@@ -1,1 +1,1 @@
-EduHub backend
+EduHub
