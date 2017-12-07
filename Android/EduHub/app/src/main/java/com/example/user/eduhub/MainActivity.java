@@ -1,17 +1,20 @@
 package com.example.user.eduhub;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Fragments.LoginFragment;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
+import com.example.user.eduhub.Repository.TestUserRep;
 
 public class MainActivity extends AppCompatActivity implements IFragmentsActivities {
 FragmentTransaction fTransaction;
 LoginFragment loginFragment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,5 +33,11 @@ LoginFragment loginFragment;
         fTransaction.addToBackStack(null);
         fTransaction.commit();
     }
+
+    @Override
+    public void signIn(User user) {
+
+    }
+
 
 }

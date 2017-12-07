@@ -47,6 +47,6 @@
             android:layout_above="@+id/sign_up"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="Button" />
+            android:text="Sign In" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

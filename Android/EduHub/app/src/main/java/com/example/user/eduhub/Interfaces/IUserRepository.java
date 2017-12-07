@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by user on 06.12.2017.
  */
 
-public interface IUserReposetory {
+public interface IUserRepository {
     ArrayList<User> LoadUsers();
-    void SaveUsers(ArrayList<User> users);
+    ArrayList<User> AddUser(User user);
 }
