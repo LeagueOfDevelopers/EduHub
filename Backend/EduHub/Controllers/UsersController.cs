@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using EduHub.Models;
+
+namespace EduHub.Controllers
+{
+    [Produces("application/json")]
+    [Route("api/users")]
+    public class UsersController : Controller
+    {
+        [HttpPost]
+        [Route("search")]
+        public IActionResult SearchUser([FromBody]User user)
+        {
+            return Ok($"Поиск пользователя с именем {user.Name} осуществлен");
+        }
+
+        [HttpPost]
+        [Route("{idOfUser}/complaint")]
+        public IActionResult Report()
+        {
+            return Ok($"Жалоба на пользователя добавлена");
+        }
+    }
+}
