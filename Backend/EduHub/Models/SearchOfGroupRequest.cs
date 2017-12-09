@@ -7,7 +7,6 @@ namespace EduHub.Models
 {
     public class SearchOfGroupRequest
     {
-        public string Name { get; set; }
-        public int MaxCount { get; set; }
+        public string Tag { get; set; }
     }
 }

@@ -13,54 +13,60 @@ namespace EduHub.Controllers
     public class UserProfileController : Controller
     {
         [HttpDelete]
-        public IActionResult DeleteProfile()
+        public IActionResult DeleteProfile([FromRoute] int idOfUser)
         {
             return Ok("Профиль удален");
         }
 
         [HttpPost]
-        public IActionResult RestoreProfile()
+        public IActionResult RestoreProfile([FromRoute] int idOfUser)
         {
             return Ok("Профиль восстановлен");
         }
 
         [HttpPut]
-        public IActionResult EditProfile([FromBody]EditProfileRequest request)
+        public IActionResult EditProfile([FromBody]EditProfileRequest request, [FromRoute] int idOfUser)
         {
             return Ok($"Новые данные профиля ИМЯ:{request.Name}, ВОЗРАСТ:{request.Age}");
         }
 
         [HttpPost]
         [Route("teaching")]
-        public IActionResult BecomeTeacher()
+        public IActionResult BecomeTeacher([FromRoute] int idOfUser)
         {
             return Ok("Пользователь стал преподавателем");
         }
 
         [HttpDelete]
         [Route("teaching")]
-        public IActionResult StopToBeTeacher()
+        public IActionResult StopToBeTeacher([FromRoute] int idOfUser)
         {
             return Ok("Пользователь перестал быть преподавателем");
         }
 
         [HttpPost]
-        [Route("announcements")]
-        public IActionResult TurnOnNotify()
+        [Route("notifies")]
+        public IActionResult TurnOnNotify([FromRoute] int idOfUser)
         {
             return Ok("Уведомления включены");
         }
 
         [HttpDelete]
-        [Route("announcements")]
-        public IActionResult TurnOffNotify()
+        [Route("notifies")]
+        public IActionResult TurnOffNotify([FromRoute] int idOfUser)
         {
             return Ok("Уведомления выключены");
         }
 
         [HttpGet]
-        [Route("announcements")]
-        public IActionResult ShowNotifies()
+        [Route("notifies")]
+        public IActionResult GetNotifies([FromRoute] int idOfUser)
+        {
+            return Ok("Просмотр уведомлений");
+        }
+
+        [HttpGet]
+        public IActionResult GetProfile([FromRoute] int idOfUser)
         {
             return Ok("Просмотр уведомлений");
         }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EduHub.Models
 {
-    public class User
+    public class SearchOfUserRequest
     {
         public string Name { get; set; }
     }

@@ -13115,7 +13115,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Users\\Ноутбук\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13124,17 +13124,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\EduHub\\Backend\\EduHub\\EduHub.csproj",
+      "projectUniqueName": "C:\\Users\\Ноутбук\\Desktop\\EduHub\\Backend\\EduHub\\EduHub.csproj",
       "projectName": "EduHub",
-      "projectPath": "C:\\Users\\User\\Desktop\\EduHub\\Backend\\EduHub\\EduHub.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\EduHub\\Backend\\EduHub\\obj\\",
+      "projectPath": "C:\\Users\\Ноутбук\\Desktop\\EduHub\\Backend\\EduHub\\EduHub.csproj",
+      "packagesPath": "C:\\Users\\Ноутбук\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ноутбук\\Desktop\\EduHub\\Backend\\EduHub\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Ноутбук\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -13142,7 +13142,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://www.nuget.org/api/v2/": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.0": {

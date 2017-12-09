@@ -14,30 +14,32 @@ namespace EduHub.Controllers
     {
         [HttpPost]
         [Route("message")]
-        public IActionResult SendMessage([FromBody]SendMessageRequest message)
+        public IActionResult SendMessage([FromBody]SendMessageRequest message, [FromRoute]int idOfGroup)
         {
-            return Ok($"Пользователю {message.Receiver} было отправлено сообщение '{message.Text}'");
+            return Ok($"Чату {message.ChatId} было отправлено сообщение '{message.Text}'");
         }
 
         [HttpGet]
         [Route("message/{idOfMessage}")]
-        public IActionResult GetMessage()
+        public IActionResult GetMessage([FromRoute] int idOfGroup,[FromRoute] int idOfMessage)
         {
-            return Ok($"Получено сообщение");
+            return Ok($"Получено сообщение {idOfMessage} в чате группы {idOfGroup}");
         }
 
         [HttpPut]
         [Route("message/{idOfMessage}")]
-        public IActionResult EditMessage([FromBody]EditMessageRequest message)
+        public IActionResult EditMessage([FromBody]EditMessageRequest message,
+                [FromRoute] int idOfGroup, [FromRoute] int idOfMessage)
         {
-            return Ok($"Текст сообщения исправлен на '{message.NewText}'");
+            return Ok($"Текст сообщения {idOfMessage} исправлен на '{message.NewText}' " +
+                $"в чате группы {idOfGroup}");
         }
 
         [HttpDelete]
         [Route("message/{idOfMessage}")]
-        public IActionResult DeleteMessage()
+        public IActionResult DeleteMessage([FromRoute]int idOfGroup, [FromRoute]int idOfMessage)
         {
-            return Ok($"Сообщение удалено");
+            return Ok($"Сообщение {idOfMessage} удалено из чата группы {idOfGroup}");
         }
     }
 }

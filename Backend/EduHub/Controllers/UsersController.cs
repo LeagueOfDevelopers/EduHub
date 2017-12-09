@@ -14,14 +14,14 @@ namespace EduHub.Controllers
     {
         [HttpPost]
         [Route("search")]
-        public IActionResult SearchUser([FromBody]User user)
+        public IActionResult SearchUser([FromBody]SearchOfUserRequest user)
         {
             return Ok($"Поиск пользователя с именем {user.Name} осуществлен");
         }
 
         [HttpPost]
-        [Route("{idOfUser}/complaint")]
-        public IActionResult Report()
+        [Route("{idOfUser}/report")]
+        public IActionResult Report([FromRoute]int idOfUser)
         {
             return Ok($"Жалоба на пользователя добавлена");
         }

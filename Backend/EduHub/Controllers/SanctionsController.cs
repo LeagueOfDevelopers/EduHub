@@ -13,16 +13,16 @@ namespace EduHub.Controllers
     {
         [HttpPost]
         [Route("{idOfUser}")]
-        public IActionResult ApplySanction()
+        public IActionResult ApplySanction([FromRoute] int idOfUser)
         {
-            return Ok("К пользователю применены санкции");
+            return Ok($"К пользователю {idOfUser} применены санкции");
         }
 
         [HttpDelete]
         [Route("{idOfUser}")]
-        public IActionResult LiftSanction()
+        public IActionResult AnullSanction([FromRoute] int idOfUser)
         {
-            return Ok("Санкции пользователя отменены");
+            return Ok($"Санкции с пользователя {idOfUser} сняты");
         }
     }
 }
