@@ -13115,7 +13115,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Ноутбук\\.nuget\\packages\\": {},
+    "C:\\Users\\chipodeil\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -13124,17 +13124,17 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ноутбук\\Desktop\\EduHub\\Backend\\EduHub\\EduHub.csproj",
+      "projectUniqueName": "C:\\Users\\chipodeil\\Desktop\\EduHub\\Backend\\EduHub\\EduHub.csproj",
       "projectName": "EduHub",
-      "projectPath": "C:\\Users\\Ноутбук\\Desktop\\EduHub\\Backend\\EduHub\\EduHub.csproj",
-      "packagesPath": "C:\\Users\\Ноутбук\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ноутбук\\Desktop\\EduHub\\Backend\\EduHub\\obj\\",
+      "projectPath": "C:\\Users\\chipodeil\\Desktop\\EduHub\\Backend\\EduHub\\EduHub.csproj",
+      "packagesPath": "C:\\Users\\chipodeil\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\chipodeil\\Desktop\\EduHub\\Backend\\EduHub\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Ноутбук\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\chipodeil\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
