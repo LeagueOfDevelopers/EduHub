@@ -8,7 +8,8 @@ namespace EduHub.Models
 {
     public class SendMessageRequest
     {
-        public string Receiver { get; set; }
+        public int ChatId { get; set; }
         public string Text { get; set; }
+        public string SenderId { get; set; }
     }
 }

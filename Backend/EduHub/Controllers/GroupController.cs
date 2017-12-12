@@ -20,23 +20,23 @@ namespace EduHub.Controllers
 
         [HttpPost]
         [Route("search")]
-        public IActionResult SearchGroup([FromBody]SearchOfGroupRequest request)
+        public IActionResult SearchGroupByTag([FromBody]SearchOfGroupRequest request)
         {
-            return Ok($"Поиск курса {request.Name} осуществлен");
+            return Ok($"Поиск групп с тегом {request.Tag} осуществлен");
         }
 
         [HttpPut]
         [Route("{idOfGroup}")]
-        public IActionResult EditGroupDescription([FromBody]EditDescriptionOfGroupRequest request)
+        public IActionResult EditGroupDescription([FromBody]EditDescriptionOfGroupRequest request, [FromRoute] int idOfGroup)
         {
-            return Ok($"Описание группы изменено на {request.NewText}");
+            return Ok($"Описание группы с id {idOfGroup} изменено на {request.NewText}");
         }
 
         [HttpDelete]
         [Route("{idOfGroup}")]
-        public IActionResult DeleteGroup()
+        public IActionResult DeleteGroup([FromRoute] int idOfGroup)
         {
-            return Ok("Группа удалена");
+            return Ok($"Группа {idOfGroup} удалена");
         }
     }
 }

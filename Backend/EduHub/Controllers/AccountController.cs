@@ -20,7 +20,7 @@ namespace EduHub.Controllers
         }
 
         [HttpPost]
-        [Route("token")]
+        [Route("login")]
         public IActionResult Login([FromBody]LoginRequest loginRequest)
         {
             return Ok("Пользователь авторизован");

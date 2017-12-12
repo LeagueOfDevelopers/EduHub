@@ -9,37 +9,37 @@ namespace EduHub.Controllers
 {
     [Produces("application/json")]
     [Route("api/group/{idOfGroup}/members")]
-    public class GroupMembersController : Controller
+    public class GroupMemberController : Controller
     {
         [HttpPost]
         [Route("{idOfUser}/invitation")]
-        public IActionResult InviteUser()
+        public IActionResult InviteUser([FromRoute] int idOfGroup, [FromRoute] int idOfUser)
         {
             return Ok("Пользователь приглашен");
         }
 
         [HttpPut]
-        public IActionResult AcceptInvitation()
+        public IActionResult AcceptInvitation([FromRoute] int idOfGroup)
         {
             return Ok("Приглашение принято");
         }
 
         [HttpDelete]
-        public IActionResult RejectInvitation()
+        public IActionResult RejectInvitation([FromRoute] int idOfGroup)
         {
-            return Ok("Приглашение отвергнуто");
+            return Ok("Приглашение отклонено");
         }
 
         [HttpPost]
         [Route("{idOfUser}")]
-        public IActionResult AddUser()
+        public IActionResult AddMember([FromRoute] int idOfGroup)
         {
             return Ok("Пользователь добавлен");
         }
 
         [HttpDelete]
         [Route("{idOfUser}")]
-        public IActionResult DeleteUser()
+        public IActionResult DeleteMember([FromRoute] int idOfGroup)
         {
             return Ok("Пользователь удален");
         }
