@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain
 {
-    class Group
+    public class Group
     {
     }
 }
