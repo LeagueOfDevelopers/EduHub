@@ -16,9 +16,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    aaptOptions {
-        cruncherEnabled = false
-        useNewCruncher = false
+    lintOptions{
+        abortOnError=false
     }
 }
 
