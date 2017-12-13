@@ -1,8 +1,11 @@
 package com.example.user.eduhub;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,15 +16,35 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.user.eduhub.Adapters.GroupAdapter;
+import com.example.user.eduhub.Classes.Group;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+RecyclerView recyclerView;
+    RecyclerView recyclerView2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+recyclerView=findViewById(R.id.recycler1);
+        recyclerView2=findViewById(R.id.recycler2);
+        recyclerView.setHasFixedSize(true);
+        recyclerView2.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager llm2 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(llm);
+        recyclerView2.setLayoutManager(llm2);
+        GroupAdapter adapter = new GroupAdapter(getFakeGroups());
+        recyclerView.setAdapter(adapter);
+        recyclerView2.setAdapter(adapter);
+
 
 
 
@@ -88,5 +111,13 @@ public class Main2Activity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private ArrayList<Group> getFakeGroups(){
+        ArrayList<Group> groups=new ArrayList<>();
+        GregorianCalendar gregorianCalendar=new GregorianCalendar(2017, Calendar.DECEMBER,13,21,00);
+
+        groups.add(new Group("C# easy",8,3,new ArrayList<String>(),gregorianCalendar.getTime() ));
+        groups.add(new Group("Java для чайников",8,5,new ArrayList<String>(),new GregorianCalendar(2017,Calendar.DECEMBER,31).getTime()));
+        return groups;
     }
 }
