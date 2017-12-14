@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,7 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.user.eduhub.Adapters.GroupAdapter;
+import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Classes.Group;
+import com.example.user.eduhub.Fragments.TeacherFragment;
+import com.example.user.eduhub.Fragments.UserFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,25 +30,31 @@ import java.util.GregorianCalendar;
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-RecyclerView recyclerView;
-    RecyclerView recyclerView2;
+ViewPager pager;
+ViewPagerAdapter adapter;
+UserFragment userFragment;
+TeacherFragment teacherFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-recyclerView=findViewById(R.id.recycler1);
-        recyclerView2=findViewById(R.id.recycler2);
-        recyclerView.setHasFixedSize(true);
-        recyclerView2.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
-        LinearLayoutManager llm2 = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
-        recyclerView.setLayoutManager(llm);
-        recyclerView2.setLayoutManager(llm2);
-        GroupAdapter adapter = new GroupAdapter(getFakeGroups());
-        recyclerView.setAdapter(adapter);
-        recyclerView2.setAdapter(adapter);
+        teacherFragment=new TeacherFragment();
+        userFragment=new UserFragment();
+        teacherFragment.setGroups(getFakeGroups());
+        userFragment.setGroups(getFakeGroups());
+        pager=findViewById(R.id.pager);
+        adapter=new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(userFragment,"Обучение");
+        adapter.addFragment(teacherFragment ,"Преподавание");
+        pager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(pager);
+
+
 
 
 
@@ -114,10 +125,10 @@ recyclerView=findViewById(R.id.recycler1);
     }
     private ArrayList<Group> getFakeGroups(){
         ArrayList<Group> groups=new ArrayList<>();
-        GregorianCalendar gregorianCalendar=new GregorianCalendar(2017, Calendar.DECEMBER,13,21,00);
 
-        groups.add(new Group("C# easy",8,3,new ArrayList<String>(),gregorianCalendar.getTime() ));
-        groups.add(new Group("Java для чайников",8,5,new ArrayList<String>(),new GregorianCalendar(2017,Calendar.DECEMBER,31).getTime()));
+
+        groups.add(new Group("C# easy",8,3,new ArrayList<String>(),25));
+        groups.add(new Group("Java для чайников",8,5,new ArrayList<String>(),10));
         return groups;
     }
 }

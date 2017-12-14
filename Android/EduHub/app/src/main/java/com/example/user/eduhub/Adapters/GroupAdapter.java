@@ -33,7 +33,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     public void onBindViewHolder(GroupViewHolder holder, int position) {
         holder.name.setText(groups.get(position).getName());
         holder.users.setText(groups.get(position).getUsersNow()+"/"+groups.get(position).getMaxUsers());
-        holder.timeLeft.setText(groups.get(position).getDeadLine().toString());
+        holder.cost.setText("$"+groups.get(position).getCost());
         holder.tags.setText(groups.get(position).getTags().toString());
 
     }
@@ -52,14 +52,15 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         TextView name;
         TextView users;
         TextView tags;
-        TextView timeLeft;
+        TextView cost;
 
         public GroupViewHolder(View itemView){
             super(itemView);
-            name=itemView.findViewById(R.id.groupName);
+            name=itemView.findViewById(R.id.name_of_group);
             users=itemView.findViewById(R.id.participants);
             tags=itemView.findViewById(R.id.tags);
-            timeLeft=itemView.findViewById(R.id.timeLeft);
+            cost=itemView.findViewById(R.id.cost);
+
 
 
         }

@@ -14,13 +14,14 @@ public class Group {
     private int maxUsers;
     private int usersNow;
     private Date deadLine;
+    private int cost;
     private ArrayList<String> tags;
-    public Group(String name,int maxUsers,int usersNow,ArrayList<String> tags,Date deadLine){
+    public Group(String name,int maxUsers,int usersNow,ArrayList<String> tags,int cost){
         this.name=name;
         this.maxUsers=maxUsers;
         this.usersNow=usersNow;
         this.tags=tags;
-        this.deadLine=deadLine;
+       this.cost=cost;
 
     }
     public String getName(){
@@ -49,6 +50,9 @@ public class Group {
     }
     public Date getDeadLine(){
         return deadLine;
+    }
+    public int getCost(){
+        return cost;
     }
 
 }
