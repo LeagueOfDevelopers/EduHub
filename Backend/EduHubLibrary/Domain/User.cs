@@ -9,6 +9,7 @@ namespace EduHubLibrary.Domain
     {
         public string Name { get; private set; }
         public string Email { get; private set; }
+        public Guid Id { get; private set; }
 
         public User(string name, string email, bool isTeacher)
         {
@@ -16,6 +17,7 @@ namespace EduHubLibrary.Domain
             Email = email;
             _isTeacher = isTeacher;
             _isActive = true;
+            Id = Guid.NewGuid();
         }
 
         public void EditProfile(string newName, bool isTeacher)
