@@ -16,12 +16,14 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import CreateGroupPage from 'containers/CreateGroupPage';
 
 export default function App() {
   return (
     <div>
       <Switch>
         <Route exact path="/" component={HomePage} />
+        <Route path='/create_group' component={CreateGroupPage}/>
         <Route component={NotFoundPage} />
       </Switch>
     </div>

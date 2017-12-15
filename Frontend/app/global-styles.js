@@ -2,6 +2,10 @@ import { injectGlobal } from 'styled-components';
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
+  html {
+    font-size: 10px;
+  }
+
   html,
   body {
     height: 100%;
@@ -11,7 +15,8 @@ injectGlobal`
   }
 
   body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: Tahoma, Helvetica, Arial, sans-serif;
+    font-size: 18px;
   }
 
   body.fontLoaded {
@@ -19,7 +24,7 @@ injectGlobal`
   }
 
   #app {
-    background-color: #666;
+    background-color: #fff;
     min-height: 100%;
     min-width: 100%;
   }
