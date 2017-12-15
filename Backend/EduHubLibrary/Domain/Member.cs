@@ -4,12 +4,17 @@ using System.Text;
 
 namespace EduHubLibrary.Domain
 {
-    class Member
+    internal class Member
     {
-        public Member(Guid userId, MemberRole memberRole)
+        internal Member(Guid userId, MemberRole memberRole)
         {
             UserId = userId;
             MemberRole = memberRole;
+        }
+
+        internal void ChangeRole(MemberRole newRole)
+        {
+            MemberRole = newRole;
         }
 
         public Guid UserId{ get; protected set; }

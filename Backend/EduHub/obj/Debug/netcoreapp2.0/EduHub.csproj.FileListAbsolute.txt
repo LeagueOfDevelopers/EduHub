@@ -19,4 +19,3 @@ C:\Users\chipodeil\Desktop\EduHub\Backend\EduHub\obj\Debug\netcoreapp2.0\EduHub.
 C:\Users\chipodeil\Desktop\EduHub\Backend\EduHub\obj\Debug\netcoreapp2.0\EduHub.AssemblyInfo.cs
 C:\Users\chipodeil\Desktop\EduHub\Backend\EduHub\obj\Debug\netcoreapp2.0\EduHub.dll
 C:\Users\chipodeil\Desktop\EduHub\Backend\EduHub\obj\Debug\netcoreapp2.0\EduHub.pdb
-C:\Users\chipodeil\Desktop\EduHub\Backend\EduHub\obj\Debug\netcoreapp2.0\EduHub.csprojResolveAssemblyReference.cache
