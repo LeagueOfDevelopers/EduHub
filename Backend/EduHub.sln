@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduHub", "EduHub\EduHub.csproj", "{7EB6D516-7DD9-4D7F-A9CF-057262E2C110}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduHubLibrary", "EduHubLibrary\EduHubLibrary.csproj", "{800B576C-E7A7-4595-A0ED-3295736B3442}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduHubLibrary", "EduHubLibrary\EduHubLibrary.csproj", "{800B576C-E7A7-4595-A0ED-3295736B3442}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{7E898681-575C-4AA5-9484-485B9C8A0CB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{800B576C-E7A7-4595-A0ED-3295736B3442}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{800B576C-E7A7-4595-A0ED-3295736B3442}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{800B576C-E7A7-4595-A0ED-3295736B3442}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E898681-575C-4AA5-9484-485B9C8A0CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E898681-575C-4AA5-9484-485B9C8A0CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E898681-575C-4AA5-9484-485B9C8A0CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E898681-575C-4AA5-9484-485B9C8A0CB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
