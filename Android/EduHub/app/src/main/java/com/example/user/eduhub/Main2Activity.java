@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.example.user.eduhub.Adapters.GroupAdapter;
 import com.example.user.eduhub.Adapters.ViewPagerAdapter;
@@ -34,6 +35,7 @@ ViewPager pager;
 ViewPagerAdapter adapter;
 UserFragment userFragment;
 TeacherFragment teacherFragment;
+Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ TeacherFragment teacherFragment;
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        btn=findViewById(R.id.btn);
         teacherFragment=new TeacherFragment();
         userFragment=new UserFragment();
         teacherFragment.setGroups(getFakeGroups());
@@ -105,17 +108,17 @@ TeacherFragment teacherFragment;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.main) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.profile) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.becameTeacher) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.settings) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.notification) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.myGroups) {
 
         }
 
