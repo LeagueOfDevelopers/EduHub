@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using EduHubLibrary.Domain.Exceptions;
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("UnitTests")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EduHubTests")]
 
 namespace EduHubLibrary.Domain
 {
