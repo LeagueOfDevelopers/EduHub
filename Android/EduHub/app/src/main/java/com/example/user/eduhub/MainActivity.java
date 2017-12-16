@@ -8,7 +8,6 @@ import android.os.Bundle;
 import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Fragments.LoginFragment;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
-import com.example.user.eduhub.Repository.TestUserRep;
 
 public class MainActivity extends AppCompatActivity implements IFragmentsActivities {
 FragmentTransaction fTransaction;

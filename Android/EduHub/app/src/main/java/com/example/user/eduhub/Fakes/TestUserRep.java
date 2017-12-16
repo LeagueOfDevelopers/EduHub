@@ -1,4 +1,4 @@
-package com.example.user.eduhub.Repository;
+package com.example.user.eduhub.Fakes;
 
 import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Interfaces.IUserRepository;

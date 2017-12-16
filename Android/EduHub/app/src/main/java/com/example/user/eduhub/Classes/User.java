@@ -17,6 +17,7 @@ public class User {
     private Date birthYear;
     private String sex;
 
+
     public String getEmail(){
         return email;
     }

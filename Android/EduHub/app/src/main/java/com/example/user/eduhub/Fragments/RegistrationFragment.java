@@ -13,7 +13,8 @@ import android.widget.Toast;
 import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
 import com.example.user.eduhub.R;
-import com.example.user.eduhub.Repository.TestUserRep;
+import com.example.user.eduhub.Fakes.TestUserRep;
+import com.example.user.eduhub.Retrofit.AccountActivities;
 
 /**
  * Created by user on 06.12.2017.
@@ -22,6 +23,7 @@ import com.example.user.eduhub.Repository.TestUserRep;
 public class RegistrationFragment extends Fragment {
     IFragmentsActivities fragmentsActivities;
     TestUserRep testUserRep=new TestUserRep();
+    AccountActivities accountActivities=new AccountActivities();
     boolean flag=false;
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -45,26 +47,12 @@ public class RegistrationFragment extends Fragment {
             public void onClick(View view) {
 
                 if(!email.getText().toString().equals("")&&!password.getText().toString().equals("")&&!login.getText().toString().equals("")){
-                    for (User user:testUserRep.LoadUsers()
-                         ) {
-                        if(user.getEmail().equals(email.getText().toString())){
-                            flag=true;
-                        }
-
-                    }
-                    if(flag){
-                        MakeToast("Такой Email уже используется.");
-                    }else{
-                    User newUser=new User();
-                    newUser.setEmail(email.getText().toString());
-                    newUser.setPassword(password.getText().toString());
-                    newUser.setLogin(login.getText().toString());
-
-                    LoginFragment loginFragment=new LoginFragment();
-                    MakeToast("Регистрация прошла успешно.");
-                    fragmentsActivities.switchingFragmets(loginFragment);
-                    }
-
+                    flag=accountActivities.UserRegistration(email.getText().toString(),password.getText().toString(),login.getText().toString());
+if(flag){
+    MakeToast("Регистрация прошла успешно");
+}else{
+    MakeToast(",билиберда");
+}
 
                 }else{
                    MakeToast("Ошибка.заполните все поля.");
