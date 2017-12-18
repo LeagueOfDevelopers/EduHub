@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EnsureThat;
 
 namespace EduHubLibrary.Domain
 {
@@ -15,18 +16,26 @@ namespace EduHubLibrary.Domain
 
         public User(string name, string email, bool isTeacher)
         {
-            Name = name;
-            Email = email;
+            Name = Ensure.String.IsNotNullOrWhiteSpace(name);
+            Email = Ensure.String.IsNotNullOrWhiteSpace(email);
             IsTeacher = isTeacher;
             IsActive = true;
             Id = Guid.NewGuid();
         }
 
-        public void EditProfile(string newName, string email, bool isTeacher)
+        public void EditName(string newName)
         {
-            Name = newName;
-            Email = email;
-            IsTeacher = isTeacher;
+            Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
+        }
+
+        public void BecomeTeacher()
+        {
+            IsTeacher = true;
+        }
+
+        public void StopToBeTeacher()
+        {
+            IsTeacher = false;
         }
 
         public void RestoreProfile()
