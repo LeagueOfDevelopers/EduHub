@@ -30,7 +30,6 @@ namespace EduHub.Controllers
 
         //TODO delete
         [HttpGet]
-        [Route("")]
         public IActionResult All()
         {
             return Ok(_userFacade.GetUsers());
