@@ -10,14 +10,16 @@ namespace EduHubLibrary.Domain
     {
         public string Name { get; private set; }
         public string Email { get; private set; }
+        public string Password { get; private set; }
         public bool IsTeacher { get; private set; }
         public bool IsActive { get; private set; }
         public Guid Id { get; private set; }
 
-        public User(string name, string email, bool isTeacher)
+        public User(string name, string email, string password, bool isTeacher)
         {
             Name = Ensure.String.IsNotNullOrWhiteSpace(name);
             Email = Ensure.String.IsNotNullOrWhiteSpace(email);
+            Password = Ensure.String.IsNotNullOrWhiteSpace(email);
             IsTeacher = isTeacher;
             IsActive = true;
             Id = Guid.NewGuid();

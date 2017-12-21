@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain
 {
-    enum MemberRole
+    public enum MemberRole
     {
         Default = 0,
         Member = 1,

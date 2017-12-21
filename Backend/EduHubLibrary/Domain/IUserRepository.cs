@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
         void Add(User user);
         void Update(User user);

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain
 {
-    internal class Member
+    public class Member
     {
         internal Member(Guid userId, MemberRole memberRole)
         {

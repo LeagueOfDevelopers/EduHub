@@ -35,22 +35,6 @@ namespace EduHubLibrary.Domain
             listOfMembers.Remove(GetMemberById(deletingPerson));
         }
 
-        private void DeleteCreator(Member deletingCreator)
-        {
-            if (deletingCreator.MemberRole != MemberRole.Creator)
-                throw new NotEnoughPermissionsException(deletingCreator.UserId);
-            int indexOfCreator = listOfMembers.IndexOf(deletingCreator);
-            if (indexOfCreator+1 == listOfMembers.Count)
-            {
-                listOfMembers.Remove(deletingCreator);
-                IsActive = false;
-                return;
-            }
-            Member newCreator = listOfMembers[indexOfCreator + 1];
-            newCreator.ChangeRole(MemberRole.Creator);
-            listOfMembers.Remove(deletingCreator);
-        }
-
         internal bool IsMember(Guid userId)
         {
             return listOfMembers.FirstOrDefault(current => current.UserId == userId) != null;
@@ -66,6 +50,30 @@ namespace EduHubLibrary.Domain
             return listOfMembers;
         }
 
+        private void DeleteCreator(Member deletingCreator)
+        {
+            if (deletingCreator.MemberRole != MemberRole.Creator)
+                throw new NotEnoughPermissionsException(deletingCreator.UserId);
+            int indexOfCreator = listOfMembers.IndexOf(deletingCreator);
+            if (indexOfCreator + 1 == listOfMembers.Count)
+            {
+                listOfMembers.Remove(deletingCreator);
+                IsActive = false;
+                return;
+            }
+            Member newCreator = listOfMembers[indexOfCreator + 1];
+            newCreator.ChangeRole(MemberRole.Creator);
+            listOfMembers.Remove(deletingCreator);
+        }
+
+        public Group(Guid groupId, Guid creatorId, List<Member> toWrite)
+        {
+            Id = groupId;
+            listOfMembers = toWrite;
+            var creator = new Member(creatorId, MemberRole.Creator);
+            listOfMembers.Add(creator);
+        }
+
         public Group(Guid groupId, Guid creatorId)
         {
             Id = groupId;
@@ -73,10 +81,10 @@ namespace EduHubLibrary.Domain
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);
         }
-        public Guid Id { get; protected set; }
-        List<Member> listOfMembers;
-        public Chat Chat { get; protected set; }
-        public Course Course { get; protected set; }
-        public bool IsActive { get; protected set; }
+        public Guid Id { get; private set; }
+        private List<Member> listOfMembers;
+        public Chat Chat { get; private set; }
+        public Course Course { get; private set; }
+        public bool IsActive { get; private set; }
     }
 }

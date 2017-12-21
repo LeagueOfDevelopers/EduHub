@@ -12,19 +12,24 @@ namespace UnitTests
         {
             string NameOfUser = "Ivan";
             string Email = "sokolov@gmail.com";
+            string Password = "sokolov@gmail.com";
+
             bool IsTeacher = false;
 
-            User UserTest = new User(NameOfUser, Email, IsTeacher);
+            User UserTest = new User(NameOfUser, Email, Password, IsTeacher);
             string ExpectedName = NameOfUser;
             string ExpectedEmail = Email;
             bool ExpectedIsTeacher = IsTeacher;
 
             string ActualName = UserTest.Name;
             string ActualEmail = UserTest.Email;
+            string ActualPass = UserTest.Password;
             bool ActualIsTeacher = UserTest.IsTeacher;
             Assert.AreEqual(ExpectedName, ActualName);
             Assert.AreEqual(ExpectedEmail, ActualEmail);
             Assert.AreEqual(ExpectedIsTeacher, ActualIsTeacher);
+            Assert.AreEqual(Password, ActualPass);
+
         }
 
         [TestMethod]
@@ -32,7 +37,7 @@ namespace UnitTests
         {
             string NewName = "Nikolai";
 
-            User UserTest = new User("Ivan", "ivanov@mail.ru", false);
+            User UserTest = new User("Ivan", "ivanov@mail.ru", "", false);
             UserTest.EditName(NewName);
             string ExpectedName = NewName;
 
@@ -45,14 +50,14 @@ namespace UnitTests
         {
             string NewName = "";
 
-            User UserTest = new User("Ivan", "ivanov@mail.ru", false);
+            User UserTest = new User("Ivan", "ivanov@mail.ru", "",false);
             UserTest.EditName(NewName);
         }
 
         [TestMethod]
         public void BecomeTeacher_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@mail.ru", false);
+            User UserTest = new User("Ivan", "ivanov@mail.ru", "",false);
             UserTest.BecomeTeacher();
 
             Assert.AreEqual(true, UserTest.IsTeacher);
@@ -61,7 +66,7 @@ namespace UnitTests
         [TestMethod]
         public void StopToTeacher_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@mail.ru", true);
+            User UserTest = new User("Ivan", "ivanov@mail.ru","", true);
             UserTest.StopToBeTeacher();
 
             Assert.AreEqual(false, UserTest.IsTeacher);
@@ -70,7 +75,7 @@ namespace UnitTests
         [TestMethod]
         public void DeleteProfile_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@gmail.com", false);
+            User UserTest = new User("Ivan", "ivanov@gmail.com","", false);
 
             UserTest.DeleteProfile();
             bool Expected = false;
@@ -82,7 +87,7 @@ namespace UnitTests
         [TestMethod]
         public void RestoreProfile_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@gmail.com", false);
+            User UserTest = new User("Ivan", "ivanov@gmail.com","", false);
 
             UserTest.DeleteProfile();
             UserTest.RestoreProfile();
@@ -99,7 +104,7 @@ namespace UnitTests
             string Email = "";
             bool IsTeacher = false;
 
-            User UserTest = new User(NameOfUser, Email, IsTeacher);
+            User UserTest = new User(NameOfUser, Email, "", IsTeacher);
         }
     }
 }

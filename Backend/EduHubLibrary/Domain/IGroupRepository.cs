@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain
 {
-    interface IGroupRepository
+    public interface IGroupRepository
     {
         void Add(Group group);
         void Delete(Group group);
