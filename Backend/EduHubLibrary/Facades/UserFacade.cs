@@ -18,7 +18,7 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetAll();
         }
 
-        public Guid RegUser(string username, string email,string password, bool IsTeacher)
+        public Guid RegUser(string username, string email, string password, bool IsTeacher)
         {
             User user = new User(username, email, password, IsTeacher);
             _userRepository.Add(user);

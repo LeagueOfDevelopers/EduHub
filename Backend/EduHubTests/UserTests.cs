@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EduHubLibrary.Domain;
 
-namespace UnitTests
+namespace EduHubTests
 {
     [TestClass]
     public class UserTests
@@ -37,7 +37,7 @@ namespace UnitTests
         {
             string NewName = "Nikolai";
 
-            User UserTest = new User("Ivan", "ivanov@mail.ru", "", false);
+            User UserTest = new User("Ivan", "ivanov@mail.ru", "1", false);
             UserTest.EditName(NewName);
             string ExpectedName = NewName;
 
@@ -50,14 +50,14 @@ namespace UnitTests
         {
             string NewName = "";
 
-            User UserTest = new User("Ivan", "ivanov@mail.ru", "",false);
+            User UserTest = new User("Ivan", "ivanov@mail.ru", "1",false);
             UserTest.EditName(NewName);
         }
 
         [TestMethod]
         public void BecomeTeacher_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@mail.ru", "",false);
+            User UserTest = new User("Ivan", "ivanov@mail.ru", "1",false);
             UserTest.BecomeTeacher();
 
             Assert.AreEqual(true, UserTest.IsTeacher);
@@ -66,7 +66,7 @@ namespace UnitTests
         [TestMethod]
         public void StopToTeacher_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@mail.ru","", true);
+            User UserTest = new User("Ivan", "ivanov@mail.ru","1", true);
             UserTest.StopToBeTeacher();
 
             Assert.AreEqual(false, UserTest.IsTeacher);
@@ -75,7 +75,7 @@ namespace UnitTests
         [TestMethod]
         public void DeleteProfile_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@gmail.com","", false);
+            User UserTest = new User("Ivan", "ivanov@gmail.com","1", false);
 
             UserTest.DeleteProfile();
             bool Expected = false;
@@ -87,7 +87,7 @@ namespace UnitTests
         [TestMethod]
         public void RestoreProfile_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@gmail.com","", false);
+            User UserTest = new User("Ivan", "ivanov@gmail.com","1", false);
 
             UserTest.DeleteProfile();
             UserTest.RestoreProfile();
@@ -104,7 +104,7 @@ namespace UnitTests
             string Email = "";
             bool IsTeacher = false;
 
-            User UserTest = new User(NameOfUser, Email, "", IsTeacher);
+            User UserTest = new User(NameOfUser, Email, "1", IsTeacher);
         }
     }
 }

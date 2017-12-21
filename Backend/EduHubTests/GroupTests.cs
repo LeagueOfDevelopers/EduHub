@@ -5,7 +5,7 @@ using EduHubLibrary.Domain.Exceptions;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace UnitTests
+namespace EduHubTests
 {
     [TestClass]
     public class GroupTests

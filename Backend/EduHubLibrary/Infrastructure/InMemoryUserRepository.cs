@@ -7,7 +7,7 @@ using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubLibrary.Infrastructure
 {
-    class InMemoryUserRepository : IUserRepository
+    public class InMemoryUserRepository : IUserRepository
     {
         public void Add(User user)
         {

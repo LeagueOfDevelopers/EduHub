@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
+using EduHubLibrary.Facades;
 
 namespace EduHub.Controllers
 {
@@ -16,6 +17,7 @@ namespace EduHub.Controllers
         [Route("registration")]
         public IActionResult Registrate([FromBody]RegistrationRequest request)
         {
+            _userFacade.RegUser(request.Name, request.Email, request.Password, request.IsTeacher);
             return Ok("Пользователь зарегистрирован");
         }
 
@@ -25,5 +27,21 @@ namespace EduHub.Controllers
         {
             return Ok("Пользователь авторизован");
         }
+
+        //TODO delete
+        [HttpGet]
+        [Route("")]
+        public IActionResult All()
+        {
+            return Ok(_userFacade.GetUsers());
+        }
+        
+
+        public AccountController(IUserFacade userFacade)
+        {
+            _userFacade = userFacade;
+        }
+
+        private readonly IUserFacade _userFacade;
     }
 }

@@ -11,7 +11,7 @@ using System.Linq;
 namespace EduHubTests
 {
     [TestClass]
-    class UserFacadeTests
+    public class UserFacadeTests
     {
         [TestMethod]
         public void AddNewUser_HasItAdded()

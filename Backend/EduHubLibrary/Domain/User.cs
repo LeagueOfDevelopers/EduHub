@@ -19,7 +19,7 @@ namespace EduHubLibrary.Domain
         {
             Name = Ensure.String.IsNotNullOrWhiteSpace(name);
             Email = Ensure.String.IsNotNullOrWhiteSpace(email);
-            Password = Ensure.String.IsNotNullOrWhiteSpace(email);
+            Password = Ensure.String.IsNotNullOrWhiteSpace(password);
             IsTeacher = isTeacher;
             IsActive = true;
             Id = Guid.NewGuid();
