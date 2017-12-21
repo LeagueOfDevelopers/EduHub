@@ -15,6 +15,7 @@ public class Group {
     private int usersNow;
     private Date deadLine;
     private int cost;
+
     private ArrayList<String> tags;
     public Group(String name,int maxUsers,int usersNow,ArrayList<String> tags,int cost){
         this.name=name;
