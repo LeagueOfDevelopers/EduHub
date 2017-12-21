@@ -25,9 +25,9 @@
             android:id="@+id/participants"
             android:layout_width="40dp"
             android:layout_height="45dp"
-            android:layout_alignLeft="@+id/name"
-            android:layout_alignStart="@+id/name"
-            android:layout_below="@+id/name"
+            android:layout_alignLeft="@+id/type_of_education"
+            android:layout_alignStart="@+id/type_of_education"
+            android:layout_below="@+id/type_of_education"
             android:ems="10"
             android:hint="14"
             android:inputType="textPersonName" />
@@ -36,7 +36,7 @@
             android:id="@+id/cost"
             android:layout_width="60dp"
             android:layout_height="45dp"
-            android:layout_below="@+id/name"
+            android:layout_below="@+id/type_of_education"
             android:layout_marginLeft="17dp"
             android:layout_marginStart="17dp"
             android:layout_toEndOf="@+id/participants"
@@ -45,13 +45,13 @@
             android:hint="300$"
             android:inputType="textPersonName" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/type_of_education"
             android:layout_width="250dp"
             android:layout_height="45dp"
-            android:layout_alignLeft="@+id/participants"
-            android:layout_alignStart="@+id/participants"
-            android:layout_below="@+id/participants"
+            android:layout_alignLeft="@+id/name"
+            android:layout_alignStart="@+id/name"
+            android:layout_below="@+id/name"
             android:ems="10"
             android:hint="Тип обучения"
             android:inputType="textPersonName" />
@@ -60,19 +60,30 @@
             android:id="@+id/checkBox"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
-            android:layout_alignEnd="@+id/name"
-            android:layout_alignRight="@+id/name"
-            android:layout_below="@+id/name"
+            android:layout_alignEnd="@+id/type_of_education"
+            android:layout_alignRight="@+id/type_of_education"
+            android:layout_below="@+id/type_of_education"
             android:layoutDirection="rtl"
             android:text="Приватность:" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/create_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:text="Button" />
+
+        <EditText
+            android:id="@+id/tags"
+            android:layout_width="250dp"
+            android:layout_height="45dp"
+            android:layout_alignLeft="@+id/participants"
+            android:layout_alignStart="@+id/participants"
+            android:layout_below="@+id/participants"
+            android:ems="10"
+            android:hint="tags"
+            android:inputType="textPersonName" />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -13,16 +13,18 @@ public class Group {
     private String name;
     private int maxUsers;
     private int usersNow;
-    private Date deadLine;
+    private boolean privacy;
     private int cost;
-
+    private TypeOfEducation typeOfEducation;
     private ArrayList<String> tags;
-    public Group(String name,int maxUsers,int usersNow,ArrayList<String> tags,int cost){
+
+    public Group(String name,int maxUsers,ArrayList<String> tags,int cost,TypeOfEducation typeOfEducation,boolean privacy){
         this.name=name;
         this.maxUsers=maxUsers;
-        this.usersNow=usersNow;
+        this.typeOfEducation=typeOfEducation;
         this.tags=tags;
        this.cost=cost;
+       this.privacy=privacy;
 
     }
     public String getName(){
@@ -49,11 +51,25 @@ public class Group {
     public void setTags(ArrayList<String> tags){
         this.tags=tags;
     }
-    public Date getDeadLine(){
-        return deadLine;
-    }
+
     public int getCost(){
         return cost;
     }
+    public void setCost(int cost){
+        this.cost=cost;
+    }
+    public TypeOfEducation getTypeOfEducation(){
+        return typeOfEducation;
+    }
+    public void setTypeOfEducation(TypeOfEducation typeOfEducation){
+        this.typeOfEducation=typeOfEducation;
+    }
+    public boolean getPrivacy(){
+        return privacy;
+    }
+    public void setPrivacy(boolean privacy){
+        this.privacy=privacy;
+    }
+
 
 }
