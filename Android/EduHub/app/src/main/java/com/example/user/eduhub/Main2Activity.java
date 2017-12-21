@@ -22,6 +22,7 @@ import android.widget.Button;
 import com.example.user.eduhub.Adapters.GroupAdapter;
 import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Classes.Group;
+import com.example.user.eduhub.Classes.TypeOfEducation;
 import com.example.user.eduhub.Fragments.TeacherFragment;
 import com.example.user.eduhub.Fragments.UserFragment;
 
@@ -130,8 +131,8 @@ Button btn;
         ArrayList<Group> groups=new ArrayList<>();
 
 
-        groups.add(new Group("C# easy",8,3,new ArrayList<String>(),25));
-        groups.add(new Group("Java для чайников",8,5,new ArrayList<String>(),10));
+        groups.add(new Group("C# easy",8,new ArrayList<String>(),25, TypeOfEducation.Lection,true));
+        groups.add(new Group("Java для чайников",8,new ArrayList<String>(),10,TypeOfEducation.Lection,false));
         return groups;
     }
 }
