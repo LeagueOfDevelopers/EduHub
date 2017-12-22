@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EduHub.Models
 {
-    public class Group
+    public class GroupRequest
     {
         public string Name { get; set; }
         public string Description { get; set; }

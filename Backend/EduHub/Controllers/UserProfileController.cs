@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
+using EduHubLibrary.Facades;
+using EduHubLibrary.Domain;
 
 namespace EduHub.Controllers
 {
@@ -12,6 +14,11 @@ namespace EduHub.Controllers
     [Route("api/users/{idOfUser}/profile")]
     public class UserProfileController : Controller
     {
+        public UserProfileController(IUserFacade userFacade)
+        {
+            _userFacade = userFacade;
+        }
+
         [HttpDelete]
         public IActionResult DeleteProfile([FromRoute] int idOfUser)
         {
@@ -62,13 +69,18 @@ namespace EduHub.Controllers
         [Route("notifies")]
         public IActionResult GetNotifies([FromRoute] int idOfUser)
         {
-            return Ok("Просмотр уведомлений");
+            List<NotifiesResponse> response = new List<NotifiesResponse>();
+            return Ok(response);
         }
 
         [HttpGet]
-        public IActionResult GetProfile([FromRoute] int idOfUser)
+        public IActionResult GetProfile([FromRoute] Guid idOfUser)
         {
-            return Ok("Просмотр уведомлений");
+            User user = _userFacade.GetUser(idOfUser);
+            UserResponse response = new UserResponse(user.Name, user.Email, user.IsTeacher, user.IsActive);
+            return Ok(response);
         }
+
+        private readonly IUserFacade _userFacade;
     }
 }

@@ -23,7 +23,8 @@ namespace EduHub.Controllers
         [Route("message/{idOfMessage}")]
         public IActionResult GetMessage([FromRoute] int idOfGroup,[FromRoute] int idOfMessage)
         {
-            return Ok($"Получено сообщение {idOfMessage} в чате группы {idOfGroup}");
+            MessageResponse response = new MessageResponse();
+            return Ok(response);
         }
 
         [HttpPut]

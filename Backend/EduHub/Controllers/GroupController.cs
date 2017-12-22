@@ -52,7 +52,9 @@ namespace EduHub.Controllers
         [Route("{idOfGroup}")]
         public IActionResult GetGroup([FromRoute] Guid idOfGroup)
         {
-            return Ok(_groupFacade.GetGroup(idOfGroup));
+            Group group = _groupFacade.GetGroup(idOfGroup);
+            GroupResponse response = new GroupResponse(group.Title, group.Description, group.IsActive, group.Tags);
+            return Ok(response);
         }
 
         public GroupController(IGroupFacade groupFacade)
