@@ -15,8 +15,12 @@ namespace EduHubTests
         {
             //Arrange
             var idOfUser = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            tags.Add("js");
             //Act
-            var someGroup = new Group(idOfUser);
+            var someGroup = new Group(idOfUser, title, tags, description);
             //Assert
             Assert.AreEqual(idOfUser, someGroup.GetMemberById(idOfUser).UserId);
         }
@@ -26,8 +30,12 @@ namespace EduHubTests
         {
             //Arrange
             var idOfUser = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            tags.Add("js");
             //Act
-            var someGroup = new Group(idOfUser);
+            var someGroup = new Group(idOfUser, title, tags, description);
             someGroup.DeleteMember(idOfUser, Guid.NewGuid());
         }
 
@@ -37,8 +45,12 @@ namespace EduHubTests
             //Arrange
             var idOfUser = Guid.NewGuid();
             var idOfInvitedUser = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            tags.Add("js");
             //Act
-            var someGroup = new Group(idOfUser);
+            var someGroup = new Group(idOfUser, title, tags, description);
             someGroup.AddMember(idOfUser, idOfInvitedUser);
             someGroup.DeleteMember(idOfInvitedUser, idOfUser);
         }
@@ -50,8 +62,12 @@ namespace EduHubTests
             var idOfUser = Guid.NewGuid();
             var idOfInvitedUser = Guid.NewGuid();
             var expected = 1;
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            tags.Add("js");
             //Act
-            var someGroup = new Group(idOfUser);
+            var someGroup = new Group(idOfUser, title, tags, description);
             someGroup.AddMember(idOfUser, idOfInvitedUser);
             someGroup.DeleteMember(idOfInvitedUser, idOfInvitedUser);
             var result = someGroup.GetAllMembers().ToArray().Length;
@@ -64,10 +80,14 @@ namespace EduHubTests
         {
             //Arrange
             var idOfUser = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            tags.Add("js");
             var idOfInvitedUser = Guid.NewGuid();
             var expected = 2;
             //Act
-            var someGroup = new Group(idOfUser);
+            var someGroup = new Group(idOfUser, title, tags, description);
             someGroup.AddMember(idOfUser, idOfInvitedUser);
             var result = someGroup.GetAllMembers().ToArray().Length;
             //Assert
@@ -80,9 +100,13 @@ namespace EduHubTests
             //Arrange
             var idOfCreator = Guid.NewGuid();
             var idOfInvitedUser = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            tags.Add("js");
             var expected = 1;
             //Act
-            var someGroup = new Group(idOfCreator);
+            var someGroup = new Group(idOfCreator, title, tags, description);
             someGroup.AddMember(idOfCreator, idOfInvitedUser);
             someGroup.DeleteMember(idOfCreator, idOfInvitedUser);
             var result = someGroup.GetAllMembers().ToArray().Length;
@@ -95,12 +119,16 @@ namespace EduHubTests
         {
             //Arrange
             var idOfCreator = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            tags.Add("js");
             var idOfInvitedUser = Guid.NewGuid();
             var expectedRole = MemberRole.Creator;
             var expectedLength = 1;
 
             //Act
-            var someGroup = new Group(idOfCreator);
+            var someGroup = new Group(idOfCreator, title, tags, description);
             someGroup.AddMember(idOfCreator, idOfInvitedUser);
             someGroup.DeleteMember(idOfCreator, idOfCreator);
             var listOfMembers = someGroup.GetAllMembers().ToList();

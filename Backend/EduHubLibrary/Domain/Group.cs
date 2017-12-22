@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using EduHubLibrary.Domain.Exceptions;
+using EnsureThat;
+
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EduHubTests")]
 
 namespace EduHubLibrary.Domain
@@ -66,22 +68,32 @@ namespace EduHubLibrary.Domain
             listOfMembers.Remove(deletingCreator);
         }
 
-        public Group(Guid creatorId, List<Member> toWrite)
+        public Group(Guid creatorId, List<Member> toWrite, string title, List<string> tags,
+            string description)
         {
-            Id = Guid.NewGuid();
-            listOfMembers = toWrite;
+            Id = Ensure.Guid.IsNotEmpty(Guid.NewGuid());
+            Tags = Ensure.Any.IsNotNull(tags);
+            Title = Ensure.String.IsNotNullOrWhiteSpace(title);
+            Description = Ensure.String.IsNotNullOrWhiteSpace(description);
+            listOfMembers = Ensure.Any.IsNotNull(toWrite);
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);
         }
 
-        public Group(Guid creatorId)
+        public Group(Guid creatorId, string title, List<string> tags, string description)
         {
-            Id = Guid.NewGuid();
+            Id = Ensure.Guid.IsNotEmpty(Guid.NewGuid());
+            Tags = Ensure.Any.IsNotNull(tags);
+            Title = Ensure.String.IsNotNullOrWhiteSpace(title);
+            Description = Ensure.String.IsNotNullOrWhiteSpace(description);
             listOfMembers = new List<Member>();
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);
         }
         public Guid Id { get; private set; }
+        public string Description { get; private set; }
+        public string Title { get; private set; }
+        public List<string> Tags { get; private set; }
         private List<Member> listOfMembers;
         public Chat Chat { get; private set; }
         public Course Course { get; private set; }

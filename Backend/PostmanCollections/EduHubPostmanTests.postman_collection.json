@@ -1,0 +1,110 @@
+{
+	"info": {
+		"name": "EduHubPostmanTests",
+		"_postman_id": "22c40796-6c94-13c0-fa2a-7a87d151ddc4",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RegUser",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"some name\",\n\t\"email\":\"some email\",\n\t\"password\":\"some password\",\n\t\"isTeacher\":false\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/account/registration",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"registration"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllUsers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/account/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"account",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CreateGroup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idOfCreator\":\"15222ac1-d498-411e-98f8-295eedc36373\",\n\t\"title\":\"some group\",\n\t\"description\":\"some desc\",\n\t\"tags\":[\"tag1\", \"tag2\", \"tag3\"]\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/group/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"group",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetGroups",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/group/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"group",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

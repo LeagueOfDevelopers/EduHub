@@ -30,7 +30,7 @@ namespace EduHub
             var userRepository = new InMemoryUserRepository();
             var userFacade = new UserFacade(userRepository);
             var groupRepository = new InMemoryGroupRepository();
-            var groupFacade = new GroupFacade(groupRepository);
+            var groupFacade = new GroupFacade(groupRepository, userRepository);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddMvc();

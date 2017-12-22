@@ -15,9 +15,9 @@ namespace EduHub.Controllers
     public class GroupController : Controller
     {
         [HttpPost]
-        public IActionResult AddQuery([FromBody]Guid userId)
+        public IActionResult AddQuery([FromBody]CreateGroupRequest newGroup)
         {
-            _groupFacade.CreateGroup(userId);
+            _groupFacade.CreateGroup(newGroup.IdOfCreator, newGroup.Title, newGroup.Tags, newGroup.Description);
             return Ok($"Группа создана");
         }
 
