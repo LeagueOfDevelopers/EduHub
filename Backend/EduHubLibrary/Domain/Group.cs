@@ -66,17 +66,17 @@ namespace EduHubLibrary.Domain
             listOfMembers.Remove(deletingCreator);
         }
 
-        public Group(Guid groupId, Guid creatorId, List<Member> toWrite)
+        public Group(Guid creatorId, List<Member> toWrite)
         {
-            Id = groupId;
+            Id = Guid.NewGuid();
             listOfMembers = toWrite;
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);
         }
 
-        public Group(Guid groupId, Guid creatorId)
+        public Group(Guid creatorId)
         {
-            Id = groupId;
+            Id = Guid.NewGuid();
             listOfMembers = new List<Member>();
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);

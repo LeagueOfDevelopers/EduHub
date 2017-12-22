@@ -35,7 +35,6 @@ namespace EduHub.Controllers
             return Ok(_userFacade.GetUsers());
         }
         
-
         public AccountController(IUserFacade userFacade)
         {
             _userFacade = userFacade;

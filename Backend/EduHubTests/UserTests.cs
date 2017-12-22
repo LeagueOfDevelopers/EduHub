@@ -12,7 +12,7 @@ namespace EduHubTests
         {
             string NameOfUser = "Ivan";
             string Email = "sokolov@gmail.com";
-            string Password = "sokolov@gmail.com";
+            string Password = "sokolov";
 
             bool IsTeacher = false;
 

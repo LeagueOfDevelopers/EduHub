@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
+using EduHubLibrary.Facades;
+using EduHubLibrary.Domain;
 
 namespace EduHub.Controllers
 {
@@ -13,9 +15,10 @@ namespace EduHub.Controllers
     public class GroupController : Controller
     {
         [HttpPost]
-        public IActionResult AddQuery([FromBody]Group group)
+        public IActionResult AddQuery([FromBody]User user)
         {
-            return Ok($"Запрос на обучение с названием {group.Name}, описанием {group.Description} и вместимостью {group.Count} отправлен");
+            _groupFacade.CreateGroup(user);
+            return Ok($"Группа создана");
         }
 
         [HttpPost]
@@ -38,5 +41,18 @@ namespace EduHub.Controllers
         {
             return Ok($"Группа {idOfGroup} удалена");
         }
+
+        [HttpGet]
+        public IActionResult All()
+        {
+            return Ok(_groupFacade.GetGroups());
+        }
+
+        public GroupController(IGroupFacade groupFacade)
+        {
+            _groupFacade = groupFacade;
+        }
+        
+        private readonly IGroupFacade _groupFacade;
     }
 }
