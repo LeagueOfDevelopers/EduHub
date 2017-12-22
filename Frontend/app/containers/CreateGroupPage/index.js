@@ -30,13 +30,9 @@ const tailFormItemLayout = {
       offset: 0,
     },
     sm: {
-      span: 12,
-      offset: 9,
+      span: 24,
+      offset: 0,
     },
-  },
-  style: {
-    marginLeft: 30,
-    marginRight: 30
   }
 };
 
@@ -55,9 +51,10 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
           <Row style={{textAlign: 'center', marginTop: 30}}><h3>Создание группы</h3></Row>
           <Row><Divider/></Row>
           <Row style={{marginTop: 20}}><CreateGroupForm/></Row>
-          <Row style={{marginTop: 20}}>
+          <Row style={{marginTop: 20, textAlign: 'center'}}>
             <FormItem {...tailFormItemLayout}>
-              <Col xs={{span: 6, offset: 8}} md={{span: 6, offset: 4}}><Button type="primary" htmlType="submit">Создать группу</Button></Col>
+              <Button htmlType="button" style={{marginRight: '2%'}}>Отменить</Button>
+              <Button type="primary" htmlType="submit">Создать группу</Button>
             </FormItem>
           </Row>
         </div>

@@ -9,7 +9,12 @@
   min-width: 200px;
 }
 
-.ant-form label {
+.group-card {
+  width: 294px;
+  min-width: 250px;
+}
+
+.ant-form label, .ant-card-body span {
   font-size: 16px;
   font-family: Roboto, Tahoma;
 }
@@ -26,7 +31,41 @@
 }
 
 @media screen and (max-width: 576px) {
-  .header span {
+  .header .userName {
     display: none;
   }
+
+  .ant-row {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+}
+
+.group-card > .ant-card-body a {
+  color: #757575;
+}
+
+.group-card > .ant-card-body a:hover {
+  color: #999999;
+}
+
+a:focus {
+  text-decoration: none;
+}
+
+.unassembled-groups-list > .ant-card-head, .assembled-groups-list > .ant-card-head{
+  padding: 0;
+}
+
+.unassembled-groups-list > .ant-card-body, .assembled-groups-list > .ant-card-body {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.cards-holder {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 294px);
+  grid-gap: 30px;
+  align-items: center;
+  justify-content: center;
 }

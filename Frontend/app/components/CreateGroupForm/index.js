@@ -32,10 +32,6 @@ class CreateGroupForm extends React.Component {
         xs: { span: 24 },
         sm: { span: 8 }
       },
-      style: {
-        marginLeft: 30,
-        marginRight: 30
-      }
     };
 
 
