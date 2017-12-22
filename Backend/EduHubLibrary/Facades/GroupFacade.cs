@@ -12,9 +12,9 @@ namespace EduHubLibrary.Facades
             _groupRepository = groupRepository;
         }
 
-        public Guid CreateGroup(User creator)
+        public Guid CreateGroup(Guid userId)
         {
-            Group group = new Group(creator.Id);
+            Group group = new Group(userId);
             _groupRepository.Add(group);
             return group.Id;
         }

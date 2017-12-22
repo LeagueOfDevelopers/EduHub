@@ -15,9 +15,9 @@ namespace EduHub.Controllers
     public class GroupController : Controller
     {
         [HttpPost]
-        public IActionResult AddQuery([FromBody]User user)
+        public IActionResult AddQuery([FromBody]Guid userId)
         {
-            _groupFacade.CreateGroup(user);
+            _groupFacade.CreateGroup(userId);
             return Ok($"Группа создана");
         }
 
@@ -41,7 +41,7 @@ namespace EduHub.Controllers
         {
             return Ok($"Группа {idOfGroup} удалена");
         }
-
+        //TODO delete
         [HttpGet]
         public IActionResult All()
         {
