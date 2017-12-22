@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
@@ -20,6 +21,7 @@ namespace EduHub.Controllers
         }
 
         [HttpGet]
+        [SwaggerResponse(400, Type = typeof(MessageResponse))]
         [Route("message/{idOfMessage}")]
         public IActionResult GetMessage([FromRoute] int idOfGroup,[FromRoute] int idOfMessage)
         {

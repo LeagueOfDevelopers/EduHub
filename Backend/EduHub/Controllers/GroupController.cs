@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Domain;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Net;
 
 namespace EduHub.Controllers
 {
@@ -49,6 +51,7 @@ namespace EduHub.Controllers
         }
 
         [HttpGet]
+        [SwaggerResponse(400, Type = typeof(GroupResponse))]
         [Route("{idOfGroup}")]
         public IActionResult GetGroup([FromRoute] Guid idOfGroup)
         {

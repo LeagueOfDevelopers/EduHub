@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Domain;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
@@ -66,6 +67,7 @@ namespace EduHub.Controllers
         }
 
         [HttpGet]
+        [SwaggerResponse(400, Type = typeof(List<NotifiesResponse>))]
         [Route("notifies")]
         public IActionResult GetNotifies([FromRoute] int idOfUser)
         {
@@ -74,6 +76,7 @@ namespace EduHub.Controllers
         }
 
         [HttpGet]
+        [SwaggerResponse(400, Type = typeof(UserResponse))]
         public IActionResult GetProfile([FromRoute] Guid idOfUser)
         {
             User user = _userFacade.GetUser(idOfUser);
