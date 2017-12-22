@@ -1,0 +1,32 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.ant-form-item-label {
+  text-align: left;
+  min-width: 200px;
+}
+
+.ant-form label {
+  font-size: 16px;
+  font-family: Roboto, Tahoma;
+}
+
+.header {
+  background-color: #c4c4c4;
+  height: 60px;
+}
+
+@media screen and (max-width: 767px) {
+  .header .search {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .header span {
+    display: none;
+  }
+}
