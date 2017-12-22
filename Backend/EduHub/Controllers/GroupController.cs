@@ -48,6 +48,13 @@ namespace EduHub.Controllers
             return Ok(_groupFacade.GetGroups());
         }
 
+        [HttpGet]
+        [Route("{idOfGroup}")]
+        public IActionResult GetGroup([FromRoute] Guid idOfGroup)
+        {
+            return Ok(_groupFacade.GetGroup(idOfGroup));
+        }
+
         public GroupController(IGroupFacade groupFacade)
         {
             _groupFacade = groupFacade;

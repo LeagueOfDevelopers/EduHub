@@ -10,25 +10,25 @@ namespace EduHubTests
         [TestMethod]
         public void CreateUser_IsItPossible()
         {
-            string NameOfUser = "Ivan";
-            string Email = "sokolov@gmail.com";
-            string Password = "sokolov";
+            var nameOfUser = "Ivan";
+            var email = "sokolov@gmail.com";
+            var password = "sokolov";
 
-            bool IsTeacher = false;
+            var IsTeacher = false;
 
-            User UserTest = new User(NameOfUser, Email, Password, IsTeacher);
-            string ExpectedName = NameOfUser;
-            string ExpectedEmail = Email;
-            bool ExpectedIsTeacher = IsTeacher;
+            var UserTest = new User(nameOfUser, email, password, IsTeacher);
+            var ExpectedName = nameOfUser;
+            var ExpectedEmail = email;
+            var ExpectedIsTeacher = IsTeacher;
 
-            string ActualName = UserTest.Name;
-            string ActualEmail = UserTest.Email;
-            string ActualPass = UserTest.Password;
-            bool ActualIsTeacher = UserTest.IsTeacher;
+            var ActualName = UserTest.Name;
+            var ActualEmail = UserTest.Email;
+            var ActualPass = UserTest.Password;
+            var ActualIsTeacher = UserTest.IsTeacher;
             Assert.AreEqual(ExpectedName, ActualName);
             Assert.AreEqual(ExpectedEmail, ActualEmail);
             Assert.AreEqual(ExpectedIsTeacher, ActualIsTeacher);
-            Assert.AreEqual(Password, ActualPass);
+            Assert.AreEqual(password, ActualPass);
 
         }
 
