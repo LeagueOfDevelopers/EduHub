@@ -8,5 +8,5 @@ import com.example.user.eduhub.Fragments.CreateGroupFragment;
  */
 
 public interface IGroupActivities {
-     Group CreateGroup (Group group);
+     boolean CreateGroup (Group group);
 }

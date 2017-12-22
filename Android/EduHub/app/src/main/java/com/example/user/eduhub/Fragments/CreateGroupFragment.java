@@ -21,6 +21,8 @@ import com.example.user.eduhub.Fakes.FakeGroupActivities;
 import com.example.user.eduhub.R;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by user on 21.12.2017.
@@ -31,18 +33,39 @@ Group newGroup;
 ArrayList<String> tags=new ArrayList<>();
 TypeOfEducation type;
 boolean privacy;
+    Spinner spinner;
+    SpinnerAdapter adapter;
 FakeGroupActivities fakeGroupActivities=new FakeGroupActivities();
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.registration_fragment, null);
+        final View v = inflater.inflate(R.layout.create_group_fragment, null);
         final EditText nameOfGroup=v.findViewById(R.id.name);
         final EditText maxParticipants=v.findViewById(R.id.participants);
         final EditText cost=v.findViewById(R.id.cost);
-        final Spinner typeOfEducation=v.findViewById(R.id.type_of_education);
+        spinner=v.findViewById(R.id.type_of_education);
         final EditText editTags=v.findViewById(R.id.tags);
         final CheckBox checkBox=v.findViewById(R.id.checkBox);
         Button createGroup=v.findViewById(R.id.create_group);
-createSpenner(typeOfEducation);
+        adapter=new SpinnerAdapter(getContext(),R.layout.spenner_item,TypeOfEducation.values());
+
+        spinner.setAdapter(adapter);
+        // заголовок
+        spinner.setPrompt("Type of education");
+        // выделяем элемент
+        spinner.setSelection(0);
+        // устанавливаем обработчик нажатия
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                // показываем позиция нажатого элемента
+                type=TypeOfEducation.values()[position];
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
         createGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,9 +79,25 @@ createSpenner(typeOfEducation);
                   }else{
                       privacy=false;
                   }
+                  Pattern p = Pattern.compile("\\D");
+                  Matcher m = p.matcher(cost.getText().toString());
+                  Matcher m2=p.matcher(cost.getText().toString());
+                  if(m.find()||m2.find()){
+                      MakeToast("Некорректная цена");
+
+                  }else {
+
+
 
                   newGroup=new Group(nameOfGroup.getText().toString(),Integer.parseInt(maxParticipants.getText().toString()),tags,Integer.parseInt(cost.getText().toString()),type,privacy);
-                  fakeGroupActivities.CreateGroup(newGroup);
+                  boolean flag=fakeGroupActivities.CreateGroup(newGroup);
+                  if(flag){
+                      MakeToast("Группа создана успешно");
+                  }
+                  else{
+                      MakeToast("Такое название занято или чтото другое");
+                  }
+                  }
               }else{
                   MakeToast("Ошибка.заполните все поля.");
               }
@@ -74,12 +113,12 @@ createSpenner(typeOfEducation);
         toast.show();
     }
 
-    private void createSpenner(Spinner spinner){
+    private void createSpinner(Spinner spinner){
         SpinnerAdapter adapter=new SpinnerAdapter(getActivity().getApplicationContext(),R.layout.spenner_item,TypeOfEducation.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         // заголовок
-        spinner.setPrompt("Title");
+        spinner.setPrompt("Type of education");
         // выделяем элемент
         spinner.setSelection(2);
         // устанавливаем обработчик нажатия

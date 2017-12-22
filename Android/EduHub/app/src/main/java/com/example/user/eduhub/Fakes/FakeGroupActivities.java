@@ -9,7 +9,7 @@ import com.example.user.eduhub.Interfaces.IGroupActivities;
 
 public class FakeGroupActivities implements IGroupActivities {
     @Override
-    public Group CreateGroup(Group group) {
-        return group;
+    public boolean CreateGroup(Group group) {
+        return true;
     }
 }

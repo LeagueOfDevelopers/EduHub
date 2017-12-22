@@ -22,12 +22,18 @@ public class SpinnerAdapter extends ArrayAdapter<TypeOfEducation> {
     private LayoutInflater mInflater;
     private int mLayout;
     private TypeOfEducation[] typesOfEducations;
-    public SpinnerAdapter(@NonNull Context context, int resource, TypeOfEducation[] typesOfEducations) {
+    public SpinnerAdapter( Context context, int resource, TypeOfEducation[] typesOfEducations) {
         super(context, resource,typesOfEducations);
         this.typesOfEducations=typesOfEducations;
         this.mLayout = resource;
         this.mInflater = LayoutInflater.from(context);
+    }@Override
+    public View getDropDownView(int position, View convertView,
+                                ViewGroup parent) {
+
+        return getView(position, convertView, parent);
     }
+
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View view= mInflater.inflate(this.mLayout, parent, false);

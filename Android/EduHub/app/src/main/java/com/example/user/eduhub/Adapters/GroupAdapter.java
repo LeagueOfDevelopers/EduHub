@@ -35,6 +35,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         holder.users.setText(groups.get(position).getUsersNow()+"/"+groups.get(position).getMaxUsers());
         holder.cost.setText("$"+groups.get(position).getCost());
         holder.tags.setText(groups.get(position).getTags().toString());
+        holder.typeOdEducation.setText(groups.get(position).getTypeOfEducation().toString());
 
     }
 
@@ -49,6 +50,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
     public static class GroupViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
+        TextView typeOdEducation;
         TextView name;
         TextView users;
         TextView tags;
@@ -60,6 +62,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
             users=itemView.findViewById(R.id.participants);
             tags=itemView.findViewById(R.id.tags);
             cost=itemView.findViewById(R.id.cost);
+            typeOdEducation=itemView.findViewById(R.id.type_of_education);
 
 
 

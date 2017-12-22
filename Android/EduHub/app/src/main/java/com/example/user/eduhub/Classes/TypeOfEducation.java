@@ -6,5 +6,8 @@ package com.example.user.eduhub.Classes;
 
 public enum TypeOfEducation {
     Lection,
+    Seminar,
+    Vebinar,
+    Online
 
 }

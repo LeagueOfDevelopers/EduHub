@@ -23,6 +23,7 @@ import com.example.user.eduhub.Adapters.GroupAdapter;
 import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Classes.Group;
 import com.example.user.eduhub.Classes.TypeOfEducation;
+import com.example.user.eduhub.Fragments.CreateGroupFragment;
 import com.example.user.eduhub.Fragments.TeacherFragment;
 import com.example.user.eduhub.Fragments.UserFragment;
 
@@ -36,6 +37,7 @@ ViewPager pager;
 ViewPagerAdapter adapter;
 UserFragment userFragment;
 TeacherFragment teacherFragment;
+CreateGroupFragment createGroupFragment;
 Button btn;
 
     @Override
@@ -47,12 +49,14 @@ Button btn;
         btn=findViewById(R.id.btn);
         teacherFragment=new TeacherFragment();
         userFragment=new UserFragment();
+        createGroupFragment=new CreateGroupFragment();
         teacherFragment.setGroups(getFakeGroups());
         userFragment.setGroups(getFakeGroups());
         pager=findViewById(R.id.pager);
         adapter=new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(userFragment,"Обучение");
         adapter.addFragment(teacherFragment ,"Преподавание");
+        adapter.addFragment(createGroupFragment ,"test");
         pager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -130,9 +134,11 @@ Button btn;
     private ArrayList<Group> getFakeGroups(){
         ArrayList<Group> groups=new ArrayList<>();
 
-
-        groups.add(new Group("C# easy",8,new ArrayList<String>(),25, TypeOfEducation.Lection,true));
-        groups.add(new Group("Java для чайников",8,new ArrayList<String>(),10,TypeOfEducation.Lection,false));
+        ArrayList<String> a=new ArrayList<>();
+        a.add("#c#");
+        a.add("#for beginers");
+        groups.add(new Group("C# easy",8,a,25, TypeOfEducation.Lection,true));
+        groups.add(new Group("Java для чайников",8,new ArrayList<String>(),10,TypeOfEducation.Vebinar,false));
         return groups;
     }
 }
