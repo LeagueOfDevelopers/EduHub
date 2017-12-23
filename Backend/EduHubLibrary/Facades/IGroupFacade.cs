@@ -10,5 +10,6 @@ namespace EduHubLibrary.Facades
         Guid CreateGroup(Guid userId, string title, List<string> tags, string description);
         IEnumerable<Group> GetGroups();
         Group GetGroup(Guid id);
+        IEnumerable<Member> GetMembersOfGroup(Guid groupId);
     }
 }
