@@ -51,7 +51,7 @@ namespace EduHub.Controllers
         }
 
         [HttpGet]
-        [SwaggerResponse(400, Type = typeof(GroupResponse))]
+        [SwaggerResponse(200, Type = typeof(GroupResponse))]
         [Route("{idOfGroup}")]
         public IActionResult GetGroup([FromRoute] Guid idOfGroup)
         {

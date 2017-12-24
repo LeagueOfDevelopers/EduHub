@@ -21,7 +21,7 @@ namespace EduHub.Controllers
         }
 
         [HttpGet]
-        [SwaggerResponse(400, Type = typeof(MessageResponse))]
+        [SwaggerResponse(200, Type = typeof(MessageResponse))]
         [Route("message/{idOfMessage}")]
         public IActionResult GetMessage([FromRoute] int idOfGroup,[FromRoute] int idOfMessage)
         {
