@@ -17,14 +17,14 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimaryDark"
+            android:background="@color/dark_grey"
             android:minHeight="?attr/actionBarSize"
             app:tabGravity="fill"
             app:tabMode="fixed" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
-            android:background="@color/grey"
+            android:background="@color/metalic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/tabs" />

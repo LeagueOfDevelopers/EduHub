@@ -10,7 +10,8 @@ import java.util.Date;
 public class User {
     private String email;
     private String password;
-    private String login;
+    private String name;
+    private String role;
     private int qualification;
     private ArrayList<String> skils;
     private String description;
@@ -30,11 +31,11 @@ public class User {
     public void setPassword(String password){
         this.password=password;
     }
-    public String getLogin(){
-        return login;
+    public String getName(){
+        return name;
     }
-    public void setLogin(String login){
-        this.login=login;
+    public void setName(String name){
+        this.name = name;
     }
     public int getQualification(){
         return qualification;
@@ -67,4 +68,11 @@ public class User {
         this.sex=sex;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

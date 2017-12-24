@@ -23,6 +23,9 @@ import com.example.user.eduhub.Adapters.GroupAdapter;
 import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Classes.Group;
 import com.example.user.eduhub.Classes.TypeOfEducation;
+import com.example.user.eduhub.Fakes.FakeAcocuntActivities;
+import com.example.user.eduhub.Fakes.FakeGroupActivities;
+import com.example.user.eduhub.Fragments.Chat;
 import com.example.user.eduhub.Fragments.CreateGroupFragment;
 import com.example.user.eduhub.Fragments.TeacherFragment;
 import com.example.user.eduhub.Fragments.UserFragment;
@@ -38,6 +41,9 @@ ViewPagerAdapter adapter;
 UserFragment userFragment;
 TeacherFragment teacherFragment;
 CreateGroupFragment createGroupFragment;
+Chat chat;
+FakeAcocuntActivities fakeAcocuntActivities=new FakeAcocuntActivities();
+FakeGroupActivities fakeGroupActivities=new FakeGroupActivities();
 Button btn;
 
     @Override
@@ -50,13 +56,16 @@ Button btn;
         teacherFragment=new TeacherFragment();
         userFragment=new UserFragment();
         createGroupFragment=new CreateGroupFragment();
-        teacherFragment.setGroups(getFakeGroups());
-        userFragment.setGroups(getFakeGroups());
+        chat=new Chat();
+        chat.setUser(fakeAcocuntActivities.UserLogin("Cаня","Lol"));
+        teacherFragment.setGroups(fakeGroupActivities.loadGroups());
+        userFragment.setGroups(fakeGroupActivities.loadGroups());
         pager=findViewById(R.id.pager);
         adapter=new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(userFragment,"Обучение");
         adapter.addFragment(teacherFragment ,"Преподавание");
         adapter.addFragment(createGroupFragment ,"test");
+        adapter.addFragment(chat ,"testChat");
         pager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -131,14 +140,5 @@ Button btn;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    private ArrayList<Group> getFakeGroups(){
-        ArrayList<Group> groups=new ArrayList<>();
 
-        ArrayList<String> a=new ArrayList<>();
-        a.add("#c#");
-        a.add("#for beginers");
-        groups.add(new Group("C# easy",8,a,25, TypeOfEducation.Lection,true));
-        groups.add(new Group("Java для чайников",8,new ArrayList<String>(),10,TypeOfEducation.Vebinar,false));
-        return groups;
-    }
 }

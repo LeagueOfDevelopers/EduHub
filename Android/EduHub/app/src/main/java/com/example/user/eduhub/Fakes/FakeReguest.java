@@ -1,7 +1,5 @@
 package com.example.user.eduhub.Fakes;
 
-import android.widget.Toast;
-
 import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Fragments.LoginFragment;
 import com.example.user.eduhub.Interfaces.IAccountActivities;
@@ -52,7 +50,7 @@ public class FakeReguest implements IAccountActivities{
             User newUser=new User();
             newUser.setEmail(login);
             newUser.setPassword(password);
-            newUser.setLogin(name);
+            newUser.setName(name);
 
             LoginFragment loginFragment=new LoginFragment();
 

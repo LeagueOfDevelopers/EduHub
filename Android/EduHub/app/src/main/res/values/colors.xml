@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="grey">#c1c1c1</color>
-    <color name="metalic">#b1b1b1</color>
+    <color name="metalic">#acacac</color>
+    <color name="dark_grey">#b1b1b1</color>
     <color name="veryGrey">#878787</color>
     <color name="black">#000000</color>
 </resources>
