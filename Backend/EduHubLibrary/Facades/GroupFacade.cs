@@ -13,9 +13,9 @@ namespace EduHubLibrary.Facades
             _userRepository = userRepository;
         }
 
-        public Guid CreateGroup(Guid userId, string title, List<string> tags, string description)
+        public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size, double totalValue)
         {
-            Group group = new Group(userId, title, tags, description);
+            Group group = new Group(userId, title, tags, description, size, totalValue);
             _groupRepository.Add(group);
             return group.Id;
         }

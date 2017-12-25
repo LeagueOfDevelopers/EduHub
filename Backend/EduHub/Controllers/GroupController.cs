@@ -19,7 +19,8 @@ namespace EduHub.Controllers
         [HttpPost]
         public IActionResult AddQuery([FromBody]CreateGroupRequest newGroup)
         {
-            _groupFacade.CreateGroup(newGroup.IdOfCreator, newGroup.Title, newGroup.Tags, newGroup.Description);
+            _groupFacade.CreateGroup(newGroup.IdOfCreator, newGroup.Title, newGroup.Tags, newGroup.Description,
+                newGroup.Size, newGroup.totalValue);
             return Ok($"Группа создана");
         }
 
@@ -52,14 +53,23 @@ namespace EduHub.Controllers
 
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(GroupResponse))]
+        [SwaggerResponse(400, Type = typeof(ErrorResponse))]
         [Route("{idOfGroup}")]
         public IActionResult GetGroup([FromRoute] Guid idOfGroup)
         {
-            Group group = _groupFacade.GetGroup(idOfGroup);
-            IEnumerable<Member> membersOfGroup = _groupFacade.GetMembersOfGroup(idOfGroup);
-            GroupResponse response = new GroupResponse(group.Title, group.Description, group.IsActive, group.Tags,
-                membersOfGroup);
-            return Ok(response);
+            try
+            {
+                Group group = _groupFacade.GetGroup(idOfGroup);
+                IEnumerable<Member> membersOfGroup = _groupFacade.GetMembersOfGroup(idOfGroup);
+                GroupResponse response = new GroupResponse(group.Title, group.Description, group.IsActive, group.Tags,
+                    membersOfGroup, group.TotalValue, group.Size);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                ErrorResponse err = new ErrorResponse() { Message = e.Message };
+                return BadRequest(err);
+            }
         }
 
         public GroupController(IGroupFacade groupFacade)

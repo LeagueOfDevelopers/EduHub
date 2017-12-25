@@ -11,5 +11,7 @@ namespace EduHub.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public List<string> Tags { get; set; }
+        public int Size { get; set; }
+        public double totalValue { get; set; }
     }
 }

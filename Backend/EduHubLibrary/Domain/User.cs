@@ -14,6 +14,7 @@ namespace EduHubLibrary.Domain
         public bool IsTeacher { get; private set; }
         public bool IsActive { get; private set; }
         public Guid Id { get; private set; }
+        public List<Invitation> listOfInvitation { get; private set; }
 
         public User(string name, string email, string password, bool isTeacher)
         {
@@ -23,6 +24,7 @@ namespace EduHubLibrary.Domain
             IsTeacher = isTeacher;
             IsActive = true;
             Id = Guid.NewGuid();
+            listOfInvitation = new List<Invitation>();
         }
 
         public void EditName(string newName)
@@ -49,5 +51,37 @@ namespace EduHubLibrary.Domain
         {
             IsActive = false;
         }
+
+        internal void AddInvitation(Invitation newInvitation)
+        {
+            listOfInvitation.Add(newInvitation);
+        }
+
+        internal void AcceptInvitation(Guid invitationId)
+        {
+            Ensure.Guid.IsNotEmpty(invitationId);
+            Invitation currentInvitation =
+                Ensure.Any.IsNotNull(listOfInvitation.Find(current => current.Id == invitationId));
+            currentInvitation.Status = InvitationStatus.Accepted;
+        }
+        internal void DeclineInvitation(Guid invitationId)
+        {
+            Ensure.Guid.IsNotEmpty(invitationId);
+            Invitation currentInvitation =
+                Ensure.Any.IsNotNull(listOfInvitation.Find(current => current.Id == invitationId));
+            currentInvitation.Status = InvitationStatus.Declined;
+        }
+
+        internal IEnumerable<Invitation> GetAllInvitation()
+        {
+            return listOfInvitation;
+        }
+
+        internal Invitation GetInvitationById(Guid invitationId)
+        {
+            Ensure.Guid.IsNotEmpty(invitationId);
+            return Ensure.Any.IsNotNull(listOfInvitation.Find(current => current.Id == invitationId));
+        }
+
     }
 }

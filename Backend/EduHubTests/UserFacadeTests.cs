@@ -18,7 +18,9 @@ namespace EduHubTests
         {
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository);
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
             string expectedName = "yaroslav";
             string expectedPass = "123123";
             string expectedEmail = "bus.yaroslav@gmail.com";

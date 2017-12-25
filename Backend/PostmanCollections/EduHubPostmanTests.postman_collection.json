@@ -18,7 +18,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\":\"some name\",\n\t\"email\":\"some email\",\n\t\"password\":\"some password\",\n\t\"isTeacher\":false\n}"
+					"raw": "{\n  \"name\":\"some name\",\n  \"email\":\"some email\",\n  \"password\":\"some password\",\n  \"isTeacher\":false\n}"
 				},
 				"url": {
 					"raw": "{{url}}/api/account/registration",
@@ -31,7 +31,7 @@
 						"registration"
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -52,7 +52,7 @@
 						""
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -68,7 +68,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"idOfCreator\":\"15222ac1-d498-411e-98f8-295eedc36373\",\n\t\"title\":\"some group\",\n\t\"description\":\"some desc\",\n\t\"tags\":[\"tag1\", \"tag2\", \"tag3\"]\n}"
+					"raw": "{\n  \"idOfCreator\":\"15222ac1-d498-411e-98f8-295eedc36373\",\n  \"title\":\"some group\",\n  \"description\":\"some desc\",\n  \"tags\":[\"tag1\", \"tag2\", \"tag3\"],\n  \"totalValue\": 100,\n  \"Size\": 12\n}"
 				},
 				"url": {
 					"raw": "{{url}}/api/group/",
@@ -81,7 +81,7 @@
 						""
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		},
@@ -102,7 +102,7 @@
 						""
 					]
 				},
-				"description": ""
+				"description": null
 			},
 			"response": []
 		}

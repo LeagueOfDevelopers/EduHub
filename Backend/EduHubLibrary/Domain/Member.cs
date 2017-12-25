@@ -10,14 +10,11 @@ namespace EduHubLibrary.Domain
         {
             UserId = userId;
             MemberRole = memberRole;
+            Paid = false;
         }
 
-        internal void ChangeRole(MemberRole newRole)
-        {
-            MemberRole = newRole;
-        }
-
-        public Guid UserId{ get; protected set; }
-        public MemberRole MemberRole { get; protected set; }
+        public Guid UserId{ get; private set; }
+        public MemberRole MemberRole { get; set; }
+        public bool Paid { get; set; }
     }
 }
