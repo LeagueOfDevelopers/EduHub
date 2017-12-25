@@ -153,6 +153,26 @@ namespace EduHubTests
             Assert.AreEqual(expectedRole, resultRole);
             Assert.AreEqual(expectedLength, resultLength);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotEnoughPermissionsException))]
+        public void TryToChangeSizeByMember_IsItPossible()
+        {
+            //Arrange
+            var idOfCreator = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            var size = 4;
+            var totalValue = 100.0;
+            var idOfInvited = Guid.NewGuid();
+            tags.Add("js");
+            //Act
+            var someGroup = new Group(idOfCreator, title, tags, description, size, totalValue);
+            someGroup.AddMember(idOfCreator, idOfInvited);
+            someGroup.ChangeSizeOfGroup(idOfInvited, 10);
+        }
+
     }
 
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    class GroupIsFullException : Exception
+    public class GroupIsFullException : Exception
     {
         public GroupIsFullException()
         {

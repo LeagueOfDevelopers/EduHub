@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    class GroupNotFoundException : System.Exception
+    public class GroupNotFoundException : System.Exception
     {
         public GroupNotFoundException(Guid groupId) 
             : base($"Group with id {groupId} not found")

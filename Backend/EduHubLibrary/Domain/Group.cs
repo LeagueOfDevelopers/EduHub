@@ -61,9 +61,6 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeSizeOfGroup),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
-            //TODO validate size
-            ResourceManager rm = new ResourceManager(typeof(int));
-            rm.GetString("maxSizeOfGroup");
             Size = newSize;
         }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    class AlreadyMemberException : Exception
+    public class AlreadyMemberException : Exception
     {
         public AlreadyMemberException()
         {

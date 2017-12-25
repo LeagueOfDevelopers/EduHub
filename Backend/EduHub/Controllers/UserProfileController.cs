@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
@@ -12,7 +9,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace EduHub.Controllers
 {
     [Produces("application/json")]
-    [Route("api/users/{idOfUser}/profile")]
+    [Route("api/user/{userId}/profile")]
     public class UserProfileController : Controller
     {
         public UserProfileController(IUserFacade userFacade)
@@ -24,6 +21,16 @@ namespace EduHub.Controllers
         public IActionResult DeleteProfile([FromRoute] int idOfUser)
         {
             return Ok("Профиль удален");
+        }
+
+        [HttpGet]
+        [Route("invitations")]
+        [SwaggerResponse(200, Type = typeof(GetInvitationsResponse))]
+        public IActionResult GetInvitations([FromRoute] Guid userId)
+        {
+            IEnumerable<Invitation> invitationsForUser = _userFacade.GetAllInvitationsForUser(userId);
+            GetInvitationsResponse response = new GetInvitationsResponse(invitationsForUser);
+            return Ok(response);
         }
 
         [HttpPost]

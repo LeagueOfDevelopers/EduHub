@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    class MemberNotFoundException : System.Exception
+    public class MemberNotFoundException : System.Exception
     {
         public MemberNotFoundException(Guid userId) 
             : base($"Member with id {userId} not found")

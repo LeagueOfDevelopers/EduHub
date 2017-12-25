@@ -2,19 +2,27 @@
 using System.Collections.Generic;
 using System.Text;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Settings;
+using EnsureThat;
 
 namespace EduHubLibrary.Facades
 {
     public class GroupFacade : IGroupFacade
     {
-        public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository)
+        public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
+            GroupSettings groupSettings)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
+            _groupSettings = groupSettings;
         }
 
         public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size, double totalValue)
         {
+            Ensure.Bool.IsTrue(size <= _groupSettings.MaxGroupSize && size >= _groupSettings.MinGroupSize,
+                nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(size))));
+            Ensure.Bool.IsTrue(totalValue <= _groupSettings.MaxGroupValue && totalValue >= _groupSettings.MinGroupValue,
+                nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(totalValue))));
             Group group = new Group(userId, title, tags, description, size, totalValue);
             _groupRepository.Add(group);
             return group.Id;
@@ -42,5 +50,6 @@ namespace EduHubLibrary.Facades
 
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
+        private readonly GroupSettings _groupSettings;
     }
 }

@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
-using EduHubLibrary.Domain;
+using Swashbuckle;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
     [Produces("application/json")]
-    [Route("api/group/{GroupId}/members")]
+    [Route("api/group/{groupId}/member")]
     public class GroupMemberController : Controller
     {
         [HttpPost]
-        [Route("{UserId}/invite/{InvitedId}")]
-        public IActionResult InviteUser([FromRoute] Guid InvitedId, [FromRoute] Guid UserId,
-            [FromRoute] Guid GroupId)
+        [Route("{inviterId}/invite/{invitedId}")]
+        public IActionResult InviteUser([FromRoute] Guid invitedId, [FromRoute] Guid inviterId,
+            [FromRoute] Guid groupId)
         {
-            _userFacade.Invite(UserId, InvitedId, GroupId);
+            _userFacade.Invite(inviterId, invitedId, groupId);
             return Ok("Пользователь приглашен");
         }
 
@@ -29,16 +28,6 @@ namespace EduHub.Controllers
         {
             _userFacade.ChangeStatusOfInvitation(changer.UserId, changer.InvitationId, changer.Status);
             return Ok("Приглашение принято");
-        }
-
-        [HttpGet]
-        [Route("{UserId}/invitations")]
-        [SwaggerResponse(200, Type = typeof(GetInvitationsResponse))]
-        public IActionResult GetInvitations([FromRoute] Guid UserId)
-        {
-            IEnumerable<Invitation> invitationsForUser =  _userFacade.GetAllInvitationsForUser(UserId);
-            GetInvitationsResponse response = new GetInvitationsResponse(invitationsForUser);
-            return Ok(response);
         }
 
         [HttpPost]

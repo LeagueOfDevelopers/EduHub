@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
-
+using EduHubLibrary.Settings;
+using EduHub.Filters;
 
 namespace EduHub
 {
@@ -27,19 +22,24 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
+                Configuration.GetValue<int>("MaxGroupSize"),
+                Configuration.GetValue<double>("MinGroupValue"),
+                Configuration.GetValue<double>("MaxGroupValue"));
             var userRepository = new InMemoryUserRepository();
             var groupRepository = new InMemoryGroupRepository();
             var userFacade = new UserFacade(userRepository, groupRepository);
-            var groupFacade = new GroupFacade(groupRepository, userRepository);
+            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
-            services.AddMvc();
             services.AddSwaggerGen(current => {
                 current.SwaggerDoc("v1", new Info{
                     Title = "EduHub API",
                     Version = "v1"
                 });
+                current.DescribeAllEnumsAsStrings();
             });
+            services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

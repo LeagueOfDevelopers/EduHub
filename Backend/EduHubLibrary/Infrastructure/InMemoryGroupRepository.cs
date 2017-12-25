@@ -1,5 +1,6 @@
 ﻿using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,15 +12,13 @@ namespace EduHubLibrary.Infrastructure
 
         public void Add(Group group)
         {
-            if (group == null)
-                throw new ArgumentNullException();
+            Ensure.Any.IsNotNull(group);
             listOfGroups.Add(group);
         }
 
         public void Delete(Group group)
         {
-            if (group == null)
-                throw new ArgumentNullException();
+            Ensure.Any.IsNotNull(group);
             listOfGroups.Remove(group);
         }
 
@@ -30,22 +29,20 @@ namespace EduHubLibrary.Infrastructure
 
         public Group GetGroupById(Guid id)
         {
-            if (id == null)
-                throw new ArgumentNullException();
-            return listOfGroups.Find(current => current.Id == id);
+            Ensure.Guid.IsNotEmpty(id);
+            return Ensure.Any.IsNotNull(listOfGroups.Find(current => current.Id == id), nameof(GetGroupById),
+                opt => opt.WithException(new GroupNotFoundException(id)));
         }
 
         public IEnumerable<Group> GetGroupsByMemberId(Guid memberId)
         {
-            if (memberId == null)
-                throw new ArgumentNullException();
+            Ensure.Guid.IsNotEmpty(memberId);
             return listOfGroups.FindAll(current => current.IsMember(memberId));
         }
 
         public void Update(Group group)
         {
-            if (group == null)
-                throw new ArgumentNullException();
+            Ensure.Any.IsNotNull(group);
             var currentGroup = listOfGroups.Find(current => current.Id == group.Id) ?? throw new GroupNotFoundException(group.Id); 
             currentGroup = group;
         }

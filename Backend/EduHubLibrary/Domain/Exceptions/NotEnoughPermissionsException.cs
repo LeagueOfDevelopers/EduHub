@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    class NotEnoughPermissionsException : System.Exception
+    public class NotEnoughPermissionsException : System.Exception
     {
         public NotEnoughPermissionsException(Guid userId) 
             : base($"Member with id {userId} hasn't enough permissions to this action")

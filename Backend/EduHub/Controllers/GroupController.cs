@@ -17,11 +17,13 @@ namespace EduHub.Controllers
     public class GroupController : Controller
     {
         [HttpPost]
-        public IActionResult AddQuery([FromBody]CreateGroupRequest newGroup)
+        [SwaggerResponse(200, typeof(CreateGroupResponse))]
+        public IActionResult AddGroup([FromBody]CreateGroupRequest newGroup)
         {
-            _groupFacade.CreateGroup(newGroup.IdOfCreator, newGroup.Title, newGroup.Tags, newGroup.Description,
+            Guid newId =_groupFacade.CreateGroup(newGroup.IdOfCreator, newGroup.Title, newGroup.Tags, newGroup.Description,
                 newGroup.Size, newGroup.totalValue);
-            return Ok($"Группа создана");
+            CreateGroupResponse response = new CreateGroupResponse(newId);
+            return Ok(response);
         }
 
         [HttpPost]
@@ -53,23 +55,14 @@ namespace EduHub.Controllers
 
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(GroupResponse))]
-        [SwaggerResponse(400, Type = typeof(ErrorResponse))]
         [Route("{idOfGroup}")]
         public IActionResult GetGroup([FromRoute] Guid idOfGroup)
         {
-            try
-            {
-                Group group = _groupFacade.GetGroup(idOfGroup);
-                IEnumerable<Member> membersOfGroup = _groupFacade.GetMembersOfGroup(idOfGroup);
-                GroupResponse response = new GroupResponse(group.Title, group.Description, group.IsActive, group.Tags,
-                    membersOfGroup, group.TotalValue, group.Size);
-                return Ok(response);
-            }
-            catch (Exception e)
-            {
-                ErrorResponse err = new ErrorResponse() { Message = e.Message };
-                return BadRequest(err);
-            }
+            Group group = _groupFacade.GetGroup(idOfGroup);
+            IEnumerable<Member> membersOfGroup = _groupFacade.GetMembersOfGroup(idOfGroup);
+            GroupResponse response = new GroupResponse(group.Title, group.Description, group.IsActive, group.Tags,
+                membersOfGroup, group.TotalValue, group.Size);
+            return Ok(response);
         }
 
         public GroupController(IGroupFacade groupFacade)

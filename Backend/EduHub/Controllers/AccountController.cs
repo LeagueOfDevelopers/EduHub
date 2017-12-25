@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using EduHubLibrary.Domain;
 
 namespace EduHub.Controllers
 {
@@ -15,10 +17,12 @@ namespace EduHub.Controllers
     {
         [HttpPost]
         [Route("registration")]
+        [SwaggerResponse(200, typeof(RegistrationResponse))]
         public IActionResult Registrate([FromBody]RegistrationRequest request)
         {
-            _userFacade.RegUser(request.Name, request.Email, request.Password, request.IsTeacher);
-            return Ok("Пользователь зарегистрирован");
+            Guid newId = _userFacade.RegUser(request.Name, request.Email, request.Password, request.IsTeacher);
+            RegistrationResponse response = new RegistrationResponse(newId);
+            return Ok(response);
         }
 
         [HttpPost]
