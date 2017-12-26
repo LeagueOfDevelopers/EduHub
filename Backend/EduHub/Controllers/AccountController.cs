@@ -8,6 +8,8 @@ using EduHub.Models;
 using EduHubLibrary.Facades;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Common;
+using EduHub.Security;
 
 namespace EduHub.Controllers
 {
@@ -20,7 +22,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, typeof(RegistrationResponse))]
         public IActionResult Registrate([FromBody]RegistrationRequest request)
         {
-            Guid newId = _userFacade.RegUser(request.Name, request.Email, request.Password, request.IsTeacher);
+            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher);
             RegistrationResponse response = new RegistrationResponse(newId);
             return Ok(response);
         }
@@ -29,7 +31,19 @@ namespace EduHub.Controllers
         [Route("login")]
         public IActionResult Login([FromBody]LoginRequest loginRequest)
         {
-            return Ok("Пользователь авторизован");
+            var creditials = Credentials.FromRawData(loginRequest.Email, loginRequest.Password);
+            if (creditials == _securitySettings.AdminCredentinals)
+            {
+                return Ok(_jwtIssuer.IssueJwt(Claims.Roles.Admin, null));
+            }
+            var client = _userFacade.FindByCredentials(creditials);
+
+            if (client != null)
+            {
+                return Ok(_jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
+            }
+
+            return Unauthorized();
         }
 
         //TODO delete
@@ -39,11 +53,15 @@ namespace EduHub.Controllers
             return Ok(_userFacade.GetUsers());
         }
         
-        public AccountController(IUserFacade userFacade)
+        public AccountController(IUserFacade userFacade, SecuritySettings securitySettings, IJwtIssuer jwtIssuer)
         {
             _userFacade = userFacade;
+            _jwtIssuer = jwtIssuer;
+            _securitySettings = securitySettings;
         }
 
+        private readonly IJwtIssuer _jwtIssuer;
+        private readonly SecuritySettings _securitySettings;
         private readonly IUserFacade _userFacade;
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Common;
 
 namespace EduHubLibrary.Infrastructure
 {
@@ -33,6 +34,11 @@ namespace EduHubLibrary.Infrastructure
             if (userId == null)
                 throw new ArgumentNullException();
             return listOfUsers.FirstOrDefault(current => current.Id == userId);
+        }
+
+        public User GetUserByCredentials(Credentials credentials)
+        {
+            return listOfUsers.FirstOrDefault(current => current.Credentials == credentials);
         }
 
         public void Update(User user)

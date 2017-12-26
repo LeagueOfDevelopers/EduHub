@@ -7,6 +7,7 @@ using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Domain;
 
 using System.Linq;
+using EduHubLibrary.Common;
 
 namespace EduHubTests
 {
@@ -26,13 +27,11 @@ namespace EduHubTests
             string expectedEmail = "bus.yaroslav@gmail.com";
             bool expectedStatus = false;
             //Act
-            userFacade.RegUser(expectedName, expectedEmail, expectedPass, expectedStatus);
+            userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass), expectedStatus);
             List<User> listOfUsers = userFacade.GetUsers().ToList();
             User currentUser = listOfUsers[0];
             //Assert
             Assert.AreEqual(currentUser.Name, expectedName);
-            Assert.AreEqual(currentUser.Email, expectedEmail);
-            Assert.AreEqual(currentUser.Password, expectedPass);
             Assert.AreEqual(currentUser.IsTeacher, expectedStatus);
         }
 

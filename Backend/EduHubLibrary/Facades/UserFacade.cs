@@ -5,6 +5,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Infrastructure;
 using EnsureThat;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Common;
 
 namespace EduHubLibrary.Facades
 {
@@ -20,12 +21,19 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetAll();
         }
 
-        public Guid RegUser(string username, string email, string password, bool IsTeacher)
+        public Guid RegUser(string username, Credentials credentials, bool IsTeacher)
         {
-            User user = new User(username, email, password, IsTeacher);
+            User user = new User(username, credentials, IsTeacher);
             _userRepository.Add(user);
             return user.Id;
         }
+
+        public User FindByCredentials(Credentials credentials)
+        {
+
+            return _userRepository.GetUserByCredentials(credentials);
+        }
+
         public void ChangeStatusOfInvitation(Guid userId, Guid invitationId, InvitationStatus status)
         {
             Ensure.Guid.IsNotEmpty(userId);

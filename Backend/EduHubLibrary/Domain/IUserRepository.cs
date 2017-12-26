@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EduHubLibrary.Common;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +12,6 @@ namespace EduHubLibrary.Domain
         void Delete(User user);
         IEnumerable<User> GetAll();
         User GetUserById(Guid userId);
-
+        User GetUserByCredentials(Credentials credentials);
     }
 }

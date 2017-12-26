@@ -87,7 +87,7 @@ namespace EduHub.Controllers
         public IActionResult GetProfile([FromRoute] Guid idOfUser)
         {
             User user = _userFacade.GetUser(idOfUser);
-            UserResponse response = new UserResponse(user.Name, user.Email, user.IsTeacher, user.IsActive);
+            UserResponse response = new UserResponse(user.Name, user.Credentials.Email, user.IsTeacher, user.IsActive);
             return Ok(response);
         }
 

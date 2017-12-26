@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Common;
 
 namespace EduHubTests
 {
@@ -16,19 +17,15 @@ namespace EduHubTests
 
             var IsTeacher = false;
 
-            var UserTest = new User(nameOfUser, email, password, IsTeacher);
+            var UserTest = new User(nameOfUser, Credentials.FromRawData(email, password), IsTeacher);
             var ExpectedName = nameOfUser;
             var ExpectedEmail = email;
             var ExpectedIsTeacher = IsTeacher;
 
             var ActualName = UserTest.Name;
-            var ActualEmail = UserTest.Email;
-            var ActualPass = UserTest.Password;
             var ActualIsTeacher = UserTest.IsTeacher;
             Assert.AreEqual(ExpectedName, ActualName);
-            Assert.AreEqual(ExpectedEmail, ActualEmail);
             Assert.AreEqual(ExpectedIsTeacher, ActualIsTeacher);
-            Assert.AreEqual(password, ActualPass);
 
         }
 
@@ -37,7 +34,7 @@ namespace EduHubTests
         {
             string NewName = "Nikolai";
 
-            User UserTest = new User("Ivan", "ivanov@mail.ru", "1", false);
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
             UserTest.EditName(NewName);
             string ExpectedName = NewName;
 
@@ -50,14 +47,14 @@ namespace EduHubTests
         {
             string NewName = "";
 
-            User UserTest = new User("Ivan", "ivanov@mail.ru", "1",false);
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
             UserTest.EditName(NewName);
         }
 
         [TestMethod]
         public void BecomeTeacher_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@mail.ru", "1",false);
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
             UserTest.BecomeTeacher();
 
             Assert.AreEqual(true, UserTest.IsTeacher);
@@ -66,7 +63,7 @@ namespace EduHubTests
         [TestMethod]
         public void StopToTeacher_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@mail.ru","1", true);
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), true);
             UserTest.StopToBeTeacher();
 
             Assert.AreEqual(false, UserTest.IsTeacher);
@@ -75,7 +72,7 @@ namespace EduHubTests
         [TestMethod]
         public void DeleteProfile_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@gmail.com","1", false);
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
 
             UserTest.DeleteProfile();
             bool Expected = false;
@@ -87,7 +84,7 @@ namespace EduHubTests
         [TestMethod]
         public void RestoreProfile_IsItPossible()
         {
-            User UserTest = new User("Ivan", "ivanov@gmail.com","1", false);
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
 
             UserTest.DeleteProfile();
             UserTest.RestoreProfile();
@@ -104,7 +101,7 @@ namespace EduHubTests
             string Email = "";
             bool IsTeacher = false;
 
-            User UserTest = new User(NameOfUser, Email, "1", IsTeacher);
+            User UserTest = new User(NameOfUser, Credentials.FromRawData(Email, "1"), IsTeacher);
         }
     }
 }

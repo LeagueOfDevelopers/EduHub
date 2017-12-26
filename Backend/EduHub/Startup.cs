@@ -7,6 +7,8 @@ using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
 using EduHub.Filters;
+using EduHub.Security;
+using EduHubLibrary.Common;
 
 namespace EduHub
 {
@@ -40,6 +42,8 @@ namespace EduHub
                 current.DescribeAllEnumsAsStrings();
             });
             services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
+
+            ConfigureSecurity(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +61,17 @@ namespace EduHub
             }
 
             app.UseMvc();
+        }
+
+
+        private void ConfigureSecurity(IServiceCollection services)
+        {
+            var securityConfiguration = Configuration.GetSection("Security");
+            var securitySettings = new SecuritySettings(
+                    Credentials.FromRawData(securityConfiguration["AdminEmail"], securityConfiguration["AdminPassword"]), securityConfiguration["EncryptionKey"], securityConfiguration["Issue"], securityConfiguration.GetValue<System.TimeSpan>("ExpirationPeriod"));
+            var jwtIssuer = new JwtIssuer(securitySettings);
+            services.AddSingleton(securitySettings);
+            services.AddSingleton<IJwtIssuer>(jwtIssuer);
         }
     }
 }
