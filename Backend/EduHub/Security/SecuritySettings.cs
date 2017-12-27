@@ -13,13 +13,13 @@ namespace EduHub.Security
         public SecuritySettings(Credentials adminCredentinals, string encryptionKey, string issue, TimeSpan expirationPeriod)
         {
             AdminCredentinals = adminCredentinals;
-            EncryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(encryptionKey));
+            EncryptionKey = encryptionKey;
             Issue = issue;
             ExpirationPeriod = expirationPeriod;
         }
 
         public Credentials AdminCredentinals { get; }
-        public SymmetricSecurityKey EncryptionKey { get; }
+        public string EncryptionKey { get; }
         public string Issue { get; }
         public TimeSpan ExpirationPeriod { get; }
     }

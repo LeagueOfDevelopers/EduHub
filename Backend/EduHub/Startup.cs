@@ -48,28 +48,6 @@ namespace EduHub
 
             ConfigureSecurity(services);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = "lod-misis.ru",
-                        ValidAudience = "",
-                        IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes("ma;xqKKfZbzrKGDpXC]B%FfSB^M&xT7ldHym"))
-                    };
-                });
-            services
-                .AddAuthorization(options => 
-                {
-                    options.DefaultPolicy = 
-                    new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser().Build();
-                });
             services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
         }
 
@@ -99,6 +77,28 @@ namespace EduHub
             var jwtIssuer = new JwtIssuer(securitySettings);
             services.AddSingleton(securitySettings);
             services.AddSingleton<IJwtIssuer>(jwtIssuer);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(securitySettings.EncryptionKey))
+                    };
+                });
+
+            services
+                .AddAuthorization(options =>
+                {
+                    options.DefaultPolicy =
+                    new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build();
+                });
         }
     }
 }

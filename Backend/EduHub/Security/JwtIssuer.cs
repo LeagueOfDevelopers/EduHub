@@ -24,7 +24,7 @@ namespace EduHub.Security
                 new Claim(Claims.IdClaim, id?.ToString() ?? string.Empty)
                 };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ma;xqKKfZbzrKGDpXC]B%FfSB^M&xT7ldHym"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securitySettings.EncryptionKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(issuer: _securitySettings.Issue, claims: claims, expires: DateTime.Now.Add(_securitySettings.ExpirationPeriod),
                 signingCredentials: credentials);
