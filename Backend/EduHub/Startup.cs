@@ -53,17 +53,23 @@ namespace EduHub
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        //ValidIssuer = "yourdomain.com",
-                        ValidAudience = " ",
+                        ValidIssuer = "lod-misis.ru",
+                        ValidAudience = "",
                         IssuerSigningKey = new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes("ma;xqKKfZbzrKGDpXC]B%FfSB^M&xT7ldHym"))
                     };
                 });
-
+            services
+                .AddAuthorization(options => 
+                {
+                    options.DefaultPolicy = 
+                    new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build();
+                });
             services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
         }
 
