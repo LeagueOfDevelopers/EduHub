@@ -9,6 +9,7 @@ using EduHubLibrary.Facades;
 using EduHubLibrary.Domain;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub.Controllers
 {
@@ -46,8 +47,10 @@ namespace EduHub.Controllers
         {
             return Ok($"Группа {idOfGroup} удалена");
         }
+        
         //TODO delete
         [HttpGet]
+        [Authorize]
         public IActionResult All()
         {
             return Ok(_groupFacade.GetGroups());

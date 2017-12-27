@@ -16,7 +16,7 @@ namespace EduHub.Controllers
         {
             _userFacade = userFacade;
         }
-
+        
         [HttpDelete]
         public IActionResult DeleteProfile([FromRoute] int idOfUser)
         {
