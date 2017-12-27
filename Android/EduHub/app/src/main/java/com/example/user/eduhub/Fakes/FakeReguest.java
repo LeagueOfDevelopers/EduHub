@@ -36,7 +36,7 @@ public class FakeReguest implements IAccountActivities{
 
 
     @Override
-    public Boolean UserRegistration(String login, String password, String name) {
+    public Boolean UserRegistration(String login, String password, String name,Boolean isTeacher) {
         for (User user:testUserRep.LoadUsers()
                 ) {
             if(user.getEmail().equals(login)){
@@ -51,6 +51,7 @@ public class FakeReguest implements IAccountActivities{
             newUser.setEmail(login);
             newUser.setPassword(password);
             newUser.setName(name);
+
 
             LoginFragment loginFragment=new LoginFragment();
 

@@ -18,6 +18,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public ViewPagerAdapter(FragmentManager manager) {
         super(manager);
     }
+
+
+
     @Override
     public Fragment getItem(int position) {
         return fragmentList.get(position);

@@ -1,6 +1,7 @@
 package com.example.user.eduhub;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -42,6 +43,7 @@ UserFragment userFragment;
 TeacherFragment teacherFragment;
 CreateGroupFragment createGroupFragment;
 Chat chat;
+
 FakeAcocuntActivities fakeAcocuntActivities=new FakeAcocuntActivities();
 FakeGroupActivities fakeGroupActivities=new FakeGroupActivities();
 Button btn;
@@ -70,6 +72,8 @@ Button btn;
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(pager);
+
+
 
 
 

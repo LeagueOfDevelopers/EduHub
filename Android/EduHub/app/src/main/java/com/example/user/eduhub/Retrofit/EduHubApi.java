@@ -2,6 +2,8 @@ package com.example.user.eduhub.Retrofit;
 
 import com.example.user.eduhub.Models.LoginModel;
 import com.example.user.eduhub.Models.RegistrationModel;
+import com.example.user.eduhub.Models.RegistrationResponseModel;
+import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,7 +15,7 @@ import retrofit2.http.POST;
 
 public interface EduHubApi {
     @POST("/api/account/registration")
-    Call<String> userRegistration(@Body RegistrationModel registrationModel);
+    Call<RegistrationResponseModel> userRegistration(@Body RegistrationModel registrationModel);
     @POST("/api/account/login")
-    Call<String> userLogin(@Body LoginModel loginModel);
+    Call<RegistrationResponseModel> userLogin(@Body LoginModel loginModel);
 }

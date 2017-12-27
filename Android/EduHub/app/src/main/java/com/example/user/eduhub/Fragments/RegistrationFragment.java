@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class RegistrationFragment extends Fragment {
         final EditText email=v.findViewById(R.id.registr_email);
         final EditText password=v.findViewById(R.id.registr_password);
         final EditText login=v.findViewById(R.id.registr_login);
+        final CheckBox checkBox=v.findViewById(R.id.teacher_or_not);
         Button submit=v.findViewById(R.id.registr_btn);
 
 
@@ -47,11 +49,17 @@ public class RegistrationFragment extends Fragment {
             public void onClick(View view) {
 
                 if(!email.getText().toString().equals("")&&!password.getText().toString().equals("")&&!login.getText().toString().equals("")){
-                    flag=accountActivities.UserRegistration(email.getText().toString(),password.getText().toString(),login.getText().toString());
+                    boolean isTeacher;
+                    if(checkBox.isChecked()){
+                        isTeacher=true;
+                    } else{
+                        isTeacher=false;
+                    }
+                    flag=accountActivities.UserRegistration(email.getText().toString(),password.getText().toString(),login.getText().toString(),isTeacher);
 if(flag){
     MakeToast("Регистрация прошла успешно");
 }else{
-    MakeToast(",билиберда");
+    MakeToast("билеберда");
 }
 
                 }else{

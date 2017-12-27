@@ -48,5 +48,15 @@
             android:ems="10"
             android:hint="Login"
             android:inputType="textPersonName" />
+
+        <CheckBox
+            android:id="@+id/teacher_or_not"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_alignLeft="@+id/registr_password"
+            android:layout_alignStart="@+id/registr_password"
+            android:layout_below="@+id/registr_password"
+            android:layoutDirection="rtl"
+            android:text="Преподаватель:" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

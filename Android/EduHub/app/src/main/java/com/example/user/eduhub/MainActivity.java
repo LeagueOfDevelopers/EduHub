@@ -10,8 +10,8 @@ import com.example.user.eduhub.Fragments.LoginFragment;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
 
 public class MainActivity extends AppCompatActivity implements IFragmentsActivities {
-FragmentTransaction fTransaction;
-LoginFragment loginFragment;
+    FragmentTransaction fTransaction;
+    LoginFragment loginFragment;
 
 
     @Override

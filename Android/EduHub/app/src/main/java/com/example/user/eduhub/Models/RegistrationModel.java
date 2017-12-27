@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class RegistrationModel {
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -17,6 +18,9 @@ public class RegistrationModel {
     @SerializedName("password")
     @Expose
     private String password;
+    @SerializedName("isTeacher")
+    @Expose
+    private Boolean isTeacher;
 
     public String getName() {
         return name;
@@ -41,4 +45,13 @@ public class RegistrationModel {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Boolean getIsTeacher() {
+        return isTeacher;
+    }
+
+    public void setIsTeacher(Boolean isTeacher) {
+        this.isTeacher = isTeacher;
+    }
+
 }
