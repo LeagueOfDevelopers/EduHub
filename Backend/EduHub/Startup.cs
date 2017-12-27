@@ -12,6 +12,7 @@ using EduHubLibrary.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub
 {
@@ -57,9 +58,9 @@ namespace EduHub
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         //ValidIssuer = "yourdomain.com",
-                        //ValidAudience = "yourdomain.com",
-                        //IssuerSigningKey = new SymmetricSecurityKey(
-                            //Encoding.UTF8.GetBytes("ma;xqKKfZbzrKGDpXC]B%FfSB^M&xT7ldHym"))
+                        ValidAudience = " ",
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes("ma;xqKKfZbzrKGDpXC]B%FfSB^M&xT7ldHym"))
                     };
                 });
 

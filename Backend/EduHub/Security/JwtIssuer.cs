@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EduHub.Security
@@ -23,7 +24,8 @@ namespace EduHub.Security
                 new Claim(Claims.IdClaim, id?.ToString() ?? string.Empty)
                 };
 
-            var credentials = new SigningCredentials(_securitySettings.EncryptionKey, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ma;xqKKfZbzrKGDpXC]B%FfSB^M&xT7ldHym"));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(issuer: _securitySettings.Issue, claims: claims, expires: DateTime.Now.Add(_securitySettings.ExpirationPeriod),
                 signingCredentials: credentials);
 
