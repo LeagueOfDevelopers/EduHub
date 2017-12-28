@@ -99,7 +99,7 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
           <Card
             title='Незаполненные группы'
             bordered={false}
-            className='unassembled-groups-list'
+            className='unassembled-groups-list font-size-20'
             extra={<a href='#'>Показать больше</a>}
           >
             <div className='cards-holder'>
@@ -117,7 +117,7 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
           <Card
             title='Заполненные группы'
             bordered={false}
-            className='assembled-groups-list'
+            className='assembled-groups-list font-size-20'
             extra={<a href='#'>Показать больше</a>}
           >
             <div className='cards-holder'>
