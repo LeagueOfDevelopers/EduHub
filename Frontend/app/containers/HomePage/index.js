@@ -10,6 +10,19 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+
+import injectSaga from 'utils/injectSaga';
+import injectReducer from 'utils/injectReducer';
+import { makeSelectHomePage,
+         makeSelectAssembledGroups,
+         makeSelectUnassembledGroups
+} from "./selectors";
+import reducer from './reducer';
+import saga from './saga';
 import {Card, Col, Row, Button} from 'antd';
 import styled from 'styled-components';
 
@@ -17,78 +30,85 @@ import Header from 'components/Header';
 import UnassembledGroupCard from 'components/UnassembledGroupCard';
 import AssembledGroupCard from 'components/AssembledGroupCard';
 import {Link} from "react-router-dom";
+import { getAssembledGroups, getUnassembledGroups } from "./actions";
 
-const unassembledGroups = [
-  {
-    title: 'Группа 1',
-    link: '#'
-  },
-  {
-    title: 'Группа 2',
-    link: '#'
-  },
-  {
-    title: 'Группа 3',
-    link: '#'
-  },
-  {
-    title: 'Группа 4',
-    link: '#'
-  },
-  {
-    title: 'Группа 5',
-    link: '#'
-  },
-  {
-    title: 'Группа 6',
-    link: '#'
-  },
-  {
-    title: 'Группа 7',
-    link: '#'
-  },
-  {
-    title: 'Группа 8',
-    link: '#'
+// const unassembledGroups = [
+//   {
+//     title: 'Группа 1',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 2',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 3',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 4',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 5',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 6',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 7',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 8',
+//     link: '#'
+//   }
+// ]
+//
+// const assembledGroups = [
+//   {
+//     title: 'Группа 1',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 2',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 3',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 4',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 5',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 6',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 7',
+//     link: '#'
+//   },
+//   {
+//     title: 'Группа 8',
+//     link: '#'
+//   }
+// ]
+
+export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+
+  componentDidMount() {
+    this.props.getUnassembledGroups();
+    // this.props.getAssembledProps();
   }
-]
 
-const assembledGroups = [
-  {
-    title: 'Группа 1',
-    link: '#'
-  },
-  {
-    title: 'Группа 2',
-    link: '#'
-  },
-  {
-    title: 'Группа 3',
-    link: '#'
-  },
-  {
-    title: 'Группа 4',
-    link: '#'
-  },
-  {
-    title: 'Группа 5',
-    link: '#'
-  },
-  {
-    title: 'Группа 6',
-    link: '#'
-  },
-  {
-    title: 'Группа 7',
-    link: '#'
-  },
-  {
-    title: 'Группа 8',
-    link: '#'
-  }
-]
-
-export default class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
@@ -103,7 +123,7 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
             extra={<a href='#'>Показать больше</a>}
           >
             <div className='cards-holder'>
-              {unassembledGroups.map((item,index) =>
+              {this.props.unassembledGroups.map((item,index) =>
                 <UnassembledGroupCard {...item}/>
               )}
             </div>
@@ -121,7 +141,7 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
             extra={<a href='#'>Показать больше</a>}
           >
             <div className='cards-holder'>
-              {assembledGroups.map((item,index) =>
+              {this.props.unassembledGroups.map((item,index) =>
                 <AssembledGroupCard {...item}/>
               )}
             </div>
@@ -135,3 +155,36 @@ export default class HomePage extends React.PureComponent { // eslint-disable-li
     );
   }
 }
+
+HomePage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+HomePage.defaultProps = {
+  unassembledGroups: [],
+  // assembledGroups: []
+}
+
+const mapStateToProps = createStructuredSelector({
+  //homepage: makeSelectHomePage(),
+  unassembledGroups: makeSelectUnassembledGroups(),
+  // assembledGroups: makeSelectAssembledGroups()
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getUnassembledGroups: dispatch(getUnassembledGroups()),
+    // getAssembledGroups: dispatch(getAssembledGroups())
+  };
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+const withReducer = injectReducer({ key: 'homePage', reducer });
+const withSaga = injectSaga({ key: 'homePage', saga });
+
+export default compose(
+  withReducer,
+  withSaga,
+  withConnect,
+)(HomePage);
