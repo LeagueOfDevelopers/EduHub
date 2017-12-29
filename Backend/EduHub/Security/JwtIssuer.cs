@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -31,7 +32,6 @@ namespace EduHub.Security
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
 
         private readonly SecuritySettings _securitySettings;
     }

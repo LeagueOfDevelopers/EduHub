@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Common;
 using EduHub.Security;
+using Microsoft.AspNetCore.Identity;
 
 namespace EduHub.Controllers
 {
@@ -37,7 +38,7 @@ namespace EduHub.Controllers
                 return Ok(_jwtIssuer.IssueJwt(Claims.Roles.Admin, null));
             }
             var client = _userFacade.FindByCredentials(creditials);
-
+   
             if (client != null)
             {
                 LoginResponse response = new LoginResponse(client.Name, UserType.User, client.IsTeacher, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));

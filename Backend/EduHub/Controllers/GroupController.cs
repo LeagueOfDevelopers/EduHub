@@ -10,6 +10,8 @@ using EduHubLibrary.Domain;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using EduHub.Security;
+using Microsoft.AspNetCore.Identity;
 
 namespace EduHub.Controllers
 {
@@ -50,7 +52,7 @@ namespace EduHub.Controllers
         
         //TODO delete
         [HttpGet]
-        [Authorize]
+        [Authorize(Policy ="ForAdmins")]
         public IActionResult All()
         {
             return Ok(_groupFacade.GetGroups());

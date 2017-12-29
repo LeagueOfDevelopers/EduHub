@@ -10,8 +10,6 @@ namespace EduHubLibrary.Domain
     public class User
     {
         public string Name { get; private set; }
-        //public string Email { get; private set; }
-        //public string Password { get; private set; }
         public Credentials Credentials { get; private set; }
         public bool IsTeacher { get; private set; }
         public bool IsActive { get; private set; }
@@ -21,8 +19,6 @@ namespace EduHubLibrary.Domain
         public User(string name, Credentials credentials, bool isTeacher)
         {
             Name = Ensure.String.IsNotNullOrWhiteSpace(name);
-            //Email = Ensure.String.IsNotNullOrWhiteSpace(email);
-            //Password = Ensure.String.IsNotNullOrWhiteSpace(password);
             Credentials = credentials;
             IsTeacher = isTeacher;
             IsActive = true;

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace EduHub
 {
@@ -98,6 +99,11 @@ namespace EduHub
                     options.DefaultPolicy =
                     new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser().Build();
+
+                    options.AddPolicy("ForAdmins", policy =>
+                    {
+                        policy.RequireClaim("Role");
+                    });
                 });
         }
     }
