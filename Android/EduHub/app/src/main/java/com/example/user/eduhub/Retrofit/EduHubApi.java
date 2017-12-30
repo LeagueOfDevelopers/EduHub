@@ -17,5 +17,5 @@ public interface EduHubApi {
     @POST("/api/account/registration")
     Call<RegistrationResponseModel> userRegistration(@Body RegistrationModel registrationModel);
     @POST("/api/account/login")
-    Call<RegistrationResponseModel> userLogin(@Body LoginModel loginModel);
+    Call<String> userLogin(@Body LoginModel loginModel);
 }

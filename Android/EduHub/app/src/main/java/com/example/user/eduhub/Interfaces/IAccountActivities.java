@@ -7,6 +7,6 @@ import com.example.user.eduhub.Classes.User;
  */
 
 public interface IAccountActivities {
-    User UserLogin(String email,String password);
-    Boolean UserRegistration(String email,String password,String name,Boolean isTeacher);
+    void UserLogin(String email,String password);
+    void UserRegistration(String email,String password,String name,Boolean isTeacher);
 }

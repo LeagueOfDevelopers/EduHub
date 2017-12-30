@@ -3,6 +3,7 @@ package com.example.user.eduhub.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.user.eduhub.Classes.User;
+import com.example.user.eduhub.Interfaces.ICallBack;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Fakes.TestUserRep;
@@ -21,11 +23,11 @@ import com.example.user.eduhub.Retrofit.AccountActivities;
  * Created by user on 06.12.2017.
  */
 
-public class RegistrationFragment extends Fragment {
+public class RegistrationFragment extends Fragment implements ICallBack {
     IFragmentsActivities fragmentsActivities;
     TestUserRep testUserRep=new TestUserRep();
-    AccountActivities accountActivities=new AccountActivities();
-    boolean flag=false;
+    AccountActivities accountActivities=new AccountActivities(this);
+    String id;
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -55,12 +57,8 @@ public class RegistrationFragment extends Fragment {
                     } else{
                         isTeacher=false;
                     }
-                    flag=accountActivities.UserRegistration(email.getText().toString(),password.getText().toString(),login.getText().toString(),isTeacher);
-if(flag){
-    MakeToast("Регистрация прошла успешно");
-}else{
-    MakeToast("билеберда");
-}
+                    accountActivities.UserRegistration(email.getText().toString(),password.getText().toString(),login.getText().toString(),isTeacher);
+
 
                 }else{
                    MakeToast("Ошибка.заполните все поля.");
@@ -75,5 +73,26 @@ if(flag){
         Toast toast = Toast.makeText(getActivity().getApplicationContext(),
                 (s), Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    @Override
+    public void callBackRegistrate(String id) {
+        this.id=id;
+        MakeToast("Регистрация прошла успешно");
+    }
+
+    @Override
+    public void callBackRegistrationError(int code) {
+
+    }
+
+    @Override
+    public void callBackLogin(String token) {
+
+    }
+
+    @Override
+    public void callBackLoginError(int code) {
+
     }
 }
