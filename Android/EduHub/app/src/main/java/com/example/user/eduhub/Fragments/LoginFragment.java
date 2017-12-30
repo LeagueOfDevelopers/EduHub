@@ -2,6 +2,7 @@ package com.example.user.eduhub.Fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -11,8 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.user.eduhub.AuthorizedUserActivity;
 import com.example.user.eduhub.Classes.User;
-import com.example.user.eduhub.Fakes.FakeReguest;
+import com.example.user.eduhub.Interfaces.ICallBack;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Fakes.TestUserRep;
@@ -22,11 +24,10 @@ import com.example.user.eduhub.Retrofit.AccountActivities;
  * Created by user on 05.12.2017.
  */
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements ICallBack {
 IFragmentsActivities fragmentsActivities;
     TestUserRep testUserRep=new TestUserRep();
-    AccountActivities accountActivities=new AccountActivities();
-    FakeReguest fakeReguest=new FakeReguest();
+    AccountActivities accountActivities=new AccountActivities(this);
     boolean flag=false;
     User checkUser;
     public void onAttach(Activity activity) {
@@ -55,12 +56,8 @@ IFragmentsActivities fragmentsActivities;
             public void onClick(View v) {
                 flag=false;
                 if(!emailText.getText().toString().equals("")&&!password.getText().toString().equals("")){
-                   checkUser=accountActivities.UserLogin(emailText.getText().toString(),password.getText().toString());
-                   if(checkUser!=null){
-                       MakeToast("Вход выполнен успешно "+checkUser.getEmail());
-                       fragmentsActivities.signIn(checkUser);
-                   }
-                   else{MakeToast("Данной комбинации Email и пароля не существует");}
+                   accountActivities.UserLogin(emailText.getText().toString(),password.getText().toString());
+
                 }
                 else{
                     MakeToast("Ошибка.заполните все поля.");
@@ -80,5 +77,29 @@ IFragmentsActivities fragmentsActivities;
     }
 
 
+    @Override
+    public void callBackRegistrate(String id) {
 
+    }
+
+    @Override
+    public void callBackRegistrationError(int code) {
+
+    }
+
+    @Override
+    public void callBackLogin(String token) {
+        MakeToast("Вход выполнен успешно");
+        Intent intent=new Intent(getActivity(), AuthorizedUserActivity.class);
+        intent.putExtra("token",token);
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void callBackLoginError(int code) {
+        if(code==401){
+            MakeToast("Неверный логин или пароль");
+        }
+    }
 }

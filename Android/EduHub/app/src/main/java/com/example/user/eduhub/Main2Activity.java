@@ -24,6 +24,7 @@ import com.example.user.eduhub.Adapters.GroupAdapter;
 import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Classes.Group;
 import com.example.user.eduhub.Classes.TypeOfEducation;
+import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Fakes.FakeAcocuntActivities;
 import com.example.user.eduhub.Fakes.FakeGroupActivities;
 import com.example.user.eduhub.Fragments.Chat;
@@ -35,8 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Main2Activity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Main2Activity extends AppCompatActivity {
 ViewPager pager;
 ViewPagerAdapter adapter;
 UserFragment userFragment;
@@ -59,7 +59,7 @@ Button btn;
         userFragment=new UserFragment();
         createGroupFragment=new CreateGroupFragment();
         chat=new Chat();
-        chat.setUser(fakeAcocuntActivities.UserLogin("Cаня","Lol"));
+       chat.setUser(new User());
         teacherFragment.setGroups(fakeGroupActivities.loadGroups());
         userFragment.setGroups(fakeGroupActivities.loadGroups());
         pager=findViewById(R.id.pager);
@@ -74,75 +74,8 @@ Button btn;
         tabLayout.setupWithViewPager(pager);
 
 
-
-
-
-
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.main) {
-            // Handle the camera action
-        } else if (id == R.id.profile) {
-
-        } else if (id == R.id.becameTeacher) {
-
-        } else if (id == R.id.settings) {
-
-        } else if (id == R.id.notification) {
-
-        } else if (id == R.id.myGroups) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
 }
