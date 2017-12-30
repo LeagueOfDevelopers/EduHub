@@ -11,6 +11,7 @@ namespace EduHub.Security
         public static class Roles
         {
             public const string RoleClaim = "Role";
+            public const string GeneralAdmin = "GeneralAdmin";
             public const string Admin = "Admin";
             public const string User = "User";
         }

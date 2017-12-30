@@ -11,6 +11,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Common;
 using EduHub.Security;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub.Controllers
 {

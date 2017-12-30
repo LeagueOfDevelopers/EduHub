@@ -52,7 +52,7 @@ namespace EduHub.Controllers
         
         //TODO delete
         [HttpGet]
-        [Authorize(Policy ="AdminsOnly")]
+        [Authorize]
         public IActionResult All()
         {
             return Ok(_groupFacade.GetGroups());
