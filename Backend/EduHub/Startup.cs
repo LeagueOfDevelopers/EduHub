@@ -98,13 +98,11 @@ namespace EduHub
                 {
                     options.DefaultPolicy =
                     new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser().Build();
+                    .RequireClaim(ClaimTypes.Role, Claims.Roles.Admin).Build();
 
-                    options.AddPolicy("ForAdmins", policy =>
-                    {
-                        policy.RequireClaim("Role");
-                    });
+                    options.AddPolicy("AdminsOnly", new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Admin).Build());
                 });
         }
-    }
+    } 
 }
