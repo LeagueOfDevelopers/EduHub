@@ -4,6 +4,7 @@ using System.Text;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Settings;
 using EnsureThat;
+using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubLibrary.Facades
 {
@@ -23,6 +24,8 @@ namespace EduHubLibrary.Facades
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(size))));
             Ensure.Bool.IsTrue(totalValue <= _groupSettings.MaxGroupValue && totalValue >= _groupSettings.MinGroupValue,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(totalValue))));
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(userId), 
+                opt => opt.WithException(new UserNotFoundException(userId)));
             Group group = new Group(userId, title, tags, description, size, totalValue);
             _groupRepository.Add(group);
             return group.Id;

@@ -12,6 +12,7 @@ using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using EduHub.Security;
 using Microsoft.AspNetCore.Identity;
+using EnsureThat;
 
 namespace EduHub.Controllers
 {
@@ -23,8 +24,10 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, typeof(CreateGroupResponse))]
         public IActionResult AddGroup([FromBody]CreateGroupRequest newGroup)
         {
-            Guid newId =_groupFacade.CreateGroup(newGroup.IdOfCreator, newGroup.Title, newGroup.Tags, newGroup.Description,
-                newGroup.Size, newGroup.totalValue);
+            Ensure.Any.IsNotNull(newGroup, nameof(newGroup), 
+                opt=> opt.WithException(new ArgumentNullException(nameof(newGroup))));
+            Guid newId =_groupFacade.CreateGroup(newGroup.CreatorId, newGroup.Title, newGroup.Tags, newGroup.Description,
+                newGroup.Size, newGroup.TotalValue);
             CreateGroupResponse response = new CreateGroupResponse(newId);
             return Ok(response);
         }

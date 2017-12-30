@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore;
+﻿using Loggly;
+using Loggly.Config;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using System;

@@ -14,6 +14,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Loggly.Config;
+using Loggly;
+using Serilog;
 
 namespace EduHub
 {
@@ -22,6 +25,7 @@ namespace EduHub
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -48,6 +52,7 @@ namespace EduHub
             });
 
             ConfigureSecurity(services);
+            StartLoggly();
 
             services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
         }
@@ -67,6 +72,26 @@ namespace EduHub
             }
 
             app.UseMvc();
+        }
+
+        private void StartLoggly()
+        {
+            var config = LogglyConfig.Instance;
+            config.CustomerToken = Configuration.GetValue<string>("LogglyToken");
+            config.ApplicationName = "EduHubWebApi";
+
+            config.Transport.EndpointHostname = "logs-01.loggly.com";
+            config.Transport.EndpointPort = 443;
+            config.Transport.LogTransport = LogTransport.Https;
+
+            var ct = new ApplicationNameTag();
+            ct.Formatter = "application-{0}";
+            config.TagConfig.Tags.Add(ct);
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information().WriteTo.Loggly()
+                .CreateLogger();
+            Log.Information("Loggly started");
         }
 
 
