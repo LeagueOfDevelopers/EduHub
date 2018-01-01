@@ -24,7 +24,12 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, typeof(RegistrationResponse))]
         public IActionResult Registrate([FromBody]RegistrationRequest request)
         {
-            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher);
+            Role role;
+            if (request.Role.Equals("Admin") || request.Role.Equals("admin"))
+                role = Role.Admin;
+            else role = Role.User;
+
+            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher, role);
             RegistrationResponse response = new RegistrationResponse(newId);
             return Ok(response);
         }
@@ -34,15 +39,11 @@ namespace EduHub.Controllers
         public IActionResult Login([FromBody]LoginRequest loginRequest)
         {
             var creditials = Credentials.FromRawData(loginRequest.Email, loginRequest.Password);
-            if (creditials == _securitySettings.AdminCredentinals)
-            {
-                return Ok(_jwtIssuer.IssueJwt(Claims.Roles.Admin, null));
-            }
             var client = _userFacade.FindByCredentials(creditials);
    
             if (client != null)
             {
-                LoginResponse response = new LoginResponse(client.Name, UserType.User, client.IsTeacher, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
+                LoginResponse response = new LoginResponse(client.Name, client.Role, client.IsTeacher, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
                 return Ok(response);
             }
 

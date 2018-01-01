@@ -11,15 +11,17 @@ namespace EduHubLibrary.Domain
     {
         public string Name { get; private set; }
         public Credentials Credentials { get; private set; }
+        public Role Role { get; set; }
         public bool IsTeacher { get; private set; }
         public bool IsActive { get; private set; }
         public Guid Id { get; private set; }
         public List<Invitation> listOfInvitation { get; private set; }
 
-        public User(string name, Credentials credentials, bool isTeacher)
+        public User(string name, Credentials credentials, bool isTeacher, Role role)
         {
             Name = Ensure.String.IsNotNullOrWhiteSpace(name);
             Credentials = credentials;
+            Role = role;
             IsTeacher = isTeacher;
             IsActive = true;
             Id = Guid.NewGuid();
@@ -39,6 +41,16 @@ namespace EduHubLibrary.Domain
         public void StopToBeTeacher()
         {
             IsTeacher = false;
+        }
+
+        public void BecomeAdmin()
+        {
+            Role = Role.Admin;
+        }
+
+        public void StopToBeAdmin()
+        {
+            Role = Role.User;
         }
 
         public void RestoreProfile()
@@ -81,6 +93,5 @@ namespace EduHubLibrary.Domain
             Ensure.Guid.IsNotEmpty(invitationId);
             return Ensure.Any.IsNotNull(listOfInvitation.Find(current => current.Id == invitationId));
         }
-
     }
 }

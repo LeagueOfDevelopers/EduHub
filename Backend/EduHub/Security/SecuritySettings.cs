@@ -10,15 +10,13 @@ namespace EduHub.Security
 {
     public class SecuritySettings
     {
-        public SecuritySettings(Credentials adminCredentinals, string encryptionKey, string issue, TimeSpan expirationPeriod)
+        public SecuritySettings(string encryptionKey, string issue, TimeSpan expirationPeriod)
         {
-            AdminCredentinals = adminCredentinals;
             EncryptionKey = encryptionKey;
             Issue = issue;
             ExpirationPeriod = expirationPeriod;
         }
-
-        public Credentials AdminCredentinals { get; }
+        
         public string EncryptionKey { get; }
         public string Issue { get; }
         public TimeSpan ExpirationPeriod { get; }

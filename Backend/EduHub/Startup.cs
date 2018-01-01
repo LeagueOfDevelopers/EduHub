@@ -110,7 +110,7 @@ namespace EduHub
         {
             var securityConfiguration = Configuration.GetSection("Security");
             var securitySettings = new SecuritySettings(
-                    Credentials.FromRawData(securityConfiguration["AdminEmail"], securityConfiguration["AdminPassword"]), securityConfiguration["EncryptionKey"], securityConfiguration["Issue"], securityConfiguration.GetValue<System.TimeSpan>("ExpirationPeriod"));
+                securityConfiguration["EncryptionKey"], securityConfiguration["Issue"], securityConfiguration.GetValue<System.TimeSpan>("ExpirationPeriod"));
             var jwtIssuer = new JwtIssuer(securitySettings);
             services.AddSingleton(securitySettings);
             services.AddSingleton<IJwtIssuer>(jwtIssuer);

@@ -17,12 +17,12 @@ namespace EduHub.Security
             _securitySettings = securitySettings;
         }
 
-        public string IssueJwt(string role, Guid? id)
+        public string IssueJwt(string role, Guid id)
         {
             var claims = new[]
              {
                 new Claim(Claims.Roles.RoleClaim, role),
-                new Claim(Claims.IdClaim, id?.ToString() ?? string.Empty)
+                new Claim(Claims.IdClaim, id.ToString())
                 };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securitySettings.EncryptionKey));
