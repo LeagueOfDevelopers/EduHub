@@ -18,6 +18,7 @@ namespace EduHub.Controllers
 {
     [Produces("application/json")]
     [Route("api/group")]
+    [Authorize]
     public class GroupController : Controller
     {
         [HttpPost]

@@ -17,6 +17,7 @@ using System.Security.Claims;
 using Loggly.Config;
 using Loggly;
 using Serilog;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace EduHub
 {
@@ -53,8 +54,18 @@ namespace EduHub
 
             ConfigureSecurity(services);
             StartLoggly();
+            if (Configuration.GetValue<bool>("Authorization"))
+            {
+                services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
+            }
+            else
+            {
+                services.AddMvc(o => {
+                    o.Filters.Add(new AllowAnonymousFilter());
+                    o.Filters.Add(new ExceptionFilter());
+                    });
+            }
 
-            services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
