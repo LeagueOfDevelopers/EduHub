@@ -16,7 +16,7 @@ import {
 
 const initialState = fromJS({
   unassembledGroups: [],
-  // assembledGroups: []
+  assembledGroups: []
 });
 
 function createHomeReducer(state = initialState, action) {

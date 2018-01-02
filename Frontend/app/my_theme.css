@@ -36,13 +36,27 @@
   cursor: default;
 }
 
-.ant-dropdown-menu-item:hover {
+.unhover:hover {
   background-color: #fff;
 }
 
-@media screen and (max-width: 767px) {
+.danger-menu-item:hover {
+  background-color: #ffdcef;
+}
+
+@media screen and (max-width: 768px) {
   .header .search {
     display: none;
+  }
+
+  .md-center-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .md-offset-16px {
+    margin-left: 16px;
   }
 }
 
@@ -59,10 +73,11 @@
     display: none;
   }
 
-  .ant-row {
+  .form .ant-row {
     margin-right: 10px;
     margin-left: 10px;
   }
+
 }
 
 .group-card > .ant-card-body a {
@@ -97,3 +112,61 @@ a:focus {
 .font-size-20 .ant-card-head-title {
   font-size: 20px;
 }
+
+.member-container {
+  border-radius: 4px;
+  overflow: auto;
+  padding: 8px 16px;
+  height: 400px;
+}
+
+.chatroom p {
+  margin: 0;
+}
+
+.chatroom {
+  width: 100%;
+  height: 560px;
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 6px -2px;
+}
+
+.chatroom .header {
+  background-color: #fff;
+  margin: 0;
+  height: 40px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 2px 6px -2px rgba(0, 0, 0, 0.36);
+}
+
+.chatroom .chat {
+  box-sizing: border-box;
+  padding: 0 20px;
+  margin: 0 0;
+  height: 480px;
+  overflow-y: scroll;
+}
+
+.chatroom .chat .message {
+  background-color: #fff;
+  position: relative;
+  padding: 5px 13px;
+  border-radius: 10px;
+  list-style: none;
+  float: left;
+  clear: both;
+  margin: 10px 0;
+  max-width: 92%;
+  word-wrap: break-word;
+}
+
+.chatroom .chat .message.right {
+  float: right;
+  clear: both;
+}
+
+

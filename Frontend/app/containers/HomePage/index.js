@@ -23,110 +23,86 @@ import { makeSelectHomePage,
 } from "./selectors";
 import reducer from './reducer';
 import saga from './saga';
-import {Card, Col, Row, Button} from 'antd';
-import styled from 'styled-components';
+import {Card, Col, Row, Button, message} from 'antd';
+// import styled from 'styled-components';
 
 import Header from 'components/Header';
 import UnassembledGroupCard from 'components/UnassembledGroupCard';
 import AssembledGroupCard from 'components/AssembledGroupCard';
+import SigningInForm from 'components/SigningInForm';
 import {Link} from "react-router-dom";
 import { getAssembledGroups, getUnassembledGroups } from "./actions";
 
-// const unassembledGroups = [
-//   {
-//     title: 'Группа 1',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 2',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 3',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 4',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 5',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 6',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 7',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 8',
-//     link: '#'
-//   }
-// ]
-//
-// const assembledGroups = [
-//   {
-//     title: 'Группа 1',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 2',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 3',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 4',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 5',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 6',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 7',
-//     link: '#'
-//   },
-//   {
-//     title: 'Группа 8',
-//     link: '#'
-//   }
-// ]
-
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+
+    this.makeTeacher = this.makeTeacher.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleOk = this.handleOk.bind(this);
+
+    this.state = {
+      signInVisible: false
+    }
+  }
 
   componentDidMount() {
     this.props.getUnassembledGroups();
-    // this.props.getAssembledProps();
+    this.props.getAssembledProps();
   }
+
+  makeTeacher() {
+    if(this.props.token)
+      message.success('Теперь вы можете преподавать!');
+    else
+      this.setState({signInVisible: true})
+  }
+
+  handleCancel = () => {
+    this.setState({signInVisible: false})
+  };
+
+  handleOk = () => {
+    message.error('Не удалось войти!')
+  };
+
+  unassembledGroups = (
+    <div className='cards-holder'>
+      {this.props.unassembledGroups.map((item) =>
+        <Link to='/group'>
+          <UnassembledGroupCard {...item}/>
+        </Link>
+      )}
+    </div>
+  );
+
+  assembledGroups = (
+    <div className='cards-holder'>
+      {this.props.assembledGroups.map((item) =>
+        <Link to='/group'>
+          <AssembledGroupCard {...item}/>
+        </Link>
+      )}
+    </div>
+  )
 
   render() {
     return (
       <div>
         <header>
-          <Header/>
+          <Header token={this.props.token}/>
         </header>
         <Col span={20} offset={2} style={{marginTop: 40}}>
           <Card
             title='Незаполненные группы'
             bordered={false}
             className='unassembled-groups-list font-size-20'
-            extra={<a href='#'>Показать больше</a>}
+            extra={<Link to='#'>Показать больше</Link>}
           >
-            <div className='cards-holder'>
-              {this.props.unassembledGroups.map((item,index) =>
-                <UnassembledGroupCard {...item}/>
-              )}
-            </div>
+            {this.props.unassembledGroups.length > 0 ?
+              this.unassembledGroups
+              : (<div>Здесь пока ничего нет.</div>)
+            }
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
               <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>
@@ -138,16 +114,16 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             title='Заполненные группы'
             bordered={false}
             className='assembled-groups-list font-size-20'
-            extra={<a href='#'>Показать больше</a>}
+            extra={<Link to='#'>Показать больше</Link>}
           >
-            <div className='cards-holder'>
-              {this.props.unassembledGroups.map((item,index) =>
-                <AssembledGroupCard {...item}/>
-              )}
-            </div>
+            {this.props.unassembledGroups.length > 0 ?
+              this.assembledGroups
+              : (<div>Здесь пока ничего нет.</div>)
+            }
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
-              <Button type="primary" htmlType="submit">Стать преподавателем</Button>
+              <Button type="primary" htmlType="submit" onClick={this.makeTeacher}>Стать преподавателем</Button>
+              <SigningInForm visible={this.state.signInVisible} handleOk={this.handleOk} handleCancel={this.handleCancel}/>
             </Row>
           </Card>
         </Col>
@@ -158,23 +134,26 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
 HomePage.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  makeTeacher: PropTypes.func,
+  unassembledGroups: PropTypes.array,
+  assembledGroups: PropTypes.array
 };
 
 HomePage.defaultProps = {
   unassembledGroups: [],
-  // assembledGroups: []
+  assembledGroups: [],
+  token: ''
 }
 
 const mapStateToProps = createStructuredSelector({
-  //homepage: makeSelectHomePage(),
   unassembledGroups: makeSelectUnassembledGroups(),
-  // assembledGroups: makeSelectAssembledGroups()
+  assembledGroups: makeSelectAssembledGroups()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     getUnassembledGroups: dispatch(getUnassembledGroups()),
-    // getAssembledGroups: dispatch(getAssembledGroups())
+    getAssembledGroups: dispatch(getAssembledGroups())
   };
 }
 

@@ -6,6 +6,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import { Form, Input, Switch, Select, Col, InputNumber } from 'antd';
 const FormItem = Form.Item;
@@ -36,7 +37,7 @@ class CreateGroupForm extends React.Component {
 
 
     return (
-      <Form>
+      <Form className='form'>
         <FormItem
           {...formItemLayout}
           label="Название группы"
@@ -53,7 +54,7 @@ class CreateGroupForm extends React.Component {
           {...formItemLayout}
           label="Изучаемые технологии"
         >
-          <Select mode="tags" placeholder="Добавьте, что хотите изучить">
+          <Select mode="tags" placeholder="Введите, что хотите изучить">
             <Option value="html">html</Option>
             <Option value="css">css</Option>
             <Option value="js">js</Option>
@@ -65,7 +66,7 @@ class CreateGroupForm extends React.Component {
           label="Формат занятий"
         >
           <Col span={8}>
-            <Select placeholder="Выберите формат занятий">
+            <Select placeholder="Выберите формат">
               <Option value="lecture">Лекция</Option>
               <Option value="webinar">Вебинар</Option>
               <Option value="seminar">Семинар</Option>
@@ -95,10 +96,9 @@ class CreateGroupForm extends React.Component {
             defaultActiveFirstOption={false}
             placeholder="Добавьте участников"
           >
-            <Option key={'p1'}>{'Первый пользователь'}</Option>
-            <Option key={'p2'}>{'Второй пользователь'}</Option>
-            <Option key={'p3'}>{'Третий пользователь'}</Option>
-            <Option key={'p4'}>{'Четвертый пользователь'}</Option>
+            {this.props.users.map(item =>
+              <Option key={item.id}>{item.name}</Option>
+            )}
           </Select>
         </FormItem >
         <FormItem
@@ -113,8 +113,14 @@ class CreateGroupForm extends React.Component {
 }
 
 
-CreateGroupForm.propTypes = {
+CreateGroupForm.defaultProps = {
+  users: []
+}
 
+CreateGroupForm.propTypes = {
+  users: PropTypes.array,
+  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired
 };
 
 

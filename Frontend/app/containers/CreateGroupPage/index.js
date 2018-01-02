@@ -16,7 +16,7 @@ import makeSelectCreateGroupPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import styled from 'styled-components';
-import { Form, Col, Row, Button, Divider } from 'antd';
+import { Form, Col, Row, Button, Divider, message } from 'antd';
 const FormItem = Form.Item;
 
 import Header from 'components/Header';
@@ -36,11 +36,22 @@ const tailFormItemLayout = {
   }
 };
 
-const members = [
-
-]
-
 export class CreateGroupPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+
+    this.createGroup = this.createGroup.bind(this);
+    this.goBack = this.goBack.bind(this);
+  }
+
+  createGroup() {
+    message.error('Невозможно создать группу!')
+  }
+
+  goBack() {
+    history.back()
+  }
+
   render() {
     return (
       <div>
@@ -53,8 +64,8 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
           <Row style={{marginTop: 20}}><CreateGroupForm/></Row>
           <Row style={{marginTop: 20, textAlign: 'center'}}>
             <FormItem {...tailFormItemLayout}>
-              <Button htmlType="button" style={{marginRight: '2%'}}>Отменить</Button>
-              <Button type="primary" htmlType="submit">Создать группу</Button>
+              <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
+              <Button type="primary" htmlType="submit" onClick={this.createGroup}>Создать группу</Button>
             </FormItem>
           </Row>
         </div>
@@ -66,6 +77,8 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
 
 CreateGroupPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  createGroup: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -32,7 +32,7 @@ class RegistrationForm extends React.Component { // eslint-disable-line react/pr
 
 
     return (
-      <Form>
+      <Form className='form'>
         <FormItem
           {...formItemLayout}
           label="Имя"
@@ -50,12 +50,6 @@ class RegistrationForm extends React.Component { // eslint-disable-line react/pr
           label="Придумайте пароль"
         >
           <Input type='password' placeholder="Введите пароль"/>
-        </FormItem>
-        <FormItem
-        {...formItemLayout}
-        label="Повторите пароль"
-        >
-          <Input type='password' placeholder="Введите пароль еще раз"/>
         </FormItem>
       </Form>
     );

@@ -16,12 +16,12 @@ import makeSelectRegistrationPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-import { Form, Col, Row, Button, Divider } from 'antd';
+import { Form, Col, Row, Button, Divider, message } from 'antd';
 const FormItem = Form.Item;
 
 import Header from 'components/Header';
 import RegistrationForm from 'components/RegistrationForm';
-import SingingInForm from "components/SingingInForm";
+import SigningInForm from "components/SigningInForm";
 
 
 
@@ -49,6 +49,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.onSignInClick = this.onSignInClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleOk = this.handleOk.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
   onSignInClick = () => {
@@ -60,8 +61,16 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
   };
 
   handleOk = () => {
-    this.setState({signInVisible: false})
+    message.error('Не удалось войти!')
   };
+
+  goBack() {
+    history.back()
+  }
+
+  signUp() {
+    message.error('Не удалось зарегестрироваться!');
+  }
 
   render() {
     return (
@@ -76,13 +85,13 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
           <Row style={{marginTop: 20, textAlign: 'center'}}>
             <FormItem {...tailFormItemLayout}>
               <div>
-                <Button htmlType="button" style={{marginRight: '2%'}}>Отменить</Button>
-                <Button type="primary" htmlType="submit">Зарегистрироваться</Button>
+                <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
+                <Button type="primary" htmlType="submit" onClick={this.signUp}>Зарегистрироваться</Button>
               </div>
               <div>
                 <span style={{marginRight: 10}}>Уже есть аккаунт?</span>
                 <a href="#" onClick={this.onSignInClick}>Войти</a>
-                <SingingInForm visible={this.state.signInVisible} handleOk={this.handleOk} handleCancel={this.handleCancel}/>
+                <SigningInForm visible={this.state.signInVisible} handleOk={this.handleOk} handleCancel={this.handleCancel}/>
               </div>
             </FormItem>
           </Row>

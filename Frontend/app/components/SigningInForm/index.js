@@ -5,6 +5,7 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Form, Input, Col, Row, Modal, Button } from 'antd';
 import {Link} from "react-router-dom";
@@ -34,7 +35,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
         bodyStyle={{padding: '24px 26px'}}
         footer={[
           <Row type='flex' justify='space-between' align='middle' style={{padding: '4px 14px'}}>
-            <Col><a>Забыли пароль?</a></Col>
+            <Col><Link to='#'>Забыли пароль?</Link></Col>
             <Col>
               <Button onClick={this.props.handleCancel}>Отмена</Button>
               <Button type="primary" onClick={this.props.handleOk}>Войти</Button>
@@ -73,7 +74,9 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
 }
 
 SingingInForm.propTypes = {
-
+  visible: PropTypes.bool.isRequired,
+  handleCancel: PropTypes.func.isRequired,
+  handleOk: PropTypes.func.isRequired
 };
 
 export default SingingInForm;

@@ -6,29 +6,16 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Input, Row, Icon, Col, Avatar, Button, Form, Menu, Dropdown } from 'antd';
+import { Input, Row, Icon, Col, Avatar, Button, Form, Menu, Dropdown, message } from 'antd';
 import {Link} from "react-router-dom";
 const Search = Input.Search;
 const FormItem = Form.Item;
-import SingingInForm from "../SingingInForm/index";
+import SigningInForm from "../SigningInForm/index";
 
 const Logo = styled.div`
   font-size: 36px;
   cursor: pointer;
-`
-
-const menu = (
-  <Menu>
-    <Menu.Item key="0">
-    <div style={{textAlign: 'center'}}>
-      <Button className='profile' htmlType="button" onClick={this.onSignInClick}>Войти</Button>
-    </div>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>
-    </Menu.Item>
-  </Menu>
-);
+`;
 
 class Header extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props){
@@ -52,16 +39,40 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
   };
 
   handleOk = () => {
-    this.setState({signInVisible: false})
+    message.error('Не удалось войти!')
   };
+
+   acc_menu = (
+    <Menu>
+      <Menu.Item key="0">
+        <span>Мой аккаунт</span>
+      </Menu.Item>
+      <Menu.Item key="1" className='danger-menu-item'>
+        <span style={{color: 'red'}}>Выйти</span>
+      </Menu.Item>
+    </Menu>
+  );
+
+  menu = (
+    <Menu>
+      <Menu.Item className='unhover' key="0">
+        <Button className='profile' style={{width: '100%'}} htmlType="button" onClick={this.onSignInClick}>Войти</Button>
+      </Menu.Item>
+      <Menu.Item className='unhover' key="1">
+        <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>
+      </Menu.Item>
+    </Menu>
+  );
 
   render() {
     return (
       <Row type="flex" align="middle" className='header' style={{width: '100hr'}}>
         <Col span={2} offset={2}>
-          <Link to='/' style={{color: 'rgba(0,0,0,0.65)', textDecoration: 'none'}}>
-            <Logo>Logo</Logo>
-          </Link>
+          <div style={{width: 80}}>
+            <Link to='/' style={{color: 'rgba(0,0,0,0.65)', textDecoration: 'none'}}>
+              <Logo>Logo</Logo>
+            </Link>
+          </div>
         </Col>
         <Col span={6} offset={2}>
           <Search className='search'
@@ -69,19 +80,31 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             size='large'
           />
         </Col>
-        <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', cursor: 'pointer'}}>
-          {/*<Avatar*/}
-            {/*icon="user"*/}
-            {/*size='large'*/}
-            {/*style={{backgroundColor: "#fff", color: "rgba(0,0,0,0.65)", minHeight: 40, minWidth: 40, marginRight: 10}}*/}
-          {/*/>*/}
-          {/*<span className='userName' style={{whiteSpace: 'nowrap'}}>Имя Фамилия</span>*/}
-          <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '6%'}}>Войти</Button>
-          <SingingInForm visible={this.state.signInVisible} handleOk={this.handleOk} handleCancel={this.handleCancel}/>
-          <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>
-          <Dropdown className="dropdown" overlay={menu} trigger={['click']}>
-            <img className='menu-btn' style={{width: 30}} src={require('images/menu.svg')} alt=""/>
-          </Dropdown>
+        <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
+          {this.props.token ? (
+              <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
+                <Dropdown overlay={this.acc_menu} trigger={['click']}>
+                  <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
+                    <Avatar
+                      icon="user"
+                      size='large'
+                      style={{backgroundColor: "#fff", color: "rgba(0,0,0,0.65)", minHeight: 40, minWidth: 40, marginRight: 10, cursor: 'pointer'}}
+                    />
+                    <span className='userName' style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>Имя Фамилия</span>
+                  </div>
+                </Dropdown>
+              </Col>
+          )
+          : (
+              <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
+                <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '30%'}}>Войти</Button>
+                <SigningInForm visible={this.state.signInVisible} handleOk={this.handleOk} handleCancel={this.handleCancel}/>
+                <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>
+                <Dropdown className="unregistered-person" overlay={this.menu} trigger={['click']}>
+                  <img className='menu-btn' style={{minWidth: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
+                </Dropdown>
+              </Col>
+          )}
         </Col>
       </Row>
     );

@@ -18,6 +18,7 @@ import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import CreateGroupPage from 'containers/CreateGroupPage';
 import RegistrationPage from 'containers/RegistrationPage';
+import GroupPage from 'containers/GroupPage/Loadable';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route exact path="/" component={HomePage} />
         <Route path='/create_group' component={CreateGroupPage}/>
         <Route path='/registration' component={RegistrationPage}/>
+        <Route path='/group' component={GroupPage}/>
         <Route component={NotFoundPage} />
       </Switch>
     </div>

@@ -31,7 +31,7 @@ injectGlobal`
 
   p,
   label {
-    font-family: Georgia, Times, 'Times New Roman', serif;
+    font-family: Tahoma, Helvetica, Arial, sans-serif;
     line-height: 1.5em;
   }
 `;

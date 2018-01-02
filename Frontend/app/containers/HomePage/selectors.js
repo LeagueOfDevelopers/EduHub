@@ -10,12 +10,12 @@ const selectHomePageDomain = (state) => state.get('homePage');
  */
 
 const makeSelectUnassembledGroups = () => createSelector(
-  makeSelectHomePage,
+  selectHomePageDomain,
   (homeState) => homeState.get('unassembledGroups')
 )
 
 const makeSelectAssembledGroups = () => createSelector(
-  makeSelectHomePage,
+  selectHomePageDomain,
   (homeState) => homeState.get('assembledGroups')
 )
 
@@ -23,14 +23,13 @@ const makeSelectAssembledGroups = () => createSelector(
  * Default selector used by HomePage
  */
 
-const makeSelectHomePage = () => createSelector(
-  selectHomePageDomain,
-  (substate) => substate.toJS()
-);
+// const makeSelectHomePage = () => createSelector(
+//   selectHomePageDomain,
+//   (substate) => substate.toJS()
+// );
 
 export {
   selectHomePageDomain,
   makeSelectUnassembledGroups,
-  makeSelectAssembledGroups,
-  makeSelectHomePage
+  makeSelectAssembledGroups
 };
