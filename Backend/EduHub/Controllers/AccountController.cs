@@ -29,7 +29,7 @@ namespace EduHub.Controllers
                 role = Role.Admin;
             else role = Role.User;
 
-            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher, role);
+            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher, role, request.AvatarLink);
             RegistrationResponse response = new RegistrationResponse(newId);
             return Ok(response);
         }
@@ -43,7 +43,7 @@ namespace EduHub.Controllers
    
             if (client != null)
             {
-                LoginResponse response = new LoginResponse(client.Name, client.Role, client.IsTeacher, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
+                LoginResponse response = new LoginResponse(client.Name, client.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
                 return Ok(response);
             }
 

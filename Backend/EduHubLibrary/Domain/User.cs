@@ -15,9 +15,10 @@ namespace EduHubLibrary.Domain
         public bool IsTeacher { get; private set; }
         public bool IsActive { get; private set; }
         public Guid Id { get; private set; }
+        public string AvatarLink { get; private set; }
         public List<Invitation> listOfInvitation { get; private set; }
 
-        public User(string name, Credentials credentials, bool isTeacher, Role role)
+        public User(string name, Credentials credentials, bool isTeacher, Role role, string avatarLink)
         {
             Name = Ensure.String.IsNotNullOrWhiteSpace(name);
             Credentials = credentials;
@@ -25,6 +26,7 @@ namespace EduHubLibrary.Domain
             IsTeacher = isTeacher;
             IsActive = true;
             Id = Guid.NewGuid();
+            AvatarLink = avatarLink;
             listOfInvitation = new List<Invitation>();
         }
 

@@ -12,5 +12,6 @@ namespace EduHub.Models
         public string Password { get; set; }
         public string Role { get; set; }
         public bool IsTeacher { get; set; }
+        public string AvatarLink { get; set; }
     }
 }

@@ -8,25 +8,15 @@ namespace EduHub.Models
 {
     public class LoginResponse
     {
-        public LoginResponse(string name, Role typeOfRole, bool isTeacher, string token)
+        public LoginResponse(string name, string avatarLink, string token)
         {
             Name = name;
-            IsTeacher = isTeacher;
+            AvatarLink = avatarLink;
             Token = token;
-
-            if (typeOfRole == Role.Admin)
-            {
-                TypeOfRole = "Admin";
-            }
-            else
-            {
-                TypeOfRole = "User";
-            }
         }
 
         public string Name { get; set; }
-        public string TypeOfRole { get; set; }
-        public bool IsTeacher { get; set; }
+        public string AvatarLink { get; set; }
         public string Token { get; set; }
     }
 }

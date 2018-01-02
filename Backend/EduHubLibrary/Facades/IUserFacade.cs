@@ -8,7 +8,7 @@ namespace EduHubLibrary.Facades
 {
     public interface IUserFacade
     {
-        Guid RegUser(string username, Credentials credentials, bool IsTeacher, Role role);
+        Guid RegUser(string username, Credentials credentials, bool IsTeacher, Role role, string avatarLink);
         IEnumerable<User> GetUsers();
         User GetUser(Guid id);
         User FindByCredentials(Credentials credentials);
