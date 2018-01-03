@@ -22,14 +22,18 @@ namespace EduHubTests
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
 
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-            string expectedName = "yaroslav";
-            string expectedPass = "123123";
-            string expectedEmail = "bus.yaroslav@gmail.com";
-            bool expectedStatus = false;
+            var expectedName = "yaroslav";
+            var expectedPass = "123123";
+            var expectedEmail = "bus.yaroslav@gmail.com";
+            var expectedLink = "avatar.ru";
+            Role expectedRole = Role.User;
+            var expectedStatus = false;
+            
             //Act
-            userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass), expectedStatus);
+            userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass), expectedStatus, expectedRole, expectedLink);
             List<User> listOfUsers = userFacade.GetUsers().ToList();
             User currentUser = listOfUsers[0];
+            
             //Assert
             Assert.AreEqual(currentUser.Name, expectedName);
             Assert.AreEqual(currentUser.IsTeacher, expectedStatus);

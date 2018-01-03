@@ -11,97 +11,118 @@ namespace EduHubTests
         [TestMethod]
         public void CreateUser_IsItPossible()
         {
-            var nameOfUser = "Ivan";
-            var email = "sokolov@gmail.com";
-            var password = "sokolov";
-
+            //Arrange
+            var UserName = "Ivan";
+            var Email = "sokolov@gmail.com";
+            var Password = "sokolov";
             var IsTeacher = false;
+            Role Role = Role.User;
+            var Avatar = "avatar.ru";
 
-            var UserTest = new User(nameOfUser, Credentials.FromRawData(email, password), IsTeacher);
-            var ExpectedName = nameOfUser;
-            var ExpectedEmail = email;
-            var ExpectedIsTeacher = IsTeacher;
-
+            //Act
+            var UserTest = new User(UserName, Credentials.FromRawData(Email, Password), IsTeacher, Role, Avatar);
             var ActualName = UserTest.Name;
             var ActualIsTeacher = UserTest.IsTeacher;
-            Assert.AreEqual(ExpectedName, ActualName);
-            Assert.AreEqual(ExpectedIsTeacher, ActualIsTeacher);
+
+            //Assert
+            Assert.AreEqual(UserName, ActualName);
+            Assert.AreEqual(IsTeacher, ActualIsTeacher);
 
         }
 
         [TestMethod]
         public void EditName_IsItPossible()
         {
-            string NewName = "Nikolai";
+            //Arrange
+            var NewName = "Nikolai";
 
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
+            //Act
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, Role.User, "avatar.com");
             UserTest.EditName(NewName);
-            string ExpectedName = NewName;
+            var ActualName = UserTest.Name;
 
-            string ActualName = UserTest.Name;
-            Assert.AreEqual(ExpectedName, ActualName);
+            //Assert
+            Assert.AreEqual(NewName, ActualName);
         }
 
         [ExpectedException(typeof(System.ArgumentException)), TestMethod]
         public void EditName_IsItCorrect()
         {
-            string NewName = "";
+            //Arrange
+            var NewName = "";
 
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
+            //Act
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, Role.User, "avatar.com");
             UserTest.EditName(NewName);
         }
 
         [TestMethod]
         public void BecomeTeacher_IsItPossible()
         {
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
+            //Arrange
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, Role.User, "avatar.com");
+
+            //Act
             UserTest.BecomeTeacher();
 
+            //Assert
             Assert.AreEqual(true, UserTest.IsTeacher);
         }
 
         [TestMethod]
         public void StopToTeacher_IsItPossible()
         {
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), true);
+            //Arrange
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), true, Role.User, "avatar.com");
+
+            //Act
             UserTest.StopToBeTeacher();
 
+            //Assert
             Assert.AreEqual(false, UserTest.IsTeacher);
         }
 
         [TestMethod]
         public void DeleteProfile_IsItPossible()
         {
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
+            //Arrange
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, Role.User, "avatar.com");
 
+            //Act
             UserTest.DeleteProfile();
-            bool Expected = false;
+            var Actual = UserTest.IsActive;
 
-            bool Actual = UserTest.IsActive;
-            Assert.AreEqual(Expected, Actual);
+            //Assert
+            Assert.AreEqual(false, Actual);
         }
 
         [TestMethod]
         public void RestoreProfile_IsItPossible()
         {
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
+            //Arrange
+            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, Role.User, "avatar.com");
 
+            //Act
             UserTest.DeleteProfile();
             UserTest.RestoreProfile();
-            bool Expected = true;
+            var Actual = UserTest.IsActive;
 
-            bool Actual = UserTest.IsActive;
-            Assert.AreEqual(Expected, Actual);
+            //Assert
+            Assert.AreEqual(true, Actual);
         }
 
         [ExpectedException(typeof(System.ArgumentException)), TestMethod]
         public void CreateUser_IsCorrectData()
         {
-            string NameOfUser = "";
-            string Email = "";
-            bool IsTeacher = false;
+            //Arrange
+            var NameOfUser = "";
+            var Email = "";
+            var IsTeacher = false;
+            Role Role = Role.Admin;
+            var AvatarLink = "";
 
-            User UserTest = new User(NameOfUser, Credentials.FromRawData(Email, "1"), IsTeacher);
+            //Act
+            User UserTest = new User(NameOfUser, Credentials.FromRawData(Email, "1"), IsTeacher, Role, AvatarLink);
         }
     }
 }
