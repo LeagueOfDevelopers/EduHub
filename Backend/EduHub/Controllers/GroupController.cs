@@ -52,7 +52,6 @@ namespace EduHub.Controllers
         
         //TODO delete
         [HttpGet]
-        [Authorize]
         public IActionResult All()
         {
             return Ok(_groupFacade.GetGroups());
