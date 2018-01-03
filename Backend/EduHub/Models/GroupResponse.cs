@@ -26,5 +26,7 @@ namespace EduHub.Models
         public IEnumerable<Member> Members { get; set; }
         public double TotalValue { get; set; }
         public int Size { get; set; }
+        public bool isPrivate = false;
+        public bool hasTeacher = false;
     }
 }

@@ -63,8 +63,8 @@ namespace EduHub.Controllers
         }
 
         [HttpGet]
-        [SwaggerResponse(200, Type = typeof(GroupResponse))]
         [Route("{idOfGroup}")]
+        [SwaggerResponse(200, Type = typeof(GroupResponse))]
         public IActionResult GetGroup([FromRoute] Guid idOfGroup)
         {
             Group group = _groupFacade.GetGroup(idOfGroup);

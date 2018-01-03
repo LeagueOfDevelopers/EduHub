@@ -74,8 +74,8 @@ namespace EduHub.Controllers
         }
 
         [HttpGet]
-        [SwaggerResponse(200, Type = typeof(List<NotifiesResponse>))]
         [Route("notifies")]
+        [SwaggerResponse(200, Type = typeof(List<NotifiesResponse>))]
         public IActionResult GetNotifies([FromRoute] int idOfUser)
         {
             List<NotifiesResponse> response = new List<NotifiesResponse>();

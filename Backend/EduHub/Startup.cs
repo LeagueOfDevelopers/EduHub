@@ -8,7 +8,6 @@ using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
 using EduHub.Filters;
 using EduHub.Security;
-using EduHubLibrary.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -48,6 +47,13 @@ namespace EduHub
                 current.SwaggerDoc("v1", new Info{
                     Title = "EduHub API",
                     Version = "v1"
+                });
+                current.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
                 });
                 current.DescribeAllEnumsAsStrings();
             });

@@ -28,7 +28,6 @@ namespace EduHub.Controllers
             if (request.Role.Equals("Admin") || request.Role.Equals("admin"))
                 role = Role.Admin;
             else role = Role.User;
-
             Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher, role, request.AvatarLink);
             RegistrationResponse response = new RegistrationResponse(newId);
             return Ok(response);
@@ -36,6 +35,7 @@ namespace EduHub.Controllers
 
         [HttpPost]
         [Route("login")]
+        [SwaggerResponse(200, typeof(LoginRequest))]
         public IActionResult Login([FromBody]LoginRequest loginRequest)
         {
             var creditials = Credentials.FromRawData(loginRequest.Email, loginRequest.Password);
