@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Domain;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Net;
 using Microsoft.AspNetCore.Authorization;
-using EduHub.Security;
-using Microsoft.AspNetCore.Identity;
 using EnsureThat;
 
 namespace EduHub.Controllers
 {
     [Produces("application/json")]
     [Route("api/group")]
-    [Authorize]
     public class GroupController : Controller
     {
+        [Authorize]
         [HttpPost]
         [SwaggerResponse(200, typeof(CreateGroupResponse))]
         public IActionResult AddGroup([FromBody]CreateGroupRequest newGroup)
@@ -40,6 +34,7 @@ namespace EduHub.Controllers
             return Ok($"Поиск групп с тегом {request.Tag} осуществлен");
         }
 
+        [Authorize]
         [HttpPut]
         [Route("{idOfGroup}")]
         public IActionResult EditGroupDescription([FromBody]EditDescriptionOfGroupRequest request, [FromRoute] int idOfGroup)
@@ -47,6 +42,7 @@ namespace EduHub.Controllers
             return Ok($"Описание группы с id {idOfGroup} изменено на {request.NewText}");
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("{idOfGroup}")]
         public IActionResult DeleteGroup([FromRoute] int idOfGroup)
