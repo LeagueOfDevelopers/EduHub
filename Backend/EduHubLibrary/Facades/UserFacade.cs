@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Infrastructure;
 using EnsureThat;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Common;
+using System.Linq;
 
 namespace EduHubLibrary.Facades
 {
@@ -59,11 +58,13 @@ namespace EduHubLibrary.Facades
             Ensure.Guid.IsNotEmpty(invitedId);
             Ensure.Guid.IsNotEmpty(groupId);
             Group currentGroup = _groupRepository.GetGroupById(groupId);
+            User invitedUser = _userRepository.GetUserById(invitedId);
             Ensure.Bool.IsTrue(currentGroup.IsMember(inviterId), nameof(Invite),
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
             Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),
                 opt => opt.WithException(new AlreadyMemberException(invitedId, groupId)));
-            User invitedUser = _userRepository.GetUserById(invitedId);
+            Ensure.Bool.IsTrue(invitedUser.GetAllInvitation().First(c => c.GroupId == groupId) == null, 
+                nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
             Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, InvitationStatus.InProgress);
             invitedUser.AddInvitation(newInvintation);
         }

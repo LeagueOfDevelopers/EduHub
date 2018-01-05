@@ -5,6 +5,7 @@ using System.Text;
 using System.Linq;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Common;
+using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
 {
@@ -31,9 +32,9 @@ namespace EduHubLibrary.Infrastructure
 
         public User GetUserById(Guid userId)
         {
-            if (userId == null)
-                throw new ArgumentNullException();
-            return listOfUsers.FirstOrDefault(current => current.Id == userId);
+            Ensure.Guid.IsNotEmpty(userId);
+            return Ensure.Any.IsNotNull(listOfUsers.Find(current => current.Id == userId), nameof(GetUserById),
+               opt => opt.WithException(new UserNotFoundException(userId)));
         }
 
         public User GetUserByCredentials(Credentials credentials)

@@ -24,11 +24,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, typeof(RegistrationResponse))]
         public IActionResult Registrate([FromBody]RegistrationRequest request)
         {
-            Role role;
-            if (request.Role.Equals("Admin") || request.Role.Equals("admin"))
-                role = Role.Admin;
-            else role = Role.User;
-            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher, role, request.AvatarLink);
+            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher, request.Role, request.AvatarLink);
             RegistrationResponse response = new RegistrationResponse(newId);
             return Ok(response);
         }
