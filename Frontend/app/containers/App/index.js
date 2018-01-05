@@ -19,16 +19,20 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import CreateGroupPage from 'containers/CreateGroupPage';
 import RegistrationPage from 'containers/RegistrationPage';
 import GroupPage from 'containers/GroupPage/Loadable';
+import Header from 'components/Header';
 
 export default function App() {
   return (
     <div>
+      <header>
+        <Header/>
+      </header>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path='/create_group' component={CreateGroupPage}/>
         <Route path='/registration' component={RegistrationPage}/>
-        <Route path='/group' component={GroupPage}/>
-        <Route component={NotFoundPage} />
+        <Route path='/group/:id' component={GroupPage}/>
+        <Route path='' component={NotFoundPage} />
       </Switch>
     </div>
   );

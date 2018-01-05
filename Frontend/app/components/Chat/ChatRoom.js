@@ -17,7 +17,8 @@ export default class ChatRoom extends React.Component {
   }
 
   componentDidMount() {
-    this.scrollToBottom()
+    this.scrollToBottom();
+    this.setState({username: localStorage.getItem('name')});
   }
 
   componentDidUpdate() {
@@ -67,11 +68,11 @@ export default class ChatRoom extends React.Component {
 }
 
 ChatRoom.propTypes = {
-  scrollToBottom: PropTypes.func.isRequired,
-  submitMessage: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired,
+  scrollToBottom: PropTypes.func,
+  submitMessage: PropTypes.func,
+  username: PropTypes.string,
+  content: PropTypes.string,
+  time: PropTypes.string,
   messages: PropTypes.array
 }
 

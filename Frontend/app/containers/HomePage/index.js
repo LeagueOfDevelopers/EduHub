@@ -17,21 +17,49 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectHomePage,
+import { selectHomePage,
          makeSelectAssembledGroups,
          makeSelectUnassembledGroups
 } from "./selectors";
 import reducer from './reducer';
 import saga from './saga';
+
 import {Card, Col, Row, Button, message} from 'antd';
 // import styled from 'styled-components';
 
-import Header from 'components/Header';
 import UnassembledGroupCard from 'components/UnassembledGroupCard';
 import AssembledGroupCard from 'components/AssembledGroupCard';
-import SigningInForm from 'components/SigningInForm';
+import SigningInForm from 'containers/SigningInForm';
 import {Link} from "react-router-dom";
 import { getAssembledGroups, getUnassembledGroups } from "./actions";
+
+const unassembledGroups = [
+  {
+    id: '1',
+    name: 'Первая группа',
+    size: 10,
+    members: [],
+    totalValue: 600,
+    type: 'Лекция',
+    tags: ['js', 'react'],
+    isActive: true,
+    description: ''
+  }
+];
+
+const assembledGroups = [
+  {
+    id: '1',
+    name: 'Первая группа',
+    size: 10,
+    members: [],
+    totalValue: 600,
+    type: 'Лекция',
+    tags: ['js', 'react'],
+    isActive: true,
+    description: ''
+  }
+];
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -39,20 +67,19 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     this.makeTeacher = this.makeTeacher.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-    this.handleOk = this.handleOk.bind(this);
 
     this.state = {
-      signInVisible: false
+      signInVisible: false,
     }
   }
 
   componentDidMount() {
     this.props.getUnassembledGroups();
-    this.props.getAssembledProps();
+    this.props.getAssembledGroups();
   }
 
   makeTeacher() {
-    if(this.props.token)
+    if(localStorage.getItem('token'))
       message.success('Теперь вы можете преподавать!');
     else
       this.setState({signInVisible: true})
@@ -62,14 +89,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     this.setState({signInVisible: false})
   };
 
-  handleOk = () => {
-    message.error('Не удалось войти!')
-  };
-
   unassembledGroups = (
     <div className='cards-holder'>
       {this.props.unassembledGroups.map((item) =>
-        <Link to='/group'>
+        <Link to={`/group/${item.id}`}>
           <UnassembledGroupCard {...item}/>
         </Link>
       )}
@@ -79,19 +102,16 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   assembledGroups = (
     <div className='cards-holder'>
       {this.props.assembledGroups.map((item) =>
-        <Link to='/group'>
+        <Link to={`/group/${item.id}`}>
           <AssembledGroupCard {...item}/>
         </Link>
       )}
     </div>
-  )
+  );
 
   render() {
     return (
       <div>
-        <header>
-          <Header token={this.props.token}/>
-        </header>
         <Col span={20} offset={2} style={{marginTop: 40}}>
           <Card
             title='Незаполненные группы'
@@ -101,7 +121,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           >
             {this.props.unassembledGroups.length > 0 ?
               this.unassembledGroups
-              : (<div>Здесь пока ничего нет.</div>)
+              : (
+                <div className='cards-holder'>
+                  {unassembledGroups.map((item) =>
+                    <Link to={`/group/${item.id}`}>
+                      <UnassembledGroupCard {...item}/>
+                    </Link>
+                  )}
+                </div>
+              )
             }
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
@@ -116,14 +144,22 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             className='assembled-groups-list font-size-20'
             extra={<Link to='#'>Показать больше</Link>}
           >
-            {this.props.unassembledGroups.length > 0 ?
+            {this.props.assembledGroups.length > 0 ?
               this.assembledGroups
-              : (<div>Здесь пока ничего нет.</div>)
+              : (
+                <div className='cards-holder'>
+                  {assembledGroups.map((item) =>
+                    <Link to={`/group/${item.id}`}>
+                      <AssembledGroupCard {...item}/>
+                    </Link>
+                  )}
+                </div>
+              )
             }
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
-              <Button type="primary" htmlType="submit" onClick={this.makeTeacher}>Стать преподавателем</Button>
-              <SigningInForm visible={this.state.signInVisible} handleOk={this.handleOk} handleCancel={this.handleCancel}/>
+              <Button type="primary" onClick={this.makeTeacher}>Стать преподавателем</Button>
+              <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
             </Row>
           </Card>
         </Col>
@@ -133,17 +169,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 }
 
 HomePage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   makeTeacher: PropTypes.func,
   unassembledGroups: PropTypes.array,
   assembledGroups: PropTypes.array
 };
 
-HomePage.defaultProps = {
-  unassembledGroups: [],
-  assembledGroups: [],
-  token: ''
-}
+// HomePage.defaultProps = {
+//   unassembledGroups: [],
+//   assembledGroups: [],
+// };
 
 const mapStateToProps = createStructuredSelector({
   unassembledGroups: makeSelectUnassembledGroups(),

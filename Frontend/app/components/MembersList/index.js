@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 
 class MembersList extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
-    super(props)
+    super(props);
 
     this.confirm = this.confirm.bind(this);
   }
@@ -69,7 +69,7 @@ MembersList.defaultProps = {
   role: '',
   members: [],
   id: ''
-}
+};
 
 MembersList.propTypes = {
   name: PropTypes.string,

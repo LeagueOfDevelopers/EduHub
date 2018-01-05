@@ -6,11 +6,13 @@
 
 import React from 'react';
 import styled from 'styled-components';
+
 import { Input, Row, Icon, Col, Avatar, Button, Form, Menu, Dropdown, message } from 'antd';
 import {Link} from "react-router-dom";
 const Search = Input.Search;
 const FormItem = Form.Item;
-import SigningInForm from "../SigningInForm/index";
+import SigningInForm from "../../containers/SigningInForm/index";
+
 
 const Logo = styled.div`
   font-size: 36px;
@@ -22,12 +24,11 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     super(props);
 
     this.state = {
-      signInVisible: false
+      signInVisible: false,
     };
 
     this.onSignInClick = this.onSignInClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-    this.handleOk = this.handleOk.bind(this);
   }
 
   onSignInClick = () => {
@@ -36,10 +37,6 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
 
   handleCancel = () => {
     this.setState({signInVisible: false})
-  };
-
-  handleOk = () => {
-    message.error('Не удалось войти!')
   };
 
    acc_menu = (
@@ -59,7 +56,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
         <Button className='profile' style={{width: '100%'}} htmlType="button" onClick={this.onSignInClick}>Войти</Button>
       </Menu.Item>
       <Menu.Item className='unhover' key="1">
-        <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>
+        <Link className="profile" to='/registration'><Button type="primary" htmlType="button">Зарегистрироваться</Button></Link>
       </Menu.Item>
     </Menu>
   );
@@ -81,16 +78,16 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
           />
         </Col>
         <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
-          {this.props.token ? (
+          {localStorage.getItem('token') ? (
               <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
                 <Dropdown overlay={this.acc_menu} trigger={['click']}>
                   <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
                     <Avatar
-                      icon="user"
+                      src={localStorage.getItem('avatarLink')}
                       size='large'
                       style={{backgroundColor: "#fff", color: "rgba(0,0,0,0.65)", minHeight: 40, minWidth: 40, marginRight: 10, cursor: 'pointer'}}
                     />
-                    <span className='userName' style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>Имя Фамилия</span>
+                    <span className='userName' style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>{localStorage.getItem('name')}</span>
                   </div>
                 </Dropdown>
               </Col>
@@ -98,7 +95,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
           : (
               <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
                 <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '30%'}}>Войти</Button>
-                <SigningInForm visible={this.state.signInVisible} handleOk={this.handleOk} handleCancel={this.handleCancel}/>
+                <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
                 <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>
                 <Dropdown className="unregistered-person" overlay={this.menu} trigger={['click']}>
                   <img className='menu-btn' style={{minWidth: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
@@ -110,7 +107,5 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     );
   }
 }
-
-
 
 export default Header;

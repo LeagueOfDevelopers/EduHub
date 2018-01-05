@@ -6,6 +6,16 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+
+import injectSaga from 'utils/injectSaga';
+import injectReducer from 'utils/injectReducer';
+import reducer from '../App/reducer';
+import saga from '../App/saga';
+import {loadCurrentUser} from '../App/actions';
+
 import styled from 'styled-components';
 import { Form, Input, Col, Row, Modal, Button } from 'antd';
 import {Link} from "react-router-dom";
@@ -21,9 +31,14 @@ const Img = styled.img`
 
 class SingingInForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
-    super(props)
+    super(props);
+
+    this.login = this.login.bind(this);
   }
 
+  login() {
+    this.props.login(this.email, this.password)
+  }
 
   render() {
     return (
@@ -38,7 +53,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
             <Col><Link to='#'>Забыли пароль?</Link></Col>
             <Col>
               <Button onClick={this.props.handleCancel}>Отмена</Button>
-              <Button type="primary" onClick={this.props.handleOk}>Войти</Button>
+              <Button type="primary" onClick={this.login}>Войти</Button>
             </Col>
           </Row>
         ]}
@@ -47,12 +62,12 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
           <FormItem
             label="Ваш email"
           >
-            <Input placeholder=""/>
+            <Input ref={input => this.email = input} placeholder=""/>
           </FormItem>
           <FormItem
             label="Введите пароль"
           >
-            <Input type='password' placeholder=""/>
+            <Input ref={input => this.password = input} type='password' placeholder=""/>
           </FormItem>
           <Row style={{display:'flex', alignItems:'center', width:'100%', marginTop: 55, marginBottom: 25}}>
             <Col>
@@ -74,9 +89,29 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
 }
 
 SingingInForm.propTypes = {
-  visible: PropTypes.bool.isRequired,
-  handleCancel: PropTypes.func.isRequired,
-  handleOk: PropTypes.func.isRequired
+  visible: PropTypes.bool,
+  handleCancel: PropTypes.func,
+  handleOk: PropTypes.func
 };
 
-export default SingingInForm;
+const mapStateToProps = createStructuredSelector({
+
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    login: (email, password) => dispatch(loadCurrentUser(email, password))
+  };
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+const withReducer = injectReducer({ key: 'SingingInForm', reducer });
+const withSaga = injectSaga({ key: 'SingingInForm', saga });
+
+export default compose(
+  withReducer,
+  withSaga,
+  withConnect,
+)(SingingInForm);
+

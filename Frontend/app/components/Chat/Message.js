@@ -21,8 +21,8 @@ export default class Message extends React.Component {
 }
 
 Message.propTypes = {
-  user: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired
+  user: PropTypes.string,
+  username: PropTypes.string,
+  content: PropTypes.string,
+  time: PropTypes.string
 }

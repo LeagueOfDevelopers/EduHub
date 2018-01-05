@@ -5,10 +5,10 @@
  */
 
 import {
-  GET_UNASSEMBLED_GROUPS_FAILED,
+  GET_UNASSEMBLED_GROUPS_ERROR,
   GET_UNASSEMBLED_GROUPS_SUCCESS,
   GET_UNASSEMBLED_GROUPS_START,
-  GET_ASSEMBLED_GROUPS_FAILED,
+  GET_ASSEMBLED_GROUPS_ERROR,
   GET_ASSEMBLED_GROUPS_SUCCESS,
   GET_ASSEMBLED_GROUPS_START
 } from './constants';
@@ -26,9 +26,9 @@ export const getUnassembledGroupsSuccess = (groups) => (
   }
 )
 
-export const getUnassembledGroupsFailed = (error) => (
+export const getUnassembledGroupsError = (error) => (
   {
-    type: GET_UNASSEMBLED_GROUPS_FAILED,
+    type: GET_UNASSEMBLED_GROUPS_ERROR,
     payload: error
   }
 )
@@ -46,9 +46,9 @@ export const getAssembledGroupsSuccess = (groups) => (
   }
 )
 
-export const getAssembledGroupsFailed = (error) => (
+export const getAssembledGroupsError = (error) => (
   {
-    type: GET_ASSEMBLED_GROUPS_FAILED,
+    type: GET_ASSEMBLED_GROUPS_ERROR,
     payload: error
   }
 )

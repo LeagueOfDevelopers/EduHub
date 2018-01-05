@@ -12,16 +12,15 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectRegistrationPage from './selectors';
+import {selectRegistrationPage} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import {registrate} from './actions';
 
-import { Form, Col, Row, Button, Divider, message } from 'antd';
+import { Form, Col, Row, Button, Divider, message, Input } from 'antd';
 const FormItem = Form.Item;
 
-import Header from 'components/Header';
-import RegistrationForm from 'components/RegistrationForm';
-import SigningInForm from "components/SigningInForm";
+import SigningInForm from "../SigningInForm";
 
 
 
@@ -38,6 +37,20 @@ const tailFormItemLayout = {
   }
 };
 
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 4,
+      offset: 5
+    },
+    md: { offset: 6 }
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 8 }
+  },
+};
+
 export class RegistrationPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props){
     super(props);
@@ -48,8 +61,8 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
 
     this.onSignInClick = this.onSignInClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-    this.handleOk = this.handleOk.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.registrate = this.registrate.bind(this);
   }
 
   onSignInClick = () => {
@@ -60,58 +73,70 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.setState({signInVisible: false})
   };
 
-  handleOk = () => {
-    message.error('Не удалось войти!')
-  };
-
   goBack() {
     history.back()
   }
 
-  signUp() {
-    message.error('Не удалось зарегестрироваться!');
+  registrate() {
+    this.props.signUp(this.username, this.email, this.password);
   }
 
   render() {
     return (
       <div>
-        <header>
-          <Header/>
-        </header>
-        <div>
-          <Row style={{textAlign: 'center', marginTop: 30}}><h3>Регистрация</h3></Row>
-          <Row><Divider/></Row>
-          <Row style={{marginTop: 20}}><RegistrationForm/></Row>
-          <Row style={{marginTop: 20, textAlign: 'center'}}>
-            <FormItem {...tailFormItemLayout}>
-              <div>
-                <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
-                <Button type="primary" htmlType="submit" onClick={this.signUp}>Зарегистрироваться</Button>
-              </div>
-              <div>
-                <span style={{marginRight: 10}}>Уже есть аккаунт?</span>
-                <a href="#" onClick={this.onSignInClick}>Войти</a>
-                <SigningInForm visible={this.state.signInVisible} handleOk={this.handleOk} handleCancel={this.handleCancel}/>
-              </div>
+        <Row style={{textAlign: 'center', marginTop: 30}}><h3>Регистрация</h3></Row>
+        <Row><Divider/></Row>
+        <Row style={{marginTop: 20}}>
+          <Form className='form' onSubmit={this.registrate}>
+            <FormItem
+              {...formItemLayout}
+              label="Имя"
+            >
+              <Input ref={input => this.username = input} placeholder="Так вас будут видеть на сайте"/>
             </FormItem>
-          </Row>
-        </div>
+            <FormItem
+              {...formItemLayout}
+              label="Ваш email"
+            >
+              <Input ref={input => this.email = input} placeholder="Введите ваш email"/>
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="Придумайте пароль"
+            >
+              <Input ref={input => this.password = input} type='password' placeholder="Введите пароль"/>
+            </FormItem>
+            <Row style={{marginTop: 20, textAlign: 'center'}}>
+              <FormItem {...tailFormItemLayout}>
+                <div>
+                  <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
+                  <Button type="primary" htmlType="submit">Зарегистрироваться</Button>
+                </div>
+                <div>
+                  <span style={{marginRight: 10}}>Уже есть аккаунт?</span>
+                  <a href="#" onClick={this.onSignInClick}>Войти</a>
+                  <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
+                </div>
+              </FormItem>
+            </Row>
+          </Form>
+        </Row>
       </div>
     );
   }
 }
 
 RegistrationPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+
 };
 
 const mapStateToProps = createStructuredSelector({
-  registrationpage: makeSelectRegistrationPage(),
+
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    signUp: (username, email, password) => dispatch(registrate(username, email, password))
   };
 }
 

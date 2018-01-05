@@ -1,26 +1,31 @@
-import { take, call, put, select } from 'redux-saga/effects';
+import { takeEvery, call, put, select, all } from 'redux-saga/effects';
 import  config from '../../config';
 import {
-  getAssembledGroupsFailed,
+  getAssembledGroupsError,
   getAssembledGroupsSuccess,
-  getUnassembledGroupsFailed,
+  getUnassembledGroupsError,
   getUnassembledGroupsSuccess
 } from './actions'
 
 import { GET_ASSEMBLED_GROUPS_START, GET_UNASSEMBLED_GROUPS_START } from './constants'
 
-export default function* getGroupsSaga() {
-  while(true) {
-    try {
-      yield take(GET_UNASSEMBLED_GROUPS_START, GET_ASSEMBLED_GROUPS_START);
-      const unassembledGroups = call(getUnassembledGroups);
-      // const assembledGroups = call(getAssembledGroups);
-      yield put(getUnassembledGroupsSuccess(unassembledGroups));
-    }
-    catch(e) {
-      yield put(getUnassembledGroupsFailed(e));
-      // yield put(getAssembledGroupsFailed(e));
-    }
+export function* getUnassembledGroupsSaga() {
+  try {
+    const unassembledGroups = call(getUnassembledGroups);
+    yield put(getUnassembledGroupsSuccess(unassembledGroups));
+  }
+  catch(e) {
+    yield put(getUnassembledGroupsError(e));
+  }
+}
+
+export function* getAssembledGroupsSaga() {
+  try {
+    const assembledGroups = call(getAssembledGroups);
+    yield put(getAssembledGroupsSuccess(assembledGroups));
+  }
+  catch(e) {
+    yield put(getAssembledGroupsError(e));
   }
 }
 
@@ -45,3 +50,9 @@ function getAssembledGroups() {
       return Promise.reject(res.status)
     })
 }
+
+export default function* () {
+  yield takeEvery(GET_UNASSEMBLED_GROUPS_START, getUnassembledGroupsSaga)
+  yield takeEvery(GET_ASSEMBLED_GROUPS_START, getAssembledGroupsSaga)
+}
+

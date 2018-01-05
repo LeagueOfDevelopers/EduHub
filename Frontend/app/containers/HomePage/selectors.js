@@ -3,33 +3,28 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the HomePage state domain
  */
-const selectHomePageDomain = (state) => state.get('homePage');
+const selectHomePage = (state) => state.get('homePage');
 
 /**
  * Other specific selectors
  */
 
 const makeSelectUnassembledGroups = () => createSelector(
-  selectHomePageDomain,
+  selectHomePage,
   (homeState) => homeState.get('unassembledGroups')
-)
+);
 
 const makeSelectAssembledGroups = () => createSelector(
-  selectHomePageDomain,
+  selectHomePage,
   (homeState) => homeState.get('assembledGroups')
-)
+);
 
 /**
  * Default selector used by HomePage
  */
 
-// const makeSelectHomePage = () => createSelector(
-//   selectHomePageDomain,
-//   (substate) => substate.toJS()
-// );
-
 export {
-  selectHomePageDomain,
+  selectHomePage,
   makeSelectUnassembledGroups,
   makeSelectAssembledGroups
 };

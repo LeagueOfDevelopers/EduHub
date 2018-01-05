@@ -6,8 +6,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { Card, Col, Row } from 'antd';
+import {Link} from "react-router-dom";
 
 
 class UnassembledGroupCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -25,7 +26,7 @@ class UnassembledGroupCard extends React.PureComponent { // eslint-disable-line 
         >
           <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
             <Col>Участников</Col>
-            <Col>{this.props.members.count + '/' + this.props.size}</Col>
+            <Col>{this.props.members.length + '/' + this.props.size}</Col>
           </Row>
           <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
             <Col>Взнос</Col>
@@ -48,16 +49,16 @@ class UnassembledGroupCard extends React.PureComponent { // eslint-disable-line 
 
 UnassembledGroupCard.defaultProps = {
   name: '',
-  count: 0,
+  length: 0,
   size: 0,
   totalValue: 0,
   type: '',
   tags: []
-}
+};
 
 UnassembledGroupCard.propTypes = {
   name: PropTypes.string,
-  count: PropTypes.number,
+  members: PropTypes.array,
   size: PropTypes.number,
   totalValue: PropTypes.number,
   type: PropTypes.string,

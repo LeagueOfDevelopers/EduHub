@@ -9,4 +9,7 @@
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
 
+export const LOAD_CURRENT_USER = 'LOAD_CURRENT_USER';
+export const LOAD_CURRENT_USER_SUCCESS = 'LOAD_CURRENT_USER_SUCCESS';
+export const LOAD_CURRENT_USER_ERROR = 'LOAD_CURRENT_USER_ERROR';
 export const DEFAULT_LOCALE = 'en';
