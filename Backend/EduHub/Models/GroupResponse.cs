@@ -8,25 +8,18 @@ namespace EduHub.Models
 {
     public class GroupResponse
     {
-        public GroupResponse(string name, string description, bool isActive, List<string> tags, IEnumerable<Member> members, double totalValue, int size)
+        public GroupResponse(GroupInfo groupInfo, Course course, Member teacher,IEnumerable<Member> members)
         {
-            Name = name;
-            Description = description;
-            IsActive = isActive;
-            Tags = tags;
+            GroupInfo = groupInfo;
             Members = members;
-            TotalValue = totalValue;
-            Size = size;
+            Course = course;
+            Teacher = teacher;
         }
 
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool IsActive { get; set; }
-        public List<string> Tags { get; set; }
         public IEnumerable<Member> Members { get; set; }
-        public double TotalValue { get; set; }
-        public int Size { get; set; }
-        public bool isPrivate = false;
-        public bool hasTeacher = false;
+        public GroupInfo GroupInfo { get; set; }
+        public Course Course { get; set; }
+        public Member Teacher { get; set; }
+
     }
 }

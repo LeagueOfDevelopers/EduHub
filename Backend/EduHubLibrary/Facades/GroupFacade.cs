@@ -52,6 +52,29 @@ namespace EduHubLibrary.Facades
             return _groupRepository.GetGroupById(groupId).GetAllMembers();
         }
 
+        public void AcceptCourse(Guid userId, Guid groupId)
+        {
+            Ensure.Guid.IsNotEmpty(userId);
+            Ensure.Guid.IsNotEmpty(groupId);
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AcceptCourse),
+                opt => opt.WithException(new UserNotFoundException(userId)));
+            Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AcceptCourse),
+                opt => opt.WithException(new GroupNotFoundException(groupId)));
+            currentGroup.AcceptCourse(userId);
+        }
+
+        public void OfferCourse(Guid userId, Guid groupId, string description)
+        {
+            Ensure.Guid.IsNotEmpty(userId);
+            Ensure.Guid.IsNotEmpty(groupId);
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AcceptCourse),
+                opt => opt.WithException(new UserNotFoundException(userId)));
+            Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AcceptCourse),
+                opt => opt.WithException(new GroupNotFoundException(groupId)));
+            Course course = new Course(description);
+            currentGroup.OfferCourse(userId, course);
+        }
+
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
         private readonly GroupSettings _groupSettings;

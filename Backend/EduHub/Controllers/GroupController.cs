@@ -7,6 +7,8 @@ using EduHubLibrary.Domain;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Authorization;
 using EnsureThat;
+using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace EduHub.Controllers
 {
@@ -19,10 +21,13 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, typeof(CreateGroupResponse))]
         public IActionResult AddGroup([FromBody]CreateGroupRequest newGroup)
         {
+            var handler = new JwtSecurityTokenHandler();
+            string a = Request.Headers["Authorization"];
+            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
             Ensure.Any.IsNotNull(newGroup, nameof(newGroup), 
                 opt=> opt.WithException(new ArgumentNullException(nameof(newGroup))));
-            Guid newId =_groupFacade.CreateGroup(newGroup.CreatorId, newGroup.Title, newGroup.Tags, newGroup.Description,
-                newGroup.Size, newGroup.TotalValue);
+            Guid newId =_groupFacade.CreateGroup(userId, newGroup.Title, newGroup.Tags, newGroup.Description,
+                newGroup.Size, newGroup.MoneyPerUser, newGroup.IsPrivate, newGroup.GroupType);
             CreateGroupResponse response = new CreateGroupResponse(newId);
             return Ok(response);
         }
@@ -52,9 +57,14 @@ namespace EduHub.Controllers
         
         //TODO delete
         [HttpGet]
+        [SwaggerResponse(200, Type = typeof(MinGroupResponse))]
         public IActionResult All()
         {
-            return Ok(_groupFacade.GetGroups());
+            IEnumerable<Group> groups =  _groupFacade.GetGroups();
+            List<MinItemGroupResponse> items = new List<MinItemGroupResponse>();
+            groups.ToList().ForEach(g => items.Add(new MinItemGroupResponse(g.GroupInfo)));
+            MinGroupResponse response = new MinGroupResponse(items);
+            return Ok(response);
         }
 
         [HttpGet]
@@ -64,16 +74,18 @@ namespace EduHub.Controllers
         {
             Group group = _groupFacade.GetGroup(idOfGroup);
             IEnumerable<Member> membersOfGroup = _groupFacade.GetMembersOfGroup(idOfGroup);
-            GroupResponse response = new GroupResponse(group.Title, group.Description, group.IsActive, group.Tags,
-                membersOfGroup, group.TotalValue, group.Size);
+            GroupResponse response = new GroupResponse(group.GroupInfo, group.Course, group.Teacher, membersOfGroup);
             return Ok(response);
         }
 
-        public GroupController(IGroupFacade groupFacade)
+        public GroupController(IGroupFacade groupFacade, IUserFacade userFacade)
         {
             _groupFacade = groupFacade;
+            _userFacade = userFacade;
         }
         
         private readonly IGroupFacade _groupFacade;
+        private readonly IUserFacade _userFacade;
+
     }
 }
