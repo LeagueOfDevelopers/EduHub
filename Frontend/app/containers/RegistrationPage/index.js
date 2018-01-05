@@ -87,7 +87,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
         <Row style={{textAlign: 'center', marginTop: 30}}><h3>Регистрация</h3></Row>
         <Row><Divider/></Row>
         <Row style={{marginTop: 20}}>
-          <Form className='form' onSubmit={this.registrate}>
+          <Form className='form'>
             <FormItem
               {...formItemLayout}
               label="Имя"
@@ -110,7 +110,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
               <FormItem {...tailFormItemLayout}>
                 <div>
                   <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
-                  <Button type="primary" htmlType="submit">Зарегистрироваться</Button>
+                  <Button type="primary" htmlType="submit" onClick={this.registrate}>Зарегистрироваться</Button>
                 </div>
                 <div>
                   <span style={{marginRight: 10}}>Уже есть аккаунт?</span>

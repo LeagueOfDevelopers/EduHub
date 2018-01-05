@@ -5,11 +5,11 @@ import {REGISTRATION_START} from './constants';
 import {registrateSuccess, registrateError} from './actions';
 
 // Individual exports for testing
-export default function* registrationSaga() {
+export default function* registrationSaga(action) {
   while(true)
   try {
     yield take(REGISTRATION_START);
-    const userId = call(getUserData(username, email, password));
+    const userId = call(getUserData(action.name, action.email, action.password));
     yield put(registrateSuccess(userId));
   }
   catch(e) {

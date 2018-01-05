@@ -5,11 +5,11 @@ import {LOAD_CURRENT_USER} from './constants';
 import {loadCurrentUserError, loadCurrentUserSuccess} from './actions';
 
 // Individual exports for testing
-export default function* loginSaga() {
+export default function* loginSaga(action) {
   while(true)
     try {
       yield take(LOAD_CURRENT_USER);
-      const userData = call(getUserData(email, password));
+      const userData = call(getUserData(action.email, action.password));
       yield put(loadCurrentUserSuccess(userData));
     }
     catch(e) {
