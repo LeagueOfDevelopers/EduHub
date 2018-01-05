@@ -12,6 +12,7 @@ namespace EduHub.Models
         public MinGroupResponse(IEnumerable<MinItemGroupResponse> groups)
         {
             Groups = groups;
+
         }
     }
 }
