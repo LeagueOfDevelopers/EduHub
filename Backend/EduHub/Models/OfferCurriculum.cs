@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace EduHub.Models
 {
-    public class Curriculum
+    public class OfferCurriculum
     {
-        public string Name { get; set; }
-        public int Duration { get; set; }
+        public string Description { get; set; }
+        public Guid userId { get; set; }
     }
 }

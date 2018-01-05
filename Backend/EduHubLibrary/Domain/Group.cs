@@ -12,9 +12,9 @@ namespace EduHubLibrary.Domain
     {
         internal void AddMember(Guid inviterId, Guid invitedId)
         {
-            Ensure.Bool.IsTrue(IsMember(inviterId), nameof(IsMember), 
+            Ensure.Bool.IsTrue(IsMember(inviterId), nameof(IsMember),
                 opt => opt.WithException(new MemberNotFoundException(inviterId)));
-            Ensure.Bool.IsTrue(listOfMembers.Count < Size, nameof(Size), 
+            Ensure.Bool.IsTrue(listOfMembers.Count < GroupInfo.Size, nameof(GroupInfo.Size),
                 opt => opt.WithException(new GroupIsFullException(Id)));
             var newMember = new Member(invitedId, MemberRole.Member);
             listOfMembers.Add(newMember);
@@ -43,6 +43,11 @@ namespace EduHubLibrary.Domain
             return listOfMembers.FirstOrDefault(current => current.UserId == userId) != null;
         }
 
+        internal bool IsTeacher(Guid userId)
+        {
+            return Teacher.UserId == userId;
+        }
+
         internal Member GetMemberById(Guid userId)
         {
             return listOfMembers.FirstOrDefault(current => current.UserId == userId);
@@ -59,7 +64,29 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeSizeOfGroup),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
-            Size = newSize;
+            GroupInfo.Size = newSize;
+        }
+
+        internal void OfferCourse(Guid userId, Course course)
+        {
+            Ensure.Guid.IsNotEmpty(userId);
+            Ensure.Bool.IsTrue(IsTeacher(userId), nameof(OfferCourse),
+                opt => opt.WithException(new NotEnoughPermissionsException(userId)));
+            Ensure.Any.IsNotNull(course);
+            Course = course;
+        }
+
+        internal void AcceptCourse(Guid userId)
+        {
+            Ensure.Guid.IsNotEmpty(userId);
+            Ensure.Bool.IsTrue(IsMember(userId), nameof(IsMember),
+                opt => opt.WithException(new MemberNotFoundException(userId)));
+            Member currentMember = GetMemberById(userId);
+            currentMember.AcceptedCourse = true;
+            if (listOfMembers.All(m => m.AcceptedCourse))
+            {
+                Course.CourseStatus = Tools.CourseStatus.Started;
+            }
         }
 
         private void DeleteCreator(Member deletingCreator)
@@ -71,7 +98,7 @@ namespace EduHubLibrary.Domain
             if (indexOfCreator + 1 == listOfMembers.Count)
             {
                 listOfMembers.Remove(deletingCreator);
-                IsActive = false;
+                GroupInfo.IsActive = false;
                 return;
             }
             Member newCreator = listOfMembers[indexOfCreator + 1];
@@ -80,45 +107,42 @@ namespace EduHubLibrary.Domain
         }
 
         public Group(Guid creatorId, List<Member> toWrite, string title, List<string> tags,
-            string description, int size, double totalValue, bool isPrivate, GroupType groupType)
+            string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
         {
             Id = Ensure.Guid.IsNotEmpty(Guid.NewGuid());
-            Tags = Ensure.Any.IsNotNull(tags);
-            Title = Ensure.String.IsNotNullOrWhiteSpace(title);
-            Description = Ensure.String.IsNotNullOrWhiteSpace(description);
-            listOfMembers = Ensure.Any.IsNotNull(toWrite);
-            IsPrivate = isPrivate;
-            GroupType = Ensure.Any.IsNotNull(groupType);
-            var creator = new Member(creatorId, MemberRole.Creator);
-            listOfMembers.Add(creator);
+            Ensure.Any.IsNotNull(tags);
+            Ensure.String.IsNotNullOrWhiteSpace(title);
+            Ensure.String.IsNotNullOrWhiteSpace(description);
+            Ensure.Any.IsNotNull(size);
+            Ensure.Any.IsNotNull(groupType);
+            Ensure.Any.IsNotNull(moneyPerUser);
+            Ensure.Any.IsNotNull(groupType);
+            bool isActive = true;
+            GroupInfo = new GroupInfo(title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
         }
 
-        public Group(Guid creatorId, string title, List<string> tags, 
-            string description, int size, double totalValue, bool isPrivate, GroupType groupType)
+        public Group(Guid creatorId, string title, List<string> tags,
+            string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
         {
             Id = Ensure.Guid.IsNotEmpty(Guid.NewGuid());
-            Tags = Ensure.Any.IsNotNull(tags);
-            Title = Ensure.String.IsNotNullOrWhiteSpace(title);
-            Description = Ensure.String.IsNotNullOrWhiteSpace(description);
+            Ensure.Any.IsNotNull(tags);
+            Ensure.String.IsNotNullOrWhiteSpace(title);
+            Ensure.String.IsNotNullOrWhiteSpace(description);
+            Ensure.Any.IsNotNull(size);
+            Ensure.Any.IsNotNull(groupType);
+            Ensure.Any.IsNotNull(moneyPerUser);
+            bool isActive = true;
+            GroupInfo = new GroupInfo(title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
             listOfMembers = new List<Member>();
-            Size = Ensure.Any.IsNotNull(size);
-            IsPrivate = isPrivate;
-            GroupType = Ensure.Any.IsNotNull(groupType);
-            TotalValue = Ensure.Any.IsNotNull(totalValue);
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);
         }
         public Guid Id { get; private set; }
-        public string Description { get; private set; }
-        public string Title { get; private set; }
-        public List<string> Tags { get; private set; }
-        public bool IsPrivate { get; private set; }
-        public bool IsActive { get; private set; }
-        public int Size { get; private set; } //size of group
-        public double TotalValue { get; private set; } //whole amount money for teacher
         public Chat Chat { get; private set; }
-        public GroupType GroupType { get; private set; }
+        public GroupInfo GroupInfo { get; private set; }
         private List<Member> listOfMembers;
+        public Member Teacher { get; private set; }
+        public Course Course { get; private set; }
 
     }
 }

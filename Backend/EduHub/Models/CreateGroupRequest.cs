@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EduHubLibrary.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,8 +10,6 @@ namespace EduHub.Models
     public class CreateGroupRequest
     {
         [Required]
-        public Guid CreatorId { get; set; }
-        [Required]
         public string Title { get; set; }
         [Required]
         public string Description { get; set; }
@@ -19,6 +18,10 @@ namespace EduHub.Models
         [Required]
         public int Size { get; set; }
         [Required]
-        public double TotalValue { get; set; }
+        public double MoneyPerUser { get; set; }
+        [Required]
+        public GroupType GroupType { get; set; }
+        [Required]
+        public bool IsPrivate { get; set; }
     }
 }
