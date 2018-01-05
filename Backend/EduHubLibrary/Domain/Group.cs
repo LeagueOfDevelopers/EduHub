@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using EduHubLibrary.Domain.Exceptions;
 using EnsureThat;
-using System.Resources;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EduHubTests")]
 
@@ -82,19 +80,21 @@ namespace EduHubLibrary.Domain
         }
 
         public Group(Guid creatorId, List<Member> toWrite, string title, List<string> tags,
-            string description, int size, double totalValue)
+            string description, int size, double totalValue, bool isPrivate, GroupType groupType)
         {
             Id = Ensure.Guid.IsNotEmpty(Guid.NewGuid());
             Tags = Ensure.Any.IsNotNull(tags);
             Title = Ensure.String.IsNotNullOrWhiteSpace(title);
             Description = Ensure.String.IsNotNullOrWhiteSpace(description);
             listOfMembers = Ensure.Any.IsNotNull(toWrite);
-            
+            IsPrivate = isPrivate;
+            GroupType = Ensure.Any.IsNotNull(groupType);
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);
         }
 
-        public Group(Guid creatorId, string title, List<string> tags, string description, int size, double totalValue)
+        public Group(Guid creatorId, string title, List<string> tags, 
+            string description, int size, double totalValue, bool isPrivate, GroupType groupType)
         {
             Id = Ensure.Guid.IsNotEmpty(Guid.NewGuid());
             Tags = Ensure.Any.IsNotNull(tags);
@@ -102,6 +102,8 @@ namespace EduHubLibrary.Domain
             Description = Ensure.String.IsNotNullOrWhiteSpace(description);
             listOfMembers = new List<Member>();
             Size = Ensure.Any.IsNotNull(size);
+            IsPrivate = isPrivate;
+            GroupType = Ensure.Any.IsNotNull(groupType);
             TotalValue = Ensure.Any.IsNotNull(totalValue);
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);
@@ -110,11 +112,12 @@ namespace EduHubLibrary.Domain
         public string Description { get; private set; }
         public string Title { get; private set; }
         public List<string> Tags { get; private set; }
+        public bool IsPrivate { get; private set; }
         public bool IsActive { get; private set; }
         public int Size { get; private set; } //size of group
         public double TotalValue { get; private set; } //whole amount money for teacher
         public Chat Chat { get; private set; }
-        public Course Course { get; private set; }
+        public GroupType GroupType { get; private set; }
         private List<Member> listOfMembers;
 
     }

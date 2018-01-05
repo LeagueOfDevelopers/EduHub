@@ -18,7 +18,8 @@ namespace EduHubLibrary.Facades
             _groupSettings = groupSettings;
         }
 
-        public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size, double totalValue)
+        public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size, double totalValue, bool isPrivate,
+            GroupType groupType)
         {
             Ensure.Bool.IsTrue(size <= _groupSettings.MaxGroupSize && size >= _groupSettings.MinGroupSize,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(size))));
@@ -26,7 +27,7 @@ namespace EduHubLibrary.Facades
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(totalValue))));
             Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(userId), 
                 opt => opt.WithException(new UserNotFoundException(userId)));
-            Group group = new Group(userId, title, tags, description, size, totalValue);
+            Group group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
             return group.Id;
         }

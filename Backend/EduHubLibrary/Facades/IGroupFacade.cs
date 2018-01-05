@@ -7,7 +7,8 @@ namespace EduHubLibrary.Facades
 {
     public interface IGroupFacade
     {
-        Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size, double totalValue);
+        Guid CreateGroup(Guid userId, string title, List<string> tags, string description,
+            int size, double totalValue, bool isPrivate, GroupType groupType);
         IEnumerable<Group> GetGroups();
         Group GetGroup(Guid id);
         IEnumerable<Member> GetMembersOfGroup(Guid groupId);
