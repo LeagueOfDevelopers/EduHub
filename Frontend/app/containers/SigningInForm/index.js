@@ -37,7 +37,11 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
   }
 
   login() {
-    this.props.login(this.email, this.password)
+    this.props.login(this.email, this.password);
+    // localStorage.setItem('name', 'qwerty');
+    // localStorage.setItem('avatarLink', 'qwerty');
+    // localStorage.setItem('token', 'qwerty');
+    location.reload();
   }
 
   render() {
@@ -106,8 +110,8 @@ function mapDispatchToProps(dispatch) {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-const withReducer = injectReducer({ key: 'SingingInForm', reducer });
-const withSaga = injectSaga({ key: 'SingingInForm', saga });
+const withReducer = injectReducer({ key: 'global', reducer });
+const withSaga = injectSaga({ key: 'global', saga });
 
 export default compose(
   withReducer,

@@ -1,23 +1,22 @@
-import { take, call, put, select, all } from 'redux-saga/effects';
+import { takeEvery, call, put, select, all } from 'redux-saga/effects';
 import  config from '../../config';
 
 import {REGISTRATION_START} from './constants';
 import {registrateSuccess, registrateError} from './actions';
 
 // Individual exports for testing
-export default function* registrationSaga(action) {
-  while(true)
+function* registrationSaga(action) {
   try {
-    yield take(REGISTRATION_START);
-    const userId = call(getUserData(action.name, action.email, action.password));
-    yield put(registrateSuccess(userId));
+    const userData = call(getUserIP(action.name, action.email, action.password));
+    const id = userData.id;
+    yield put(registrateSuccess(id));
   }
   catch(e) {
     yield put(registrateError(e));
   }
 }
 
-function getUserData(username, email, password) {
+export function getUserIP(username, email, password) {
   fetch(`${config.API_BASE_URL}/account/registration`, {
     method: 'POST',
     headers: {
@@ -37,5 +36,11 @@ function getUserData(username, email, password) {
       return response.json();
     }
     return Promise.reject(response.status)
+  }).then(function (res) {
+    return res
   })
+}
+
+export default function* () {
+  yield takeEvery(REGISTRATION_START, registrationSaga)
 }

@@ -14,12 +14,13 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import HomePage from 'containers/HomePage/Loadable';
-import NotFoundPage from 'containers/NotFoundPage/Loadable';
-import CreateGroupPage from 'containers/CreateGroupPage';
-import RegistrationPage from 'containers/RegistrationPage';
-import GroupPage from 'containers/GroupPage/Loadable';
-import Header from 'components/Header';
+import HomePage from '../HomePage/Loadable';
+import NotFoundPage from '../NotFoundPage/Loadable';
+import CreateGroupPage from '../CreateGroupPage';
+import RegistrationPage from '../RegistrationPage';
+import GroupPage from '../GroupPage/Loadable';
+import Header from '../../components/Header';
+import ScrollFix from '../../components/ScrollFix';
 
 export default function App() {
   return (
@@ -27,13 +28,15 @@ export default function App() {
       <header>
         <Header/>
       </header>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path='/create_group' component={CreateGroupPage}/>
-        <Route path='/registration' component={RegistrationPage}/>
-        <Route path='/group/:id' component={GroupPage}/>
-        <Route path='' component={NotFoundPage} />
-      </Switch>
+      <ScrollFix>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path='/create_group' component={CreateGroupPage}/>
+          <Route path='/registration' component={RegistrationPage}/>
+          <Route path='/group/:id' component={GroupPage}/>
+          <Route path='' component={NotFoundPage} />
+        </Switch>
+      </ScrollFix>
     </div>
   );
 }

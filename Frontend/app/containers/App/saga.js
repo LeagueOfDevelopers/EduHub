@@ -1,16 +1,17 @@
-import { take, call, put, select, all } from 'redux-saga/effects';
+import { takeEvery, call, put, select, all } from 'redux-saga/effects';
 import  config from '../../config';
 
 import {LOAD_CURRENT_USER} from './constants';
 import {loadCurrentUserError, loadCurrentUserSuccess} from './actions';
 
 // Individual exports for testing
-export default function* loginSaga(action) {
-  while(true)
+function* loginSaga(action) {
     try {
-      yield take(LOAD_CURRENT_USER);
       const userData = call(getUserData(action.email, action.password));
-      yield put(loadCurrentUserSuccess(userData));
+      const name = userData.name;
+      const avatarLink = userData.avatarLink;
+      const token = userData.token;
+      yield put(loadCurrentUserSuccess(name, avatarLink, token));
     }
     catch(e) {
       yield put(loadCurrentUserError(e));
@@ -32,6 +33,13 @@ function getUserData(email, password) {
     if(response.ok){
       return response.json();
     }
-    return Promise.reject(response.status)
+      return Promise.reject(response.status)
+    }).then(function (res) {
+    return res
   })
+}
+
+
+export default function* () {
+  yield takeEvery(LOAD_CURRENT_USER, loginSaga)
 }

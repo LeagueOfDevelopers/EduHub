@@ -33,6 +33,8 @@ import SigningInForm from 'containers/SigningInForm';
 import {Link} from "react-router-dom";
 import { getAssembledGroups, getUnassembledGroups } from "./actions";
 
+import {getUserIP} from '../RegistrationPage/saga'
+
 const unassembledGroups = [
   {
     id: '1',
@@ -67,9 +69,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     this.makeTeacher = this.makeTeacher.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.getUser = this.getUser.bind(this);
 
     this.state = {
       signInVisible: false,
+      user: 'qwerty'
     }
   }
 
@@ -81,9 +85,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   makeTeacher() {
     if(localStorage.getItem('token'))
       message.success('Теперь вы можете преподавать!');
-    else
+    else {
       this.setState({signInVisible: true})
-  }
+  }}
 
   handleCancel = () => {
     this.setState({signInVisible: false})
@@ -109,6 +113,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     </div>
   );
 
+  getUser() {
+    this.setState({user: getUserIP('f','f','f')})
+  }
+
   render() {
     return (
       <div>
@@ -117,7 +125,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             title='Незаполненные группы'
             bordered={false}
             className='unassembled-groups-list font-size-20'
-            extra={<Link to='#'>Показать больше</Link>}
+            extra={<Link to='#' onClick={this.getUser} >Показать больше</Link>}
           >
             {this.props.unassembledGroups.length > 0 ?
               this.unassembledGroups
@@ -131,6 +139,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </div>
               )
             }
+            <div>{this.state.user}</div>
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
               <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>

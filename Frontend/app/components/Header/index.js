@@ -27,6 +27,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
       signInVisible: false,
     };
 
+    this.logout = this.logout.bind(this);
     this.onSignInClick = this.onSignInClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
@@ -39,13 +40,18 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     this.setState({signInVisible: false})
   };
 
+  logout() {
+    localStorage.clear();
+    location.reload();
+  }
+
    acc_menu = (
     <Menu>
       <Menu.Item key="0">
         <span>Мой аккаунт</span>
       </Menu.Item>
       <Menu.Item key="1" className='danger-menu-item'>
-        <span style={{color: 'red'}}>Выйти</span>
+        <span style={{color: 'red'}} onClick={this.logout}>Выйти</span>
       </Menu.Item>
     </Menu>
   );
@@ -77,7 +83,6 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             size='large'
           />
         </Col>
-        <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
           {localStorage.getItem('token') ? (
               <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
                 <Dropdown overlay={this.acc_menu} trigger={['click']}>
@@ -94,7 +99,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
           )
           : (
               <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
-                <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '30%'}}>Войти</Button>
+                <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '6%'}}>Войти</Button>
                 <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
                 <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>
                 <Dropdown className="unregistered-person" overlay={this.menu} trigger={['click']}>
@@ -102,7 +107,6 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                 </Dropdown>
               </Col>
           )}
-        </Col>
       </Row>
     );
   }

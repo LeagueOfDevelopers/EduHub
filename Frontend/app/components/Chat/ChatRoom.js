@@ -11,14 +11,13 @@ export default class ChatRoom extends React.Component {
     super(props);
 
     this.state = {
-      username: '',
-      messages: []
+      messages: [],
+      showIsInGroupError: false
     };
   }
 
   componentDidMount() {
     this.scrollToBottom();
-    this.setState({username: localStorage.getItem('name')});
   }
 
   componentDidUpdate() {
@@ -32,11 +31,18 @@ export default class ChatRoom extends React.Component {
   submitMessage(e) {
     e.preventDefault();
 
-    ReactDom.findDOMNode(this.msgInput).value !== '' ?
+    if(!this.props.isInGroup) {
+      this.setState({showIsInGroupError: true})
+    }
+    else {
+      this.setState({showIsInGroupError: false})
+    }
+
+    (ReactDom.findDOMNode(this.msgInput).value !== '' && this.props.isInGroup) ?
       this.setState({
         messages: this.state.messages.concat([
           {
-            username: this.state.username,
+            username: localStorage.getItem('name'),
             content: ReactDom.findDOMNode(this.msgInput).value,
             time: new Date().getHours() + ':' + (new Date().getMinutes()<10 ? '0' : '') + new Date().getMinutes()
           }
@@ -54,13 +60,17 @@ export default class ChatRoom extends React.Component {
         <ul className='chat' ref={chat => this.chat = chat}>
           {
             this.state.messages.map(msg =>
-              <Message message={msg} user={this.state.username}/>
+              <Message message={msg} user={localStorage.getItem('name')}/>
             )
           }
         </ul>
         <form className='input' onSubmit={event => this.submitMessage(event)}>
           <Input size='large' ref={input => this.msgInput = input} placeholder='Введите сообщение' />
         </form>
+        {this.state.showIsInGroupError ?
+          (<div style={{color: 'red'}}>Вы должны вступить в группу</div>)
+          : ''
+        }
       </div>
     )
   }

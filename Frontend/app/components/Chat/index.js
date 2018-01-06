@@ -13,7 +13,7 @@ class Chat extends React.Component { // eslint-disable-line react/prefer-statele
   render() {
     return (
       <div>
-        <ChatRoom/>
+        <ChatRoom {...this.props}/>
       </div>
     );
   }
