@@ -9,6 +9,7 @@ namespace EduHubLibrary.Facades
     {
         Guid CreateGroup(Guid userId, string title, List<string> tags, string description,
             int size, double totalValue, bool isPrivate, GroupType groupType);
+        void ApproveTeacher(Guid teacherId, Guid groupId);
         void AcceptCourse(Guid userId, Guid groupId);
         void OfferCourse(Guid userId, Guid groupId, string description);
         IEnumerable<Group> GetGroups();

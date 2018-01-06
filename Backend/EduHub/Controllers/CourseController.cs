@@ -40,8 +40,9 @@ namespace EduHub.Controllers
             var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
 
             Invitation invitation = _userFacade.GetUser(userId).listOfInvitation.Find(o => o.GroupId.Equals(groupId));
+            _groupFacade.ApproveTeacher(userId, groupId);
             _userFacade.ChangeStatusOfInvitation(userId, invitation.Id, InvitationStatus.Accepted);
-
+            
             return Ok("Преподаватель принял приглашение");
         }
 

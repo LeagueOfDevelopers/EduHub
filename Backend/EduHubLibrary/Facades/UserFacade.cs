@@ -12,7 +12,7 @@ namespace EduHubLibrary.Facades
     {
         public User GetUser(Guid id)
         {
-            throw new NotImplementedException();
+            return _userRepository.GetUserById(id);
         }
 
         public IEnumerable<User> GetUsers()

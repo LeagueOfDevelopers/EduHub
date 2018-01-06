@@ -8,7 +8,7 @@ namespace EduHub.Models
 {
     public class GroupResponse
     {
-        public GroupResponse(GroupInfo groupInfo, Course course, Member teacher,IEnumerable<Member> members)
+        public GroupResponse(GroupInfo groupInfo, Course course, User teacher,IEnumerable<Member> members)
         {
             GroupInfo = groupInfo;
             Members = members;
@@ -19,7 +19,7 @@ namespace EduHub.Models
         public IEnumerable<Member> Members { get; set; }
         public GroupInfo GroupInfo { get; set; }
         public Course Course { get; set; }
-        public Member Teacher { get; set; }
+        public User Teacher { get; set; }
 
     }
 }

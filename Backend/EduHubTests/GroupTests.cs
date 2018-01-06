@@ -4,6 +4,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using System.Linq;
 using System.Collections.Generic;
+using EduHubLibrary.Common;
 
 namespace EduHubTests
 {
@@ -174,6 +175,37 @@ namespace EduHubTests
             someGroup.ChangeSizeOfGroup(idOfInvited, 10);
         }
 
+        [TestMethod]
+        public void TryToApproveTeacher_TeacherIsSet()
+        {
+            //Arrange
+            User teacher = new User("Sergey", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
+            List<string> tags = new List<string>();
+            tags.Add("The best group");
+            Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 5, 0, false, GroupType.Seminar);
+
+            //Act
+            group.ApproveTeacher(teacher);
+
+            //Assert
+            Assert.AreEqual(teacher, group.Teacher);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(TeacherIsAlreadyFoundException))]
+        public void TryToApproveAnotherTeacherWithApprovedTeacher_GetException()
+        {
+            //Assert
+            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
+            User newTeacher = new User("Bogdan", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
+            List<string> tags = new List<string>();
+            tags.Add("The best group");
+            Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 5, 0, false, GroupType.Seminar);
+
+            //Act
+            group.ApproveTeacher(approvedTeacher);
+            group.ApproveTeacher(newTeacher);
+        }
     }
 
 }

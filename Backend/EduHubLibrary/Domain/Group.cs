@@ -45,7 +45,7 @@ namespace EduHubLibrary.Domain
 
         internal bool IsTeacher(Guid userId)
         {
-            return Teacher.UserId == userId;
+            return Teacher.Id  == userId;
         }
 
         internal Member GetMemberById(Guid userId)
@@ -65,6 +65,18 @@ namespace EduHubLibrary.Domain
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeSizeOfGroup),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             GroupInfo.Size = newSize;
+        }
+
+        internal void ApproveTeacher(User teacher)
+        {
+            if (Teacher == null)
+            {
+                Teacher = Ensure.Any.IsNotNull(teacher);
+            }
+            else
+            {
+                throw new TeacherIsAlreadyFoundException();
+            }
         }
 
         internal void OfferCourse(Guid userId, Course course)
@@ -141,8 +153,7 @@ namespace EduHubLibrary.Domain
         public Chat Chat { get; private set; }
         public GroupInfo GroupInfo { get; private set; }
         private List<Member> listOfMembers;
-        public Member Teacher { get; private set; }
+        public User Teacher { get; private set; }
         public Course Course { get; private set; }
-
     }
 }
