@@ -8,6 +8,8 @@ using EduHub.Models;
 using EduHubLibrary.Facades;
 using EnsureThat;
 using EduHubLibrary.Domain;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub.Controllers
 {
@@ -15,18 +17,31 @@ namespace EduHub.Controllers
     [Route("api/group/{groupId}/course")]
     public class CourseController : Controller
     {
+        [Authorize]
         [HttpPost]
         [Route("teacher")]
-        public IActionResult InviteTeacher([FromBody]Guid userId, [FromRoute] Guid groupId)
+        public IActionResult InviteTeacher([FromBody]Guid teacherId, [FromRoute] Guid groupId)
         {
-            _userFacade.Invite(Guid.NewGuid(), userId, groupId, MemberRole.Teacher);
+            var handler = new JwtSecurityTokenHandler();
+            string a = Request.Headers["Authorization"];
+            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+
+            _userFacade.Invite(userId, teacherId, groupId, MemberRole.Teacher);
             return Ok($"Преподаватель приглашен");
         }
 
+        [Authorize]
         [HttpPut]
         [Route("teacher")]
         public IActionResult AcceptInvintation([FromRoute] Guid groupId)
         {
+            var handler = new JwtSecurityTokenHandler();
+            string a = Request.Headers["Authorization"];
+            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+
+            Invitation invitation = _userFacade.GetUser(userId).listOfInvitation.Find(o => o.GroupId.Equals(groupId));
+            _userFacade.ChangeStatusOfInvitation(userId, invitation.Id, InvitationStatus.Accepted);
+
             return Ok("Преподаватель принял приглашение");
         }
 
@@ -34,6 +49,12 @@ namespace EduHub.Controllers
         [Route("teacher")]
         public IActionResult RejectInvintation([FromRoute] Guid groupId)
         {
+            var handler = new JwtSecurityTokenHandler();
+            string a = Request.Headers["Authorization"];
+            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+
+            Invitation invitation = _userFacade.GetUser(userId).listOfInvitation.Find(o => o.GroupId.Equals(groupId));
+            _userFacade.ChangeStatusOfInvitation(userId, invitation.Id, InvitationStatus.Declined);
             return Ok("Преподаватель отклонил приглашение");
         }
 
