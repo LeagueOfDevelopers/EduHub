@@ -90,9 +90,9 @@ namespace EduHub
                 current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
                 current.InjectStylesheet("/swagger-ui/theme-muted.css");
             });
-            app.UseCors(
+            /*app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyMethod()
-            );
+            );*/
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
