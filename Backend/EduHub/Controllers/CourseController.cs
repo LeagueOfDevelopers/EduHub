@@ -27,7 +27,7 @@ namespace EduHub.Controllers
             var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
 
             _userFacade.Invite(userId, teacherId, groupId, MemberRole.Teacher);
-            return Ok($"Преподаватель приглашен");
+            return Ok($"Преподаватель {teacherId} приглашен");
         }
 
         [Authorize]
