@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EduHub.Models
 {
-    public class Review
+    public class ReviewRequest
     {
         public string Opinion { get; set; }
         public int Rating { get; set; }

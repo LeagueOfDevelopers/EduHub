@@ -26,11 +26,11 @@ namespace EduHubTests
             var expectedPass = "123123";
             var expectedEmail = "bus.yaroslav@gmail.com";
             var expectedLink = "avatar.ru";
-            Role expectedRole = Role.User;
+            TypeOfUser expectedType = TypeOfUser.User;
             var expectedStatus = false;
             
             //Act
-            userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass), expectedStatus, expectedRole, expectedLink);
+            userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass), expectedStatus, expectedType, expectedLink);
             List<User> listOfUsers = userFacade.GetUsers().ToList();
             User currentUser = listOfUsers[0];
             

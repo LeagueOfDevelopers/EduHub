@@ -11,18 +11,20 @@ namespace EduHubLibrary.Domain
     {
         public string Name { get; private set; }
         public Credentials Credentials { get; private set; }
-        public Role Role { get; set; }
+        public TypeOfUser Type { get; set; }
         public bool IsTeacher { get; private set; }
+        public TeacherProfile TeacherProfile { get; private set; }
         public bool IsActive { get; private set; }
         public Guid Id { get; private set; }
         public string AvatarLink { get; private set; }
         public List<Invitation> listOfInvitation { get; private set; }
 
-        public User(string name, Credentials credentials, bool isTeacher, Role role, string avatarLink)
+        public User(string name, Credentials credentials, bool isTeacher, TypeOfUser type, string avatarLink)
         {
             Name = Ensure.String.IsNotNullOrWhiteSpace(name);
             Credentials = credentials;
-            Role = role;
+            Type = type;
+            TeacherProfile = new TeacherProfile();
             IsTeacher = isTeacher;
             IsActive = true;
             Id = Guid.NewGuid();
@@ -33,6 +35,11 @@ namespace EduHubLibrary.Domain
         public void EditName(string newName)
         {
             Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
+        }
+
+        public void ConfigureTeacherProfile(List<string> skills)
+        {
+            TeacherProfile.ConfigureSkills(skills);
         }
 
         public void BecomeTeacher()
@@ -47,12 +54,12 @@ namespace EduHubLibrary.Domain
 
         public void BecomeAdmin()
         {
-            Role = Role.Admin;
+            Type = TypeOfUser.Admin;
         }
 
         public void StopToBeAdmin()
         {
-            Role = Role.User;
+            Type = TypeOfUser.User;
         }
 
         public void RestoreProfile()

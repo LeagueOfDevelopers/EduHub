@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
 using EnsureThat;
+using EduHubLibrary.Domain;
 
 namespace EduHub.Controllers
 {
@@ -16,9 +17,10 @@ namespace EduHub.Controllers
     {
         [HttpPost]
         [Route("teacher")]
-        public IActionResult InviteTeacher([FromBody]SearchOfUserRequest user, [FromRoute] Guid groupId)
+        public IActionResult InviteTeacher([FromBody]Guid userId, [FromRoute] Guid groupId)
         {
-            return Ok($"Преподаватель {user.Name} приглашен на курс группы {groupId}");
+            _userFacade.Invite(Guid.NewGuid(), userId, groupId, MemberRole.Teacher);
+            return Ok($"Преподаватель приглашен");
         }
 
         [HttpPut]
@@ -67,16 +69,18 @@ namespace EduHub.Controllers
 
         [HttpPost]
         [Route("review")]
-        public IActionResult LeaveReview([FromBody]Review review, [FromRoute] Guid groupId)
+        public IActionResult LeaveReview([FromBody]ReviewRequest review, [FromRoute] Guid groupId)
         {
             return Ok($"Отзыв '{review.Opinion}' с оценкой {review.Rating} был добавлен");
         }
 
-        public CourseController(IGroupFacade groupFacade)
+        public CourseController(IGroupFacade groupFacade, IUserFacade userFacade)
         {
             _groupFacade = groupFacade;
+            _userFacade = userFacade;
         }
 
         private readonly IGroupFacade _groupFacade;
+        private readonly IUserFacade _userFacade;
     }
 }

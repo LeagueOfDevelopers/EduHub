@@ -7,6 +7,7 @@ using EduHub.Models;
 using EduHubLibrary.Facades;
 using Swashbuckle;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using EduHubLibrary.Domain;
 
 namespace EduHub.Controllers
 {
@@ -19,7 +20,7 @@ namespace EduHub.Controllers
         public IActionResult InviteUser([FromRoute] Guid invitedId, [FromRoute] Guid inviterId,
             [FromRoute] Guid groupId)
         {
-            _userFacade.Invite(inviterId, invitedId, groupId);
+            _userFacade.Invite(inviterId, invitedId, groupId, MemberRole.Member);
             return Ok("Пользователь приглашен");
         }
 

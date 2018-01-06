@@ -20,9 +20,9 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetAll();
         }
 
-        public Guid RegUser(string username, Credentials credentials, bool IsTeacher, Role role, string avatarLink)
+        public Guid RegUser(string username, Credentials credentials, bool IsTeacher, TypeOfUser type, string avatarLink)
         {
-            User user = new User(username, credentials, IsTeacher, role, avatarLink);
+            User user = new User(username, credentials, IsTeacher, type, avatarLink);
             _userRepository.Add(user);
             return user.Id;
         }
@@ -52,7 +52,7 @@ namespace EduHubLibrary.Facades
             
         }
 
-        public void Invite(Guid inviterId, Guid invitedId, Guid groupId)
+        public void Invite(Guid inviterId, Guid invitedId, Guid groupId, MemberRole suggestedRole)
         {
             Ensure.Guid.IsNotEmpty(inviterId);
             Ensure.Guid.IsNotEmpty(invitedId);
@@ -65,7 +65,7 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new AlreadyMemberException(invitedId, groupId)));
             Ensure.Bool.IsTrue(invitedUser.GetAllInvitation().First(c => c.GroupId == groupId) == null, 
                 nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
-            Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, InvitationStatus.InProgress);
+            Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
             invitedUser.AddInvitation(newInvintation);
         }
 
