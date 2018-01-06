@@ -17,6 +17,10 @@ using Loggly.Config;
 using Loggly;
 using Serilog;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Swashbuckle.AspNetCore.Examples;
+using System.IO;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.Reflection;
 
 namespace EduHub
 {
@@ -25,7 +29,6 @@ namespace EduHub
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
         }
 
         public IConfiguration Configuration { get; }
@@ -55,9 +58,12 @@ namespace EduHub
                     In = "header",
                     Type = "apiKey"
                 });
+                current.OperationFilter<ExamplesOperationFilter>();
                 current.DescribeAllEnumsAsStrings();
+                var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
+                current.IncludeXmlComments(filePath);
             });
-
+            services.AddCors();
             ConfigureSecurity(services);
             StartLoggly();
             if (Configuration.GetValue<bool>("Authorization"))
@@ -69,7 +75,7 @@ namespace EduHub
                 services.AddMvc(o => {
                     o.Filters.Add(new AllowAnonymousFilter());
                     o.Filters.Add(new ExceptionFilter());
-                    });
+                });
             }
 
         }
@@ -77,12 +83,16 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseStaticFiles();
             app.UseSwagger();
 
             app.UseSwaggerUI(current => { 
                 current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
+                current.InjectStylesheet("/swagger-ui/theme-muted.css");
             });
-
+            app.UseCors(
+                options => options.AllowAnyOrigin().AllowAnyMethod()
+            );
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

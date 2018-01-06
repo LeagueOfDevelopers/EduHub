@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using EnsureThat;
 using System.Linq;
 using System.IdentityModel.Tokens.Jwt;
+using Swashbuckle.AspNetCore.Examples;
+using EduHub.Models.Examples;
 
 namespace EduHub.Controllers
 {
@@ -19,6 +21,7 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPost]
         [SwaggerResponse(200, typeof(CreateGroupResponse))]
+        [SwaggerRequestExample(typeof(CreateGroupRequest), typeof(CreateGroupRequestExample))]
         public IActionResult AddGroup([FromBody]CreateGroupRequest newGroup)
         {
             var handler = new JwtSecurityTokenHandler();
