@@ -63,7 +63,7 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
             Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),
                 opt => opt.WithException(new AlreadyMemberException(invitedId, groupId)));
-            Ensure.Bool.IsTrue(invitedUser.GetAllInvitation().First(c => c.GroupId == groupId) == null, 
+            Ensure.Bool.IsFalse(invitedUser.GetAllInvitation().Any(c => c.GroupId == groupId), 
                 nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
             Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
             invitedUser.AddInvitation(newInvintation);
