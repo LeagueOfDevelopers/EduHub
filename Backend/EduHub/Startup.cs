@@ -88,7 +88,7 @@ namespace EduHub
 
             app.UseSwaggerUI(current => { 
                 current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
-                current.InjectStylesheet("/swagger-ui/theme-muted.css");
+                //current.InjectStylesheet("/swagger-ui/theme-muted.css");
             });
             app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyMethod()
