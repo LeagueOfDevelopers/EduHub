@@ -65,8 +65,16 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new AlreadyMemberException(invitedId, groupId)));
             Ensure.Bool.IsFalse(invitedUser.GetAllInvitation().Any(c => c.GroupId == groupId), 
                 nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
-            Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
-            invitedUser.AddInvitation(newInvintation);
+
+            if (suggestedRole == MemberRole.Teacher && _groupRepository.GetGroupById(groupId).Teacher != null)
+            {
+                throw new TeacherIsAlreadyFoundException();
+            }
+            else
+            {
+                Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
+                invitedUser.AddInvitation(newInvintation);
+            }
         }
 
         public IEnumerable<Invitation> GetAllInvitationsForUser(Guid userId)
