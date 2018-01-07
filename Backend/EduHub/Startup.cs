@@ -83,12 +83,12 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
             app.UseSwagger();
 
             app.UseSwaggerUI(current => { 
                 current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
-                current.InjectStylesheet("/swagger-ui/theme-muted.css");
+                //current.InjectStylesheet("/swagger-ui/theme-muted.css");
             });
             /*app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyMethod()
