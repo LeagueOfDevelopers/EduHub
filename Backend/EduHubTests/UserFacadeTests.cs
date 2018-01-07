@@ -8,6 +8,8 @@ using EduHubLibrary.Domain;
 
 using System.Linq;
 using EduHubLibrary.Common;
+using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Settings;
 
 namespace EduHubTests
 {
@@ -39,5 +41,38 @@ namespace EduHubTests
             Assert.AreEqual(currentUser.IsTeacher, expectedStatus);
         }
 
+        [TestMethod]
+        public void TryToGetAllGroupsOfUser_ReturnRightResult()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(2, 10, 0, 100));
+            userFacade.RegUser("Alena", new Credentials("email", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Galya", new Credentials("email", "password"), true, TypeOfUser.User, "avatar.ru");
+            List<User> listOfUsers = userFacade.GetUsers().ToList();
+            User testUser = listOfUsers[0];
+            User creator = listOfUsers[1];
+
+            List<string> tags = new List<string>();
+            tags.Add("Math");
+            groupFacade.CreateGroup(creator.Id, "Group1", tags, "good group", 5, 0, false, GroupType.MasterClass);
+            groupFacade.CreateGroup(creator.Id, "Group2", tags, "The best group!", 7, 0, true, GroupType.Seminar);
+            List<Group> listOfGroups = groupFacade.GetGroups().ToList();
+            Group testGroup1 = listOfGroups[0];
+            Group testGroup2 = listOfGroups[1];
+
+            //Act
+            testGroup1.AddMember(creator.Id, testUser.Id);
+            testGroup2.AddMember(creator.Id, testUser.Id);
+            List<GroupMembership> expected = new List<GroupMembership>();
+            expected.Add(new GroupMembership(testGroup1, MemberRole.Member));
+            expected.Add(new GroupMembership(testGroup2, MemberRole.Member));
+
+            //Arrange
+            Assert.AreEqual(expected, userFacade.GetAllGroupsOfUser(testUser.Id));
+        }
     }
 }
