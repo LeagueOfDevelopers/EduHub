@@ -85,17 +85,18 @@ namespace EduHubLibrary.Facades
             return currentUser.GetAllInvitation();
         }
 
-        public IEnumerable<GroupMembership> GetAllGroupsOfUser(Guid userId)
+        public IEnumerable<Group> GetAllGroupsOfUser(Guid userId)
         {
-            List<GroupMembership> groupsOfUser = new List<GroupMembership>();
+            List<Group> groupsOfUser = new List<Group>();
+
             foreach (Group group in _groupRepository.GetAll())
             {
-                if (group.GetAllMembers().Any(member => member.UserId==userId))
+                if (group.GetAllMembers().Any(member => member.UserId.Equals(userId)))
                 {
-                    groupsOfUser.Add(new GroupMembership(group, 
-                        group.GetAllMembers().First(member => member.UserId == userId).MemberRole));
+                    groupsOfUser.Add(group);
                 }
             }
+
             return groupsOfUser;
         }
 

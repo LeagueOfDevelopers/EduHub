@@ -16,6 +16,6 @@ namespace EduHubLibrary.Facades
         void ChangeStatusOfInvitation(Guid userId, Guid invitationId, InvitationStatus status);
         void Invite(Guid inviterId, Guid invitedId, Guid groupId, MemberRole suggestedRole);
         IEnumerable<Invitation> GetAllInvitationsForUser(Guid userId);
-        IEnumerable<GroupMembership> GetAllGroupsOfUser(Guid userId);
+        IEnumerable<Group> GetAllGroupsOfUser(Guid userId);
     }
 }

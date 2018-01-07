@@ -11,7 +11,7 @@ namespace EduHub.Models
 {
     public class UserResponse
     {
-        public UserResponse(string name, string email, TypeOfUser typeOfUser, bool isTeacher, TeacherProfile teacherProfile, bool isActive, IEnumerable<GroupMembership> groups)
+        public UserResponse(string name, string email, TypeOfUser typeOfUser, bool isTeacher, TeacherProfile teacherProfile, bool isActive, IEnumerable<Group> groups)
         {
             Name = name;
             Email = email;
@@ -28,6 +28,6 @@ namespace EduHub.Models
         public bool IsTeacher { get; set; }
         public TeacherProfile TeacherProfile { get; set; }
         public bool IsActive { get; set; }
-        public IEnumerable<GroupMembership> Groups { get; set; }
+        public IEnumerable<Group> Groups { get; set; }
     }
 }

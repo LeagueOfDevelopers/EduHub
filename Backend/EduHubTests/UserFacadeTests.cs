@@ -50,6 +50,7 @@ namespace EduHubTests
 
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(2, 10, 0, 100));
+
             userFacade.RegUser("Alena", new Credentials("email", "password"), true, TypeOfUser.User, "avatar.ru");
             userFacade.RegUser("Galya", new Credentials("email", "password"), true, TypeOfUser.User, "avatar.ru");
             List<User> listOfUsers = userFacade.GetUsers().ToList();
@@ -58,7 +59,7 @@ namespace EduHubTests
 
             List<string> tags = new List<string>();
             tags.Add("Math");
-            groupFacade.CreateGroup(creator.Id, "Group1", tags, "good group", 5, 0, false, GroupType.MasterClass);
+            groupFacade.CreateGroup(creator.Id, "Group1", tags, "Good group", 5, 0, false, GroupType.MasterClass);
             groupFacade.CreateGroup(creator.Id, "Group2", tags, "The best group!", 7, 0, true, GroupType.Seminar);
             List<Group> listOfGroups = groupFacade.GetGroups().ToList();
             Group testGroup1 = listOfGroups[0];
@@ -67,12 +68,13 @@ namespace EduHubTests
             //Act
             testGroup1.AddMember(creator.Id, testUser.Id);
             testGroup2.AddMember(creator.Id, testUser.Id);
-            List<GroupMembership> expected = new List<GroupMembership>();
-            expected.Add(new GroupMembership(testGroup1, MemberRole.Member));
-            expected.Add(new GroupMembership(testGroup2, MemberRole.Member));
+            List<Group> expected = new List<Group>();
+            expected.Add(testGroup1);
+            expected.Add(testGroup2);
+            List<Group> groups = userFacade.GetAllGroupsOfUser(testUser.Id).ToList();
 
             //Arrange
-            Assert.AreEqual(expected, userFacade.GetAllGroupsOfUser(testUser.Id));
+            Assert.AreEqual(true, expected.SequenceEqual(groups));
         }
     }
 }
