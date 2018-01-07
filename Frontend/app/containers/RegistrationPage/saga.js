@@ -26,9 +26,9 @@ export function getUserIP(username, email, password) {
       name: username,
       email: email,
       password: password,
-      role: 'Участник',
       isTeacher: false,
-      avatarLink: 'string'
+      avatarLink: 'string',
+      inviteCode: 'string'
     })
   }).then(function (response) {
     if(response.ok){
