@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using Loggly.Config;
 using Loggly;
 using Serilog;
@@ -20,7 +19,6 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Swashbuckle.AspNetCore.Examples;
 using System.IO;
 using Microsoft.Extensions.PlatformAbstractions;
-using System.Reflection;
 
 namespace EduHub
 {
@@ -63,7 +61,7 @@ namespace EduHub
                 var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
                 current.IncludeXmlComments(filePath);
             });
-            services.AddCors();
+            //services.AddCors();
             ConfigureSecurity(services);
             StartLoggly();
             if (Configuration.GetValue<bool>("Authorization"))
