@@ -10,6 +10,7 @@ namespace EduHub.Models
     {
         public GroupInfo GroupInfo { get; set; }
 
+
         public MinItemGroupResponse(GroupInfo groupInfo)
         {
             GroupInfo = groupInfo;

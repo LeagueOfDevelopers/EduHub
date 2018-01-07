@@ -29,7 +29,7 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new UserNotFoundException(userId)));
             Group group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
-            return group.Id;
+            return group.GroupInfo.Id;
         }
 
         public Group GetGroup(Guid id)

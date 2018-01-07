@@ -7,6 +7,7 @@ namespace EduHub.Models
 {
     public class EditDescriptionOfGroupRequest
     {
+        /// <summary>New text of description</summary>
         public string NewText { get; set; }
     }
 }

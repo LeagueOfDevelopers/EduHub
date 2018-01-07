@@ -8,6 +8,7 @@ namespace EduHub.Models
 {
     public class GetInvitationsResponse
     {
+        /// <summary>All user's invitations</summary>
         public IEnumerable<Invitation> Invitations { get; set; }
 
         public GetInvitationsResponse(IEnumerable<Invitation> invitations)

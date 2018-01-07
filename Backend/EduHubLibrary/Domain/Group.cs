@@ -15,7 +15,7 @@ namespace EduHubLibrary.Domain
             Ensure.Bool.IsTrue(IsMember(inviterId), nameof(IsMember),
                 opt => opt.WithException(new MemberNotFoundException(inviterId)));
             Ensure.Bool.IsTrue(listOfMembers.Count < GroupInfo.Size, nameof(GroupInfo.Size),
-                opt => opt.WithException(new GroupIsFullException(Id)));
+                opt => opt.WithException(new GroupIsFullException(GroupInfo.Id)));
             var newMember = new Member(invitedId, MemberRole.Member);
             listOfMembers.Add(newMember);
         }
@@ -69,14 +69,11 @@ namespace EduHubLibrary.Domain
 
         internal void ApproveTeacher(User teacher)
         {
-            if (Teacher == null)
-            {
-                Teacher = Ensure.Any.IsNotNull(teacher);
-            }
-            else
-            {
-                throw new TeacherIsAlreadyFoundException();
-            }
+            Ensure.Bool.IsTrue(Teacher == null, nameof(Teacher), 
+                opt => opt.WithException(new TeacherIsAlreadyFoundException()));
+            Ensure.Bool.IsTrue(listOfMembers.Count == GroupInfo.Size, nameof(GroupInfo.Size),
+                opt => opt.WithException(new GroupIsNotFullException(GroupInfo.Id)));
+            Teacher = Ensure.Any.IsNotNull(teacher);
         }
 
         internal void OfferCourse(Guid userId, Course course)
@@ -121,7 +118,6 @@ namespace EduHubLibrary.Domain
         public Group(Guid creatorId, List<Member> toWrite, string title, List<string> tags,
             string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
         {
-            Id = Ensure.Guid.IsNotEmpty(Guid.NewGuid());
             Ensure.Any.IsNotNull(tags);
             Ensure.String.IsNotNullOrWhiteSpace(title);
             Ensure.String.IsNotNullOrWhiteSpace(description);
@@ -130,13 +126,12 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(moneyPerUser);
             Ensure.Any.IsNotNull(groupType);
             bool isActive = true;
-            GroupInfo = new GroupInfo(title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
+            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
         }
 
         public Group(Guid creatorId, string title, List<string> tags,
             string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
         {
-            Id = Ensure.Guid.IsNotEmpty(Guid.NewGuid());
             Ensure.Any.IsNotNull(tags);
             Ensure.String.IsNotNullOrWhiteSpace(title);
             Ensure.String.IsNotNullOrWhiteSpace(description);
@@ -144,12 +139,11 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(groupType);
             Ensure.Any.IsNotNull(moneyPerUser);
             bool isActive = true;
-            GroupInfo = new GroupInfo(title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
+            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
             listOfMembers = new List<Member>();
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);
         }
-        public Guid Id { get; private set; }
         public Chat Chat { get; private set; }
         public GroupInfo GroupInfo { get; private set; }
         private List<Member> listOfMembers;

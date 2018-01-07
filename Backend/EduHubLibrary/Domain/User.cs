@@ -17,7 +17,7 @@ namespace EduHubLibrary.Domain
         public bool IsActive { get; private set; }
         public Guid Id { get; private set; }
         public string AvatarLink { get; private set; }
-        public List<Invitation> listOfInvitation { get; private set; }
+        public List<Invitation> ListOfInvitations { get; private set; }
 
         public User(string name, Credentials credentials, bool isTeacher, TypeOfUser type, string avatarLink)
         {
@@ -29,7 +29,7 @@ namespace EduHubLibrary.Domain
             IsActive = true;
             Id = Guid.NewGuid();
             AvatarLink = avatarLink;
-            listOfInvitation = new List<Invitation>();
+            ListOfInvitations = new List<Invitation>();
         }
 
         public void EditName(string newName)
@@ -74,33 +74,33 @@ namespace EduHubLibrary.Domain
 
         internal void AddInvitation(Invitation newInvitation)
         {
-            listOfInvitation.Add(newInvitation);
+            ListOfInvitations.Add(newInvitation);
         }
 
         internal void AcceptInvitation(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);
             Invitation currentInvitation =
-                Ensure.Any.IsNotNull(listOfInvitation.Find(current => current.Id == invitationId));
+                Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
             currentInvitation.Status = InvitationStatus.Accepted;
         }
         internal void DeclineInvitation(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);
             Invitation currentInvitation =
-                Ensure.Any.IsNotNull(listOfInvitation.Find(current => current.Id == invitationId));
+                Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
             currentInvitation.Status = InvitationStatus.Declined;
         }
 
         internal IEnumerable<Invitation> GetAllInvitation()
         {
-            return listOfInvitation;
+            return ListOfInvitations;
         }
 
         internal Invitation GetInvitationById(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);
-            return Ensure.Any.IsNotNull(listOfInvitation.Find(current => current.Id == invitationId));
+            return Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
         }
     }
 }

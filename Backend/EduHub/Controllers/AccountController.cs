@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using EduHubLibrary.Domain;
 using EduHubLibrary.Common;
 using EduHub.Security;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub.Controllers
 {
@@ -19,6 +12,9 @@ namespace EduHub.Controllers
     [Route("api/account")]
     public class AccountController : Controller
     {
+        /// <summary>
+        /// Adds user to db
+        /// </summary>
         [HttpPost]
         [Route("registration")]
         [SwaggerResponse(200, typeof(RegistrationResponse))]
@@ -29,6 +25,9 @@ namespace EduHub.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Returns user's token and other information
+        /// </summary>
         [HttpPost]
         [Route("login")]
         [SwaggerResponse(200, typeof(LoginRequest))]
@@ -46,7 +45,10 @@ namespace EduHub.Controllers
             return Unauthorized();
         }
 
-        //TODO delete
+        /// <summary>
+        /// Returns all users
+        /// </summary>
+        /// TODO DELETE
         [HttpGet]
         public IActionResult All()
         {

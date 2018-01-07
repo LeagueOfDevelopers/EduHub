@@ -15,7 +15,6 @@ namespace EduHub.Models
             Course = course;
             Teacher = teacher;
         }
-
         public IEnumerable<Member> Members { get; set; }
         public GroupInfo GroupInfo { get; set; }
         public Course Course { get; set; }

@@ -13,6 +13,9 @@ namespace EduHub.Controllers
     [Route("api/group/{idOfGroup}/chat")]
     public class ChatController : Controller
     {
+        /// <summary>
+        /// Sends message to group chat
+        /// </summary>
         [HttpPost]
         [Route("message")]
         public IActionResult SendMessage([FromBody]SendMessageRequest message, [FromRoute]int idOfGroup)
@@ -20,6 +23,9 @@ namespace EduHub.Controllers
             return Ok($"Чату {message.ChatId} было отправлено сообщение '{message.Text}'");
         }
 
+        /// <summary>
+        /// Returns message by id
+        /// </summary>
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(MessageResponse))]
         [Route("message/{idOfMessage}")]
@@ -29,6 +35,9 @@ namespace EduHub.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Edites message by id
+        /// </summary>
         [HttpPut]
         [Route("message/{idOfMessage}")]
         public IActionResult EditMessage([FromBody]EditMessageRequest message,
@@ -38,6 +47,9 @@ namespace EduHub.Controllers
                 $"в чате группы {idOfGroup}");
         }
 
+        /// <summary>
+        /// Deletes message by id
+        /// </summary>
         [HttpDelete]
         [Route("message/{idOfMessage}")]
         public IActionResult DeleteMessage([FromRoute]int idOfGroup, [FromRoute]int idOfMessage)

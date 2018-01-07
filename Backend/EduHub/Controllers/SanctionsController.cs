@@ -11,13 +11,18 @@ namespace EduHub.Controllers
     [Route("api/sanctions")]
     public class SanctionController : Controller
     {
+        /// <summary>
+        /// Applies sanctions for user
+        /// </summary>
         [HttpPost]
         [Route("{idOfUser}")]
         public IActionResult ApplySanction([FromRoute] int idOfUser)
         {
             return Ok($"К пользователю {idOfUser} применены санкции");
         }
-
+        /// <summary>
+        /// Anulls sanctions for user
+        /// </summary>
         [HttpDelete]
         [Route("{idOfUser}")]
         public IActionResult AnullSanction([FromRoute] int idOfUser)

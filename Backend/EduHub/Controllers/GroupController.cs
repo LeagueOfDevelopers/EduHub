@@ -18,6 +18,10 @@ namespace EduHub.Controllers
     [Route("api/group")]
     public class GroupController : Controller
     {
+        /// <summary>
+        /// Adds groups with all parameters
+        /// </summary>
+        ///<response code="200">Group Created!</response>
         [Authorize]
         [HttpPost]
         [SwaggerResponse(200, typeof(CreateGroupResponse))]
@@ -35,6 +39,9 @@ namespace EduHub.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Searches groups 
+        /// </summary>
         [HttpPost]
         [Route("search")]
         public IActionResult SearchGroupByTag([FromBody]SearchOfGroupRequest request)
@@ -42,6 +49,10 @@ namespace EduHub.Controllers
             return Ok($"Поиск групп с тегом {request.Tag} осуществлен");
         }
 
+
+        /// <summary>
+        /// Changes group description
+        /// </summary>
         [Authorize]
         [HttpPut]
         [Route("{idOfGroup}")]
@@ -50,6 +61,9 @@ namespace EduHub.Controllers
             return Ok($"Описание группы с id {idOfGroup} изменено на {request.NewText}");
         }
 
+        /// <summary>
+        /// Deletes group
+        /// </summary>
         [Authorize]
         [HttpDelete]
         [Route("{idOfGroup}")]
@@ -57,8 +71,11 @@ namespace EduHub.Controllers
         {
             return Ok($"Группа {idOfGroup} удалена");
         }
-        
-        //TODO delete
+
+        /// <summary>
+        /// Returns all groups without any filters (for now)
+        /// </summary>
+        ///<response code="200">Get your groups</response>
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(MinGroupResponse))]
         public IActionResult All()
@@ -70,6 +87,9 @@ namespace EduHub.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Returns full information about one group
+        /// </summary>
         [HttpGet]
         [Route("{idOfGroup}")]
         [SwaggerResponse(200, Type = typeof(GroupResponse))]

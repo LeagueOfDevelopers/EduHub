@@ -17,6 +17,9 @@ namespace EduHub.Controllers
     [Route("api/group/{groupId}/course")]
     public class CourseController : Controller
     {
+        /// <summary>
+        /// Invites teacher to group
+        /// </summary>
         [Authorize]
         [HttpPost]
         [Route("teacher")]
@@ -30,22 +33,28 @@ namespace EduHub.Controllers
             return Ok($"Преподаватель {teacherId} приглашен");
         }
 
+        /// <summary>
+        /// Accept invitation
+        /// </summary>
         [Authorize]
         [HttpPut]
         [Route("teacher")]
-        public IActionResult AcceptInvintation([FromRoute] Guid groupId)
+        public IActionResult AcceptInvitation([FromRoute] Guid groupId)
         {
             var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
             var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
 
-            Invitation invitation = _userFacade.GetUser(userId).listOfInvitation.Find(o => o.GroupId.Equals(groupId));
+            Invitation invitation = _userFacade.GetUser(userId).ListOfInvitations.Find(o => o.GroupId.Equals(groupId));
             _groupFacade.ApproveTeacher(userId, groupId);
             _userFacade.ChangeStatusOfInvitation(userId, invitation.Id, InvitationStatus.Accepted);
             
             return Ok("Преподаватель принял приглашение");
         }
 
+        /// <summary>
+        /// Rejects invitation
+        /// </summary>
         [HttpDelete]
         [Route("teacher")]
         public IActionResult RejectInvintation([FromRoute] Guid groupId)
@@ -54,11 +63,14 @@ namespace EduHub.Controllers
             string a = Request.Headers["Authorization"];
             var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
 
-            Invitation invitation = _userFacade.GetUser(userId).listOfInvitation.Find(o => o.GroupId.Equals(groupId));
+            Invitation invitation = _userFacade.GetUser(userId).ListOfInvitations.Find(o => o.GroupId.Equals(groupId));
             _userFacade.ChangeStatusOfInvitation(userId, invitation.Id, InvitationStatus.Declined);
             return Ok("Преподаватель отклонил приглашение");
         }
 
+        /// <summary>
+        /// Adds suggesting plan for group
+        /// </summary>
         [HttpPost]
         [Route("curriculum")]
         public IActionResult SuggestCurriculum([FromBody]OfferCurriculum curriculum, [FromRoute] Guid groupId)
@@ -68,6 +80,9 @@ namespace EduHub.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Approves plan for group
+        /// </summary>
         [HttpPut]
         [Route("curriculum/{userId}")]
         public IActionResult ApproveCurriculum([FromRoute] Guid groupId, [FromRoute] Guid userId)
@@ -76,6 +91,9 @@ namespace EduHub.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Rejects plan for group
+        /// </summary>
         [HttpDelete]
         [Route("curriculum")]
         public IActionResult RejectCurriculum([FromRoute] Guid groupId)
@@ -83,12 +101,18 @@ namespace EduHub.Controllers
             return Ok("Учебный план отклонен");
         }
 
+        /// <summary>
+        /// Closes course for group
+        /// </summary>
         [HttpDelete]
         public IActionResult CloseCourse([FromRoute] Guid groupId)
         {
             return Ok("Курс закрыт");
         }
 
+        /// <summary>
+        /// Adds review for teacher by course
+        /// </summary>
         [HttpPost]
         [Route("review")]
         public IActionResult LeaveReview([FromBody]ReviewRequest review, [FromRoute] Guid groupId)

@@ -12,6 +12,9 @@ namespace EduHub.Controllers
     [Route("api/administrate")]
     public class AdminController : Controller
     {
+        /// <summary>
+        /// Generates invitation for admin account
+        /// </summary>
         [HttpPost]
         [Route("{idOfUser}/invitation")]
         public IActionResult GenerateInvitation([FromRoute] int idOfUser)
@@ -19,6 +22,9 @@ namespace EduHub.Controllers
             return Ok($"Приглашение {idOfUser} сгенерировано");
         }
 
+        /// <summary>
+        /// Makes user admin
+        /// </summary>
         [HttpPost]
         [Route("{idOfUser}")]
         public IActionResult AddAdmin([FromRoute] int idOfUser)
@@ -26,6 +32,9 @@ namespace EduHub.Controllers
             return Ok($"Администратор {idOfUser} добавлен");
         }
 
+        /// <summary>
+        /// Makes user regular user (not admin)
+        /// </summary>
         [HttpDelete]
         [Route("{idOfUser}")]
         public IActionResult DeleteAdmin([FromRoute] int idOfUser)

@@ -15,6 +15,9 @@ namespace EduHub.Controllers
     [Route("api/group/{groupId}/member")]
     public class GroupMemberController : Controller
     {
+        /// <summary>
+        /// Invites user to group
+        /// </summary>
         [HttpPost]
         [Route("{inviterId}/invite/{invitedId}")]
         public IActionResult InviteUser([FromRoute] Guid invitedId, [FromRoute] Guid inviterId,
@@ -24,6 +27,9 @@ namespace EduHub.Controllers
             return Ok("Пользователь приглашен");
         }
 
+        /// <summary>
+        /// Changes status of invitation, add user to group
+        /// </summary>
         [HttpPut]
         public IActionResult ChangeStatusOfInvitation([FromBody] ChangeStatusOfInvitationRequest changer)
         {
@@ -31,13 +37,9 @@ namespace EduHub.Controllers
             return Ok("Приглашение принято");
         }
 
-        [HttpPost]
-        [Route("{idOfUser}")]
-        public IActionResult AddMember([FromRoute] int idOfGroup)
-        {
-            return Ok("Пользователь добавлен");
-        }
-
+        /// <summary>
+        /// Deletes member from group
+        /// </summary>
         [HttpDelete]
         [Route("{idOfUser}")]
         public IActionResult DeleteMember([FromRoute] int idOfGroup)

@@ -12,6 +12,9 @@ namespace EduHub.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
+        /// <summary>
+        /// Searches user somehow (for now)
+        /// </summary>
         [HttpPost]
         [Route("search")]
         public IActionResult SearchUser([FromBody]SearchOfUserRequest user)
@@ -19,6 +22,9 @@ namespace EduHub.Controllers
             return Ok($"Поиск пользователя с именем {user.Name} осуществлен");
         }
 
+        /// <summary>
+        /// Reports user somehow (for now)
+        /// </summary>
         [HttpPost]
         [Route("{idOfUser}/report")]
         public IActionResult Report([FromRoute]int idOfUser)

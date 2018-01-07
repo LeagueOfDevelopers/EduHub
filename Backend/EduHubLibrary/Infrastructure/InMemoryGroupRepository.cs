@@ -30,7 +30,7 @@ namespace EduHubLibrary.Infrastructure
         public Group GetGroupById(Guid id)
         {
             Ensure.Guid.IsNotEmpty(id);
-            return Ensure.Any.IsNotNull(listOfGroups.Find(current => current.Id == id), nameof(GetGroupById),
+            return Ensure.Any.IsNotNull(listOfGroups.Find(current => current.GroupInfo.Id == id), nameof(GetGroupById),
                 opt => opt.WithException(new GroupNotFoundException(id)));
         }
 
@@ -43,7 +43,7 @@ namespace EduHubLibrary.Infrastructure
         public void Update(Group group)
         {
             Ensure.Any.IsNotNull(group);
-            var currentGroup = listOfGroups.Find(current => current.Id == group.Id) ?? throw new GroupNotFoundException(group.Id); 
+            var currentGroup = listOfGroups.Find(current => current.GroupInfo.Id == group.GroupInfo.Id) ?? throw new GroupNotFoundException(group.GroupInfo.Id); 
             currentGroup = group;
         }
 

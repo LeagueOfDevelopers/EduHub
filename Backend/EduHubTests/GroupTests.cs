@@ -22,7 +22,7 @@ namespace EduHubTests
             var size = 3;
             var moneyPerUser = 100.0;
             tags.Add("js");
-            GroupInfo info = new GroupInfo(title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             //Assert
@@ -182,7 +182,7 @@ namespace EduHubTests
             User teacher = new User("Sergey", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
             List<string> tags = new List<string>();
             tags.Add("The best group");
-            Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 5, 0, false, GroupType.Seminar);
+            Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
             group.ApproveTeacher(teacher);
@@ -195,16 +195,79 @@ namespace EduHubTests
         [ExpectedException(typeof(TeacherIsAlreadyFoundException))]
         public void TryToApproveAnotherTeacherWithApprovedTeacher_GetException()
         {
-            //Assert
+            //Arrange
             User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
             User newTeacher = new User("Bogdan", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
             List<string> tags = new List<string>();
             tags.Add("The best group");
-            Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 5, 0, false, GroupType.Seminar);
+            Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
             group.ApproveTeacher(approvedTeacher);
             group.ApproveTeacher(newTeacher);
+        }
+
+        [TestMethod]
+        public void TryToOfferCourseWithApprovedTeacher_IsItPossible()
+        {
+            //Arrange
+            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
+            List<string> tags = new List<string>();
+            tags.Add("The best group");
+            Guid creatorId = Guid.NewGuid();
+            Guid user1 = Guid.NewGuid();
+            Guid user2 = Guid.NewGuid();
+            Group group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
+            Course course = new Course("some awesome course");
+            //Act
+            group.AddMember(creatorId, user1);
+            group.AddMember(user1, user2);
+            group.ApproveTeacher(approvedTeacher);
+            group.OfferCourse(approvedTeacher.Id, course);
+            //Assert
+            Assert.IsNotNull(group.Course);
+        }
+
+        [TestMethod]
+        public void TryToStartCourseWithApprovedTeacherAndAllReadyMembers_IsItPossible()
+        {
+            //Arrange
+            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
+            List<string> tags = new List<string>();
+            tags.Add("The best group");
+            Guid creatorId = Guid.NewGuid();
+            Guid user1 = Guid.NewGuid();
+            Guid user2 = Guid.NewGuid();
+            Group group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
+            Course course = new Course("some awesome course");
+            //Act
+            group.AddMember(creatorId, user1);
+            group.AddMember(user1, user2);
+            group.ApproveTeacher(approvedTeacher);
+            group.OfferCourse(approvedTeacher.Id, course);
+            group.AcceptCourse(creatorId);
+            group.AcceptCourse(user1);
+            group.AcceptCourse(user2);
+            //Assert
+            Assert.AreEqual(group.Course.CourseStatus, EduHubLibrary.Domain.Tools.CourseStatus.Started);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(GroupIsNotFullException))]
+        public void TryToApproveTeacherWithNotFullGroup_IsItPossible()
+        {
+            //Arrange
+            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
+            List<string> tags = new List<string>();
+            tags.Add("The best group");
+            Guid creatorId = Guid.NewGuid();
+            Guid user1 = Guid.NewGuid();
+            Guid user2 = Guid.NewGuid();
+            Group group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
+            Course course = new Course("some awesome course");
+            //Act
+            group.AddMember(creatorId, user1);
+            group.ApproveTeacher(approvedTeacher);
         }
     }
 
