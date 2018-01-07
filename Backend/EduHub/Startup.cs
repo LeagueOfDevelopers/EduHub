@@ -35,84 +35,69 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            try
+            
+            StartLoggly();
+            var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
+                Configuration.GetValue<int>("MaxGroupSize"),
+                Configuration.GetValue<double>("MinGroupValue"),
+                Configuration.GetValue<double>("MaxGroupValue"));
+            var userRepository = new InMemoryUserRepository();
+            var groupRepository = new InMemoryGroupRepository();
+            var userFacade = new UserFacade(userRepository, groupRepository);
+            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
+            services.AddSingleton<IUserFacade>(userFacade);
+            services.AddSingleton<IGroupFacade>(groupFacade);
+            services.AddSwaggerGen(current =>
             {
-                StartLoggly();
-                var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
-                    Configuration.GetValue<int>("MaxGroupSize"),
-                    Configuration.GetValue<double>("MinGroupValue"),
-                    Configuration.GetValue<double>("MaxGroupValue"));
-                var userRepository = new InMemoryUserRepository();
-                var groupRepository = new InMemoryGroupRepository();
-                var userFacade = new UserFacade(userRepository, groupRepository);
-                var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
-                services.AddSingleton<IUserFacade>(userFacade);
-                services.AddSingleton<IGroupFacade>(groupFacade);
-                services.AddSwaggerGen(current =>
+                current.SwaggerDoc("v1", new Info
                 {
-                    current.SwaggerDoc("v1", new Info
-                    {
-                        Title = "EduHub API",
-                        Version = "v1"
-                    });
-                    current.AddSecurityDefinition("Bearer", new ApiKeyScheme
-                    {
-                        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                        Name = "Authorization",
-                        In = "header",
-                        Type = "apiKey"
-                    });
-                    current.OperationFilter<ExamplesOperationFilter>();
-                    current.DescribeAllEnumsAsStrings();
-                    var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
-                    current.IncludeXmlComments(filePath);
+                    Title = "EduHub API",
+                    Version = "v1"
                 });
-                ConfigureSecurity(services);
-                if (Configuration.GetValue<bool>("Authorization"))
+                current.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
-                    services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
-                }
-                else
-                {
-                    services.AddMvc(o => {
-                        o.Filters.Add(new AllowAnonymousFilter());
-                        o.Filters.Add(new ExceptionFilter());
-                    });
-                }
-            }
-            catch(Exception e)
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                current.OperationFilter<ExamplesOperationFilter>();
+                current.DescribeAllEnumsAsStrings();
+                var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
+                current.IncludeXmlComments(filePath);
+            });
+            ConfigureSecurity(services);
+            if (Configuration.GetValue<bool>("Authorization"))
             {
-                Log.Error(e, "Fail");
+                services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
+            }
+            else
+            {
+                services.AddMvc(o => {
+                    o.Filters.Add(new AllowAnonymousFilter());
+                    o.Filters.Add(new ExceptionFilter());
+                });
             }
             //services.AddCors();
-           
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            try
-            {
-                app.UseStaticFiles();
-                app.UseSwagger();
+            
+            app.UseSwagger();
 
-                app.UseSwaggerUI(current =>
-                {
-                    current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
-                    current.InjectStylesheet("/swagger-ui/theme-muted.css");
-                });
-                if (env.IsDevelopment())
-                {
-                    app.UseDeveloperExceptionPage();
-                }
-
-                app.UseMvc();
-            }
-            catch (Exception e)
+            app.UseSwaggerUI(current =>
             {
-                Log.Error(e, "Fail");
+                current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
+            });
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
             }
+
+            app.UseMvc();
+            
             /*app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyMethod()
             );*/
