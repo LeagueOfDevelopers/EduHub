@@ -1,4 +1,4 @@
-import { takeEvery, call, put, select, all } from 'redux-saga/effects';
+import { takeEvery, call, put } from 'redux-saga/effects';
 import  config from '../../config';
 import {
   getAssembledGroupsError,
@@ -30,22 +30,28 @@ export function* getAssembledGroupsSaga() {
 }
 
 function getUnassembledGroups() {
-  return fetch(`${config.API_BASE_URL}/group`)
-    .then(res => {
+  return fetch(`${config.API_LOCAL_URL}/group`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => {
       if(res.ok) {
-        const groups = res.json();
-        return groups
+        return res.json();
       }
       return Promise.reject(res.status)
     })
 }
 
 function getAssembledGroups() {
-  return fetch(`${config.API_BASE_URL}/group`)
-    .then(res => {
+  return fetch(`${config.API_LOCAL_URL}/group`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => {
       if(res.ok) {
-        const groups = res.json();
-        return groups
+        return res.json();
       }
       return Promise.reject(res.status)
     })

@@ -41,7 +41,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
     // localStorage.setItem('name', 'qwerty');
     // localStorage.setItem('avatarLink', 'qwerty');
     // localStorage.setItem('token', 'qwerty');
-    location.reload();
+    // location.reload();
   }
 
   render() {

@@ -31,15 +31,15 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
 
     this.state = {
       isPrivate: true,
-      hasTeacher: false,
-      name: "",
+      teacher: {},
+      title: "",
       description: "",
       isActive: true,
       tags: [],
       members: [],
-      totalValue: 0,
+      moneyPerUser: 0,
       size: 0,
-      type: "",
+      groupType: "",
       isInGroup: false,
       inviteVisible: false
     };
@@ -49,6 +49,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
     this.leaveGroup = this.leaveGroup.bind(this);
     this.enterGroup = this.enterGroup.bind(this);
     this.handleVisibleChange = this.handleVisibleChange.bind(this);
+    this.tryInvite = this.tryInvite.bind(this);
   }
 
   handleVisibleChange = (flag) => {
@@ -64,7 +65,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
   );
 
   componentDidMount() {
-    fetch(`${config.API_BASE_URL}/group/1`, {
+    fetch(`${config.API_LOCAL_URL}/group/${this.props.groupId}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
@@ -82,33 +83,38 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
 
   onSetResult(result) {
     this.setState({
-      name: result.name,
+      title: result.groupInfo.title,
       members: result.members,
-      isActive: result.isActive,
-      size: result.size,
-      totalValue: result.totalValue,
-      // type: result.type,
-      tags: result.tags,
-      description: result.description,
-      isPrivate: result.isPrivate,
-      hasTeacher: result.hasTeacher,
+      isActive: result.groupInfo.isActive,
+      size: result.groupInfo.size,
+      moneyPerUser: result.groupInfo.moneyPerUser,
+      groupType: result.groupInfo.groupType,
+      tags: result.groupInfo.tags,
+      description: result.groupInfo.description,
+      isPrivate: result.groupInfo.isPrivate,
+      teacher: result.teacher,
     })
   }
 
-  inviteMember() {
-    if(ReactDOM.findDOMNode(this.inviteInput).value !== '') {
-      fetch(`${config.API_BASE_URL}/group/1/member/${localStorage.getItem('name')}/invite/${ReactDOM.findDOMNode(this.inviteInput).value}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-        .then(response => {
-          if(response.ok) {
-            return response.json();
-          }
-          else throw new Error('Не удалось пригласить пользователя');
-        })
+  tryInvite() {
+    if(this.state.inviteVisible && ReactDOM.findDOMNode(this.inviteInput).value !== '') {
+      this.inviteMember();
+      ReactDOM.findDOMNode(this.inviteInput).value = '';
     }
+  }
+
+  inviteMember() {
+    fetch(`${config.API_BASE_URL}/group/1/member/${localStorage.getItem('name')}/invite/${ReactDOM.findDOMNode(this.inviteInput).value}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then(response => {
+        if(response.ok) {
+          return response.json();
+        }
+        else throw new Error('Не удалось пригласить пользователя');
+      })
   }
 
   leaveGroup() {
@@ -129,8 +135,8 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
               <Col className='md-offset-16px' md={{span: 10}} lg={{span: 7}}>
                 <Row style={{width: 248}}>
                   <Row style={{marginBottom: 26}}>
-                    <h3 style={{margin: 0, fontSize: 22}}>{this.state.name}</h3>
-                    { this.state.hasTeacher ?
+                    <h3 style={{margin: 0, fontSize: 22}}>{this.state.title}</h3>
+                    { this.state.teacher ?
                       (<span style={{color: 'rgba(0,0,0,0.6)'}}>Преподаватель найден</span>)
                       : (<span style={{color: 'rgba(0,0,0,0.6)'}}>Идет поиск преподавателя</span>)
                     }
@@ -142,11 +148,11 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                   </Row>
                   <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
                     <Col>Формат</Col>
-                    <Col>{this.state.type}</Col>
+                    <Col>{this.state.groupType}</Col>
                   </Row>
                   <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
                     <Col>Стоимость</Col>
-                    <Col>{this.state.totalValue} руб.</Col>
+                    <Col>{this.state.moneyPerUser} руб.</Col>
                   </Row>
                   <Row type='flex' justify='flex-start' style={{marginBottom: 12}}>
                     { this.state.isPrivate ?
@@ -159,18 +165,21 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                   <MemberList members={this.state.members} size={this.state.size}/>
                 </Row>
                 <Row className='md-center-container'>
-                  <Dropdown.Button
+                  <Dropdown
                     overlay={this.inviteMenu}
                     onVisibleChange={this.handleVisibleChange}
                     visible={this.state.inviteVisible}
                     trigger={['click']}
-                    size='large'
-                    style={{width: 280, marginLeft: -16}}
-                    type='primary'
-                    onClick={this.inviteMember}
                   >
-                    Пригласить
-                  </Dropdown.Button>
+                    <Button
+                      size='large'
+                      style={{width: 280, marginLeft: -16}}
+                      type='primary'
+                      onClick={this.tryInvite}
+                    >
+                      Пригласить
+                    </Button>
+                  </Dropdown>
                 </Row>
               </Col>
               <Col sm={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 16, offset: 1}}>
@@ -200,15 +209,21 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
 }
 
 GroupPage.propTypes = {
-  name: PropTypes.string,
+  title: PropTypes.string,
   isActive: PropTypes.bool,
   tags: PropTypes.array,
-  type: PropTypes.string,
-  totalValue: PropTypes.number,
-  // private: PropTypes.bool,
+  groupType: PropTypes.string,
+  moneyPerUser: PropTypes.number,
   inviteMember: PropTypes.func,
   leaveGroup: PropTypes.func,
-  description: PropTypes.string
+  description: PropTypes.string,
+  isPrivate: PropTypes.bool,
+  teacher: PropTypes.object,
+  members: PropTypes.array,
+  size: PropTypes.number,
+  isInGroup: PropTypes.bool,
+  inviteVisible: PropTypes.bool,
+  groupId: PropTypes.number
 };
 
 const mapStateToProps = createStructuredSelector({

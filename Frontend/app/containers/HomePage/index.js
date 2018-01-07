@@ -33,33 +33,33 @@ import SigningInForm from 'containers/SigningInForm';
 import {Link} from "react-router-dom";
 import { getAssembledGroups, getUnassembledGroups } from "./actions";
 
-import {getUserIP} from '../RegistrationPage/saga'
 
 const unassembledGroups = [
   {
-    id: '1',
-    name: 'Первая группа',
-    size: 10,
-    members: [],
-    totalValue: 600,
-    type: 'Лекция',
-    tags: ['js', 'react'],
-    isActive: true,
-    description: ''
+    groupInfo: {
+      id: 1,
+      title: 'cdcvvdsc',
+      length: 6,
+      size: 8,
+      moneyPerUser: 600,
+      groupType: 'Lfdsv',
+      tags: ['fds', 'sdf']
+    }
   }
 ];
 
 const assembledGroups = [
   {
-    id: '1',
-    name: 'Первая группа',
-    size: 10,
-    members: [],
-    totalValue: 600,
-    type: 'Лекция',
-    tags: ['js', 'react'],
-    isActive: true,
-    description: ''
+    groupInfo: {
+      id: 2,
+      title: 'cdcvvdsc',
+      length: 6,
+      size: 8,
+      moneyPerUser: 600,
+      groupType: 'Lfdsv',
+      tags: ['fds', 'sdf'],
+      description: 'dadasddas'
+    }
   }
 ];
 
@@ -69,7 +69,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     this.makeTeacher = this.makeTeacher.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-    this.getUser = this.getUser.bind(this);
 
     this.state = {
       signInVisible: false,
@@ -95,9 +94,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   unassembledGroups = (
     <div className='cards-holder'>
-      {this.props.unassembledGroups.map((item) =>
+      {this.props.unassembledGroups.map((item, i) =>
         <Link to={`/group/${item.id}`}>
-          <UnassembledGroupCard {...item}/>
+          <UnassembledGroupCard groupId={item.groupInfo.id} {...item}/>
         </Link>
       )}
     </div>
@@ -105,17 +104,13 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   assembledGroups = (
     <div className='cards-holder'>
-      {this.props.assembledGroups.map((item) =>
+      {this.props.assembledGroups.map((item, i) =>
         <Link to={`/group/${item.id}`}>
-          <AssembledGroupCard {...item}/>
+          <AssembledGroupCard groupId={item.groupInfo.id} {...item}/>
         </Link>
       )}
     </div>
   );
-
-  getUser() {
-    this.setState({user: getUserIP('f','f','f')})
-  }
 
   render() {
     return (
@@ -125,21 +120,20 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             title='Незаполненные группы'
             bordered={false}
             className='unassembled-groups-list font-size-20'
-            extra={<Link to='#' onClick={this.getUser} >Показать больше</Link>}
+            extra={<Link to='#' >Показать больше</Link>}
           >
             {this.props.unassembledGroups.length > 0 ?
               this.unassembledGroups
               : (
                 <div className='cards-holder'>
-                  {unassembledGroups.map((item) =>
+                  {unassembledGroups.map((item, i) =>
                     <Link to={`/group/${item.id}`}>
-                      <UnassembledGroupCard {...item}/>
+                      <UnassembledGroupCard groupId={item.groupInfo.id} {...item}/>
                     </Link>
                   )}
                 </div>
               )
             }
-            <div>{this.state.user}</div>
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
               <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>
@@ -157,9 +151,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               this.assembledGroups
               : (
                 <div className='cards-holder'>
-                  {assembledGroups.map((item) =>
+                  {assembledGroups.map((item, i) =>
                     <Link to={`/group/${item.id}`}>
-                      <AssembledGroupCard {...item}/>
+                      <AssembledGroupCard groupId={item.groupInfo.id} {...item}/>
                     </Link>
                   )}
                 </div>
@@ -179,14 +173,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
 HomePage.propTypes = {
   makeTeacher: PropTypes.func,
-  unassembledGroups: PropTypes.array,
-  assembledGroups: PropTypes.array
+  unassembledGroups: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object
+  ]),
+  assembledGroups: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object
+  ])
 };
-
-// HomePage.defaultProps = {
-//   unassembledGroups: [],
-//   assembledGroups: [],
-// };
 
 const mapStateToProps = createStructuredSelector({
   unassembledGroups: makeSelectUnassembledGroups(),
@@ -195,8 +190,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUnassembledGroups: dispatch(getUnassembledGroups()),
-    getAssembledGroups: dispatch(getAssembledGroups())
+    getUnassembledGroups: () => dispatch(getUnassembledGroups()),
+    getAssembledGroups: () => dispatch(getAssembledGroups())
   };
 }
 

@@ -9,7 +9,7 @@ import {
 const initialState = fromJS({
   loading: false,
   error: false,
-  currentUser: localStorage.getItem('name')
+  currentUser: null
 });
 
 function appReducer(state = initialState, action) {
@@ -22,10 +22,9 @@ function appReducer(state = initialState, action) {
     case LOAD_CURRENT_USER_SUCCESS:
       return () => {
         state
-          .set('loading', false);
-        localStorage.setItem('name', `${action.name}`);
-        localStorage.setItem('avatarLink', `${action.avatarLink}`);
-        localStorage.setItem('token', `${action.token}`);
+          .set('loading', false)
+          .set('error', false)
+          .set('currentUser', action.user)
       };
     case LOAD_CURRENT_USER_ERROR:
       return state

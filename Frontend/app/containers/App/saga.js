@@ -7,7 +7,7 @@ import {loadCurrentUserError, loadCurrentUserSuccess} from './actions';
 // Individual exports for testing
 function* loginSaga(action) {
     try {
-      const userData = call(getUserData(action.email, action.password));
+      const userData = call(getUserData, action.email, action.password);
       const name = userData.name;
       const avatarLink = userData.avatarLink;
       const token = userData.token;
@@ -19,11 +19,10 @@ function* loginSaga(action) {
 }
 
 function getUserData(email, password) {
-  fetch(`${config.API_BASE_URL}/account/login`, {
+  fetch(`${config.API_LOCAL_URL}/account/login`, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json-patch+json'
     },
     body: JSON.stringify({
       email: email,
