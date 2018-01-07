@@ -56,10 +56,10 @@ namespace EduHub
                     In = "header",
                     Type = "apiKey"
                 });
-                current.OperationFilter<ExamplesOperationFilter>();
+                //current.OperationFilter<ExamplesOperationFilter>();
                 current.DescribeAllEnumsAsStrings();
-                var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
-                current.IncludeXmlComments(filePath);
+                //var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
+                //current.IncludeXmlComments(filePath);
             });
             //services.AddCors();
             ConfigureSecurity(services);
