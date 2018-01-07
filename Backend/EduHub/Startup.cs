@@ -35,19 +35,19 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            StartLoggly();
-            var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
-                Configuration.GetValue<int>("MaxGroupSize"),
-                Configuration.GetValue<double>("MinGroupValue"),
-                Configuration.GetValue<double>("MaxGroupValue"));
-            var userRepository = new InMemoryUserRepository();
-            var groupRepository = new InMemoryGroupRepository();
-            var userFacade = new UserFacade(userRepository, groupRepository);
-            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
-            services.AddSingleton<IUserFacade>(userFacade);
-            services.AddSingleton<IGroupFacade>(groupFacade);
             try
             {
+                StartLoggly();
+                var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
+                    Configuration.GetValue<int>("MaxGroupSize"),
+                    Configuration.GetValue<double>("MinGroupValue"),
+                    Configuration.GetValue<double>("MaxGroupValue"));
+                var userRepository = new InMemoryUserRepository();
+                var groupRepository = new InMemoryGroupRepository();
+                var userFacade = new UserFacade(userRepository, groupRepository);
+                var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
+                services.AddSingleton<IUserFacade>(userFacade);
+                services.AddSingleton<IGroupFacade>(groupFacade);
                 services.AddSwaggerGen(current =>
                 {
                     current.SwaggerDoc("v1", new Info
@@ -67,24 +67,25 @@ namespace EduHub
                     var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
                     current.IncludeXmlComments(filePath);
                 });
+                ConfigureSecurity(services);
+                if (Configuration.GetValue<bool>("Authorization"))
+                {
+                    services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
+                }
+                else
+                {
+                    services.AddMvc(o => {
+                        o.Filters.Add(new AllowAnonymousFilter());
+                        o.Filters.Add(new ExceptionFilter());
+                    });
+                }
             }
             catch(Exception e)
             {
-                Log.Error(e, "Failed to add swagger gen");
+                Log.Error(e, "Fail");
             }
             //services.AddCors();
-            ConfigureSecurity(services);
-            if (Configuration.GetValue<bool>("Authorization"))
-            {
-                services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
-            }
-            else
-            {
-                services.AddMvc(o => {
-                    o.Filters.Add(new AllowAnonymousFilter());
-                    o.Filters.Add(new ExceptionFilter());
-                });
-            }
+           
 
         }
 
@@ -101,20 +102,21 @@ namespace EduHub
                     current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
                     current.InjectStylesheet("/swagger-ui/theme-muted.css");
                 });
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+
+                app.UseMvc();
             }
             catch (Exception e)
             {
-                Log.Error(e, "Failed to use swagger");
+                Log.Error(e, "Fail");
             }
             /*app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyMethod()
             );*/
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseMvc();
+            
         }
 
         private void StartLoggly()
