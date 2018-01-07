@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Swashbuckle.AspNetCore.Examples;
 using System.IO;
 using Microsoft.Extensions.PlatformAbstractions;
+using System;
 
 namespace EduHub
 {
@@ -34,6 +35,7 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            StartLoggly();
             var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
                 Configuration.GetValue<int>("MaxGroupSize"),
                 Configuration.GetValue<double>("MinGroupValue"),
@@ -44,26 +46,34 @@ namespace EduHub
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
-            services.AddSwaggerGen(current => {
-                current.SwaggerDoc("v1", new Info{
-                    Title = "EduHub API",
-                    Version = "v1"
-                });
-                current.AddSecurityDefinition("Bearer", new ApiKeyScheme
+            try
+            {
+                services.AddSwaggerGen(current =>
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey"
+                    current.SwaggerDoc("v1", new Info
+                    {
+                        Title = "EduHub API",
+                        Version = "v1"
+                    });
+                    current.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                        Name = "Authorization",
+                        In = "header",
+                        Type = "apiKey"
+                    });
+                    current.OperationFilter<ExamplesOperationFilter>();
+                    current.DescribeAllEnumsAsStrings();
+                    var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
+                    current.IncludeXmlComments(filePath);
                 });
-                current.OperationFilter<ExamplesOperationFilter>();
-                current.DescribeAllEnumsAsStrings();
-                var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
-                current.IncludeXmlComments(filePath);
-            });
+            }
+            catch(Exception e)
+            {
+                Log.Error(e, "Failed to add swagger gen");
+            }
             //services.AddCors();
             ConfigureSecurity(services);
-            StartLoggly();
             if (Configuration.GetValue<bool>("Authorization"))
             {
                 services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
@@ -81,13 +91,21 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseStaticFiles();
-            app.UseSwagger();
+            try
+            {
+                app.UseStaticFiles();
+                app.UseSwagger();
 
-            app.UseSwaggerUI(current => { 
-                current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
-                current.InjectStylesheet("/swagger-ui/theme-muted.css");
-            });
+                app.UseSwaggerUI(current =>
+                {
+                    current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
+                    current.InjectStylesheet("/swagger-ui/theme-muted.css");
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Failed to use swagger");
+            }
             /*app.UseCors(
                 options => options.AllowAnyOrigin().AllowAnyMethod()
             );*/
