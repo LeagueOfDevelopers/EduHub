@@ -5,6 +5,7 @@ using EnsureThat;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Common;
 using System.Linq;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Facades
 {
@@ -82,6 +83,20 @@ namespace EduHubLibrary.Facades
             Ensure.Guid.IsNotEmpty(userId);
             User currentUser = _userRepository.GetUserById(userId);
             return currentUser.GetAllInvitation();
+        }
+
+        public IEnumerable<GroupMembership> GetAllGroupsOfUser(Guid userId)
+        {
+            List<GroupMembership> groupsOfUser = new List<GroupMembership>();
+            foreach (Group group in _groupRepository.GetAll())
+            {
+                if (group.GetAllMembers().Any(member => member.UserId==userId))
+                {
+                    groupsOfUser.Add(new GroupMembership(group, 
+                        group.GetAllMembers().First(member => member.UserId == userId).MemberRole));
+                }
+            }
+            return groupsOfUser;
         }
 
         public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository)

@@ -1,5 +1,6 @@
 ﻿using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Tools;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,5 +16,6 @@ namespace EduHubLibrary.Facades
         void ChangeStatusOfInvitation(Guid userId, Guid invitationId, InvitationStatus status);
         void Invite(Guid inviterId, Guid invitedId, Guid groupId, MemberRole suggestedRole);
         IEnumerable<Invitation> GetAllInvitationsForUser(Guid userId);
+        IEnumerable<GroupMembership> GetAllGroupsOfUser(Guid userId);
     }
 }

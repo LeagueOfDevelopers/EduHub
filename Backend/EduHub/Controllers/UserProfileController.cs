@@ -84,10 +84,11 @@ namespace EduHub.Controllers
 
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(UserResponse))]
-        public IActionResult GetProfile([FromRoute] Guid idOfUser)
+        public IActionResult GetProfile([FromRoute]Guid userId)
         {
-            User user = _userFacade.GetUser(idOfUser);
-            UserResponse response = new UserResponse(user.Name, user.Credentials.Email, user.IsTeacher, user.IsActive);
+            User user = _userFacade.GetUser(userId);
+            UserResponse response = new UserResponse(user.Name, user.Credentials.Email, 
+                user.Type, user.IsTeacher, user.TeacherProfile, user.IsActive, _userFacade.GetAllGroupsOfUser(userId));
             return Ok(response);
         }
 
