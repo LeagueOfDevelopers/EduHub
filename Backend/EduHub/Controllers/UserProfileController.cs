@@ -12,9 +12,10 @@ namespace EduHub.Controllers
     [Route("api/user/{userId}/profile")]
     public class UserProfileController : Controller
     {
-        public UserProfileController(IUserFacade userFacade)
+        public UserProfileController(IUserFacade userFacade, IGroupFacade groupFacade)
         {
             _userFacade = userFacade;
+            _groupFacade = groupFacade;
         }
 
         /// <summary>
@@ -110,6 +111,18 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
+        /// Returns all groups of user
+        /// </summary>
+        [HttpGet]
+        [Route("groups")]
+        public IActionResult GetGroups([FromRoute] Guid userId)
+        {
+            GroupsOfUserResponse response = new GroupsOfUserResponse(
+                _userFacade.GetAllGroupsOfUser(userId), userId, _groupFacade);
+            return Ok(response);
+        }
+
+        /// <summary>
         /// Returns profile for user
         /// </summary>
         [HttpGet]
@@ -118,10 +131,11 @@ namespace EduHub.Controllers
         {
             User user = _userFacade.GetUser(userId);
             UserResponse response = new UserResponse(user.Name, user.Credentials.Email, 
-                user.Type, user.IsTeacher, user.TeacherProfile, user.IsActive, _userFacade.GetAllGroupsOfUser(userId));
+                user.Type, user.IsTeacher, user.TeacherProfile, user.IsActive);
             return Ok(response);
         }
 
         private readonly IUserFacade _userFacade;
+        private readonly IGroupFacade _groupFacade;
     }
 }
