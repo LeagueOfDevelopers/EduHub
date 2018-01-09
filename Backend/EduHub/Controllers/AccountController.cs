@@ -30,7 +30,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("login")]
-        [SwaggerResponse(200, typeof(LoginRequest))]
+        [SwaggerResponse(200, typeof(LoginResponse))]
         public IActionResult Login([FromBody]LoginRequest loginRequest)
         {
             var creditials = Credentials.FromRawData(loginRequest.Email, loginRequest.Password);
@@ -38,7 +38,8 @@ namespace EduHub.Controllers
    
             if (client != null)
             {
-                LoginResponse response = new LoginResponse(client.Name, client.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
+                
+                LoginResponse response = new LoginResponse(client.Name, client.Credentials.Email,client.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
                 return Ok(response);
             }
 
