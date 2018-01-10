@@ -63,7 +63,7 @@ namespace EduHub
                 });
                 current.OperationFilter<ExamplesOperationFilter>();
                 current.DescribeAllEnumsAsStrings();
-                var filePath = "Eduhub.xml";
+                var filePath = "../Eduhub.xml";
                 current.IncludeXmlComments(filePath);
             });
             ConfigureSecurity(services);
