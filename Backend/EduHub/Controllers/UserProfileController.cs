@@ -5,11 +5,13 @@ using EduHub.Models;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Domain;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub.Controllers
 {
     [Produces("application/json")]
     [Route("api/user/{userId}/profile")]
+    [Authorize]
     public class UserProfileController : Controller
     {
         public UserProfileController(IUserFacade userFacade, IGroupFacade groupFacade)
@@ -115,6 +117,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpGet]
         [Route("groups")]
+        [SwaggerResponse(200, Type = typeof(GroupsOfUserResponse))]
         public IActionResult GetGroups([FromRoute] Guid userId)
         {
             GroupsOfUserResponse response = new GroupsOfUserResponse(

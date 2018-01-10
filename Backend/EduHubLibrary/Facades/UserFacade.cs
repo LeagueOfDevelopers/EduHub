@@ -23,6 +23,8 @@ namespace EduHubLibrary.Facades
 
         public Guid RegUser(string username, Credentials credentials, bool IsTeacher, TypeOfUser type, string avatarLink)
         {
+            Ensure.Bool.IsTrue(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
+                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException()));
             User user = new User(username, credentials, IsTeacher, type, avatarLink);
             _userRepository.Add(user);
             return user.Id;
