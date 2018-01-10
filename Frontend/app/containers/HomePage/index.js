@@ -33,6 +33,8 @@ import SigningInForm from 'containers/SigningInForm';
 import {Link} from "react-router-dom";
 import { getAssembledGroups, getUnassembledGroups } from "./actions";
 
+import  config from '../../config';
+
 
 const unassembledGroups = [
   {
@@ -77,8 +79,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   componentDidMount() {
-    this.props.getUnassembledGroups();
-    this.props.getAssembledGroups();
+    // this.props.getUnassembledGroups();
+    // this.props.getAssembledGroups();
+    fetch(`${config.API_LOCAL_URL}`)
   }
 
   makeTeacher() {
@@ -190,8 +193,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUnassembledGroups: () => dispatch(getUnassembledGroups()),
-    getAssembledGroups: () => dispatch(getAssembledGroups())
+    // getUnassembledGroups: () => dispatch(getUnassembledGroups()),
+    // getAssembledGroups: () => dispatch(getAssembledGroups())
   };
 }
 
