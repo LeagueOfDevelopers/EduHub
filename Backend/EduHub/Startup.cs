@@ -63,7 +63,7 @@ namespace EduHub
                 });
                 current.OperationFilter<ExamplesOperationFilter>();
                 current.DescribeAllEnumsAsStrings();
-                var filePath = Path.Combine(PlatformServices.Default.Application.ApplicationBasePath, "EduHub.xml");
+                var filePath = "Eduhub.xml";
                 current.IncludeXmlComments(filePath);
             });
             ConfigureSecurity(services);
