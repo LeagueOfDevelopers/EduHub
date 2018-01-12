@@ -63,8 +63,8 @@ namespace EduHub
                 });
                 current.OperationFilter<ExamplesOperationFilter>();
                 current.DescribeAllEnumsAsStrings();
-                var filePath = Directory.GetCurrentDirectory() + Path.AltDirectorySeparatorChar + "EduHub.xml";
-                current.IncludeXmlComments(filePath);
+                string a = string.Format(@"{0}\EduHub.xml", AppDomain.CurrentDomain.BaseDirectory);
+                current.IncludeXmlComments(string.Format(@"{0}/EduHub.xml", AppDomain.CurrentDomain.BaseDirectory));
             });
             ConfigureSecurity(services);
             if (Configuration.GetValue<bool>("Authorization"))
@@ -86,6 +86,8 @@ namespace EduHub
         {
             
             app.UseSwagger();
+
+            string path = env.ContentRootPath;
 
             app.UseSwaggerUI(current =>
             {
