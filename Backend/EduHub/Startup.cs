@@ -17,8 +17,6 @@ using Loggly;
 using Serilog;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Swashbuckle.AspNetCore.Examples;
-using System.IO;
-using Microsoft.Extensions.PlatformAbstractions;
 using System;
 
 namespace EduHub
@@ -78,13 +76,14 @@ namespace EduHub
                     o.Filters.Add(new ExceptionFilter());
                 });
             }
-            //services.AddCors();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod());
+
             app.UseSwagger();
 
             string path = env.ContentRootPath;
@@ -99,11 +98,6 @@ namespace EduHub
             }
 
             app.UseMvc();
-            
-            /*app.UseCors(
-                options => options.AllowAnyOrigin().AllowAnyMethod()
-            );*/
-            
         }
 
         private void StartLoggly()
