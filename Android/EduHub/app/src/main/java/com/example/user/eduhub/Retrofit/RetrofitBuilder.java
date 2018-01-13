@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RetrofitBuilder {
-    static final String BASE_URL = "http://192.168.1.12:10485/";
+    static final String BASE_URL = "http://85.143.104.47:2411/";
 
     public static EduHubApi getApi() {
         Gson gson = new GsonBuilder()
