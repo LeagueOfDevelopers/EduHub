@@ -1,6 +1,6 @@
 package com.example.user.eduhub.Interfaces;
 
-import com.example.user.eduhub.Classes.User;
+import com.example.user.eduhub.Models.User;
 
 import java.util.ArrayList;
 

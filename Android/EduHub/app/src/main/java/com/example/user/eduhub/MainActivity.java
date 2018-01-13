@@ -1,13 +1,12 @@
 package com.example.user.eduhub;
-
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Fragments.LoginFragment;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
+import com.example.user.eduhub.Models.User;
 
 public class MainActivity extends AppCompatActivity implements IFragmentsActivities {
     FragmentTransaction fTransaction;
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentsActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loginFragment=new LoginFragment();
-        fTransaction=getFragmentManager().beginTransaction();
+        fTransaction=getSupportFragmentManager().beginTransaction();
         fTransaction.add(R.id.fragments_conteiner,loginFragment);
         fTransaction.commit();
 
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements IFragmentsActivit
 
     @Override
     public void switchingFragmets(Fragment fragment) {
-        fTransaction=getFragmentManager().beginTransaction();
+        fTransaction=getSupportFragmentManager().beginTransaction();
         fTransaction.replace(R.id.fragments_conteiner,fragment);
         fTransaction.addToBackStack(null);
         fTransaction.commit();

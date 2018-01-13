@@ -1,7 +1,6 @@
 package com.example.user.eduhub.Interfaces;
 
-import com.example.user.eduhub.Classes.Group;
-import com.example.user.eduhub.Fragments.CreateGroupFragment;
+import com.example.user.eduhub.Models.Group.GroupInfo;
 
 import java.util.ArrayList;
 
@@ -10,6 +9,6 @@ import java.util.ArrayList;
  */
 
 public interface IGroupActivities {
-     boolean CreateGroup (Group group);
-     ArrayList<Group> loadGroups();
+     boolean CreateGroup (GroupInfo group);
+     ArrayList<GroupInfo> loadGroups();
 }

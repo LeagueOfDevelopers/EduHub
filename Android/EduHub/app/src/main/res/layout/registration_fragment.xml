@@ -26,7 +26,7 @@
             android:layout_alignStart="@+id/registr_email"
             android:layout_below="@+id/registr_email"
             android:ems="10"
-            android:hint="Password"
+            android:hint="Пароль"
             android:inputType="textPassword" />
 
         <Button
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="Submit" />
+            android:text="Подтвердить" />
 
         <EditText
             android:id="@+id/registr_login"
@@ -46,17 +46,27 @@
             android:layout_alignRight="@+id/registr_email"
             android:layout_marginTop="34dp"
             android:ems="10"
-            android:hint="Login"
+            android:hint="Логин"
             android:inputType="textPersonName" />
 
         <CheckBox
             android:id="@+id/teacher_or_not"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
-            android:layout_alignLeft="@+id/registr_password"
-            android:layout_alignStart="@+id/registr_password"
-            android:layout_below="@+id/registr_password"
+            android:layout_alignLeft="@+id/inviteCode"
+            android:layout_alignStart="@+id/inviteCode"
+            android:layout_below="@+id/inviteCode"
             android:layoutDirection="rtl"
             android:text="Преподаватель:" />
+        <EditText
+            android:id="@+id/inviteCode"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_alignLeft="@+id/registr_password"
+            android:layout_below="@+id/registr_password"
+            android:layout_alignRight="@+id/registr_password"
+            android:hint="Код приглашения"
+
+            />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

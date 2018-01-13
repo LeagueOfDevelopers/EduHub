@@ -1,4 +1,4 @@
-package com.example.user.eduhub.Models;
+package com.example.user.eduhub.Models.Registration;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

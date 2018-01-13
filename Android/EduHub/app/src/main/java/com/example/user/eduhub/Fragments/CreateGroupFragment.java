@@ -6,21 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.user.eduhub.Adapters.GroupAdapter;
 import com.example.user.eduhub.Adapters.SpinnerAdapter;
-import com.example.user.eduhub.Classes.Group;
+
+import com.example.user.eduhub.Models.Group.GroupInfo;
 import com.example.user.eduhub.Classes.TypeOfEducation;
-import com.example.user.eduhub.Fakes.FakeGroupActivities;
 import com.example.user.eduhub.R;
 
-import java.util.ArrayList;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,13 +27,13 @@ import java.util.regex.Pattern;
  */
 
 public class CreateGroupFragment extends Fragment {
-Group newGroup;
-ArrayList<String> tags=new ArrayList<>();
+GroupInfo newGroup;
+String[] tags;
 TypeOfEducation type;
 boolean privacy;
     Spinner spinner;
     SpinnerAdapter adapter;
-FakeGroupActivities fakeGroupActivities=new FakeGroupActivities();
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.create_group_fragment, null);
@@ -71,8 +69,9 @@ FakeGroupActivities fakeGroupActivities=new FakeGroupActivities();
             public void onClick(View view) {
               if(!nameOfGroup.getText().toString().equals("")&&!cost.getText().toString().equals("")&&!maxParticipants.getText().toString().equals("")&&type!=null&&!editTags.getText().toString().equals("")){
                  String[] str=editTags.getText().toString().split(" ");
-                  for (String tag:str) {
-                      tags.add(tag);
+                 tags=new String[str.length];
+                  for(int i=0;i<str.length;i++){
+                      tags[i]=str[i];
                   }
                   if (checkBox.isChecked()) {
                       privacy=true;
@@ -89,14 +88,14 @@ FakeGroupActivities fakeGroupActivities=new FakeGroupActivities();
 
 
 
-                  newGroup=new Group(nameOfGroup.getText().toString(),Integer.parseInt(maxParticipants.getText().toString()),tags,Integer.parseInt(cost.getText().toString()),type,privacy);
-                  boolean flag=fakeGroupActivities.CreateGroup(newGroup);
+                 // newGroup=new GroupInfo(nameOfGroup.getText().toString(),Integer.parseInt(maxParticipants.getText().toString()),tags,Integer.parseInt(cost.getText().toString()),type,privacy);
+                  /*
                   if(flag){
                       MakeToast("Группа создана успешно");
                   }
                   else{
                       MakeToast("Такое название занято или чтото другое");
-                  }
+                  }*/
                   }
               }else{
                   MakeToast("Ошибка.заполните все поля.");

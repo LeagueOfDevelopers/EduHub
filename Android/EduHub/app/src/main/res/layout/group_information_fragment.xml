@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/members"
+            android:layout_width="40dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="137dp"/>
+        <TextView
+            android:id="@+id/cost"
+            android:layout_width="40dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="213dp"/>
+        <TextView
+            android:id="@+id/tags"
+            android:layout_below="@id/members"
+            android:layout_width="match_parent"
+            android:layout_height="13dp"
+            android:textAlignment="center"
+            android:textSize="7dp"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/tags"
+            android:text="Описание" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/discription"
+            android:layout_below="@+id/title"/>
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

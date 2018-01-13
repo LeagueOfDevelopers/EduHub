@@ -1,7 +1,8 @@
 package com.example.user.eduhub.Fakes;
 
-import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Interfaces.IUserRepository;
+import com.example.user.eduhub.Models.User;
+import com.example.user.eduhub.R;
 
 import java.util.ArrayList;
 
@@ -12,12 +13,8 @@ import java.util.ArrayList;
 public class TestUserRep implements IUserRepository {
     @Override
     public ArrayList<User> LoadUsers() {
-        ArrayList<User> users=new ArrayList<>();
-        User user=new User();
-        user.setEmail("1");
-        user.setPassword("1");
-        users.add(user);
-        return users ;
+
+        return null;
     }
 
     @Override

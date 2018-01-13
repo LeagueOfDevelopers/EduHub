@@ -11,16 +11,21 @@ import java.util.Date;
  */
 
 public class FakeMessageRep implements IMesasgeRepository {
+    private ArrayList<Message> messages;
     @Override
     public ArrayList<Message> LoadMessages() {
-        ArrayList<Message> messages=new ArrayList<>();
-        messages.add(new Message("Ярослав","Админ","Добро пожаловать в едухаб!",new Date()));
+
 
         return messages;
     }
 
     @Override
     public boolean SaveNewMessage(Message newMessage) {
+        messages.add(newMessage);
 return  true;
+    }
+    public FakeMessageRep(){
+        messages=new ArrayList<>();
+        messages.add(new Message("Ярослав","Админ","Добро пожаловать в едухаб!",new Date()));
     }
 }

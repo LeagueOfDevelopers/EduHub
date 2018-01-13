@@ -12,8 +12,8 @@ import android.widget.ImageButton;
 
 import com.example.user.eduhub.Adapters.MessageAdapter;
 import com.example.user.eduhub.Classes.Message;
-import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Fakes.FakeMessageRep;
+import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.R;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class Chat extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!editTextMessage.getText().toString().equals("")){
-                    Message newMessage=new Message(user.getName(),user.getRole(),editTextMessage.getText().toString(),new Date());
+                    /*Message newMessage=new Message(user.getName(),user.getRole(),editTextMessage.getText().toString(),new Date());
                    boolean flag= messageRep.SaveNewMessage(newMessage);
                     if(flag){
                         messages.clear();
@@ -56,7 +56,7 @@ public class Chat extends Fragment {
                         adapter.notifyDataSetChanged();
 
 
-                    }
+                    }*/
                 }
             }
         });

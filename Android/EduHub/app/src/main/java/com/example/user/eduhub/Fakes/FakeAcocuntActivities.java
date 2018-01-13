@@ -1,7 +1,7 @@
 package com.example.user.eduhub.Fakes;
 
-import com.example.user.eduhub.Classes.User;
 import com.example.user.eduhub.Interfaces.IAccountActivities;
+import com.example.user.eduhub.Models.User;
 
 /**
  * Created by User on 23.12.2017.
@@ -10,11 +10,7 @@ import com.example.user.eduhub.Interfaces.IAccountActivities;
 public class FakeAcocuntActivities implements IAccountActivities {
     @Override
     public void UserLogin(String email, String password ) {
-        User user=new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRole("Admin");
-        user.setName(email);
+
 
     }
 

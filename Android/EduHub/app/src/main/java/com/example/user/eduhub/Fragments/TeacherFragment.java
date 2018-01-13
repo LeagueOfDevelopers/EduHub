@@ -1,6 +1,5 @@
 package com.example.user.eduhub.Fragments;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,11 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.example.user.eduhub.Adapters.GroupAdapter;
-import com.example.user.eduhub.Classes.Group;
+import com.example.user.eduhub.Models.Group.Group;
+import com.example.user.eduhub.Models.Group.GroupInfo;
 import com.example.user.eduhub.MainActivity;
 import com.example.user.eduhub.R;
 
@@ -36,7 +35,7 @@ public class TeacherFragment extends android.support.v4.app.Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(llm);
-        GroupAdapter adapter=new GroupAdapter(groups);
+        GroupAdapter adapter=new GroupAdapter(groups,getActivity());
         recyclerView.setAdapter(adapter);
 
         btn.setOnClickListener(new View.OnClickListener() {

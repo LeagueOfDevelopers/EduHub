@@ -1,17 +1,23 @@
 package com.example.user.eduhub.Adapters;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.user.eduhub.Classes.Group;
+import com.example.user.eduhub.Models.Group.Group;
+import com.example.user.eduhub.Models.Group.GroupInfo;
+import com.example.user.eduhub.GroupActivity;
+import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.R;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by user on 13.12.2017.
@@ -19,8 +25,11 @@ import java.util.Date;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder>{
     private ArrayList<Group> groups;
-    public GroupAdapter(ArrayList<Group> groups){
+    private Activity activity;
+    private User user;
+    public GroupAdapter(ArrayList<Group> groups, Activity activity){
         this.groups=groups;
+        this.activity=activity;
     }
     @Override
     public GroupViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,12 +39,22 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     }
 
     @Override
-    public void onBindViewHolder(GroupViewHolder holder, int position) {
-        holder.name.setText(groups.get(position).getName());
-        holder.users.setText(groups.get(position).getUsersNow()+"/"+groups.get(position).getMaxUsers());
-        holder.cost.setText("$"+groups.get(position).getCost());
-        holder.tags.setText(groups.get(position).getTags().toString());
-        holder.typeOdEducation.setText(groups.get(position).getTypeOfEducation().toString());
+    public void onBindViewHolder(GroupViewHolder holder, final int position) {
+        holder.name.setText(groups.get(position).getGroupInfo().getTitle());
+        holder.users.setText(0+"/"+groups.get(position).getGroupInfo().getSize());
+        holder.cost.setText("$"+groups.get(position).getGroupInfo().getMoneyPerUser());
+        holder.tags.setText(groups.get(position).getGroupInfo().getTags().toString());
+        holder.typeOfEducation.setText(String.valueOf(groups.get(position).getGroupInfo().getGroupType()));
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Group group=groups.get(position);
+                Log.d("gROUPiD",group.getGroupInfo().getId());
+                Intent intent = new Intent(activity, GroupActivity.class);
+                intent.putExtra("group",group);
+                activity.startActivity(intent);
+            }
+        });
 
     }
 
@@ -50,7 +69,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
     public static class GroupViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
-        TextView typeOdEducation;
+        TextView typeOfEducation;
         TextView name;
         TextView users;
         TextView tags;
@@ -62,7 +81,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
             users=itemView.findViewById(R.id.participants);
             tags=itemView.findViewById(R.id.tags);
             cost=itemView.findViewById(R.id.cost);
-            typeOdEducation=itemView.findViewById(R.id.type_of_education);
+            typeOfEducation=itemView.findViewById(R.id.type_of_education);
+            cv=itemView.findViewById(R.id.group_card);
 
 
 
@@ -72,6 +92,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
 
 }
+
 }
 
 

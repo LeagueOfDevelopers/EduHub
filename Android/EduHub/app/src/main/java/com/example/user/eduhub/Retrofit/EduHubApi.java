@@ -1,13 +1,20 @@
 package com.example.user.eduhub.Retrofit;
 
+import com.example.user.eduhub.Models.Group.GetGroupsModel;
+import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.LoginModel;
-import com.example.user.eduhub.Models.RegistrationModel;
-import com.example.user.eduhub.Models.RegistrationResponseModel;
-import com.google.gson.Gson;
+import com.example.user.eduhub.Models.User;
+import com.example.user.eduhub.Models.Registration.RegistrationModel;
+import com.example.user.eduhub.Models.Registration.RegistrationResponseModel;
 
-import retrofit2.Call;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by user on 16.12.2017.
@@ -15,7 +22,14 @@ import retrofit2.http.POST;
 
 public interface EduHubApi {
     @POST("/api/account/registration")
-    Call<RegistrationResponseModel> userRegistration(@Body RegistrationModel registrationModel);
+    Observable<RegistrationResponseModel> userRegistration(@Body RegistrationModel registrationModel);
     @POST("/api/account/login")
-    Call<String> userLogin(@Body LoginModel loginModel);
+    Single<User> userLogin(@Body LoginModel loginModel);
+    @GET("/api/group")
+    Observable<GetGroupsModel> getGroups();
+    @GET("/api/group/{idOfGroup}")
+    Observable<Group> getInformationAbotGroup(@Path("idOfGroup")String id);
+    @POST("/api/group/{groupId}/member/{inviterId}/invite/{invitedId}")
+    Observable<String> invitedUser(@Header("Authorization") String token, @Path("groupId") String groupId, @Path("inviterId") String inviterId, @Path("invitedId") String invitedId);
+
 }

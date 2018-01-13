@@ -5,17 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.user.eduhub.Classes.Message;
-import com.example.user.eduhub.Classes.User;
+import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.R;
 
 import java.util.ArrayList;
-
-import static android.support.annotation.Dimension.DP;
 
 /**
  * Created by User on 22.12.2017.

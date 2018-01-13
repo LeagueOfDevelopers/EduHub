@@ -1,9 +1,9 @@
 package com.example.user.eduhub.Fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
+
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +12,27 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.user.eduhub.Classes.User;
-import com.example.user.eduhub.Interfaces.ICallBack;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
+import com.example.user.eduhub.Models.Registration.RegistrationModel;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Fakes.TestUserRep;
-import com.example.user.eduhub.Retrofit.AccountActivities;
+import com.example.user.eduhub.Retrofit.EduHubApi;
+import com.example.user.eduhub.Retrofit.RetrofitBuilder;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by user on 06.12.2017.
  */
 
-public class RegistrationFragment extends Fragment implements ICallBack {
+public class RegistrationFragment extends Fragment {
     IFragmentsActivities fragmentsActivities;
     TestUserRep testUserRep=new TestUserRep();
-    AccountActivities accountActivities=new AccountActivities(this);
+
     String id;
+    Disposable disposable;
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -43,6 +48,7 @@ public class RegistrationFragment extends Fragment implements ICallBack {
         final EditText password=v.findViewById(R.id.registr_password);
         final EditText login=v.findViewById(R.id.registr_login);
         final CheckBox checkBox=v.findViewById(R.id.teacher_or_not);
+        EditText inviteCode=v.findViewById(R.id.inviteCode);
         Button submit=v.findViewById(R.id.registr_btn);
 
 
@@ -57,8 +63,30 @@ public class RegistrationFragment extends Fragment implements ICallBack {
                     } else{
                         isTeacher=false;
                     }
-                    accountActivities.UserRegistration(email.getText().toString(),password.getText().toString(),login.getText().toString(),isTeacher);
+                    RegistrationModel registrationModel=new RegistrationModel();
+                    registrationModel.setEmail(email.getText().toString());
+                    registrationModel.setName(login.getText().toString());
+                    registrationModel.setPassword(password.getText().toString());
+                    registrationModel.setIsTeacher(isTeacher);
+                    registrationModel.setInviteCode(inviteCode.getText().toString());
+                    registrationModel.setAvatarLink("String");
+                    EduHubApi eduHubApi= RetrofitBuilder.getApi();
+                     disposable=eduHubApi.userRegistration(registrationModel)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    next -> {
+                                    },
+                                    error -> {
+                                        MakeToast("Ошибка");
+                                    },
+                                    ()->{MakeToast("Регистрация прошла успешно");
+                                    LoginFragment fragment=new LoginFragment();
+                                    fragmentsActivities.switchingFragmets(fragment);}
 
+
+
+                            );
 
                 }else{
                    MakeToast("Ошибка.заполните все поля.");
@@ -74,25 +102,11 @@ public class RegistrationFragment extends Fragment implements ICallBack {
                 (s), Toast.LENGTH_LONG);
         toast.show();
     }
-
     @Override
-    public void callBackRegistrate(String id) {
-        this.id=id;
-        MakeToast("Регистрация прошла успешно");
+    public void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 
-    @Override
-    public void callBackRegistrationError(int code) {
 
-    }
-
-    @Override
-    public void callBackLogin(String token) {
-
-    }
-
-    @Override
-    public void callBackLoginError(int code) {
-
-    }
 }
