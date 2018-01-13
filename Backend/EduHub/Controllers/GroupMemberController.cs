@@ -8,6 +8,8 @@ using EduHubLibrary.Facades;
 using Swashbuckle;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using EduHubLibrary.Domain;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub.Controllers
 {
@@ -18,22 +20,29 @@ namespace EduHub.Controllers
         /// <summary>
         /// Invites user to group
         /// </summary>
+        [Authorize]
         [HttpPost]
-        [Route("{inviterId}/invite/{invitedId}")]
-        public IActionResult InviteUser([FromRoute] Guid invitedId, [FromRoute] Guid inviterId,
-            [FromRoute] Guid groupId)
+        [Route("invite/{invitedId}")]
+        public IActionResult InviteUser([FromRoute] Guid invitedId, [FromRoute] Guid groupId)
         {
-            _userFacade.Invite(inviterId, invitedId, groupId, MemberRole.Member);
+            var handler = new JwtSecurityTokenHandler();
+            string a = Request.Headers["Authorization"];
+            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            _userFacade.Invite(userId, invitedId, groupId, MemberRole.Member);
             return Ok("Пользователь приглашен");
         }
 
         /// <summary>
         /// Changes status of invitation, add user to group
         /// </summary>
+        [Authorize]
         [HttpPut]
         public IActionResult ChangeStatusOfInvitation([FromBody] ChangeStatusOfInvitationRequest changer)
         {
-            _userFacade.ChangeStatusOfInvitation(changer.UserId, changer.InvitationId, changer.Status);
+            var handler = new JwtSecurityTokenHandler();
+            string a = Request.Headers["Authorization"];
+            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            _userFacade.ChangeStatusOfInvitation(userId, changer.InvitationId, changer.Status);
             return Ok("Приглашение принято");
         }
 

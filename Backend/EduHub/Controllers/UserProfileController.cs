@@ -6,11 +6,13 @@ using EduHubLibrary.Facades;
 using EduHubLibrary.Domain;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace EduHub.Controllers
 {
     [Produces("application/json")]
-    [Route("api/user/{userId}/profile")]
+    [Route("api/user/profile")]
     [Authorize]
     public class UserProfileController : Controller
     {
@@ -32,11 +34,15 @@ namespace EduHub.Controllers
         /// <summary>
         /// Returns all invitations for user
         /// </summary>
+        [Authorize]
         [HttpGet]
         [Route("invitations")]
         [SwaggerResponse(200, Type = typeof(GetInvitationsResponse))]
-        public IActionResult GetInvitations([FromRoute] Guid userId)
+        public IActionResult GetInvitations()
         {
+            var handler = new JwtSecurityTokenHandler();
+            string a = Request.Headers["Authorization"];
+            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
             IEnumerable<Invitation> invitationsForUser = _userFacade.GetAllInvitationsForUser(userId);
             GetInvitationsResponse response = new GetInvitationsResponse(invitationsForUser);
             return Ok(response);
@@ -115,11 +121,15 @@ namespace EduHub.Controllers
         /// <summary>
         /// Returns all groups of user
         /// </summary>
+        [Authorize]
         [HttpGet]
         [Route("groups")]
         [SwaggerResponse(200, Type = typeof(GroupsOfUserResponse))]
-        public IActionResult GetGroups([FromRoute] Guid userId)
+        public IActionResult GetGroups()
         {
+            var handler = new JwtSecurityTokenHandler();
+            string a = Request.Headers["Authorization"];
+            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
             GroupsOfUserResponse response = new GroupsOfUserResponse(
                 _userFacade.GetAllGroupsOfUser(userId), userId, _groupFacade);
             return Ok(response);
@@ -128,10 +138,14 @@ namespace EduHub.Controllers
         /// <summary>
         /// Returns profile for user
         /// </summary>
+        [Authorize]
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(UserResponse))]
-        public IActionResult GetProfile([FromRoute]Guid userId)
+        public IActionResult GetProfile()
         {
+            var handler = new JwtSecurityTokenHandler();
+            string a = Request.Headers["Authorization"];
+            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
             User user = _userFacade.GetUser(userId);
             UserResponse response = new UserResponse(user.Name, user.Credentials.Email, 
                 user.Type, user.IsTeacher, user.TeacherProfile, user.IsActive);

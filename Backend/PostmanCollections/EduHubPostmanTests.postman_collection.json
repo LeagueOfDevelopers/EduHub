@@ -7,7 +7,24 @@
 	},
 	"item": [
 		{
-			"name": "RegUser",
+			"name": "RegCreatorUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"postman.setEnvironmentVariable(\"creatorId\", jsonData.id);",
+							"",
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -18,7 +35,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\":\"some name\",\n  \"email\":\"some email\",\n  \"password\":\"some password\",\n  \"isTeacher\":false\n}"
+					"raw": "{\r\n  \"name\": \"creator\",\r\n  \"email\": \"creator@creator.creator\",\r\n  \"password\": \"creator123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
 				},
 				"url": {
 					"raw": "{{url}}/api/account/registration",
@@ -36,28 +53,24 @@
 			"response": []
 		},
 		{
-			"name": "GetAllUsers",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/api/account/",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"account",
-						""
-					]
-				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "CreateGroup",
+			"name": "RegInvitedUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"postman.setEnvironmentVariable(\"invitedId\", jsonData.id);",
+							"",
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -68,7 +81,145 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"idOfCreator\":\"15222ac1-d498-411e-98f8-295eedc36373\",\n  \"title\":\"some group\",\n  \"description\":\"some desc\",\n  \"tags\":[\"tag1\", \"tag2\", \"tag3\"],\n  \"totalValue\": 100,\n  \"Size\": 12\n}"
+					"raw": "{\r\n  \"name\": \"invited\",\r\n  \"email\": \"invited@invited.invited\",\r\n  \"password\": \"invited123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/account/registration",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"registration"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "LoginAsCreator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"postman.setEnvironmentVariable(\"creatorToken\", jsonData.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"creator@creator.creator\",\n  \"password\":\"creator123\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/account/login/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"login",
+						""
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "LoginAsInvited",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"postman.setEnvironmentVariable(\"invitedToken\", jsonData.token);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\":\"invited@invited.invited\",\n  \"password\":\"invited123\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/account/login/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"login",
+						""
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "CreateGroup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"postman.setEnvironmentVariable(\"groupId\", jsonData.id);",
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{creatorToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"some Group\",\r\n  \"description\": \"some Description\",\r\n  \"tags\": [\r\n    \"js\",\r\n    \"c#\"\r\n  ],\r\n  \"size\": 3,\r\n  \"moneyPerUser\": 100,\r\n  \"groupType\": 0,\r\n  \"isPrivate\": false\r\n}"
 				},
 				"url": {
 					"raw": "{{url}}/api/group/",
@@ -86,23 +237,198 @@
 			"response": []
 		},
 		{
-			"name": "GetGroups",
+			"name": "InviteUserToGroup",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
 			"request": {
-				"method": "GET",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{creatorToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "{{url}}/api/group/",
+					"raw": "{{url}}/api/group/{{groupId}}/member/invite/{{invitedId}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
 						"group",
-						""
+						"{{groupId}}",
+						"member",
+						"invite",
+						"{{invitedId}}"
 					]
 				},
 				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "GetInvitationsForInvited",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"postman.setEnvironmentVariable(\"invitationId\", jsonData.invitations[0].id);",
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{invitedToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/user/profile/invitations/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"profile",
+						"invitations",
+						""
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "AcceptInvitation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{invitedToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"invitationId\": \"{{invitationId}}\" ,\r\n  \"status\": 2\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/api/group/{{groupId}}/member",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"group",
+						"{{groupId}}",
+						"member"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetGroupsForInvitedUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"var expected = 1;",
+							"pm.test(\"group was added\", function () {",
+							"    var result = jsonData.groups.length;",
+							"     pm.expect(expected).to.equal(result);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{invitedToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/user/profile/groups",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"profile",
+						"groups"
+					]
+				},
+				"description": ""
 			},
 			"response": []
 		}

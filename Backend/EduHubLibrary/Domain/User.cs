@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using EnsureThat;
 using EduHubLibrary.Common;
+using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubLibrary.Domain
 {
@@ -82,6 +83,8 @@ namespace EduHubLibrary.Domain
             Ensure.Guid.IsNotEmpty(invitationId);
             Invitation currentInvitation =
                 Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
+            if (currentInvitation.Status != InvitationStatus.InProgress)
+                throw new InvitationAlreadyChangedException(invitationId);
             currentInvitation.Status = InvitationStatus.Accepted;
         }
         internal void DeclineInvitation(Guid invitationId)
@@ -89,6 +92,8 @@ namespace EduHubLibrary.Domain
             Ensure.Guid.IsNotEmpty(invitationId);
             Invitation currentInvitation =
                 Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
+            if (currentInvitation.Status != InvitationStatus.InProgress)
+                throw new InvitationAlreadyChangedException(invitationId);
             currentInvitation.Status = InvitationStatus.Declined;
         }
 
