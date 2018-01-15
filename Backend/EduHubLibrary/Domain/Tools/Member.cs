@@ -14,7 +14,7 @@ namespace EduHubLibrary.Domain
             AcceptedCourse = false;
         }
 
-        public Guid UserId{ get; private set; }
+        public Guid UserId { get; private set; }
         public MemberRole MemberRole { get; set; }
         public bool Paid { get; set; }
         public bool AcceptedCourse { get; set; }
