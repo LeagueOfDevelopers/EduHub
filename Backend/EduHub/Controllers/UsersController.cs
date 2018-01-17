@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
+using EduHubLibrary.Facades;
+using EduHubLibrary.Domain;
 
 namespace EduHub.Controllers
 {
@@ -19,7 +21,16 @@ namespace EduHub.Controllers
         [Route("search")]
         public IActionResult SearchUser([FromBody]SearchOfUserRequest user)
         {
-            return Ok($"Поиск пользователя с именем {user.Name} осуществлен");
+            if (_userFacade.DoesUserExist(user.Name))
+            {
+                User foundUser = _userFacade.GetUserByName(user.Name);
+                return Ok(new SearchOfUserResponse(foundUser.Name, foundUser.Credentials.Email,
+                    foundUser.IsTeacher, foundUser.IsActive));
+            }
+            else
+            {
+                return Ok($"Пользователь с именем {user.Name} не найден");
+            }
         }
 
         /// <summary>
@@ -30,6 +41,13 @@ namespace EduHub.Controllers
         public IActionResult Report([FromRoute]int idOfUser)
         {
             return Ok($"Жалоба на пользователя добавлена");
+        }
+
+        private readonly IUserFacade _userFacade;
+
+        public UsersController(IUserFacade userFacade)
+        {
+            _userFacade = userFacade;
         }
     }
 }
