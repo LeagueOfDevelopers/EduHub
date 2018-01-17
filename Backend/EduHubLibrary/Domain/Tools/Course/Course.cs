@@ -1,5 +1,7 @@
 ﻿
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Domain.Tools.Course;
+using System.Collections.Generic;
 
 namespace EduHubLibrary.Domain
 {
@@ -7,6 +9,8 @@ namespace EduHubLibrary.Domain
     {
         public string CourseDescription { get; set; }
         public CourseStatus CourseStatus { get; set; }
+        
+        private List<Lesson> Lessons { get; set; }
 
         public Course(string courseDescription)
         {
