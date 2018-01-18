@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using EduHub.Extensions;
 
 namespace EduHub.Controllers
 {
@@ -40,9 +41,8 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, Type = typeof(GetInvitationsResponse))]
         public IActionResult GetInvitations()
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
             IEnumerable<Invitation> invitationsForUser = _userFacade.GetAllInvitationsForUser(userId);
             GetInvitationsResponse response = new GetInvitationsResponse(invitationsForUser);
             return Ok(response);
@@ -127,9 +127,8 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, Type = typeof(GroupsOfUserResponse))]
         public IActionResult GetGroups()
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
             GroupsOfUserResponse response = new GroupsOfUserResponse(
                 _userFacade.GetAllGroupsOfUser(userId), userId, _groupFacade);
             return Ok(response);
@@ -143,9 +142,8 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, Type = typeof(UserResponse))]
         public IActionResult GetProfile()
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
             User user = _userFacade.GetUser(userId);
             UserResponse response = new UserResponse(user.Name, user.Credentials.Email, 
                 user.Type, user.IsTeacher, user.TeacherProfile, user.IsActive);

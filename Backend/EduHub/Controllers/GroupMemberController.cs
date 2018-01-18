@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using EduHubLibrary.Domain;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using EduHub.Extensions;
 
 namespace EduHub.Controllers
 {
@@ -25,9 +26,8 @@ namespace EduHub.Controllers
         [Route("invite/{invitedId}")]
         public IActionResult InviteUser([FromRoute] Guid invitedId, [FromRoute] Guid groupId)
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
             _userFacade.Invite(userId, invitedId, groupId, MemberRole.Member);
             return Ok("Пользователь приглашен");
         }
@@ -39,9 +39,8 @@ namespace EduHub.Controllers
         [HttpPut]
         public IActionResult ChangeStatusOfInvitation([FromBody] ChangeStatusOfInvitationRequest changer)
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
             _userFacade.ChangeStatusOfInvitation(userId, changer.InvitationId, changer.Status);
             return Ok("Приглашение принято");
         }

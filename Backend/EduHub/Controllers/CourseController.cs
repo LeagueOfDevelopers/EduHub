@@ -10,7 +10,7 @@ using EnsureThat;
 using EduHubLibrary.Domain;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
-
+using EduHub.Extensions;
 namespace EduHub.Controllers
 {
     [Produces("application/json")]
@@ -25,9 +25,8 @@ namespace EduHub.Controllers
         [Route("teacher")]
         public IActionResult InviteTeacher([FromBody]Guid teacherId, [FromRoute] Guid groupId)
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
 
             _userFacade.Invite(userId, teacherId, groupId, MemberRole.Teacher);
             return Ok($"Преподаватель {teacherId} приглашен");
@@ -41,9 +40,8 @@ namespace EduHub.Controllers
         [Route("teacher")]
         public IActionResult AcceptInvitation([FromRoute] Guid groupId)
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
 
             Invitation invitation = _userFacade.GetUser(userId).ListOfInvitations.Find(o => o.GroupId.Equals(groupId));
             _groupFacade.ApproveTeacher(userId, groupId);
@@ -59,9 +57,8 @@ namespace EduHub.Controllers
         [Route("teacher")]
         public IActionResult RejectInvintation([FromRoute] Guid groupId)
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
 
             Invitation invitation = _userFacade.GetUser(userId).ListOfInvitations.Find(o => o.GroupId.Equals(groupId));
             _userFacade.ChangeStatusOfInvitation(userId, invitation.Id, InvitationStatus.Declined);

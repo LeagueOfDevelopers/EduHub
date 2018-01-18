@@ -8,6 +8,7 @@ using EduHub.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
+using EduHub.Extensions;
 
 namespace EduHub.Controllers
 {
@@ -23,9 +24,8 @@ namespace EduHub.Controllers
         [Route("message")]
         public IActionResult SendMessage([FromBody]SendMessageRequest message, [FromRoute]int idOfGroup)
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
             return Ok($"Чату {message.ChatId} было отправлено сообщение '{message.Text}' от пользователя {userId}");
         }
 

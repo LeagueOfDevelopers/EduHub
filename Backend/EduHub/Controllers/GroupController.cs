@@ -11,6 +11,7 @@ using System.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using Swashbuckle.AspNetCore.Examples;
 using EduHub.Models.Examples;
+using EduHub.Extensions;
 
 namespace EduHub.Controllers
 {
@@ -28,9 +29,8 @@ namespace EduHub.Controllers
         [SwaggerRequestExample(typeof(CreateGroupRequest), typeof(CreateGroupRequestExample))]
         public IActionResult AddGroup([FromBody]CreateGroupRequest newGroup)
         {
-            var handler = new JwtSecurityTokenHandler();
             string a = Request.Headers["Authorization"];
-            var userId = Guid.Parse(handler.ReadJwtToken(a.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId = a.GetUserId();
             Ensure.Any.IsNotNull(newGroup, nameof(newGroup), 
                 opt=> opt.WithException(new ArgumentNullException(nameof(newGroup))));
             Guid newId =_groupFacade.CreateGroup(userId, newGroup.Title, newGroup.Tags, newGroup.Description,
