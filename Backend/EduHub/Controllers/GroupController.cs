@@ -82,7 +82,7 @@ namespace EduHub.Controllers
         {
             IEnumerable<Group> groups =  _groupFacade.GetGroups();
             List<MinItemGroupResponse> items = new List<MinItemGroupResponse>();
-            groups.ToList().ForEach(g => items.Add(new MinItemGroupResponse(g.GroupInfo)));
+            groups.ToList().ForEach(g => items.Add(new MinItemGroupResponse(g.GroupInfo, _groupFacade.GetMembersOfGroup(g.GroupInfo.Id).Count<Member>())));
             MinGroupResponse response = new MinGroupResponse(items);
             return Ok(response);
         }

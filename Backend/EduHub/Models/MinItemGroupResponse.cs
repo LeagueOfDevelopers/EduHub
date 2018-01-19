@@ -9,11 +9,12 @@ namespace EduHub.Models
     public class MinItemGroupResponse
     {
         public GroupInfo GroupInfo { get; set; }
+        public int NumberOfMembers { get; set; }
 
-
-        public MinItemGroupResponse(GroupInfo groupInfo)
+        public MinItemGroupResponse(GroupInfo groupInfo, int numberOfMembers)
         {
             GroupInfo = groupInfo;
+            NumberOfMembers = numberOfMembers;
         }
     }
 }

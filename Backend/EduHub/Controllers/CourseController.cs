@@ -11,6 +11,8 @@ using EduHubLibrary.Domain;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using EduHub.Extensions;
+using EduHubLibrary.Domain.Tools;
+
 namespace EduHub.Controllers
 {
     [Produces("application/json")]
@@ -104,6 +106,7 @@ namespace EduHub.Controllers
         [HttpDelete]
         public IActionResult CloseCourse([FromRoute] Guid groupId)
         {
+            _groupFacade.GetGroup(groupId).Course.CourseStatus = CourseStatus.Finished;
             return Ok("Курс закрыт");
         }
 
