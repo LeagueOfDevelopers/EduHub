@@ -24,7 +24,10 @@ function appReducer(state = initialState, action) {
         state
           .set('loading', false)
           .set('error', false)
-          .set('currentUser', action.user)
+          .set('currentUser', action.name);
+        localStorage.setItem('name', `${action.name}`);
+        localStorage.setItem('avatarLink', `${action.avatarLink}`);
+        localStorage.setItem('token', `${action.token}`);
       };
     case LOAD_CURRENT_USER_ERROR:
       return state

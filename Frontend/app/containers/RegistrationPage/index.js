@@ -12,7 +12,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {selectRegistrationPage} from './selectors';
+// import {selectRegistrationPage} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import {registrate} from './actions';
@@ -21,7 +21,7 @@ import { Form, Col, Row, Button, Divider, message, Input } from 'antd';
 const FormItem = Form.Item;
 
 import SigningInForm from "../SigningInForm";
-
+import config from '../../config';
 
 
 const tailFormItemLayout = {
@@ -56,13 +56,19 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     super(props);
 
     this.state = {
-      signInVisible: false
+      signInVisible: false,
+      username: '',
+      email: '',
+      password: ''
     };
 
     this.onSignInClick = this.onSignInClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.goBack = this.goBack.bind(this);
     this.registrate = this.registrate.bind(this);
+    this.onHandleUsernameChange = this.onHandleUsernameChange.bind(this);
+    this.onHandleEmailChange = this.onHandleEmailChange.bind(this);
+    this.onHandlePasswordChange = this.onHandlePasswordChange.bind(this);
   }
 
   onSignInClick = () => {
@@ -73,13 +79,32 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.setState({signInVisible: false})
   };
 
-  goBack() {
+  goBack = () => {
     history.back()
-  }
+  };
 
-  registrate() {
-    this.props.signUp(this.username, this.email, this.password);
-  }
+  onHandleUsernameChange = (e) => {
+    this.setState({username: e.target.value})
+  };
+
+  onHandleEmailChange = (e) => {
+    this.setState({email: e.target.value})
+  };
+
+  onHandlePasswordChange = (e) => {
+    this.setState({password: e.target.value})
+  };
+
+  registrate = () => {
+    if(this.state.username !== '' && this.state.email !== '' && this.state.password !== '') {
+      config.USE_GAGS ?
+        message.success('Вы зарегистрированы')
+        :
+        this.props.signUp(this.state.username, this.state.email, this.state.password);
+      // location.replace('/');
+    } else
+      message.error('Введите все данные')
+  };
 
   render() {
     return (
@@ -92,19 +117,19 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
               {...formItemLayout}
               label="Имя"
             >
-              <Input ref={input => this.username = input} placeholder="Так вас будут видеть на сайте"/>
+              <Input value={this.state.username} onChange={this.onHandleUsernameChange} placeholder="Так вас будут видеть на сайте"/>
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Ваш email"
             >
-              <Input ref={input => this.email = input} placeholder="Введите ваш email"/>
+              <Input value={this.state.email} onChange={this.onHandleEmailChange} placeholder="Введите ваш email"/>
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Придумайте пароль"
             >
-              <Input ref={input => this.password = input} type='password' placeholder="Введите пароль"/>
+              <Input value={this.state.password} onChange={this.onHandlePasswordChange} type='password' placeholder="Введите пароль"/>
             </FormItem>
             <Row style={{marginTop: 20, textAlign: 'center'}}>
               <FormItem {...tailFormItemLayout}>

@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import {selectGroupPage} from './selectors';
+// import {selectGroupPage} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import {Col, Row, Button, message, Dropdown, Input, Menu} from 'antd';
@@ -25,23 +25,52 @@ import Chat from 'components/Chat/Loadable';
 import {Link} from "react-router-dom";
 import * as ReactDOM from "react-dom";
 
+import {parseJwt} from "../../app";
+
 export class GroupPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
     this.state = {
+      id: null,
       isPrivate: true,
-      teacher: {},
-      title: "",
-      description: "",
+      teacher: null,
+      title: "Название группы",
+      description: "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+      "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+      "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+      "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+      "Описание группы. Описание группы. ",
       isActive: true,
-      tags: [],
-      members: [],
-      moneyPerUser: 0,
-      size: 0,
-      groupType: "",
+      tags: ['js', 'c#'],
+      members: [
+        {
+          member: {
+            userId: "string",
+            memberRole: "Создатель",
+            paid: true,
+            acceptedCourse: false
+          },
+          name: "Первый пользователь",
+          avatarLink: "string"
+        },
+        {
+          member: {
+            userId: "string",
+            memberRole: "Участник",
+            paid: true,
+            acceptedCourse: false
+          },
+          name: "Второй пользователь",
+          avatarLink: "string"
+        }
+      ],
+      moneyPerUser: 600,
+      size: 10,
+      groupType: "Лекция",
       isInGroup: false,
-      inviteVisible: false
+      inviteVisible: false,
+      userToken: null
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -65,20 +94,20 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
   );
 
   componentDidMount() {
-    fetch(`${config.API_LOCAL_URL}/group/${this.props.groupId}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-      .then(response => {
-        if(response.ok) {
-          return response.json();
+    if(!config.USE_GAGS) {
+      fetch(`${config.API_LOCAL_URL}/group/${this.state.id}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
-        else throw new Error('Не удалось получить группу');
       })
-      .then(result => this.onSetResult(result));
+        .then(response => response.json())
+        .then(result => this.onSetResult(result))
+        .catch(error => error);
+    }
 
-    this.setState({isInGroup: this.state.members.find(member => member.name === localStorage.getItem('name'))})
+    this.setState({userToken: parseJwt(localStorage.getItem('token'))});
+
+    this.setState({isInGroup: this.state.members.find(member => member.userId === this.state.userToken.UserId)})
   }
 
   onSetResult(result) {
@@ -104,17 +133,18 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
   }
 
   inviteMember() {
-    fetch(`${config.API_BASE_URL}/group/1/member/${localStorage.getItem('name')}/invite/${ReactDOM.findDOMNode(this.inviteInput).value}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    })
-      .then(response => {
-        if(response.ok) {
-          return response.json();
+    if(config.USE_GAGS) {
+      message.success('Приглашение отправлено')
+    }
+    else {
+      fetch(`${config.API_BASE_URL}/group/${this.state.id}/member/${this.state.userToken.UserId}/invite/${ReactDOM.findDOMNode(this.inviteInput).value}`, {
+        headers: {
+          'Method': 'POST',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
-        else throw new Error('Не удалось пригласить пользователя');
       })
+        .catch(error => error)
+    }
   }
 
   leaveGroup() {
@@ -190,7 +220,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                   }
                 </Row>
                 <Row style={{marginTop: 42}}>
-                  <Col><h3 style={{margin: 0, fontSize: 18}}>Описание</h3></Col>
+                  <Col><h3 style={{fontSize: 18}}>Описание</h3></Col>
                 </Row>
                 <Row style={{marginBottom: 40}}>
                   <p>

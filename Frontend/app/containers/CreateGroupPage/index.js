@@ -21,6 +21,8 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const {TextArea} = Input;
 
+import config from '../../config';
+import * as ReactDOM from "react-dom";
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -54,20 +56,66 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     super(props);
 
     this.state = {
-      members: []
+      members: [],
+      title: '',
+      size: '',
+      techs: [],
+      type: [],
+      description: '',
+      price: '',
     };
 
     this.createGroup = this.createGroup.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.onHandleTitleChange = this.onHandleTitleChange.bind(this);
+    this.onHandleSizeChange = this.onHandleSizeChange.bind(this);
+    this.onHandleTechsChange = this.onHandleTechsChange.bind(this);
+    this.onHandleDescChange = this.onHandleDescChange.bind(this);
+    this.onHandleTypeChange = this.onHandleTypeChange.bind(this);
+    this.onHandlePriceChange = this.onHandlePriceChange.bind(this);
   }
 
-  createGroup() {
-    message.error('Невозможно создать группу!')
-  }
+  createGroup = () => {
+    if(this.state.title !== '') {
+      config.USE_GAGS ?
+        message.success('Группа создана')
+        :
+        null
+    }
+    else {
+      message.error('Введите название группы')
+    }
+  };
 
-  goBack() {
+  goBack = () => {
     history.back()
-  }
+  };
+
+  onHandleTitleChange = (e) => {
+    this.setState({title: e.target.value})
+  };
+
+  onHandleSizeChange = (e) => {
+    // this.setState({size: e.target.value})
+    console.log(ReactDOM.findDOMNode(this.size).value)
+  };
+
+  onHandleTechsChange = (e) => {
+    // this.setState({techs: e.target.value})
+    console.log(ReactDOM.findDOMNode(this.techs).value)
+  };
+
+  onHandleTypeChange = (e) => {
+    this.setState({type: e.target.value})
+  };
+
+  onHandleDescChange = (e) => {
+    this.setState({description: e.target.value})
+  };
+
+  onHandlePriceChange = (e) => {
+    this.setState({price: e.target.value})
+  };
 
   render() {
     return (
@@ -80,19 +128,19 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               {...formItemLayout}
               label="Название группы"
             >
-              <Input placeholder="Введите название группы"/>
+              <Input value={this.state.title} onChange={this.onHandleTitleChange} placeholder="Введите название группы"/>
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Человек в группе"
             >
-              <InputNumber min={1} placeholder="1"/>
+              <InputNumber ref={input => this.size = input}  onChange={this.onHandleSizeChange} min={1} placeholder="1"/>
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Изучаемые технологии"
             >
-              <Select mode="tags" placeholder="Введите, что хотите изучить">
+              <Select ref={input => this.techs = input}  onChange={this.onHandleTechsChange} mode="tags" placeholder="Введите, что хотите изучить">
                 <Option value="html">html</Option>
                 <Option value="css">css</Option>
                 <Option value="js">js</Option>
@@ -104,7 +152,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               label="Формат занятий"
             >
               <Col span={8}>
-                <Select placeholder="Выберите формат">
+                <Select ref={input => this.type = input} onChange={this.onHandleTypeChange} placeholder="Выберите формат">
                   <Option value="lecture">Лекция</Option>
                   <Option value="webinar">Вебинар</Option>
                   <Option value="seminar">Семинар</Option>
@@ -115,14 +163,14 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               {...formItemLayout}
               label="Описание"
             >
-              <TextArea rows={4} />
+              <TextArea value={this.state.description} onChange={this.onHandleDescChange} rows={4} />
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Стоимость"
             >
               <Col span={6}>
-                <Input />
+                <Input value={this.state.price} onChange={this.onHandlePriceChange}/>
               </Col>
             </FormItem >
             <FormItem

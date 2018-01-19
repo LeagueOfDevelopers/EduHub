@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
 const Search = Input.Search;
 const FormItem = Form.Item;
 import SigningInForm from "../../containers/SigningInForm/index";
-
+import config from '../../config';
 
 const Logo = styled.div`
   font-size: 36px;
@@ -47,11 +47,11 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
 
    acc_menu = (
     <Menu>
-      <Menu.Item key="0">
-        <span>Мой аккаунт</span>
+      <Menu.Item key="0" className='menu-item'>
+        <div>Мой аккаунт</div>
       </Menu.Item>
-      <Menu.Item key="1" className='danger-menu-item'>
-        <span style={{color: 'red'}} onClick={this.logout}>Выйти</span>
+      <Menu.Item key="1" className='danger-menu-item menu-item'>
+        <div style={{color: 'red'}} onClick={this.logout}>Выйти</div>
       </Menu.Item>
     </Menu>
   );

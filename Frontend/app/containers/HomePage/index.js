@@ -79,9 +79,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   componentDidMount() {
-    // this.props.getUnassembledGroups();
-    // this.props.getAssembledGroups();
-    fetch(`${config.API_LOCAL_URL}`)
+    if(!config.USE_GAGS) {
+      this.props.getUnassembledGroups();
+      this.props.getAssembledGroups();
+    }
   }
 
   makeTeacher() {
@@ -98,8 +99,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   unassembledGroups = (
     <div className='cards-holder'>
       {this.props.unassembledGroups.map((item, i) =>
-        <Link to={`/group/${item.id}`}>
-          <UnassembledGroupCard groupId={item.groupInfo.id} {...item}/>
+        <Link to={`/group/${item.groupInfo.id}`}>
+          <UnassembledGroupCard {...item}/>
         </Link>
       )}
     </div>
@@ -108,8 +109,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   assembledGroups = (
     <div className='cards-holder'>
       {this.props.assembledGroups.map((item, i) =>
-        <Link to={`/group/${item.id}`}>
-          <AssembledGroupCard groupId={item.groupInfo.id} {...item}/>
+        <Link to={`/group/${item.groupInfo.id}`}>
+          <AssembledGroupCard {...item}/>
         </Link>
       )}
     </div>
@@ -125,17 +126,17 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             className='unassembled-groups-list font-size-20'
             extra={<Link to='#' >Показать больше</Link>}
           >
-            {this.props.unassembledGroups.length > 0 ?
-              this.unassembledGroups
-              : (
+            {config.USE_GAGS ?
+              (
                 <div className='cards-holder'>
                   {unassembledGroups.map((item, i) =>
-                    <Link to={`/group/${item.id}`}>
-                      <UnassembledGroupCard groupId={item.groupInfo.id} {...item}/>
+                    <Link to={`/group/${item.groupInfo.id}`}>
+                      <UnassembledGroupCard {...item}/>
                     </Link>
                   )}
                 </div>
-              )
+              ) :
+              this.unassembledGroups
             }
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
@@ -150,17 +151,17 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             className='assembled-groups-list font-size-20'
             extra={<Link to='#'>Показать больше</Link>}
           >
-            {this.props.assembledGroups.length > 0 ?
-              this.assembledGroups
-              : (
+            {config.USE_GAGS > 0 ?
+              (
                 <div className='cards-holder'>
                   {assembledGroups.map((item, i) =>
-                    <Link to={`/group/${item.id}`}>
-                      <AssembledGroupCard groupId={item.groupInfo.id} {...item}/>
+                    <Link to={`/group/${item.groupInfo.id}`}>
+                      <AssembledGroupCard {...item}/>
                     </Link>
                   )}
                 </div>
-              )
+              ) :
+              this.assembledGroups
             }
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
@@ -193,8 +194,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    // getUnassembledGroups: () => dispatch(getUnassembledGroups()),
-    // getAssembledGroups: () => dispatch(getAssembledGroups())
+    getUnassembledGroups: () => dispatch(getUnassembledGroups()),
+    getAssembledGroups: () => dispatch(getAssembledGroups())
   };
 }
 

@@ -27,7 +27,7 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
       <div style={{width: 280, boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px'}}>
         <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 2px 6px -2px rgba(0,0,0,0.36)'}}>
           <Col>Участников</Col>
-          <Col>{this.props.members.count + '/' + this.props.size}</Col>
+          <Col>{this.props.members.length + '/' + this.props.size}</Col>
         </Row>
         <div className="member-container">
           <List
@@ -37,11 +37,10 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
                 <List.Item.Meta
                   avatar={
                     <Avatar
-                      icon="user"
-                      style={{backgroundColor: "#3e92ff", color: "rgba(0,0,0,0.65)"}}
+                      src={item.avatarLink}
                     />}
                   title={<Link to="#">{item.name}</Link>}
-                  description={item.role}
+                  description={item.member.memberRole}
                 />
                 {item.role!=='Создатель' ?
                   <Popconfirm title='Удалить участника?' onConfirm={this.confirm} okText="Да" cancelText="Нет">
