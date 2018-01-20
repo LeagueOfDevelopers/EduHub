@@ -28,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/tabs"
-            android:layout_above="@+id/btn"/>
+            android:layout_above="@+id/btn" />
+
         <Button
             android:id="@+id/btn"
             android:layout_width="match_parent"

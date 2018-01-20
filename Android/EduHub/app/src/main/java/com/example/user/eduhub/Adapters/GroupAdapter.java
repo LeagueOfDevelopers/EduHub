@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.user.eduhub.Classes.TypeOfEducation;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.Group.GroupInfo;
 import com.example.user.eduhub.GroupActivity;
@@ -41,10 +42,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     @Override
     public void onBindViewHolder(GroupViewHolder holder, final int position) {
         holder.name.setText(groups.get(position).getGroupInfo().getTitle());
-        holder.users.setText(0+"/"+groups.get(position).getGroupInfo().getSize());
+        holder.users.setText(groups.get(position).getNumberOfMembers()+"/"+groups.get(position).getGroupInfo().getSize());
         holder.cost.setText("$"+groups.get(position).getGroupInfo().getMoneyPerUser());
         holder.tags.setText(groups.get(position).getGroupInfo().getTags().toString());
-        holder.typeOfEducation.setText(String.valueOf(groups.get(position).getGroupInfo().getGroupType()));
+        switch (String.valueOf(groups.get(position).getGroupInfo().getGroupType())){
+            case "1":{holder.typeOfEducation.setText(TypeOfEducation.Lecture.toString());break;}
+            case "2":{holder.typeOfEducation.setText(TypeOfEducation.Seminar.toString());break;}
+            case "3":{holder.typeOfEducation.setText(TypeOfEducation.MasterClass.toString());break;}
+        }
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

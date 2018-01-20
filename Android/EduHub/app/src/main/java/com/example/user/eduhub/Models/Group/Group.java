@@ -14,22 +14,25 @@ public class Group implements Serializable {
 
     @SerializedName("members")
     @Expose
-    private List<Member> members = null;
+    private List<Member_> members;
     @SerializedName("groupInfo")
     @Expose
     private GroupInfo groupInfo;
     @SerializedName("course")
     @Expose
     private Object course;
+    @SerializedName("numberOfMembers")
+    @Expose
+    private Integer numberOfMembers;
     @SerializedName("teacher")
     @Expose
     private Object teacher;
 
-    public List<Member> getMembers() {
+    public List<Member_> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Member> members) {
+    public void setMembers(List<Member_> members) {
         this.members = members;
     }
 
@@ -55,5 +58,13 @@ public class Group implements Serializable {
 
     public void setTeacher(Object teacher) {
         this.teacher = teacher;
+    }
+
+    public Integer getNumberOfMembers() {
+        return numberOfMembers;
+    }
+
+    public void setNumberOfMembers(Integer numberOfMembers) {
+        this.numberOfMembers = numberOfMembers;
     }
 }

@@ -2,17 +2,24 @@ package com.example.user.eduhub.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.user.eduhub.Adapters.EmptyGroupAdapter;
 import com.example.user.eduhub.Adapters.GroupAdapter;
+import com.example.user.eduhub.Fakes.FakeGroupRepository;
+import com.example.user.eduhub.Fakes.FakesButton;
+import com.example.user.eduhub.Interfaces.View.IGroupListView;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.Group.GroupInfo;
 import com.example.user.eduhub.MainActivity;
+import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.R;
 
 import java.util.ArrayList;
@@ -21,9 +28,14 @@ import java.util.ArrayList;
  * Created by user on 14.12.2017.
  */
 
-public class TeacherFragment extends android.support.v4.app.Fragment {
+public class TeacherFragment extends android.support.v4.app.Fragment implements IGroupListView {
     ArrayList<Group> groups;
     RecyclerView recyclerView;
+    SwipeRefreshLayout swipeContainer;
+    GroupsPresenter groupsPresenter=new GroupsPresenter(this);
+    FakeGroupRepository fakeGroupRepository=new FakeGroupRepository(this);
+    FakesButton fakesButton=new FakesButton();
+    EmptyGroupAdapter emptyGroupAdapter=new EmptyGroupAdapter();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,8 +47,23 @@ public class TeacherFragment extends android.support.v4.app.Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(llm);
-        GroupAdapter adapter=new GroupAdapter(groups,getActivity());
-        recyclerView.setAdapter(adapter);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        if(!fakesButton.getCheckButton()){
+
+            groupsPresenter.loadGroups();}else{
+            fakeGroupRepository.loadGroups();
+        }
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(!fakesButton.getCheckButton()){
+                    groupsPresenter.loadGroups();}else{
+                    fakeGroupRepository.loadGroups();
+                }
+            }
+        });
+
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,5 +77,32 @@ public class TeacherFragment extends android.support.v4.app.Fragment {
 
     public void setGroups(ArrayList<Group> groups){
         this.groups=groups;
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void stopLoading() {
+
+    }
+
+    @Override
+    public void getError() {
+
+    }
+
+    @Override
+    public void getGroups(ArrayList<Group> groups) {
+        if(groups==null){
+            recyclerView.setAdapter(emptyGroupAdapter);
+        }else{
+            GroupAdapter adapter=new GroupAdapter(groups,getActivity());
+
+            recyclerView.setAdapter(adapter);
+        }
+        swipeContainer.setRefreshing(false);
     }
 }

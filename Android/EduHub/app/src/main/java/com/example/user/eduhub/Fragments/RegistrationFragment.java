@@ -13,9 +13,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
+import com.example.user.eduhub.Interfaces.View.IRegistrView;
 import com.example.user.eduhub.Models.Registration.RegistrationModel;
+import com.example.user.eduhub.Presenters.RegistrPresenter;
 import com.example.user.eduhub.R;
-import com.example.user.eduhub.Fakes.TestUserRep;
 import com.example.user.eduhub.Retrofit.EduHubApi;
 import com.example.user.eduhub.Retrofit.RetrofitBuilder;
 
@@ -27,12 +28,10 @@ import io.reactivex.schedulers.Schedulers;
  * Created by user on 06.12.2017.
  */
 
-public class RegistrationFragment extends Fragment {
+public class RegistrationFragment extends Fragment implements IRegistrView {
     IFragmentsActivities fragmentsActivities;
-    TestUserRep testUserRep=new TestUserRep();
-
+    RegistrPresenter registrPresenter=new RegistrPresenter(this);
     String id;
-    Disposable disposable;
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -46,7 +45,7 @@ public class RegistrationFragment extends Fragment {
         View v = inflater.inflate(R.layout.registration_fragment, null);
         final EditText email=v.findViewById(R.id.registr_email);
         final EditText password=v.findViewById(R.id.registr_password);
-        final EditText login=v.findViewById(R.id.registr_login);
+        final EditText name=v.findViewById(R.id.registr_login);
         final CheckBox checkBox=v.findViewById(R.id.teacher_or_not);
         EditText inviteCode=v.findViewById(R.id.inviteCode);
         Button submit=v.findViewById(R.id.registr_btn);
@@ -55,43 +54,14 @@ public class RegistrationFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(!email.getText().toString().equals("")&&!password.getText().toString().equals("")&&!login.getText().toString().equals("")){
-                    boolean isTeacher;
-                    if(checkBox.isChecked()){
-                        isTeacher=true;
-                    } else{
-                        isTeacher=false;
-                    }
-                    RegistrationModel registrationModel=new RegistrationModel();
-                    registrationModel.setEmail(email.getText().toString());
-                    registrationModel.setName(login.getText().toString());
-                    registrationModel.setPassword(password.getText().toString());
-                    registrationModel.setIsTeacher(isTeacher);
-                    registrationModel.setInviteCode(inviteCode.getText().toString());
-                    registrationModel.setAvatarLink("String");
-                    EduHubApi eduHubApi= RetrofitBuilder.getApi();
-                     disposable=eduHubApi.userRegistration(registrationModel)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(
-                                    next -> {
-                                    },
-                                    error -> {
-                                        MakeToast("Ошибка");
-                                    },
-                                    ()->{MakeToast("Регистрация прошла успешно");
-                                    LoginFragment fragment=new LoginFragment();
-                                    fragmentsActivities.switchingFragmets(fragment);}
-
-
-
-                            );
-
-                }else{
-                   MakeToast("Ошибка.заполните все поля.");
-
+                boolean isTeacher;
+                if(checkBox.isChecked()){
+                    isTeacher=true;
+                } else{
+                    isTeacher=false;
                 }
+
+                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,"String",inviteCode.getText().toString());
 
             }
         });
@@ -102,11 +72,27 @@ public class RegistrationFragment extends Fragment {
                 (s), Toast.LENGTH_LONG);
         toast.show();
     }
+
+
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        disposable.dispose();
+    public void showLoading() {
+
     }
 
+    @Override
+    public void stopLoading() {
 
+    }
+
+    @Override
+    public void getResponse(Fragment fragment) {
+
+        fragmentsActivities.switchingFragmets(fragment);
+    }
+
+    @Override
+    public void getError() {
+
+    }
 }

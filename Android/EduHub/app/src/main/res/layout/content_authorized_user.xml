@@ -24,10 +24,11 @@
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
-            android:background="@color/metalic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/tabs" />
+            android:layout_below="@id/tabs"
+            android:background="@color/metalic" />
+
 
     </RelativeLayout>
 

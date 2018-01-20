@@ -55,6 +55,7 @@
             android:layout_height="45dp"
             android:layout_alignLeft="@+id/inviteCode"
             android:layout_alignStart="@+id/inviteCode"
+            android:layout_marginLeft="4dp"
             android:layout_below="@+id/inviteCode"
             android:layoutDirection="rtl"
             android:text="Преподаватель:" />

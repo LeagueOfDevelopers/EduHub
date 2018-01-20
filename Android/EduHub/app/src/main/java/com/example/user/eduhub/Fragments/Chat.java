@@ -12,12 +12,10 @@ import android.widget.ImageButton;
 
 import com.example.user.eduhub.Adapters.MessageAdapter;
 import com.example.user.eduhub.Classes.Message;
-import com.example.user.eduhub.Fakes.FakeMessageRep;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.R;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by User on 23.12.2017.
@@ -25,7 +23,7 @@ import java.util.Date;
 
 public class Chat extends Fragment {
     private User user;
-    private FakeMessageRep messageRep=new FakeMessageRep();
+    //private FakeMessageRep messageRep=new FakeMessageRep();
     ArrayList<Message> messages=new ArrayList<>();
     RecyclerView recyclerView;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +35,7 @@ public class Chat extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(llm);
-        messages=messageRep.LoadMessages();
+        //messages=messageRep.LoadMessages();
         final MessageAdapter adapter=new MessageAdapter(messages,user);
         if(messages!=null){
         recyclerView.setAdapter(adapter);}

@@ -2,14 +2,19 @@ package com.example.user.eduhub.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.example.user.eduhub.Fakes.FakeGroupInformationPresenter;
+import com.example.user.eduhub.Fakes.FakesButton;
+import com.example.user.eduhub.Interfaces.View.IGroupView;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.Group.GroupInfo;
+import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 import com.example.user.eduhub.R;
 
 
@@ -18,24 +23,59 @@ import com.example.user.eduhub.R;
  * Created by User on 05.01.2018.
  */
 
-public class GroupInformationFragment extends Fragment {
+public class GroupInformationFragment extends Fragment implements IGroupView {
     private Group group;
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.group_information_fragment, null);
-        TextView members=v.findViewById(R.id.members);
-        TextView cost=v.findViewById(R.id.cost);
-        TextView tags=v.findViewById(R.id.tags);
-        TextView discription=v.findViewById(R.id.discription);
-
-       // members.setText(group.getUsersNow()+"/"+group.getMaxUsers());
-        cost.setText("$"+group.getGroupInfo().getMoneyPerUser());
-        tags.setText(group.getGroupInfo().getTags().toString());
-        discription.setText(group.getGroupInfo().getDescription());
-        return v;
-    }
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    TextView members;
+    TextView cost;
+    TextView tags;
+    TextView discription;
+    SwipeRefreshLayout swipeConteiner;
+    FakesButton fakesButton=new FakesButton();
+    GroupInformationPresenter groupInformationPresenter=new GroupInformationPresenter(this);
+    FakeGroupInformationPresenter fakeGroupInformationPresenter=new FakeGroupInformationPresenter(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        final View v = inflater.inflate(R.layout.group_information_fragment, null);
+        members=v.findViewById(R.id.members);
+        cost=v.findViewById(R.id.cost);
+        tags=v.findViewById(R.id.tags);
+        discription=v.findViewById(R.id.discription);
+        if(!fakesButton.getCheckButton()){
+            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
+        else {
+
+            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+        }
+
+        return v;
+    }
+
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void stopLoading() {
+
+    }
+
+    @Override
+    public void getError() {
+
+    }
+
+    @Override
+    public void getInformationAboutGroup(Group group) {
+        members.setText(group.getNumberOfMembers()+"/"+group.getGroupInfo().getSize());
+        cost.setText("$"+group.getGroupInfo().getMoneyPerUser());
+        tags.setText(group.getGroupInfo().getTags().toString());
+        discription.setText(group.getGroupInfo().getDescription());
     }
 }

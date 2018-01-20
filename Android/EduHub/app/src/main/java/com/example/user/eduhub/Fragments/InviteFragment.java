@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.user.eduhub.Interfaces.IFragmentsActivities;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Retrofit.EduHubApi;
@@ -27,8 +28,14 @@ import io.reactivex.schedulers.Schedulers;
 public class InviteFragment extends Fragment {
     private String groupId;
     private User user;
+    private MainGroupFragment mainGroupFragment;
+    IFragmentsActivities fragmentsActivities;
 
-    public void setUserId(User user) {
+    public void setMainGroupFragment(MainGroupFragment mainGroupFragment) {
+        this.mainGroupFragment = mainGroupFragment;
+    }
+
+    public void setUser(User user) {
         this.user=user;
     }
 
@@ -51,17 +58,13 @@ public class InviteFragment extends Fragment {
                         .subscribe(next->{},
                                 error->{
                                     Log.e("ERROR",error+"");},
-                                ()->{MakeToast("Пользователь приглашен");});
+                                ()->{fragmentsActivities.switchingFragmets(mainGroupFragment);});
 
             }
         });
 
         return v;
     }
-    private void MakeToast(String s){
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
-                (s), Toast.LENGTH_LONG);
-        toast.show();
-    }
+
 
 }

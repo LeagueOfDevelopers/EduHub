@@ -30,20 +30,23 @@
                     android:id="@+id/UserName"
                     android:layout_width="121dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="59dp" />
+                    android:layout_marginLeft="59dp"
+                    android:gravity="center_vertical"/>
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:id="@+id/paid"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="215dp"
-                    android:layout_marginTop="15dp" />
+                    android:layout_centerVertical="true" />
 
                 <TextView
                     android:id="@+id/UserRole"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="276dp"
-                    android:layout_marginRight="10dp" />
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"/>
 
             </RelativeLayout>
 

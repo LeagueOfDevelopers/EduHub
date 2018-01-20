@@ -17,4 +17,8 @@ public class SavedDataRepository {
         user.setEmail(sPref.getString("EMAIL",null));
         return user;
     }
+    public Boolean loadCheckButtonResult(SharedPreferences sPref){
+        Boolean bool=sPref.getBoolean("CheckButton",false);
+        return bool;
+    }
 }

@@ -6,7 +6,7 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.example.user.eduhub"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -32,12 +32,16 @@ android {
 }
 
 dependencies {
+    //noinspection GradleCompatible
+    compile 'com.android.support:support-v4:26.1.0'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
     compile 'com.auth0.android:jwtdecode:1.1.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     compile 'io.reactivex.rxjava2:rxjava:2.1.1'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'de.hdodenhof:circleimageview:2.2.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // ignore if you have already added
     //noinspection GradleCompatible

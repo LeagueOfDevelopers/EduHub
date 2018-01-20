@@ -6,8 +6,9 @@
     <RelativeLayout
         android:background="@color/grey"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp">
         <TextView
             android:id="@+id/members"
             android:layout_width="40dp"
@@ -34,7 +35,7 @@
             android:text="Описание" />
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/discription"
             android:layout_below="@+id/title"/>
 

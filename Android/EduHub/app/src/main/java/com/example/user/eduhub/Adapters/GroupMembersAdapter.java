@@ -1,13 +1,17 @@
 package com.example.user.eduhub.Adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.user.eduhub.Classes.MemberRole;
 import com.example.user.eduhub.Models.Group.Member;
+import com.example.user.eduhub.Models.Group.Member_;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.R;
 
@@ -18,8 +22,8 @@ import java.util.ArrayList;
  */
 
 public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapter.GroupMembersViewHolder> {
-    private ArrayList<Member> members;
-    public GroupMembersAdapter (ArrayList<Member> members){
+    private ArrayList<Member_> members;
+    public GroupMembersAdapter (ArrayList<Member_> members){
         this.members=members;
     }
     @Override
@@ -32,7 +36,18 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
     @Override
     public void onBindViewHolder(GroupMembersViewHolder holder, int i) {
-
+        holder.userImage.setImageResource(R.drawable.ic_launcher_background);
+        Log.e("Error Role",members.get(i).getMember().getMemberRole().toString());
+        switch (members.get(i).getMember().getMemberRole().toString()){
+            case 0+"":{holder.userRole.setText(MemberRole.Default.toString()); break;}
+            case 1+"":{holder.userRole.setText(MemberRole.Member.toString()); break;}
+            case 2+"":{holder.userRole.setText(MemberRole.Teacher.toString());break;}
+            case 3+"":{holder.userRole.setText(MemberRole.Creator.toString()); break;}
+        }
+        holder.userName.setText(members.get(i).getName());
+        if(!members.get(i).getMember().getPaid()){
+            holder.paid.setImageResource(R.drawable.ic_done_black_24dp);
+        }
     }
 
     @Override
@@ -43,10 +58,12 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
     public static class GroupMembersViewHolder extends RecyclerView.ViewHolder{
         ImageView userImage;
+        ImageView paid;
         TextView userName;
         TextView userRole;
         public GroupMembersViewHolder(View itemView) {
             super(itemView);
+            paid=itemView.findViewById(R.id.paid);
             userImage=itemView.findViewById(R.id.UserImage);
             userName=itemView.findViewById(R.id.UserName);
             userRole=itemView.findViewById(R.id.UserRole);
