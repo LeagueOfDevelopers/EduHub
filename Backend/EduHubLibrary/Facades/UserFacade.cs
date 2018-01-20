@@ -11,6 +11,12 @@ namespace EduHubLibrary.Facades
 {
     public class UserFacade : IUserFacade
     {
+        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository)
+        {
+            _userRepository = userRepository;
+            _groupRepository = groupRepository;
+        }
+
         public User GetUser(Guid id)
         {
             return _userRepository.GetUserById(id);
@@ -45,14 +51,16 @@ namespace EduHubLibrary.Facades
             {
                 currentUser.AcceptInvitation(invitationId);
                 Invitation currentInvitation = currentUser.GetInvitationById(invitationId);
-                Group currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
-                currentGroup.AddMember(currentInvitation.FromUser, currentInvitation.ToUser);
+                if (currentInvitation.SuggestedRole == MemberRole.Member)
+                {
+                    Group currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
+                    currentGroup.AddMember(currentInvitation.FromUser, currentInvitation.ToUser);
+                }
             }
             else if (status.Equals(InvitationStatus.Declined))
             {
                 currentUser.DeclineInvitation(invitationId);
             }
-            
         }
 
         public void Invite(Guid inviterId, Guid invitedId, Guid groupId, MemberRole suggestedRole)
@@ -110,14 +118,7 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetAll().Any(user => user.Name.Contains(name));
         }
 
-        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository)
-        {
-            _userRepository = userRepository;
-            _groupRepository = groupRepository;
-        }
-
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
-
     }
 }
