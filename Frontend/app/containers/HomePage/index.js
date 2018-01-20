@@ -47,6 +47,39 @@ const unassembledGroups = [
       groupType: 'Lfdsv',
       tags: ['fds', 'sdf']
     }
+  },
+  {
+    groupInfo: {
+      id: 1,
+      title: 'cdcvvdsc',
+      length: 6,
+      size: 8,
+      moneyPerUser: 600,
+      groupType: 'Lfdsv',
+      tags: ['fds', 'sdf']
+    }
+  },
+  {
+    groupInfo: {
+      id: 1,
+      title: 'cdcvvdsc',
+      length: 6,
+      size: 8,
+      moneyPerUser: 600,
+      groupType: 'Lfdsv',
+      tags: ['fds', 'sdf']
+    }
+  },
+  {
+    groupInfo: {
+      id: 1,
+      title: 'cdcvvdsc',
+      length: 6,
+      size: 8,
+      moneyPerUser: 600,
+      groupType: 'Lfdsv',
+      tags: ['fds', 'sdf']
+    }
   }
 ];
 

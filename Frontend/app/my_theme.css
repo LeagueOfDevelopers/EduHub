@@ -10,8 +10,13 @@
 }
 
 .group-card {
-  width: 290px;
+  width: 260px;
   min-width: 250px;
+}
+
+.profile-card {
+  min-width: 290px;
+  cursor: default;
 }
 
 .ant-form label, .ant-card-body span {
@@ -42,6 +47,12 @@
 
 .danger-menu-item:hover {
   background-color: #ffdcef;
+}
+
+@media screen and (max-width: 992px){
+  .md-center-container .lg-center-container-item {
+    margin-bottom: 40px;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -78,14 +89,22 @@
     margin-left: 10px;
   }
 
+  .xs-groups-tabs {
+    width: 98%;
+  }
+
 }
 
-.group-card > .ant-card-body a {
+.group-card > .ant-card-body a, .user-link {
   color: #757575;
 }
 
-.group-card > .ant-card-body a:hover {
+.group-card > .ant-card-body a:hover, .user-link:hover {
   color: #40a9ff;
+}
+
+.without-border-bottom .ant-card-head{
+  border-bottom: none;
 }
 
 a:focus {
@@ -103,15 +122,25 @@ a:focus {
 
 .cards-holder {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 294px);
+  grid-template-columns: repeat(auto-fill, 260px);
   grid-gap: 30px;
   align-items: center;
   justify-content: center;
 }
 
+.cards-holder-left {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 260px);
+  grid-gap: 30px;
+  align-items: center;
+  justify-content: left;
+}
+
 .font-size-20 .ant-card-head-title {
   font-size: 20px;
 }
+
+
 
 .member-container {
   border-radius: 4px;

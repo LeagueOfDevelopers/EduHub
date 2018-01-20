@@ -21,6 +21,7 @@ import RegistrationPage from '../RegistrationPage';
 import GroupPage from '../GroupPage/Loadable';
 import Header from '../../components/Header';
 import ScrollFix from '../../components/ScrollFix';
+import ProfilePage from '../../containers/ProfilePage/Loadable';
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
           <Route exact path="/" component={HomePage} />
           <Route path='/create_group' component={CreateGroupPage}/>
           <Route path='/registration' component={RegistrationPage}/>
+          <Route path='/profile/:id' component={ProfilePage}/>
           <Route path='/group/:id' component={GroupPage}/>
           <Route path='' component={NotFoundPage} />
         </Switch>

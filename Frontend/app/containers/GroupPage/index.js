@@ -32,7 +32,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
     super(props);
 
     this.state = {
-      id: null,
+      id: this.props.match.params.id,
       isPrivate: true,
       teacher: null,
       title: "Название группы",
@@ -137,7 +137,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
       message.success('Приглашение отправлено')
     }
     else {
-      fetch(`${config.API_BASE_URL}/group/${this.state.id}/member/${this.state.userToken.UserId}/invite/${ReactDOM.findDOMNode(this.inviteInput).value}`, {
+      fetch(`${config.API_BASE_URL}/group/${this.state.id}/member/invite/${ReactDOM.findDOMNode(this.inviteInput).value}`, {
         headers: {
           'Method': 'POST',
           'Authorization': `Bearer ${localStorage.getItem('token')}`

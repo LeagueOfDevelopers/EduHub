@@ -13,6 +13,7 @@ const Search = Input.Search;
 const FormItem = Form.Item;
 import SigningInForm from "../../containers/SigningInForm/index";
 import config from '../../config';
+import {parseJwt} from "../../app";
 
 const Logo = styled.div`
   font-size: 36px;
@@ -48,7 +49,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
    acc_menu = (
     <Menu>
       <Menu.Item key="0" className='menu-item'>
-        <div>Мой аккаунт</div>
+        <Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}><div>Мой аккаунт</div></Link>
       </Menu.Item>
       <Menu.Item key="1" className='danger-menu-item menu-item'>
         <div style={{color: 'red'}} onClick={this.logout}>Выйти</div>
