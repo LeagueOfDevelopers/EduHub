@@ -30,7 +30,7 @@ export function* getAssembledGroupsSaga() {
 }
 
 function getUnassembledGroups() {
-  return fetch(`${config.API_LOCAL_URL}/group`, {
+  return fetch(`${config.API_BASE_URL}/group`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ function getUnassembledGroups() {
 }
 
 function getAssembledGroups() {
-  return fetch(`${config.API_LOCAL_URL}/group`, {
+  return fetch(`${config.API_BASE_URL}/group`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'

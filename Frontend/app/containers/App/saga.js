@@ -28,14 +28,8 @@ function getUserData(email, password) {
       email: email,
       password: password
     })
-  }).then(function (response) {
-    if(response.ok){
-      return response.json();
-    }
-      return Promise.reject(response.status)
-    }).then(function (res) {
-    return res
   })
+    .catch(error => error)
 }
 
 

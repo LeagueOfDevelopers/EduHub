@@ -1,5 +1,6 @@
 export default {
-  API_BASE_URL: 'http://localhost:10486/api',
-  API_LOCAL_URL: 'http://localhost:10486/api',
-  USE_GAGS: true
+  API_BASE_URL: 'http://85.143.104.47:2411/api',
+  API_LOCAL_URL: 'http://localhost:10485/api',
+  USE_GAGS: false
 }
+

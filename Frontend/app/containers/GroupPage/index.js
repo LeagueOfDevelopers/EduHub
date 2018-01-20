@@ -25,7 +25,7 @@ import Chat from 'components/Chat/Loadable';
 import {Link} from "react-router-dom";
 import * as ReactDOM from "react-dom";
 
-import {parseJwt} from "../../app";
+import {parseJwt} from "../../globaljs";
 
 export class GroupPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -95,7 +95,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
 
   componentDidMount() {
     if(!config.USE_GAGS) {
-      fetch(`${config.API_LOCAL_URL}/group/${this.state.id}`, {
+      fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
