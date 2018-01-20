@@ -51,8 +51,8 @@ namespace EduHubTests
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(2, 10, 0, 100));
 
-            userFacade.RegUser("Alena", new Credentials("email", "password"), true, TypeOfUser.User, "avatar.ru");
-            userFacade.RegUser("Galya", new Credentials("email", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, TypeOfUser.User, "avatar.ru");
             List<User> listOfUsers = userFacade.GetUsers().ToList();
             User testUser = listOfUsers[0];
             User creator = listOfUsers[1];
@@ -73,8 +73,92 @@ namespace EduHubTests
             expected.Add(testGroup2);
             List<Group> groups = userFacade.GetAllGroupsOfUser(testUser.Id).ToList();
 
-            //Arrange
+            //Assert
             Assert.AreEqual(true, expected.SequenceEqual(groups));
+        }
+
+        [TestMethod]
+        public void TryToFindAnyExistingUserViaFullName_ReturnTrue()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, TypeOfUser.User, "avatar.ru");
+
+            //Act
+            var actual = userFacade.DoesUserExist("Alena");
+            var expected = true;
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TryToFindAnyExistingUserViaPartOfName_ReturnTrue()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, TypeOfUser.User, "avatar.ru");
+
+            //Act
+            var actual = userFacade.DoesUserExist("Gal");
+            var expected = true;
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TryToFindNotExistingUser_ReturnFalse()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, TypeOfUser.User, "avatar.ru");
+
+            //Act
+            var actual = userFacade.DoesUserExist("Grisha");
+            var expected = false;
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TryToGetFoundUsers_ReturnListWithSorting()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            
+            userFacade.RegUser("Alenka", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email2", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Olena", new Credentials("email3", "password"), true, TypeOfUser.User, "avatar.ru");
+
+            List<User> allUsers = inMemoryUserRepository.GetAll().ToList();
+            
+            List<User> expected = new List<User>();
+            expected.Add(allUsers[1]);
+            expected.Add(allUsers[0]);
+
+            //Act
+            List<User> actual = userFacade.FindByName("Alen").ToList();
+
+            //Assert
+            Assert.AreEqual(expected[0], actual[0]);
+            Assert.AreEqual(expected[1], actual[1]);
+            Assert.AreEqual(expected.Count, actual.Count);
         }
     }
 }

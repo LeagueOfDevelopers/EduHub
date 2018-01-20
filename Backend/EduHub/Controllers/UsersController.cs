@@ -23,9 +23,12 @@ namespace EduHub.Controllers
         {
             if (_userFacade.DoesUserExist(user.Name))
             {
-                User foundUser = _userFacade.GetUserByName(user.Name);
-                return Ok(new SearchOfUserResponse(foundUser.Name, foundUser.Credentials.Email,
-                    foundUser.IsTeacher, foundUser.IsActive));
+                IEnumerable<User> foundUsers = _userFacade.FindByName(user.Name);
+                List<MinItemUserResponse> items = new List<MinItemUserResponse>();
+                foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Name, u.Credentials.Email,
+                    u.IsTeacher, u.TeacherProfile, u.IsActive)));
+                MinUserResponse response = new MinUserResponse(items);
+                return Ok(response);
             }
             else
             {

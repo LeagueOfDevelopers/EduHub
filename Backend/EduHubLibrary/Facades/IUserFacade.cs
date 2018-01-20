@@ -16,6 +16,6 @@ namespace EduHubLibrary.Facades
         IEnumerable<Invitation> GetAllInvitationsForUser(Guid userId);
         IEnumerable<Group> GetAllGroupsOfUser(Guid userId);
         bool DoesUserExist(string name);
-        User GetUserByName(string name);
+        IEnumerable<User> FindByName(string name);
     }
 }

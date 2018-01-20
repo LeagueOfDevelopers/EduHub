@@ -139,7 +139,7 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpGet]
-        [SwaggerResponse(200, Type = typeof(UserResponse))]
+        [SwaggerResponse(200, Type = typeof(MinUserResponse))]
         public IActionResult GetProfile()
         {
             string a = Request.Headers["Authorization"];

@@ -97,17 +97,20 @@ namespace EduHubLibrary.Facades
             return groupsOfUser;
         }
 
-        public User GetUserByName(string name)
+        public IEnumerable<User> FindByName(string name)
         {
-            return _userRepository.GetAll().FirstOrDefault(user => user.Name.Equals(name));
+            IEnumerable<User> result = _userRepository.GetAll().Where(u => u.Name.Contains(name));
+            
+            return result.OrderBy(u => u.Name.Length);
         }
+     
 
         public bool DoesUserExist(string name)
         { 
-            return _userRepository.GetAll().Any(user => user.Name.Equals(name));
+            return _userRepository.GetAll().Any(user => user.Name.Contains(name));
         }
 
-    public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository)
+        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository)
         {
             _userRepository = userRepository;
             _groupRepository = groupRepository;

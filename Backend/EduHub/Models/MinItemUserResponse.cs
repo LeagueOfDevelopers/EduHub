@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace EduHub.Models
 {
-    public class UserResponse
+    public class MinItemUserResponse
     {
-        public UserResponse(string name, string email, TypeOfUser type, bool isTeacher, TeacherProfile teacherProfile, bool isActive)
+        public MinItemUserResponse(string name, string email, bool isTeacher, TeacherProfile teacherProfile, bool isActive)
         {
             Name = name;
             Email = email;
-            Type = type;
             IsTeacher = isTeacher;
             TeacherProfile = teacherProfile;
             IsActive = isActive;
@@ -21,7 +20,6 @@ namespace EduHub.Models
 
         public string Name { get; set; }
         public string Email { get; set; }
-        public TypeOfUser Type { get; set; }
         public bool IsTeacher { get; set; }
         public TeacherProfile TeacherProfile { get; set; }
         public bool IsActive { get; set; }
