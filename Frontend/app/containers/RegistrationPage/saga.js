@@ -20,6 +20,7 @@ export function getUserIP(username, email, password) {
   fetch(`${config.API_LOCAL_URL}/account/registration`, {
     method: 'POST',
     headers: {
+      'Accept': 'application/json',
       'Content-Type': 'application/json-patch+json'
     },
     body: JSON.stringify({
@@ -28,16 +29,10 @@ export function getUserIP(username, email, password) {
       password: password,
       isTeacher: false,
       avatarLink: 'string',
-      inviteCode: 'string'
+      inviteCode: ''
     })
-  }).then(function (response) {
-    if(response.ok){
-      return response.json();
-    }
-    return Promise.reject(response.status)
-  }).then(function (res) {
-    return res
   })
+    .catch(error => error)
 }
 
 export default function* () {

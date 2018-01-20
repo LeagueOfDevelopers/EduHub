@@ -94,7 +94,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
   );
 
   componentDidMount() {
-    if(!config.USE_GAGS) {
+    if(!Boolean(localStorage.getItem('without_server'))) {
       fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -133,7 +133,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
   }
 
   inviteMember() {
-    if(config.USE_GAGS) {
+    if(Boolean(localStorage.getItem('without_server'))) {
       message.success('Приглашение отправлено')
     }
     else {

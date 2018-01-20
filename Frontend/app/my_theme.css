@@ -49,9 +49,21 @@
   background-color: #ffdcef;
 }
 
+.cards-holder {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 260px);
+  grid-gap: 30px;
+  align-items: center;
+  justify-content: left;
+}
+
 @media screen and (max-width: 992px){
   .md-center-container .lg-center-container-item {
     margin-bottom: 40px;
+  }
+
+  .cards-holder-center {
+    justify-content: center;
   }
 }
 
@@ -118,22 +130,6 @@ a:focus {
 .unassembled-groups-list > .ant-card-body, .assembled-groups-list > .ant-card-body {
   padding-left: 0;
   padding-right: 0;
-}
-
-.cards-holder {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 260px);
-  grid-gap: 30px;
-  align-items: center;
-  justify-content: center;
-}
-
-.cards-holder-left {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 260px);
-  grid-gap: 30px;
-  align-items: center;
-  justify-content: left;
 }
 
 .font-size-20 .ant-card-head-title {

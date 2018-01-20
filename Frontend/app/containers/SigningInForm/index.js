@@ -54,7 +54,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
 
   login() {
     if(this.state.email !== '' && this.state.password !== '') {
-      if(config.USE_GAGS) {
+      if(localStorage.getItem('without_server')) {
         localStorage.setItem('name', 'Имя пользователя');
         localStorage.setItem('avatarLink', '');
         localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' +

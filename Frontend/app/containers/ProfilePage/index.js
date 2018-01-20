@@ -99,7 +99,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   }
 
   componentDidMount() {
-    if(config.USE_GAGS) {
+    if(Boolean(localStorage.getItem('without_server'))) {
       this.setState({
         name: 'Имя пользователя',
         tags: ['js', 'c#'],
@@ -179,9 +179,9 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
           <Col sm={{span: 24}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>
             <Tabs defaultActiveKey="1" type='card'>
               <TabPane tab="Мои группы" key="1">
-                {config.USE_GAGS ?
+                {Boolean(localStorage.getItem('without_server')) ?
                   (
-                    <div className='cards-holder-left' style={{margin: '30px 0'}}>
+                    <div className='cards-holder cards-holder-center' style={{margin: '30px 0'}}>
                       {myGroups.map((item, i) =>
                         <Link to={`/group/${item.groupInfo.id}`}>
                           <UnassembledGroupCard {...item}/>
@@ -192,9 +192,9 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 }
               </TabPane>
               <TabPane tab="Созданные группы" key="2">
-                {config.USE_GAGS ?
+                {Boolean(localStorage.getItem('without_server')) ?
                   (
-                    <div className='cards-holder-left' style={{margin: '30px 0'}}>
+                    <div className='cards-holder cards-holder-center' style={{margin: '30px 0'}}>
                       {createdGroups.map((item, i) =>
                         <Link to={`/group/${item.groupInfo.id}`}>
                           <UnassembledGroupCard {...item}/>
@@ -204,7 +204,9 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   ) : null
                 }
               </TabPane>
-              <TabPane tab="Профиль преподавателя" key="3"></TabPane>
+              <TabPane tab="Профиль преподавателя" key="3">
+
+              </TabPane>
             </Tabs>
           </Col>
         </Col>
