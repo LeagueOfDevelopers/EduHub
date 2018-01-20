@@ -42,7 +42,9 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
   };
 
   logout() {
-    localStorage.clear();
+    localStorage.setItem('name', '');
+    localStorage.setItem('avatarLink', '');
+    localStorage.setItem('token', '');
     location.reload();
   }
 
@@ -110,7 +112,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                 <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
                 <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>
                 <Dropdown className="unregistered-person" overlay={this.menu} trigger={['click']}>
-                  <img className='menu-btn' style={{minWidth: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
+                  <img className='menu-btn' style={{width: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
                 </Dropdown>
               </Col>
           )}

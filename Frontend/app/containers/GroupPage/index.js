@@ -46,7 +46,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
       members: [
         {
           member: {
-            userId: "string",
+            userId: "848a3202-7085-4cba-842f-07d07eff7b35",
             memberRole: "Создатель",
             paid: true,
             acceptedCourse: false
@@ -70,7 +70,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
       groupType: "Лекция",
       isInGroup: false,
       inviteVisible: false,
-      userToken: null
+      userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -94,7 +94,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
   );
 
   componentDidMount() {
-    if(!Boolean(localStorage.getItem('without_server'))) {
+    if(!(localStorage.getItem('without_server') === 'true')) {
       fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -105,9 +105,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
         .catch(error => error);
     }
 
-    this.setState({userToken: parseJwt(localStorage.getItem('token'))});
-
-    this.setState({isInGroup: this.state.members.find(member => member.userId === this.state.userToken.UserId)})
+    this.setState({isInGroup: this.state.members.find(item => item.member.userId === this.state.userData.UserId)});
   }
 
   onSetResult(result) {
@@ -133,7 +131,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
   }
 
   inviteMember() {
-    if(Boolean(localStorage.getItem('without_server'))) {
+    if(localStorage.getItem('without_server') === 'true') {
       message.success('Приглашение отправлено')
     }
     else {
@@ -192,25 +190,32 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                   </Row>
                 </Row>
                 <Row style={{marginLeft: -16, marginBottom: 20}}>
-                  <MemberList members={this.state.members} size={this.state.size}/>
+                  <MemberList members={this.state.members} size={this.state.size} isInGroup={this.state.isInGroup}/>
                 </Row>
-                <Row className='md-center-container'>
-                  <Dropdown
-                    overlay={this.inviteMenu}
-                    onVisibleChange={this.handleVisibleChange}
-                    visible={this.state.inviteVisible}
-                    trigger={['click']}
-                  >
-                    <Button
-                      size='large'
-                      style={{width: 280, marginLeft: -16}}
-                      type='primary'
-                      onClick={this.tryInvite}
-                    >
-                      Пригласить
-                    </Button>
-                  </Dropdown>
-                </Row>
+                {
+                  this.state.isInGroup ?
+                    this.state.members.find(item =>
+                      item.member.userId === this.state.userData.UserId)
+                        .member.memberRole === 'Создатель' ?
+                      (<Row className='md-center-container'>
+                        <Dropdown
+                          overlay={this.inviteMenu}
+                          onVisibleChange={this.handleVisibleChange}
+                          visible={this.state.inviteVisible}
+                          trigger={['click']}
+                        >
+                          <Button
+                            size='large'
+                            style={{width: 280, marginLeft: -16}}
+                            type='primary'
+                            onClick={this.tryInvite}
+                          >
+                            Пригласить
+                          </Button>
+                        </Dropdown>
+                      </Row>) : null
+                    : null
+                }
               </Col>
               <Col sm={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 16, offset: 1}}>
                 <Row className='md-center-container' style={{textAlign: 'right', marginTop: 8}}>

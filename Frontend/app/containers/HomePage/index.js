@@ -113,7 +113,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   componentDidMount() {
     // localStorage.setItem('without_server', 'true')
-    if(!Boolean(localStorage.getItem('without_server'))) {
+    if(!(localStorage.getItem('without_server') === 'true')) {
       this.props.getUnassembledGroups();
       this.props.getAssembledGroups();
     }
@@ -160,7 +160,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             className='unassembled-groups-list font-size-20'
             extra={<Link to='#' >Показать больше</Link>}
           >
-            {Boolean(localStorage.getItem('without_server')) ?
+            {(localStorage.getItem('without_server') === 'true') ?
               (
                 <div className='cards-holder'>
                   {unassembledGroups.map((item, i) =>
@@ -185,7 +185,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             className='assembled-groups-list font-size-20'
             extra={<Link to='#'>Показать больше</Link>}
           >
-            {Boolean(localStorage.getItem('without_server')) > 0 ?
+            {(localStorage.getItem('without_server') === 'true') ?
               (
                 <div className='cards-holder'>
                   {assembledGroups.map((item, i) =>

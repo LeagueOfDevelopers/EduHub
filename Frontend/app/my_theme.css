@@ -57,6 +57,14 @@
   justify-content: left;
 }
 
+.unassembled-groups-list .cards-holder, .assembled-groups-list .cards-holder {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 260px);
+  grid-gap: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
 @media screen and (max-width: 992px){
   .md-center-container .lg-center-container-item {
     margin-bottom: 40px;

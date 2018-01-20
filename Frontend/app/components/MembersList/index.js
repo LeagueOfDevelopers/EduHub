@@ -9,6 +9,7 @@ import React from 'react';
 import { List, Avatar, Icon, Popconfirm, message, Row, Col } from 'antd';
 import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
+import {parseJwt} from "../../globaljs";
 
 
 class MembersList extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -42,15 +43,17 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
                   title={<Link to="#">{item.name}</Link>}
                   description={item.member.memberRole}
                 />
-                {item.role!=='Создатель' ?
-                  <Popconfirm title='Удалить участника?' onConfirm={this.confirm} okText="Да" cancelText="Нет">
-                    <Icon
-                      style={{fontSize: 18, cursor: 'pointer'}}
-                      type="close"
-                    />
-                  </Popconfirm>
-                  : ''}
-
+                { localStorage.getItem('token') && this.props.isInGroup && this.props.members.find(item =>
+                  item.member.userId === parseJwt(localStorage.getItem('token')).UserId).member.memberRole === 'Создатель' &&
+                    item.member.memberRole !== 'Создатель' ?
+                      (<Popconfirm title='Удалить участника?' onConfirm={this.confirm} okText="Да" cancelText="Нет">
+                        <Icon
+                          style={{fontSize: 18, cursor: 'pointer'}}
+                          type="close"
+                        />
+                      </Popconfirm>)
+                  : null
+                }
               </List.Item>
             )}
           >

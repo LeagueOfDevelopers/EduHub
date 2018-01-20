@@ -97,7 +97,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
 
   registrate = () => {
     if(this.state.username !== '' && this.state.email !== '' && this.state.password !== '') {
-      Boolean(localStorage.getItem('without_server')) ?
+      (localStorage.getItem('without_server') === 'true') ?
         message.success('Вы зарегистрированы')
         :
         this.props.signUp(this.state.username, this.state.email, this.state.password);

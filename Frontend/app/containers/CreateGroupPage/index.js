@@ -77,7 +77,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
 
   createGroup = () => {
     if(this.state.title !== '') {
-      Boolean(localStorage.getItem('without_server')) ?
+      (localStorage.getItem('without_server') === 'true') ?
         message.success('Группа создана')
         :
         null

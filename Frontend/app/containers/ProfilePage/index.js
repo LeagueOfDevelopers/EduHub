@@ -99,7 +99,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   }
 
   componentDidMount() {
-    if(Boolean(localStorage.getItem('without_server'))) {
+    if(localStorage.getItem('without_server') === 'true') {
       this.setState({
         name: 'Имя пользователя',
         tags: ['js', 'c#'],
@@ -179,7 +179,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
           <Col sm={{span: 24}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>
             <Tabs defaultActiveKey="1" type='card'>
               <TabPane tab="Мои группы" key="1">
-                {Boolean(localStorage.getItem('without_server')) ?
+                {(localStorage.getItem('without_server') === 'true') ?
                   (
                     <div className='cards-holder cards-holder-center' style={{margin: '30px 0'}}>
                       {myGroups.map((item, i) =>
@@ -192,7 +192,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 }
               </TabPane>
               <TabPane tab="Созданные группы" key="2">
-                {Boolean(localStorage.getItem('without_server')) ?
+                {(localStorage.getItem('without_server') === 'true') ?
                   (
                     <div className='cards-holder cards-holder-center' style={{margin: '30px 0'}}>
                       {createdGroups.map((item, i) =>
