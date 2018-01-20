@@ -84,31 +84,7 @@ namespace EduHub.Controllers
             _groupFacade.GetGroup(idOfGroup).GroupInfo.Tags = newTags;
             return Ok($"Теги группы с id {idOfGroup} изменены");
         }
-
-        /// <summary>
-        /// Changes group type
-        /// </summary>
-        [Authorize]
-        [HttpPut]
-        [Route("{idOfGroup}/type")]
-        public IActionResult EditGroupType([FromBody]GroupType newType, [FromRoute]Guid idOfGroup)
-        {
-            _groupFacade.GetGroup(idOfGroup).GroupInfo.GroupType = newType;
-            return Ok($"Тип группы с id {idOfGroup} изменен на {newType}");
-        }
-
-        /// <summary>
-        /// Changes group privacy
-        /// </summary>
-        [Authorize]
-        [HttpPut]
-        [Route("{idOfGroup}/privacy")]
-        public IActionResult EditGrouupPrivacy([FromBody]bool isPrivate, [FromRoute]Guid idOfGroup)
-        {
-            _groupFacade.GetGroup(idOfGroup).GroupInfo.IsPrivate = isPrivate;
-            return Ok($"Приватность группы с id {idOfGroup} изменена на {isPrivate}");
-        }
-
+        
         /// <summary>
         /// Changes group size
         /// </summary>

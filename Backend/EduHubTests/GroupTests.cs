@@ -316,53 +316,7 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(expectedTags, actualTags);
         }
-
-        [TestMethod]
-        public void TryToChangeGroupInfoGroupType_IsItPossible()
-        {
-            //Arrange
-            var userId = Guid.NewGuid();
-            var title = "some group";
-            var description = "some description";
-            var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
-            tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
-            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-
-            //Act
-            var expectedType = GroupType.MasterClass;
-            someGroup.GroupInfo.GroupType = expectedType;
-            var actualType = someGroup.GroupInfo.GroupType;
-
-            //Assert
-            Assert.AreEqual(expectedType, actualType);
-        }
-
-        [TestMethod]
-        public void TryToChangeGroupInfoIsPrivate_IsItPossible()
-        {
-            //Arrange
-            var userId = Guid.NewGuid();
-            var title = "some group";
-            var description = "some description";
-            var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
-            tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
-            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-
-            //Act
-            var expectedIsPrivate = true;
-            someGroup.GroupInfo.IsPrivate = expectedIsPrivate;
-            var actualIsPrivate = someGroup.GroupInfo.IsPrivate;
-
-            //Assert
-            Assert.AreEqual(expectedIsPrivate, actualIsPrivate);
-        }
-
+                       
         [TestMethod]
         public void TryToChangeGroupInfoSize_IsItPossible()
         {

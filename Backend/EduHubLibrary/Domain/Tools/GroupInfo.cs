@@ -51,19 +51,7 @@ namespace EduHubLibrary.Domain
             }
         }
 
-        public GroupType GroupType
-        {
-            get
-            {
-                return _groupType;
-            }
-            set
-            {
-                Ensure.Any.IsNotNull(value);
-                _groupType = value;
-            }
-        }
-
+        public GroupType GroupType { get; set; }
         public bool IsPrivate { get; set; }
         public bool IsActive { get; set; }
 
@@ -112,7 +100,6 @@ namespace EduHubLibrary.Domain
         private string _title;
         private string _description;
         private IEnumerable<string> _tags;
-        private GroupType _groupType;
         private int _size;
         private double _moneyPerUser;
     }
