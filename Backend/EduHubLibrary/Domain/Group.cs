@@ -124,7 +124,6 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(size);
             Ensure.Any.IsNotNull(groupType);
             Ensure.Any.IsNotNull(moneyPerUser);
-            Ensure.Any.IsNotNull(groupType);
             bool isActive = true;
             GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
         }
@@ -145,7 +144,7 @@ namespace EduHubLibrary.Domain
             listOfMembers.Add(creator);
         }
         public Chat Chat { get; private set; }
-        public GroupInfo GroupInfo { get; private set; }
+        public GroupInfo GroupInfo { get; set; }
         private List<Member> listOfMembers;
         public User Teacher { get; private set; }
         public Course Course { get; private set; }

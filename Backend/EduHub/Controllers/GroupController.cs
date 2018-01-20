@@ -49,16 +49,88 @@ namespace EduHub.Controllers
             return Ok($"Поиск групп с тегом {request.Tag} осуществлен");
         }
 
+        /// <summary>
+        /// Changes group title
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("{idOfGroup}/title")]
+        public IActionResult EditGroupTitle([FromBody]string newTitle, [FromRoute]Guid idOfGroup)
+        {
+            _groupFacade.GetGroup(idOfGroup).GroupInfo.Title = newTitle;
+            return Ok($"Название группы с id {idOfGroup} изменено на {newTitle}");
+        }
 
         /// <summary>
         /// Changes group description
         /// </summary>
         [Authorize]
         [HttpPut]
-        [Route("{idOfGroup}")]
-        public IActionResult EditGroupDescription([FromBody]EditDescriptionOfGroupRequest request, [FromRoute] int idOfGroup)
+        [Route("{idOfGroup}/description")]
+        public IActionResult EditGroupDescription([FromBody]string newDescription, [FromRoute]Guid idOfGroup)
         {
-            return Ok($"Описание группы с id {idOfGroup} изменено на {request.NewText}");
+            _groupFacade.GetGroup(idOfGroup).GroupInfo.Description = newDescription;
+            return Ok($"Описание группы с id {idOfGroup} изменено на {newDescription}");
+        }
+
+        /// <summary>
+        /// Changes group tags
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("{idOfGroup}/tags")]
+        public IActionResult EditGroupActivity([FromBody]List<string> newTags, [FromRoute]Guid idOfGroup)
+        {
+            _groupFacade.GetGroup(idOfGroup).GroupInfo.Tags = newTags;
+            return Ok($"Теги группы с id {idOfGroup} изменены");
+        }
+
+        /// <summary>
+        /// Changes group type
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("{idOfGroup}/type")]
+        public IActionResult EditGroupType([FromBody]GroupType newType, [FromRoute]Guid idOfGroup)
+        {
+            _groupFacade.GetGroup(idOfGroup).GroupInfo.GroupType = newType;
+            return Ok($"Тип группы с id {idOfGroup} изменен на {newType}");
+        }
+
+        /// <summary>
+        /// Changes group privacy
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("{idOfGroup}/privacy")]
+        public IActionResult EditGrouupPrivacy([FromBody]bool isPrivate, [FromRoute]Guid idOfGroup)
+        {
+            _groupFacade.GetGroup(idOfGroup).GroupInfo.IsPrivate = isPrivate;
+            return Ok($"Приватность группы с id {idOfGroup} изменена на {isPrivate}");
+        }
+
+        /// <summary>
+        /// Changes group size
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("{idOfGroup}/size")]
+        public IActionResult EditGroupSize([FromBody]int newSize, [FromRoute]Guid idOfGroup)
+        {
+            _groupFacade.GetGroup(idOfGroup).GroupInfo.Size = newSize;
+            return Ok($"Размер группы с id {idOfGroup} изменен на {newSize}");
+        }
+
+        /// <summary>
+        /// Changes group price
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("{idOfGroup}/price")]
+        public IActionResult EditGroupPrice([FromBody]double newPrice, [FromRoute]Guid idOfGroup)
+        {
+            _groupFacade.GetGroup(idOfGroup).GroupInfo.MoneyPerUser = newPrice;
+            return Ok($"Оплата за обучение в группе с id {idOfGroup} изменена на {newPrice}");
         }
 
         /// <summary>

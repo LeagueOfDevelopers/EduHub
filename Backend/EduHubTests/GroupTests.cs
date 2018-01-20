@@ -269,6 +269,182 @@ namespace EduHubTests
             group.AddMember(creatorId, user1);
             group.ApproveTeacher(approvedTeacher);
         }
-    }
 
+        [TestMethod]
+        public void TryToChangeGroupInfoTitle_IsItPossible()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            var size = 3;
+            var moneyPerUser = 100.0;
+            tags.Add("js");
+            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+
+            //Act
+            var expectedTitle = "new title";
+            someGroup.GroupInfo.Title = expectedTitle;
+            var actualTitle = someGroup.GroupInfo.Title;
+
+            //Assert
+            Assert.AreEqual(expectedTitle, actualTitle);
+        }
+
+        [TestMethod]
+        public void TryToChangeGroupInfoTags_IsItPossible()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            var size = 3;
+            var moneyPerUser = 100.0;
+            tags.Add("js");
+            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+
+            //Act
+            var expectedTags = new List<string>();
+            expectedTags.Add("c#");
+            someGroup.GroupInfo.Tags = expectedTags;
+            var actualTags = someGroup.GroupInfo.Tags;
+
+            //Assert
+            Assert.AreEqual(expectedTags, actualTags);
+        }
+
+        [TestMethod]
+        public void TryToChangeGroupInfoGroupType_IsItPossible()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            var size = 3;
+            var moneyPerUser = 100.0;
+            tags.Add("js");
+            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+
+            //Act
+            var expectedType = GroupType.MasterClass;
+            someGroup.GroupInfo.GroupType = expectedType;
+            var actualType = someGroup.GroupInfo.GroupType;
+
+            //Assert
+            Assert.AreEqual(expectedType, actualType);
+        }
+
+        [TestMethod]
+        public void TryToChangeGroupInfoIsPrivate_IsItPossible()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            var size = 3;
+            var moneyPerUser = 100.0;
+            tags.Add("js");
+            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+
+            //Act
+            var expectedIsPrivate = true;
+            someGroup.GroupInfo.IsPrivate = expectedIsPrivate;
+            var actualIsPrivate = someGroup.GroupInfo.IsPrivate;
+
+            //Assert
+            Assert.AreEqual(expectedIsPrivate, actualIsPrivate);
+        }
+
+        [TestMethod]
+        public void TryToChangeGroupInfoSize_IsItPossible()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            var size = 3;
+            var moneyPerUser = 100.0;
+            tags.Add("js");
+            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+
+            //Act
+            var expectedSize = 5;
+            someGroup.GroupInfo.Size = expectedSize;
+            var actualSize = someGroup.GroupInfo.Size;
+
+            //Assert
+            Assert.AreEqual(expectedSize, actualSize);
+        }
+
+        [TestMethod]
+        public void TryToChangeGroupInfoMoneyPerUser_IsItPossible()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            var size = 3;
+            var moneyPerUser = 100.0;
+            tags.Add("js");
+            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+
+            //Act
+            var expectedMoneyPerUser = 200;
+            someGroup.GroupInfo.MoneyPerUser = expectedMoneyPerUser;
+            var actualMoneyPerUser = someGroup.GroupInfo.MoneyPerUser;
+
+            //Assert
+            Assert.AreEqual(expectedMoneyPerUser, actualMoneyPerUser);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidGroupInfo))]
+        public void TryToSetInvalidSizeOfGroup_GetException()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            var size = 3;
+            var moneyPerUser = 100.0;
+            tags.Add("js");
+            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+
+            //Act
+            someGroup.GroupInfo.Size = -4;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidGroupInfo))]
+        public void TryToSetInvalidMoneyPerUser_GetException()
+        {
+            //Arrange
+            var userId = Guid.NewGuid();
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string>();
+            var size = 3;
+            var moneyPerUser = 100.0;
+            tags.Add("js");
+            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+
+            //Act
+            someGroup.GroupInfo.MoneyPerUser = -120;
+        }
+    }
 }
