@@ -23,36 +23,11 @@ namespace EduHubLibrary.Domain
         }
 
         public Guid Id { get; private set; }
-
-        public string Title
-        {
-            get
-            {
-                return _title;
-            }
-            set
-            {
-                Ensure.String.IsNotNullOrWhiteSpace(value);
-                _title = value;
-            }
-        }
-
-        public string Description { get; set; }
-
-        public IEnumerable<string> Tags
-        {
-            get
-            {
-                return _tags;
-            }
-            set
-            {
-                _tags = value;
-            }
-        }
-
-        public GroupType GroupType { get; set; }
-        public bool IsPrivate { get; set; }
+        public string Title { get; internal set; }
+        public string Description { get; internal set; }
+        public IEnumerable<string> Tags { get; internal set; }
+        public GroupType GroupType { get; private set; }
+        public bool IsPrivate { get; private set; }
         public bool IsActive { get; set; }
 
         public int Size
@@ -61,10 +36,8 @@ namespace EduHubLibrary.Domain
             {
                 return _size;
             }
-            set
+            internal set
             {
-                Ensure.Any.IsNotNull(value);
-
                 if (value>0)
                 {
                     _size = value;
@@ -82,10 +55,8 @@ namespace EduHubLibrary.Domain
             {
                 return _moneyPerUser;
             }
-            set
+            internal set
             {
-                Ensure.Any.IsNotNull(value);
-
                 if (value >= 0)
                 {
                     _moneyPerUser = value;
@@ -97,9 +68,6 @@ namespace EduHubLibrary.Domain
             }
         }
         
-        private string _title;
-        private string _description;
-        private IEnumerable<string> _tags;
         private int _size;
         private double _moneyPerUser;
     }

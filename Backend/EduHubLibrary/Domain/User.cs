@@ -40,7 +40,7 @@ namespace EduHubLibrary.Domain
 
         public void ConfigureTeacherProfile(List<string> skills)
         {
-            TeacherProfile.ConfigureSkills(skills);
+            TeacherProfile.Skills = skills;
         }
 
         public void BecomeTeacher()
@@ -87,6 +87,7 @@ namespace EduHubLibrary.Domain
                 throw new InvitationAlreadyChangedException(invitationId);
             currentInvitation.Status = InvitationStatus.Accepted;
         }
+
         internal void DeclineInvitation(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);

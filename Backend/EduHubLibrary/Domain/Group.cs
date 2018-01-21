@@ -10,6 +10,40 @@ namespace EduHubLibrary.Domain
 {
     public class Group
     {
+        public Chat Chat { get; private set; }
+        public GroupInfo GroupInfo { get; set; }
+        public User Teacher { get; private set; }
+        public Course Course { get; private set; }
+
+        public Group(Guid creatorId, List<Member> toWrite, string title, List<string> tags,
+            string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
+        {
+            Ensure.Any.IsNotNull(tags);
+            Ensure.String.IsNotNullOrWhiteSpace(title);
+            Ensure.String.IsNotNullOrWhiteSpace(description);
+            Ensure.Any.IsNotNull(size);
+            Ensure.Any.IsNotNull(groupType);
+            Ensure.Any.IsNotNull(moneyPerUser);
+            bool isActive = true;
+            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
+        }
+
+        public Group(Guid creatorId, string title, List<string> tags,
+            string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
+        {
+            Ensure.Any.IsNotNull(tags);
+            Ensure.String.IsNotNullOrWhiteSpace(title);
+            Ensure.String.IsNotNullOrWhiteSpace(description);
+            Ensure.Any.IsNotNull(size);
+            Ensure.Any.IsNotNull(groupType);
+            Ensure.Any.IsNotNull(moneyPerUser);
+            bool isActive = true;
+            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
+            listOfMembers = new List<Member>();
+            var creator = new Member(creatorId, MemberRole.Creator);
+            listOfMembers.Add(creator);
+        }
+
         internal void AddMember(Guid inviterId, Guid invitedId)
         {
             Ensure.Bool.IsTrue(IsMember(inviterId), nameof(IsMember),
@@ -57,16 +91,7 @@ namespace EduHubLibrary.Domain
         {
             return listOfMembers;
         }
-
-        internal void ChangeSizeOfGroup(Guid idOfChanger, int newSize)
-        {
-            Member current = Ensure.Any.IsNotNull(GetMemberById(idOfChanger), nameof(GetMemberById),
-                opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeSizeOfGroup),
-                opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
-            GroupInfo.Size = newSize;
-        }
-
+        
         internal void ApproveTeacher(User teacher)
         {
             Ensure.Bool.IsTrue(Teacher == null, nameof(Teacher), 
@@ -114,39 +139,7 @@ namespace EduHubLibrary.Domain
             newCreator.MemberRole = MemberRole.Creator;
             listOfMembers.Remove(deletingCreator);
         }
-
-        public Group(Guid creatorId, List<Member> toWrite, string title, List<string> tags,
-            string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
-        {
-            Ensure.Any.IsNotNull(tags);
-            Ensure.String.IsNotNullOrWhiteSpace(title);
-            Ensure.String.IsNotNullOrWhiteSpace(description);
-            Ensure.Any.IsNotNull(size);
-            Ensure.Any.IsNotNull(groupType);
-            Ensure.Any.IsNotNull(moneyPerUser);
-            bool isActive = true;
-            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
-        }
-
-        public Group(Guid creatorId, string title, List<string> tags,
-            string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
-        {
-            Ensure.Any.IsNotNull(tags);
-            Ensure.String.IsNotNullOrWhiteSpace(title);
-            Ensure.String.IsNotNullOrWhiteSpace(description);
-            Ensure.Any.IsNotNull(size);
-            Ensure.Any.IsNotNull(groupType);
-            Ensure.Any.IsNotNull(moneyPerUser);
-            bool isActive = true;
-            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
-            listOfMembers = new List<Member>();
-            var creator = new Member(creatorId, MemberRole.Creator);
-            listOfMembers.Add(creator);
-        }
-        public Chat Chat { get; private set; }
-        public GroupInfo GroupInfo { get; set; }
+        
         private List<Member> listOfMembers;
-        public User Teacher { get; private set; }
-        public Course Course { get; private set; }
     }
 }

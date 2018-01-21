@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Common;
 using System.Collections.Generic;
+using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubTests
 {
@@ -13,21 +14,21 @@ namespace EduHubTests
         public void CreateUser_IsItPossible()
         {
             //Arrange
-            var UserName = "Ivan";
-            var Email = "sokolov@gmail.com";
-            var Password = "sokolov";
-            var IsTeacher = false;
-            TypeOfUser Type = TypeOfUser.User;
-            var Avatar = "avatar.ru";
+            var userName = "Ivan";
+            var email = "sokolov@gmail.com";
+            var password = "sokolov";
+            var isTeacher = false;
+            TypeOfUser type = TypeOfUser.User;
+            var avatar = "avatar.ru";
 
             //Act
-            var UserTest = new User(UserName, Credentials.FromRawData(Email, Password), IsTeacher, Type, Avatar);
-            var ActualName = UserTest.Name;
-            var ActualIsTeacher = UserTest.IsTeacher;
+            var testUser = new User(userName, Credentials.FromRawData(email, password), isTeacher, type, avatar);
+            var actualName = testUser.Name;
+            var actualIsTeacher = testUser.IsTeacher;
 
             //Assert
-            Assert.AreEqual(UserName, ActualName);
-            Assert.AreEqual(IsTeacher, ActualIsTeacher);
+            Assert.AreEqual(userName, actualName);
+            Assert.AreEqual(isTeacher, actualIsTeacher);
 
         }
 
@@ -35,63 +36,63 @@ namespace EduHubTests
         public void EditName_IsItPossible()
         {
             //Arrange
-            var NewName = "Nikolai";
+            var newName = "Nikolai";
 
             //Act
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
-            UserTest.EditName(NewName);
-            var ActualName = UserTest.Name;
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            testUser.EditName(newName);
+            var actualName = testUser.Name;
 
             //Assert
-            Assert.AreEqual(NewName, ActualName);
+            Assert.AreEqual(newName, actualName);
         }
 
         [ExpectedException(typeof(System.ArgumentException)), TestMethod]
         public void EditName_IsItCorrect()
         {
             //Arrange
-            var NewName = "";
+            var newName = "";
 
             //Act
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
-            UserTest.EditName(NewName);
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            testUser.EditName(newName);
         }
 
         [TestMethod]
         public void BecomeTeacher_IsItPossible()
         {
             //Arrange
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
 
             //Act
-            UserTest.BecomeTeacher();
+            testUser.BecomeTeacher();
 
             //Assert
-            Assert.AreEqual(true, UserTest.IsTeacher);
+            Assert.AreEqual(true, testUser.IsTeacher);
         }
 
         [TestMethod]
         public void StopToTeacher_IsItPossible()
         {
             //Arrange
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), true, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), true, TypeOfUser.User, "avatar.com");
 
             //Act
-            UserTest.StopToBeTeacher();
+            testUser.StopToBeTeacher();
 
             //Assert
-            Assert.AreEqual(false, UserTest.IsTeacher);
+            Assert.AreEqual(false, testUser.IsTeacher);
         }
 
         [TestMethod]
         public void DeleteProfile_IsItPossible()
         {
             //Arrange
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
 
             //Act
-            UserTest.DeleteProfile();
-            var Actual = UserTest.IsActive;
+            testUser.DeleteProfile();
+            var Actual = testUser.IsActive;
 
             //Assert
             Assert.AreEqual(false, Actual);
@@ -101,12 +102,12 @@ namespace EduHubTests
         public void RestoreProfile_IsItPossible()
         {
             //Arrange
-            User UserTest = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
 
             //Act
-            UserTest.DeleteProfile();
-            UserTest.RestoreProfile();
-            var Actual = UserTest.IsActive;
+            testUser.DeleteProfile();
+            testUser.RestoreProfile();
+            var Actual = testUser.IsActive;
 
             //Assert
             Assert.AreEqual(true, Actual);
@@ -116,14 +117,14 @@ namespace EduHubTests
         public void CreateUser_IsCorrectData()
         {
             //Arrange
-            var NameOfUser = "";
-            var Email = "";
-            var IsTeacher = false;
-            TypeOfUser Type = TypeOfUser.Admin;
-            var AvatarLink = "";
+            var nameOfUser = "";
+            var email = "";
+            var isTeacher = false;
+            TypeOfUser type = TypeOfUser.Admin;
+            var avatarLink = "";
 
             //Act
-            User UserTest = new User(NameOfUser, Credentials.FromRawData(Email, "1"), IsTeacher, Type, AvatarLink);
+            User testUser = new User(nameOfUser, Credentials.FromRawData(email, "1"), isTeacher, type, avatarLink);
         }
 
         [TestMethod]
@@ -147,8 +148,7 @@ namespace EduHubTests
         {
             //Arrange
             User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, TypeOfUser.User, "avatar.com");
-
-
+            
             //Act
             Review review = new Review(Guid.NewGuid(), "The best", 5);
             teacher.TeacherProfile.AddReview(review);
@@ -162,8 +162,7 @@ namespace EduHubTests
         {
             //Arrange
             User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, TypeOfUser.User, "avatar.com");
-
-
+            
             //Act
             Review review = new Review(Guid.Empty, "The best", 5);
             teacher.TeacherProfile.AddReview(review);

@@ -6,18 +6,13 @@ namespace EduHubLibrary.Domain
 {
     public class TeacherProfile
     {
-        public List<Review> Reviews;
-        public List<string> Skills;
+        public List<Review> Reviews { get; private set; }
+        public List<string> Skills { get; set; }
 
         public TeacherProfile()
         {
             Reviews = new List<Review>();
             Skills = new List<string>();
-        }
-
-        public void ConfigureSkills(List<string> skills)
-        {
-            Skills = skills;
         }
 
         public void AddReview(Review review)

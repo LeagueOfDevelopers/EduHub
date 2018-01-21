@@ -55,6 +55,6 @@ namespace EduHubLibrary.Infrastructure
             listOfUsers = new List<User>();
         }
 
-        List<User> listOfUsers;
+        private List<User> listOfUsers;
     }
 }

@@ -10,6 +10,7 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Settings;
+using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubTests
 {
@@ -159,6 +160,19 @@ namespace EduHubTests
             Assert.AreEqual(expected[0], actual[0]);
             Assert.AreEqual(expected[1], actual[1]);
             Assert.AreEqual(expected.Count, actual.Count);
+        }
+        
+        [ExpectedException(typeof(UserAlreadyExistsException)), TestMethod]
+        public void TryToRegUserWithExistingEmail_GetException()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+
+            //Act
+            userFacade.RegUser("Grisha", new Credentials("sokolov@mail.ru", "password1"), true, TypeOfUser.User, "avatar1.ru");
+            userFacade.RegUser("Sasha", new Credentials("sokolov@mail.ru", "password2"), false, TypeOfUser.User, "avatar2.ru");
         }
     }
 }

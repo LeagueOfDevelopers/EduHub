@@ -57,8 +57,10 @@ namespace EduHub.Controllers
         [Route("{idOfGroup}/title")]
         public IActionResult EditGroupTitle([FromBody]string newTitle, [FromRoute]Guid idOfGroup)
         {
-            _groupFacade.GetGroup(idOfGroup).GroupInfo.Title = newTitle;
-            return Ok($"Название группы с id {idOfGroup} изменено на {newTitle}");
+            string a = Request.Headers["Authorization"];
+            var userId = a.GetUserId();
+            _groupFacade.ChangeTitleOfGroup(idOfGroup, userId, newTitle);
+            return Ok($"Название группы изменено на {newTitle}");
         }
 
         /// <summary>
@@ -69,8 +71,10 @@ namespace EduHub.Controllers
         [Route("{idOfGroup}/description")]
         public IActionResult EditGroupDescription([FromBody]string newDescription, [FromRoute]Guid idOfGroup)
         {
-            _groupFacade.GetGroup(idOfGroup).GroupInfo.Description = newDescription;
-            return Ok($"Описание группы с id {idOfGroup} изменено на {newDescription}");
+            string a = Request.Headers["Authorization"];
+            var userId = a.GetUserId();
+            _groupFacade.ChangeDescriptionOfGroup(idOfGroup, userId, newDescription);
+            return Ok($"Описание группы изменено на {newDescription}");
         }
 
         /// <summary>
@@ -79,10 +83,12 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{idOfGroup}/tags")]
-        public IActionResult EditGroupActivity([FromBody]List<string> newTags, [FromRoute]Guid idOfGroup)
+        public IActionResult EditGroupTags([FromBody]List<string> newTags, [FromRoute]Guid idOfGroup)
         {
-            _groupFacade.GetGroup(idOfGroup).GroupInfo.Tags = newTags;
-            return Ok($"Теги группы с id {idOfGroup} изменены");
+            string a = Request.Headers["Authorization"];
+            var userId = a.GetUserId();
+            _groupFacade.ChangeTagsOfGroup(idOfGroup, userId, newTags);
+            return Ok($"Теги группы изменены");
         }
         
         /// <summary>
@@ -93,8 +99,10 @@ namespace EduHub.Controllers
         [Route("{idOfGroup}/size")]
         public IActionResult EditGroupSize([FromBody]int newSize, [FromRoute]Guid idOfGroup)
         {
-            _groupFacade.GetGroup(idOfGroup).GroupInfo.Size = newSize;
-            return Ok($"Размер группы с id {idOfGroup} изменен на {newSize}");
+            string a = Request.Headers["Authorization"];
+            var userId = a.GetUserId();
+            _groupFacade.ChangeSizeOfGroup(idOfGroup, userId, newSize);
+            return Ok($"Размер группы изменен на {newSize}");
         }
 
         /// <summary>
@@ -105,8 +113,10 @@ namespace EduHub.Controllers
         [Route("{idOfGroup}/price")]
         public IActionResult EditGroupPrice([FromBody]double newPrice, [FromRoute]Guid idOfGroup)
         {
-            _groupFacade.GetGroup(idOfGroup).GroupInfo.MoneyPerUser = newPrice;
-            return Ok($"Оплата за обучение в группе с id {idOfGroup} изменена на {newPrice}");
+            string a = Request.Headers["Authorization"];
+            var userId = a.GetUserId();
+            _groupFacade.ChangePriceInGroup(idOfGroup, userId, newPrice);
+            return Ok($"Оплата за обучение в группе изменена на {newPrice}");
         }
 
         /// <summary>

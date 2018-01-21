@@ -53,6 +53,5 @@ namespace EduHubLibrary.Infrastructure
         }
 
         private List<Group> listOfGroups;
-
     }
 }

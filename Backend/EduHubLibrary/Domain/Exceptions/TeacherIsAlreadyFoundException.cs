@@ -7,7 +7,11 @@ namespace EduHubLibrary.Domain.Exceptions
 {
     public class TeacherIsAlreadyFoundException : Exception
     {
-        public TeacherIsAlreadyFoundException() : base("Teacher is already approved")
+        public TeacherIsAlreadyFoundException()
+        {
+        }
+
+        public TeacherIsAlreadyFoundException(Guid groupId) : base($"Teacher in group {groupId} is already approved")
         {
         }
 

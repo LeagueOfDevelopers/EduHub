@@ -7,11 +7,11 @@ namespace EduHubLibrary.Domain.Exceptions
 {
     public class UserAlreadyExistsException : Exception
     {
-        public UserAlreadyExistsException() : base("User with this email already exists")
+        public UserAlreadyExistsException()
         {
         }
 
-        public UserAlreadyExistsException(string message) : base(message)
+        public UserAlreadyExistsException(string userEmail) : base($"User with email '{userEmail}' already exists")
         {
         }
 

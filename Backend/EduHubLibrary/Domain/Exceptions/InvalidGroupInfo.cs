@@ -11,8 +11,7 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public InvalidGroupInfo(string parameter)
-            : base($"Parameter '{parameter}' has invalid value")
+        public InvalidGroupInfo(string parameter) : base($"Parameter '{parameter}' has invalid value")
         {
         }
 
