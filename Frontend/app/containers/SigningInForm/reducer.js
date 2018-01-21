@@ -10,9 +10,9 @@ const initialState = fromJS({
   loading: false,
   error: false,
   currentUser: {
-    name: null,
-    avatarLink: null,
-    token: null
+    name: localStorage.getItem('name'),
+    avatarLink: localStorage.getItem('avatarLink'),
+    token: localStorage.getItem('token')
   }
 });
 
