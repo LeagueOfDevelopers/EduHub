@@ -11,7 +11,8 @@ import { GET_ASSEMBLED_GROUPS_START, GET_UNASSEMBLED_GROUPS_START } from './cons
 
 export function* getUnassembledGroupsSaga() {
   try {
-    const unassembledGroups = call(getUnassembledGroups);
+    const groups = yield call(getUnassembledGroups);
+    const unassembledGroups = groups.groups;
     yield put(getUnassembledGroupsSuccess(unassembledGroups));
   }
   catch(e) {
@@ -21,7 +22,8 @@ export function* getUnassembledGroupsSaga() {
 
 export function* getAssembledGroupsSaga() {
   try {
-    const assembledGroups = call(getAssembledGroups);
+    const groups = yield call(getAssembledGroups);
+    const assembledGroups = groups.groups;
     yield put(getAssembledGroupsSuccess(assembledGroups));
   }
   catch(e) {
@@ -29,29 +31,17 @@ export function* getAssembledGroupsSaga() {
   }
 }
 
-function getUnassembledGroups() {
-  fetch(`${config.API_LOCAL_URL}/group`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(res => res.json())
-    .then(res => res.groups)
-    .catch(error => error)
-}
+ function getUnassembledGroups() {
+   return fetch(`${config.API_LOCAL_URL}/group`)
+     .then(response => response.json())
+     .catch(error => error)
+ }
 
-function getAssembledGroups() {
-  fetch(`${config.API_LOCAL_URL}/group`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(res => res.json())
-    .then(res => res.groups)
-    .catch(error => error)
-}
+ function getAssembledGroups() {
+   return fetch(`${config.API_LOCAL_URL}/group`)
+     .then(res => res.json())
+     .catch(error => error)
+ }
 
 export default function* () {
   yield takeEvery(GET_UNASSEMBLED_GROUPS_START, getUnassembledGroupsSaga)

@@ -107,21 +107,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     this.state = {
       signInVisible: false,
-      user: 'qwerty'
     }
   }
 
   componentDidMount() {
-    return fetch(`${config.API_LOCAL_URL}/group`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(res => res.groups)
-      .catch(error => error)
-    // localStorage.setItem('without_server', 'true')
     if(!(localStorage.getItem('without_server') === 'true')) {
       this.props.getUnassembledGroups();
       this.props.getAssembledGroups();
@@ -138,26 +127,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   handleCancel = () => {
     this.setState({signInVisible: false})
   };
-
-  unassembledGroups = (
-    <div className='cards-holder'>
-      {this.props.unassembledGroups.map((item, i) =>
-        <Link to={`/group/${item.groupInfo.id}`}>
-          <UnassembledGroupCard {...item}/>
-        </Link>
-      )}
-    </div>
-  );
-
-  assembledGroups = (
-    <div className='cards-holder'>
-      {this.props.assembledGroups.map((item, i) =>
-        <Link to={`/group/${item.groupInfo.id}`}>
-          <AssembledGroupCard {...item}/>
-        </Link>
-      )}
-    </div>
-  );
 
   render() {
     return (
@@ -179,7 +148,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   )}
                 </div>
               ) :
-              this.unassembledGroups
+              (
+                <div className='cards-holder'>
+                  {this.props.unassembledGroups.map((item, i) =>
+                    <Link to={`/group/${item.groupInfo.id}`}>
+                      <UnassembledGroupCard {...item}/>
+                    </Link>
+                  )}
+                </div>
+              )
             }
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
@@ -204,7 +181,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   )}
                 </div>
               ) :
-              this.assembledGroups
+              (
+                <div className='cards-holder'>
+                  {this.props.assembledGroups.map((item, i) =>
+                    <Link to={`/group/${item.groupInfo.id}`}>
+                      <AssembledGroupCard {...item}/>
+                    </Link>
+                  )}
+                </div>
+              )
             }
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>

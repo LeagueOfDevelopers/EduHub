@@ -19,7 +19,7 @@ function* loginSaga(action) {
 }
 
 function getUserData(email, password) {
-  fetch(`${config.API_BASE_URL}/account/login`, {
+  fetch(`${config.API_LOCAL_URL}/account/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json-patch+json'
