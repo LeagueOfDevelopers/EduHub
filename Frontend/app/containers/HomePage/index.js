@@ -112,6 +112,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   componentDidMount() {
+    return fetch(`${config.API_LOCAL_URL}/group`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(res => res.groups)
+      .catch(error => error)
     // localStorage.setItem('without_server', 'true')
     if(!(localStorage.getItem('without_server') === 'true')) {
       this.props.getUnassembledGroups();

@@ -30,31 +30,27 @@ export function* getAssembledGroupsSaga() {
 }
 
 function getUnassembledGroups() {
-  return fetch(`${config.API_BASE_URL}/group`, {
+  fetch(`${config.API_LOCAL_URL}/group`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     }
-  }).then(res => {
-      if(res.ok) {
-        return res.json();
-      }
-      return Promise.reject(res.status)
-    })
+  })
+    .then(res => res.json())
+    .then(res => res.groups)
+    .catch(error => error)
 }
 
 function getAssembledGroups() {
-  return fetch(`${config.API_BASE_URL}/group`, {
+  fetch(`${config.API_LOCAL_URL}/group`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     }
-  }).then(res => {
-      if(res.ok) {
-        return res.json();
-      }
-      return Promise.reject(res.status)
-    })
+  })
+    .then(res => res.json())
+    .then(res => res.groups)
+    .catch(error => error)
 }
 
 export default function* () {
