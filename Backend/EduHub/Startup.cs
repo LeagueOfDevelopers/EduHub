@@ -76,14 +76,16 @@ namespace EduHub
                     o.Filters.Add(new ExceptionFilter());
                 });
             }
-            services.AddCors();
+            services.AddCors(options =>
+            {
+            options.AddPolicy("AllowAnyOrigin",
+                builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod());
-
             app.UseSwagger();
 
             string path = env.ContentRootPath;
@@ -96,6 +98,7 @@ namespace EduHub
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("AllowAnyOrigin");
 
             app.UseMvc();
         }
