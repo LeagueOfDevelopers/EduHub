@@ -12,9 +12,10 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import reducer from '../App/reducer';
-import saga from '../App/saga';
-import {loadCurrentUser} from '../App/actions';
+import reducer from './reducer';
+import saga from './saga';
+import {loadCurrentUser} from './actions';
+import {makeSelectUsername, makeSelectAvatarLink, makeSelectToken, makeSelectCurrentUser} from './selectors';
 
 import styled from 'styled-components';
 import { Form, Input, Col, Row, Modal, Button, message } from 'antd';
@@ -46,13 +47,15 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
 
   onHandleEmailChange = (e) => {
     this.setState({email: e.target.value})
+    const name = makeSelectUsername();
+    console.log(name)
   };
 
   onHandlePasswordChange = (e) => {
     this.setState({password: e.target.value})
   };
 
-  login() {
+  login = (callback) => {
     if(this.state.email !== '' && this.state.password !== '') {
       if(localStorage.getItem('without_server') === 'true') {
         localStorage.setItem('name', 'Имя пользователя');
@@ -61,17 +64,17 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
           '.eyJSb2xlIjoiVXNlciIsIlVzZXJJZCI6Ijg0OGEzMjAyLTcwODUt' +
           'NGNiYS04NDJmLTA3ZDA3ZWZmN2IzNSIsImV4cCI6MTUxNTk2NDk3MCwia' +
           'XNzIjoibG9kLW1pc2lzLnJ1In0.N9tSh9SPHz1cvWjsq9ZkmEKl0NBDh-ebtj4Eo-IsG5o');
+        location.reload();
       }
       else {
         this.props.login(this.state.email, this.state.password);
+        callback()
       }
-
-      location.reload();
     }
     else {
       message.error('Введите все данные')
     }
-  }
+  };
 
   render() {
     return (
@@ -86,7 +89,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
             <Col><Link to='#'>Забыли пароль?</Link></Col>
             <Col>
               <Button onClick={this.props.handleCancel}>Отмена</Button>
-              <Button type="primary" onClick={this.login}>Войти</Button>
+              <Button type="primary" onClick={() => this.login(setTimeout(() => {location.reload()}, 1000))}>Войти</Button>
             </Col>
           </Row>
         ]}
@@ -139,8 +142,8 @@ function mapDispatchToProps(dispatch) {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-const withReducer = injectReducer({ key: 'global', reducer });
-const withSaga = injectSaga({ key: 'global', saga });
+const withReducer = injectReducer({ key: 'login', reducer });
+const withSaga = injectSaga({ key: 'login', saga });
 
 export default compose(
   withReducer,

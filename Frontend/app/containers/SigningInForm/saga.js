@@ -6,22 +6,20 @@ import {loadCurrentUserError, loadCurrentUserSuccess} from './actions';
 
 // Individual exports for testing
 function* loginSaga(action) {
-    try {
-      const userData = call(getUserData, action.email, action.password);
-      const name = userData.name;
-      const avatarLink = userData.avatarLink;
-      const token = userData.token;
-      yield put(loadCurrentUserSuccess(name, avatarLink, token));
-    }
-    catch(e) {
-      yield put(loadCurrentUserError(e));
-    }
+  try {
+    const userData = yield call(login, action.email, action.password);
+    yield put(loadCurrentUserSuccess(userData.name, userData.avatarLink, userData.token));
+  }
+  catch(e) {
+    yield put(loadCurrentUserError(e));
+  }
 }
 
-function getUserData(email, password) {
-  fetch(`${config.API_LOCAL_URL}/account/login`, {
+function login(email, password) {
+  return fetch(`${config.API_LOCAL_URL}/account/login`, {
     method: 'POST',
     headers: {
+      'Accept': 'application/json',
       'Content-Type': 'application/json-patch+json'
     },
     body: JSON.stringify({
@@ -30,7 +28,6 @@ function getUserData(email, password) {
     })
   })
     .then(res => res.json())
-    .then(res => res)
     .catch(error => error)
 }
 

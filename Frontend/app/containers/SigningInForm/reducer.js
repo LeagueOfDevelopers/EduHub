@@ -9,7 +9,11 @@ import {
 const initialState = fromJS({
   loading: false,
   error: false,
-  currentUser: null
+  currentUser: {
+    name: null,
+    avatarLink: null,
+    token: null
+  }
 });
 
 function appReducer(state = initialState, action) {
@@ -17,18 +21,17 @@ function appReducer(state = initialState, action) {
     case LOAD_CURRENT_USER:
       return state
         .set('loading', true)
-        .set('error', false)
-        .set('currentUser', null);
+        .set('error', false);
     case LOAD_CURRENT_USER_SUCCESS:
-      return () => {
-        state
+      localStorage.setItem('name', `${action.name}`);
+      localStorage.setItem('avatarLink', `${action.avatarLink}`);
+      localStorage.setItem('token', `${action.token}`);
+      return state
           .set('loading', false)
           .set('error', false)
-          .set('currentUser', action.name);
-        localStorage.setItem('name', `${action.name}`);
-        localStorage.setItem('avatarLink', `${action.avatarLink}`);
-        localStorage.setItem('token', `${action.token}`);
-      };
+          .setIn(['currentUser', 'name'], action.name)
+          .setIn(['currentUser', 'avatarLink'], action.avatarLink)
+          .setIn(['currentUser', 'token'], action.token);
     case LOAD_CURRENT_USER_ERROR:
       return state
         .set('error', action.error)

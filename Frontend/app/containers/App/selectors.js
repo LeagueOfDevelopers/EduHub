@@ -9,13 +9,7 @@ const makeSelectLocation = () => createSelector(
   (routeState) => routeState.get('location').toJS()
 );
 
-const makeSelectCurrentUser = () => createSelector(
-  selectGlobal,
-  (globalState) => globalState.get('currentUser')
-);
-
 export {
   selectGlobal,
-  makeSelectCurrentUser,
   makeSelectLocation,
 };

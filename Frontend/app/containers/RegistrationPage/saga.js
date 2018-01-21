@@ -7,17 +7,16 @@ import {registrateSuccess, registrateError} from './actions';
 // Individual exports for testing
 function* registrationSaga(action) {
   try {
-    const userData = call(getUserIP, action.name, action.email, action.password);
-    const id = userData.id;
-    yield put(registrateSuccess(id));
+    const userData = yield call(registrate, action.name, action.email, action.password);
+    yield put(registrateSuccess(userData.id));
   }
   catch(e) {
     yield put(registrateError(e));
   }
 }
 
-export function getUserIP(username, email, password) {
-  fetch(`${config.API_LOCAL_URL}/account/registration`, {
+function registrate(username, email, password) {
+  return fetch(`${config.API_LOCAL_URL}/account/registration`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -28,10 +27,11 @@ export function getUserIP(username, email, password) {
       email: email,
       password: password,
       isTeacher: false,
-      avatarLink: 'string',
+      avatarLink: '',
       inviteCode: ''
     })
   })
+    .then(res => res.json())
     .catch(error => error)
 }
 
