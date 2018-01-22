@@ -22,6 +22,7 @@ import GroupPage from '../GroupPage/Loadable';
 import Header from '../../components/Header';
 import ScrollFix from '../../components/ScrollFix';
 import ProfilePage from '../../containers/ProfilePage/Loadable';
+import NotificationPage from '../../containers/NotificationPage/Loadable';
 
 export default function App() {
   return (
@@ -34,8 +35,9 @@ export default function App() {
           <Route exact path="/" component={HomePage} />
           <Route path='/create_group' component={CreateGroupPage}/>
           <Route path='/registration' component={RegistrationPage}/>
-          <Route path='/profile/:id' component={ProfilePage}/>
+          <Route exact path='/profile/:id' component={ProfilePage}/>
           <Route path='/group/:id' component={GroupPage}/>
+          <Route path='/profile/:id/notifications' component={NotificationPage}/>
           <Route path='' component={NotFoundPage} />
         </Switch>
       </ScrollFix>

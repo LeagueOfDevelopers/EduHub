@@ -95,7 +95,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
 
   componentDidMount() {
     if(!(localStorage.getItem('without_server') === 'true')) {
-      fetch(`${config.API_LOCAL_URL}/group/${this.state.id}`, {
+      fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

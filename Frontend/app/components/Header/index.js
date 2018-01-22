@@ -59,7 +59,16 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
           null
         }
       </Menu.Item>
-      <Menu.Item key="1" className='danger-menu-item menu-item'>
+      <Menu.Item key="1" className='menu-item'>
+        {localStorage.getItem('token') ?
+          (<Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}/notifications`}>
+            <div>Уведомления</div>
+          </Link>)
+          :
+          null
+        }
+      </Menu.Item>
+      <Menu.Item key="2" className='danger-menu-item menu-item'>
         <div style={{color: 'red'}} onClick={this.logout}>Выйти</div>
       </Menu.Item>
     </Menu>
@@ -93,7 +102,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
           />
         </Col>
           {localStorage.getItem('token') ? (
-              <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
+              <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <Dropdown overlay={this.acc_menu} trigger={['click']}>
                   <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
                     <Avatar
@@ -107,7 +116,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
               </Col>
           )
           : (
-              <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'right'}}>
+              <Col span={6} offset={4} style={{display: 'flex', justifyContent: 'flex-end'}}>
                 <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '6%'}}>Войти</Button>
                 <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
                 <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>

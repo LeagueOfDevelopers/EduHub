@@ -23,9 +23,11 @@ function appReducer(state = initialState, action) {
         .set('loading', true)
         .set('error', false);
     case LOAD_CURRENT_USER_SUCCESS:
-      localStorage.setItem('name', `${action.name}`);
-      localStorage.setItem('avatarLink', `${action.avatarLink}`);
-      localStorage.setItem('token', `${action.token}`);
+      if(action.token !== undefined) {
+        localStorage.setItem('name', `${action.name}`);
+        localStorage.setItem('avatarLink', `${action.avatarLink}`);
+        localStorage.setItem('token', `${action.token}`);
+      }
       return state
           .set('loading', false)
           .set('error', false)

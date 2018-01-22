@@ -16,7 +16,7 @@ function* loginSaga(action) {
 }
 
 function login(email, password) {
-  return fetch(`${config.API_LOCAL_URL}/account/login`, {
+  return fetch(`${config.API_BASE_URL}/account/login`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

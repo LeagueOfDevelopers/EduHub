@@ -17,6 +17,7 @@ injectGlobal`
   body {
     font-family: Tahoma, Helvetica, Arial, sans-serif;
     font-size: 18px;
+    overflow-y: scroll;
   }
 
   body.fontLoaded {

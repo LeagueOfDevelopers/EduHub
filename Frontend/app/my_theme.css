@@ -65,6 +65,13 @@
   justify-content: center;
 }
 
+@media screen and (max-width: 1200px) {
+  .sm-row-center {
+    text-align: center;
+    margin-left: 0;
+  }
+}
+
 @media screen and (max-width: 992px){
   .md-center-container .lg-center-container-item {
     margin-bottom: 40px;
@@ -205,3 +212,35 @@ a:focus {
 .menu-item {
   cursor: pointer;
 }
+
+
+.notify-tabs .ant-tabs-nav-scroll {
+  display: flex;
+  justify-content: center;
+}
+
+.notify-card:hover {
+  z-index: 100;
+}
+
+.readed-btn {
+  border: 10px solid transparent;
+  border-left: 10px solid #eeeeee;
+  border-top: 10px solid #eeeeee;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  /*cursor: pointer;*/
+}
+
+.not-readed-btn {
+  border: 10px solid transparent;
+  border-left: 10px solid #1890ff;
+  border-top: 10px solid #1890ff;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  /*cursor: pointer;*/
+}
+
+

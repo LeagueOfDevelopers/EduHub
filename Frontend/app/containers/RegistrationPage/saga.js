@@ -16,7 +16,7 @@ function* registrationSaga(action) {
 }
 
 function registrate(username, email, password) {
-  return fetch(`${config.API_LOCAL_URL}/account/registration`, {
+  return fetch(`${config.API_BASE_URL}/account/registration`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

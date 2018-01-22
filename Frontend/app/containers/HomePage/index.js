@@ -111,6 +111,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   componentDidMount() {
+    localStorage.setItem('without_server', 'false');
+
     if(!(localStorage.getItem('without_server') === 'true')) {
       this.props.getUnassembledGroups();
       this.props.getAssembledGroups();

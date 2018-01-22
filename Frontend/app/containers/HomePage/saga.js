@@ -32,13 +32,13 @@ export function* getAssembledGroupsSaga() {
 }
 
  function getUnassembledGroups() {
-   return fetch(`${config.API_LOCAL_URL}/group`)
+   return fetch(`${config.API_BASE_URL}/group`)
      .then(response => response.json())
      .catch(error => error)
  }
 
  function getAssembledGroups() {
-   return fetch(`${config.API_LOCAL_URL}/group`)
+   return fetch(`${config.API_BASE_URL}/group`)
      .then(res => res.json())
      .catch(error => error)
  }

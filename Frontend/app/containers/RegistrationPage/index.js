@@ -40,9 +40,7 @@ const tailFormItemLayout = {
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 4,
-      offset: 5
-    },
+    sm: { span: 4, offset: 5 },
     md: { offset: 6 }
   },
   wrapperCol: {
@@ -95,13 +93,13 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.setState({password: e.target.value})
   };
 
-  registrate = () => {
+  registrate = (callback) => {
     if(this.state.username !== '' && this.state.email !== '' && this.state.password !== '') {
       (localStorage.getItem('without_server') === 'true') ?
         message.success('Вы зарегистрированы')
         :
         this.props.signUp(this.state.username, this.state.email, this.state.password);
-      // location.replace('/');
+        callback()
     } else
       message.error('Введите все данные')
   };
@@ -131,11 +129,11 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
             >
               <Input value={this.state.password} onChange={this.onHandlePasswordChange} type='password' placeholder="Введите пароль"/>
             </FormItem>
-            <Row style={{marginTop: 20, textAlign: 'center'}}>
+            <Col offset={10} className='sm-row-center' style={{marginTop: 20}}>
               <FormItem {...tailFormItemLayout}>
                 <div>
                   <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
-                  <Button type="primary" htmlType="submit" onClick={this.registrate}>Зарегистрироваться</Button>
+                  <Button type="primary" htmlType="submit" onClick={() => {this.registrate(setTimeout(() => {location.assign('/')}, 1000))}}>Зарегистрироваться</Button>
                 </div>
                 <div>
                   <span style={{marginRight: 10}}>Уже есть аккаунт?</span>
@@ -143,7 +141,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
                   <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
                 </div>
               </FormItem>
-            </Row>
+            </Col>
           </Form>
         </Row>
       </div>

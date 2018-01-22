@@ -40,9 +40,7 @@ const tailFormItemLayout = {
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
-    sm: { span: 4,
-      offset: 5
-    },
+    sm: { span: 4, offset: 5 },
     md: { offset: 6 }
   },
   wrapperCol: {
@@ -193,12 +191,12 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
             >
               <Switch />
             </FormItem >
-            <Row style={{marginTop: 20, textAlign: 'center'}}>
+            <Col offset={10} className='sm-row-center' style={{marginTop: 20}}>
               <FormItem {...tailFormItemLayout}>
                 <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
                 <Button type="primary" htmlType="submit" onClick={this.createGroup}>Создать группу</Button>
               </FormItem>
-            </Row>
+            </Col>
           </Form>
         </Row>
       </div>
