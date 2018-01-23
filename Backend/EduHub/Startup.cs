@@ -33,7 +33,6 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             StartLoggly();
             var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
                 Configuration.GetValue<int>("MaxGroupSize"),
@@ -67,13 +66,17 @@ namespace EduHub
             ConfigureSecurity(services);
             if (Configuration.GetValue<bool>("Authorization"))
             {
-                services.AddMvc(o => o.Filters.Add(new ExceptionFilter()));
+                services.AddMvc(o => {
+                    o.Filters.Add(new ExceptionFilter());
+                    o.Filters.Add(new ActionFilter());
+                });
             }
             else
             {
                 services.AddMvc(o => {
                     o.Filters.Add(new AllowAnonymousFilter());
                     o.Filters.Add(new ExceptionFilter());
+                    o.Filters.Add(new ActionFilter());
                 });
             }
             services.AddCors(options =>
@@ -118,7 +121,7 @@ namespace EduHub
             config.TagConfig.Tags.Add(ct);
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information().WriteTo.Loggly()
+                .MinimumLevel.Verbose().WriteTo.Loggly()
                 .CreateLogger();
             Log.Information("Loggly started");
         }
