@@ -155,7 +155,7 @@ namespace EduHub.Controllers
         {
             Group group = _groupFacade.GetGroup(idOfGroup);
             IEnumerable<Member> membersOfGroup = _groupFacade.GetMembersOfGroup(idOfGroup);
-            GroupResponse response = new GroupResponse(group.GroupInfo, group.Course, group.Teacher, membersOfGroup, _userFacade);
+            GroupResponse response = new GroupResponse(group.GroupInfo, group.Status, group.Teacher, membersOfGroup, _userFacade);
             return Ok(response);
         }
 

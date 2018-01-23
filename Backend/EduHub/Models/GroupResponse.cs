@@ -1,4 +1,5 @@
 ﻿using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,10 @@ namespace EduHub.Models
 {
     public class GroupResponse
     {
-        public GroupResponse(GroupInfo groupInfo, Course course, User teacher,IEnumerable<Member> members, IUserFacade userFacade)
+        public GroupResponse(GroupInfo groupInfo, CourseStatus status, User teacher,IEnumerable<Member> members, IUserFacade userFacade)
         {
             GroupInfo = groupInfo;
-            Course = course;
+            Status = status;
             Teacher = teacher;
             Members = new List<GroupMember>();
 
@@ -24,7 +25,7 @@ namespace EduHub.Models
         }
         public List<GroupMember> Members { get; set; }
         public GroupInfo GroupInfo { get; set; }
-        public Course Course { get; set; }
+        public CourseStatus Status { get; set; }
         public User Teacher { get; set; }
 
         public struct GroupMember

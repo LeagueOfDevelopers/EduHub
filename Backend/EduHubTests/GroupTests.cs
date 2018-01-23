@@ -208,16 +208,16 @@ namespace EduHubTests
             Guid user1 = Guid.NewGuid();
             Guid user2 = Guid.NewGuid();
             Group group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
-            Course course = new Course("some awesome course");
+            string expectedCurriculum = "Awesome course";
             
             //Act
             group.AddMember(creatorId, user1);
             group.AddMember(user1, user2);
             group.ApproveTeacher(approvedTeacher);
-            group.OfferCourse(approvedTeacher.Id, course);
+            group.OfferCurriculum(approvedTeacher.Id, expectedCurriculum);
             
             //Assert
-            Assert.IsNotNull(group.Course);
+            Assert.IsNotNull(group.GroupInfo.Curriculum);
         }
 
         [TestMethod]
@@ -231,19 +231,19 @@ namespace EduHubTests
             Guid user1 = Guid.NewGuid();
             Guid user2 = Guid.NewGuid();
             Group group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
-            Course course = new Course("some awesome course");
-            
+            string expectedCurriculum = "Awesome course";
+
             //Act
             group.AddMember(creatorId, user1);
             group.AddMember(user1, user2);
             group.ApproveTeacher(approvedTeacher);
-            group.OfferCourse(approvedTeacher.Id, course);
-            group.AcceptCourse(creatorId);
-            group.AcceptCourse(user1);
-            group.AcceptCourse(user2);
+            group.OfferCurriculum(approvedTeacher.Id, expectedCurriculum);
+            group.AcceptCurriculum(creatorId);
+            group.AcceptCurriculum(user1);
+            group.AcceptCurriculum(user2);
             
             //Assert
-            Assert.AreEqual(group.Course.CourseStatus, EduHubLibrary.Domain.Tools.CourseStatus.Started);
+            Assert.AreEqual(group.Status, EduHubLibrary.Domain.Tools.CourseStatus.Started);
         }
 
         [TestMethod]
@@ -258,8 +258,7 @@ namespace EduHubTests
             Guid user1 = Guid.NewGuid();
             Guid user2 = Guid.NewGuid();
             Group group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
-            Course course = new Course("some awesome course");
-            
+
             //Act
             group.AddMember(creatorId, user1);
             group.ApproveTeacher(approvedTeacher);

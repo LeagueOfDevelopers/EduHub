@@ -25,6 +25,7 @@ namespace EduHubLibrary.Domain
         public Guid Id { get; private set; }
         public string Title { get; internal set; }
         public string Description { get; internal set; }
+        public string Curriculum { get; internal set; }
         public IEnumerable<string> Tags { get; internal set; }
         public GroupType GroupType { get; private set; }
         public bool IsPrivate { get; private set; }

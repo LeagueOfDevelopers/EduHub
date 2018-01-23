@@ -65,27 +65,26 @@ namespace EduHubLibrary.Facades
             currentGroup.ApproveTeacher(teacher);
         }
 
-        public void AcceptCourse(Guid userId, Guid groupId)
+        public void AcceptCurriculum(Guid userId, Guid groupId)
         {
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Guid.IsNotEmpty(groupId);
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AcceptCourse),
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AcceptCurriculum),
                 opt => opt.WithException(new UserNotFoundException(userId)));
-            Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AcceptCourse),
+            Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AcceptCurriculum),
                 opt => opt.WithException(new GroupNotFoundException(groupId)));
-            currentGroup.AcceptCourse(userId);
+            currentGroup.AcceptCurriculum(userId);
         }
 
-        public void OfferCourse(Guid userId, Guid groupId, string description)
+        public void OfferCurriculum(Guid userId, Guid groupId, string description)
         {
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Guid.IsNotEmpty(groupId);
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AcceptCourse),
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AcceptCurriculum),
                 opt => opt.WithException(new UserNotFoundException(userId)));
-            Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AcceptCourse),
+            Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AcceptCurriculum),
                 opt => opt.WithException(new GroupNotFoundException(groupId)));
-            Course course = new Course(description);
-            currentGroup.OfferCourse(userId, course);
+            currentGroup.OfferCurriculum(userId, description);
         }
 
         #region Editing of group

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain.Exceptions;
 using EnsureThat;
+using EduHubLibrary.Domain.Tools;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EduHubTests")]
 
@@ -13,7 +14,7 @@ namespace EduHubLibrary.Domain
         public Chat Chat { get; private set; }
         public GroupInfo GroupInfo { get; set; }
         public User Teacher { get; private set; }
-        public Course Course { get; private set; }
+        public CourseStatus Status { get; set; }
 
         public Group(Guid creatorId, List<Member> toWrite, string title, List<string> tags,
             string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
@@ -101,25 +102,25 @@ namespace EduHubLibrary.Domain
             Teacher = Ensure.Any.IsNotNull(teacher);
         }
 
-        internal void OfferCourse(Guid userId, Course course)
+        internal void OfferCurriculum(Guid userId, string curriculum)
         {
             Ensure.Guid.IsNotEmpty(userId);
-            Ensure.Bool.IsTrue(IsTeacher(userId), nameof(OfferCourse),
+            Ensure.Bool.IsTrue(IsTeacher(userId), nameof(OfferCurriculum),
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
-            Ensure.Any.IsNotNull(course);
-            Course = course;
+            Ensure.String.IsNotNullOrWhiteSpace(curriculum);
+            GroupInfo.Curriculum = curriculum;
         }
 
-        internal void AcceptCourse(Guid userId)
+        internal void AcceptCurriculum(Guid userId)
         {
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Bool.IsTrue(IsMember(userId), nameof(IsMember),
                 opt => opt.WithException(new MemberNotFoundException(userId)));
             Member currentMember = GetMemberById(userId);
-            currentMember.AcceptedCourse = true;
-            if (listOfMembers.All(m => m.AcceptedCourse))
+            currentMember.AcceptedCurriculum = true;
+            if (listOfMembers.All(m => m.AcceptedCurriculum))
             {
-                Course.CourseStatus = Tools.CourseStatus.Started;
+                Status = CourseStatus.Started;
             }
         }
 

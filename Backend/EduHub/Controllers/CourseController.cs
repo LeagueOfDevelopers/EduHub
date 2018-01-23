@@ -75,8 +75,8 @@ namespace EduHub.Controllers
         public IActionResult SuggestCurriculum([FromBody]OfferCurriculum curriculum, [FromRoute] Guid groupId)
         {
             Ensure.Any.IsNotNull(curriculum);
-            _groupFacade.OfferCourse(curriculum.userId, groupId, curriculum.Description);
-            return Ok();
+            _groupFacade.OfferCurriculum(curriculum.UserId, groupId, curriculum.Description);
+            return Ok($"В группы был предложен учебный план '{curriculum.Description}'");
         }
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace EduHub.Controllers
         [Route("curriculum/{userId}")]
         public IActionResult ApproveCurriculum([FromRoute] Guid groupId, [FromRoute] Guid userId)
         {
-            _groupFacade.AcceptCourse(userId, groupId);
-            return Ok();
+            _groupFacade.AcceptCurriculum(userId, groupId);
+            return Ok("Учебный план утвержден");
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace EduHub.Controllers
         [HttpDelete]
         public IActionResult CloseCourse([FromRoute] Guid groupId)
         {
-            _groupFacade.GetGroup(groupId).Course.CourseStatus = CourseStatus.Finished;
+            _groupFacade.GetGroup(groupId).Status = CourseStatus.Finished;
             return Ok("Курс закрыт");
         }
 
