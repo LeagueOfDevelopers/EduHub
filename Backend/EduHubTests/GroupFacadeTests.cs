@@ -27,16 +27,11 @@ namespace EduHubTests
             userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
-
-            var title = "some group";
-            var description = "some description";
+            
             var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
             tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
 
-            groupFacade.CreateGroup(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -62,15 +57,10 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var title = "some group";
-            var description = "some description";
             var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
             tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
 
-            groupFacade.CreateGroup(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -91,15 +81,10 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var title = "some group";
-            var description = "some description";
             var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
             tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
 
-            groupFacade.CreateGroup(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -125,15 +110,10 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var title = "some group";
-            var description = "some description";
             var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
             tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
 
-            groupFacade.CreateGroup(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
             
@@ -160,15 +140,10 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var title = "some group";
-            var description = "some description";
             var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
             tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
 
-            groupFacade.CreateGroup(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -194,15 +169,10 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var title = "some group";
-            var description = "some description";
             var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
             tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
 
-            groupFacade.CreateGroup(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -229,15 +199,10 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var title = "some group";
-            var description = "some description";
             var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
             tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
 
-            groupFacade.CreateGroup(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -259,15 +224,10 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var title = "some group";
-            var description = "some description";
             var tags = new List<string>();
-            var size = 3;
-            var moneyPerUser = 100.0;
             tags.Add("js");
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
 
-            groupFacade.CreateGroup(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 

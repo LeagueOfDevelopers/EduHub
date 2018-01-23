@@ -174,5 +174,62 @@ namespace EduHubTests
             userFacade.RegUser("Grisha", new Credentials("sokolov@mail.ru", "password1"), true, TypeOfUser.User, "avatar1.ru");
             userFacade.RegUser("Sasha", new Credentials("sokolov@mail.ru", "password2"), false, TypeOfUser.User, "avatar2.ru");
         }
+
+        [TestMethod]
+        public void TryToInviteUserWithTeacherFlag_IsItPossible()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000));
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+
+            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), true, TypeOfUser.User, "avatar.ru");
+            List<User> allUsers = userFacade.GetUsers().ToList();
+            Guid creatorId = allUsers[0].Id;
+            Guid teacherId = allUsers[1].Id;
+
+            var tags = new List<string>();
+            tags.Add("js");
+
+            groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
+            List<Group> allGroups = groupFacade.GetGroups().ToList();
+            var createdGroup = allGroups[0];
+
+            //Act
+            userFacade.Invite(creatorId, teacherId, createdGroup.GroupInfo.Id, MemberRole.Teacher);
+            List <Invitation> invitations = userFacade.GetAllInvitationsForUser(teacherId).ToList();
+
+            //Assert
+            Assert.AreEqual(createdGroup.GroupInfo.Id, invitations[0].GroupId);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UserIsNotTeacher))]
+        public void TryToInviteUserWithoutTeacherFlag_GetException()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000));
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+
+            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false, TypeOfUser.User, "avatar.ru");
+            List<User> allUsers = userFacade.GetUsers().ToList();
+            Guid creatorId = allUsers[0].Id;
+            Guid pseudoTeacherId = allUsers[1].Id;
+
+            var tags = new List<string>();
+            tags.Add("js");
+
+            groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
+            List<Group> allGroups = groupFacade.GetGroups().ToList();
+            var createdGroupId = allGroups[0].GroupInfo.Id;
+
+            //Act
+            userFacade.Invite(creatorId, pseudoTeacherId, createdGroupId, MemberRole.Teacher);
+        }
     }
 }
