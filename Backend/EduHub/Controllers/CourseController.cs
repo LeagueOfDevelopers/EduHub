@@ -76,7 +76,7 @@ namespace EduHub.Controllers
         {
             Ensure.Any.IsNotNull(curriculum);
             _groupFacade.OfferCurriculum(curriculum.UserId, groupId, curriculum.Description);
-            return Ok($"В группы был предложен учебный план '{curriculum.Description}'");
+            return Ok($"В группу был предложен учебный план '{curriculum.Description}'");
         }
 
         /// <summary>

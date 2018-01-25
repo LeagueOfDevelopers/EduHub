@@ -70,17 +70,22 @@ namespace EduHubLibrary.Facades
             Ensure.Guid.IsNotEmpty(groupId);
             Group currentGroup = _groupRepository.GetGroupById(groupId);
             User invitedUser = _userRepository.GetUserById(invitedId);
+
             Ensure.Bool.IsTrue(currentGroup.IsMember(inviterId), nameof(Invite),
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
             Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),
                 opt => opt.WithException(new AlreadyMemberException(invitedId, groupId)));
             Ensure.Bool.IsFalse(invitedUser.GetAllInvitation().Any(c => c.GroupId == groupId), 
                 nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
-            Ensure.Bool.IsTrue(invitedUser.IsTeacher && suggestedRole == MemberRole.Teacher, 
-                nameof(Invite), opt => opt.WithException(new UserIsNotTeacher(invitedId)));
+            if (suggestedRole == MemberRole.Teacher)
+            {
+                Ensure.Bool.IsTrue(invitedUser.IsTeacher, nameof(Invite), 
+                    opt => opt.WithException(new UserIsNotTeacher(invitedId)));
+            }
             Ensure.Bool.IsFalse(suggestedRole == MemberRole.Teacher && _groupRepository.GetGroupById(groupId).Teacher != null,
                 nameof(Invite), opt => opt.WithException(new TeacherIsAlreadyFoundException()));
             Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
+
             invitedUser.AddInvitation(newInvintation);
         }
 

@@ -31,7 +31,7 @@ namespace EduHubTests
             var tags = new List<string>();
             tags.Add("js");
 
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -60,7 +60,7 @@ namespace EduHubTests
             var tags = new List<string>();
             tags.Add("js");
 
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -84,7 +84,7 @@ namespace EduHubTests
             var tags = new List<string>();
             tags.Add("js");
 
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -113,7 +113,7 @@ namespace EduHubTests
             var tags = new List<string>();
             tags.Add("js");
 
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
             
@@ -143,7 +143,7 @@ namespace EduHubTests
             var tags = new List<string>();
             tags.Add("js");
 
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -172,7 +172,7 @@ namespace EduHubTests
             var tags = new List<string>();
             tags.Add("js");
 
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -202,7 +202,7 @@ namespace EduHubTests
             var tags = new List<string>();
             tags.Add("js");
 
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
@@ -227,7 +227,7 @@ namespace EduHubTests
             var tags = new List<string>();
             tags.Add("js");
 
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welkome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroup = allGroups[0];
 
