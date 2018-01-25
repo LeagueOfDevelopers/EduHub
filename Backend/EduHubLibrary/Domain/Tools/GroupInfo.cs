@@ -30,46 +30,7 @@ namespace EduHubLibrary.Domain
         public GroupType GroupType { get; private set; }
         public bool IsPrivate { get; private set; }
         public bool IsActive { get; set; }
-
-        public int Size
-        {
-            get
-            {
-                return _size;
-            }
-            internal set
-            {
-                if (value>0)
-                {
-                    _size = value;
-                }
-                else
-                {
-                    throw new InvalidGroupInfo("size");
-                }
-            }
-        }
-
-        public double MoneyPerUser
-        {
-            get
-            {
-                return _moneyPerUser;
-            }
-            internal set
-            {
-                if (value >= 0)
-                {
-                    _moneyPerUser = value;
-                }
-                else
-                {
-                    throw new InvalidGroupInfo("money per user");
-                }
-            }
-        }
-        
-        private int _size;
-        private double _moneyPerUser;
+        public int Size { get; internal set; }
+        public double MoneyPerUser { get; internal set; }
     }
 }
