@@ -15,7 +15,7 @@ import injectReducer from 'utils/injectReducer';
 // import {selectGroupPage} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import {Col, Row, Button, message, Dropdown, Input, Menu} from 'antd';
+import {Col, Row, Button, message, Dropdown, Input, Menu, Select} from 'antd';
 // import styled from 'styled-components';
 
 import config from '../../config'
@@ -27,50 +27,66 @@ import * as ReactDOM from "react-dom";
 
 import {parseJwt} from "../../globaljs";
 
+const defaultGroupInfo = {
+  groupInfo: {
+    isPrivate: true,
+    title: "Название группы",
+    description: "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+    "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+    "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+    "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+    "Описание группы. Описание группы. ",
+    isActive: true,
+    tags: ['js', 'c#'],
+    moneyPerUser: 600,
+    size: 10,
+    groupType: "Лекция",
+  },
+  members: [
+    {
+      member: {
+        userId: "848a3202-7085-4cba-842f-07d07eff7b35",
+        memberRole: "Создатель",
+        paid: true,
+        acceptedCourse: false
+      },
+      name: "Первый пользователь",
+      avatarLink: "string"
+    },
+    {
+      member: {
+        userId: "string",
+        memberRole: "Участник",
+        paid: true,
+        acceptedCourse: false
+      },
+      name: "Второй пользователь",
+      avatarLink: "string"
+    }
+  ],
+  teacher: null,
+};
+
 export class GroupPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
     this.state = {
       id: this.props.match.params.id,
-      isPrivate: true,
+      title: '',
+      isActive: null,
+      size: 0,
+      moneyPerUser: 0,
+      groupType: '',
+      tags: [],
+      description: '',
+      isPrivate: null,
+      members: [],
       teacher: null,
-      title: "Название группы",
-      description: "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-      "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-      "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-      "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-      "Описание группы. Описание группы. ",
-      isActive: true,
-      tags: ['js', 'c#'],
-      members: [
-        {
-          member: {
-            userId: "848a3202-7085-4cba-842f-07d07eff7b35",
-            memberRole: "Создатель",
-            paid: true,
-            acceptedCourse: false
-          },
-          name: "Первый пользователь",
-          avatarLink: "string"
-        },
-        {
-          member: {
-            userId: "string",
-            memberRole: "Участник",
-            paid: true,
-            acceptedCourse: false
-          },
-          name: "Второй пользователь",
-          avatarLink: "string"
-        }
-      ],
-      moneyPerUser: 600,
-      size: 10,
-      groupType: "Лекция",
       isInGroup: false,
       inviteVisible: false,
-      userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null
+      userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
+      selectData: ['fdsf', 'dafda']
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -79,39 +95,61 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
     this.enterGroup = this.enterGroup.bind(this);
     this.handleVisibleChange = this.handleVisibleChange.bind(this);
     this.tryInvite = this.tryInvite.bind(this);
+    this.getOptions = this.getOptions.bind(this);
   }
 
   handleVisibleChange = (flag) => {
     this.setState({ inviteVisible: flag });
   };
 
+  getSelectData = (e) => {
+    console.log(this.state.selectData);
+  };
+
+  getOptions = () => {
+    this.state.selectData.map(item => <Select.Option key={item}>{item}</Select.Option>);
+  };
+
   inviteMenu = (
     <Menu>
       <Menu.Item className='unhover' key="0">
-        <Input onPressEnter={this.inviteMember} ref={input => this.inviteInput = input} placeholder='Введите id пользователя'/>
+        <Select
+          mode="combobox"
+          style={{width: '100%'}}
+          placeholder='Введите пользователя'
+          defaultActiveFirstOption={false}
+          showArrow={false}
+          notFoundContent='Нет совпадений'
+          onSelect={this.inviteMember}
+          onChange={this.getSelectData}
+        >
+          <Select.Option key='item'>item</Select.Option>
+        </Select>
       </Menu.Item>
     </Menu>
   );
 
   componentDidMount() {
-    if(!(localStorage.getItem('without_server') === 'true')) {
+    if(localStorage.getItem('without_server') === 'true') {
+      this.onSetResult(defaultGroupInfo)
+    }
+    else {
       fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       })
         .then(response => response.json())
-        .then(result => this.onSetResult(result))
+        .then(result => {
+          this.onSetResult(result);
+        })
         .catch(error => error);
     }
-
-    this.setState({isInGroup: this.state.members.find(item => item.member.userId === this.state.userData.UserId)});
   }
 
   onSetResult(result) {
     this.setState({
       title: result.groupInfo.title,
-      members: result.members,
       isActive: result.groupInfo.isActive,
       size: result.groupInfo.size,
       moneyPerUser: result.groupInfo.moneyPerUser,
@@ -119,14 +157,16 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
       tags: result.groupInfo.tags,
       description: result.groupInfo.description,
       isPrivate: result.groupInfo.isPrivate,
+      members: result.members,
       teacher: result.teacher,
+      isInGroup: result.members.find(item => item.member.userId === this.state.userData.UserId)
     })
   }
 
   tryInvite() {
     if(this.state.inviteVisible && ReactDOM.findDOMNode(this.inviteInput).value !== '') {
       this.inviteMember();
-      ReactDOM.findDOMNode(this.inviteInput).value = '';
+      // ReactDOM.findDOMNode(this.inviteInput).value = '';
     }
   }
 
@@ -155,10 +195,8 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
 
   render() {
     return (
-      !this.state.isActive ?
-        (<div>Данной группы не существует</div>)
-        : (
-          <div>
+      this.state.isActive ?
+        (<div>
             <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 60, fontSize: 16}} className='md-center-container'>
               <Col className='md-offset-16px' md={{span: 10}} lg={{span: 7}}>
                 <Row style={{width: 248}}>
@@ -238,7 +276,8 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
               </Col>
             </Col>
           </div>
-        )
+        ) :
+        (<div>Данной группы не существует</div>)
     );
   }
 }

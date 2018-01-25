@@ -96,9 +96,11 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
           </div>
         </Col>
         <Col span={6} offset={2}>
-          <Search className='search'
+          <Search
+            className='search'
             placeholder="Введите, что хотите найти"
             size='large'
+            onKeyDown={value => console.log(value.target.value)}
           />
         </Col>
           {localStorage.getItem('token') ? (

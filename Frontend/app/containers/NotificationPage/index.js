@@ -21,31 +21,34 @@ const TabPane = Tabs.TabPane;
 
 import NotifyCard from '../../components/NotifyCard';
 import InviteCard from '../../components/InviteCard';
+import config from "../../config";
 
 export class NotificationPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
-    super(props)
+    super(props);
+
+    this.state = {
+      notifies: [],
+      invites: []
+    }
   }
 
-  notifys = [
+  notifies = [
     {
-      senderName: 'Имя отправителя',
-      time: new Date().getHours() + ':' + (new Date().getMinutes()<10 ? '0' : '') + new Date().getMinutes(),
-      date: new Date().toLocaleDateString(),
+      fromUser: 'Имя отправителя',
+      date: new Date().toDateString(),
       text: 'Текст уведомления',
       readed: false
     },
     {
-      senderName: 'Имя отправителя',
-      time: new Date().getHours() + ':' + (new Date().getMinutes()<10 ? '0' : '') + new Date().getMinutes(),
-      date: new Date().toLocaleDateString(),
+      fromUser: 'Имя отправителя',
+      date: new Date().toDateString(),
       text: 'Текст уведомления',
       readed: true
     },
     {
-      senderName: 'Имя отправителя',
-      time: new Date().getHours() + ':' + (new Date().getMinutes()<10 ? '0' : '') + new Date().getMinutes(),
-      date: new Date().toLocaleDateString(),
+      fromUser: 'Имя отправителя',
+      date: new Date().toDateString(),
       text: 'Текст уведомления',
       readed: true
     }
@@ -53,20 +56,52 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
 
   invites = [
     {
-      senderName: 'Имя отправителя',
-      time: new Date().getHours() + ':' + (new Date().getMinutes()<10 ? '0' : '') + new Date().getMinutes(),
-      date: new Date().toLocaleDateString(),
-      text: 'Текст уведомления',
+      fromUser: 'Имя отправителя',
+      date: new Date().toDateString(),
+      groupId: '32478643981654',
+      suggestedRole: 'Участник',
       readed: false
     },
     {
-      senderName: 'Имя отправителя',
-      time: new Date().getHours() + ':' + (new Date().getMinutes()<10 ? '0' : '') + new Date().getMinutes(),
-      date: new Date().toLocaleDateString(),
-      text: 'Текст уведомления',
+      fromUser: 'Имя отправителя',
+      date: new Date().toDateString(),
+      groupId: 'dr32847363274',
+      suggestedRole: 'Участник',
       readed: true
     }
   ];
+
+  componentDidMount() {
+    if(localStorage.getItem('without_server') === 'true') {
+      this.setState({
+        notifies: this.notifies,
+        invites: this.invites
+      })
+    }
+    else {
+      fetch(`${config.API_BASE_URL}/user/profile/notifies`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+        .then(response => response.json())
+        .then(result => {
+          this.setState({notifies: result});
+        })
+        .catch(error => error);
+
+      fetch(`${config.API_BASE_URL}/user/profile/invitations`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+        .then(response => response.json())
+        .then(result => {
+          this.setState({invites: result.invitations});
+        })
+        .catch(error => error);
+    }
+  }
 
   render() {
     return (
@@ -77,7 +112,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
               <TabPane tab="Уведомления" key="1" style={{margin: '30px 0'}}>
                 {(localStorage.getItem('without_server') === 'true') ?
                   (<div>
-                      {this.notifys.map(item =>
+                      {this.state.notifies.map(item =>
                         <NotifyCard {...item}/>
                       )}
                     </div>
@@ -87,7 +122,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
               <TabPane tab="Приглашения" key="2" style={{margin: '30px 0'}}>
                 {(localStorage.getItem('without_server') === 'true') ?
                   (<div>
-                      {this.invites.map(item =>
+                      {this.state.invites.map(item =>
                         <InviteCard {...item}/>
                       )}
                     </div>

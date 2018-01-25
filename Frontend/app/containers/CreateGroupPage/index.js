@@ -56,9 +56,9 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     this.state = {
       members: [],
       title: '',
-      size: '',
+      size: 1,
       techs: [],
-      type: [],
+      type: '',
       description: '',
       price: '',
     };
@@ -94,25 +94,25 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
   };
 
   onHandleSizeChange = (e) => {
-    // this.setState({size: e.target.value})
-    console.log(ReactDOM.findDOMNode(this.size).value)
+    this.setState({size: e})
   };
 
   onHandleTechsChange = (e) => {
-    // this.setState({techs: e.target.value})
-    console.log(ReactDOM.findDOMNode(this.techs).value)
+    this.setState({techs: e})
   };
 
   onHandleTypeChange = (e) => {
-    this.setState({type: e.target.value})
+    this.setState({type: e})
   };
 
   onHandleDescChange = (e) => {
     this.setState({description: e.target.value})
+
   };
 
   onHandlePriceChange = (e) => {
     this.setState({price: e.target.value})
+
   };
 
   render() {
@@ -132,13 +132,13 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               {...formItemLayout}
               label="Человек в группе"
             >
-              <InputNumber ref={input => this.size = input}  onChange={this.onHandleSizeChange} min={1} placeholder="1"/>
+              <InputNumber onChange={this.onHandleSizeChange} min={1} placeholder="1"/>
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Изучаемые технологии"
             >
-              <Select ref={input => this.techs = input}  onChange={this.onHandleTechsChange} mode="tags" placeholder="Введите, что хотите изучить">
+              <Select onChange={this.onHandleTechsChange} mode="tags" placeholder="Введите, что хотите изучить">
                 <Option value="html">html</Option>
                 <Option value="css">css</Option>
                 <Option value="js">js</Option>
@@ -150,7 +150,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               label="Формат занятий"
             >
               <Col span={8}>
-                <Select ref={input => this.type = input} onChange={this.onHandleTypeChange} placeholder="Выберите формат">
+                <Select onChange={this.onHandleTypeChange} placeholder="Выберите формат">
                   <Option value="lecture">Лекция</Option>
                   <Option value="webinar">Вебинар</Option>
                   <Option value="seminar">Семинар</Option>

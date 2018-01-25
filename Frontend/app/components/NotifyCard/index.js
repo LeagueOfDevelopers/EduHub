@@ -26,14 +26,11 @@ class NotifyCard extends React.PureComponent { // eslint-disable-line react/pref
         }
         <Row style={{marginBottom: 12}}>
           <Col span={12}>
-            <span style={{fontSize: 14, opacity: 0.9}}>{this.props.senderName}</span>
+            <span style={{fontSize: 14, opacity: 0.9}}>{this.props.fromUser}</span>
           </Col>
           <Col span={12} style={{textAlign: 'right'}}>
-            <span style={{fontSize: 14, opacity: 0.7, marginRight: 12}}>
-              {this.props.date}
-            </span>
             <span style={{fontSize: 14, opacity: 0.7}}>
-              {this.props.time}
+              {this.props.date}
             </span>
           </Col>
         </Row>
