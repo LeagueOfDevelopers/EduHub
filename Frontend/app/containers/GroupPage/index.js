@@ -67,6 +67,8 @@ const defaultGroupInfo = {
   teacher: null,
 };
 
+const defaultSelectData = ['Первый пользователь', 'Второй пользователь'];
+
 export class GroupPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -86,7 +88,8 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
       isInGroup: false,
       inviteVisible: false,
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
-      selectData: ['fdsf', 'dafda']
+      selectData: [],
+      selectValue: ''
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -94,40 +97,47 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
     this.leaveGroup = this.leaveGroup.bind(this);
     this.enterGroup = this.enterGroup.bind(this);
     this.handleVisibleChange = this.handleVisibleChange.bind(this);
-    this.tryInvite = this.tryInvite.bind(this);
-    this.getOptions = this.getOptions.bind(this);
+    this.fetchData = this.fetchData.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
   handleVisibleChange = (flag) => {
     this.setState({ inviteVisible: flag });
   };
 
-  getSelectData = (e) => {
-    console.log(this.state.selectData);
+  fetchData = (value, callback) => {
+    if(localStorage.getItem('without_server') === 'true') {
+      callback(defaultSelectData)
+    }
   };
 
-  getOptions = () => {
-    this.state.selectData.map(item => <Select.Option key={item}>{item}</Select.Option>);
+  handleSelectChange = (value) => {
+    this.setState({selectValue: value});
+    this.fetchData(value, data => this.setState({selectData: data}));
+    if(value === '') {
+      this.setState({selectData: []})
+    }
   };
 
-  inviteMenu = (
-    <Menu>
-      <Menu.Item className='unhover' key="0">
-        <Select
-          mode="combobox"
-          style={{width: '100%'}}
-          placeholder='Введите пользователя'
-          defaultActiveFirstOption={false}
-          showArrow={false}
-          notFoundContent='Нет совпадений'
-          onSelect={this.inviteMember}
-          onChange={this.getSelectData}
-        >
-          <Select.Option key='item'>item</Select.Option>
-        </Select>
-      </Menu.Item>
-    </Menu>
-  );
+  inviteMenu = (options) => (
+      <Menu>
+        <Menu.Item className='unhover' key="0">
+          <Select
+            mode="combobox"
+            style={{width: '100%'}}
+            value={this.state.selectValue}
+            placeholder='Введите имя пользователя'
+            defaultActiveFirstOption={false}
+            showArrow={false}
+            notFoundContent='Нет совпадений'
+            onSelect={this.inviteMember}
+            onChange={this.handleSelectChange}
+          >
+            {options.map(item => <Select.Option key={item}>{item}</Select.Option>)}
+          </Select>
+        </Menu.Item>
+      </Menu>
+    );
 
   componentDidMount() {
     if(localStorage.getItem('without_server') === 'true') {
@@ -163,19 +173,12 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
     })
   }
 
-  tryInvite() {
-    if(this.state.inviteVisible && ReactDOM.findDOMNode(this.inviteInput).value !== '') {
-      this.inviteMember();
-      // ReactDOM.findDOMNode(this.inviteInput).value = '';
-    }
-  }
-
   inviteMember() {
     if(localStorage.getItem('without_server') === 'true') {
       message.success('Приглашение отправлено')
     }
     else {
-      fetch(`${config.API_LOCAL_URL}/group/${this.state.id}/member/invite/${ReactDOM.findDOMNode(this.inviteInput).value}`, {
+      fetch(`${config.API_LOCAL_URL}/group/${this.state.id}/member/invite/${this.state.selectValue}`, {
         headers: {
           'Method': 'POST',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -183,6 +186,8 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
       })
         .catch(error => error)
     }
+
+    this.setState({selectValue: ''});
   }
 
   leaveGroup() {
@@ -237,7 +242,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                         .member.memberRole === 'Создатель' ?
                       (<Row className='md-center-container'>
                         <Dropdown
-                          overlay={this.inviteMenu}
+                          overlay={this.inviteMenu(this.state.selectData)}
                           onVisibleChange={this.handleVisibleChange}
                           visible={this.state.inviteVisible}
                           trigger={['click']}
@@ -246,7 +251,6 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                             size='large'
                             style={{width: 280, marginLeft: -16}}
                             type='primary'
-                            onClick={this.tryInvite}
                           >
                             Пригласить
                           </Button>

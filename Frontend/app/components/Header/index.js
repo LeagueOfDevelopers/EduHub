@@ -7,10 +7,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Input, Row, Icon, Col, Avatar, Button, Form, Menu, Dropdown, message } from 'antd';
+import { Input, Row, Icon, Col, Avatar, Button, Form, Menu, Dropdown, message, Select } from 'antd';
 import {Link} from "react-router-dom";
 const Search = Input.Search;
 const FormItem = Form.Item;
+const {Option, OptGroup} = Select;
 import SigningInForm from "../../containers/SigningInForm/index";
 import config from '../../config';
 import {parseJwt} from "../../globaljs";
@@ -26,11 +27,18 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
 
     this.state = {
       signInVisible: false,
+      searchValue: '',
+      searchData: {
+        users: [],
+        groups: []
+      }
     };
 
     this.logout = this.logout.bind(this);
     this.onSignInClick = this.onSignInClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.fetchData = this.fetchData.bind(this);
   }
 
   onSignInClick = () => {
@@ -85,23 +93,62 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     </Menu>
   );
 
+  defaultSelectData = {
+    users: ['Первый пользователь', 'Второй пользователь'],
+    groups: [{title: 'Первая группа', tags: ['js' , 'c#']}, {title: 'Вторая группа', tags: ['js' , 'react']}]
+  };
+
+  fetchData = (value, callback) => {
+    if(localStorage.getItem('without_server') === 'true') {
+      callback(this.defaultSelectData)
+    }
+  };
+
+  handleSelectChange = (value) => {
+    this.setState({searchValue: value});
+    this.fetchData(value, data => this.setState({searchData: data}));
+    if(value === '') {
+      this.setState({searchData: { users: [], groups: []}})
+    }
+  };
+
   render() {
     return (
       <Row type="flex" align="middle" className='header' style={{width: '100hr'}}>
         <Col span={2} offset={2}>
           <div style={{width: 80}}>
             <Link to='/' style={{color: 'rgba(0,0,0,0.65)', textDecoration: 'none'}}>
-              <Logo>Logo</Logo>
+              <Logo>EduHub</Logo>
             </Link>
           </div>
         </Col>
         <Col span={6} offset={2}>
-          <Search
+          <Select
+            mode="combobox"
             className='search'
+            style={{width: '100%'}}
+            value={this.state.searchValue}
             placeholder="Введите, что хотите найти"
             size='large'
-            onKeyDown={value => console.log(value.target.value)}
-          />
+            defaultActiveFirstOption={false}
+            showArrow={false}
+            onChange={this.handleSelectChange}
+            onSelect={() => this.setState({searchValue: ''})}
+          >
+            <OptGroup label="Пользователи">
+              {this.state.searchData.users.map(item =>
+                <Option key={item}>{item}</Option>
+              )}
+            </OptGroup>
+            <OptGroup label="Группы">
+              {this.state.searchData.groups.map(item =>
+                <Option key={item.title}>
+                  <div>{item.title}</div>
+                  <div>{item.tags.map(tag => <Link to="" style={{marginRight: 6}}>{tag}</Link>)}</div>
+                </Option>
+              )}
+            </OptGroup>
+          </Select>
         </Col>
           {localStorage.getItem('token') ? (
               <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'flex-end'}}>
