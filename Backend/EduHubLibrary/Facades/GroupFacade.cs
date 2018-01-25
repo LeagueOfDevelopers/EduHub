@@ -32,6 +32,45 @@ namespace EduHubLibrary.Facades
             return group.GroupInfo.Id;
         }
 
+        public void AddMember(Guid groupId, Guid newMemberId)
+        {
+            Ensure.Guid.IsNotEmpty(groupId);
+            Ensure.Guid.IsNotEmpty(newMemberId);
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(newMemberId), nameof(newMemberId),
+                opt => opt.WithException(new UserNotFoundException(newMemberId)));
+            Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AddMember),
+                opt => opt.WithException(new GroupNotFoundException(groupId)));
+            currentGroup.AddMember(newMemberId);
+        }
+
+        public void DeleteTeacher(Guid groupId, Guid requestedPerson, Guid teacherId)
+        {
+            Ensure.Guid.IsNotEmpty(groupId);
+            Ensure.Guid.IsNotEmpty(requestedPerson);
+            Ensure.Guid.IsNotEmpty(teacherId);
+            Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(DeleteTeacher),
+                opt => opt.WithException(new GroupNotFoundException(groupId)));
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(requestedPerson), nameof(DeleteTeacher),
+                opt => opt.WithException(new UserNotFoundException(requestedPerson)));
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(teacherId), nameof(DeleteTeacher),
+                 opt => opt.WithException(new UserNotFoundException(teacherId)));
+            currentGroup.DeleteTeacher(requestedPerson, teacherId);
+        }
+
+        public void DeleteMember(Guid groupId, Guid requestedPerson, Guid deletingPerson)
+        {
+            Ensure.Guid.IsNotEmpty(requestedPerson);
+            Ensure.Guid.IsNotEmpty(deletingPerson);
+            Ensure.Guid.IsNotEmpty(groupId);
+            Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(DeleteMember),
+                opt => opt.WithException(new GroupNotFoundException(groupId)));
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(requestedPerson), nameof(DeleteMember),
+                opt => opt.WithException(new UserNotFoundException(requestedPerson)));
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(deletingPerson), nameof(DeleteMember),
+                opt => opt.WithException(new UserNotFoundException(deletingPerson)));
+            currentGroup.DeleteMember(requestedPerson, deletingPerson);
+        }
+
         public Group GetGroup(Guid id)
         {
             return _groupRepository.GetGroupById(id);
@@ -128,6 +167,8 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeSizeOfGroup),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.Any.IsNotNull(newSize);
+            Ensure.Bool.IsTrue(newSize <= _groupSettings.MaxGroupSize && newSize >= _groupSettings.MinGroupSize,
+               nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newSize))));
             currentGroup.GroupInfo.Size = newSize;
         }
 
@@ -139,8 +180,12 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangePriceInGroup),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.Any.IsNotNull(newPrice);
+            Ensure.Bool.IsTrue(newPrice <= _groupSettings.MaxGroupValue && newPrice >= _groupSettings.MinGroupValue,
+               nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newPrice))));
             currentGroup.GroupInfo.MoneyPerUser = newPrice;
         }
+
+
         #endregion
 
         private readonly IGroupRepository _groupRepository;

@@ -67,8 +67,8 @@ namespace EduHubTests
             Group testGroup2 = listOfGroups[1];
 
             //Act
-            testGroup1.AddMember(creator.Id, testUser.Id);
-            testGroup2.AddMember(creator.Id, testUser.Id);
+            testGroup1.AddMember(testUser.Id);
+            testGroup2.AddMember(testUser.Id);
             List<Group> expected = new List<Group>();
             expected.Add(testGroup1);
             expected.Add(testGroup2);

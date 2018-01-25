@@ -54,7 +54,7 @@ namespace EduHubLibrary.Facades
                 if (currentInvitation.SuggestedRole == MemberRole.Member)
                 {
                     Group currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
-                    currentGroup.AddMember(currentInvitation.FromUser, currentInvitation.ToUser);
+                    currentGroup.AddMember(currentInvitation.ToUser);
                 }
             }
             else if (status.Equals(InvitationStatus.Declined))

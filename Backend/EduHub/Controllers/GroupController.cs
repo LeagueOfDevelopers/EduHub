@@ -8,7 +8,6 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Authorization;
 using EnsureThat;
 using System.Linq;
-using System.IdentityModel.Tokens.Jwt;
 using Swashbuckle.AspNetCore.Examples;
 using EduHub.Models.Examples;
 using EduHub.Extensions;
@@ -158,6 +157,8 @@ namespace EduHub.Controllers
             GroupResponse response = new GroupResponse(group.GroupInfo, group.Status, group.Teacher, membersOfGroup, _userFacade);
             return Ok(response);
         }
+
+
 
         public GroupController(IGroupFacade groupFacade, IUserFacade userFacade)
         {

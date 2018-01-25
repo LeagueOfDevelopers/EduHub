@@ -186,7 +186,7 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidGroupInfo))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TryToSetInvalidSizeOfGroup_GetException()
         {
             //Arrange
@@ -211,7 +211,7 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidGroupInfo))]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void TryToSetInvalidMoneyPerUser_GetException()
         {
             //Arrange

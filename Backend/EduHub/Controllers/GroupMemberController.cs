@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
-using Swashbuckle;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using EduHubLibrary.Domain;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using EduHub.Extensions;
 
@@ -33,6 +27,18 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
+        /// Adds user to group as member
+        /// </summary>
+        [HttpPost]
+        public IActionResult AddMember([FromRoute] Guid groupId)
+        {
+            string a = Request.Headers["Authorization"];
+            var requestedId = a.GetUserId();
+            _groupFacade.AddMember(groupId, requestedId);
+            return Ok();
+        }
+
+        /// <summary>
         /// Changes status of invitation, add user to group
         /// </summary>
         [Authorize]
@@ -49,18 +55,36 @@ namespace EduHub.Controllers
         /// Deletes member from group
         /// </summary>
         [HttpDelete]
-        [Route("{idOfUser}")]
-        public IActionResult DeleteMember([FromRoute] int idOfGroup)
+        [Route("{memberId}")]
+        public IActionResult DeleteMember([FromRoute] Guid groupId, [FromRoute] Guid memberId)
         {
-            return Ok("Пользователь удален");
+            string a = Request.Headers["Authorization"];
+            var requestedId = a.GetUserId();
+            _groupFacade.DeleteMember(groupId, requestedId, memberId);
+            return Ok();
         }
 
-        public GroupMemberController(IUserFacade userFacade)
+        /// <summary>
+        /// Deletes teacher from group
+        /// </summary>
+        [HttpDelete]
+        [Route("teacher/{memberId}")]
+        public IActionResult DeleteTeacher([FromRoute] Guid groupId, [FromRoute] Guid memberId)
+        {
+            string a = Request.Headers["Authorization"];
+            var requestedId = a.GetUserId();
+            _groupFacade.DeleteTeacher(groupId, requestedId, memberId);
+            return Ok();
+        }
+
+        public GroupMemberController(IUserFacade userFacade, IGroupFacade groupFacade)
         {
             _userFacade = userFacade;
+            _groupFacade = groupFacade;
         }
 
         private readonly IUserFacade _userFacade;
+        private readonly IGroupFacade _groupFacade;
 
     }
 }

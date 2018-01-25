@@ -45,13 +45,13 @@ namespace EduHubLibrary.Domain
             listOfMembers.Add(creator);
         }
 
-        internal void AddMember(Guid inviterId, Guid invitedId)
+        internal void AddMember(Guid newMemberId)
         {
-            Ensure.Bool.IsTrue(IsMember(inviterId), nameof(IsMember),
-                opt => opt.WithException(new MemberNotFoundException(inviterId)));
+            Ensure.Bool.IsFalse(IsMember(newMemberId), nameof(AddMember),
+                opt => opt.WithException(new AlreadyMemberException(newMemberId, GroupInfo.Id)));
             Ensure.Bool.IsTrue(listOfMembers.Count < GroupInfo.Size, nameof(GroupInfo.Size),
                 opt => opt.WithException(new GroupIsFullException(GroupInfo.Id)));
-            var newMember = new Member(invitedId, MemberRole.Member);
+            var newMember = new Member(newMemberId, MemberRole.Member);
             listOfMembers.Add(newMember);
         }
 
@@ -71,6 +71,27 @@ namespace EduHubLibrary.Domain
                 return;
             }
             listOfMembers.Remove(deletingMember);
+        }
+
+        internal void DeleteTeacher(Guid requestedPerson, Guid teacherId)
+        {
+            Ensure.Guid.IsNotEmpty(requestedPerson);
+            Ensure.Guid.IsNotEmpty(teacherId);
+            Ensure.Bool.IsTrue(IsTeacher(teacherId), nameof(DeleteTeacher), 
+                opt => opt.WithException(new InvalidOperationException()));
+            if (requestedPerson == teacherId)
+            {
+                Teacher = null;
+            }
+            else
+            {
+                Ensure.Bool.IsTrue(IsMember(requestedPerson), nameof(DeleteTeacher),
+                    opt => opt.WithException(new MemberNotFoundException(requestedPerson)));
+                Member current = GetMemberById(requestedPerson);
+                Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(DeleteCreator),
+                    opt => opt.WithException(new NotEnoughPermissionsException(requestedPerson)));
+                Teacher = null;
+            }
         }
 
         internal bool IsMember(Guid userId)
@@ -97,8 +118,9 @@ namespace EduHubLibrary.Domain
         {
             Ensure.Bool.IsTrue(Teacher == null, nameof(Teacher), 
                 opt => opt.WithException(new TeacherIsAlreadyFoundException()));
-            Ensure.Bool.IsTrue(listOfMembers.Count == GroupInfo.Size, nameof(GroupInfo.Size),
-                opt => opt.WithException(new GroupIsNotFullException(GroupInfo.Id)));
+            /*Ensure.Bool.IsTrue(listOfMembers.Count == GroupInfo.Size, nameof(GroupInfo.Size),
+                opt => opt.WithException(new GroupIsNotFullException(GroupInfo.Id)));*/
+            // because of waffle task 103 this line is commented
             Teacher = Ensure.Any.IsNotNull(teacher);
         }
 

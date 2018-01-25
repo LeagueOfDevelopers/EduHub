@@ -20,5 +20,9 @@ namespace EduHubLibrary.Facades
         void ChangeTagsOfGroup(Guid idOfGroup, Guid idOfChanger, List<string> newTags);
         void ChangeSizeOfGroup(Guid idOfGroup, Guid idOfChanger, int newSize);
         void ChangePriceInGroup(Guid idOfGroup, Guid idOfChanger, double newPrice);
+        void DeleteMember(Guid groupId, Guid requestedPerson, Guid requestingPerson);
+        void AddMember(Guid groupId, Guid requestedPerson);
+        void DeleteTeacher(Guid groupId, Guid requestedPerson, Guid teacherId);
+
     }
 }

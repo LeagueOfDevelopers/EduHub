@@ -61,7 +61,7 @@ namespace EduHubTests
             
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(userId, idOfInvitedUser);
+            someGroup.AddMember(idOfInvitedUser);
             someGroup.DeleteMember(idOfInvitedUser, userId);
         }
 
@@ -81,7 +81,7 @@ namespace EduHubTests
             
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(userId, idOfInvitedUser);
+            someGroup.AddMember(idOfInvitedUser);
             someGroup.DeleteMember(idOfInvitedUser, idOfInvitedUser);
             var result = someGroup.GetAllMembers().ToArray().Length;
             
@@ -106,7 +106,7 @@ namespace EduHubTests
             
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(userId, idOfInvitedUser);
+            someGroup.AddMember(idOfInvitedUser);
             var result = someGroup.GetAllMembers().ToArray().Length;
             
             //Assert
@@ -129,7 +129,7 @@ namespace EduHubTests
             
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(userId, idOfInvitedUser);
+            someGroup.AddMember(idOfInvitedUser);
             someGroup.DeleteMember(userId, idOfInvitedUser);
             var result = someGroup.GetAllMembers().ToArray().Length;
             
@@ -154,7 +154,7 @@ namespace EduHubTests
 
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(userId, idOfInvitedUser);
+            someGroup.AddMember(idOfInvitedUser);
             someGroup.DeleteMember(userId, userId);
             var listOfMembers = someGroup.GetAllMembers().ToList();
             var resultRole = listOfMembers[0].MemberRole;
@@ -211,8 +211,8 @@ namespace EduHubTests
             string expectedCurriculum = "Awesome course";
             
             //Act
-            group.AddMember(creatorId, user1);
-            group.AddMember(user1, user2);
+            group.AddMember(user1);
+            group.AddMember(user2);
             group.ApproveTeacher(approvedTeacher);
             group.OfferCurriculum(approvedTeacher.Id, expectedCurriculum);
             
@@ -234,8 +234,8 @@ namespace EduHubTests
             string expectedCurriculum = "Awesome course";
 
             //Act
-            group.AddMember(creatorId, user1);
-            group.AddMember(user1, user2);
+            group.AddMember(user1);
+            group.AddMember(user2);
             group.ApproveTeacher(approvedTeacher);
             group.OfferCurriculum(approvedTeacher.Id, expectedCurriculum);
             group.AcceptCurriculum(creatorId);
@@ -244,24 +244,6 @@ namespace EduHubTests
             
             //Assert
             Assert.AreEqual(group.Status, EduHubLibrary.Domain.Tools.CourseStatus.Started);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(GroupIsNotFullException))]
-        public void TryToApproveTeacherWithNotFullGroup_IsItPossible()
-        {
-            //Arrange
-            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, TypeOfUser.User, "avatar");
-            List<string> tags = new List<string>();
-            tags.Add("The best group");
-            Guid creatorId = Guid.NewGuid();
-            Guid user1 = Guid.NewGuid();
-            Guid user2 = Guid.NewGuid();
-            Group group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
-
-            //Act
-            group.AddMember(creatorId, user1);
-            group.ApproveTeacher(approvedTeacher);
         }
     }
 }
