@@ -21,6 +21,8 @@ const Logo = styled.div`
   cursor: pointer;
 `;
 
+const selectItemsCount = 4;
+
 class Header extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props){
     super(props);
@@ -94,8 +96,19 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
   );
 
   defaultSelectData = {
-    users: ['Первый пользователь', 'Второй пользователь'],
-    groups: [{title: 'Первая группа', tags: ['js' , 'c#']}, {title: 'Вторая группа', tags: ['js' , 'react']}]
+    users: [
+      'Первый пользователь',
+      'Второй пользователь',
+      'Третий пользователь',
+      'Четвертый пользователь',
+      'Пятый пользователь'],
+    groups: [
+      {title: 'Первая группа', tags: ['js' , 'c#']},
+      {title: 'Вторая группа', tags: ['js' , 'react']},
+      {title: 'Третья группа', tags: ['c#' , '.Net']},
+      {title: 'Четвертая группа', tags: ['c#' , '.Net']},
+      {title: 'Пятая группа', tags: ['c#' , '.Net']}
+      ]
   };
 
   fetchData = (value, callback) => {
@@ -122,33 +135,54 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             </Link>
           </div>
         </Col>
-        <Col span={6} offset={2}>
+        <Col span={6} offset={2} style={{position: 'relative'}}>
           <Select
             mode="combobox"
             className='search'
             style={{width: '100%'}}
             value={this.state.searchValue}
-            placeholder="Введите, что хотите найти"
+            placeholder="Поиск"
             size='large'
             defaultActiveFirstOption={false}
             showArrow={false}
             onChange={this.handleSelectChange}
             onSelect={() => this.setState({searchValue: ''})}
           >
-            <OptGroup label="Пользователи">
-              {this.state.searchData.users.map(item =>
-                <Option key={item}>{item}</Option>
+            <OptGroup key='1' label={
+              this.state.searchData.users.length > selectItemsCount ?
+                (<div>
+                  <Col span={12}>
+                    Пользователи
+                  </Col>
+                  <Col span={12} style={{textAlign: 'right'}}>
+                    <Link to='#'>Показать больше</Link>
+                  </Col>
+                </div>) : (<div>Пользователи</div>)
+            }>
+              {this.state.searchData.users.map((item, i) =>
+                i < selectItemsCount ? <Option key={item}>{item}</Option> : null
               )}
             </OptGroup>
-            <OptGroup label="Группы">
-              {this.state.searchData.groups.map(item =>
-                <Option key={item.title}>
+            <OptGroup key='2' label={
+              this.state.searchData.groups.length > selectItemsCount ?
+                (<div>
+                  <Col span={12}>
+                    Группы
+                  </Col>
+                  <Col span={12} style={{textAlign: 'right'}}>
+                    <Link to='#'>Показать больше</Link>
+                  </Col>
+                </div>) : (<div>Группы</div>)
+            }>
+              {this.state.searchData.groups.map((item, i) =>
+                i < selectItemsCount ? <Option key={item.title}>
                   <div>{item.title}</div>
                   <div>{item.tags.map(tag => <Link to="" style={{marginRight: 6}}>{tag}</Link>)}</div>
-                </Option>
+                </Option> : null
               )}
             </OptGroup>
           </Select>
+          <Icon type="search" className='search' style={{fontSize: 20, position: 'absolute', top: 10, right: 10, opacity: 0.8}}/>
         </Col>
           {localStorage.getItem('token') ? (
               <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'flex-end'}}>
