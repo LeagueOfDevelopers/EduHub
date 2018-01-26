@@ -231,5 +231,34 @@ namespace EduHubTests
             //Act
             userFacade.Invite(creatorId, pseudoTeacherId, createdGroupId, MemberRole.Teacher);
         }
+
+        [TestMethod]
+        public void TryToInviteUser_GetAddedInvitationInGroup()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000));
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+
+            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Invited", new Credentials("email2", "password"), false, TypeOfUser.User, "avatar.ru");
+            List<User> allUsers = userFacade.GetUsers().ToList();
+            Guid creatorId = allUsers[0].Id;
+            Guid invitedId = allUsers[1].Id;
+
+            var tags = new List<string>();
+            tags.Add("js");
+
+            groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
+            List<Group> allGroups = groupFacade.GetGroups().ToList();
+            var createdGroupId = allGroups[0].GroupInfo.Id;
+
+            //Act
+            userFacade.Invite(creatorId, invitedId, createdGroupId, MemberRole.Member);
+
+            //Assert
+            Assert.AreEqual(allGroups[0].GetAllInvitation().ToList().Count, 1);
+        }
     }
 }

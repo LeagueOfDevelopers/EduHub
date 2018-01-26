@@ -73,9 +73,13 @@ namespace EduHubLibrary.Domain
             IsActive = false;
         }
 
+        internal delegate void InvitationHandler(Invitation invitation);
+        internal event InvitationHandler InvitationAdded;
+
         internal void AddInvitation(Invitation newInvitation)
         {
             ListOfInvitations.Add(newInvitation);
+            InvitationAdded(newInvitation);
         }
 
         internal void AcceptInvitation(Guid invitationId)

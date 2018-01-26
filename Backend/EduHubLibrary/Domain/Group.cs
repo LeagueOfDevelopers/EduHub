@@ -41,6 +41,7 @@ namespace EduHubLibrary.Domain
             bool isActive = true;
             GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
             listOfMembers = new List<Member>();
+            listOfInvitations = new List<Invitation>();
             var creator = new Member(creatorId, MemberRole.Creator);
             listOfMembers.Add(creator);
         }
@@ -113,6 +114,16 @@ namespace EduHubLibrary.Domain
         {
             return listOfMembers;
         }
+
+        internal IEnumerable<Invitation> GetAllInvitation()
+        {
+            return listOfInvitations; 
+        }
+
+        internal void AddInvitation(Invitation invitation)
+        {
+            listOfInvitations.Add(invitation);
+        }
         
         internal void ApproveTeacher(User teacher)
         {
@@ -164,5 +175,6 @@ namespace EduHubLibrary.Domain
         }
         
         private List<Member> listOfMembers;
+        private List<Invitation> listOfInvitations;
     }
 }
