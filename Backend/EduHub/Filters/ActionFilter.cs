@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
 using Serilog;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EduHub.Filters
 {
@@ -12,7 +9,7 @@ namespace EduHub.Filters
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            var result = context.Result;
+            /*var result = context.Result;
 
             if (!(result is OkObjectResult))
             {
@@ -21,7 +18,7 @@ namespace EduHub.Filters
             else
             {
                 Log.Verbose(JsonConvert.SerializeObject(result));
-            }
+            }*/
             base.OnActionExecuted(context);
         }
 
@@ -32,10 +29,10 @@ namespace EduHub.Filters
                 context.Result = new BadRequestObjectResult(context.ModelState);
                 Log.Warning(context.ActionDescriptor.DisplayName +" model is not valid", "some");
             }
-            context.ActionArguments.ToList().ForEach(a => 
+            /*context.ActionArguments.ToList().ForEach(a => 
             {
                 Log.Verbose(JsonConvert.SerializeObject(a.Value), "params");
-            });
+            });*/
             base.OnActionExecuting(context);
         }
     }

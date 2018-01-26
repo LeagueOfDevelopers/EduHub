@@ -121,7 +121,9 @@ namespace EduHub
             config.TagConfig.Tags.Add(ct);
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose().WriteTo.Loggly()
+                .MinimumLevel.Verbose()
+                .Enrich.FromLogContext()
+                .WriteTo.Loggly()
                 .CreateLogger();
             Log.Information("Loggly started");
         }

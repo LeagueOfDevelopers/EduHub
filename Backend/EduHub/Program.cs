@@ -12,7 +12,9 @@ namespace EduHub
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information().WriteTo.RollingFile("Eduhub.log")
+                .MinimumLevel.Information()
+                .Enrich.FromLogContext()
+                .WriteTo.RollingFile("Eduhub.log")
                 .CreateLogger();
             try
             {
@@ -28,6 +30,7 @@ namespace EduHub
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseSerilog()
                 .UseSetting("detailedErrors", "true")
                 .CaptureStartupErrors(true)
                 .Build();
