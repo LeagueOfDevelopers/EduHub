@@ -146,7 +146,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             defaultActiveFirstOption={false}
             showArrow={false}
             onChange={this.handleSelectChange}
-            onSelect={() => this.setState({searchValue: ''})}
+            onSelect={() => {setTimeout(() => this.setState({searchValue: ''}), 0)}}
           >
             <OptGroup key='1' label={
               this.state.searchData.users.length > selectItemsCount ?

@@ -76,7 +76,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
     this.state = {
       id: this.props.match.params.id,
       title: '',
-      isActive: null,
+      isActive: true,
       size: 0,
       moneyPerUser: 0,
       groupType: '',
@@ -169,7 +169,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
       isPrivate: result.groupInfo.isPrivate,
       members: result.members,
       teacher: result.teacher,
-      isInGroup: result.members.find(item => item.member.userId === this.state.userData.UserId)
+      isInGroup: this.state.userData ? result.members.find(item => item.member.userId === this.state.userData.UserId) : false
     })
   }
 
@@ -187,7 +187,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
         .catch(error => error)
     }
 
-    this.setState({selectValue: ''});
+    setTimeout(() => this.setState({selectValue: ''}), 0);
   }
 
   leaveGroup() {
@@ -281,7 +281,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
             </Col>
           </div>
         ) :
-        (<div>Данной группы не существует</div>)
+        (<Row type='flex' justify='center' style={{marginTop: 20}}>Данной группы не существует</Row>)
     );
   }
 }
