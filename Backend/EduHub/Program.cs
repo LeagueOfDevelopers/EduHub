@@ -1,8 +1,7 @@
-﻿using Loggly;
-using Loggly.Config;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
+using Serilog.Events;
 using System;
 
 namespace EduHub
@@ -12,7 +11,8 @@ namespace EduHub
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Debug)
                 .Enrich.FromLogContext()
                 .WriteTo.RollingFile("Eduhub.log")
                 .CreateLogger();

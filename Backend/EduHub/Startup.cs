@@ -18,6 +18,7 @@ using Serilog;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Swashbuckle.AspNetCore.Examples;
 using System;
+using Serilog.Events;
 
 namespace EduHub
 {
@@ -121,7 +122,8 @@ namespace EduHub
             config.TagConfig.Tags.Add(ct);
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Debug)
                 .Enrich.FromLogContext()
                 .WriteTo.Loggly()
                 .CreateLogger();

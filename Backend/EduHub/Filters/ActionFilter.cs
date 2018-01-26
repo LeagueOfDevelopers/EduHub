@@ -29,10 +29,7 @@ namespace EduHub.Filters
                 context.Result = new BadRequestObjectResult(context.ModelState);
                 Log.Warning(context.ActionDescriptor.DisplayName +" model is not valid", "some");
             }
-            /*context.ActionArguments.ToList().ForEach(a => 
-            {
-                Log.Verbose(JsonConvert.SerializeObject(a.Value), "params");
-            });*/
+            Log.Information("Received arguments {@Arguments}", context.ActionArguments);
             base.OnActionExecuting(context);
         }
     }
