@@ -89,12 +89,12 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
             <Col><Link to='#'>Забыли пароль?</Link></Col>
             <Col>
               <Button onClick={this.props.handleCancel}>Отмена</Button>
-              <Button type="primary" onClick={() => this.login(setTimeout(() => {location.reload()}, 1000))}>Войти</Button>
+              <Button type="primary" htmlType='submit' form='sign-in-form' onClick={() => this.login(setTimeout(() => {location.reload()}, 1000))}>Войти</Button>
             </Col>
           </Row>
         ]}
       >
-        <Form>
+        <Form id='sign-in-form'>
           <FormItem
             label="Ваш email"
           >

@@ -235,8 +235,8 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                 <Row style={{marginLeft: -16, marginBottom: 20}}>
                   <MemberList members={this.state.members} size={this.state.size} isInGroup={this.state.isInGroup}/>
                 </Row>
-                {
-                  this.state.isInGroup ?
+                {/*<Row>{this.state.members}</Row>*/}
+                {this.state.isInGroup ?
                     this.state.members.find(item =>
                       item.member.userId === this.state.userData.UserId)
                         .member.memberRole === 'Создатель' ?

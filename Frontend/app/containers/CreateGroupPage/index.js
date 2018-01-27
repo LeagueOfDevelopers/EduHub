@@ -12,17 +12,13 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {selectCreateGroupPage} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import styled from 'styled-components';
+import {createGroup} from "./actions";
 import { Form, Col, Row, Button, Divider, message, Input, Switch, Select, InputNumber } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const {TextArea} = Input;
-
-import config from '../../config';
-import * as ReactDOM from "react-dom";
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -61,6 +57,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
       type: '',
       description: '',
       price: '',
+      isPrivate: false
     };
 
     this.createGroup = this.createGroup.bind(this);
@@ -71,6 +68,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     this.onHandleDescChange = this.onHandleDescChange.bind(this);
     this.onHandleTypeChange = this.onHandleTypeChange.bind(this);
     this.onHandlePriceChange = this.onHandlePriceChange.bind(this);
+    this.onHandlePrivateChange = this.onHandlePrivateChange.bind(this);
   }
 
   createGroup = () => {
@@ -78,7 +76,15 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
       (localStorage.getItem('without_server') === 'true') ?
         message.success('Группа создана')
         :
-        null
+        this.props.createGroup(
+          this.state.title,
+          this.state.description,
+          this.state.techs,
+          this.state.size,
+          this.state.price,
+          this.state.type,
+          this.state.isPrivate
+        )
     }
     else {
       message.error('Введите название группы')
@@ -113,6 +119,10 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
   onHandlePriceChange = (e) => {
     this.setState({price: e.target.value})
 
+  };
+
+  onHandlePrivateChange = (e) => {
+    this.setState({isPrivate: e})
   };
 
   render() {
@@ -151,15 +161,15 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
             >
               <Col span={8}>
                 <Select onChange={this.onHandleTypeChange} placeholder="Выберите формат">
-                  <Option value="lecture">Лекция</Option>
-                  <Option value="webinar">Вебинар</Option>
-                  <Option value="seminar">Семинар</Option>
+                  <Option value="Lecture">Лекция</Option>
+                  <Option value="MasterClass">Мастер-класс</Option>
+                  <Option value="Seminar">Семинар</Option>
                 </Select>
               </Col>
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="Описание"
+              label="Описание группы"
             >
               <TextArea value={this.state.description} onChange={this.onHandleDescChange} rows={4} />
             </FormItem>
@@ -171,25 +181,25 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
                 <Input value={this.state.price} onChange={this.onHandlePriceChange}/>
               </Col>
             </FormItem >
-            <FormItem
-              {...formItemLayout}
-              label="Добавить участника"
-            >
-              <Select
-                mode="multiple"
-                defaultActiveFirstOption={false}
-                placeholder="Добавьте участников"
-              >
-                {this.state.members.map(item =>
-                  <Option key={item.id}>{item.name}</Option>
-                )}
-              </Select>
-            </FormItem >
+            {/*<FormItem*/}
+              {/*{...formItemLayout}*/}
+              {/*label="Добавить участника"*/}
+            {/*>*/}
+              {/*<Select*/}
+                {/*mode="multiple"*/}
+                {/*defaultActiveFirstOption={false}*/}
+                {/*placeholder="Добавьте участников"*/}
+              {/*>*/}
+                {/*{this.state.members.map(item =>*/}
+                  {/*<Option key={item.id}>{item.name}</Option>*/}
+                {/*)}*/}
+              {/*</Select>*/}
+            {/*</FormItem >*/}
             <FormItem
               {...formItemLayout}
               label="Приватная группа"
             >
-              <Switch />
+              <Switch value={this.state.isPrivate} onChange={this.onHandlePrivateChange}/>
             </FormItem >
             <Col offset={10} className='sm-row-center' style={{marginTop: 20}}>
               <FormItem {...tailFormItemLayout}>
@@ -219,7 +229,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    createGroup: (title, desc, tags, size, moneyPerUser, groupType, isPrivate) => dispatch(createGroup(title, desc, tags, size, moneyPerUser, groupType, isPrivate))
   };
 }
 

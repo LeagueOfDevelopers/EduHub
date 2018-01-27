@@ -24,7 +24,7 @@ const Logo = styled.div`
 const selectItemsCount = 4;
 
 class Header extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -58,7 +58,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     location.reload();
   }
 
-   acc_menu = (
+  acc_menu = (
     <Menu>
       <Menu.Item key="0" className='menu-item'>
         {localStorage.getItem('token') ?
@@ -87,10 +87,12 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
   menu = (
     <Menu>
       <Menu.Item className='unhover' key="0">
-        <Button className='profile' style={{width: '100%'}} htmlType="button" onClick={this.onSignInClick}>Войти</Button>
+        <Button className='profile' style={{width: '100%'}} htmlType="button"
+                onClick={this.onSignInClick}>Войти</Button>
       </Menu.Item>
       <Menu.Item className='unhover' key="1">
-        <Link className="profile" to='/registration'><Button type="primary" htmlType="button">Зарегистрироваться</Button></Link>
+        <Link className="profile" to='/registration'><Button type="primary"
+                                                             htmlType="button">Зарегистрироваться</Button></Link>
       </Menu.Item>
     </Menu>
   );
@@ -103,25 +105,41 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
       'Четвертый пользователь',
       'Пятый пользователь'],
     groups: [
-      {title: 'Первая группа', tags: ['js' , 'c#']},
-      {title: 'Вторая группа', tags: ['js' , 'react']},
-      {title: 'Третья группа', tags: ['c#' , '.Net']},
-      {title: 'Четвертая группа', tags: ['c#' , '.Net']},
-      {title: 'Пятая группа', tags: ['c#' , '.Net']}
-      ]
+      {title: 'Первая группа', tags: ['js', 'c#']},
+      {title: 'Вторая группа', tags: ['js', 'react']},
+      {title: 'Третья группа', tags: ['c#', '.Net']},
+      {title: 'Четвертая группа', tags: ['c#', '.Net']},
+      {title: 'Пятая группа', tags: ['c#', '.Net']}
+    ]
   };
 
   fetchData = (value, callback) => {
-    if(localStorage.getItem('without_server') === 'true') {
+    if (localStorage.getItem('without_server') === 'true') {
       callback(this.defaultSelectData)
+    }
+    else {
+      fetch(`${config.API_BASE_URL}/users/search`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json-patch+json'
+        },
+        body: JSON.stringify({
+          name: value
+        })
+      })
+        .then(res => res.json())
+        .then(res => callback({users: res.users && this.state.searchValue !== '' ? res.users : [], groups: []}))
+        .catch(error => error)
     }
   };
 
   handleSelectChange = (value) => {
     this.setState({searchValue: value});
-    this.fetchData(value, data => this.setState({searchData: data}));
-    if(value === '') {
-      this.setState({searchData: { users: [], groups: []}})
+    if (value !== '') {
+      this.fetchData(value, data => this.setState({searchData: data}));
+    }
+    else {
+      this.setState({searchData: {users: [], groups: []}})
     }
   };
 
@@ -146,7 +164,9 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             defaultActiveFirstOption={false}
             showArrow={false}
             onChange={this.handleSelectChange}
-            onSelect={() => {setTimeout(() => this.setState({searchValue: ''}), 0)}}
+            onSelect={() => {
+              setTimeout(() => this.setState({searchValue: ''}), 0)
+            }}
           >
             <OptGroup key='1' label={
               this.state.searchData.users.length > selectItemsCount ?
@@ -160,7 +180,11 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                 </div>) : (<div>Пользователи</div>)
             }>
               {this.state.searchData.users.map((item, i) =>
-                i < selectItemsCount ? <Option key={item}>{item}</Option> : null
+                i < selectItemsCount ?
+                  <Option className='search-option-item' key={item.name}><Link className='search-user-link'
+                                                                               to={`/profile/${item.id}`}>
+                    <div>{item.name}</div>
+                  </Link></Option> : null
               )}
             </OptGroup>
             <OptGroup key='2' label={
@@ -182,31 +206,42 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
               )}
             </OptGroup>
           </Select>
-          <Icon type="search" className='search' style={{fontSize: 20, position: 'absolute', top: 10, right: 10, opacity: 0.8}}/>
+          <Icon type="search" className='search'
+                style={{fontSize: 20, position: 'absolute', top: 10, right: 10, opacity: 0.8}}/>
         </Col>
-          {localStorage.getItem('token') ? (
-              <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <Dropdown overlay={this.acc_menu} trigger={['click']}>
-                  <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
-                    <Avatar
-                      src={localStorage.getItem('avatarLink')}
-                      size='large'
-                      style={{backgroundColor: "#fff", color: "rgba(0,0,0,0.65)", minHeight: 40, minWidth: 40, marginRight: 10, cursor: 'pointer'}}
-                    />
-                    <span className='userName' style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>{localStorage.getItem('name')}</span>
-                  </div>
-                </Dropdown>
-              </Col>
+        {localStorage.getItem('token') ? (
+            <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'flex-end'}}>
+              <Dropdown overlay={this.acc_menu} trigger={['click']}>
+                <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
+                  <Avatar
+                    src={localStorage.getItem('avatarLink')}
+                    size='large'
+                    style={{
+                      backgroundColor: "#fff",
+                      color: "rgba(0,0,0,0.65)",
+                      minHeight: 40,
+                      minWidth: 40,
+                      marginRight: 10,
+                      cursor: 'pointer'
+                    }}
+                  />
+                  <span className='userName'
+                        style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>{localStorage.getItem('name')}</span>
+                </div>
+              </Dropdown>
+            </Col>
           )
           : (
-              <Col span={6} offset={4} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '6%'}}>Войти</Button>
-                <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
-                <Link className="profile" to='/registration'><Button type="primary" htmlType="submit">Зарегистрироваться</Button></Link>
-                <Dropdown className="unregistered-person" overlay={this.menu} trigger={['click']}>
-                  <img className='menu-btn' style={{width: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
-                </Dropdown>
-              </Col>
+            <Col span={6} offset={4} style={{display: 'flex', justifyContent: 'flex-end'}}>
+              <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '6%'}}>Войти</Button>
+              <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
+              <Link className="profile" to='/registration'><Button type="primary"
+                                                                   htmlType="submit">Зарегистрироваться</Button></Link>
+              <Dropdown className="unregistered-person" overlay={this.menu} trigger={['click']}>
+                <img className='menu-btn' style={{width: 26, cursor: 'pointer'}} src={require('images/menu.svg')}
+                     alt=""/>
+              </Dropdown>
+            </Col>
           )}
       </Row>
     );

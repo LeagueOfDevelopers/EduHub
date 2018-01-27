@@ -243,4 +243,6 @@ a:focus {
   /*cursor: pointer;*/
 }
 
-
+.search-option-item .search-user-link {
+  color: inherit;
+}

@@ -41,7 +41,7 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
                       src={item.avatarLink}
                     />}
                   title={<Link to="#">{item.name}</Link>}
-                  description={item.member.memberRole}
+                  description={item.member.memberRole === 3 ? 'Создатель' : ''}
                 />
                 { localStorage.getItem('token') && this.props.isInGroup && this.props.members.find(item =>
                   item.member.userId === parseJwt(localStorage.getItem('token')).UserId).member.memberRole === 'Создатель' &&

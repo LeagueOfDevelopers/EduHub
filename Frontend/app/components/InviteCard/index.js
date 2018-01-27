@@ -45,18 +45,18 @@ class InviteCard extends React.PureComponent { // eslint-disable-line react/pref
         style={{width: '100%', cursor: 'default'}}
         bodyStyle={{padding: '14px 20px 0 20px'}}
       >
-        {
-          this.props.readed ? (<div className='readed-btn'/>) : (<div className='not-readed-btn'/>)
-        }
+        {/*{*/}
+          {/*this.props.readed ? (<div className='readed-btn'/>) : (<div className='not-readed-btn'/>)*/}
+        {/*}*/}
         <Row style={{marginBottom: 12}}>
           <Col span={12}>
             <span style={{fontSize: 14, opacity: 0.9}}>{this.props.fromUser}</span>
           </Col>
-          <Col span={12} style={{textAlign: 'right'}}>
-            <span style={{fontSize: 14, opacity: 0.7}}>
-              {this.props.date}
-            </span>
-          </Col>
+          {/*<Col span={12} style={{textAlign: 'right'}}>*/}
+            {/*<span style={{fontSize: 14, opacity: 0.7}}>*/}
+              {/*{this.props.date}*/}
+            {/*</span>*/}
+          {/*</Col>*/}
         </Row>
         <Row>
           <Col xs={{span: 24}} sm={{span: 12}} style={{marginBottom: 10}}>

@@ -92,6 +92,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
 
       fetch(`${config.API_BASE_URL}/user/profile/invitations`, {
         headers: {
+          'Content-Type': 'application/json-patch+json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       })
@@ -101,6 +102,8 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
         })
         .catch(error => error);
     }
+
+    // setTimeout(() => console.log(this.state.invites), 300)
   }
 
   render() {

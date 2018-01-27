@@ -26,7 +26,7 @@ class UnassembledGroupCard extends React.PureComponent { // eslint-disable-line 
         >
           <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
             <Col>Участников</Col>
-            <Col>{length + '/' + this.props.groupInfo.size}</Col>
+            <Col>{this.props.numberOfMembers + '/' + this.props.groupInfo.size}</Col>
           </Row>
           <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
             <Col>Взнос</Col>
@@ -50,7 +50,7 @@ class UnassembledGroupCard extends React.PureComponent { // eslint-disable-line 
 UnassembledGroupCard.defaultProps = {
   groupInfo: {
     title: '',
-    length: 0,
+    numberOfMembers: 0,
     size: 0,
     moneyPerUser: 0,
     groupType: '',
@@ -65,6 +65,7 @@ UnassembledGroupCard.propTypes = {
   moneyPerUser: PropTypes.number,
   groupType: PropTypes.string,
   tags: PropTypes.array,
+  numberOfMembers: PropTypes.number
 };
 
 export default UnassembledGroupCard;
