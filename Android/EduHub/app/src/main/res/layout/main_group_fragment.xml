@@ -13,6 +13,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/grey" />
 
         <TextView
@@ -23,6 +24,7 @@
             android:background="@color/grey"
             android:gravity="center_vertical"
             android:text="GroupTitle"
+            android:paddingLeft="8dp"
             android:textColor="@color/black" />
 
         <ImageButton
@@ -31,6 +33,7 @@
             android:layout_height="36dp"
             android:layout_marginTop="10dp"
             android:background="@color/grey"
+            android:layout_marginRight="10dp"
             android:src="@drawable/ic_group_add_black_36dp"
             android:layout_alignParentRight="true" />
 
@@ -41,8 +44,10 @@
             android:layout_below="@+id/GroupTitle"
             android:background="@color/grey"
             android:minHeight="?attr/actionBarSize"
-            app:tabGravity="fill"
-            app:tabMode="fixed" />
+            app:tabGravity="center"
+            app:tabMode="fixed"
+            style="@style/MyCustomTabLayout"
+            />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"

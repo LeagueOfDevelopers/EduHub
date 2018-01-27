@@ -21,6 +21,7 @@
         android:fitsSystemWindows="true"
         android:background="@color/metalic"
         app:headerLayout="@layout/nav_header_authorized_user"
-        app:menu="@menu/drawer" />
+        app:menu="@menu/drawer"
+        />
 
 </android.support.v4.widget.DrawerLayout>

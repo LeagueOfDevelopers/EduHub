@@ -6,35 +6,18 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.user.eduhub.Adapters.ViewPagerAdapter;
-import com.example.user.eduhub.Fakes.FakeGroupInformationPresenter;
-import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
-import com.example.user.eduhub.Interfaces.View.IGroupView;
 import com.example.user.eduhub.Models.Group.Group;
-import com.example.user.eduhub.Models.Group.Member;
-import com.example.user.eduhub.Models.Group.Member_;
-import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
-import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 import com.example.user.eduhub.R;
-import com.example.user.eduhub.Retrofit.EduHubApi;
-import com.example.user.eduhub.Retrofit.RetrofitBuilder;
-
-import java.util.ArrayList;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by User on 12.01.2018.
@@ -44,7 +27,7 @@ public class MainGroupFragment extends Fragment {
     ViewPager pager;
     ViewPagerAdapter adapter;
     TabLayout tabLayout;
-    Chat chat;
+    ChatFragment chat;
     IFragmentsActivities fragmentsActivities;
     GroupMembersFragment groupMembersFragment;
     GroupInformationFragment groupInformationFragment;
@@ -60,6 +43,8 @@ public class MainGroupFragment extends Fragment {
     }
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.main_group_fragment, null);
+        Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(group.getGroupInfo().getTitle());
         ImageButton inviteButton=v.findViewById(R.id.invite_button);
         pager=v.findViewById(R.id.pager);
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
@@ -67,7 +52,7 @@ public class MainGroupFragment extends Fragment {
         imageView.setImageResource(R.mipmap.ic_launcher_round);
         groupInformationFragment=new GroupInformationFragment();
         groupInformationFragment.setGroup(group);
-        chat=new Chat();
+        chat=new ChatFragment();
 
         groupMembersFragment=new GroupMembersFragment();
         groupMembersFragment.setGroup(group);
@@ -86,6 +71,7 @@ public class MainGroupFragment extends Fragment {
             InviteFragment inviteFragment=new InviteFragment();
             inviteFragment.setGroupId(group.getGroupInfo().getId());
             inviteFragment.setUser(user);
+            inviteFragment.setToolbar( getActivity().findViewById(R.id.toolbar));
             fragmentsActivities.switchingFragmets(inviteFragment);
         });
 
@@ -99,6 +85,8 @@ public class MainGroupFragment extends Fragment {
     public void setUser(User user) {
         this.user = user;
     }
+
+
 
 
 }

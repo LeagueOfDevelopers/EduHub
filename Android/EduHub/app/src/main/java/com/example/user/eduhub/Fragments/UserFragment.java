@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.user.eduhub.Adapters.EmptyGroupAdapter;
 import com.example.user.eduhub.Adapters.GroupAdapter;
@@ -17,7 +16,6 @@ import com.example.user.eduhub.Fakes.FakeGroupRepository;
 import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.View.IGroupListView;
 import com.example.user.eduhub.Models.Group.Group;
-import com.example.user.eduhub.Models.Group.GroupInfo;
 import com.example.user.eduhub.MainActivity;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.R;
@@ -52,16 +50,16 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadGroups();}else{
-            fakeGroupRepository.loadGroups();
+            groupsPresenter.loadAllGroups();}else{
+            fakeGroupRepository.loadAllGroups();
         }
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupsPresenter.loadGroups();}else{
-                    fakeGroupRepository.loadGroups();
+                    groupsPresenter.loadAllGroups();}else{
+                    fakeGroupRepository.loadAllGroups();
                 }
             }
         });
@@ -93,7 +91,7 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
     }
 
     @Override
-    public void getError() {
+    public void getError(Throwable error) {
 
     }
 

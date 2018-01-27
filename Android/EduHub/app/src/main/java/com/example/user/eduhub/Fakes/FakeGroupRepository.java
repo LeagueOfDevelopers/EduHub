@@ -21,7 +21,7 @@ public class FakeGroupRepository  implements IGroupRepository{
         this.groupListView=groupListView;
     }
     @Override
-    public void loadGroups() {
+    public void loadAllGroups() {
         ArrayList<Group> groups=new ArrayList<>();
         GroupInfo groupInfo=new GroupInfo();
         ArrayList<String> tags=new ArrayList<>();
@@ -42,5 +42,10 @@ public class FakeGroupRepository  implements IGroupRepository{
         }
         Log.d("CREATE GROUPS",groups.size()+"");
         groupListView.getGroups(groups);
+    }
+
+    @Override
+    public void loadUsersGroup(String token) {
+        loadAllGroups();
     }
 }

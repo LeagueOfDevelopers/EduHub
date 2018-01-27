@@ -1,16 +1,18 @@
 package com.example.user.eduhub;
 
+import android.animation.LayoutTransition;
 import android.content.*;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -18,32 +20,27 @@ import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
 import com.example.user.eduhub.Adapters.ViewPagerAdapter;
-import com.example.user.eduhub.Fakes.FakeGroupRepository;
 import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Fragments.Authorized_fragment;
-import com.example.user.eduhub.Fragments.Authorized_fragment2;
-import com.example.user.eduhub.Interfaces.View.IGroupListView;
-import com.example.user.eduhub.Models.Group.Group;
+import com.example.user.eduhub.Fragments.MainFragment;
+import com.example.user.eduhub.Fragments.UserProfile;
+import com.example.user.eduhub.Fragments.UsersGroupsFragment;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.Retrofit.EduHubApi;
-
-import java.util.ArrayList;
 
 import io.reactivex.disposables.Disposable;
 
 public class AuthorizedUserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-    ViewPager pager;
-    ViewPagerAdapter adapter;
-    Authorized_fragment authorized_fragment;
-    Authorized_fragment authorized_fragment2;
+    FragmentTransaction fragmentTransaction;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     User user;
     FakesButton fakesButton=new FakesButton();
@@ -69,7 +66,8 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
         sPref=getSharedPreferences("User",MODE_PRIVATE);
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(AVATARLINK)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
-             user=savedDataRepository.loadSavedData(sPref);}else{
+             user=savedDataRepository.loadSavedData(sPref);}
+             else{
             Intent intent=getIntent();
             user=(User) intent.getSerializableExtra("user");
             savedDataRepository=new SavedDataRepository();
@@ -90,21 +88,12 @@ public class AuthorizedUserActivity extends AppCompatActivity
         Log.d("User name",user.getName());
 
         navigationView.setNavigationItemSelectedListener(this);
-        authorized_fragment=new Authorized_fragment();
+        MainFragment mainFragment=new MainFragment();
+        fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.main_fragments_conteiner,mainFragment);
+        fragmentTransaction.commit();
 
-        authorized_fragment2=new Authorized_fragment();
 
-        btn=findViewById(R.id.btn);
-
-        pager=findViewById(R.id.pager);
-        adapter=new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(authorized_fragment,"Обучение");
-        adapter.addFragment(authorized_fragment2,"Преподавание");
-
-        pager.setAdapter(adapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(pager);
 
 
         ViewTreeObserver vto = navigationView.getViewTreeObserver();
@@ -112,6 +101,8 @@ public class AuthorizedUserActivity extends AppCompatActivity
                 (new ViewTreeObserver.OnGlobalLayoutListener() { @Override public void onGlobalLayout() {
                     TextView textView=findViewById(R.id.name_user);
                     textView.setText(user.getName());
+                    TextView textView1=findViewById(R.id.email_user);
+                    textView1.setText(user.getEmail());
                     checkFakes=findViewById(R.id.checkFakes);
                     checkFakes.setChecked(fakesButton.getCheckButton());
                     checkFakes.setOnClickListener(click->{
@@ -140,7 +131,23 @@ public class AuthorizedUserActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.second_menu, menu);
-        return true;
+        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+        final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
+        searchViewAndroidActionBar.setQueryHint("Поиск");
+        searchViewAndroidActionBar.setMaxWidth(450);
+        searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchViewAndroidActionBar.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -165,9 +172,18 @@ public class AuthorizedUserActivity extends AppCompatActivity
             Intent intent=new Intent(this,AuthorizedUserActivity.class);
             startActivity(intent);
         } else if (id == R.id.profile) {
-
+            UserProfile userProfile=new UserProfile();
+            fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_fragments_conteiner,userProfile);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         } else if (id == R.id.myGroups) {
-
+            UsersGroupsFragment usersGroupsFragment=new UsersGroupsFragment();
+            usersGroupsFragment.setToken(user.getToken());
+            fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_fragments_conteiner,usersGroupsFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         } else if (id == R.id.becameTeacher) {
 
         } else if (id == R.id.settings) {

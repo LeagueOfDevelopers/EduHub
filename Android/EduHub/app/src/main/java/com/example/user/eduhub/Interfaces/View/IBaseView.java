@@ -7,5 +7,5 @@ package com.example.user.eduhub.Interfaces.View;
 public interface IBaseView {
     void showLoading();
     void stopLoading();
-    void getError();
+    void getError(Throwable error);
 }

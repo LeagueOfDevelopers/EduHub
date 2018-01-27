@@ -46,7 +46,7 @@
             android:layout_alignRight="@+id/registr_email"
             android:layout_marginTop="34dp"
             android:ems="10"
-            android:hint="Логин"
+            android:hint="Имя"
             android:inputType="textPersonName" />
 
         <CheckBox

@@ -1,5 +1,6 @@
 package com.example.user.eduhub.Models.Group;
 
+import com.example.user.eduhub.Models.Group.Teacher.Teacher;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -26,7 +27,10 @@ public class Group implements Serializable {
     private Integer numberOfMembers;
     @SerializedName("teacher")
     @Expose
-    private Object teacher;
+    private Teacher teacher;
+    @SerializedName("chat")
+    @Expose
+    private Chat chat;
 
     public List<Member_> getMembers() {
         return members;
@@ -52,11 +56,11 @@ public class Group implements Serializable {
         this.course = course;
     }
 
-    public Object getTeacher() {
+    public Teacher getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(Object teacher) {
+    public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
 

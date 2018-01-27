@@ -6,38 +6,49 @@
     <RelativeLayout
         android:background="@color/grey"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="15dp">
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="30dp">
+
+
         <TextView
             android:id="@+id/members"
-            android:layout_width="40dp"
-            android:layout_height="26dp"
-            android:layout_marginLeft="137dp"/>
+            android:layout_width="64dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="113dp"
+            android:drawableLeft="@drawable/ic_user"
+            android:gravity="center"/>
+
         <TextView
             android:id="@+id/cost"
-            android:layout_width="40dp"
-            android:layout_height="26dp"
-            android:layout_marginLeft="213dp"/>
+            android:layout_width="64dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="189dp"
+            android:drawableLeft="@drawable/ic_money_bag_2"
+            android:gravity="center" />
+
         <TextView
             android:id="@+id/tags"
-            android:layout_below="@id/members"
             android:layout_width="match_parent"
             android:layout_height="13dp"
-            android:textAlignment="center"
-            android:textSize="7dp"/>
+            android:layout_below="@id/members"
+            android:gravity="center"
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_below="@+id/tags"
-            android:text="Описание" />
+            android:text="Описание:"
+            android:paddingLeft="8dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/discription"
-            android:layout_below="@+id/title"/>
+            android:layout_below="@+id/title"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"/>
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

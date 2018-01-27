@@ -5,30 +5,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.user.eduhub.Adapters.EmptyGroupAdapter;
 import com.example.user.eduhub.Adapters.GroupAdapter;
 import com.example.user.eduhub.Fakes.FakeGroupRepository;
 import com.example.user.eduhub.Fakes.FakesButton;
-import com.example.user.eduhub.Interfaces.Presenters.IGroupRepository;
 import com.example.user.eduhub.Interfaces.View.IGroupListView;
 import com.example.user.eduhub.Models.Group.Group;
-import com.example.user.eduhub.Models.Group.GroupInfo;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Retrofit.EduHubApi;
-import com.example.user.eduhub.Retrofit.RetrofitBuilder;
 
 import java.util.ArrayList;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by User on 30.12.2017.
@@ -56,16 +48,16 @@ SwipeRefreshLayout swipeContainer;
         recyclerView.setLayoutManager(llm);
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadGroups();}else{
-            fakeGroupRepository.loadGroups();
+            groupsPresenter.loadAllGroups();}else{
+            fakeGroupRepository.loadAllGroups();
         }
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupsPresenter.loadGroups();}else{
-                    fakeGroupRepository.loadGroups();
+                    groupsPresenter.loadAllGroups();}else{
+                    fakeGroupRepository.loadAllGroups();
                 }
             }
         });
@@ -88,7 +80,7 @@ SwipeRefreshLayout swipeContainer;
     }
 
     @Override
-    public void getError() {
+    public void getError(Throwable error) {
 
     }
 

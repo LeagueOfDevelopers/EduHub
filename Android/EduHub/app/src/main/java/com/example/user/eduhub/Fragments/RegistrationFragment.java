@@ -2,8 +2,12 @@ package com.example.user.eduhub.Fragments;
 
 import android.app.Activity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +16,17 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
+import com.example.user.eduhub.AuthorizedUserActivity;
+import com.example.user.eduhub.Fakes.FakeLoginPresenter;
+import com.example.user.eduhub.Fakes.FakeRegistrPresenter;
+import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
+import com.example.user.eduhub.Interfaces.View.ILoginView;
 import com.example.user.eduhub.Interfaces.View.IRegistrView;
 import com.example.user.eduhub.Models.Registration.RegistrationModel;
+import com.example.user.eduhub.Models.User;
+import com.example.user.eduhub.Presenters.LoginPresenter;
 import com.example.user.eduhub.Presenters.RegistrPresenter;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Retrofit.EduHubApi;
@@ -28,10 +40,19 @@ import io.reactivex.schedulers.Schedulers;
  * Created by user on 06.12.2017.
  */
 
-public class RegistrationFragment extends Fragment implements IRegistrView {
+public class RegistrationFragment extends Fragment implements IRegistrView,ILoginView {
     IFragmentsActivities fragmentsActivities;
     RegistrPresenter registrPresenter=new RegistrPresenter(this);
+    LoginPresenter loginPresenter=new LoginPresenter(this);
     String id;
+    EditText name;
+    EditText password;
+    EditText email;
+    FakesButton fakesButton=new FakesButton();
+    FakeRegistrPresenter fakeRegistrPresenter=new FakeRegistrPresenter(this);
+    FakeLoginPresenter fakeLoginPresenter=new FakeLoginPresenter(this);
+
+
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -40,12 +61,15 @@ public class RegistrationFragment extends Fragment implements IRegistrView {
             throw new ClassCastException(activity.toString() + " must implement onSomeEventListener");
         }
     }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.registration_fragment, null);
-        final EditText email=v.findViewById(R.id.registr_email);
-        final EditText password=v.findViewById(R.id.registr_password);
-        final EditText name=v.findViewById(R.id.registr_login);
+        email=v.findViewById(R.id.registr_email);
+        password=v.findViewById(R.id.registr_password);
+        name=v.findViewById(R.id.registr_login);
+        Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Регистрация");
         final CheckBox checkBox=v.findViewById(R.id.teacher_or_not);
         EditText inviteCode=v.findViewById(R.id.inviteCode);
         Button submit=v.findViewById(R.id.registr_btn);
@@ -60,8 +84,11 @@ public class RegistrationFragment extends Fragment implements IRegistrView {
                 } else{
                     isTeacher=false;
                 }
-
-                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,"String",inviteCode.getText().toString());
+                if(!fakesButton.getCheckButton()){
+                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,"String",inviteCode.getText().toString());}
+                else{
+                    fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,"String",inviteCode.getText().toString());
+                }
 
             }
         });
@@ -87,12 +114,24 @@ public class RegistrationFragment extends Fragment implements IRegistrView {
 
     @Override
     public void getResponse(Fragment fragment) {
+        MakeToast("Регистрация выполнена успешно.");
+        if(!fakesButton.getCheckButton()){
+        loginPresenter.Login(email.getText().toString(),password.getText().toString());}
+        else{
+            fakeLoginPresenter.Login(email.getText().toString(),password.getText().toString());
+        }
 
-        fragmentsActivities.switchingFragmets(fragment);
     }
 
     @Override
-    public void getError() {
+    public void getError(Throwable error) {
 
+    }
+
+    @Override
+    public void login(User user) {
+        Intent intent = new Intent(getActivity(), AuthorizedUserActivity.class);
+        intent.putExtra("user", user);
+        getActivity().startActivity(intent);
     }
 }

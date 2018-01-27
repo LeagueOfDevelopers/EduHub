@@ -41,7 +41,7 @@ public class LoginPresenter implements ILoginPresenter {
                     .subscribe(response->{
                                 user=response;
                                 loginView.login(user);},
-                            error->{});
+                            error->{loginView.getError(error);});
         }
         else{
 

@@ -26,7 +26,7 @@
             android:layout_below="@+id/edit_email"
             android:layout_centerHorizontal="true"
             android:ems="10"
-            android:hint="Password"
+            android:hint="Пароль"
             android:inputType="textPassword" />
 
         <Button
@@ -37,7 +37,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="Sign Up" />
+            android:text="Зарегистрироваться" />
 
         <Button
             android:id="@+id/sign_in"
@@ -47,6 +47,6 @@
             android:layout_above="@+id/sign_up"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="Sign In" />
+            android:text="Войти" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

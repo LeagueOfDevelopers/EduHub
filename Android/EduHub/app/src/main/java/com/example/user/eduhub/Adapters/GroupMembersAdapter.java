@@ -45,8 +45,8 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
             case 3+"":{holder.userRole.setText(MemberRole.Creator.toString()); break;}
         }
         holder.userName.setText(members.get(i).getName());
-        if(!members.get(i).getMember().getPaid()){
-            holder.paid.setImageResource(R.drawable.ic_done_black_24dp);
+        if(members.get(i).getMember().getPaid()){
+            holder.paid.setImageResource(R.drawable.ic_wallet_24dp);
         }
     }
 

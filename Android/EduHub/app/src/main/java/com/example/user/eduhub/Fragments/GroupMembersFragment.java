@@ -69,7 +69,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
-    public void getError() {
+    public void getError(Throwable error) {
 
     }
 

@@ -42,7 +42,7 @@ public class RegistrPresenter implements IRegistrPresenter {
                             next -> {
                             },
                             error -> {
-                                registrView.getError();
+                                registrView.getError(error);
 
                             },
                             ()->{

@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Created by User on 23.12.2017.
  */
 
-public class Chat extends Fragment {
+public class ChatFragment extends Fragment {
     private User user;
     //private FakeMessageRep messageRep=new FakeMessageRep();
     ArrayList<Message> messages=new ArrayList<>();

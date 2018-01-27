@@ -67,7 +67,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView {
     }
 
     @Override
-    public void getError() {
+    public void getError(Throwable error) {
 
     }
 
@@ -75,7 +75,12 @@ public class GroupInformationFragment extends Fragment implements IGroupView {
     public void getInformationAboutGroup(Group group) {
         members.setText(group.getNumberOfMembers()+"/"+group.getGroupInfo().getSize());
         cost.setText("$"+group.getGroupInfo().getMoneyPerUser());
-        tags.setText(group.getGroupInfo().getTags().toString());
+        for (String tag:group.getGroupInfo().getTags()
+             ) {        tags.setText(tags.getText().toString()+tag+" ");
+
+
+        }
+
         discription.setText(group.getGroupInfo().getDescription());
     }
 }
