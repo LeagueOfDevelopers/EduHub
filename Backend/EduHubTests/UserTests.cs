@@ -18,7 +18,7 @@ namespace EduHubTests
             var email = "sokolov@gmail.com";
             var password = "sokolov";
             var isTeacher = false;
-            TypeOfUser type = TypeOfUser.User;
+            UserType type = UserType.User;
             var avatar = "avatar.ru";
 
             //Act
@@ -39,7 +39,7 @@ namespace EduHubTests
             var newName = "Nikolai";
 
             //Act
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User, "avatar.com");
             testUser.EditName(newName);
             var actualName = testUser.Name;
 
@@ -54,7 +54,7 @@ namespace EduHubTests
             var newName = "";
 
             //Act
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User, "avatar.com");
             testUser.EditName(newName);
         }
 
@@ -62,7 +62,7 @@ namespace EduHubTests
         public void BecomeTeacher_IsItPossible()
         {
             //Arrange
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User, "avatar.com");
 
             //Act
             testUser.BecomeTeacher();
@@ -75,7 +75,7 @@ namespace EduHubTests
         public void StopToTeacher_IsItPossible()
         {
             //Arrange
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), true, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), true, UserType.User, "avatar.com");
 
             //Act
             testUser.StopToBeTeacher();
@@ -88,7 +88,7 @@ namespace EduHubTests
         public void DeleteProfile_IsItPossible()
         {
             //Arrange
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User, "avatar.com");
 
             //Act
             testUser.DeleteProfile();
@@ -102,7 +102,7 @@ namespace EduHubTests
         public void RestoreProfile_IsItPossible()
         {
             //Arrange
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User, "avatar.com");
 
             //Act
             testUser.DeleteProfile();
@@ -120,7 +120,7 @@ namespace EduHubTests
             var nameOfUser = "";
             var email = "";
             var isTeacher = false;
-            TypeOfUser type = TypeOfUser.Admin;
+            UserType type = UserType.Admin;
             var avatarLink = "";
 
             //Act
@@ -131,7 +131,7 @@ namespace EduHubTests
         public void ConfigureSkills_IsItPossible()
         {
             //Arrange
-            User testUser = new User("Ivan", new Credentials("SomeEmail", "SomePassword"), true, TypeOfUser.User, "avatar.com");
+            User testUser = new User("Ivan", new Credentials("SomeEmail", "SomePassword"), true, UserType.User, "avatar.com");
             List<string> skills = new List<string>();
             skills.Add("Math");
             skills.Add("Biology");
@@ -147,7 +147,7 @@ namespace EduHubTests
         public void AddReviewToTeacher_IsItPossibleWithCorrectData()
         {
             //Arrange
-            User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, TypeOfUser.User, "avatar.com");
+            User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User, "avatar.com");
             
             //Act
             Review review = new Review(Guid.NewGuid(), "The best", 5);
@@ -161,7 +161,7 @@ namespace EduHubTests
         public void AddReviewToTeacher_IsCorrectEvaluatorData()
         {
             //Arrange
-            User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, TypeOfUser.User, "avatar.com");
+            User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User, "avatar.com");
             
             //Act
             Review review = new Review(Guid.Empty, "The best", 5);

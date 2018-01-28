@@ -27,7 +27,7 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetAll();
         }
 
-        public Guid RegUser(string username, Credentials credentials, bool IsTeacher, TypeOfUser type, string avatarLink)
+        public Guid RegUser(string username, Credentials credentials, bool IsTeacher, UserType type, string avatarLink)
         {
             Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
                 nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException()));
@@ -42,7 +42,7 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetUserByCredentials(credentials);
         }
 
-        public void ChangeStatusOfInvitation(Guid userId, Guid invitationId, InvitationStatus status)
+        public void ChangeInvitationStatus(Guid userId, Guid invitationId, InvitationStatus status)
         {
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Guid.IsNotEmpty(invitationId);

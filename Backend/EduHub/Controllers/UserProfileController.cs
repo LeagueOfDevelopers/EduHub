@@ -27,7 +27,7 @@ namespace EduHub.Controllers
         /// Deletes user's profile
         /// </summary>
         [HttpDelete]
-        public IActionResult DeleteProfile([FromRoute] int idOfUser)
+        public IActionResult DeleteProfile([FromRoute] int userId)
         {
             return Ok("Профиль удален");
         }
@@ -52,7 +52,7 @@ namespace EduHub.Controllers
         /// Restores user's profile
         /// </summary>
         [HttpPost]
-        public IActionResult RestoreProfile([FromRoute] int idOfUser)
+        public IActionResult RestoreProfile([FromRoute] int userId)
         {
             return Ok("Профиль восстановлен");
         }
@@ -61,7 +61,7 @@ namespace EduHub.Controllers
         /// Edites user's profile
         /// </summary>
         [HttpPut]
-        public IActionResult EditProfile([FromBody]EditProfileRequest request, [FromRoute] int idOfUser)
+        public IActionResult EditProfile([FromBody]EditProfileRequest request, [FromRoute] int userId)
         {
             return Ok($"Новые данные профиля ИМЯ:{request.Name}, ВОЗРАСТ:{request.Age}");
         }
@@ -71,7 +71,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("teaching")]
-        public IActionResult BecomeTeacher([FromRoute] int idOfUser)
+        public IActionResult BecomeTeacher([FromRoute] int userId)
         {
             return Ok("Пользователь стал преподавателем");
         }
@@ -81,7 +81,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpDelete]
         [Route("teaching")]
-        public IActionResult StopToBeTeacher([FromRoute] int idOfUser)
+        public IActionResult StopToBeTeacher([FromRoute] int userId)
         {
             return Ok("Пользователь перестал быть преподавателем");
         }
@@ -91,7 +91,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("notifies")]
-        public IActionResult TurnOnNotify([FromRoute] int idOfUser)
+        public IActionResult TurnOnNotify([FromRoute] int userId)
         {
             return Ok("Уведомления включены");
         }
@@ -101,7 +101,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpDelete]
         [Route("notifies")]
-        public IActionResult TurnOffNotify([FromRoute] int idOfUser)
+        public IActionResult TurnOffNotify([FromRoute] int userId)
         {
             return Ok("Уведомления выключены");
         }
@@ -112,7 +112,7 @@ namespace EduHub.Controllers
         [HttpGet]
         [Route("notifies")]
         [SwaggerResponse(200, Type = typeof(List<NotifiesResponse>))]
-        public IActionResult GetNotifies([FromRoute] int idOfUser)
+        public IActionResult GetNotifies([FromRoute] int userId)
         {
             List<NotifiesResponse> response = new List<NotifiesResponse>();
             return Ok(response);

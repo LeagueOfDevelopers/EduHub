@@ -128,43 +128,43 @@ namespace EduHubLibrary.Facades
 
         #region Editing of group
 
-        public void ChangeTitleOfGroup(Guid idOfGroup, Guid idOfChanger, string newTitle)
+        public void ChangeGroupTitle(Guid idOfGroup, Guid idOfChanger, string newTitle)
         {
             Group currentGroup = _groupRepository.GetGroupById(idOfGroup);
             Member current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeTitleOfGroup),
+            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupTitle),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.String.IsNotNullOrWhiteSpace(newTitle);
             currentGroup.GroupInfo.Title = newTitle;
         }
 
-        public void ChangeDescriptionOfGroup(Guid idOfGroup, Guid idOfChanger, string newDescription)
+        public void ChangeGroupDescription(Guid idOfGroup, Guid idOfChanger, string newDescription)
         {
             Group currentGroup = _groupRepository.GetGroupById(idOfGroup);
             Member current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeDescriptionOfGroup),
+            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupDescription),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             currentGroup.GroupInfo.Description = newDescription;
         }
 
-        public void ChangeTagsOfGroup(Guid idOfGroup, Guid idOfChanger, List<string> newTags)
+        public void ChangeGroupTags(Guid idOfGroup, Guid idOfChanger, List<string> newTags)
         {
             Group currentGroup = _groupRepository.GetGroupById(idOfGroup);
             Member current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeTagsOfGroup),
+            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupTags),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             currentGroup.GroupInfo.Tags = newTags;
         }
 
-        public void ChangeSizeOfGroup(Guid idOfGroup, Guid idOfChanger, int newSize)
+        public void ChangeGroupSize(Guid idOfGroup, Guid idOfChanger, int newSize)
         {
             Group currentGroup = _groupRepository.GetGroupById(idOfGroup);
             Member current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeSizeOfGroup),
+            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupSize),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.Any.IsNotNull(newSize);
             Ensure.Bool.IsTrue(newSize <= _groupSettings.MaxGroupSize && newSize >= _groupSettings.MinGroupSize,
@@ -172,12 +172,12 @@ namespace EduHubLibrary.Facades
             currentGroup.GroupInfo.Size = newSize;
         }
 
-        public void ChangePriceInGroup(Guid idOfGroup, Guid idOfChanger, double newPrice)
+        public void ChangeGroupPrice(Guid idOfGroup, Guid idOfChanger, double newPrice)
         {
             Group currentGroup = _groupRepository.GetGroupById(idOfGroup);
             Member current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangePriceInGroup),
+            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupPrice),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.Any.IsNotNull(newPrice);
             Ensure.Bool.IsTrue(newPrice <= _groupSettings.MaxGroupValue && newPrice >= _groupSettings.MinGroupValue,

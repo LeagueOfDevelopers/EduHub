@@ -20,7 +20,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, typeof(RegistrationResponse))]
         public IActionResult Registrate([FromBody]RegistrationRequest request)
         {
-            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher, TypeOfUser.User, request.AvatarLink);
+            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password), request.IsTeacher, UserType.User, request.AvatarLink);
             RegistrationResponse response = new RegistrationResponse(newId);
             return Ok(response);
         }
@@ -39,7 +39,7 @@ namespace EduHub.Controllers
             if (client != null)
             {
                 
-                LoginResponse response = new LoginResponse(client.Name, client.Credentials.Email,client.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
+                LoginResponse response = new LoginResponse(client.Name, client.Credentials.Email, client.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
                 return Ok(response);
             }
 

@@ -24,7 +24,7 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
             
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
             
@@ -37,7 +37,7 @@ namespace EduHubTests
 
             //Act
             var expectedTitle = "new title";
-            groupFacade.ChangeTitleOfGroup(createdGroup.GroupInfo.Id, userId, expectedTitle);
+            groupFacade.ChangeGroupTitle(createdGroup.GroupInfo.Id, userId, expectedTitle);
             var actualTitle = createdGroup.GroupInfo.Title;
 
             //Assert
@@ -53,7 +53,7 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
@@ -65,7 +65,7 @@ namespace EduHubTests
             var createdGroup = allGroups[0];
 
             //Act
-            groupFacade.ChangeTitleOfGroup(createdGroup.GroupInfo.Id, userId, " ");
+            groupFacade.ChangeGroupTitle(createdGroup.GroupInfo.Id, userId, " ");
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
@@ -90,7 +90,7 @@ namespace EduHubTests
 
             //Act
             var expectedDescription = "new title";
-            groupFacade.ChangeDescriptionOfGroup(createdGroup.GroupInfo.Id, userId, expectedDescription);
+            groupFacade.ChangeGroupDescription(createdGroup.GroupInfo.Id, userId, expectedDescription);
             var actualDescription = createdGroup.GroupInfo.Description;
 
             //Assert
@@ -106,7 +106,7 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
@@ -120,7 +120,7 @@ namespace EduHubTests
             //Act
             var expectedTags = new List<string>();
             expectedTags.Add("c#");
-            groupFacade.ChangeTagsOfGroup(createdGroup.GroupInfo.Id, userId, expectedTags);
+            groupFacade.ChangeGroupTags(createdGroup.GroupInfo.Id, userId, expectedTags);
             var actualTags = createdGroup.GroupInfo.Tags;
 
             //Assert
@@ -136,7 +136,7 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
@@ -149,7 +149,7 @@ namespace EduHubTests
 
             //Act
             var expectedSize = 5;
-            groupFacade.ChangeSizeOfGroup(createdGroup.GroupInfo.Id, userId, expectedSize);
+            groupFacade.ChangeGroupSize(createdGroup.GroupInfo.Id, userId, expectedSize);
             var actualSize = createdGroup.GroupInfo.Size;
 
             //Assert
@@ -165,7 +165,7 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
@@ -178,7 +178,7 @@ namespace EduHubTests
 
             //Act
             var expectedMoneyPerUser = 200;
-            groupFacade.ChangePriceInGroup(createdGroup.GroupInfo.Id, userId, expectedMoneyPerUser);
+            groupFacade.ChangeGroupPrice(createdGroup.GroupInfo.Id, userId, expectedMoneyPerUser);
             var actualMoneyPerUser = createdGroup.GroupInfo.MoneyPerUser;
 
             //Assert
@@ -195,7 +195,7 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
@@ -207,7 +207,7 @@ namespace EduHubTests
             var createdGroup = allGroups[0];
 
             //Act
-            groupFacade.ChangeSizeOfGroup(createdGroup.GroupInfo.Id, userId, -4);
+            groupFacade.ChangeGroupSize(createdGroup.GroupInfo.Id, userId, -4);
         }
 
         [TestMethod]
@@ -220,7 +220,7 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, TypeOfUser.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
@@ -232,7 +232,7 @@ namespace EduHubTests
             var createdGroup = allGroups[0];
 
             //Act
-            groupFacade.ChangePriceInGroup(createdGroup.GroupInfo.Id, userId, -200);
+            groupFacade.ChangeGroupPrice(createdGroup.GroupInfo.Id, userId, -200);
         }
     }
 }

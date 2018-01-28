@@ -4,5 +4,5 @@ using System.Text;
 
 namespace EduHubLibrary.Common
 {
-    public enum TypeOfUser { Admin, User };
+    public enum UserType { Admin, User };
 }

@@ -22,7 +22,7 @@ namespace EduHub.Controllers
         [HttpPost]
         [Authorize]
         [Route("message")]
-        public IActionResult SendMessage([FromBody]SendMessageRequest message, [FromRoute]int idOfGroup)
+        public IActionResult SendMessage([FromBody]SendMessageRequest message, [FromRoute]int groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
@@ -35,7 +35,7 @@ namespace EduHub.Controllers
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(MessageResponse))]
         [Route("message/{idOfMessage}")]
-        public IActionResult GetMessage([FromRoute] int idOfGroup,[FromRoute] int idOfMessage)
+        public IActionResult GetMessage([FromRoute] int groupId,[FromRoute] int messageId)
         {
             MessageResponse response = new MessageResponse();
             return Ok(response);
@@ -47,10 +47,10 @@ namespace EduHub.Controllers
         [HttpPut]
         [Route("message/{idOfMessage}")]
         public IActionResult EditMessage([FromBody]EditMessageRequest message,
-                [FromRoute] int idOfGroup, [FromRoute] int idOfMessage)
+                [FromRoute] int groupId, [FromRoute] int idOfMessage)
         {
             return Ok($"Текст сообщения {idOfMessage} исправлен на '{message.NewText}' " +
-                $"в чате группы {idOfGroup}");
+                $"в чате группы {groupId}");
         }
 
         /// <summary>
@@ -58,9 +58,9 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpDelete]
         [Route("message/{idOfMessage}")]
-        public IActionResult DeleteMessage([FromRoute]int idOfGroup, [FromRoute]int idOfMessage)
+        public IActionResult DeleteMessage([FromRoute]int groupId, [FromRoute]int messageId)
         {
-            return Ok($"Сообщение {idOfMessage} удалено из чата группы {idOfGroup}");
+            return Ok($"Сообщение {messageId} удалено из чата группы {groupId}");
         }
     }
 }

@@ -47,7 +47,7 @@ namespace EduHub.Controllers
 
             Invitation invitation = _userFacade.GetUser(userId).ListOfInvitations.Find(o => o.GroupId.Equals(groupId));
             _groupFacade.ApproveTeacher(userId, groupId);
-            _userFacade.ChangeStatusOfInvitation(userId, invitation.Id, InvitationStatus.Accepted);
+            _userFacade.ChangeInvitationStatus(userId, invitation.Id, InvitationStatus.Accepted);
             
             return Ok("Преподаватель принял приглашение");
         }
@@ -63,7 +63,7 @@ namespace EduHub.Controllers
             var userId = a.GetUserId();
 
             Invitation invitation = _userFacade.GetUser(userId).ListOfInvitations.Find(o => o.GroupId.Equals(groupId));
-            _userFacade.ChangeStatusOfInvitation(userId, invitation.Id, InvitationStatus.Declined);
+            _userFacade.ChangeInvitationStatus(userId, invitation.Id, InvitationStatus.Declined);
             return Ok("Преподаватель отклонил приглашение");
         }
 

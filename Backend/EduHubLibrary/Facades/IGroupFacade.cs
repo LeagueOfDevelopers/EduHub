@@ -15,11 +15,11 @@ namespace EduHubLibrary.Facades
         IEnumerable<Group> GetGroups();
         Group GetGroup(Guid id);
         IEnumerable<Member> GetMembersOfGroup(Guid groupId);
-        void ChangeTitleOfGroup(Guid idOfGroup, Guid idOfChanger, string newTitle);
-        void ChangeDescriptionOfGroup(Guid idOfGroup, Guid idOfChanger, string newDescription);
-        void ChangeTagsOfGroup(Guid idOfGroup, Guid idOfChanger, List<string> newTags);
-        void ChangeSizeOfGroup(Guid idOfGroup, Guid idOfChanger, int newSize);
-        void ChangePriceInGroup(Guid idOfGroup, Guid idOfChanger, double newPrice);
+        void ChangeGroupTitle(Guid idOfGroup, Guid idOfChanger, string newTitle);
+        void ChangeGroupDescription(Guid idOfGroup, Guid idOfChanger, string newDescription);
+        void ChangeGroupTags(Guid idOfGroup, Guid idOfChanger, List<string> newTags);
+        void ChangeGroupSize(Guid idOfGroup, Guid idOfChanger, int newSize);
+        void ChangeGroupPrice(Guid idOfGroup, Guid idOfChanger, double newPrice);
         void DeleteMember(Guid groupId, Guid requestedPerson, Guid requestingPerson);
         void AddMember(Guid groupId, Guid requestedPerson);
         void DeleteTeacher(Guid groupId, Guid requestedPerson, Guid teacherId);

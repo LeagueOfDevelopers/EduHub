@@ -17,9 +17,9 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("{idOfUser}/invitation")]
-        public IActionResult GenerateInvitation([FromRoute] int idOfUser)
+        public IActionResult GenerateInvitation([FromRoute] int userId)
         {
-            return Ok($"Приглашение {idOfUser} сгенерировано");
+            return Ok($"Приглашение {userId} сгенерировано");
         }
 
         /// <summary>
@@ -27,9 +27,9 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("{idOfUser}")]
-        public IActionResult AddAdmin([FromRoute] int idOfUser)
+        public IActionResult AddAdmin([FromRoute] int userId)
         {
-            return Ok($"Администратор {idOfUser} добавлен");
+            return Ok($"Администратор {userId} добавлен");
         }
 
         /// <summary>
@@ -37,9 +37,9 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpDelete]
         [Route("{idOfUser}")]
-        public IActionResult DeleteAdmin([FromRoute] int idOfUser)
+        public IActionResult DeleteAdmin([FromRoute] int userId)
         {
-            return Ok($"Администратор {idOfUser} удален");
+            return Ok($"Администратор {userId} удален");
         }
     }
 }

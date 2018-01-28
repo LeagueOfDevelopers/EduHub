@@ -54,11 +54,11 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{idOfGroup}/title")]
-        public IActionResult EditGroupTitle([FromBody]string newTitle, [FromRoute]Guid idOfGroup)
+        public IActionResult EditGroupTitle([FromBody]string newTitle, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangeTitleOfGroup(idOfGroup, userId, newTitle);
+            _groupFacade.ChangeGroupTitle(groupId, userId, newTitle);
             return Ok($"Название группы изменено на {newTitle}");
         }
 
@@ -68,11 +68,11 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{idOfGroup}/description")]
-        public IActionResult EditGroupDescription([FromBody]string newDescription, [FromRoute]Guid idOfGroup)
+        public IActionResult EditGroupDescription([FromBody]string newDescription, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangeDescriptionOfGroup(idOfGroup, userId, newDescription);
+            _groupFacade.ChangeGroupDescription(groupId, userId, newDescription);
             return Ok($"Описание группы изменено на {newDescription}");
         }
 
@@ -82,11 +82,11 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{idOfGroup}/tags")]
-        public IActionResult EditGroupTags([FromBody]List<string> newTags, [FromRoute]Guid idOfGroup)
+        public IActionResult EditGroupTags([FromBody]List<string> newTags, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangeTagsOfGroup(idOfGroup, userId, newTags);
+            _groupFacade.ChangeGroupTags(groupId, userId, newTags);
             return Ok($"Теги группы изменены");
         }
         
@@ -96,11 +96,11 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{idOfGroup}/size")]
-        public IActionResult EditGroupSize([FromBody]int newSize, [FromRoute]Guid idOfGroup)
+        public IActionResult EditGroupSize([FromBody]int newSize, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangeSizeOfGroup(idOfGroup, userId, newSize);
+            _groupFacade.ChangeGroupSize(groupId, userId, newSize);
             return Ok($"Размер группы изменен на {newSize}");
         }
 
@@ -110,11 +110,11 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{idOfGroup}/price")]
-        public IActionResult EditGroupPrice([FromBody]double newPrice, [FromRoute]Guid idOfGroup)
+        public IActionResult EditGroupPrice([FromBody]double newPrice, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangePriceInGroup(idOfGroup, userId, newPrice);
+            _groupFacade.ChangeGroupPrice(groupId, userId, newPrice);
             return Ok($"Оплата за обучение в группе изменена на {newPrice}");
         }
 
@@ -124,9 +124,9 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpDelete]
         [Route("{idOfGroup}")]
-        public IActionResult DeleteGroup([FromRoute] int idOfGroup)
+        public IActionResult DeleteGroup([FromRoute] int groupId)
         {
-            return Ok($"Группа {idOfGroup} удалена");
+            return Ok($"Группа {groupId} удалена");
         }
 
         /// <summary>
@@ -150,10 +150,10 @@ namespace EduHub.Controllers
         [HttpGet]
         [Route("{idOfGroup}")]
         [SwaggerResponse(200, Type = typeof(GroupResponse))]
-        public IActionResult GetGroup([FromRoute] Guid idOfGroup)
+        public IActionResult GetGroup([FromRoute] Guid groupId)
         {
-            Group group = _groupFacade.GetGroup(idOfGroup);
-            IEnumerable<Member> membersOfGroup = _groupFacade.GetMembersOfGroup(idOfGroup);
+            Group group = _groupFacade.GetGroup(groupId);
+            IEnumerable<Member> membersOfGroup = _groupFacade.GetMembersOfGroup(groupId);
             GroupResponse response = new GroupResponse(group.GroupInfo, group.Status, group.Teacher, membersOfGroup, _userFacade);
             return Ok(response);
         }

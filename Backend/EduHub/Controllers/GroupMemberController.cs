@@ -47,7 +47,7 @@ namespace EduHub.Controllers
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _userFacade.ChangeStatusOfInvitation(userId, changer.InvitationId, changer.Status);
+            _userFacade.ChangeInvitationStatus(userId, changer.InvitationId, changer.Status);
             return Ok("Приглашение принято");
         }
 

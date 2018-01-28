@@ -9,7 +9,7 @@ namespace EduHub.Models
 {
     public class UserResponse
     {
-        public UserResponse(string name, string email, TypeOfUser type, bool isTeacher, TeacherProfile teacherProfile, bool isActive)
+        public UserResponse(string name, string email, UserType type, bool isTeacher, TeacherProfile teacherProfile, bool isActive)
         {
             Name = name;
             Email = email;
@@ -21,7 +21,7 @@ namespace EduHub.Models
 
         public string Name { get; set; }
         public string Email { get; set; }
-        public TypeOfUser Type { get; set; }
+        public UserType Type { get; set; }
         public bool IsTeacher { get; set; }
         public TeacherProfile TeacherProfile { get; set; }
         public bool IsActive { get; set; }
