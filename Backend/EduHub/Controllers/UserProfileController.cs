@@ -129,8 +129,10 @@ namespace EduHub.Controllers
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            GroupsOfUserResponse response = new GroupsOfUserResponse(
-                _userFacade.GetAllGroupsOfUser(userId), userId, _groupFacade);
+            IEnumerable<Group> groups = _userFacade.GetAllGroupsOfUser(userId);
+            List<MinItemGroupResponse> items = new List<MinItemGroupResponse>();
+            groups.ToList().ForEach(g => items.Add(new MinItemGroupResponse(g.GroupInfo, _groupFacade.GetMembersOfGroup(g.GroupInfo.Id).Count<Member>())));
+            MinGroupResponse response = new MinGroupResponse(items);
             return Ok(response);
         }
 

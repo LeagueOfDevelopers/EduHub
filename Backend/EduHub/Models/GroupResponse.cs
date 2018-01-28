@@ -30,15 +30,21 @@ namespace EduHub.Models
 
         public struct GroupMember
         {
-            public Member Member;
+            public Guid UserId;
             public string Name;
             public string AvatarLink;
+            public MemberRole MemberRole;
+            public bool Paid;
+            public bool AcceptedCourse;
 
             public GroupMember(Member member, string name, string avatarLink)
             {
-                Member = member;
+                UserId = member.UserId;
                 Name = name;
                 AvatarLink = avatarLink;
+                MemberRole = member.MemberRole;
+                Paid = member.Paid;
+                AcceptedCourse = member.AcceptedCurriculum;
             }
         }
     }
