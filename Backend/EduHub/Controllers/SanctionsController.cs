@@ -15,7 +15,7 @@ namespace EduHub.Controllers
         /// Applies sanctions for user
         /// </summary>
         [HttpPost]
-        [Route("{idOfUser}")]
+        [Route("{userId}")]
         public IActionResult ApplySanction([FromRoute] int userId)
         {
             return Ok($"К пользователю {userId} применены санкции");
@@ -24,7 +24,7 @@ namespace EduHub.Controllers
         /// Anulls sanctions for user
         /// </summary>
         [HttpDelete]
-        [Route("{idOfUser}")]
+        [Route("{userId}")]
         public IActionResult AnullSanction([FromRoute] int userId)
         {
             return Ok($"Санкции с пользователя {userId} сняты");

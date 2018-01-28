@@ -40,7 +40,7 @@ namespace EduHub.Controllers
         /// Reports user somehow (for now)
         /// </summary>
         [HttpPost]
-        [Route("{idOfUser}/report")]
+        [Route("{userId}/report")]
         public IActionResult Report([FromRoute]int userId)
         {
             return Ok($"Жалоба на пользователя добавлена");

@@ -10,11 +10,11 @@ namespace EduHub.Models
 {
     public class GroupResponse
     {
-        public GroupResponse(GroupInfo groupInfo, CourseStatus status, User teacher,IEnumerable<Member> members, IUserFacade userFacade)
+        public GroupResponse(GroupInfo groupInfo, CourseStatus status, User teacher, IEnumerable<Member> members, IUserFacade userFacade)
         {
             GroupInfo = groupInfo;
             Status = status;
-            Teacher = teacher;
+            Educator = new Teacher(teacher);
             Members = new List<GroupMember>();
 
             foreach (Member member in members)
@@ -23,10 +23,11 @@ namespace EduHub.Models
                 Members.Add(new GroupMember(member, currentMember.Name, currentMember.AvatarLink));
             }
         }
+
         public List<GroupMember> Members { get; set; }
         public GroupInfo GroupInfo { get; set; }
         public CourseStatus Status { get; set; }
-        public User Teacher { get; set; }
+        public Teacher Educator { get; set; }
 
         public struct GroupMember
         {
@@ -46,6 +47,20 @@ namespace EduHub.Models
                 Paid = member.Paid;
                 AcceptedCourse = member.AcceptedCurriculum;
             }
+        }
+        
+        public struct Teacher
+        {
+            public Teacher(User teacher)
+            {
+                UserId = teacher.Id;
+                Name = teacher.Name;
+                AvatarLink = teacher.AvatarLink;
+            }
+
+            public Guid UserId;
+            public string Name;
+            public string AvatarLink;
         }
     }
 }

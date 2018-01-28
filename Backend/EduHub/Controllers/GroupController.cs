@@ -53,7 +53,7 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpPut]
-        [Route("{idOfGroup}/title")]
+        [Route("{groupId}/title")]
         public IActionResult EditGroupTitle([FromBody]string newTitle, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -67,7 +67,7 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpPut]
-        [Route("{idOfGroup}/description")]
+        [Route("{groupId}/description")]
         public IActionResult EditGroupDescription([FromBody]string newDescription, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -81,7 +81,7 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpPut]
-        [Route("{idOfGroup}/tags")]
+        [Route("{groupId}/tags")]
         public IActionResult EditGroupTags([FromBody]List<string> newTags, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -95,7 +95,7 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpPut]
-        [Route("{idOfGroup}/size")]
+        [Route("{groupId}/size")]
         public IActionResult EditGroupSize([FromBody]int newSize, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -109,7 +109,7 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpPut]
-        [Route("{idOfGroup}/price")]
+        [Route("{groupId}/price")]
         public IActionResult EditGroupPrice([FromBody]double newPrice, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -123,7 +123,7 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpDelete]
-        [Route("{idOfGroup}")]
+        [Route("{groupId}")]
         public IActionResult DeleteGroup([FromRoute] int groupId)
         {
             return Ok($"Группа {groupId} удалена");
@@ -148,7 +148,7 @@ namespace EduHub.Controllers
         /// Returns full information about one group
         /// </summary>
         [HttpGet]
-        [Route("{idOfGroup}")]
+        [Route("{groupId}")]
         [SwaggerResponse(200, Type = typeof(GroupResponse))]
         public IActionResult GetGroup([FromRoute] Guid groupId)
         {
@@ -157,9 +157,7 @@ namespace EduHub.Controllers
             GroupResponse response = new GroupResponse(group.GroupInfo, group.Status, group.Teacher, membersOfGroup, _userFacade);
             return Ok(response);
         }
-
-
-
+        
         public GroupController(IGroupFacade groupFacade, IUserFacade userFacade)
         {
             _groupFacade = groupFacade;
@@ -168,6 +166,5 @@ namespace EduHub.Controllers
         
         private readonly IGroupFacade _groupFacade;
         private readonly IUserFacade _userFacade;
-
     }
 }

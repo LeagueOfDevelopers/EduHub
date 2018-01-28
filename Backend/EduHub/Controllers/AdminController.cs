@@ -16,7 +16,7 @@ namespace EduHub.Controllers
         /// Generates invitation for admin account
         /// </summary>
         [HttpPost]
-        [Route("{idOfUser}/invitation")]
+        [Route("{userId}/invitation")]
         public IActionResult GenerateInvitation([FromRoute] int userId)
         {
             return Ok($"Приглашение {userId} сгенерировано");
@@ -26,7 +26,7 @@ namespace EduHub.Controllers
         /// Makes user admin
         /// </summary>
         [HttpPost]
-        [Route("{idOfUser}")]
+        [Route("{userId}")]
         public IActionResult AddAdmin([FromRoute] int userId)
         {
             return Ok($"Администратор {userId} добавлен");
@@ -36,7 +36,7 @@ namespace EduHub.Controllers
         /// Makes user regular user (not admin)
         /// </summary>
         [HttpDelete]
-        [Route("{idOfUser}")]
+        [Route("{userId}")]
         public IActionResult DeleteAdmin([FromRoute] int userId)
         {
             return Ok($"Администратор {userId} удален");
