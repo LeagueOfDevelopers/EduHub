@@ -14,7 +14,10 @@ namespace EduHub.Models
         {
             GroupInfo = groupInfo;
             Status = status;
-            Educator = new Teacher(teacher);
+            if (teacher != null)
+            {
+                Educator = new Teacher(teacher);
+            }
             Members = new List<GroupMember>();
 
             foreach (Member member in members)
