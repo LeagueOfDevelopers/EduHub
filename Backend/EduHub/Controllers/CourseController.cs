@@ -20,54 +20,6 @@ namespace EduHub.Controllers
     public class CourseController : Controller
     {
         /// <summary>
-        /// Invites teacher to group
-        /// </summary>
-        [Authorize]
-        [HttpPost]
-        [Route("teacher")]
-        public IActionResult InviteTeacher([FromBody]Guid teacherId, [FromRoute] Guid groupId)
-        {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
-
-            _userFacade.Invite(userId, teacherId, groupId, MemberRole.Teacher);
-            return Ok($"Преподаватель {teacherId} приглашен");
-        }
-
-        /// <summary>
-        /// Accept invitation
-        /// </summary>
-        [Authorize]
-        [HttpPut]
-        [Route("teacher")]
-        public IActionResult AcceptInvitation([FromRoute] Guid groupId)
-        {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
-
-            Invitation invitation = _userFacade.GetUser(userId).ListOfInvitations.Find(o => o.GroupId.Equals(groupId));
-            _groupFacade.ApproveTeacher(userId, groupId);
-            _userFacade.ChangeInvitationStatus(userId, invitation.Id, InvitationStatus.Accepted);
-            
-            return Ok("Преподаватель принял приглашение");
-        }
-
-        /// <summary>
-        /// Rejects invitation
-        /// </summary>
-        [HttpDelete]
-        [Route("teacher")]
-        public IActionResult RejectInvintation([FromRoute] Guid groupId)
-        {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
-
-            Invitation invitation = _userFacade.GetUser(userId).ListOfInvitations.Find(o => o.GroupId.Equals(groupId));
-            _userFacade.ChangeInvitationStatus(userId, invitation.Id, InvitationStatus.Declined);
-            return Ok("Преподаватель отклонил приглашение");
-        }
-
-        /// <summary>
         /// Adds suggesting plan for group
         /// </summary>
         [HttpPost]

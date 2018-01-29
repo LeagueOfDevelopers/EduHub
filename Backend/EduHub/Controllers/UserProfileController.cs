@@ -49,6 +49,28 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
+        /// Changes status of invitation, add user to group
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("invitations")]
+        [SwaggerResponse(200, Type = typeof(ChangeStatusOfInvitationRequest))]
+        public IActionResult ChangeStatusOfInvitation([FromBody] ChangeStatusOfInvitationRequest changer)
+        {
+            string a = Request.Headers["Authorization"];
+            var userId = a.GetUserId();
+            _userFacade.ChangeInvitationStatus(userId, changer.InvitationId, changer.Status);
+            Invitation invitation = _userFacade.GetAllInvitationsForUser(userId).First(i => i.Id.Equals(changer.InvitationId));
+
+            if (invitation.SuggestedRole == MemberRole.Teacher && changer.Status == InvitationStatus.Accepted)
+            {
+                _groupFacade.ApproveTeacher(userId, invitation.GroupId);
+            }
+
+            return Ok($"Текущий статус приглашения {changer.Status}");
+        }
+
+        /// <summary>
         /// Restores user's profile
         /// </summary>
         [HttpPost]

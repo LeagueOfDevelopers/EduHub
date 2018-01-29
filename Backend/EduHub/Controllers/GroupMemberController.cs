@@ -17,13 +17,13 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpPost]
-        [Route("invitation/{invitedId}")]
-        public IActionResult InviteUser([FromRoute] Guid invitedId, [FromRoute] Guid groupId)
+        [Route("invitation")]
+        public IActionResult Invite([FromRoute] Guid groupId, [FromBody]InviteRequest request)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _userFacade.Invite(userId, invitedId, groupId, MemberRole.Member);
-            return Ok("Пользователь приглашен");
+            _userFacade.Invite(userId, request.InvitedId, groupId, request.Role);
+            return Ok($"Пользователь {request.InvitedId} приглашен на роль {request.Role}");
         }
 
         /// <summary>
@@ -36,19 +36,6 @@ namespace EduHub.Controllers
             var requestedId = a.GetUserId();
             _groupFacade.AddMember(groupId, requestedId);
             return Ok();
-        }
-
-        /// <summary>
-        /// Changes status of invitation, add user to group
-        /// </summary>
-        [Authorize]
-        [HttpPut]
-        public IActionResult ChangeStatusOfInvitation([FromBody] ChangeStatusOfInvitationRequest changer)
-        {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
-            _userFacade.ChangeInvitationStatus(userId, changer.InvitationId, changer.Status);
-            return Ok("Приглашение принято");
         }
 
         /// <summary>
