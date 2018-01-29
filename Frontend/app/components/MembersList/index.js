@@ -5,12 +5,10 @@
 */
 
 import React from 'react';
-// import styled from 'styled-components';
-import { List, Avatar, Icon, Popconfirm, message, Row, Col } from 'antd';
-import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
-import {parseJwt} from "../../globaljs";
-
+import {parseJwt, getMemberRole} from "../../globalJS";
+import {Link} from "react-router-dom";
+import { List, Avatar, Icon, Popconfirm, message, Row, Col } from 'antd';
 
 class MembersList extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -19,9 +17,9 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
     this.confirm = this.confirm.bind(this);
   }
 
-  confirm() {
+  confirm = () => {
     message.error('Участник удален')
-  }
+  };
 
   render() {
     return (
@@ -41,11 +39,12 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
                       src={item.avatarLink}
                     />}
                   title={<Link to="#">{item.name}</Link>}
-                  description={item.member.memberRole === 3 ? 'Создатель' : ''}
+                  description={getMemberRole(item.memberRole)}
                 />
-                { localStorage.getItem('token') && this.props.isInGroup && this.props.members.find(item =>
-                  item.member.userId === parseJwt(localStorage.getItem('token')).UserId).member.memberRole === 'Создатель' &&
-                    item.member.memberRole !== 'Создатель' ?
+                { localStorage.getItem('token') && this.props.isInGroup &&
+                  getMemberRole(this.props.members.find(item =>
+                    item.userId === parseJwt(localStorage.getItem('token')).UserId).memberRole) === 'Создатель' &&
+                    getMemberRole(item.memberRole) !== 'Создатель' ?
                       (<Popconfirm title='Удалить участника?' onConfirm={this.confirm} okText="Да" cancelText="Нет">
                         <Icon
                           style={{fontSize: 18, cursor: 'pointer'}}
@@ -64,18 +63,9 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
   }
 }
 
-MembersList.defaultProps = {
-  name: '',
-  count: 0,
-  size: 0,
-  role: '',
-  members: [],
-  id: ''
-};
-
 MembersList.propTypes = {
   name: PropTypes.string,
-  count: PropTypes.number,
+  length: PropTypes.number,
   size: PropTypes.number,
   role: PropTypes.string,
   id: PropTypes.array,

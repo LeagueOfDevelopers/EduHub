@@ -14,72 +14,64 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { selectHomePage,
-         makeSelectAssembledGroups,
+import { makeSelectAssembledGroups,
          makeSelectUnassembledGroups
 } from "./selectors";
 import reducer from './reducer';
 import saga from './saga';
-
+import { getAssembledGroups, getUnassembledGroups } from "./actions";
+import {Link} from "react-router-dom";
 import {Card, Col, Row, Button, message} from 'antd';
-// import styled from 'styled-components';
-
 import UnassembledGroupCard from 'components/UnassembledGroupCard';
 import AssembledGroupCard from 'components/AssembledGroupCard';
 import SigningInForm from 'containers/SigningInForm';
-import {Link} from "react-router-dom";
-import { getAssembledGroups, getUnassembledGroups } from "./actions";
-
-import  config from '../../config';
-
 
 const unassembledGroups = [
   {
     groupInfo: {
       id: 1,
       title: 'cdcvvdsc',
-      numberOfMembers: 6,
       size: 8,
       moneyPerUser: 600,
       groupType: 'Lfdsv',
       tags: ['fds', 'sdf']
-    }
+    },
+    numberOfMembers: 6,
   },
   {
     groupInfo: {
       id: 1,
       title: 'cdcvvdsc',
-      numberOfMembers: 6,
       size: 8,
       moneyPerUser: 600,
       groupType: 'Lfdsv',
       tags: ['fds', 'sdf']
-    }
+    },
+    numberOfMembers: 6,
   },
   {
     groupInfo: {
       id: 1,
       title: 'cdcvvdsc',
-      numberOfMembers: 6,
       size: 8,
       moneyPerUser: 600,
       groupType: 'Lfdsv',
       tags: ['fds', 'sdf']
-    }
+    },
+    numberOfMembers: 6,
   },
   {
     groupInfo: {
       id: 1,
       title: 'cdcvvdsc',
-      numberOfMembers: 6,
       size: 8,
       moneyPerUser: 600,
       groupType: 'Lfdsv',
       tags: ['fds', 'sdf']
-    }
+    },
+    numberOfMembers: 6,
   }
 ];
 
@@ -88,13 +80,13 @@ const assembledGroups = [
     groupInfo: {
       id: 2,
       title: 'cdcvvdsc',
-      numberOfMembers: 6,
       size: 8,
       moneyPerUser: 600,
       groupType: 'Lfdsv',
       tags: ['fds', 'sdf'],
       description: 'dadasddas'
-    }
+    },
+    numberOfMembers: 6,
   }
 ];
 
@@ -111,9 +103,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   componentDidMount() {
-    localStorage.setItem('without_server', 'false');
-
-    if(!(localStorage.getItem('without_server') === 'true')) {
+    if(localStorage.getItem('without_server') !== 'true') {
       this.props.getUnassembledGroups();
       this.props.getAssembledGroups();
     }
@@ -143,8 +133,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             {(localStorage.getItem('without_server') === 'true') ?
               (
                 <div className='cards-holder'>
-                  {unassembledGroups.map((item, i) =>
-                    <Link to={`/group/${item.groupInfo.id}`}>
+                  {unassembledGroups.map((item) =>
+                    <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                       <UnassembledGroupCard {...item}/>
                     </Link>
                   )}
@@ -152,8 +142,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               ) :
               (
                 <div className='cards-holder'>
-                  {this.props.unassembledGroups.map((item, i) =>
-                    <Link to={`/group/${item.groupInfo.id}`}>
+                  {this.props.unassembledGroups.map((item) =>
+                    <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                       <UnassembledGroupCard {...item}/>
                     </Link>
                   )}
@@ -176,8 +166,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             {(localStorage.getItem('without_server') === 'true') ?
               (
                 <div className='cards-holder'>
-                  {assembledGroups.map((item, i) =>
-                    <Link to={`/group/${item.groupInfo.id}`}>
+                  {assembledGroups.map((item) =>
+                    <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                       <AssembledGroupCard {...item}/>
                     </Link>
                   )}
@@ -185,8 +175,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               ) :
               (
                 <div className='cards-holder'>
-                  {this.props.assembledGroups.map((item, i) =>
-                    <Link to={`/group/${item.groupInfo.id}`}>
+                  {this.props.assembledGroups.map((item) =>
+                    <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                       <AssembledGroupCard {...item}/>
                     </Link>
                   )}

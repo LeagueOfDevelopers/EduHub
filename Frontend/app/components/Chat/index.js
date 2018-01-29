@@ -5,7 +5,6 @@
 */
 
 import React from 'react';
-// import styled from 'styled-components';
 import ChatRoom from './ChatRoom';
 
 
@@ -18,9 +17,5 @@ class Chat extends React.Component { // eslint-disable-line react/prefer-statele
     );
   }
 }
-
-Chat.propTypes = {
-
-};
 
 export default Chat;

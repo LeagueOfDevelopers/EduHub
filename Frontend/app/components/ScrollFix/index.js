@@ -3,7 +3,7 @@ import { Component } from 'react';
 class ScrollFix extends Component {
 
   componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
+    if (prevProps.location !== this.props.location) {
       window.scrollTo(0, 0);
     }
   }

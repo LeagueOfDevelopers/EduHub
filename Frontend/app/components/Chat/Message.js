@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Avatar} from 'antd';
 
 export default class Message extends React.Component {
   constructor(props) {
@@ -25,4 +24,4 @@ Message.propTypes = {
   username: PropTypes.string,
   content: PropTypes.string,
   time: PropTypes.string
-}
+};

@@ -113,23 +113,21 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
           <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 12, offset: 6}}>
             <Tabs defaultActiveKey="1" style={{margin: '30px 0'}}>
               <TabPane tab="Уведомления" key="1" style={{margin: '30px 0'}}>
-                {(localStorage.getItem('without_server') === 'true') ?
-                  (<div>
-                      {this.state.notifies.map(item =>
-                        <NotifyCard {...item}/>
+                {(<div>
+                      {this.state.notifies.reverse().map(item =>
+                        <NotifyCard key={item.id} {...item}/>
                       )}
                     </div>
-                  ) : null
+                  )
                 }
               </TabPane>
               <TabPane tab="Приглашения" key="2" style={{margin: '30px 0'}}>
-                {(localStorage.getItem('without_server') === 'true') ?
-                  (<div>
-                      {this.state.invites.map(item =>
-                        <InviteCard {...item}/>
+                {(<div>
+                      {this.state.invites.reverse().map(item =>
+                        <InviteCard key={item.id} {...item}/>
                       )}
                     </div>
-                  ) : null
+                  )
                 }
               </TabPane>
             </Tabs>

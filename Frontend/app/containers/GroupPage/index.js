@@ -11,21 +11,17 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-
-// import {selectGroupPage} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import {Col, Row, Button, message, Dropdown, Input, Menu, Select} from 'antd';
-// import styled from 'styled-components';
-
+import { makeSelectGroupData } from "./selectors";
+import { getGroupData, enterGroup, leaveGroup } from "./actions";
 import config from '../../config'
-
-import MemberList from 'components/MembersList/Loadable';
-import Chat from 'components/Chat/Loadable';
 import {Link} from "react-router-dom";
-import * as ReactDOM from "react-dom";
+import {parseJwt, getGroupType, getMemberRole} from "../../globalJS";
+import {Col, Row, Button, message, Dropdown, Menu, Select} from 'antd';
+import MemberList from '../../components/MembersList/Loadable';
+import Chat from '../../components/Chat/Loadable';
 
-import {parseJwt} from "../../globaljs";
 
 const defaultGroupInfo = {
   groupInfo: {
@@ -46,7 +42,7 @@ const defaultGroupInfo = {
     {
       member: {
         userId: "848a3202-7085-4cba-842f-07d07eff7b35",
-        memberRole: "Создатель",
+        memberRole: 3,
         paid: true,
         acceptedCourse: false
       },
@@ -56,7 +52,7 @@ const defaultGroupInfo = {
     {
       member: {
         userId: "string",
-        memberRole: "Участник",
+        memberRole: 1,
         paid: true,
         acceptedCourse: false
       },
@@ -69,7 +65,7 @@ const defaultGroupInfo = {
 
 const defaultSelectData = ['Первый пользователь', 'Второй пользователь'];
 
-export class GroupPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class GroupPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -94,30 +90,10 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
 
     this.onSetResult = this.onSetResult.bind(this);
     this.inviteMember = this.inviteMember.bind(this);
-    this.leaveGroup = this.leaveGroup.bind(this);
-    this.enterGroup = this.enterGroup.bind(this);
     this.handleVisibleChange = this.handleVisibleChange.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
   }
-
-  handleVisibleChange = (flag) => {
-    this.setState({ inviteVisible: flag });
-  };
-
-  fetchData = (value, callback) => {
-    if(localStorage.getItem('without_server') === 'true') {
-      callback(defaultSelectData)
-    }
-  };
-
-  handleSelectChange = (value) => {
-    this.setState({selectValue: value});
-    this.fetchData(value, data => this.setState({selectData: data}));
-    if(value === '') {
-      this.setState({selectData: []})
-    }
-  };
 
   inviteMenu = (options) => (
       <Menu>
@@ -144,18 +120,35 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
       this.onSetResult(defaultGroupInfo)
     }
     else {
-      fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-        .then(response => response.json())
-        .then(result => {
-          this.onSetResult(result);
-        })
-        .catch(error => error);
+      this.props.getCurrentGroupData(this.state.id);
+      setTimeout(() => this.onSetResult(this.props.currentGroupData), 1000)
     }
   }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if(prevState !== this.state) {
+  //     this.props.getCurrentGroupData(this.state.id);
+  //     setTimeout(() => this.onSetResult(this.props.currentGroupData), 1000)
+  //   }
+  // }
+
+  handleVisibleChange = (flag) => {
+    this.setState({ inviteVisible: flag });
+  };
+
+  fetchData = (value, callback) => {
+    if(localStorage.getItem('without_server') === 'true') {
+      callback(defaultSelectData)
+    }
+  };
+
+  handleSelectChange = (value) => {
+    this.setState({selectValue: value});
+    this.fetchData(value, data => this.setState({selectData: data}));
+    if(value === '') {
+      this.setState({selectData: []})
+    }
+  };
 
   onSetResult(result) {
     this.setState({
@@ -169,7 +162,7 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
       isPrivate: result.groupInfo.isPrivate,
       members: result.members,
       teacher: result.teacher,
-      isInGroup: this.state.userData ? result.members.find(item => item.member.userId === this.state.userData.UserId) : false
+      isInGroup: this.state.userData ? Boolean(result.members.find(item => item.userId === this.state.userData.UserId)) : false
     })
   }
 
@@ -190,13 +183,13 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
     setTimeout(() => this.setState({selectValue: ''}), 0);
   }
 
-  leaveGroup() {
-    this.setState({isInGroup: false})
-  }
-
-  enterGroup() {
-    this.setState({isInGroup: true})
-  }
+  // leaveGroup() {
+  //   this.setState({isInGroup: false})
+  // }
+  //
+  // enterGroup() {
+  //   this.setState({isInGroup: true})
+  // }
 
   render() {
     return (
@@ -214,12 +207,12 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                   </Row>
                   <Row gutter={6} type='flex' justify='start' style={{marginBottom: 8}}>
                     {this.state.tags.map((item) =>
-                      <Link to="#">{item}</Link>
+                      <Link key={item} to="#">{item}</Link>
                     )}
                   </Row>
                   <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
                     <Col>Формат</Col>
-                    <Col>{this.state.groupType}</Col>
+                    <Col>{getGroupType(this.state.groupType)}</Col>
                   </Row>
                   <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
                     <Col>Стоимость</Col>
@@ -235,11 +228,10 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                 <Row style={{marginLeft: -16, marginBottom: 20}}>
                   <MemberList members={this.state.members} size={this.state.size} isInGroup={this.state.isInGroup}/>
                 </Row>
-                {/*<Row>{this.state.members}</Row>*/}
-                {this.state.isInGroup ?
+                <Row>
+                  {this.state.isInGroup ? getMemberRole(
                     this.state.members.find(item =>
-                      item.member.userId === this.state.userData.UserId)
-                        .member.memberRole === 'Создатель' ?
+                      item.userId === this.state.userData.UserId).memberRole) === 'Создатель' ?
                       (<Row className='md-center-container'>
                         <Dropdown
                           overlay={this.inviteMenu(this.state.selectData)}
@@ -257,13 +249,14 @@ export class GroupPage extends React.Component { // eslint-disable-line react/pr
                         </Dropdown>
                       </Row>) : null
                     : null
-                }
+                  }
+                </Row>
               </Col>
               <Col sm={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 16, offset: 1}}>
                 <Row className='md-center-container' style={{textAlign: 'right', marginTop: 8}}>
                   { this.state.isInGroup ?
-                    (<Button onClick={this.leaveGroup}>Покинуть группу</Button>)
-                    : (<Button type='primary' onClick={this.enterGroup}>Вступить в группу</Button>)
+                    (<Button onClick={() => this.props.leaveGroup(this.state.id, this.state.userData.UserId)}>Покинуть группу</Button>)
+                    : (<Button type='primary' onClick={() => this.props.enterGroup(this.state.id)}>Вступить в группу</Button>)
                   }
                 </Row>
                 <Row style={{marginTop: 42}}>
@@ -305,11 +298,14 @@ GroupPage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  currentGroupData: makeSelectGroupData()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getCurrentGroupData: (groupId) => dispatch(getGroupData(groupId)),
+    enterGroup: (groupId) => dispatch(enterGroup(groupId)),
+    leaveGroup: (groupId, memberId) => dispatch(leaveGroup(groupId, memberId))
   };
 }
 

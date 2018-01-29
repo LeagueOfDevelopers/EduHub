@@ -5,7 +5,7 @@
 */
 
 import React from 'react';
-// import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import {Card, Row, Col} from 'antd';
 
 class NotifyCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -35,7 +35,7 @@ class NotifyCard extends React.PureComponent { // eslint-disable-line react/pref
           </Col>
         </Row>
         <Row>
-          <span>
+          <span style={{wordWrap: 'break-word'}}>
             {this.props.text}
           </span>
         </Row>
@@ -45,7 +45,10 @@ class NotifyCard extends React.PureComponent { // eslint-disable-line react/pref
 }
 
 NotifyCard.propTypes = {
-
+  readed: PropTypes.bool,
+  fromUser: PropTypes.string,
+  date: PropTypes.string,
+  text: PropTypes.string
 };
 
 export default NotifyCard;

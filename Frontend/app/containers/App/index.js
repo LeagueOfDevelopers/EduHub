@@ -13,34 +13,35 @@
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-
 import HomePage from '../HomePage/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
 import CreateGroupPage from '../CreateGroupPage';
 import RegistrationPage from '../RegistrationPage';
 import GroupPage from '../GroupPage/Loadable';
-import Header from '../../components/Header';
+import Header from '../../containers/Header/Loadable';
 import ScrollFix from '../../components/ScrollFix';
 import ProfilePage from '../../containers/ProfilePage/Loadable';
 import NotificationPage from '../../containers/NotificationPage/Loadable';
 
-export default function App() {
-  return (
-    <div>
-      <header>
-        <Header/>
-      </header>
-      <ScrollFix>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path='/create_group' component={CreateGroupPage}/>
-          <Route path='/registration' component={RegistrationPage}/>
-          <Route exact path='/profile/:id' component={ProfilePage}/>
-          <Route path='/group/:id' component={GroupPage}/>
-          <Route path='/profile/:id/notifications' component={NotificationPage}/>
-          <Route path='' component={NotFoundPage} />
-        </Switch>
-      </ScrollFix>
-    </div>
-  );
+export default class App extends React.Component{
+  render() {
+    return (
+      <div>
+        <header>
+          <Header/>
+        </header>
+        <ScrollFix>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path='/create_group' component={CreateGroupPage}/>
+            <Route path='/registration' component={RegistrationPage}/>
+            <Route exact path='/profile/:id' component={ProfilePage}/>
+            <Route path='/group/:id' component={GroupPage}/>
+            <Route path='/profile/:id/notifications' component={NotificationPage}/>
+            <Route path='' component={NotFoundPage} />
+          </Switch>
+        </ScrollFix>
+      </div>
+    );
+  }
 }

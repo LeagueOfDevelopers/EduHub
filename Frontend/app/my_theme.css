@@ -52,7 +52,7 @@
 .cards-holder {
   display: grid;
   grid-template-columns: repeat(auto-fill, 260px);
-  grid-gap: 30px;
+  grid-gap: 29px;
   align-items: center;
   justify-content: left;
 }

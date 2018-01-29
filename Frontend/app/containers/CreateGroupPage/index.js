@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
@@ -73,9 +72,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
 
   createGroup = () => {
     if(this.state.title !== '') {
-      (localStorage.getItem('without_server') === 'true') ?
-        message.success('Группа создана')
-        :
+      (localStorage.getItem('without_server') !== 'true') ?
         this.props.createGroup(
           this.state.title,
           this.state.description,
@@ -84,11 +81,21 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
           this.state.price,
           this.state.type,
           this.state.isPrivate
-        )
+        ) : null
     }
     else {
       message.error('Введите название группы')
     }
+
+    setTimeout(() => {
+        message.success('Группа создана');
+      }, 1000
+    );
+
+    setTimeout(() => {
+        location.assign('/');
+      }, 2000
+    )
   };
 
   goBack = () => {
@@ -118,7 +125,6 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
 
   onHandlePriceChange = (e) => {
     this.setState({price: e.target.value})
-
   };
 
   onHandlePrivateChange = (e) => {
@@ -218,9 +224,14 @@ CreateGroupPage.propTypes = {
   dispatch: PropTypes.func,
   createGroup: PropTypes.func,
   goBack: PropTypes.func,
-  users: PropTypes.array,
-  name: PropTypes.string,
-  id: PropTypes.string
+  members: PropTypes.array,
+  title: PropTypes.string,
+  size: PropTypes.number,
+  techs: PropTypes.array,
+  type: PropTypes.string,
+  description: PropTypes.string,
+  price: PropTypes.string,
+  isPrivate: PropTypes.bool
 };
 
 const mapStateToProps = createStructuredSelector({

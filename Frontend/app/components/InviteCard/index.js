@@ -5,36 +5,39 @@
 */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from '../../containers/NotificationPage/reducer';
 import saga from '../../containers/NotificationPage/saga';
 import { changeInvitationStatus } from "../../containers/NotificationPage/actions";
-// import styled from 'styled-components';
+import { getMemberRole } from "../../globalJS";
 import {Card, Row, Col, Button, message} from 'antd';
 
 
 class InviteCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
-    super(props)
+    super(props);
+
+    this.tryAccept = this.tryAccept.bind(this);
+    this.tryDecline = this.tryDecline.bind(this);
   }
 
   tryAccept() {
-    (localStorage.getItem('without_server') === 'true') ?
-      message.success('Приглашение принято')
-      :
-      this.props.acceptInvitation(this.props.groupId, this.props.id, 'Accepted')
+    (localStorage.getItem('without_server') !== 'true') ?
+      this.props.acceptInvitation(this.props.groupId, this.props.id, 'Accepted') : null;
+
+    message.success('Приглашение принято')
   }
 
   tryDecline() {
-    (localStorage.getItem('without_server') === 'true') ?
-      message.success('Приглашение отклонено')
-      :
-      this.props.declineInvitation(this.props.groupId, this.props.id, 'Declined')
+    (localStorage.getItem('without_server') !== 'true') ?
+      this.props.declineInvitation(this.props.groupId, this.props.id, 'Declined') : null;
+
+    message.success('Приглашение отклонено')
   }
 
   render() {
@@ -45,23 +48,23 @@ class InviteCard extends React.PureComponent { // eslint-disable-line react/pref
         style={{width: '100%', cursor: 'default'}}
         bodyStyle={{padding: '14px 20px 0 20px'}}
       >
-        {/*{*/}
-          {/*this.props.readed ? (<div className='readed-btn'/>) : (<div className='not-readed-btn'/>)*/}
-        {/*}*/}
+        {
+          this.props.readed ? (<div className='readed-btn'/>) : (<div className='not-readed-btn'/>)
+        }
         <Row style={{marginBottom: 12}}>
           <Col span={12}>
             <span style={{fontSize: 14, opacity: 0.9}}>{this.props.fromUser}</span>
           </Col>
-          {/*<Col span={12} style={{textAlign: 'right'}}>*/}
-            {/*<span style={{fontSize: 14, opacity: 0.7}}>*/}
-              {/*{this.props.date}*/}
-            {/*</span>*/}
-          {/*</Col>*/}
+          <Col span={12} style={{textAlign: 'right'}}>
+            <span style={{fontSize: 14, opacity: 0.7}}>
+              {this.props.date}
+            </span>
+          </Col>
         </Row>
         <Row>
           <Col xs={{span: 24}} sm={{span: 12}} style={{marginBottom: 10}}>
-            <span>
-              Вас пригласили в группу {this.props.groupId} на роль "{this.props.suggestedRole}"
+            <span style={{wordWrap: 'break-word'}}>
+              Вас пригласили в группу {this.props.groupId} на роль "{getMemberRole(this.props.suggestedRole)}"
             </span>
           </Col>
           <Col xs={{span: 24}} sm={{span: 12}} style={{textAlign: 'right'}}>
@@ -80,6 +83,15 @@ class InviteCard extends React.PureComponent { // eslint-disable-line react/pref
 }
 
 InviteCard.propTypes = {
+  readed: PropTypes.bool,
+  groupId: PropTypes.string,
+  id: PropTypes.string,
+  fromUser: PropTypes.string,
+  date: PropTypes.string,
+  suggestedRole: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string
+  ])
 
 };
 

@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
-
 import {Input} from 'antd';
-
 import Message from './Message';
 
 export default class ChatRoom extends React.Component {
@@ -84,5 +82,5 @@ ChatRoom.propTypes = {
   content: PropTypes.string,
   time: PropTypes.string,
   messages: PropTypes.array
-}
+};
 

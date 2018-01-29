@@ -83,34 +83,38 @@ const createdGroups = [
   }
 ];
 
+const defaultUserData = {
+  name: 'Имя пользователя',
+  tags: ['js', 'c#'],
+  sex: 'Мужской',
+  years: 19,
+  experience: 3,
+  description:
+  'Краткая инфа о себе. Краткая инфа о себе. Краткая инфа о себе.\n' +
+  '                  Краткая инфа о себе.',
+  links: ['LinkedIn', 'Vk']
+};
+
 export class ProfilePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
     this.state = {
-      name: '',
-      tags: [],
-      sex: '',
-      years: 0,
-      experience: 0,
-      description: '',
-      links: []
+      userData: {
+        name: '',
+        tags: [],
+        sex: '',
+        years: 0,
+        experience: 0,
+        description: '',
+        links: []
+      }
     }
   }
 
   componentDidMount() {
     if(localStorage.getItem('without_server') === 'true') {
-      this.setState({
-        name: 'Имя пользователя',
-        tags: ['js', 'c#'],
-        sex: 'Мужской',
-        years: 19,
-        experience: 3,
-        description:
-        'Краткая инфа о себе. Краткая инфа о себе. Краткая инфа о себе.\n' +
-        '                  Краткая инфа о себе.',
-        links: ['LinkedIn', 'Vk']
-      })
+      this.setState({userData: defaultUserData})
     }
   }
 
@@ -128,7 +132,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   >
                   </Avatar>
                   <span>
-                    {this.state.name}
+                    {this.state.userData.name}
                   </span>
                 </Row>
 
@@ -138,38 +142,38 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             >
               <Row style={{marginBottom: 20}}>
                 <div>Пол</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.sex}</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.sex}</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Возраст</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.years} лет</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.years} лет</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Опыт работы</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.experience} года</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.experience} года</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Основные навыки</div>
                 <Row gutter={6}>
-                  {this.state.tags.map((item) =>
-                    <Link to="#">{item}</Link>
+                  {this.state.userData.tags.map((item) =>
+                    <Link to="#" key={item}>{item}</Link>
                   )}
                 </Row>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>О себе</div>
                 <div style={{fontSize: 16, color: '#000'}}>
-                  {this.state.description}
+                  {this.state.userData.description}
                 </div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Ссылки</div>
                 <div>
-                  {this.state.links.map((item) =>
+                  {this.state.userData.links.map((item) =>
                     <div>
-                      <a className='user-link' style={{fontSize: 16}}>
+                      <Link to='#' key={item} className='user-link' style={{fontSize: 16}}>
                         {item}
-                      </a>
+                      </Link>
                     </div>
                   )}
                 </div>

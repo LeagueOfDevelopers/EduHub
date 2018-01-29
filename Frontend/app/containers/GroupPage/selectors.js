@@ -5,15 +5,12 @@ import { createSelector } from 'reselect';
  */
 const selectGroupPage = (state) => state.get('groupPage');
 
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by GroupPage
- */
+const makeSelectGroupData = () => createSelector(
+  selectGroupPage,
+  (groupState) => groupState.get('groupData')
+);
 
 export {
   selectGroupPage,
+  makeSelectGroupData
 };

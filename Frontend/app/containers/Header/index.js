@@ -1,20 +1,25 @@
 /**
-*
-* Header
-*
-*/
-
+ *
+ * Header
+ *
+ */
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import injectSaga from 'utils/injectSaga';
+import injectReducer from 'utils/injectReducer';
+import makeSelectHeader from './selectors';
+import reducer from './reducer';
+import saga from './saga';
 import styled from 'styled-components';
-
-import { Input, Row, Icon, Col, Avatar, Button, Form, Menu, Dropdown, message, Select } from 'antd';
-import {Link} from "react-router-dom";
-const Search = Input.Search;
-const FormItem = Form.Item;
-const {Option, OptGroup} = Select;
-import SigningInForm from "../../containers/SigningInForm/index";
 import config from '../../config';
-import {parseJwt} from "../../globaljs";
+import {parseJwt} from "../../globalJS";
+import {Link} from "react-router-dom";
+import SigningInForm from "../../containers/SigningInForm/index";
+import { Row, Icon, Col, Avatar, Button, Menu, Dropdown, message, Select } from 'antd';
+const {Option, OptGroup} = Select;
 
 const Logo = styled.div`
   font-size: 36px;
@@ -51,12 +56,12 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     this.setState({signInVisible: false})
   };
 
-  logout() {
+  logout = () => {
     localStorage.setItem('name', '');
     localStorage.setItem('avatarLink', '');
     localStorage.setItem('token', '');
-    location.reload();
-  }
+    location.assign('/');
+  };
 
   acc_menu = (
     <Menu>
@@ -114,6 +119,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
   };
 
   fetchData = (value, callback) => {
+    let data = null;
     if (localStorage.getItem('without_server') === 'true') {
       callback(this.defaultSelectData)
     }
@@ -128,15 +134,17 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
         })
       })
         .then(res => res.json())
-        .then(res => callback({users: res.users && this.state.searchValue !== '' ? res.users : [], groups: []}))
+        .then(res => data = res)
         .catch(error => error)
     }
+
+    setTimeout(() => callback({users: data.users && this.state.searchValue !== '' ? data.users : [], groups: []}), 1000)
   };
 
   handleSelectChange = (value) => {
     this.setState({searchValue: value});
     if (value !== '') {
-      this.fetchData(value, data => this.setState({searchData: data}));
+      this.fetchData(this.state.searchValue, data => this.setState({searchData: data}));
     }
     else {
       this.setState({searchData: {users: [], groups: []}})
@@ -248,4 +256,27 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
   }
 }
 
-export default Header;
+Header.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({
+  header: makeSelectHeader(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+const withReducer = injectReducer({ key: 'header', reducer });
+const withSaga = injectSaga({ key: 'header', saga });
+
+export default compose(
+  withReducer,
+  withSaga,
+  withConnect,
+)(Header);

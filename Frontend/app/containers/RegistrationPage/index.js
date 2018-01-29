@@ -9,19 +9,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-// import {selectRegistrationPage} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import {registrate} from './actions';
-
+import SigningInForm from "../SigningInForm";
 import { Form, Col, Row, Button, Divider, message, Input } from 'antd';
 const FormItem = Form.Item;
 
-import SigningInForm from "../SigningInForm";
-import config from '../../config';
 
 
 const tailFormItemLayout = {
@@ -150,7 +146,10 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
 }
 
 RegistrationPage.propTypes = {
-
+  signInVisible: PropTypes.bool,
+  username: PropTypes.string,
+  email: PropTypes.string,
+  password: PropTypes.string
 };
 
 const mapStateToProps = createStructuredSelector({

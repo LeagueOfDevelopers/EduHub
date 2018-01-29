@@ -9,19 +9,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
 import {loadCurrentUser} from './actions';
-import {makeSelectUsername, makeSelectAvatarLink, makeSelectToken, makeSelectCurrentUser} from './selectors';
-
+import {Link} from "react-router-dom";
 import styled from 'styled-components';
 import { Form, Input, Col, Row, Modal, Button, message } from 'antd';
-import {Link} from "react-router-dom";
 const FormItem = Form.Item;
-import config from '../../config';
 
 const Img = styled.img`
   width: 30px;
@@ -29,7 +25,7 @@ const Img = styled.img`
   cursor: pointer;
   margin-right: 16px;
   border-radius: 3px;
-`
+`;
 
 class SingingInForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -47,8 +43,6 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
 
   onHandleEmailChange = (e) => {
     this.setState({email: e.target.value})
-    const name = makeSelectUsername();
-    console.log(name)
   };
 
   onHandlePasswordChange = (e) => {
@@ -127,7 +121,9 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
 SingingInForm.propTypes = {
   visible: PropTypes.bool,
   handleCancel: PropTypes.func,
-  handleOk: PropTypes.func
+  handleOk: PropTypes.func,
+  email: PropTypes.string,
+  password: PropTypes.string
 };
 
 const mapStateToProps = createStructuredSelector({
