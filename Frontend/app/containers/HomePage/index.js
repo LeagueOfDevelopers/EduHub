@@ -39,41 +39,7 @@ const unassembledGroups = [
       tags: ['fds', 'sdf']
     },
     numberOfMembers: 6,
-  },
-  {
-    groupInfo: {
-      id: 1,
-      title: 'cdcvvdsc',
-      size: 8,
-      moneyPerUser: 600,
-      groupType: 'Lfdsv',
-      tags: ['fds', 'sdf']
-    },
-    numberOfMembers: 6,
-  },
-  {
-    groupInfo: {
-      id: 1,
-      title: 'cdcvvdsc',
-      size: 8,
-      moneyPerUser: 600,
-      groupType: 'Lfdsv',
-      tags: ['fds', 'sdf']
-    },
-    numberOfMembers: 6,
-  },
-  {
-    groupInfo: {
-      id: 1,
-      title: 'cdcvvdsc',
-      size: 8,
-      moneyPerUser: 600,
-      groupType: 'Lfdsv',
-      tags: ['fds', 'sdf']
-    },
-    numberOfMembers: 6,
-  }
-];
+  }];
 
 const assembledGroups = [
   {
