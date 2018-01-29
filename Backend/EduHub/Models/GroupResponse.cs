@@ -10,20 +10,14 @@ namespace EduHub.Models
 {
     public class GroupResponse
     {
-        public GroupResponse(GroupInfo groupInfo, CourseStatus status, User teacher, IEnumerable<Member> members, IUserFacade userFacade)
+        public GroupResponse(List<GroupMember> members, GroupInfo groupInfo, CourseStatus status, User educator)
         {
+            Members = members;
             GroupInfo = groupInfo;
             Status = status;
-            if (teacher != null)
+            if (educator != null)
             {
-                Educator = new Teacher(teacher);
-            }
-            Members = new List<GroupMember>();
-
-            foreach (Member member in members)
-            {
-                User currentMember = userFacade.GetUser(member.UserId);
-                Members.Add(new GroupMember(member, currentMember.Name, currentMember.AvatarLink));
+                Educator = new Teacher(educator);
             }
         }
 
@@ -31,39 +25,39 @@ namespace EduHub.Models
         public GroupInfo GroupInfo { get; set; }
         public CourseStatus Status { get; set; }
         public Teacher Educator { get; set; }
-
-        public struct GroupMember
-        {
-            public Guid UserId;
-            public string Name;
-            public string AvatarLink;
-            public MemberRole MemberRole;
-            public bool Paid;
-            public bool AcceptedCourse;
-
-            public GroupMember(Member member, string name, string avatarLink)
-            {
-                UserId = member.UserId;
-                Name = name;
-                AvatarLink = avatarLink;
-                MemberRole = member.MemberRole;
-                Paid = member.Paid;
-                AcceptedCourse = member.AcceptedCurriculum;
-            }
-        }
         
         public struct Teacher
         {
-            public Teacher(User teacher)
+            public Teacher(User user)
             {
-                UserId = teacher.Id;
-                Name = teacher.Name;
-                AvatarLink = teacher.AvatarLink;
+                UserId = user.Id;
+                Name = user.Name;
+                AvatarLink = user.AvatarLink;
             }
 
             public Guid UserId;
             public string Name;
             public string AvatarLink;
+        }
+    }
+
+    public struct GroupMember
+    {
+        public Guid UserId;
+        public string Name;
+        public string AvatarLink;
+        public MemberRole MemberRole;
+        public bool Paid;
+        public bool AcceptedCourse;
+
+        public GroupMember(Member member, string name, string avatarLink)
+        {
+            UserId = member.UserId;
+            Name = name;
+            AvatarLink = avatarLink;
+            MemberRole = member.MemberRole;
+            Paid = member.Paid;
+            AcceptedCourse = member.AcceptedCurriculum;
         }
     }
 }

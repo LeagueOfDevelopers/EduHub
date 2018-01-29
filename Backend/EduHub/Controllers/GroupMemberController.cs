@@ -17,7 +17,7 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpPost]
-        [Route("invite/{invitedId}")]
+        [Route("invitation/{invitedId}")]
         public IActionResult InviteUser([FromRoute] Guid invitedId, [FromRoute] Guid groupId)
         {
             string a = Request.Headers["Authorization"];

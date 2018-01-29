@@ -153,8 +153,11 @@ namespace EduHub.Controllers
         public IActionResult GetGroup([FromRoute] Guid groupId)
         {
             Group group = _groupFacade.GetGroup(groupId);
-            IEnumerable<Member> membersOfGroup = _groupFacade.GetMembersOfGroup(groupId);
-            GroupResponse response = new GroupResponse(group.GroupInfo, group.Status, group.Teacher, membersOfGroup, _userFacade);
+            List<GroupMember> membersOfGroup = new List<GroupMember>();
+            _groupFacade.GetMembersOfGroup(groupId).ToList().ForEach(u => membersOfGroup.Add
+            (new GroupMember(u, _userFacade.GetUser(u.UserId).Name, _userFacade.GetUser(u.UserId).AvatarLink)));
+
+            GroupResponse response = new GroupResponse(membersOfGroup, group.GroupInfo, group.Status, group.Teacher);
             return Ok(response);
         }
         

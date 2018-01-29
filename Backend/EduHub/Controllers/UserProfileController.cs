@@ -124,7 +124,7 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpGet]
         [Route("groups")]
-        [SwaggerResponse(200, Type = typeof(GroupsOfUserResponse))]
+        [SwaggerResponse(200, Type = typeof(MinGroupResponse))]
         public IActionResult GetGroups()
         {
             string a = Request.Headers["Authorization"];
