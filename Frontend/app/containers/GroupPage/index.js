@@ -21,7 +21,6 @@ import {parseJwt, getGroupType, getMemberRole} from "../../globalJS";
 import {Col, Row, Button, message, Dropdown, Menu, Select} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
-import { withRouter } from 'react-router-dom'
 
 const defaultGroupInfo = {
   groupInfo: {
@@ -183,14 +182,6 @@ export class GroupPage extends React.Component {
     setTimeout(() => this.setState({selectValue: ''}), 0);
   }
 
-  // leaveGroup() {
-  //   this.setState({isInGroup: false})
-  // }
-  //
-  // enterGroup() {
-  //   this.setState({isInGroup: true})
-  // }
-
   render() {
     return (
       this.state.isActive ?
@@ -316,8 +307,8 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps);
 const withReducer = injectReducer({ key: 'groupPage', reducer });
 const withSaga = injectSaga({ key: 'groupPage', saga });
 
-export default withRouter(compose(
+export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(GroupPage));
+)(GroupPage);
