@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Domain;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
@@ -19,6 +20,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("search")]
+        [SwaggerResponse(200, typeof(MinUserResponse))]
         public IActionResult SearchUser([FromBody]SearchOfUserRequest user)
         {
             if (_userFacade.DoesUserExist(user.Name))

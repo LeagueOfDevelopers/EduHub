@@ -122,8 +122,8 @@ namespace EduHub
             config.TagConfig.Tags.Add(ct);
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Debug)
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Loggly()
                 .CreateLogger();
