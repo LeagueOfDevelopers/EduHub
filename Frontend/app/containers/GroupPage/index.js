@@ -21,7 +21,7 @@ import {parseJwt, getGroupType, getMemberRole} from "../../globalJS";
 import {Col, Row, Button, message, Dropdown, Menu, Select} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
-
+import { withRouter } from 'react-router-dom'
 
 const defaultGroupInfo = {
   groupInfo: {
@@ -316,8 +316,8 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps);
 const withReducer = injectReducer({ key: 'groupPage', reducer });
 const withSaga = injectSaga({ key: 'groupPage', saga });
 
-export default compose(
+export default withRouter(compose(
   withReducer,
   withSaga,
   withConnect,
-)(GroupPage);
+)(GroupPage));
