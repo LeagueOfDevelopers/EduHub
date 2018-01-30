@@ -252,22 +252,24 @@ export class GroupPage extends React.Component {
                   }
                 </Row>
               </Col>
-              <Col sm={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 16, offset: 1}}>
+              <Col xs={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 16, offset: 1}}>
                 <Row className='md-center-container' style={{textAlign: 'right', marginTop: 8}}>
                   { this.state.isInGroup ?
                     (<Button onClick={() => this.props.leaveGroup(this.state.id, this.state.userData.UserId)}>Покинуть группу</Button>)
                     : (<Button type='primary' onClick={() => this.props.enterGroup(this.state.id)}>Вступить в группу</Button>)
                   }
                 </Row>
-                <Row style={{marginTop: 42}}>
-                  <Col><h3 style={{fontSize: 18}}>Описание</h3></Col>
-                </Row>
-                <Row style={{marginBottom: 40}}>
-                  <p>
-                    {this.state.description}
-                  </p>
-                </Row>
                 <Row>
+                  <Row style={{marginTop: 42}}>
+                    <Col><h3 style={{fontSize: 18}}>Описание</h3></Col>
+                  </Row>
+                  <Row style={{marginBottom: 40}}>
+                    <p>
+                      {this.state.description}
+                    </p>
+                  </Row>
+                </Row>
+                <Row style={{width: '100%'}}>
                   <Chat isInGroup={this.state.isInGroup}/>
                 </Row>
               </Col>
