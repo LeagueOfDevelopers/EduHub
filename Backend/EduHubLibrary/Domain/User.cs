@@ -112,7 +112,7 @@ namespace EduHubLibrary.Domain
             return Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
         }
 
-        public List<Event> GetNotifies()
+        internal IEnumerable<Event> GetNotifies()
         {
             return _events.GetAllEvents();
         }

@@ -12,11 +12,12 @@ namespace EduHubLibrary.Facades
     public class GroupFacade : IGroupFacade
     {
         public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
-            GroupSettings groupSettings)
+            GroupSettings groupSettings, IMessageBus messageBus)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
             _groupSettings = groupSettings;
+            _messageBus = messageBus;
         }
 
         public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size, double totalValue, bool isPrivate,
@@ -31,7 +32,6 @@ namespace EduHubLibrary.Facades
             Group group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
 
-            _messageBus = new MessageBus();
             _messageBus.AddSubscriber(_userRepository.GetUserById(userId));
 
             return group.GroupInfo.Id;
@@ -143,7 +143,7 @@ namespace EduHubLibrary.Facades
             Ensure.String.IsNotNullOrWhiteSpace(newTitle);
             currentGroup.GroupInfo.Title = newTitle;
 
-            _messageBus.SendMessage(new Event($"Название группы {idOfGroup} изменено на {newTitle}"));
+            _messageBus.SendMessage(new Event(MessageType.ToGroupMembers, $"Название группы {idOfGroup} изменено на {newTitle}"));
             _messageBus.Notify();
         }
 
@@ -199,6 +199,6 @@ namespace EduHubLibrary.Facades
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
         private readonly GroupSettings _groupSettings;
-        public MessageBus _messageBus;
+        public IMessageBus _messageBus;
     }
 }

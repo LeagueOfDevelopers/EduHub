@@ -6,6 +6,7 @@ using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Common;
 using System.Linq;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubLibrary.Facades
 {
@@ -122,6 +123,11 @@ namespace EduHubLibrary.Facades
         public bool DoesUserExist(string name)
         { 
             return _userRepository.GetAll().Any(user => user.Name.Contains(name));
+        }
+
+        public IEnumerable<Event> GetNotifies(Guid userId)
+        {
+            return _userRepository.GetUserById(userId).GetNotifies();
         }
 
         private readonly IUserRepository _userRepository;

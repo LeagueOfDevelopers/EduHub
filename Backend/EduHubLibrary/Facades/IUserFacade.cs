@@ -1,5 +1,6 @@
 ﻿using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.NotificationService;
 using System;
 using System.Collections.Generic;
 
@@ -17,5 +18,6 @@ namespace EduHubLibrary.Facades
         IEnumerable<Group> GetAllGroupsOfUser(Guid userId);
         bool DoesUserExist(string name);
         IEnumerable<User> FindByName(string name);
+        IEnumerable<Event> GetNotifies(Guid userId);
     }
 }

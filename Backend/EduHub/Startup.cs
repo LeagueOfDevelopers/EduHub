@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Swashbuckle.AspNetCore.Examples;
 using System;
 using Serilog.Events;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHub
 {
@@ -41,8 +42,9 @@ namespace EduHub
                 Configuration.GetValue<double>("MaxGroupValue"));
             var userRepository = new InMemoryUserRepository();
             var groupRepository = new InMemoryGroupRepository();
+            var messageBus = new MessageBus();
             var userFacade = new UserFacade(userRepository, groupRepository);
-            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
+            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings, messageBus);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSwaggerGen(current =>
