@@ -86,7 +86,6 @@ namespace EduHubLibrary.Facades
                 nameof(Invite), opt => opt.WithException(new TeacherIsAlreadyFoundException()));
             Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
 
-            invitedUser.InvitationAdded += currentGroup.AddInvitation;
             invitedUser.AddInvitation(newInvintation);
         }
 

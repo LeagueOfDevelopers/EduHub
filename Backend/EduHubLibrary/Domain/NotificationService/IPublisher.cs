@@ -7,7 +7,7 @@ namespace EduHubLibrary.Domain.NotificationService
     public interface IPublisher
     {
         void AddSubscriber(ISubscriber subscriber);
-        void NotifySubscribers();
+        void NotifySubscribers(string description);
         void RemoveSubscriber(ISubscriber subscriber);
     }
 }

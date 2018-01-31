@@ -5,10 +5,12 @@ using System.Text;
 using EnsureThat;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Infrastructure;
 
 namespace EduHubLibrary.Domain
 {
-    public class User
+    public class User : ISubscriber
     {
         public string Name { get; private set; }
         public Credentials Credentials { get; private set; }
@@ -19,6 +21,8 @@ namespace EduHubLibrary.Domain
         public Guid Id { get; private set; }
         public string AvatarLink { get; private set; }
         public List<Invitation> ListOfInvitations { get; private set; }
+
+        private InMemoryEventRepository _events;
 
         public User(string name, Credentials credentials, bool isTeacher, UserType type, string avatarLink)
         {
@@ -73,13 +77,9 @@ namespace EduHubLibrary.Domain
             IsActive = false;
         }
 
-        internal delegate void InvitationHandler(Invitation invitation);
-        internal event InvitationHandler InvitationAdded;
-
         internal void AddInvitation(Invitation newInvitation)
         {
             ListOfInvitations.Add(newInvitation);
-            InvitationAdded(newInvitation);
         }
 
         internal void AcceptInvitation(Guid invitationId)
@@ -111,6 +111,16 @@ namespace EduHubLibrary.Domain
         {
             Ensure.Guid.IsNotEmpty(invitationId);
             return Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
+        }
+
+        public List<Event> GetNotifies()
+        {
+            return _events.GetAllEvents();
+        }
+
+        public void Update(string description)
+        {
+            _events.AddEvent(new Event(description));
         }
     }
 }

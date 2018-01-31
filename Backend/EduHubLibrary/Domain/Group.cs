@@ -4,12 +4,13 @@ using System.Linq;
 using EduHubLibrary.Domain.Exceptions;
 using EnsureThat;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Domain.NotificationService;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EduHubTests")]
 
 namespace EduHubLibrary.Domain
 {
-    public class Group
+    public class Group : IPublisher
     {
         public Chat Chat { get; private set; }
         public GroupInfo GroupInfo { get; set; }
@@ -54,6 +55,8 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new GroupIsFullException(GroupInfo.Id)));
             var newMember = new Member(newMemberId, MemberRole.Member);
             listOfMembers.Add(newMember);
+
+            NotifySubscribers("В группу добавлен пользователь " + newMemberId);
         }
 
         internal void DeleteMember(Guid requestedPerson, Guid deletingPerson)
@@ -173,7 +176,27 @@ namespace EduHubLibrary.Domain
             newCreator.MemberRole = MemberRole.Creator;
             listOfMembers.Remove(deletingCreator);
         }
-        
+
+        public void AddSubscriber(ISubscriber subscriber)
+        {
+            _subscribers.Add(subscriber);
+        }
+
+        public void NotifySubscribers(string description)
+        {
+            foreach (ISubscriber subscriber in _subscribers)
+            {
+                subscriber.Update(description);
+            }
+        }
+
+        public void RemoveSubscriber(ISubscriber subscriber)
+        {
+            _subscribers.Remove(subscriber);
+        }
+
+        private List<ISubscriber> _subscribers;
+
         private List<Member> listOfMembers;
         private List<Invitation> listOfInvitations;
     }
