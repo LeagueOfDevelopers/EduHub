@@ -6,6 +6,6 @@ namespace EduHubLibrary.Domain.NotificationService
 {
     public interface ISubscriber
     {
-        void Update(string description);
+        void GetMessage(Event @event);
     }
 }

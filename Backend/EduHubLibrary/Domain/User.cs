@@ -22,8 +22,6 @@ namespace EduHubLibrary.Domain
         public string AvatarLink { get; private set; }
         public List<Invitation> ListOfInvitations { get; private set; }
 
-        private InMemoryEventRepository _events;
-
         public User(string name, Credentials credentials, bool isTeacher, UserType type, string avatarLink)
         {
             Name = Ensure.String.IsNotNullOrWhiteSpace(name);
@@ -35,6 +33,7 @@ namespace EduHubLibrary.Domain
             Id = Guid.NewGuid();
             AvatarLink = avatarLink;
             ListOfInvitations = new List<Invitation>();
+            _events = new InMemoryEventRepository();
         }
 
         public void EditName(string newName)
@@ -118,9 +117,11 @@ namespace EduHubLibrary.Domain
             return _events.GetAllEvents();
         }
 
-        public void Update(string description)
+        public void GetMessage(Event @event)
         {
-            _events.AddEvent(new Event(description));
+            _events.AddEvent(@event);
         }
+
+        private InMemoryEventRepository _events;
     }
 }

@@ -5,6 +5,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Settings;
 using EnsureThat;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubLibrary.Facades
 {
@@ -29,6 +30,10 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new UserNotFoundException(userId)));
             Group group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
+
+            _messageBus = new MessageBus();
+            _messageBus.AddSubscriber(_userRepository.GetUserById(userId));
+
             return group.GroupInfo.Id;
         }
 
@@ -137,6 +142,9 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.String.IsNotNullOrWhiteSpace(newTitle);
             currentGroup.GroupInfo.Title = newTitle;
+
+            _messageBus.SendMessage(new Event($"Название группы {idOfGroup} изменено на {newTitle}"));
+            _messageBus.Notify();
         }
 
         public void ChangeGroupDescription(Guid idOfGroup, Guid idOfChanger, string newDescription)
@@ -191,5 +199,6 @@ namespace EduHubLibrary.Facades
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
         private readonly GroupSettings _groupSettings;
+        public MessageBus _messageBus;
     }
 }

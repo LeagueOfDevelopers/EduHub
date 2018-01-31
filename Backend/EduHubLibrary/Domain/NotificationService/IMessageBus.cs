@@ -4,10 +4,11 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
-    public interface IPublisher
+    public interface IMessageBus
     {
         void AddSubscriber(ISubscriber subscriber);
-        void NotifySubscribers(string description);
         void RemoveSubscriber(ISubscriber subscriber);
+        void Notify();
+        void SendMessage(Event @event);
     }
 }

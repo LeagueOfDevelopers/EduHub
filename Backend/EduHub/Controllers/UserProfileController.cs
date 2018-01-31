@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using EduHub.Extensions;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHub.Controllers
 {
@@ -134,10 +135,13 @@ namespace EduHub.Controllers
         [HttpGet]
         [Route("notifies")]
         [SwaggerResponse(200, Type = typeof(List<NotifiesResponse>))]
-        public IActionResult GetNotifies([FromRoute] int userId)
+        public IActionResult GetNotifies()
         {
-            List<NotifiesResponse> response = new List<NotifiesResponse>();
-            return Ok(response);
+            string a = Request.Headers["Authorization"];
+            var userId = a.GetUserId();
+            //List<NotifiesResponse> response = new List<NotifiesResponse>();
+            List<Event> notifies = _userFacade.GetUser(userId).GetNotifies();
+            return Ok(notifies);
         }
 
         /// <summary>
