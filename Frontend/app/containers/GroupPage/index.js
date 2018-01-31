@@ -13,56 +13,16 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
-import { makeSelectGroupData } from "./selectors";
-import { getGroupData, enterGroup, leaveGroup } from "./actions";
-import config from '../../config'
+import { enterGroup, leaveGroup, inviteMember } from "./actions";
+import { getUsers } from "../Header/actions";
+import { makeSelectUsers } from "../Header/selectors";
 import {Link} from "react-router-dom";
-import {parseJwt, getGroupType, getMemberRole} from "../../globalJS";
+import config from "../../config";
+import {getGroupType, parseJwt, getMemberRole} from "../../globalJS";
 import {Col, Row, Button, message, Dropdown, Menu, Select} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
-
-const defaultGroupInfo = {
-  groupInfo: {
-    isPrivate: true,
-    title: "Название группы",
-    description: "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-    "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-    "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-    "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-    "Описание группы. Описание группы. ",
-    isActive: true,
-    tags: ['js', 'c#'],
-    moneyPerUser: 600,
-    size: 10,
-    groupType: "Лекция",
-  },
-  members: [
-    {
-      member: {
-        userId: "848a3202-7085-4cba-842f-07d07eff7b35",
-        memberRole: 3,
-        paid: true,
-        acceptedCourse: false
-      },
-      name: "Первый пользователь",
-      avatarLink: "string"
-    },
-    {
-      member: {
-        userId: "string",
-        memberRole: 1,
-        paid: true,
-        acceptedCourse: false
-      },
-      name: "Второй пользователь",
-      avatarLink: "string"
-    }
-  ],
-  teacher: null,
-};
-
-const defaultSelectData = ['Первый пользователь', 'Второй пользователь'];
+import InviteMemberSelect from '../../components/InviteMemberSelect/Loadable';
 
 export class GroupPage extends React.Component {
   constructor(props) {
@@ -70,184 +30,130 @@ export class GroupPage extends React.Component {
 
     this.state = {
       id: this.props.match.params.id,
-      title: '',
-      isActive: true,
-      size: 0,
-      moneyPerUser: 0,
-      groupType: '',
-      tags: [],
-      description: '',
-      isPrivate: null,
-      members: [],
-      teacher: null,
-      isInGroup: false,
-      inviteVisible: false,
+      groupData: {
+        groupInfo: {
+          isPrivate: true,
+          title: '',
+          description: '',
+          isActive: true,
+          tags: [],
+          moneyPerUser: null,
+          size: null,
+          groupType: '',
+        },
+        members: [],
+        educator: null,
+      },
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
-      selectData: [],
-      selectValue: ''
+      isInGroup: false,
+      isCreator: false
     };
 
     this.onSetResult = this.onSetResult.bind(this);
-    this.inviteMember = this.inviteMember.bind(this);
-    this.handleVisibleChange = this.handleVisibleChange.bind(this);
-    this.fetchData = this.fetchData.bind(this);
-    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.getCurrentGroup = this.getCurrentGroup.bind(this);
   }
 
-  inviteMenu = (options) => (
-      <Menu>
-        <Menu.Item className='unhover' key="0">
-          <Select
-            mode="combobox"
-            style={{width: '100%'}}
-            value={this.state.selectValue}
-            placeholder='Введите имя пользователя'
-            defaultActiveFirstOption={false}
-            showArrow={false}
-            notFoundContent='Нет совпадений'
-            onSelect={this.inviteMember}
-            onChange={this.handleSelectChange}
-          >
-            {options.map(item => <Select.Option key={item}>{item}</Select.Option>)}
-          </Select>
-        </Menu.Item>
-      </Menu>
-    );
-
-  componentDidMount() {
-    if(localStorage.getItem('without_server') === 'true') {
-      this.onSetResult(defaultGroupInfo)
+  getCurrentGroup = () => {
+    if(localStorage.getItem('without_server') !== 'true') {
+      fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
+        headers: {
+          'Content-Type': 'application/json-patch+json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+        .then(response => response.json())
+        .then(result => this.onSetResult(result))
+        .catch(error => error)
     }
     else {
-      this.props.getCurrentGroupData(this.state.id);
-      setTimeout(() => this.onSetResult(this.props.currentGroupData), 1000)
+      this.onSetResult(this.props.groupData)
     }
+  };
+
+  componentDidMount() {
+    this.getCurrentGroup()
   }
 
   // componentDidUpdate(prevProps, prevState) {
   //   if(prevState !== this.state) {
-  //     this.props.getCurrentGroupData(this.state.id);
-  //     setTimeout(() => this.onSetResult(this.props.currentGroupData), 1000)
+  //     console.log(true)
+  //     this.getCurrentGroup()
+  //   }
+  //   else {
+  //     console.log(false)
   //   }
   // }
 
-  handleVisibleChange = (flag) => {
-    this.setState({ inviteVisible: flag });
-  };
-
-  fetchData = (value, callback) => {
-    if(localStorage.getItem('without_server') === 'true') {
-      callback(defaultSelectData)
-    }
-  };
-
-  handleSelectChange = (value) => {
-    this.setState({selectValue: value});
-    this.fetchData(value, data => this.setState({selectData: data}));
-    if(value === '') {
-      this.setState({selectData: []})
-    }
-  };
-
   onSetResult(result) {
     this.setState({
-      title: result.groupInfo.title,
-      isActive: result.groupInfo.isActive,
-      size: result.groupInfo.size,
-      moneyPerUser: result.groupInfo.moneyPerUser,
-      groupType: result.groupInfo.groupType,
-      tags: result.groupInfo.tags,
-      description: result.groupInfo.description,
-      isPrivate: result.groupInfo.isPrivate,
-      members: result.members,
-      teacher: result.teacher,
-      isInGroup: this.state.userData ? Boolean(result.members.find(item => item.userId === this.state.userData.UserId)) : false
-    })
-  }
-
-  inviteMember() {
-    if(localStorage.getItem('without_server') === 'true') {
-      message.success('Приглашение отправлено')
-    }
-    else {
-      fetch(`${config.API_LOCAL_URL}/group/${this.state.id}/member/invite/${this.state.selectValue}`, {
-        headers: {
-          'Method': 'POST',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-        .catch(error => error)
-    }
-
-    setTimeout(() => this.setState({selectValue: ''}), 0);
+      groupData: result,
+      isInGroup: this.state.userData ?
+        Boolean(result.members.find(item => item.userId === this.state.userData.UserId)) : false,
+      });
+    this.setState({
+      isCreator: this.state.isInGroup ?
+        getMemberRole(result.members.find(item =>
+          item.userId === this.state.userData.UserId).memberRole) === 'Создатель' : false });
   }
 
   render() {
     return (
-      this.state.isActive ?
+      this.state.groupData.groupInfo.isActive ?
         (<div>
-            <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 60, fontSize: 16}} className='md-center-container'>
+            <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 160, fontSize: 16}} className='md-center-container'>
               <Col className='md-offset-16px' md={{span: 10}} lg={{span: 7}}>
                 <Row style={{width: 248}}>
                   <Row style={{marginBottom: 26}}>
-                    <h3 style={{margin: 0, fontSize: 22}}>{this.state.title}</h3>
-                    { this.state.teacher ?
+                    <h3 style={{margin: 0, fontSize: 22}}>{this.state.groupData.groupInfo.title}</h3>
+                    { this.state.groupData.educator ?
                       (<span style={{color: 'rgba(0,0,0,0.6)'}}>Преподаватель найден</span>)
                       : (<span style={{color: 'rgba(0,0,0,0.6)'}}>Идет поиск преподавателя</span>)
                     }
                   </Row>
                   <Row gutter={6} type='flex' justify='start' style={{marginBottom: 8}}>
-                    {this.state.tags.map((item) =>
+                    {this.state.groupData.groupInfo.tags.map((item) =>
                       <Link key={item} to="#">{item}</Link>
                     )}
                   </Row>
                   <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
                     <Col>Формат</Col>
-                    <Col>{getGroupType(this.state.groupType)}</Col>
+                    <Col>{getGroupType(this.state.groupData.groupInfo.groupType)}</Col>
                   </Row>
                   <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
                     <Col>Стоимость</Col>
-                    <Col>{this.state.moneyPerUser} руб.</Col>
+                    <Col>{this.state.groupData.groupInfo.moneyPerUser} руб.</Col>
                   </Row>
                   <Row type='flex' justify='flex-start' style={{marginBottom: 12}}>
-                    { this.state.isPrivate ?
+                    {this.state.groupData.groupInfo.isPrivate ?
                       (<Col>Эта группа является приватной</Col>)
                       : (<Col>Эта группа не является приватной</Col>)
                     }
                   </Row>
                 </Row>
                 <Row style={{marginLeft: -16, marginBottom: 20}}>
-                  <MemberList members={this.state.members} size={this.state.size} isInGroup={this.state.isInGroup}/>
+                  <MemberList members={this.state.groupData.members} size={this.state.groupData.groupInfo.size} isCreator={this.state.isCreator}/>
                 </Row>
                 <Row>
-                  {this.state.isInGroup ? getMemberRole(
-                    this.state.members.find(item =>
-                      item.userId === this.state.userData.UserId).memberRole) === 'Создатель' ?
+                  {this.state.isCreator ?
                       (<Row className='md-center-container'>
-                        <Dropdown
-                          overlay={this.inviteMenu(this.state.selectData)}
-                          onVisibleChange={this.handleVisibleChange}
-                          visible={this.state.inviteVisible}
-                          trigger={['click']}
-                        >
-                          <Button
-                            size='large'
-                            style={{width: 280, marginLeft: -16}}
-                            type='primary'
-                          >
-                            Пригласить
-                          </Button>
-                        </Dropdown>
+                        <InviteMemberSelect/>
                       </Row>) : null
-                    : null
                   }
                 </Row>
               </Col>
-              <Col xs={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 16, offset: 1}}>
+              <Col xs={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
                 <Row className='md-center-container' style={{textAlign: 'right', marginTop: 8}}>
                   { this.state.isInGroup ?
-                    (<Button onClick={() => this.props.leaveGroup(this.state.id, this.state.userData.UserId)}>Покинуть группу</Button>)
-                    : (<Button type='primary' onClick={() => this.props.enterGroup(this.state.id)}>Вступить в группу</Button>)
+                    (<Button onClick={() =>
+                      this.props.leaveGroup(this.state.id, this.state.userData.UserId)}
+                    >
+                      Покинуть группу
+                    </Button>)
+                    : (<Button type='primary' onClick={() =>
+                      this.props.enterGroup(this.state.id)}
+                    >
+                      Вступить в группу
+                    </Button>)
                   }
                 </Row>
                 <Row>
@@ -256,7 +162,7 @@ export class GroupPage extends React.Component {
                   </Row>
                   <Row style={{marginBottom: 40}}>
                     <p>
-                      {this.state.description}
+                      {this.state.groupData.groupInfo.description}
                     </p>
                   </Row>
                 </Row>
@@ -282,7 +188,7 @@ GroupPage.propTypes = {
   leaveGroup: PropTypes.func,
   description: PropTypes.string,
   isPrivate: PropTypes.bool,
-  teacher: PropTypes.object,
+  educator: PropTypes.object,
   members: PropTypes.array,
   size: PropTypes.number,
   isInGroup: PropTypes.bool,
@@ -290,13 +196,58 @@ GroupPage.propTypes = {
   groupId: PropTypes.number
 };
 
+GroupPage.defaultProps = {
+  groupData : localStorage.getItem('withoutServer') === 'true' ?
+    {
+      groupInfo: {
+        isPrivate: true,
+        title: "Название группы",
+        description: "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+        "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+        "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+        "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+        "Описание группы. Описание группы. ",
+        isActive: true,
+        tags: ['js', 'c#'],
+        moneyPerUser: 600,
+        size: 10,
+        groupType: "Лекция",
+      },
+      members: [
+        {
+          member: {
+            userId: "848a3202-7085-4cba-842f-07d07eff7b35",
+            memberRole: 3,
+            paid: true,
+            acceptedCourse: false
+          },
+          name: "Первый пользователь",
+          avatarLink: "string"
+        },
+        {
+          member: {
+            userId: "string",
+            memberRole: 1,
+            paid: true,
+            acceptedCourse: false
+          },
+          name: "Второй пользователь",
+          avatarLink: "string"
+        }
+      ],
+      educator: null,
+    }
+    :
+    {},
+  users: localStorage.getItem('withoutServer') === 'true' ?
+    ['Первый пользователь', 'Второй пользователь'] : []
+};
+
 const mapStateToProps = createStructuredSelector({
-  currentGroupData: makeSelectGroupData()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCurrentGroupData: (groupId) => dispatch(getGroupData(groupId)),
     enterGroup: (groupId) => dispatch(enterGroup(groupId)),
     leaveGroup: (groupId, memberId) => dispatch(leaveGroup(groupId, memberId))
   };

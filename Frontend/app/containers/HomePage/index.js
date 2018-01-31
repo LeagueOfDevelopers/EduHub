@@ -94,11 +94,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             title='Незаполненные группы'
             bordered={false}
             className='unassembled-groups-list font-size-20'
-            extra={<Link to='#' >Показать больше</Link>}
+            extra={<Link to='/groups/unassembledGroups' >Показать больше</Link>}
           >
             {(localStorage.getItem('without_server') === 'true') ?
               (
-                <div className='cards-holder'>
+                <div className='cards-holder cards-holder-center'>
                   {unassembledGroups.map((item) =>
                     <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                       <UnassembledGroupCard {...item}/>
@@ -107,7 +107,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </div>
               ) :
               (
-                <div className='cards-holder'>
+                <div className='cards-holder cards-holder-center'>
                   {this.props.unassembledGroups.map((item) =>
                     <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                       <UnassembledGroupCard {...item}/>
@@ -127,11 +127,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             title='Заполненные группы'
             bordered={false}
             className='assembled-groups-list font-size-20'
-            extra={<Link to='#'>Показать больше</Link>}
+            extra={<Link to='/groups/assembledGroups'>Показать больше</Link>}
           >
             {(localStorage.getItem('without_server') === 'true') ?
               (
-                <div className='cards-holder'>
+                <div className='cards-holder cards-holder-center'>
                   {assembledGroups.map((item) =>
                     <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                       <AssembledGroupCard {...item}/>
@@ -140,7 +140,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </div>
               ) :
               (
-                <div className='cards-holder'>
+                <div className='cards-holder cards-holder-center'>
                   {this.props.assembledGroups.map((item) =>
                     <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                       <AssembledGroupCard {...item}/>

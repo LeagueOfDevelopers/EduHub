@@ -22,6 +22,7 @@ import Header from '../../containers/Header/Loadable';
 import ScrollFix from '../../components/ScrollFix';
 import ProfilePage from '../../containers/ProfilePage/Loadable';
 import NotificationPage from '../../containers/NotificationPage/Loadable';
+import GroupsPage from '../../containers/GroupsPage';
 
 export default class App extends React.Component{
   render() {
@@ -37,6 +38,7 @@ export default class App extends React.Component{
             <Route path='/registration' component={RegistrationPage}/>
             <Route exact path='/profile/:id' component={ProfilePage}/>
             <Route path='/group/:id' component={GroupPage}/>
+            <Route path='/groups/:groupsTitle' component={GroupsPage}/>
             <Route path='/profile/:id/notifications' component={NotificationPage}/>
             <Route path='' component={NotFoundPage} />
           </Switch>

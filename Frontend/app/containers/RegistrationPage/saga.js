@@ -3,6 +3,7 @@ import  config from '../../config';
 
 import {REGISTRATION_START} from './constants';
 import {registrateSuccess, registrateError} from './actions';
+import {message} from 'antd'
 
 // Individual exports for testing
 function* registrationSaga(action) {

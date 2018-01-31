@@ -86,16 +86,6 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     else {
       message.error('Введите название группы')
     }
-
-    setTimeout(() => {
-        message.success('Группа создана');
-      }, 1000
-    );
-
-    setTimeout(() => {
-        location.assign('/');
-      }, 2000
-    )
   };
 
   goBack = () => {

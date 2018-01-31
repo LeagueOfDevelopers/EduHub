@@ -5,21 +5,12 @@ import { createSelector } from 'reselect';
  */
 const selectHeaderDomain = (state) => state.get('header');
 
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by Header
- */
-
-const makeSelectHeader = () => createSelector(
+const makeSelectUsers = () => createSelector(
   selectHeaderDomain,
-  (substate) => substate.toJS()
+  (headerState) => headerState.get('users')
 );
 
-export default makeSelectHeader;
 export {
   selectHeaderDomain,
+  makeSelectUsers
 };

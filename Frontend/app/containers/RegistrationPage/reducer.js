@@ -31,6 +31,7 @@ function registrationPageReducer(state = initialState, action) {
         .setIn(['registrationData', 'email'], action.email)
         .setIn(['registrationData', 'password'], action.password);
     case REGISTRATION_SUCCESS:
+      location.assign('/')
       return state
         .set('pending', false)
         .set('userId', action.id);

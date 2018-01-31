@@ -89,13 +89,13 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.setState({password: e.target.value})
   };
 
-  registrate = (callback) => {
+  registrate = () => {
     if(this.state.username !== '' && this.state.email !== '' && this.state.password !== '') {
       (localStorage.getItem('without_server') === 'true') ?
-        message.success('Вы зарегистрированы')
+        location.assign('/')
         :
         this.props.signUp(this.state.username, this.state.email, this.state.password);
-        callback()
+
     } else
       message.error('Введите все данные')
   };
@@ -129,7 +129,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
               <FormItem {...tailFormItemLayout}>
                 <div>
                   <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
-                  <Button type="primary" htmlType="submit" onClick={() => {this.registrate(setTimeout(() => {location.assign('/')}, 1000))}}>Зарегистрироваться</Button>
+                  <Button type="primary" htmlType="submit" onClick={this.registrate}>Зарегистрироваться</Button>
                 </div>
                 <div>
                   <span style={{marginRight: 10}}>Уже есть аккаунт?</span>

@@ -5,12 +5,6 @@ import { createSelector } from 'reselect';
  */
 const selectGroupPage = (state) => state.get('groupPage');
 
-const makeSelectGroupData = () => createSelector(
-  selectGroupPage,
-  (groupState) => groupState.get('groupData')
-);
-
 export {
-  selectGroupPage,
-  makeSelectGroupData
+  selectGroupPage
 };

@@ -4,4 +4,6 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/Header/DEFAULT_ACTION';
+export const GET_USERS_START = 'GET_USERS_START';
+export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
+export const GET_USERS_FAILED = 'GET_USERS_FAILED';

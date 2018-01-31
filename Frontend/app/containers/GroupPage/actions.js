@@ -13,7 +13,10 @@ import {
   ENTER_GROUP_FAILED,
   LEAVE_GROUP_START,
   LEAVE_GROUP_SUCCESS,
-  LEAVE_GROUP_FAILED
+  LEAVE_GROUP_FAILED,
+  INVITE_MEMBER_START,
+  INVITE_MEMBER_SUCCESS,
+  INVITE_MEMBER_FAILED,
 } from './constants';
 
 export function getGroupData(groupId) {
@@ -77,3 +80,26 @@ export function leaveGroupFailed(error) {
     error
   };
 }
+
+export function inviteMember(groupId, invitedId, role) {
+  return {
+    type: INVITE_MEMBER_START,
+    groupId,
+    invitedId,
+    role
+  };
+}
+
+export function inviteMemberSuccess() {
+  return {
+    type: INVITE_MEMBER_SUCCESS
+  };
+}
+
+export function inviteMemberFailed(error) {
+  return {
+    type: INVITE_MEMBER_FAILED,
+    error
+  };
+}
+

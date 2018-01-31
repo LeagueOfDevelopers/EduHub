@@ -41,9 +41,7 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
                   title={<Link to="#">{item.name}</Link>}
                   description={getMemberRole(item.memberRole)}
                 />
-                { localStorage.getItem('token') && this.props.isInGroup &&
-                  getMemberRole(this.props.members.find(item =>
-                    item.userId === parseJwt(localStorage.getItem('token')).UserId).memberRole) === 'Создатель' &&
+                {this.props.isCreator &&
                     getMemberRole(item.memberRole) !== 'Создатель' ?
                       (<Popconfirm title='Удалить участника?' onConfirm={this.confirm} okText="Да" cancelText="Нет">
                         <Icon

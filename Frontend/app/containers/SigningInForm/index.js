@@ -49,7 +49,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
     this.setState({password: e.target.value})
   };
 
-  login = (callback) => {
+  login = () => {
     if(this.state.email !== '' && this.state.password !== '') {
       if(localStorage.getItem('without_server') === 'true') {
         localStorage.setItem('name', 'Имя пользователя');
@@ -62,7 +62,6 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
       }
       else {
         this.props.login(this.state.email, this.state.password);
-        callback()
       }
     }
     else {
@@ -83,7 +82,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
             <Col><Link to='#'>Забыли пароль?</Link></Col>
             <Col>
               <Button onClick={this.props.handleCancel}>Отмена</Button>
-              <Button type="primary" htmlType='submit' form='sign-in-form' onClick={() => this.login(setTimeout(() => {location.reload()}, 1000))}>Войти</Button>
+              <Button type="primary" htmlType='submit' form='sign-in-form' onClick={this.login}>Войти</Button>
             </Col>
           </Row>
         ]}

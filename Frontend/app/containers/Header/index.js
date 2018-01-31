@@ -10,11 +10,11 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectHeader from './selectors';
+import {makeSelectUsers} from './selectors';
+import {getUsers} from "./actions";
 import reducer from './reducer';
 import saga from './saga';
 import styled from 'styled-components';
-import config from '../../config';
 import {parseJwt} from "../../globalJS";
 import {Link} from "react-router-dom";
 import SigningInForm from "../../containers/SigningInForm/index";
@@ -34,18 +34,13 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
 
     this.state = {
       signInVisible: false,
-      searchValue: '',
-      searchData: {
-        users: [],
-        groups: []
-      }
+      searchValue: ''
     };
 
     this.logout = this.logout.bind(this);
     this.onSignInClick = this.onSignInClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
-    this.fetchData = this.fetchData.bind(this);
   }
 
   onSignInClick = () => {
@@ -102,53 +97,9 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     </Menu>
   );
 
-  defaultSelectData = {
-    users: [
-      'Первый пользователь',
-      'Второй пользователь',
-      'Третий пользователь',
-      'Четвертый пользователь',
-      'Пятый пользователь'],
-    groups: [
-      {title: 'Первая группа', tags: ['js', 'c#']},
-      {title: 'Вторая группа', tags: ['js', 'react']},
-      {title: 'Третья группа', tags: ['c#', '.Net']},
-      {title: 'Четвертая группа', tags: ['c#', '.Net']},
-      {title: 'Пятая группа', tags: ['c#', '.Net']}
-    ]
-  };
-
-  fetchData = (value, callback) => {
-    let data = null;
-    if (localStorage.getItem('without_server') === 'true') {
-      callback(this.defaultSelectData)
-    }
-    else {
-      fetch(`${config.API_BASE_URL}/users/search`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json-patch+json'
-        },
-        body: JSON.stringify({
-          name: value
-        })
-      })
-        .then(res => res.json())
-        .then(res => data = res)
-        .catch(error => error)
-    }
-
-    setTimeout(() => callback({users: data.users && this.state.searchValue !== '' ? data.users : [], groups: []}), 1000)
-  };
-
   handleSelectChange = (value) => {
     this.setState({searchValue: value});
-    if (value !== '') {
-      this.fetchData(this.state.searchValue, data => this.setState({searchData: data}));
-    }
-    else {
-      this.setState({searchData: {users: [], groups: []}})
-    }
+    setTimeout(() => this.props.getUsers(this.state.searchValue), 0);
   };
 
   render() {
@@ -177,7 +128,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             }}
           >
             <OptGroup key='1' label={
-              this.state.searchData.users.length > selectItemsCount ?
+                this.props.users.length > selectItemsCount ?
                 (<div>
                   <Col span={12}>
                     Пользователи
@@ -187,7 +138,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                   </Col>
                 </div>) : (<div>Пользователи</div>)
             }>
-              {this.state.searchData.users.map((item, i) =>
+              {this.props.users.map((item, i) =>
                 i < selectItemsCount ?
                   <Option className='search-option-item' key={item.name}><Link className='search-user-link'
                                                                                to={`/profile/${item.id}`}>
@@ -196,7 +147,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
               )}
             </OptGroup>
             <OptGroup key='2' label={
-              this.state.searchData.groups.length > selectItemsCount ?
+              this.props.groups.length > selectItemsCount ?
                 (<div>
                   <Col span={12}>
                     Группы
@@ -206,7 +157,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                   </Col>
                 </div>) : (<div>Группы</div>)
             }>
-              {this.state.searchData.groups.map((item, i) =>
+              {this.props.groups.map((item, i) =>
                 i < selectItemsCount ? <Option key={item.title}>
                   <div>{item.title}</div>
                   <div>{item.tags.map(tag => <Link to="" style={{marginRight: 6}}>{tag}</Link>)}</div>
@@ -257,16 +208,36 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
 }
 
 Header.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
+};
+
+Header.defaultProps = {
+  users: localStorage.getItem('withoutServer') === 'true' ?
+    [
+      'Первый пользователь',
+      'Второй пользователь',
+      'Третий пользователь',
+      'Четвертый пользователь',
+      'Пятый пользователь']
+  : [],
+  groups: localStorage.getItem('withoutServer') === 'true' ?
+    [
+      {title: 'Первая группа', tags: ['js', 'c#']},
+      {title: 'Вторая группа', tags: ['js', 'react']},
+      {title: 'Третья группа', tags: ['c#', '.Net']},
+      {title: 'Четвертая группа', tags: ['c#', '.Net']},
+      {title: 'Пятая группа', tags: ['c#', '.Net']}
+    ]
+    : []
 };
 
 const mapStateToProps = createStructuredSelector({
-  header: makeSelectHeader(),
+  users: makeSelectUsers()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getUsers: (name) => dispatch(getUsers(name))
   };
 }
 

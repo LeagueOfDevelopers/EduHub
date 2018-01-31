@@ -1,24 +1,14 @@
 import { takeEvery, call, put, select } from 'redux-saga/effects';
 import {
-  getGroupDataSuccess,
-  getGroupDataFailed,
   leaveGroupSuccess,
   leaveGroupFailed,
   enterGroupSuccess,
-  enterGroupFailed
+  enterGroupFailed,
+  inviteMemberSuccess,
+  inviteMemberFailed
 } from "./actions";
-import { GET_GROUP_DATA_START, ENTER_GROUP_START, LEAVE_GROUP_START } from "./constants";
+import { ENTER_GROUP_START, LEAVE_GROUP_START, INVITE_MEMBER_START } from "./constants";
 import config from '../../config';
-
-function* getGroupSaga(action) {
-  try {
-    const groupData = yield call(getGroup, action.groupId);
-    yield put(getGroupDataSuccess(groupData));
-  }
-  catch(e) {
-    yield put(getGroupDataFailed(e))
-  }
-}
 
 function* enterGroupSaga(action) {
   try {
@@ -38,6 +28,31 @@ function* leaveGroupSaga(action) {
   catch(e) {
     yield put(leaveGroupFailed(e))
   }
+}
+
+function* inviteMemberSaga(action) {
+  try {
+    yield call(inviteMember, action.invitedId, action.role);
+    yield put(inviteMemberSuccess());
+  }
+  catch(e) {
+    yield put(inviteMemberFailed(e))
+  }
+}
+
+function inviteMember(groupId, invitedId, role) {
+  return fetch(`${config.API_LOCAL_URL}/group/${groupId}/member/invitation`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      invitedId: invitedId,
+      role: role
+    })
+  })
+    .catch(error => error)
 }
 
 function enterGroup(groupId) {
@@ -62,20 +77,8 @@ function leaveGroup(groupId, memberId) {
     .catch(error => error);
 }
 
-function getGroup(id) {
-  return fetch(`${config.API_BASE_URL}/group/${id}`, {
-    headers: {
-      'Content-Type': 'application/json-patch+json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  })
-    .then(response => response.json())
-    .then(result => result)
-    .catch(error => error);
-}
-
 export default function* () {
-  yield takeEvery(GET_GROUP_DATA_START, getGroupSaga);
   yield takeEvery(ENTER_GROUP_START, enterGroupSaga);
-  yield takeEvery(LEAVE_GROUP_START, leaveGroupSaga)
+  yield takeEvery(LEAVE_GROUP_START, leaveGroupSaga);
+  yield takeEvery(INVITE_MEMBER_START, inviteMemberSaga);
 }

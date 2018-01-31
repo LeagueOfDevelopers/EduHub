@@ -5,21 +5,18 @@ import { createSelector } from 'reselect';
  */
 const selectNotificationPageDomain = (state) => state.get('notificationPage');
 
-/**
- * Other specific selectors
- */
-
-
-/**
- * Default selector used by NotificationPage
- */
-
-const makeSelectNotificationPage = () => createSelector(
+const makeSelectNotifies = () => createSelector(
   selectNotificationPageDomain,
-  (substate) => substate.toJS()
+  (notifyPageState) => notifyPageState.get('notifies')
 );
 
-export default makeSelectNotificationPage;
+const makeSelectInvites = () => createSelector(
+  selectNotificationPageDomain,
+  (notifyPageState) => notifyPageState.get('invites')
+);
+
 export {
   selectNotificationPageDomain,
+  makeSelectNotifies,
+  makeSelectInvites
 };

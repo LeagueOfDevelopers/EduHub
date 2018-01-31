@@ -185,7 +185,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               <TabPane tab="Мои группы" key="1">
                 {(localStorage.getItem('without_server') === 'true') ?
                   (
-                    <div className='cards-holder cards-holder-center' style={{margin: '30px 0'}}>
+                    <div className='cards-holder md-cards-holder-center' style={{margin: '30px 0'}}>
                       {myGroups.map((item, i) =>
                         <Link to={`/group/${item.groupInfo.id}`}>
                           <UnassembledGroupCard {...item}/>
@@ -198,7 +198,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               <TabPane tab="Созданные группы" key="2">
                 {(localStorage.getItem('without_server') === 'true') ?
                   (
-                    <div className='cards-holder cards-holder-center' style={{margin: '30px 0'}}>
+                    <div className='cards-holder md-cards-holder-center' style={{margin: '30px 0'}}>
                       {createdGroups.map((item, i) =>
                         <Link to={`/group/${item.groupInfo.id}`}>
                           <UnassembledGroupCard {...item}/>

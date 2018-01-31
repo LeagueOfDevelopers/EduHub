@@ -27,6 +27,7 @@ function appReducer(state = initialState, action) {
         localStorage.setItem('name', `${action.name}`);
         localStorage.setItem('avatarLink', `${action.avatarLink}`);
         localStorage.setItem('token', `${action.token}`);
+        location.assign('/')
       }
       return state
           .set('loading', false)
