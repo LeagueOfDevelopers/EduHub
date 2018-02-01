@@ -38,8 +38,8 @@ namespace EduHubTests
             User currentUser = listOfUsers[0];
             
             //Assert
-            Assert.AreEqual(currentUser.Name, expectedName);
-            Assert.AreEqual(currentUser.IsTeacher, expectedStatus);
+            Assert.AreEqual(currentUser.UserProfile.Name, expectedName);
+            Assert.AreEqual(currentUser.UserProfile.IsTeacher, expectedStatus);
         }
 
         [TestMethod]

@@ -15,7 +15,6 @@ namespace EduHub.Controllers
 {
     [Produces("application/json")]
     [Route("api/user/profile")]
-    [Authorize]
     public class UserProfileController : Controller
     {
         public UserProfileController(IUserFacade userFacade, IGroupFacade groupFacade)
@@ -27,6 +26,7 @@ namespace EduHub.Controllers
         /// <summary>
         /// Deletes user's profile
         /// </summary>
+        [Authorize]
         [HttpDelete]
         public IActionResult DeleteProfile([FromRoute] int userId)
         {
@@ -74,6 +74,7 @@ namespace EduHub.Controllers
         /// <summary>
         /// Restores user's profile
         /// </summary>
+        [Authorize]
         [HttpPost]
         public IActionResult RestoreProfile([FromRoute] int userId)
         {
@@ -84,6 +85,7 @@ namespace EduHub.Controllers
         /// Edites user's profile
         /// </summary>
         [HttpPut]
+        [Authorize]
         public IActionResult EditProfile([FromBody]EditProfileRequest request, [FromRoute] int userId)
         {
             return Ok($"Новые данные профиля ИМЯ:{request.Name}, ВОЗРАСТ:{request.Age}");
@@ -92,6 +94,7 @@ namespace EduHub.Controllers
         /// <summary>
         /// Makes user teacher
         /// </summary>
+        [Authorize]
         [HttpPost]
         [Route("teaching")]
         public IActionResult BecomeTeacher([FromRoute] int userId)
@@ -102,6 +105,7 @@ namespace EduHub.Controllers
         /// <summary>
         /// Makes user regular user (not teacher)
         /// </summary>
+        [Authorize]
         [HttpDelete]
         [Route("teaching")]
         public IActionResult StopToBeTeacher([FromRoute] int userId)
@@ -112,6 +116,7 @@ namespace EduHub.Controllers
         /// <summary>
         /// Turns on user's notifies
         /// </summary>
+        [Authorize]
         [HttpPost]
         [Route("notifies")]
         public IActionResult TurnOnNotify([FromRoute] int userId)
@@ -122,6 +127,7 @@ namespace EduHub.Controllers
         /// <summary>
         /// Turns off user's notifies
         /// </summary>
+        [Authorize]
         [HttpDelete]
         [Route("notifies")]
         public IActionResult TurnOffNotify([FromRoute] int userId)
@@ -132,6 +138,7 @@ namespace EduHub.Controllers
         /// <summary>
         /// Returns all notifies for user
         /// </summary>
+        [Authorize]
         [HttpGet]
         [Route("notifies")]
         [SwaggerResponse(200, Type = typeof(List<NotifiesResponse>))]
@@ -145,7 +152,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Returns all groups of user
+        /// Returns all user groups
         /// </summary>
         [Authorize]
         [HttpGet]
@@ -163,18 +170,23 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Returns profile for user
+        /// Returns user profile
         /// </summary>
-        [Authorize]
         [HttpGet]
-        [SwaggerResponse(200, Type = typeof(MinUserResponse))]
-        public IActionResult GetProfile()
+        [Route("{userId}")]
+        [SwaggerResponse(200, Type = typeof(ProfileResponse))]
+        public IActionResult GetProfile([FromRoute]Guid userId)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
             User user = _userFacade.GetUser(userId);
-            UserResponse response = new UserResponse(user.Name, user.Credentials.Email, 
-                user.Type, user.IsTeacher, user.TeacherProfile, user.IsActive);
+            ProfileResponse response;
+            if (user.UserProfile.IsTeacher)
+            {
+                response = new ProfileResponse(user.UserProfile, user.TeacherProfile);
+            }
+            else
+            {
+                response = new ProfileResponse(user.UserProfile);
+            }
             return Ok(response);
         }
 

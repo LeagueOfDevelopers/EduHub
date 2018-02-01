@@ -31,7 +31,7 @@ namespace EduHubLibrary.Facades
         public Guid RegUser(string username, Credentials credentials, bool IsTeacher, UserType type, string avatarLink)
         {
             Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
-                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException()));
+                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
             User user = new User(username, credentials, IsTeacher, type, avatarLink);
             _userRepository.Add(user);
             return user.Id;
@@ -80,7 +80,7 @@ namespace EduHubLibrary.Facades
                 nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
             if (suggestedRole == MemberRole.Teacher)
             {
-                Ensure.Bool.IsTrue(invitedUser.IsTeacher, nameof(Invite), 
+                Ensure.Bool.IsTrue(invitedUser.UserProfile.IsTeacher, nameof(Invite), 
                     opt => opt.WithException(new UserIsNotTeacher(invitedId)));
             }
             Ensure.Bool.IsFalse(suggestedRole == MemberRole.Teacher && _groupRepository.GetGroupById(groupId).Teacher != null,
@@ -114,15 +114,15 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<User> FindByName(string name)
         {
-            IEnumerable<User> result = _userRepository.GetAll().Where(u => u.Name.Contains(name));
+            IEnumerable<User> result = _userRepository.GetAll().Where(u => u.UserProfile.Name.Contains(name));
             
-            return result.OrderBy(u => u.Name.Length);
+            return result.OrderBy(u => u.UserProfile.Name.Length);
         }
      
 
         public bool DoesUserExist(string name)
         { 
-            return _userRepository.GetAll().Any(user => user.Name.Contains(name));
+            return _userRepository.GetAll().Any(user => user.UserProfile.Name.Contains(name));
         }
 
         public IEnumerable<Event> GetNotifies(Guid userId)

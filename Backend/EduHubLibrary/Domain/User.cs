@@ -7,53 +7,79 @@ using EduHubLibrary.Common;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Infrastructure;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Domain
 {
     public class User : ISubscriber
     {
-        public string Name { get; private set; }
         public Credentials Credentials { get; private set; }
         public UserType Type { get; set; }
-        public bool IsTeacher { get; private set; }
         public TeacherProfile TeacherProfile { get; private set; }
+        public UserProfile UserProfile { get; private set; }
         public bool IsActive { get; private set; }
         public Guid Id { get; private set; }
-        public string AvatarLink { get; private set; }
         public List<Invitation> ListOfInvitations { get; private set; }
 
         public User(string name, Credentials credentials, bool isTeacher, UserType type, string avatarLink)
         {
-            Name = Ensure.String.IsNotNullOrWhiteSpace(name);
-            Credentials = credentials;
+            Ensure.String.IsNotNullOrWhiteSpace(name);
+            Ensure.String.IsNotNullOrWhiteSpace(avatarLink);
+            Credentials = Ensure.Any.IsNotNull(credentials);
             Type = type;
             TeacherProfile = new TeacherProfile();
-            IsTeacher = isTeacher;
+            UserProfile = new UserProfile(name, Credentials.Email, avatarLink, isTeacher);
             IsActive = true;
             Id = Guid.NewGuid();
-            AvatarLink = avatarLink;
             ListOfInvitations = new List<Invitation>();
             _events = new InMemoryEventRepository();
         }
 
+        #region Edit Profile Data Methods
         public void EditName(string newName)
         {
-            Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
+            UserProfile.Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
         }
 
-        public void ConfigureTeacherProfile(List<string> skills)
+        public void EditAboutUser(string newAboutUser)
         {
-            TeacherProfile.Skills = skills;
+            UserProfile.AboutUser = Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
+        }
+
+        public void EditGender(bool isMan)
+        {
+            UserProfile.IsMan = isMan;
+        }
+
+        public void EditAvatarLink(string newAvatarLink)
+        {
+            UserProfile.AvatarLink = Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
+        }
+
+        public void EditContacts(List<string> newContactData)
+        {
+            UserProfile.Contacts = Ensure.Any.IsNotNull(newContactData);
+        }
+
+        public void EditBirthYear(string newDate)
+        {
+            UserProfile.BirthYear = Ensure.String.IsNotNullOrWhiteSpace(newDate);
         }
 
         public void BecomeTeacher()
         {
-            IsTeacher = true;
+            UserProfile.IsTeacher = true;
         }
 
         public void StopToBeTeacher()
         {
-            IsTeacher = false;
+            UserProfile.IsTeacher = false;
+        }
+        #endregion
+
+        public void ConfigureTeacherProfile(List<string> skills)
+        {
+            TeacherProfile.Skills = skills;
         }
 
         public void BecomeAdmin()

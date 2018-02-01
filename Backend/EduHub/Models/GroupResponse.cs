@@ -31,8 +31,8 @@ namespace EduHub.Models
             public Teacher(User user)
             {
                 UserId = user.Id;
-                Name = user.Name;
-                AvatarLink = user.AvatarLink;
+                Name = user.UserProfile.Name;
+                AvatarLink = user.UserProfile.AvatarLink;
             }
 
             public Guid UserId;

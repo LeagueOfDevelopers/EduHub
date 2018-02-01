@@ -155,7 +155,7 @@ namespace EduHub.Controllers
             Group group = _groupFacade.GetGroup(groupId);
             List<GroupMember> membersOfGroup = new List<GroupMember>();
             _groupFacade.GetMembersOfGroup(groupId).ToList().ForEach(u => membersOfGroup.Add
-            (new GroupMember(u, _userFacade.GetUser(u.UserId).Name, _userFacade.GetUser(u.UserId).AvatarLink)));
+            (new GroupMember(u, _userFacade.GetUser(u.UserId).UserProfile.Name, _userFacade.GetUser(u.UserId).UserProfile.AvatarLink)));
 
             GroupResponse response = new GroupResponse(membersOfGroup, group.GroupInfo, group.Status, group.Teacher);
             return Ok(response);

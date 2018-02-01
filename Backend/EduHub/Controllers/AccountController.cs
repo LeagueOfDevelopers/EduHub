@@ -39,7 +39,7 @@ namespace EduHub.Controllers
             if (client != null)
             {
                 
-                LoginResponse response = new LoginResponse(client.Name, client.Credentials.Email, client.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
+                LoginResponse response = new LoginResponse(client.UserProfile.Name, client.Credentials.Email, client.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
                 return Ok(response);
             }
 

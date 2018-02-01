@@ -36,6 +36,9 @@ namespace EduHub.Filters
                 case ArgumentNullException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case UserAlreadyExistsException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {

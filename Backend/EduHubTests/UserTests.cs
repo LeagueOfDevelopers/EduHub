@@ -23,8 +23,8 @@ namespace EduHubTests
 
             //Act
             var testUser = new User(userName, Credentials.FromRawData(email, password), isTeacher, type, avatar);
-            var actualName = testUser.Name;
-            var actualIsTeacher = testUser.IsTeacher;
+            var actualName = testUser.UserProfile.Name;
+            var actualIsTeacher = testUser.UserProfile.IsTeacher;
 
             //Assert
             Assert.AreEqual(userName, actualName);
@@ -41,7 +41,7 @@ namespace EduHubTests
             //Act
             User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User, "avatar.com");
             testUser.EditName(newName);
-            var actualName = testUser.Name;
+            var actualName = testUser.UserProfile.Name;
 
             //Assert
             Assert.AreEqual(newName, actualName);
@@ -68,7 +68,7 @@ namespace EduHubTests
             testUser.BecomeTeacher();
 
             //Assert
-            Assert.AreEqual(true, testUser.IsTeacher);
+            Assert.AreEqual(true, testUser.UserProfile.IsTeacher);
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace EduHubTests
             testUser.StopToBeTeacher();
 
             //Assert
-            Assert.AreEqual(false, testUser.IsTeacher);
+            Assert.AreEqual(false, testUser.UserProfile.IsTeacher);
         }
 
         [TestMethod]
