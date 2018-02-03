@@ -252,8 +252,7 @@ namespace EduHubTests
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
             IEventBus eventBus = new EventBus();
-            IEventBus messageBus = new EventBus();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), messageBus);
+            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), eventBus);
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
             userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User, "avatar.ru");
@@ -265,7 +264,7 @@ namespace EduHubTests
             var tags = new List<string>();
             tags.Add("js");
 
-            groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
+            Guid groupId = groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
             var createdGroupId = allGroups[0].GroupInfo.Id;
 
@@ -273,7 +272,7 @@ namespace EduHubTests
             userFacade.Invite(creatorId, invitedId, createdGroupId, MemberRole.Member);
 
             //Assert
-            Assert.AreEqual(allGroups[0].GetAllInvitation().ToList().Count, 1);
+            Assert.AreEqual(groupFacade.GetGroup(groupId).GetAllInvitation().Count, 1);
         }
     }
 }
