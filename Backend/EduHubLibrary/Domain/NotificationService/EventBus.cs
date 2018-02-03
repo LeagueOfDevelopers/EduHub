@@ -14,26 +14,13 @@ namespace EduHubLibrary.Domain.NotificationService
             _subscriptions = new List<Subscription>();
         }
 
-        /// <summary>
-        /// Subscription is connected with type of eventInfo
-        /// </summary>
-        public Guid AddSubscription(IEventInfo eventInfo)
+        public IEnumerable<ISubscriber> GetSubscribers(IEventInfo eventInfo)
         {
-            _subscriptions.Add(new Subscription(eventInfo));
-            return _subscriptions.Last().Id;
-        }
-
-        public IEnumerable<ISubscriber> GetSubscribers(Guid subscriptionId)
-        {
-            return _subscriptions.Find(s => s.Id == subscriptionId).GetSubscribers();
-        }
-
-        public void RemoveSubscription(Guid subscriptionId)
-        {
-            _subscriptions.Remove(_subscriptions.Find(s => s.Id == subscriptionId));
+            return _subscriptions.Find(s => s.EventInfo.Equals(eventInfo)).GetSubscribers();
         }
 
         /// <summary>
+        /// Subscription is connected with type of eventInfo.
         /// Event bus is looking for suitable subscription or creates a new one.
         /// Then bus adds subscriber
         /// </summary>
@@ -41,7 +28,7 @@ namespace EduHubLibrary.Domain.NotificationService
         {
             if (_subscriptions.TrueForAll(s => !s.IsInterestedInEvent(eventInfo)))
             {
-                AddSubscription(eventInfo);
+                _subscriptions.Add(new Subscription(eventInfo));
                 _subscriptions.Last().AddSubscriber(subscriber);
             }
             else
@@ -49,10 +36,17 @@ namespace EduHubLibrary.Domain.NotificationService
                 _subscriptions.Find(s => s.EventInfo.Equals(eventInfo)).AddSubscriber(subscriber);
             }
         }
-
+  
+        /// <summary>
+        /// Bus doesn't keep empty subscriptions
+        /// </summary>
         public void RemoveSubscriber(ISubscriber subscriber, IEventInfo eventInfo)
         {
-            _subscriptions.Find(s => s.EventInfo.Equals(eventInfo)).RemoveSubscriber(subscriber);
+            Subscription subscription = _subscriptions.Find(s => s.EventInfo.Equals(eventInfo));
+            subscription.RemoveSubscriber(subscriber);
+
+            if (subscription.GetSubscribers().Count == 0)
+                _subscriptions.Remove(subscription);
         }
 
         /// <summary>
@@ -81,21 +75,16 @@ namespace EduHubLibrary.Domain.NotificationService
             _events.AddMessage(@event);
         }
 
-        public IEnumerable<Subscription> GetSubscriptions()
+        public List<Subscription> GetSubscriptions()
         {
             return _subscriptions;
-        }
-
-        public IEnumerable<Event> GetMessages()
-        {
-            return _events.GetAllEvents();
         }
 
         public IEnumerable<Event> GetAllEvents()
         {
             return _events.GetAllEvents();
         }
-
+        
         private InMemoryEventRepository _events;
         private List<Subscription> _subscriptions;
     }

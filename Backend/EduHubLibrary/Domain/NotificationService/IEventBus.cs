@@ -6,9 +6,7 @@ namespace EduHubLibrary.Domain.NotificationService
 {
     public interface IEventBus
     {
-        Guid AddSubscription(IEventInfo eventInfo);
-        IEnumerable<ISubscriber> GetSubscribers(Guid subscriptionId);
-        void RemoveSubscription(Guid subscriptionId);
+        IEnumerable<ISubscriber> GetSubscribers(IEventInfo eventInfo);
         void AddSubscriber(ISubscriber subscriber, IEventInfo eventInfo);
         void RemoveSubscriber(ISubscriber subscriber, IEventInfo eventInfo);
         void Notify();

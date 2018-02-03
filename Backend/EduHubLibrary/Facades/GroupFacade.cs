@@ -32,10 +32,12 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new UserNotFoundException(userId)));
             Group group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
+
+            _eventBus.AddSubscriber(group, new InvitationToGroupEvent(new Invitation(Guid.NewGuid(), Guid.NewGuid(), group.GroupInfo.Id, MemberRole.Default, InvitationStatus.Unknown)));
             
             //TODO delete: It was created to show work of message bus
             _eventBus.AddSubscriber(_userRepository.GetUserById(userId), new EditedGroupEvent(group.GroupInfo.Id));
-
+            
             return group.GroupInfo.Id;
         }
 

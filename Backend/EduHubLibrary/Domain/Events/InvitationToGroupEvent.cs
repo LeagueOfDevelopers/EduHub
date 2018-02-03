@@ -5,39 +5,40 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Events
 {
-    public class EditedGroupEvent : IEventInfo
+    public class InvitationToGroupEvent : IEventInfo
     {
-        public EditedGroupEvent(Guid groupId)
+        public InvitationToGroupEvent(Invitation invitation)
         {
-            GroupId = groupId;
+            Invitation = invitation;
         }
 
+        public Invitation Invitation { get; private set; }
+    
         public string GetDescription()
         {
-            return $"В группе с id {GroupId} произошло редактирование";
+            return ($"В группу приглашен пользователь с id {Invitation.ToUser} на роль {Invitation.SuggestedRole}");
         }
 
         public string GetEventType()
         {
             return GetType().Name;
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj.GetType().Equals(GetType()))
             {
-                EditedGroupEvent newObj = (EditedGroupEvent)obj;
-                if (newObj.GroupId.Equals(GroupId)) return true;
+                InvitationToGroupEvent newObj = (InvitationToGroupEvent)obj;
+
+                if (Invitation.GroupId.Equals(newObj.Invitation.GroupId)) return true;
                 else return false;
             }
-            else return false;
+            else return false;           
         }
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
-
-        public Guid GroupId { get; set; }
     }
 }

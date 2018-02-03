@@ -7,15 +7,17 @@ using EduHubLibrary.Common;
 using System.Linq;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.Events;
 
 namespace EduHubLibrary.Facades
 {
     public class UserFacade : IUserFacade
     {
-        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository)
+        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository, IEventBus eventBus)
         {
             _userRepository = userRepository;
             _groupRepository = groupRepository;
+            _eventBus = eventBus;
         }
 
         public User GetUser(Guid id)
@@ -88,6 +90,8 @@ namespace EduHubLibrary.Facades
             Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
 
             invitedUser.AddInvitation(newInvintation);
+            _eventBus.SendMessage(new Event(new InvitationToGroupEvent(newInvintation)));
+            _eventBus.Notify();
         }
 
         public IEnumerable<Invitation> GetAllInvitationsForUser(Guid userId)
@@ -132,5 +136,6 @@ namespace EduHubLibrary.Facades
 
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
+        private IEventBus _eventBus;
     }
 }

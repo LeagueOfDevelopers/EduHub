@@ -24,8 +24,9 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            IEventBus eventBus = new EventBus();
 
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
             var expectedName = "yaroslav";
             var expectedPass = "123123";
             var expectedEmail = "bus.yaroslav@gmail.com";
@@ -49,25 +50,28 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            IEventBus messageBus = new EventBus();
+            IEventBus eventBus = new EventBus();
 
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(2, 10, 0, 100), messageBus);
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
+            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(2, 10, 0, 100), eventBus);
 
             userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
+            
             List<User> listOfUsers = userFacade.GetUsers().ToList();
             User testUser = listOfUsers[0];
             User creator = listOfUsers[1];
 
             List<string> tags = new List<string>();
             tags.Add("Math");
+            
             groupFacade.CreateGroup(creator.Id, "Group1", tags, "Good group", 5, 0, false, GroupType.MasterClass);
             groupFacade.CreateGroup(creator.Id, "Group2", tags, "The best group!", 7, 0, true, GroupType.Seminar);
+            
             List<Group> listOfGroups = groupFacade.GetGroups().ToList();
             Group testGroup1 = listOfGroups[0];
             Group testGroup2 = listOfGroups[1];
-
+            
             //Act
             testGroup1.AddMember(testUser.Id);
             testGroup2.AddMember(testUser.Id);
@@ -86,7 +90,8 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            IEventBus eventBus = new EventBus();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
             userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
@@ -105,7 +110,8 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            IEventBus eventBus = new EventBus();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
             userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
@@ -124,7 +130,8 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            IEventBus eventBus = new EventBus();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
             userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
@@ -143,8 +150,9 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-            
+            IEventBus eventBus = new EventBus();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
+
             userFacade.RegUser("Alenka", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
             userFacade.RegUser("Alena", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
             userFacade.RegUser("Olena", new Credentials("email3", "password"), true, UserType.User, "avatar.ru");
@@ -170,7 +178,8 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            IEventBus eventBus = new EventBus();
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
             //Act
             userFacade.RegUser("Grisha", new Credentials("sokolov@mail.ru", "password1"), true, UserType.User, "avatar1.ru");
@@ -183,9 +192,9 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            IEventBus messageBus = new EventBus();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), messageBus);
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            IEventBus eventBus = new EventBus();
+            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), eventBus);
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
             userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User, "avatar.ru");
             userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
@@ -215,9 +224,9 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            IEventBus messageBus = new EventBus();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), messageBus);
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            IEventBus eventBus = new EventBus();
+            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), eventBus);
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
             userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User, "avatar.ru");
             userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false, UserType.User, "avatar.ru");
@@ -242,9 +251,10 @@ namespace EduHubTests
             //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            IEventBus eventBus = new EventBus();
             IEventBus messageBus = new EventBus();
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), messageBus);
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
             userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User, "avatar.ru");
             userFacade.RegUser("Invited", new Credentials("email2", "password"), false, UserType.User, "avatar.ru");

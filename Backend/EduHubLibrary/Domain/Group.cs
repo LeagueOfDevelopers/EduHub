@@ -5,12 +5,13 @@ using EduHubLibrary.Domain.Exceptions;
 using EnsureThat;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.Events;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EduHubTests")]
 
 namespace EduHubLibrary.Domain
 {
-    public class Group
+    public class Group : ISubscriber
     {
         public Chat Chat { get; private set; }
         public GroupInfo GroupInfo { get; set; }
@@ -117,7 +118,7 @@ namespace EduHubLibrary.Domain
             return listOfMembers;
         }
 
-        internal IEnumerable<Invitation> GetAllInvitation()
+        internal List<Invitation> GetAllInvitation()
         {
             return listOfInvitations; 
         }
@@ -175,7 +176,16 @@ namespace EduHubLibrary.Domain
             newCreator.MemberRole = MemberRole.Creator;
             listOfMembers.Remove(deletingCreator);
         }
-        
+
+        public void GetMessage(Event @event)
+        {
+            if (@event.EventInfo.GetEventType().Equals("InvitationToGroupEvent"))
+            {
+                InvitationToGroupEvent eventInfo = (InvitationToGroupEvent)@event.EventInfo;
+                listOfInvitations.Add(eventInfo.Invitation);
+            }
+        }
+
         private List<Member> listOfMembers;
         private List<Invitation> listOfInvitations;
     }
