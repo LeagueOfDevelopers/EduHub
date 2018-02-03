@@ -5,12 +5,8 @@ import android.util.Log;
 import com.example.user.eduhub.Interfaces.View.IGroupListView;
 import com.example.user.eduhub.Interfaces.Presenters.IGroupRepository;
 import com.example.user.eduhub.Models.Group.Group;
-import com.example.user.eduhub.Models.Group.Group_;
 import com.example.user.eduhub.Retrofit.EduHubApi;
 import com.example.user.eduhub.Retrofit.RetrofitBuilder;
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
-
-import org.xml.sax.ErrorHandler;
 
 import java.util.ArrayList;
 
@@ -27,7 +23,7 @@ public class GroupsPresenter implements IGroupRepository {
     EduHubApi eduHubApi;
     Disposable disposable;
     ArrayList<Group> groups;
-    ArrayList<Group_> groups_=new ArrayList<>();
+
 
 
     private IGroupListView groupListView;
@@ -68,18 +64,14 @@ public class GroupsPresenter implements IGroupRepository {
                 .subscribe(
                         next->{
 
-                            groups_=(ArrayList<Group_>) next.getGroups();},
+                            groups=next.getGroups();},
                         error->{
                             Log.e("ERROR",error+"");
 
                         },
                         ()-> {
-                            groups=new ArrayList<>();
-                            for (Group_ group:groups_
-                                 ) {
-                                groups.add(group.getGroup());
-                            }
                             groupListView.getGroups(groups);
+                            disposable.dispose();
 
                         });
     }

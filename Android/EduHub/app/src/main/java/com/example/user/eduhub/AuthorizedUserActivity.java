@@ -1,12 +1,9 @@
 package com.example.user.eduhub;
 
-import android.animation.LayoutTransition;
 import android.content.*;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,15 +17,14 @@ import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
-import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Fakes.FakesButton;
-import com.example.user.eduhub.Fragments.Authorized_fragment;
 import com.example.user.eduhub.Fragments.MainFragment;
-import com.example.user.eduhub.Fragments.UserProfile;
+import com.example.user.eduhub.Fragments.NotificationFragment;
+import com.example.user.eduhub.Fragments.ProfileTransactionFragment;
+import com.example.user.eduhub.Fragments.UserProfileFragment;
 import com.example.user.eduhub.Fragments.UsersGroupsFragment;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
@@ -172,9 +168,9 @@ public class AuthorizedUserActivity extends AppCompatActivity
             Intent intent=new Intent(this,AuthorizedUserActivity.class);
             startActivity(intent);
         } else if (id == R.id.profile) {
-            UserProfile userProfile=new UserProfile();
+            ProfileTransactionFragment profileTransactionFragment=new ProfileTransactionFragment();
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_fragments_conteiner,userProfile);
+            fragmentTransaction.replace(R.id.main_fragments_conteiner,profileTransactionFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         } else if (id == R.id.myGroups) {
@@ -189,6 +185,11 @@ public class AuthorizedUserActivity extends AppCompatActivity
         } else if (id == R.id.settings) {
 
         } else if (id == R.id.notification) {
+            NotificationFragment notificationFragment=new NotificationFragment();
+            fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_fragments_conteiner,notificationFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
 
         }
 

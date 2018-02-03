@@ -1,14 +1,13 @@
-package com.example.user.eduhub.Models.Group.Teacher;
+package com.example.user.eduhub.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by User on 25.01.2018.
+ * Created by User on 01.02.2018.
  */
 
-public class ListOfInvitation {
-
+public class Invitation {
     @SerializedName("status")
     @Expose
     private String status;
@@ -27,6 +26,12 @@ public class ListOfInvitation {
     @SerializedName("id")
     @Expose
     private String id;
+    @SerializedName("fromUserName")
+    @Expose
+    private String fromUserName;
+    @SerializedName("toUserName")
+    @Expose
+    private String toUserName;
 
     public String getStatus() {
         return status;
@@ -76,4 +81,19 @@ public class ListOfInvitation {
         this.id = id;
     }
 
+    public String getFromUserName() {
+        return fromUserName;
+    }
+
+    public void setFromUserName(String fromUserName) {
+        this.fromUserName = fromUserName;
+    }
+
+    public String getToUserName() {
+        return toUserName;
+    }
+
+    public void setToUserName(String toUserName) {
+        this.toUserName = toUserName;
+    }
 }

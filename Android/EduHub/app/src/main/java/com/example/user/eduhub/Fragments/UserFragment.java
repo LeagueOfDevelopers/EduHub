@@ -97,7 +97,7 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
 
     @Override
     public void getGroups(ArrayList<Group> groups) {
-        if(groups==null){
+        if(groups.size()==0){
             recyclerView.setAdapter(emptyGroupAdapter);
         }else{
         GroupAdapter adapter=new GroupAdapter(groups,getActivity());

@@ -23,7 +23,7 @@
                 android:title="Настройки" />
         <item
                 android:id="@+id/notification"
-                android:title="Уведомление" />
+                android:title="Уведомления" />
     </group>
 
 

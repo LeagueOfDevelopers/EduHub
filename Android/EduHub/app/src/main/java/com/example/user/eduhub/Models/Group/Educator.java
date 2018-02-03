@@ -3,14 +3,16 @@ package com.example.user.eduhub.Models.Group;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
- * Created by User on 18.01.2018.
+ * Created by User on 03.02.2018.
  */
 
-public class Member_ {
-    @SerializedName("member")
+public class Educator implements Serializable{
+    @SerializedName("userId")
     @Expose
-    private Member member;
+    private String userId;
     @SerializedName("name")
     @Expose
     private String name;
@@ -18,12 +20,12 @@ public class Member_ {
     @Expose
     private String avatarLink;
 
-    public Member getMember() {
-        return member;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {

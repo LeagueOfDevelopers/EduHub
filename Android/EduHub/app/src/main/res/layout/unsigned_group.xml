@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey">
+
+        <ImageView
+            android:id="@+id/icon_group"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@color/grey" />
+
+        <TextView
+            android:id="@+id/GroupTitle"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_toRightOf="@+id/icon_group"
+            android:background="@color/grey"
+            android:gravity="center_vertical"
+            android:text="GroupTitle"
+            android:paddingLeft="8dp"
+            android:textColor="@color/black" />
+
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/GroupTitle"
+            android:background="@color/grey"
+            android:minHeight="?attr/actionBarSize"
+            app:tabGravity="center"
+            app:tabMode="fixed"
+            style="@style/MyCustomTabLayout"
+            />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tabs"
+            android:background="@color/metalic" />
+        <Button
+            android:id="@+id/signed_to_group"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:text="Вступить в группу"/>
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

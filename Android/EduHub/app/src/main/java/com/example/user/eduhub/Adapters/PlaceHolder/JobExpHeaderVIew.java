@@ -1,0 +1,56 @@
+package com.example.user.eduhub.Adapters.PlaceHolder;
+
+import android.content.Context;
+import android.widget.TextView;
+
+import com.example.user.eduhub.R;
+import com.mindorks.placeholderview.annotations.Layout;
+import com.mindorks.placeholderview.annotations.Resolve;
+import com.mindorks.placeholderview.annotations.View;
+import com.mindorks.placeholderview.annotations.expand.Collapse;
+import com.mindorks.placeholderview.annotations.expand.Expand;
+import com.mindorks.placeholderview.annotations.expand.Parent;
+import com.mindorks.placeholderview.annotations.expand.ParentPosition;
+import com.mindorks.placeholderview.annotations.expand.SingleTop;
+import com.mindorks.placeholderview.annotations.expand.Toggle;
+
+/**
+ * Created by User on 03.02.2018.
+ */
+
+@Parent
+@SingleTop
+@Layout(R.layout.job_exp_header)
+public class JobExpHeaderVIew {
+    @View(R.id.number_of_groups)
+    private TextView numberOfGroup;
+
+    @Toggle(R.id.number_of_groups)
+    private TextView toggleView;
+
+    @ParentPosition
+    private int mParentPosition;
+
+    private Context context;
+    private String heading;
+
+    public JobExpHeaderVIew(Context mContext,String heading) {
+        this.context = mContext;
+        this.heading=heading;
+    }
+    @Resolve
+    private void onResolved() {
+        numberOfGroup.setText(heading);
+
+    }
+
+    @Expand
+    private void onExpand(){
+
+    }
+
+    @Collapse
+    private void onCollapse(){
+
+    }
+}

@@ -14,8 +14,6 @@ import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.View.IGroupView;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.Group.Member;
-import com.example.user.eduhub.Models.Group.Member_;
-import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 import com.example.user.eduhub.R;
 
@@ -75,7 +73,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void getInformationAboutGroup(Group group) {
-        ArrayList<Member_> members=(ArrayList<Member_>) group.getMembers();
+        ArrayList<Member> members=(ArrayList<Member>) group.getMembers();
         GroupMembersAdapter adapter=new GroupMembersAdapter(members);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());

@@ -3,19 +3,26 @@ package com.example.user.eduhub.Models.Group;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by User on 10.01.2018.
  */
 
-public class Member {
-
+public class Member implements Serializable{
 
     @SerializedName("userId")
     @Expose
     private String userId;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("avatarLink")
+    @Expose
+    private String avatarLink;
     @SerializedName("memberRole")
     @Expose
-    private Integer memberRole;
+    private int memberRole;
     @SerializedName("paid")
     @Expose
     private Boolean paid;
@@ -31,11 +38,27 @@ public class Member {
         this.userId = userId;
     }
 
-    public Integer getMemberRole() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
+    }
+
+    public int getMemberRole() {
         return memberRole;
     }
 
-    public void setMemberRole(Integer memberRole) {
+    public void setMemberRole(int memberRole) {
         this.memberRole = memberRole;
     }
 

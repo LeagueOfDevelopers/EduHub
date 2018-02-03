@@ -1,26 +1,22 @@
-package com.example.user.eduhub.Models.Group.Teacher;
+package com.example.user.eduhub.Models.UserProfile;
 
-import com.example.user.eduhub.Models.Credentials;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
- * Created by User on 25.01.2018.
+ * Created by User on 30.01.2018.
  */
 
-public class Teacher {
-
+public class UserProfile {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("credentials")
+    @SerializedName("email")
     @Expose
-    private Credentials credentials;
+    private String email;
     @SerializedName("type")
     @Expose
-    private String type;
+    private Integer type;
     @SerializedName("isTeacher")
     @Expose
     private Boolean isTeacher;
@@ -33,12 +29,14 @@ public class Teacher {
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("avatarLink")
-    @Expose
-    private String avatarLink;
-    @SerializedName("listOfInvitations")
-    @Expose
-    private List<ListOfInvitation> listOfInvitations = null;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -48,19 +46,19 @@ public class Teacher {
         this.name = name;
     }
 
-    public Credentials getCredentials() {
-        return credentials;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCredentials(Credentials credentials) {
-        this.credentials = credentials;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -87,29 +85,4 @@ public class Teacher {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAvatarLink() {
-        return avatarLink;
-    }
-
-    public void setAvatarLink(String avatarLink) {
-        this.avatarLink = avatarLink;
-    }
-
-    public List<ListOfInvitation> getListOfInvitations() {
-        return listOfInvitations;
-    }
-
-    public void setListOfInvitations(List<ListOfInvitation> listOfInvitations) {
-        this.listOfInvitations = listOfInvitations;
-    }
-
 }

@@ -1,22 +1,25 @@
-package com.example.user.eduhub.Models.Group.Teacher;
+package com.example.user.eduhub.Models.UserProfile;
 
+import com.example.user.eduhub.Models.Group.Group;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 /**
- * Created by User on 25.01.2018.
+ * Created by User on 30.01.2018.
  */
 
 public class TeacherProfile {
-
     @SerializedName("reviews")
     @Expose
     private List<Review> reviews = null;
     @SerializedName("skills")
     @Expose
     private List<String> skills = null;
+    @SerializedName("jobExp")
+    @Expose
+    private List<Group> jobExp = null;
 
     public List<Review> getReviews() {
         return reviews;
@@ -34,4 +37,11 @@ public class TeacherProfile {
         this.skills = skills;
     }
 
+    public List<Group> getJobExp() {
+        return jobExp;
+    }
+
+    public void setJobExp(List<Group> jobExp) {
+        this.jobExp = jobExp;
+    }
 }

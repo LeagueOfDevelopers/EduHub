@@ -1,26 +1,26 @@
-package com.example.user.eduhub.Models.Group;
+package com.example.user.eduhub.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by User on 25.01.2018.
+ * Created by User on 31.01.2018.
  */
 
-public class Group_ {
-    @SerializedName("group")
+public class InviteUserModel {
+    @SerializedName("invitedId")
     @Expose
-    private Group group;
+    private String invitedId;
     @SerializedName("role")
     @Expose
     private String role;
 
-    public Group getGroup() {
-        return group;
+    public String getInvitedId() {
+        return invitedId;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setInvitedId(String invitedId) {
+        this.invitedId = invitedId;
     }
 
     public String getRole() {
@@ -30,6 +30,4 @@ public class Group_ {
     public void setRole(String role) {
         this.role = role;
     }
-
 }
-

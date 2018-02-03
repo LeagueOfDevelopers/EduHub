@@ -1,6 +1,7 @@
 package com.example.user.eduhub.Fragments;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -12,12 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
 import com.example.user.eduhub.Models.Group.Group;
+import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.R;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by User on 12.01.2018.
@@ -33,6 +38,7 @@ public class MainGroupFragment extends Fragment {
     GroupInformationFragment groupInformationFragment;
     Group group;
     User user;
+    SavedDataRepository savedDataRepository=new SavedDataRepository();
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -45,7 +51,11 @@ public class MainGroupFragment extends Fragment {
         View v = inflater.inflate(R.layout.main_group_fragment, null);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(group.getGroupInfo().getTitle());
+        TextView groupTitle=v.findViewById(R.id.GroupTitle);
+        groupTitle.setText(group.getGroupInfo().getTitle());
         ImageButton inviteButton=v.findViewById(R.id.invite_button);
+        SharedPreferences sPref=getActivity().getSharedPreferences("User",MODE_PRIVATE);
+        user= savedDataRepository.loadSavedData(sPref);
         pager=v.findViewById(R.id.pager);
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         ImageView imageView=v.findViewById(R.id.icon_group);
@@ -70,7 +80,6 @@ public class MainGroupFragment extends Fragment {
         inviteButton.setOnClickListener(click->{
             InviteFragment inviteFragment=new InviteFragment();
             inviteFragment.setGroupId(group.getGroupInfo().getId());
-            inviteFragment.setUser(user);
             inviteFragment.setToolbar( getActivity().findViewById(R.id.toolbar));
             fragmentsActivities.switchingFragmets(inviteFragment);
         });
@@ -82,9 +91,6 @@ public class MainGroupFragment extends Fragment {
         this.group=group;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 
 
 

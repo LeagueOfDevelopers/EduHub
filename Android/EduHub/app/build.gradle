@@ -17,6 +17,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
     aaptOptions {
         cruncherEnabled = false
@@ -29,9 +30,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+            res.srcDirs = ['src/main/res', 'src/main/res/drawable']
+        }
+    }
 }
 
 dependencies {
+    compile 'com.mindorks:placeholderview:0.7.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     //noinspection GradleCompatible
     compile 'com.android.support:support-v4:26.1.0'
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
