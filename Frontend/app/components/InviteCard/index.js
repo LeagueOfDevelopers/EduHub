@@ -28,14 +28,14 @@ class InviteCard extends React.PureComponent { // eslint-disable-line react/pref
 
   tryAccept() {
     (localStorage.getItem('without_server') !== 'true') ?
-      this.props.acceptInvitation(this.props.groupId, this.props.id, 'Accepted') : null;
+      this.props.acceptInvitation(this.props.id, 'Accepted') : null;
 
     message.success('Приглашение принято')
   }
 
   tryDecline() {
     (localStorage.getItem('without_server') !== 'true') ?
-      this.props.declineInvitation(this.props.groupId, this.props.id, 'Declined') : null;
+      this.props.declineInvitation(this.props.id, 'Declined') : null;
 
     message.success('Приглашение отклонено')
   }
@@ -97,8 +97,8 @@ InviteCard.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    acceptInvitation: (groupId, invitationId, status) => dispatch(changeInvitationStatus(groupId, invitationId, status)),
-    declineInvitation: (groupId, invitationId, status) => dispatch(changeInvitationStatus(groupId, invitationId, status))
+    acceptInvitation: (invitationId, status) => dispatch(changeInvitationStatus(invitationId, status)),
+    declineInvitation: (invitationId, status) => dispatch(changeInvitationStatus(invitationId, status))
   };
 }
 

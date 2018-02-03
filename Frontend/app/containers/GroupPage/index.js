@@ -24,6 +24,46 @@ import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
 import InviteMemberSelect from '../../components/InviteMemberSelect/Loadable';
 
+const groupData = {
+    groupInfo: {
+      isPrivate: true,
+      title: "Название группы",
+      description: "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+      "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+      "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+      "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
+      "Описание группы. Описание группы. ",
+      isActive: true,
+      tags: ['js', 'c#'],
+      moneyPerUser: 600,
+      size: 10,
+      groupType: "Лекция",
+    },
+    members: [
+      {
+        member: {
+          userId: "848a3202-7085-4cba-842f-07d07eff7b35",
+          memberRole: 3,
+          paid: true,
+          acceptedCourse: false
+        },
+        name: "Первый пользователь",
+        avatarLink: "string"
+      },
+      {
+        member: {
+          userId: "string",
+          memberRole: 1,
+          paid: true,
+          acceptedCourse: false
+        },
+        name: "Второй пользователь",
+        avatarLink: "string"
+      }
+      ],
+    educator: null,
+  };
+
 export class GroupPage extends React.Component {
   constructor(props) {
     super(props);
@@ -46,7 +86,8 @@ export class GroupPage extends React.Component {
       },
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
       isInGroup: false,
-      isCreator: false
+      isCreator: false,
+      needUpdate: false
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -66,7 +107,7 @@ export class GroupPage extends React.Component {
         .catch(error => error)
     }
     else {
-      this.onSetResult(this.props.groupData)
+      this.onSetResult(groupData)
     }
   };
 
@@ -74,15 +115,12 @@ export class GroupPage extends React.Component {
     this.getCurrentGroup()
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if(prevState !== this.state) {
-  //     console.log(true)
-  //     this.getCurrentGroup()
-  //   }
-  //   else {
-  //     console.log(false)
-  //   }
-  // }
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.needUpdate !== this.state.needUpdate) {
+      this.getCurrentGroup();
+      this.setState({needUpdate: false});
+    }
+  }
 
   onSetResult(result) {
     this.setState({
@@ -136,7 +174,7 @@ export class GroupPage extends React.Component {
                 <Row>
                   {this.state.isCreator ?
                       (<Row className='md-center-container'>
-                        <InviteMemberSelect/>
+                        <InviteMemberSelect groupId={this.state.id}/>
                       </Row>) : null
                   }
                 </Row>
@@ -144,13 +182,17 @@ export class GroupPage extends React.Component {
               <Col xs={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
                 <Row className='md-center-container' style={{textAlign: 'right', marginTop: 8}}>
                   { this.state.isInGroup ?
-                    (<Button onClick={() =>
-                      this.props.leaveGroup(this.state.id, this.state.userData.UserId)}
+                    (<Button onClick={() => {
+                      this.setState({needUpdate: true});
+                      this.props.leaveGroup(this.state.id, this.state.userData.UserId)
+                    }}
                     >
                       Покинуть группу
                     </Button>)
-                    : (<Button type='primary' onClick={() =>
-                      this.props.enterGroup(this.state.id)}
+                    : (<Button type='primary' onClick={() => {
+                      this.props.enterGroup(this.state.id);
+                      this.setState({needUpdate: true});
+                    }}
                     >
                       Вступить в группу
                     </Button>)
@@ -197,48 +239,6 @@ GroupPage.propTypes = {
 };
 
 GroupPage.defaultProps = {
-  groupData : localStorage.getItem('withoutServer') === 'true' ?
-    {
-      groupInfo: {
-        isPrivate: true,
-        title: "Название группы",
-        description: "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-        "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-        "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-        "Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. Описание группы. " +
-        "Описание группы. Описание группы. ",
-        isActive: true,
-        tags: ['js', 'c#'],
-        moneyPerUser: 600,
-        size: 10,
-        groupType: "Лекция",
-      },
-      members: [
-        {
-          member: {
-            userId: "848a3202-7085-4cba-842f-07d07eff7b35",
-            memberRole: 3,
-            paid: true,
-            acceptedCourse: false
-          },
-          name: "Первый пользователь",
-          avatarLink: "string"
-        },
-        {
-          member: {
-            userId: "string",
-            memberRole: 1,
-            paid: true,
-            acceptedCourse: false
-          },
-          name: "Второй пользователь",
-          avatarLink: "string"
-        }
-      ],
-      educator: null,
-    }
-    :
-    {},
   users: localStorage.getItem('withoutServer') === 'true' ?
     ['Первый пользователь', 'Второй пользователь'] : []
 };

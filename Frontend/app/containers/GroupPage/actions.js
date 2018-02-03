@@ -5,9 +5,6 @@
  */
 
 import {
-  GET_GROUP_DATA_START,
-  GET_GROUP_DATA_SUCCESS,
-  GET_GROUP_DATA_FAILED,
   ENTER_GROUP_START,
   ENTER_GROUP_SUCCESS,
   ENTER_GROUP_FAILED,
@@ -19,26 +16,7 @@ import {
   INVITE_MEMBER_FAILED,
 } from './constants';
 
-export function getGroupData(groupId) {
-  return {
-    type: GET_GROUP_DATA_START,
-    groupId
-  };
-}
 
-export function getGroupDataSuccess(groupData) {
-  return {
-    type: GET_GROUP_DATA_SUCCESS,
-    groupData
-  };
-}
-
-export function getGroupDataFailed(error) {
-  return {
-    type: GET_GROUP_DATA_FAILED,
-    error
-  };
-}
 
 export function enterGroup(groupId) {
   return {

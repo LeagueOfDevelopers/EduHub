@@ -32,7 +32,7 @@ function* leaveGroupSaga(action) {
 
 function* inviteMemberSaga(action) {
   try {
-    yield call(inviteMember, action.invitedId, action.role);
+    yield call(inviteMember, action.groupId, action.invitedId, action.role);
     yield put(inviteMemberSuccess());
   }
   catch(e) {
@@ -68,7 +68,7 @@ function enterGroup(groupId) {
 
 function leaveGroup(groupId, memberId) {
   return fetch(`${config.API_BASE_URL}/group/${groupId}/member/${memberId}`, {
-    method: 'POST',
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json-patch+json',
       'Authorization': `Bearer ${localStorage.getItem('token')}`

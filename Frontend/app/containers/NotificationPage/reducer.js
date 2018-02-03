@@ -42,7 +42,7 @@ function notificationPageReducer(state = initialState, action) {
     case GET_NOTIFIES_SUCCESS:
       return state
         .set('pending', false)
-        .set('notifies', action.payload);
+        .set('notifies', action.notifies);
     case GET_NOTIFIES_FAILED:
       return state
         .set('pending', false)
@@ -53,7 +53,7 @@ function notificationPageReducer(state = initialState, action) {
     case GET_INVITES_SUCCESS:
       return state
         .set('pending', false)
-        .set('notifies', action.payload);
+        .set('invites', action.invites);
     case GET_INVITES_FAILED:
       return state
         .set('pending', false)

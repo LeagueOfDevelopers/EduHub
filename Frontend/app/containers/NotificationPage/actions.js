@@ -47,14 +47,14 @@ export function getNotifies() {
 export function getNotifiesSuccess(notifies) {
   return {
     type: GET_NOTIFIES_SUCCESS,
-    payload: notifies
+    notifies
   };
 }
 
 export function getNotifiesFailed(error) {
   return {
     type: GET_NOTIFIES_FAILED,
-    payload: error
+    error
   };
 }
 
@@ -67,13 +67,13 @@ export function getInvites() {
 export function getInvitesSuccess(invites) {
   return {
     type: GET_INVITES_SUCCESS,
-    payload: invites
+    invites
   };
 }
 
 export function getInvitesFailed(error) {
   return {
     type: GET_INVITES_FAILED,
-    payload: error
+    error
   };
 }

@@ -13,7 +13,7 @@ import {
 
 function* changeInvitationStatusSaga(action) {
   try {
-    yield call(changeInvitationStatus, action.groupId, action.invitationId, action.status);
+    yield call(changeInvitationStatus, action.invitationId, action.status);
     yield put(changeInvitationStatusSuccess());
   }
   catch(error) {
@@ -64,8 +64,8 @@ function getInvites() {
     .catch(error => error);
 }
 
-function changeInvitationStatus(groupId, idOfInvitation, statusOfInvitation) {
-  return fetch(`${config.API_BASE_URL}/group/${groupId}/member`, {
+function changeInvitationStatus(idOfInvitation, statusOfInvitation) {
+  return fetch(`${config.API_BASE_URL}/user/profile/invitations`, {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',

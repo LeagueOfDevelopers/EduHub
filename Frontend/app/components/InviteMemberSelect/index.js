@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { inviteMember } from "../../containers/GroupPage/actions";
 import { getUsers } from "../../containers/Header/actions";
 import { makeSelectUsers } from "../../containers/Header/selectors";
-import {Dropdown, Button, Menu, Select} from 'antd';
+import {Dropdown, Button, Menu, Select, message} from 'antd';
 
 
 class InviteMemberSelect extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -28,29 +28,6 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
     this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
-  inviteMenu = () => (
-    <Menu>
-      <Menu.Item className='unhover' key='0'>
-        <Select
-          mode='combobox'
-          className='unhover'
-          style={{width: '100%'}}
-          value={this.state.selectValue}
-          onChange={this.handleSelectChange}
-          placeholder='Введите имя пользователя'
-          notFoundContent='Нет совпадений'
-          defaultActiveFirstOption={false}
-          showArrow={false}
-        >
-          {this.props.users.map(item =>
-            <Select.Option key={item.id}>
-              <div onClick={() => this.tryInviteMember(item.id)}>{item.name}</div>
-            </Select.Option>)}
-        </Select>
-      </Menu.Item>
-    </Menu>
-  );
-
   handleVisibleChange = (flag) => {
     this.setState({ inviteVisible: flag });
   };
@@ -62,7 +39,7 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
 
   tryInviteMember(invitedId) {
     if(localStorage.getItem('without_server') !== 'true') {
-      this.props.inviteMember(this.state.id, invitedId, 'Member')
+      this.props.inviteMember(this.props.groupId, invitedId, 'Member')
     }
     else {
       message.success('Приглашение отправлено');
@@ -74,7 +51,27 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
   render() {
     return (
       <Dropdown
-        overlay={this.inviteMenu()}
+        overlay={(
+          <Menu>
+            <Menu.Item className='unhover' key='0'>
+              <Select
+                mode='combobox'
+                className='unhover'
+                style={{width: '100%'}}
+                value={this.state.selectValue}
+                onChange={this.handleSelectChange}
+                placeholder='Введите имя пользователя'
+                defaultActiveFirstOption={false}
+                showArrow={false}
+              >
+                {this.props.users.map(item =>
+                  <Select.Option key={item.email}>
+                    <div onClick={() => this.tryInviteMember(item.id)}>{item.name}</div>
+                  </Select.Option>)}
+              </Select>
+            </Menu.Item>
+          </Menu>
+        )}
         onVisibleChange={this.handleVisibleChange}
         visible={this.state.inviteVisible}
         trigger={['click']}
