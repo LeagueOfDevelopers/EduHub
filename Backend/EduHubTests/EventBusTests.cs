@@ -16,8 +16,8 @@ namespace EduHubTests
         public void AddNewSubscriberInSubscription_GetListOfMembersWithOneMember()
         {
             //Arrange
-            Subscription subscription = new Subscription(new EditedGroupEvent(Guid.NewGuid()));
-            User subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
+            var subscription = new Subscription(new EditedGroupEvent(Guid.NewGuid()));
+            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
 
             //Act
             subscription.AddSubscriber(subscriber);
@@ -30,8 +30,8 @@ namespace EduHubTests
         public void RemoveSingleSubscriberFronSubscription_GetEmptyListOfMembers()
         {
             //Arrange
-            Subscription subscription = new Subscription(new EditedGroupEvent(Guid.NewGuid()));
-            User subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
+            var subscription = new Subscription(new EditedGroupEvent(Guid.NewGuid()));
+            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
             
             subscription.AddSubscriber(subscriber);
 
@@ -46,8 +46,8 @@ namespace EduHubTests
         public void CheckIfSubscriptionIsInterestedInEvent_GetRightResult()
         {
             //Arrange
-            Guid groupId = Guid.NewGuid();
-            Subscription subscription = new Subscription(new EditedGroupEvent(groupId));
+            var groupId = Guid.NewGuid();
+            var subscription = new Subscription(new EditedGroupEvent(groupId));
 
             //Act
             bool actual = subscription.IsInterestedInEvent(new EditedGroupEvent(groupId));
@@ -60,9 +60,8 @@ namespace EduHubTests
         public void AddNewSubscriptionInEmptyBus_GetListWithOneSubscription()
         {
             //Arrange
-            EventBus bus = new EventBus();
-            User subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
-
+            var bus = new EventBus();
+            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
 
             //Act
             bus.AddSubscriber(subscriber, new EditedGroupEvent(Guid.NewGuid()));
@@ -75,8 +74,8 @@ namespace EduHubTests
         public void RemoveSingleSubscriptionInBus_GetEmptyList()
         {
             //Arrange
-            EventBus bus = new EventBus();
-            User subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
+            var bus = new EventBus();
+            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
             IEventInfo eventInfo = new EditedGroupEvent(Guid.NewGuid());
             bus.AddSubscriber(subscriber, eventInfo);
 
@@ -91,11 +90,11 @@ namespace EduHubTests
         public void SendMessageToBus_OnlySubscribedUserGetNotify()
         {
             //Arrange
-            EventBus messageBus = new EventBus();
-            User user1 = new User("name", Credentials.FromRawData("email", "password"), false, UserType.User, "avatar");
-            User user2 = new User("name", Credentials.FromRawData("email2", "password"), false, UserType.User, "avatar");
-            Guid groupId = Guid.NewGuid();
-            EditedGroupEvent @event = new EditedGroupEvent(groupId);
+            var messageBus = new EventBus();
+            var user1 = new User("name", Credentials.FromRawData("email", "password"), false, UserType.User, "avatar");
+            var user2 = new User("name", Credentials.FromRawData("email2", "password"), false, UserType.User, "avatar");
+            var groupId = Guid.NewGuid();
+            var @event = new EditedGroupEvent(groupId);
             messageBus.AddSubscriber(user1, @event);
 
             //Act
@@ -108,13 +107,13 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        public void TryToGetNotifyAboutInvitationInGroup()
+        public void TryToGetNotifyAboutInvitationInGroup_GetListOfInvitationWithOneInvitation()
         {
             //Arrange
-            EventBus messageBus = new EventBus();
-            User user = new User("name", Credentials.FromRawData("email", "password"), false, UserType.User, "avatar");
-            Guid groupId = Guid.NewGuid();
-            EditedGroupEvent @event = new EditedGroupEvent(groupId);
+            var messageBus = new EventBus();
+            var user = new User("name", Credentials.FromRawData("email", "password"), false, UserType.User, "avatar");
+            var groupId = Guid.NewGuid();
+            var @event = new EditedGroupEvent(groupId);
             messageBus.AddSubscriber(user, @event);
             
             var userId = Guid.NewGuid();
@@ -124,10 +123,10 @@ namespace EduHubTests
             var size = 3;
             var moneyPerUser = 100.0;
             tags.Add("js");
-
-            //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             messageBus.AddSubscriber(someGroup, new InvitationToGroupEvent(new Invitation(Guid.NewGuid(), Guid.NewGuid(), someGroup.GroupInfo.Id, MemberRole.Default, InvitationStatus.Unknown)));
+
+            //Act
             messageBus.SendMessage(new Event(new InvitationToGroupEvent(new Invitation(Guid.NewGuid(), Guid.NewGuid(), someGroup.GroupInfo.Id, MemberRole.Creator, InvitationStatus.InProgress))));
             messageBus.Notify();
 

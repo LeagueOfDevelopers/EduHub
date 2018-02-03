@@ -141,13 +141,13 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpGet]
         [Route("notifies")]
-        [SwaggerResponse(200, Type = typeof(List<NotifiesResponse>))]
+        [SwaggerResponse(200, Type = typeof(List<NotifyResponse>))]
         public IActionResult GetNotifies()
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            List<NotifiesResponse> notifies = new List<NotifiesResponse>();
-            _userFacade.GetUser(userId).GetNotifies().ToList().ForEach(n => notifies.Add(new NotifiesResponse(n.Description, n.OccurredOn)));
+            List<NotifyResponse> notifies = new List<NotifyResponse>();
+            _userFacade.GetUser(userId).GetNotifies().ToList().ForEach(n => notifies.Add(new NotifyResponse(n.Description, n.OccurredOn)));
             return Ok(notifies);
         }
 

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace EduHub.Models
 {
-    public class NotifiesResponse
+    public class NotifyResponse
     {
-        public NotifiesResponse(string text, DateTime date)
+        public NotifyResponse(string text, DateTime date)
         {
             Text = text;
             Date = date;
