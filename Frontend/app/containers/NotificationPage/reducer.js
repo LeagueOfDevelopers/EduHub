@@ -16,6 +16,7 @@ import {
   GET_NOTIFIES_SUCCESS,
   GET_NOTIFIES_FAILED
 } from './constants';
+import {message} from 'antd';
 
 const initialState = fromJS({
   notifies: [],

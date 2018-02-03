@@ -41,7 +41,7 @@ function* inviteMemberSaga(action) {
 }
 
 function inviteMember(groupId, invitedId, role) {
-  return fetch(`${config.API_LOCAL_URL}/group/${groupId}/member/invitation`, {
+  return fetch(`${config.API_BASE_URL}/group/${groupId}/member/invitation`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json-patch+json',

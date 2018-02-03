@@ -68,7 +68,6 @@ function changeInvitationStatus(idOfInvitation, statusOfInvitation) {
   return fetch(`${config.API_BASE_URL}/user/profile/invitations`, {
     method: 'PUT',
     headers: {
-      'Accept': 'application/json',
       'Content-Type': 'application/json-patch+json',
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     },

@@ -14,12 +14,11 @@ const selectProfilePageDomain = (state) => state.get('profilePage');
  * Default selector used by ProfilePage
  */
 
-const makeSelectProfilePage = () => createSelector(
+const makeSelectUserGroups = () => createSelector(
   selectProfilePageDomain,
-  (substate) => substate.toJS()
+  (profileState) => profileState.get('groups')
 );
 
-export default makeSelectProfilePage;
 export {
-  selectProfilePageDomain,
+  makeSelectUserGroups,
 };

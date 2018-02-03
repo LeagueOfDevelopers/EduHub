@@ -23,6 +23,7 @@ import ScrollFix from '../../components/ScrollFix';
 import ProfilePage from '../../containers/ProfilePage/Loadable';
 import NotificationPage from '../../containers/NotificationPage/Loadable';
 import GroupsPage from '../../containers/GroupsPage';
+import RegistrationSuccessPage from '../../containers/RegistrationSuccessPage';
 
 export default class App extends React.Component{
   render() {
@@ -40,6 +41,7 @@ export default class App extends React.Component{
             <Route path='/group/:id' component={GroupPage}/>
             <Route path='/groups/:groupsTitle' component={GroupsPage}/>
             <Route path='/profile/:id/notifications' component={NotificationPage}/>
+            <Route path='/registration_success' component={RegistrationSuccessPage}/>
             <Route path='' component={NotFoundPage} />
           </Switch>
         </ScrollFix>

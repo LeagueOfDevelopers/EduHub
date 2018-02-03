@@ -29,15 +29,11 @@ class InviteCard extends React.PureComponent { // eslint-disable-line react/pref
   tryAccept() {
     (localStorage.getItem('without_server') !== 'true') ?
       this.props.acceptInvitation(this.props.id, 'Accepted') : null;
-
-    message.success('Приглашение принято')
   }
 
   tryDecline() {
     (localStorage.getItem('without_server') !== 'true') ?
       this.props.declineInvitation(this.props.id, 'Declined') : null;
-
-    message.success('Приглашение отклонено')
   }
 
   render() {

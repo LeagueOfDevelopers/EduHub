@@ -16,10 +16,9 @@ import {
   GET_NOTIFIES_FAILED
 } from './constants';
 
-export function changeInvitationStatus(groupId, invitationId, status) {
+export function changeInvitationStatus(invitationId, status) {
   return {
     type: CHANGE_INVITATION_STATUS_START,
-    groupId,
     invitationId,
     status
   };

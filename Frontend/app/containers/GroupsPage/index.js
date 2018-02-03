@@ -49,7 +49,7 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
         this.setState({title: 'Незаполненные группы'});
       }
       else if(this.props.match.params.groupsTitle === 'assembledGroups') {
-        this.setState({title: 'Заполненные группы'});
+        this.setState({title: 'Идет набор'});
       }
     }
   }

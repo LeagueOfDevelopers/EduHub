@@ -9,79 +9,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectProfilePage from './selectors';
+import {makeSelectUserGroups} from './selectors';
+import {getCurrentUserGroups} from "./actions";
 import reducer from './reducer';
 import saga from './saga';
-import {Card, Col, Row, Button, message, Avatar, Tabs} from 'antd';
-const TabPane = Tabs.TabPane;
 import config from '../../config';
 import {Link} from "react-router-dom";
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
-
-const myGroups = [
-  {
-    groupInfo: {
-      id: 1,
-      title: 'cdcvvdsc',
-      length: 6,
-      size: 8,
-      moneyPerUser: 600,
-      groupType: 'Lfdsv',
-      tags: ['fds', 'sdf']
-    }
-  },
-  {
-    groupInfo: {
-      id: 3,
-      title: 'dscsdc',
-      length: 6,
-      size: 8,
-      moneyPerUser: 600,
-      groupType: 'Lfdsv',
-      tags: ['fds', 'sdf']
-    }
-  },
-  {
-    groupInfo: {
-      id: 1,
-      title: 'cdcvvdsc',
-      length: 6,
-      size: 8,
-      moneyPerUser: 600,
-      groupType: 'Lfdsv',
-      tags: ['fds', 'sdf']
-    }
-  },
-  {
-    groupInfo: {
-      id: 3,
-      title: 'dscsdc',
-      length: 6,
-      size: 8,
-      moneyPerUser: 600,
-      groupType: 'Lfdsv',
-      tags: ['fds', 'sdf']
-    }
-  }
-];
-
-const createdGroups = [
-  {
-    groupInfo: {
-      id: 2,
-      title: 'werfs',
-      length: 6,
-      size: 8,
-      moneyPerUser: 600,
-      groupType: 'Lfdsv',
-      tags: ['fds', 'sdf'],
-      description: 'dadasddas'
-    }
-  }
-];
+import {Card, Col, Row, Avatar, Tabs} from 'antd';
+const TabPane = Tabs.TabPane;
 
 const defaultUserData = {
   name: 'Имя пользователя',
@@ -100,21 +38,44 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     super(props);
 
     this.state = {
+      id: this.props.match.params.id,
       userData: {
         name: '',
-        tags: [],
-        sex: '',
-        years: 0,
-        experience: 0,
-        description: '',
-        links: []
+        email: '',
+        avatarLink: '',
+        isMan: '',
+        birthYear: null,
+        aboutUser: '',
+        contacts: []
+      },
+      teacherProfile: {
+        reviews: [],
+        skills: []
       }
-    }
+    };
   }
 
   componentDidMount() {
     if(localStorage.getItem('without_server') === 'true') {
       this.setState({userData: defaultUserData})
+    }
+    else {
+      this.props.getCurrentUserGroups();
+      fetch(`${config.API_BASE_URL}/user/profile/${this.state.id}`, {
+        headers: {
+          'Content-Type': 'application/json-patch+json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+          .then(res => res.json())
+          .then(res => {
+            this.setState({
+              userData: res.userProfile,
+              teacherProfile: res.teacherProfile
+            },
+              console.log(this.state.userData))
+          })
+          .catch(error => error)
     }
   }
 
@@ -127,7 +88,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               title={
                 <Row type='flex' align='middle' style={{textAlign: 'center'}}>
                   <Avatar
-                    src=''
+                    src={this.state.userData.avatarLink}
                     style={{minHeight: 50, minWidth: 50, marginRight: 20, borderRadius: '50%'}}
                   >
                   </Avatar>
@@ -141,23 +102,24 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               className='profile-card font-size-20 without-border-bottom'
             >
               <Row style={{marginBottom: 20}}>
+                <div>Почтовый адрес</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.email}</div>
+              </Row>
+              <Row style={{marginBottom: 20}}>
                 <div>Пол</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.sex}</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.isMan}</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Возраст</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.years} лет</div>
-              </Row>
-              <Row style={{marginBottom: 20}}>
-                <div>Опыт работы</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.experience} года</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.birthYear} лет</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Основные навыки</div>
                 <Row gutter={6}>
-                  {this.state.userData.tags.map((item) =>
+                  {this.state.userData.teacherProfile ?
+                    this.state.userData.teacherProfile.skills.map((item) =>
                     <Link to="#" key={item}>{item}</Link>
-                  )}
+                  ) : null}
                 </Row>
               </Row>
               <Row style={{marginBottom: 20}}>
@@ -169,7 +131,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               <Row style={{marginBottom: 20}}>
                 <div>Ссылки</div>
                 <div>
-                  {this.state.userData.links.map((item) =>
+                  {this.state.userData.contacts.map((item) =>
                     <div>
                       <Link to='#' key={item} className='user-link' style={{fontSize: 16}}>
                         {item}
@@ -182,27 +144,12 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
           </Col>
           <Col sm={{span: 24}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>
             <Tabs defaultActiveKey="1" type='card'>
-              <TabPane tab="Мои группы" key="1">
+              <TabPane tab="Группы" key="1">
                 {(localStorage.getItem('without_server') === 'true') ?
                   (
                     <div className='cards-holder md-cards-holder-center' style={{margin: '30px 0'}}>
-                      {myGroups.map((item, i) =>
-                        <Link to={`/group/${item.groupInfo.id}`}>
-                          <UnassembledGroupCard {...item}/>
-                        </Link>
-                      )}
-                    </div>
-                  ) : null
-                }
-              </TabPane>
-              <TabPane tab="Созданные группы" key="2">
-                {(localStorage.getItem('without_server') === 'true') ?
-                  (
-                    <div className='cards-holder md-cards-holder-center' style={{margin: '30px 0'}}>
-                      {createdGroups.map((item, i) =>
-                        <Link to={`/group/${item.groupInfo.id}`}>
-                          <UnassembledGroupCard {...item}/>
-                        </Link>
+                      {this.props.myGroups.map((item, i) =>
+                        <UnassembledGroupCard {...item}/>
                       )}
                     </div>
                   ) : null
@@ -220,15 +167,65 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
 }
 
 ProfilePage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
+};
+
+ProfilePage.defaultProps = {
+  myGroups: [
+    {
+      groupInfo: {
+        id: 1,
+        title: 'cdcvvdsc',
+        length: 6,
+        size: 8,
+        moneyPerUser: 600,
+        groupType: 'Lfdsv',
+        tags: ['fds', 'sdf']
+      }
+    },
+    {
+      groupInfo: {
+        id: 3,
+        title: 'dscsdc',
+        length: 6,
+        size: 8,
+        moneyPerUser: 600,
+        groupType: 'Lfdsv',
+        tags: ['fds', 'sdf']
+      }
+    },
+    {
+      groupInfo: {
+        id: 1,
+        title: 'cdcvvdsc',
+        length: 6,
+        size: 8,
+        moneyPerUser: 600,
+        groupType: 'Lfdsv',
+        tags: ['fds', 'sdf']
+      }
+    },
+    {
+      groupInfo: {
+        id: 3,
+        title: 'dscsdc',
+        length: 6,
+        size: 8,
+        moneyPerUser: 600,
+        groupType: 'Lfdsv',
+        tags: ['fds', 'sdf']
+      }
+    }
+  ]
 };
 
 const mapStateToProps = createStructuredSelector({
+  myGroups: makeSelectUserGroups()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getCurrentUserGroups: () => dispatch(getCurrentUserGroups())
   };
 }
 

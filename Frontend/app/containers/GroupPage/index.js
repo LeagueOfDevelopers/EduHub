@@ -23,6 +23,7 @@ import {Col, Row, Button, message, Dropdown, Menu, Select} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
 import InviteMemberSelect from '../../components/InviteMemberSelect/Loadable';
+import SigningInForm from "../../containers/SigningInForm/index";
 
 const groupData = {
     groupInfo: {
@@ -87,12 +88,23 @@ export class GroupPage extends React.Component {
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
       isInGroup: false,
       isCreator: false,
-      needUpdate: false
+      needUpdate: false,
+      signInVisible: false,
     };
 
     this.onSetResult = this.onSetResult.bind(this);
     this.getCurrentGroup = this.getCurrentGroup.bind(this);
+    this.onSignInClick = this.onSignInClick.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
+
+  onSignInClick = () => {
+    this.setState({signInVisible: true})
+  };
+
+  handleCancel = () => {
+    this.setState({signInVisible: false})
+  };
 
   getCurrentGroup = () => {
     if(localStorage.getItem('without_server') !== 'true') {
@@ -181,7 +193,7 @@ export class GroupPage extends React.Component {
               </Col>
               <Col xs={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
                 <Row className='md-center-container' style={{textAlign: 'right', marginTop: 8}}>
-                  { this.state.isInGroup ?
+                  {this.state.isInGroup ?
                     (<Button onClick={() => {
                       this.setState({needUpdate: true});
                       this.props.leaveGroup(this.state.id, this.state.userData.UserId)
@@ -190,8 +202,13 @@ export class GroupPage extends React.Component {
                       Покинуть группу
                     </Button>)
                     : (<Button type='primary' onClick={() => {
-                      this.props.enterGroup(this.state.id);
-                      this.setState({needUpdate: true});
+                      if(this.state.userData) {
+                        this.props.enterGroup(this.state.id);
+                        this.setState({needUpdate: true});
+                      }
+                      else {
+                        this.onSignInClick()
+                      }
                     }}
                     >
                       Вступить в группу
@@ -213,6 +230,7 @@ export class GroupPage extends React.Component {
                 </Row>
               </Col>
             </Col>
+            <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
           </div>
         ) :
         (<Row type='flex' justify='center' style={{marginTop: 20}}>Данной группы не существует</Row>)

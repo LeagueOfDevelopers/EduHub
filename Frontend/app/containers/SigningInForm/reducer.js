@@ -5,6 +5,8 @@ import {
   LOAD_CURRENT_USER_SUCCESS,
   LOAD_CURRENT_USER_ERROR
 } from './constants';
+import {message} from 'antd';
+
 
 const initialState = fromJS({
   loading: false,
@@ -28,6 +30,9 @@ function appReducer(state = initialState, action) {
         localStorage.setItem('avatarLink', `${action.avatarLink}`);
         localStorage.setItem('token', `${action.token}`);
         location.assign('/')
+      }
+      else if(action.name === 'SyntaxError') {
+        message.error('Данного пользователя не существует')
       }
       return state
           .set('loading', false)

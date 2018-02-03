@@ -124,7 +124,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         </Col>
         <Col span={20} offset={2} style={{marginTop: 40}}>
           <Card
-            title='Заполненные группы'
+            title='Идет набор'
             bordered={false}
             className='assembled-groups-list font-size-20'
             extra={<Link to='/groups/assembledGroups'>Показать больше</Link>}
