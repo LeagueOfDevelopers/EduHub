@@ -4,9 +4,9 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
-    public interface IEventRepository
+    public interface IEventInfo
     {
-        void AddMessage(Event @event);
-        IEnumerable<Event> GetAllEvents();
+        string GetEventType();
+        string GetDescription();
     }
 }

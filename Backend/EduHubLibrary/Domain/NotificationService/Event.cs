@@ -6,24 +6,27 @@ namespace EduHubLibrary.Domain.NotificationService
 {
     public class Event
     {
-        public Event(MessageType type, string description)
+        public Event(IEventInfo eventInfo)
         {
             Id = Guid.NewGuid();
-            Type = type;
-            Description = description;
             OccurredOn = DateTime.Now;
-            IsRead = false;
+            IsParsed = false;
+            EventInfo = eventInfo;
+            Description = eventInfo.GetDescription();
         }
 
         public Guid Id { get; private set; }
-        public MessageType Type { get; private set; }
-        public string Description { get; private set; }
         public DateTime OccurredOn { get; private set; }
-        public bool IsRead { get; private set; }
+        public bool IsParsed { get; private set; }
+        public IEventInfo EventInfo { get; private set; }
+        public string Description { get; private set; }
 
-        public void ReadEvent()
+        /// <summary>
+        /// Change label when event is read with event bus
+        /// </summary>
+        public void MakeParsed()
         {
-            IsRead = true;
+            IsParsed = true;
         }
     }
 }

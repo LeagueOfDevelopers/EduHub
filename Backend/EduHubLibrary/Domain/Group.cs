@@ -55,6 +55,7 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new GroupIsFullException(GroupInfo.Id)));
             var newMember = new Member(newMemberId, MemberRole.Member);
             listOfMembers.Add(newMember);
+            
         }
 
         internal void DeleteMember(Guid requestedPerson, Guid deletingPerson)

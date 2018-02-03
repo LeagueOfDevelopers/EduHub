@@ -1,4 +1,5 @@
 ﻿using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.NotificationService;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +24,5 @@ namespace EduHubLibrary.Facades
         void DeleteMember(Guid groupId, Guid requestedPerson, Guid requestingPerson);
         void AddMember(Guid groupId, Guid requestedPerson);
         void DeleteTeacher(Guid groupId, Guid requestedPerson, Guid teacherId);
-
     }
 }

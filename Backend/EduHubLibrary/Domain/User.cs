@@ -9,6 +9,8 @@ using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Domain.Tools;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EventBusTests")]
+
 namespace EduHubLibrary.Domain
 {
     public class User : ISubscriber
@@ -138,14 +140,19 @@ namespace EduHubLibrary.Domain
             return Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
         }
 
-        internal IEnumerable<Event> GetNotifies()
+        public List<Event> GetNotifies()
         {
-            return _events.GetAllEvents();
+            return _events.GetAllEvents().ToList();
         }
 
+
+        //TODO delete: It was created to show work of message bus
         public void GetMessage(Event @event)
         {
-            _events.AddEvent(@event);
+            if (@event.EventInfo.GetEventType().Equals("EditedGroupEvent"))
+            {
+                _events.AddMessage(@event);
+            }
         }
 
         private InMemoryEventRepository _events;
