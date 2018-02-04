@@ -16,6 +16,9 @@ const initialState = fromJS({
     name: null,
     email: null,
     password: null,
+    isTeacher: null,
+    avatarLink: null,
+    inviteCode: null
   },
   userId: null,
   error: false,
@@ -29,7 +32,10 @@ function registrationPageReducer(state = initialState, action) {
         .set('pending', true)
         .setIn(['registrationData', 'name'], action.name)
         .setIn(['registrationData', 'email'], action.email)
-        .setIn(['registrationData', 'password'], action.password);
+        .setIn(['registrationData', 'password'], action.password)
+        .setIn(['registrationData', 'isTeacher'], action.isTeacher)
+        .setIn(['registrationData', 'avatarLink'], action.avatarLink)
+        .setIn(['registrationData', 'inviteCode'], action.inviteCode);
     case REGISTRATION_SUCCESS:
       location.assign('/registration_success');
       return state

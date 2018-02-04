@@ -140,7 +140,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             }>
               {this.props.users.map((item, i) =>
                 i < selectItemsCount ?
-                  <Option className='search-option-item' key={item.email}><Link className='search-user-link'
+                  <Option className='search-option-item' key={item.name}><Link className='search-user-link'
                                                                                to={`/profile/${item.id}`}>
                     <div>{item.name}</div>
                   </Link></Option> : null

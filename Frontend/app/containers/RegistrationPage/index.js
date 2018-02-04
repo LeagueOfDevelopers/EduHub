@@ -15,7 +15,7 @@ import reducer from './reducer';
 import saga from './saga';
 import {registrate} from './actions';
 import SigningInForm from "../SigningInForm";
-import { Form, Col, Row, Button, Divider, message, Input } from 'antd';
+import { Form, Col, Row, Button, Divider, message, Input, Switch } from 'antd';
 const FormItem = Form.Item;
 
 
@@ -53,7 +53,10 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
       signInVisible: false,
       username: '',
       email: '',
-      password: ''
+      password: '',
+      isTeacher: false,
+      avatarLink: '',
+      inviteCode: ''
     };
 
     this.onSignInClick = this.onSignInClick.bind(this);
@@ -63,6 +66,9 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.onHandleUsernameChange = this.onHandleUsernameChange.bind(this);
     this.onHandleEmailChange = this.onHandleEmailChange.bind(this);
     this.onHandlePasswordChange = this.onHandlePasswordChange.bind(this);
+    this.onHandleTeacherStatusChange = this.onHandleTeacherStatusChange.bind(this);
+    this.onHandleAvatarLinkChange = this.onHandleAvatarLinkChange.bind(this);
+    this.onHandleInviteCodeChange = this.onHandleInviteCodeChange.bind(this);
   }
 
   onSignInClick = () => {
@@ -89,12 +95,31 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.setState({password: e.target.value})
   };
 
+  onHandleTeacherStatusChange = (e) => {
+    this.setState({isTeacher: e})
+  };
+
+  onHandleAvatarLinkChange = (e) => {
+    this.setState({avatarLink: e.target.value})
+  };
+
+  onHandleInviteCodeChange = (e) => {
+    this.setState({inviteCode: e.target.value})
+  };
+
   registrate = () => {
     if(this.state.username !== '' && this.state.email !== '' && this.state.password !== '') {
       (localStorage.getItem('without_server') === 'true') ?
         location.assign('/')
         :
-        this.props.signUp(this.state.username, this.state.email, this.state.password);
+        this.props.signUp(
+          this.state.username,
+          this.state.email,
+          this.state.password,
+          this.state.isTeacher,
+          this.state.avatarLink,
+          this.state.inviteCode
+        );
 
     } else
       message.error('Введите все данные')
@@ -124,6 +149,24 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
               label="Придумайте пароль"
             >
               <Input value={this.state.password} onChange={this.onHandlePasswordChange} type='password' placeholder="Введите пароль"/>
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="Преподаватель"
+            >
+              <Switch value={this.state.isTeacher} onChange={this.onHandleTeacherStatusChange}/>
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="Ссылка на аватарку"
+            >
+              <Input value={this.state.avatarLink} onChange={this.onHandleAvatarLinkChange} placeholder="Можете оставить поле пустым"/>
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="Код приглашения"
+            >
+              <Input value={this.state.inviteCode} onChange={this.onHandleInviteCodeChange} placeholder="Можете оставить поле пустым"/>
             </FormItem>
             <Col offset={10} className='sm-row-center' style={{marginTop: 20}}>
               <FormItem {...tailFormItemLayout}>
@@ -158,7 +201,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    signUp: (username, email, password) => dispatch(registrate(username, email, password))
+    signUp: (username, email, password, isTeacher, avatarLink, inviteCode) =>
+      dispatch(registrate(username, email, password, isTeacher, avatarLink, inviteCode))
   };
 }
 

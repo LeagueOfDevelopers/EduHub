@@ -65,7 +65,7 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
                 showArrow={false}
               >
                 {this.props.users.map(item =>
-                  <Select.Option key={item.email}>
+                  <Select.Option key={item.name}>
                     <div onClick={() => this.tryInviteMember(item.id)}>{item.name}</div>
                   </Select.Option>)}
               </Select>

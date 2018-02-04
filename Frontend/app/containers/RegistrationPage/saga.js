@@ -7,7 +7,7 @@ import {registrateSuccess, registrateError} from './actions';
 // Individual exports for testing
 function* registrationSaga(action) {
   try {
-    const userData = yield call(registrate, action.name, action.email, action.password);
+    const userData = yield call(registrate, action.name, action.email, action.password, action.isTeacher, action.avatarLink, action.inviteCode);
     yield put(registrateSuccess(userData.id));
   }
   catch(e) {
@@ -15,7 +15,7 @@ function* registrationSaga(action) {
   }
 }
 
-function registrate(username, email, password) {
+function registrate(username, email, password, isTeacher, avatarLink, inviteCode) {
   return fetch(`${config.API_BASE_URL}/account/registration`, {
     method: 'POST',
     headers: {
@@ -26,9 +26,9 @@ function registrate(username, email, password) {
       name: username,
       email: email,
       password: password,
-      isTeacher: false,
-      avatarLink: '',
-      inviteCode: ''
+      isTeacher: isTeacher,
+      avatarLink: avatarLink ? avatarLink : 'http://vk.com/im',
+      inviteCode: inviteCode ? inviteCode :'string'
     })
   })
     .then(res => res.json())

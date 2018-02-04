@@ -40,44 +40,54 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.state = {
       id: this.props.match.params.id,
       userData: {
-        name: '',
-        email: '',
-        avatarLink: '',
-        isMan: '',
-        birthYear: null,
-        aboutUser: '',
-        contacts: []
-      },
-      teacherProfile: {
-        reviews: [],
-        skills: []
+        userProfile: {
+          name: '',
+          email: '',
+          avatarLink: '',
+          isMan: '',
+          birthYear: null,
+          aboutUser: '',
+          contacts: []
+        },
+        teacherProfile: {
+          reviews: [],
+          skills: []
+        }
       }
     };
+
+    this.onSetResult = this.onSetResult.bind(this);
+    this.getCurrentUser = this.getCurrentUser.bind(this);
   }
 
   componentDidMount() {
-    if(localStorage.getItem('without_server') === 'true') {
-      this.setState({userData: defaultUserData})
+    if(localStorage.getItem('without_server') !== 'true') {
+      this.props.getCurrentUserGroups();
+      this.getCurrentUser(this.state.id);
     }
     else {
-      this.props.getCurrentUserGroups();
-      fetch(`${config.API_BASE_URL}/user/profile/${this.state.id}`, {
-        headers: {
-          'Content-Type': 'application/json-patch+json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-          .then(res => res.json())
-          .then(res => {
-            this.setState({
-              userData: res.userProfile,
-              teacherProfile: res.teacherProfile
-            },
-              console.log(this.state.userData))
-          })
-          .catch(error => error)
+      this.onSetResult(defaultUserData)
     }
   }
+
+  getCurrentUser = (id) => {
+    fetch(`${config.API_BASE_URL}/user/profile/${id}`, {
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then(res => res.json())
+      .then(res => this.onSetResult(res))
+      .catch(error => error)
+  };
+
+  onSetResult = (result) => {
+    setTimeout(() => {
+        this.setState({userData: result});
+      }, 1000
+    ) //Убрать таймаут
+  };
 
   render() {
     return (
@@ -88,12 +98,12 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               title={
                 <Row type='flex' align='middle' style={{textAlign: 'center'}}>
                   <Avatar
-                    src={this.state.userData.avatarLink}
+                    src={this.state.userData.userProfile.avatarLink}
                     style={{minHeight: 50, minWidth: 50, marginRight: 20, borderRadius: '50%'}}
                   >
                   </Avatar>
                   <span>
-                    {this.state.userData.name}
+                    {this.state.userData.userProfile.name}
                   </span>
                 </Row>
 
@@ -103,15 +113,15 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             >
               <Row style={{marginBottom: 20}}>
                 <div>Почтовый адрес</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.email}</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.userProfile.email}</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Пол</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.isMan}</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.userProfile.isMan}</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Возраст</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.birthYear} лет</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.userProfile.birthYear} лет</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Основные навыки</div>
@@ -125,19 +135,19 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               <Row style={{marginBottom: 20}}>
                 <div>О себе</div>
                 <div style={{fontSize: 16, color: '#000'}}>
-                  {this.state.userData.description}
+                  {this.state.userData.userProfile.aboutUser}
                 </div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Ссылки</div>
                 <div>
-                  {this.state.userData.contacts.map((item) =>
+                  {this.state.userData.userProfile.contacts ? this.state.userData.userProfile.contacts.map((item) =>
                     <div>
                       <Link to='#' key={item} className='user-link' style={{fontSize: 16}}>
                         {item}
                       </Link>
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </Row>
             </Card>
