@@ -13,6 +13,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
+import {makeSelectIsExists} from "./selectors";
 import {loadCurrentUser} from './actions';
 import {Link} from "react-router-dom";
 import styled from 'styled-components';
@@ -98,7 +99,12 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
           >
             <Input value={this.state.password} onChange={this.onHandlePasswordChange} type='password' placeholder=""/>
           </FormItem>
-          <Row style={{display:'flex', alignItems:'center', width:'100%', marginTop: 55, marginBottom: 25}}>
+          {this.props.isExists ? null :
+            <div style={{color: 'red'}}>
+              Данного пользователя не существует
+            </div>
+          }
+          <Row style={{display:'flex', alignItems:'center', width:'100%', marginTop: 20, marginBottom: 25}}>
             <Col>
               <span style={{whiteSpace: 'nowrap', fontSize: 15, marginRight: 20 }}>Или войдите через</span>
             </Col>
@@ -126,7 +132,7 @@ SingingInForm.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-
+  isExists: makeSelectIsExists()
 });
 
 function mapDispatchToProps(dispatch) {

@@ -15,7 +15,8 @@ const initialState = fromJS({
     name: localStorage.getItem('name'),
     avatarLink: localStorage.getItem('avatarLink'),
     token: localStorage.getItem('token')
-  }
+  },
+  isExists: true
 });
 
 function appReducer(state = initialState, action) {
@@ -31,15 +32,25 @@ function appReducer(state = initialState, action) {
         localStorage.setItem('token', `${action.token}`);
         location.assign('/')
       }
-      else if(action.name === 'SyntaxError') {
-        message.error('Данного пользователя не существует')
-      }
-      return state
+      if(action.name === 'SyntaxError') {
+        return state
           .set('loading', false)
           .set('error', false)
           .setIn(['currentUser', 'name'], action.name)
           .setIn(['currentUser', 'avatarLink'], action.avatarLink)
-          .setIn(['currentUser', 'token'], action.token);
+          .setIn(['currentUser', 'token'], action.token)
+          .set('isExists', false)
+      }
+      else {
+        return state
+          .set('loading', false)
+          .set('error', false)
+          .setIn(['currentUser', 'name'], action.name)
+          .setIn(['currentUser', 'avatarLink'], action.avatarLink)
+          .setIn(['currentUser', 'token'], action.token)
+          .set('isExists', true)
+      }
+
     case LOAD_CURRENT_USER_ERROR:
       return state
         .set('error', action.error)

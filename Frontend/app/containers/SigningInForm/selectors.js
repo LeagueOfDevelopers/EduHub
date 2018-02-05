@@ -3,28 +3,16 @@ import { createSelector } from 'reselect';
 const selectLogin = (state) => state.get('login');
 
 const makeSelectCurrentUser = () => createSelector(
-  selectLogin(),
-  (globalState) => globalState.get('currentUser')
+  selectLogin,
+  (globalState) => globalState.get('currentUser').toJS()
 );
 
-const makeSelectUsername = () => createSelector(
-  makeSelectCurrentUser(),
-  (currentUser) => currentUser.get('name')
-);
-
-const makeSelectAvatarLink = () => createSelector(
-  makeSelectCurrentUser(),
-  (currentUser) => currentUser.get('avatarLink')
-);
-
-const makeSelectToken = () => createSelector(
-  makeSelectCurrentUser(),
-  (currentUser) => currentUser.get('token')
+const makeSelectIsExists = () => createSelector(
+  selectLogin,
+  (globalState) => globalState.get('isExists')
 );
 
 export {
   makeSelectCurrentUser,
-  makeSelectUsername,
-  makeSelectAvatarLink,
-  makeSelectToken
+  makeSelectIsExists
 }
