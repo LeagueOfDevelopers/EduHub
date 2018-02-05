@@ -22,6 +22,8 @@ namespace EduHub.Controllers
         [HttpPost]
         [Authorize]
         [Route("message")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult SendMessage([FromBody]SendMessageRequest message, [FromRoute]int groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -34,6 +36,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(MessageResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [Route("message/{messageId}")]
         public IActionResult GetMessage([FromRoute] int groupId,[FromRoute] int messageId)
         {
@@ -44,8 +47,11 @@ namespace EduHub.Controllers
         /// <summary>
         /// Edites message by id
         /// </summary>
+        [Authorize]
         [HttpPut]
         [Route("message/{messageId}")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditMessage([FromBody]EditMessageRequest message,
                 [FromRoute] int groupId, [FromRoute] int messageId)
         {
@@ -56,8 +62,11 @@ namespace EduHub.Controllers
         /// <summary>
         /// Deletes message by id
         /// </summary>
+        [Authorize]
         [HttpDelete]
         [Route("message/{messageId}")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult DeleteMessage([FromRoute]int groupId, [FromRoute]int messageId)
         {
             return Ok($"Сообщение {messageId} удалено из чата группы {groupId}");

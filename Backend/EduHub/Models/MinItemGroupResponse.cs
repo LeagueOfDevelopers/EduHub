@@ -1,4 +1,5 @@
-﻿using EduHubLibrary.Domain;
+﻿using EduHub.Models.Tools;
+using EduHubLibrary.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,11 @@ namespace EduHub.Models
 {
     public class MinItemGroupResponse
     {
-        public GroupInfo GroupInfo { get; set; }
-        public int NumberOfMembers { get; set; }
+        public MinGroupInfo GroupInfo { get; set; }
 
-        public MinItemGroupResponse(GroupInfo groupInfo, int numberOfMembers)
+        public MinItemGroupResponse(MinGroupInfo groupInfo)
         {
             GroupInfo = groupInfo;
-            NumberOfMembers = numberOfMembers;
         }
     }
 }

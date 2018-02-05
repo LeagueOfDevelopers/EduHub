@@ -30,11 +30,11 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetAll();
         }
 
-        public Guid RegUser(string username, Credentials credentials, bool IsTeacher, UserType type, string avatarLink)
+        public Guid RegUser(string username, Credentials credentials, bool IsTeacher, UserType type)
         {
             Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
                 nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
-            User user = new User(username, credentials, IsTeacher, type, avatarLink);
+            User user = new User(username, credentials, IsTeacher, type);
             _userRepository.Add(user);
             return user.Id;
         }

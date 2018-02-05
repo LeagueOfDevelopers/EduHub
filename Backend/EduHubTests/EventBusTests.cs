@@ -17,7 +17,7 @@ namespace EduHubTests
         {
             //Arrange
             var subscription = new Subscription(new EditedGroupEvent(Guid.NewGuid()));
-            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
+            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User);
 
             //Act
             subscription.AddSubscriber(subscriber);
@@ -31,7 +31,7 @@ namespace EduHubTests
         {
             //Arrange
             var subscription = new Subscription(new EditedGroupEvent(Guid.NewGuid()));
-            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
+            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User);
             
             subscription.AddSubscriber(subscriber);
 
@@ -61,7 +61,7 @@ namespace EduHubTests
         {
             //Arrange
             var bus = new EventBus();
-            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
+            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User);
 
             //Act
             bus.AddSubscriber(subscriber, new EditedGroupEvent(Guid.NewGuid()));
@@ -75,7 +75,7 @@ namespace EduHubTests
         {
             //Arrange
             var bus = new EventBus();
-            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User, "avatar");
+            var subscriber = new User("Alena", Credentials.FromRawData("alena", "password"), false, UserType.User);
             IEventInfo eventInfo = new EditedGroupEvent(Guid.NewGuid());
             bus.AddSubscriber(subscriber, eventInfo);
 
@@ -91,8 +91,8 @@ namespace EduHubTests
         {
             //Arrange
             var messageBus = new EventBus();
-            var user1 = new User("name", Credentials.FromRawData("email", "password"), false, UserType.User, "avatar");
-            var user2 = new User("name", Credentials.FromRawData("email2", "password"), false, UserType.User, "avatar");
+            var user1 = new User("name", Credentials.FromRawData("email", "password"), false, UserType.User);
+            var user2 = new User("name", Credentials.FromRawData("email2", "password"), false, UserType.User);
             var groupId = Guid.NewGuid();
             var @event = new EditedGroupEvent(groupId);
             messageBus.AddSubscriber(user1, @event);
@@ -111,7 +111,7 @@ namespace EduHubTests
         {
             //Arrange
             var messageBus = new EventBus();
-            var user = new User("name", Credentials.FromRawData("email", "password"), false, UserType.User, "avatar");
+            var user = new User("name", Credentials.FromRawData("email", "password"), false, UserType.User);
             var groupId = Guid.NewGuid();
             var @event = new EditedGroupEvent(groupId);
             messageBus.AddSubscriber(user, @event);

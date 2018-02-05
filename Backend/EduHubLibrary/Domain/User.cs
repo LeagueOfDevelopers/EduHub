@@ -23,14 +23,13 @@ namespace EduHubLibrary.Domain
         public Guid Id { get; private set; }
         public List<Invitation> ListOfInvitations { get; private set; }
 
-        public User(string name, Credentials credentials, bool isTeacher, UserType type, string avatarLink)
+        public User(string name, Credentials credentials, bool isTeacher, UserType type)
         {
             Ensure.String.IsNotNullOrWhiteSpace(name);
-            Ensure.String.IsNotNullOrWhiteSpace(avatarLink);
             Credentials = Ensure.Any.IsNotNull(credentials);
             Type = type;
             TeacherProfile = new TeacherProfile();
-            UserProfile = new UserProfile(name, Credentials.Email, avatarLink, isTeacher);
+            UserProfile = new UserProfile(name, Credentials.Email, isTeacher);
             IsActive = true;
             Id = Guid.NewGuid();
             ListOfInvitations = new List<Invitation>();

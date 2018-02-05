@@ -27,6 +27,7 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(size);
             Ensure.Any.IsNotNull(groupType);
             Ensure.Any.IsNotNull(moneyPerUser);
+
             bool isActive = true;
             GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
         }
@@ -40,6 +41,7 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(size);
             Ensure.Any.IsNotNull(groupType);
             Ensure.Any.IsNotNull(moneyPerUser);
+
             bool isActive = true;
             GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
             listOfMembers = new List<Member>();
@@ -54,6 +56,7 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new AlreadyMemberException(newMemberId, GroupInfo.Id)));
             Ensure.Bool.IsTrue(listOfMembers.Count < GroupInfo.Size, nameof(GroupInfo.Size),
                 opt => opt.WithException(new GroupIsFullException(GroupInfo.Id)));
+
             var newMember = new Member(newMemberId, MemberRole.Member);
             listOfMembers.Add(newMember);
             
@@ -69,11 +72,13 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new MemberNotFoundException(deletingPerson)));
             Ensure.Bool.IsTrue(requestedPerson == deletingPerson || requestedMember.MemberRole == MemberRole.Creator,
                 nameof(DeleteMember), opt => opt.WithException(new NotEnoughPermissionsException(requestedPerson)));
+
             if (deletingMember.MemberRole == MemberRole.Creator)
             {
                 DeleteCreator(deletingMember);
                 return;
             }
+
             listOfMembers.Remove(deletingMember);
         }
 

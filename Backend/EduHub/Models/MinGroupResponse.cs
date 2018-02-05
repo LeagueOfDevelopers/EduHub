@@ -7,9 +7,9 @@ namespace EduHub.Models
 {
     public class MinGroupResponse
     {
-        public IEnumerable<MinItemGroupResponse> Groups { get; set; }
+        public List<MinItemGroupResponse> Groups { get; set; }
 
-        public MinGroupResponse(IEnumerable<MinItemGroupResponse> groups)
+        public MinGroupResponse(List<MinItemGroupResponse> groups)
         {
             Groups = groups;
         }

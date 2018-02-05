@@ -15,11 +15,10 @@ namespace EduHubLibrary.Domain.Tools
         public string AvatarLink { get; set; }
         public List<string> Contacts { get; set; }
 
-        public UserProfile(string name, string email, string avatarLink, bool isTeacher)
+        public UserProfile(string name, string email, bool isTeacher)
         {
             Email = email;
             Name = name;
-            AvatarLink = avatarLink;
             IsTeacher = isTeacher;
         }
     }

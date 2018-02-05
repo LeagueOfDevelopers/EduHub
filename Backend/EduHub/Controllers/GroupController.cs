@@ -11,6 +11,7 @@ using System.Linq;
 using Swashbuckle.AspNetCore.Examples;
 using EduHub.Models.Examples;
 using EduHub.Extensions;
+using EduHub.Models.Tools;
 
 namespace EduHub.Controllers
 {
@@ -26,6 +27,8 @@ namespace EduHub.Controllers
         [HttpPost]
         [SwaggerResponse(200, typeof(CreateGroupResponse))]
         [SwaggerRequestExample(typeof(CreateGroupRequest), typeof(CreateGroupRequestExample))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult AddGroup([FromBody]CreateGroupRequest newGroup)
         {
             string a = Request.Headers["Authorization"];
@@ -43,6 +46,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("search")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult SearchGroupByTag([FromBody]SearchOfGroupRequest request)
         {
             return Ok($"Поиск групп с тегом {request.Tag} осуществлен");
@@ -54,6 +58,8 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{groupId}/title")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupTitle([FromBody]string newTitle, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -68,6 +74,8 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{groupId}/description")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupDescription([FromBody]string newDescription, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -82,6 +90,8 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{groupId}/tags")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupTags([FromBody]List<string> newTags, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -96,6 +106,8 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{groupId}/size")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupSize([FromBody]int newSize, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -110,6 +122,8 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("{groupId}/price")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupPrice([FromBody]double newPrice, [FromRoute]Guid groupId)
         {
             string a = Request.Headers["Authorization"];
@@ -124,23 +138,40 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpDelete]
         [Route("{groupId}")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult DeleteGroup([FromRoute] int groupId)
         {
             return Ok($"Группа {groupId} удалена");
         }
 
         /// <summary>
-        /// Returns all groups without any filters (for now)
+        /// Returns full and filling groups
         /// </summary>
-        ///<response code="200">Get your groups</response>
+        ///<response code="200">Get groups</response>
         [HttpGet]
-        [SwaggerResponse(200, Type = typeof(MinGroupResponse))]
+        [SwaggerResponse(200, Type = typeof(MinFilterGroupResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult All()
         {
             IEnumerable<Group> groups =  _groupFacade.GetGroups();
-            List<MinItemGroupResponse> items = new List<MinItemGroupResponse>();
-            groups.ToList().ForEach(g => items.Add(new MinItemGroupResponse(g.GroupInfo, _groupFacade.GetMembersOfGroup(g.GroupInfo.Id).Count<Member>())));
-            MinGroupResponse response = new MinGroupResponse(items);
+            List<MinItemGroupResponse> FillingGroupList = new List<MinItemGroupResponse>();
+            List<MinItemGroupResponse> fullGroupList = new List<MinItemGroupResponse>();
+            groups.ToList().ForEach(g => 
+            {
+                int memberAmount = _groupFacade.GetGroupMembers(g.GroupInfo.Id).ToList().Count;
+                MinGroupInfo groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size,
+                    g.GroupInfo.MoneyPerUser, g.GroupInfo.GroupType, g.GroupInfo.Tags);
+                if (memberAmount == g.GroupInfo.Size)
+                {
+                    fullGroupList.Add(new MinItemGroupResponse(groupInfo));
+                }
+                else
+                {
+                    FillingGroupList.Add(new MinItemGroupResponse(groupInfo));
+                }
+            });
+            MinFilterGroupResponse response = new MinFilterGroupResponse(fullGroupList, FillingGroupList);
             return Ok(response);
         }
 
@@ -150,11 +181,12 @@ namespace EduHub.Controllers
         [HttpGet]
         [Route("{groupId}")]
         [SwaggerResponse(200, Type = typeof(GroupResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetGroup([FromRoute] Guid groupId)
         {
             Group group = _groupFacade.GetGroup(groupId);
             List<GroupMember> membersOfGroup = new List<GroupMember>();
-            _groupFacade.GetMembersOfGroup(groupId).ToList().ForEach(u => membersOfGroup.Add
+            _groupFacade.GetGroupMembers(groupId).ToList().ForEach(u => membersOfGroup.Add
             (new GroupMember(u, _userFacade.GetUser(u.UserId).UserProfile.Name, _userFacade.GetUser(u.UserId).UserProfile.AvatarLink)));
 
             GroupResponse response = new GroupResponse(membersOfGroup, group.GroupInfo, group.Status, group.Teacher);

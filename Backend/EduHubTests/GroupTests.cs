@@ -169,7 +169,7 @@ namespace EduHubTests
         public void TryToApproveTeacher_TeacherIsSet()
         {
             //Arrange
-            User teacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User, "avatar");
+            User teacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             List<string> tags = new List<string>();
             tags.Add("The best group");
             Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
@@ -186,8 +186,8 @@ namespace EduHubTests
         public void TryToApproveAnotherTeacherWithApprovedTeacher_GetException()
         {
             //Arrange
-            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User, "avatar");
-            User newTeacher = new User("Bogdan", new Credentials("email", "password"), true, UserType.User, "avatar");
+            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
+            User newTeacher = new User("Bogdan", new Credentials("email", "password"), true, UserType.User);
             List<string> tags = new List<string>();
             tags.Add("The best group");
             Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
@@ -201,7 +201,7 @@ namespace EduHubTests
         public void TryToOfferCourseWithApprovedTeacher_IsItPossible()
         {
             //Arrange
-            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User, "avatar");
+            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             List<string> tags = new List<string>();
             tags.Add("The best group");
             Guid creatorId = Guid.NewGuid();
@@ -224,7 +224,7 @@ namespace EduHubTests
         public void TryToStartCourseWithApprovedTeacherAndAllReadyMembers_IsItPossible()
         {
             //Arrange
-            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User, "avatar");
+            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             List<string> tags = new List<string>();
             tags.Add("The best group");
             Guid creatorId = Guid.NewGuid();

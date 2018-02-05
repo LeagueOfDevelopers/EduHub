@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/administrate")]
     public class AdminController : Controller
@@ -17,6 +19,8 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("{userId}/invitation")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult GenerateInvitation([FromRoute] int userId)
         {
             return Ok($"Приглашение {userId} сгенерировано");
@@ -27,6 +31,8 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("{userId}")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult AddAdmin([FromRoute] int userId)
         {
             return Ok($"Администратор {userId} добавлен");
@@ -37,6 +43,8 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpDelete]
         [Route("{userId}")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult DeleteAdmin([FromRoute] int userId)
         {
             return Ok($"Администратор {userId} удален");

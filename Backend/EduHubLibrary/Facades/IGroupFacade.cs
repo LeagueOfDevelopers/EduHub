@@ -15,7 +15,7 @@ namespace EduHubLibrary.Facades
         void OfferCurriculum(Guid userId, Guid groupId, string description);
         IEnumerable<Group> GetGroups();
         Group GetGroup(Guid id);
-        IEnumerable<Member> GetMembersOfGroup(Guid groupId);
+        IEnumerable<Member> GetGroupMembers(Guid groupId);
         void ChangeGroupTitle(Guid idOfGroup, Guid idOfChanger, string newTitle);
         void ChangeGroupDescription(Guid idOfGroup, Guid idOfChanger, string newDescription);
         void ChangeGroupTags(Guid idOfGroup, Guid idOfChanger, List<string> newTags);

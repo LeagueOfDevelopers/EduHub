@@ -85,7 +85,7 @@ namespace EduHubLibrary.Facades
             return _groupRepository.GetGroupById(id);
         }
 
-        public IEnumerable<Member> GetAllMembersOfGroup(Guid id)
+        public IEnumerable<Member> GetGroupMembers(Guid id)
         {
             return _groupRepository.GetGroupById(id).GetAllMembers();
         }

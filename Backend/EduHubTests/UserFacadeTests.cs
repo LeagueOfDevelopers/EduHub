@@ -30,12 +30,11 @@ namespace EduHubTests
             var expectedName = "yaroslav";
             var expectedPass = "123123";
             var expectedEmail = "bus.yaroslav@gmail.com";
-            var expectedLink = "avatar.ru";
             UserType expectedType = UserType.User;
             var expectedStatus = false;
             
             //Act
-            userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass), expectedStatus, expectedType, expectedLink);
+            userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass), expectedStatus, expectedType);
             List<User> listOfUsers = userFacade.GetUsers().ToList();
             User currentUser = listOfUsers[0];
             
@@ -55,8 +54,8 @@ namespace EduHubTests
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(2, 10, 0, 100), eventBus);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
-            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
             
             List<User> listOfUsers = userFacade.GetUsers().ToList();
             User testUser = listOfUsers[0];
@@ -93,8 +92,8 @@ namespace EduHubTests
             IEventBus eventBus = new EventBus();
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
-            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
 
             //Act
             var actual = userFacade.DoesUserExist("Alena");
@@ -113,8 +112,8 @@ namespace EduHubTests
             IEventBus eventBus = new EventBus();
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
-            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
 
             //Act
             var actual = userFacade.DoesUserExist("Gal");
@@ -133,8 +132,8 @@ namespace EduHubTests
             IEventBus eventBus = new EventBus();
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
-            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
 
             //Act
             var actual = userFacade.DoesUserExist("Grisha");
@@ -153,9 +152,9 @@ namespace EduHubTests
             IEventBus eventBus = new EventBus();
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
-            userFacade.RegUser("Alenka", new Credentials("email1", "password"), true, UserType.User, "avatar.ru");
-            userFacade.RegUser("Alena", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
-            userFacade.RegUser("Olena", new Credentials("email3", "password"), true, UserType.User, "avatar.ru");
+            userFacade.RegUser("Alenka", new Credentials("email1", "password"), true, UserType.User);
+            userFacade.RegUser("Alena", new Credentials("email2", "password"), true, UserType.User);
+            userFacade.RegUser("Olena", new Credentials("email3", "password"), true, UserType.User);
 
             List<User> allUsers = inMemoryUserRepository.GetAll().ToList();
             
@@ -182,8 +181,8 @@ namespace EduHubTests
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
             //Act
-            userFacade.RegUser("Grisha", new Credentials("sokolov@mail.ru", "password1"), true, UserType.User, "avatar1.ru");
-            userFacade.RegUser("Sasha", new Credentials("sokolov@mail.ru", "password2"), false, UserType.User, "avatar2.ru");
+            userFacade.RegUser("Grisha", new Credentials("sokolov@mail.ru", "password1"), true, UserType.User);
+            userFacade.RegUser("Sasha", new Credentials("sokolov@mail.ru", "password2"), false, UserType.User);
         }
 
         [TestMethod]
@@ -196,8 +195,8 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), eventBus);
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
-            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User, "avatar.ru");
-            userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), true, UserType.User, "avatar.ru");
+            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), true, UserType.User);
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid creatorId = allUsers[0].Id;
             Guid teacherId = allUsers[1].Id;
@@ -228,8 +227,8 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), eventBus);
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
-            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User, "avatar.ru");
-            userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false, UserType.User, "avatar.ru");
+            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false, UserType.User);
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid creatorId = allUsers[0].Id;
             Guid pseudoTeacherId = allUsers[1].Id;
@@ -255,8 +254,8 @@ namespace EduHubTests
             GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000), eventBus);
             UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, eventBus);
 
-            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User, "avatar.ru");
-            userFacade.RegUser("Invited", new Credentials("email2", "password"), false, UserType.User, "avatar.ru");
+            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            userFacade.RegUser("Invited", new Credentials("email2", "password"), false, UserType.User);
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid creatorId = allUsers[0].Id;
             Guid invitedId = allUsers[1].Id;

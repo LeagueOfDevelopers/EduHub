@@ -12,9 +12,11 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using EduHub.Extensions;
 using EduHubLibrary.Domain.Tools;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/group/{groupId}/course")]
     public class CourseController : Controller
@@ -24,6 +26,8 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("curriculum")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult SuggestCurriculum([FromBody]OfferCurriculum curriculum, [FromRoute] Guid groupId)
         {
             Ensure.Any.IsNotNull(curriculum);
@@ -36,6 +40,8 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPut]
         [Route("curriculum/{userId}")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult ApproveCurriculum([FromRoute] Guid groupId, [FromRoute] Guid userId)
         {
             _groupFacade.AcceptCurriculum(userId, groupId);
@@ -47,6 +53,8 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpDelete]
         [Route("curriculum")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult RejectCurriculum([FromRoute] Guid groupId)
         {
             return Ok("Учебный план отклонен");
@@ -56,6 +64,8 @@ namespace EduHub.Controllers
         /// Closes course for group
         /// </summary>
         [HttpDelete]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult CloseCourse([FromRoute] Guid groupId)
         {
             _groupFacade.GetGroup(groupId).Status = CourseStatus.Finished;
@@ -67,6 +77,8 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("review")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult LeaveReview([FromBody]ReviewRequest review, [FromRoute] Guid groupId)
         {
             return Ok($"Отзыв '{review.Opinion}' с оценкой {review.Rating} был добавлен");

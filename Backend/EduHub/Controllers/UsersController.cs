@@ -8,6 +8,7 @@ using EduHub.Models;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Domain;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub.Controllers
 {
@@ -21,6 +22,7 @@ namespace EduHub.Controllers
         [HttpPost]
         [Route("search")]
         [SwaggerResponse(200, typeof(MinUserResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult SearchUser([FromBody]SearchOfUserRequest user)
         {
             if (_userFacade.DoesUserExist(user.Name))
@@ -28,7 +30,7 @@ namespace EduHub.Controllers
                 IEnumerable<User> foundUsers = _userFacade.FindByName(user.Name);
                 List<MinItemUserResponse> items = new List<MinItemUserResponse>();
                 foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name, u.UserProfile.Email,
-                    u.UserProfile.IsTeacher, u.TeacherProfile, u.IsActive)));
+                    u.UserProfile.IsTeacher, u.IsActive, u.UserProfile.AvatarLink)));
                 MinUserResponse response = new MinUserResponse(items);
                 return Ok(response);
             }
@@ -41,8 +43,11 @@ namespace EduHub.Controllers
         /// <summary>
         /// Reports user somehow (for now)
         /// </summary>
+        [Authorize]
         [HttpPost]
         [Route("{userId}/report")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult Report([FromRoute]int userId)
         {
             return Ok($"Жалоба на пользователя добавлена");
