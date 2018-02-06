@@ -178,8 +178,7 @@ namespace EduHub.Controllers
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            List<NotifyResponse> notifies = new List<NotifyResponse>();
-            _userFacade.GetUser(userId).GetNotifies().ToList().ForEach(n => notifies.Add(new NotifyResponse(n.Description, n.OccurredOn)));
+            List<string> notifies = _userFacade.GetNotifies(userId).ToList();
             return Ok(notifies);
         }
 

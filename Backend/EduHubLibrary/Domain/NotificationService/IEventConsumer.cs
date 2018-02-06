@@ -4,8 +4,8 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
-    public interface IEventInfo
+    public interface IEventConsumer<T> where T : IEventInfo
     {
-        string GetEventType();
+        void Consume(T @event);
     }
 }

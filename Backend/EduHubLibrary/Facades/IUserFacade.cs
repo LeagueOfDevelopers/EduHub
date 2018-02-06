@@ -18,6 +18,7 @@ namespace EduHubLibrary.Facades
         IEnumerable<Group> GetAllGroupsOfUser(Guid userId);
         bool DoesUserExist(string name);
         IEnumerable<User> FindByName(string name);
-        IEnumerable<Event> GetNotifies(Guid userId);
+        IEnumerable<string> GetNotifies(Guid userId);
+        void AddNotify(Guid userId, string notify);
     }
 }

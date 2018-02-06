@@ -5,13 +5,12 @@ using EduHubLibrary.Domain.Exceptions;
 using EnsureThat;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.Events;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EduHubTests")]
 
 namespace EduHubLibrary.Domain
 {
-    public class Group : ISubscriber
+    public class Group
     {
         public Chat Chat { get; private set; }
         public GroupInfo GroupInfo { get; set; }
@@ -180,15 +179,6 @@ namespace EduHubLibrary.Domain
             Member newCreator = listOfMembers[indexOfCreator + 1];
             newCreator.MemberRole = MemberRole.Creator;
             listOfMembers.Remove(deletingCreator);
-        }
-
-        public void GetMessage(Event @event)
-        {
-            if (@event.EventInfo.GetEventType().Equals("InvitationToGroupEvent"))
-            {
-                InvitationToGroupEvent eventInfo = (InvitationToGroupEvent)@event.EventInfo;
-                listOfInvitations.Add(eventInfo.Invitation);
-            }
         }
 
         private List<Member> listOfMembers;

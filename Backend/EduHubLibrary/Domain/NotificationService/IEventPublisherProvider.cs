@@ -4,8 +4,8 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
-    public interface ISubscriber
+    public interface IEventPublisherProvider
     {
-        void GetMessage(Event @event);
+        IEventPublisher GetEventPublisher();
     }
 }

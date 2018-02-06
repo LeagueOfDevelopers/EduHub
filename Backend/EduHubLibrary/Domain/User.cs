@@ -13,7 +13,7 @@ using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Domain
 {
-    public class User : ISubscriber
+    public class User
     {
         public Credentials Credentials { get; private set; }
         public UserType Type { get; set; }
@@ -33,7 +33,7 @@ namespace EduHubLibrary.Domain
             IsActive = true;
             Id = Guid.NewGuid();
             ListOfInvitations = new List<Invitation>();
-            _events = new InMemoryEventRepository();
+            _notifies = new List<string>();
         }
 
         #region Edit Profile Data Methods
@@ -139,21 +139,16 @@ namespace EduHubLibrary.Domain
             return Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
         }
 
-        public List<Event> GetNotifies()
+        public void AddNotify(string notify)
         {
-            return _events.GetAllEvents().ToList();
+            _notifies.Add(notify);
         }
 
-
-        //TODO delete: It was created to show work of message bus
-        public void GetMessage(Event @event)
+        public List<string> GetNotifies()
         {
-            if (@event.EventInfo.GetEventType().Equals("EditedGroupEvent"))
-            {
-                _events.AddMessage(@event);
-            }
+            return _notifies;
         }
-
-        private InMemoryEventRepository _events;
+        
+        private List<string> _notifies;
     }
 }

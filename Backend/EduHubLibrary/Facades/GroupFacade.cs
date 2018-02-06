@@ -13,12 +13,12 @@ namespace EduHubLibrary.Facades
     public class GroupFacade : IGroupFacade
     {
         public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
-            GroupSettings groupSettings, IEventBus messageBus)
+            GroupSettings groupSettings, IEventPublisher eventPublisher)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
             _groupSettings = groupSettings;
-            _eventBus = messageBus;
+            _eventPublisher = eventPublisher;
         }
 
         public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size, double totalValue, bool isPrivate,
@@ -32,11 +32,6 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new UserNotFoundException(userId)));
             Group group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
-
-            _eventBus.AddSubscriber(group, new InvitationToGroupEvent(new Invitation(Guid.NewGuid(), Guid.NewGuid(), group.GroupInfo.Id, MemberRole.Default, InvitationStatus.Unknown)));
-            
-            //TODO delete: It was created to show work of message bus
-            _eventBus.AddSubscriber(_userRepository.GetUserById(userId), new EditedGroupEvent(group.GroupInfo.Id));
             
             return group.GroupInfo.Id;
         }
@@ -50,6 +45,7 @@ namespace EduHubLibrary.Facades
             Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AddMember),
                 opt => opt.WithException(new GroupNotFoundException(groupId)));
             currentGroup.AddMember(newMemberId);
+            //_eventPublisher.PublishEvent(new NewMemberInGroup(groupId, newMemberId));
         }
 
         public void DeleteTeacher(Guid groupId, Guid requestedPerson, Guid teacherId)
@@ -146,10 +142,6 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.String.IsNotNullOrWhiteSpace(newTitle);
             currentGroup.GroupInfo.Title = newTitle;
-
-            //TODO delete: It was created to show work of message bus
-            _eventBus.SendMessage(new Event(new EditedGroupEvent(idOfGroup)));
-            _eventBus.Notify();
         }
 
         public void ChangeGroupDescription(Guid idOfGroup, Guid idOfChanger, string newDescription)
@@ -203,7 +195,7 @@ namespace EduHubLibrary.Facades
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
         private readonly GroupSettings _groupSettings;
-        private IEventBus _eventBus;
+        private readonly IEventPublisher _eventPublisher;
         
     }
 }

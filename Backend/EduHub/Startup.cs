@@ -20,6 +20,8 @@ using Swashbuckle.AspNetCore.Examples;
 using System;
 using Serilog.Events;
 using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.Consumers;
+using EduHubLibrary.Domain.Events;
 
 namespace EduHub
 {
@@ -38,18 +40,25 @@ namespace EduHub
         public void ConfigureServices(IServiceCollection services)
         {
             StartLoggly();
+            
+            EventConsumersContainer consumersContainer = new EventConsumersContainer(new EventBusSettings("$HostName", "$VirtualHost", "$UserName", "$Password"));
+
+            //consumersContainer.StartListening();
+            IEventPublisher eventPublisher = consumersContainer.GetEventPublisher();
+            
             var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
                 Configuration.GetValue<int>("MaxGroupSize"),
                 Configuration.GetValue<double>("MinGroupValue"),
                 Configuration.GetValue<double>("MaxGroupValue"));
             var userRepository = new InMemoryUserRepository();
             var groupRepository = new InMemoryGroupRepository();
-            var eventBus = new EventBus();
-            var userFacade = new UserFacade(userRepository, groupRepository, eventBus);
-            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings, eventBus);
+            var userFacade = new UserFacade(userRepository, groupRepository);
+            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings, eventPublisher);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IHostingEnvironment>(Env);
+            
+            //consumersContainer.RegisterConsumer(new GroupMembersConsumer(userFacade, groupFacade));
 
             services.AddSwaggerGen(current =>
             {
