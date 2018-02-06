@@ -13,12 +13,11 @@ namespace EduHubLibrary.Facades
     public class GroupFacade : IGroupFacade
     {
         public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
-            GroupSettings groupSettings, IEventPublisher eventPublisher)
+            GroupSettings groupSettings)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
             _groupSettings = groupSettings;
-            _eventPublisher = eventPublisher;
         }
 
         public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size, double totalValue, bool isPrivate,
@@ -45,7 +44,6 @@ namespace EduHubLibrary.Facades
             Group currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AddMember),
                 opt => opt.WithException(new GroupNotFoundException(groupId)));
             currentGroup.AddMember(newMemberId);
-            //_eventPublisher.PublishEvent(new NewMemberInGroup(groupId, newMemberId));
         }
 
         public void DeleteTeacher(Guid groupId, Guid requestedPerson, Guid teacherId)
@@ -195,7 +193,6 @@ namespace EduHubLibrary.Facades
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
         private readonly GroupSettings _groupSettings;
-        private readonly IEventPublisher _eventPublisher;
         
     }
 }

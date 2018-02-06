@@ -4,10 +4,9 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
-    public interface IEventConsumersContainer
+    public interface IEventBus
     {
         void RegisterConsumer<T>(IEventConsumer<T> consumer) where T : EventInfoBase;
-        void StartListening();
-        void StopListening();
+        void PublishEvent<T>(T @event) where T : EventInfoBase;
     }
 }

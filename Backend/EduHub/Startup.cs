@@ -40,12 +40,6 @@ namespace EduHub
         public void ConfigureServices(IServiceCollection services)
         {
             StartLoggly();
-            
-            EventConsumersContainer consumersContainer = new EventConsumersContainer(new EventBusSettings("$HostName", "$VirtualHost", "$UserName", "$Password"));
-
-            //consumersContainer.StartListening();
-            IEventPublisher eventPublisher = consumersContainer.GetEventPublisher();
-            
             var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
                 Configuration.GetValue<int>("MaxGroupSize"),
                 Configuration.GetValue<double>("MinGroupValue"),
@@ -53,12 +47,12 @@ namespace EduHub
             var userRepository = new InMemoryUserRepository();
             var groupRepository = new InMemoryGroupRepository();
             var userFacade = new UserFacade(userRepository, groupRepository);
-            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings, eventPublisher);
+            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IHostingEnvironment>(Env);
             
-            //consumersContainer.RegisterConsumer(new GroupMembersConsumer(userFacade, groupFacade));
+
 
             services.AddSwaggerGen(current =>
             {
