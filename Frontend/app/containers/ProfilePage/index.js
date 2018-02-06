@@ -39,20 +39,18 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
 
     this.state = {
       id: this.props.match.params.id,
-      userData: {
-        userProfile: {
-          name: '',
-          email: '',
-          avatarLink: '',
-          isMan: '',
-          birthYear: null,
-          aboutUser: '',
-          contacts: []
-        },
-        teacherProfile: {
-          reviews: [],
-          skills: []
-        }
+      userProfile: {
+        name: '',
+        email: '',
+        avatarLink: '',
+        isMan: '',
+        birthYear: null,
+        aboutUser: '',
+        contacts: []
+      },
+      teacherProfile: {
+        reviews: [],
+        skills: []
       }
     };
 
@@ -83,10 +81,10 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   };
 
   onSetResult = (result) => {
-    setTimeout(() => {
-        this.setState({userData: result});
-      }, 1000
-    ) //Убрать таймаут
+    this.setState({
+      userProfile: result.userProfile ? result.userProfile : {},
+      teacherProfile: result.teacherProfile ? result.teacherProfile : {},
+    });
   };
 
   render() {
@@ -98,12 +96,12 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               title={
                 <Row type='flex' align='middle' style={{textAlign: 'center'}}>
                   <Avatar
-                    src={this.state.userData.userProfile.avatarLink}
+                    src={this.state.userProfile.avatarLink}
                     style={{minHeight: 50, minWidth: 50, marginRight: 20, borderRadius: '50%'}}
                   >
                   </Avatar>
                   <span>
-                    {this.state.userData.userProfile.name}
+                    {this.state.userProfile.name}
                   </span>
                 </Row>
 
@@ -113,41 +111,49 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             >
               <Row style={{marginBottom: 20}}>
                 <div>Почтовый адрес</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.userProfile.email}</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userProfile.email}</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Пол</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.userProfile.isMan}</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userProfile.isMan ?
+                  this.state.userProfile.isMan : 'Не указано'
+                }</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Возраст</div>
-                <div style={{fontSize: 16, color: '#000'}}>{this.state.userData.userProfile.birthYear} лет</div>
+                <div style={{fontSize: 16, color: '#000'}}>{this.state.userProfile.birthYear ?
+                  this.state.userProfile.birthYear + ' лет' : 'Не указано'
+                }</div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Основные навыки</div>
                 <Row gutter={6}>
-                  {this.state.userData.teacherProfile ?
-                    this.state.userData.teacherProfile.skills.map((item) =>
+                  {this.state.teacherProfile.skills &&
+                    this.state.teacherProfile.skills.length !== 0 ?
+                      this.state.teacherProfile.skills.map((item) =>
                     <Link to="#" key={item}>{item}</Link>
-                  ) : null}
+                  ) : <div style={{fontSize: 16, color: '#000'}}>Не указано</div>}
                 </Row>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>О себе</div>
                 <div style={{fontSize: 16, color: '#000'}}>
-                  {this.state.userData.userProfile.aboutUser}
+                  {this.state.userProfile.aboutUser ?
+                    this.state.userProfile.aboutUser : 'Не указано'
+                  }
                 </div>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Ссылки</div>
                 <div>
-                  {this.state.userData.userProfile.contacts ? this.state.userData.userProfile.contacts.map((item) =>
+                  {this.state.userProfile.contacts && this.state.userProfile.contacts.length !== 0
+                    ? this.state.userProfile.contacts.map((item) =>
                     <div>
                       <Link to='#' key={item} className='user-link' style={{fontSize: 16}}>
                         {item}
                       </Link>
                     </div>
-                  ) : null}
+                  ) : <div style={{fontSize: 16, color: '#000'}}>Не указано</div>}
                 </div>
               </Row>
             </Card>
@@ -155,15 +161,13 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
           <Col sm={{span: 24}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>
             <Tabs defaultActiveKey="1" type='card'>
               <TabPane tab="Группы" key="1">
-                {(localStorage.getItem('without_server') === 'true') ?
-                  (
-                    <div className='cards-holder md-cards-holder-center' style={{margin: '30px 0'}}>
-                      {this.props.myGroups.map((item, i) =>
-                        <UnassembledGroupCard {...item}/>
-                      )}
-                    </div>
-                  ) : null
-                }
+                {(
+                  <div className='cards-holder md-cards-holder-center' style={{margin: '30px 0'}}>
+                    {this.props.myGroups.map((item, i) =>
+                      <UnassembledGroupCard key={item.groupInfo.id} {...item}/>
+                    )}
+                  </div>
+                )}
               </TabPane>
               <TabPane tab="Профиль преподавателя" key="3">
 
