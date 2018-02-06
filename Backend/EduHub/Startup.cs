@@ -52,8 +52,6 @@ namespace EduHub
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IHostingEnvironment>(Env);
             
-
-
             services.AddSwaggerGen(current =>
             {
                 current.SwaggerDoc("v1", new Info

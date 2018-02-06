@@ -163,6 +163,14 @@ namespace EduHubLibrary.Domain
                 Status = CourseStatus.Started;
             }
         }
+        
+        internal bool DoesContainsTags(List<string> tags)
+        {
+            if (tags.TrueForAll(t => GroupInfo.Tags.Contains(t)))
+                return true;
+
+            else return false;
+        }
 
         private void DeleteCreator(Member deletingCreator)
         {

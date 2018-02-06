@@ -15,7 +15,6 @@ using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubTests
 {
-    /*
     [TestClass]
     public class UserFacadeTests
     {
@@ -60,9 +59,8 @@ namespace EduHubTests
             User testUser = listOfUsers[0];
             User creator = listOfUsers[1];
 
-            List<string> tags = new List<string>();
-            tags.Add("Math");
-            
+            var tags = new List<string> { "c#" };
+
             groupFacade.CreateGroup(creator.Id, "Group1", tags, "Good group", 5, 0, false, GroupType.MasterClass);
             groupFacade.CreateGroup(creator.Id, "Group2", tags, "The best group!", 7, 0, true, GroupType.Seminar);
             
@@ -194,8 +192,7 @@ namespace EduHubTests
             Guid creatorId = allUsers[0].Id;
             Guid teacherId = allUsers[1].Id;
 
-            var tags = new List<string>();
-            tags.Add("js");
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -225,8 +222,7 @@ namespace EduHubTests
             Guid creatorId = allUsers[0].Id;
             Guid pseudoTeacherId = allUsers[1].Id;
 
-            var tags = new List<string>();
-            tags.Add("js");
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -236,6 +232,7 @@ namespace EduHubTests
             userFacade.Invite(creatorId, pseudoTeacherId, createdGroupId, MemberRole.Teacher);
         }
 
+        /*
         [TestMethod]
         public void TryToInviteUser_GetAddedInvitationInGroup()
         {
@@ -264,6 +261,6 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(groupFacade.GetGroup(groupId).GetAllInvitation().Count, 1);
         }
+        */
     }
-    */
 }

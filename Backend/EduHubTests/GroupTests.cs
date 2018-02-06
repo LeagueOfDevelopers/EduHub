@@ -18,10 +18,9 @@ namespace EduHubTests
             var userId = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string>();
+            var tags = new List<string> { "c#" };
             var size = 3;
             var moneyPerUser = 100.0;
-            tags.Add("js");
             GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
@@ -36,10 +35,9 @@ namespace EduHubTests
             var userId = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string>();
+            var tags = new List<string> { "c#" };
             var size = 3;
             var moneyPerUser = 100.0;
-            tags.Add("js");
             
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
@@ -54,10 +52,9 @@ namespace EduHubTests
             var idOfInvitedUser = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string>();
+            var tags = new List<string> { "c#" };
             var size = 3;
             var moneyPerUser = 100.0;
-            tags.Add("js");
             
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
@@ -74,10 +71,9 @@ namespace EduHubTests
             var expected = 1;
             var title = "some group";
             var description = "some description";
-            var tags = new List<string>();
+            var tags = new List<string> { "c#" };
             var size = 3;
             var moneyPerUser = 100.0;
-            tags.Add("js");
             
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
@@ -96,13 +92,12 @@ namespace EduHubTests
             var userId = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string>();
+            var tags = new List<string> { "c#" };
             tags.Add("js");
             var idOfInvitedUser = Guid.NewGuid();
             var expected = 2;
             var size = 3;
             var moneyPerUser = 100.0;
-            tags.Add("js");
             
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
@@ -121,10 +116,9 @@ namespace EduHubTests
             var idOfInvitedUser = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string>();
+            var tags = new List<string> { "c#" };
             var size = 3;
             var moneyPerUser = 100.0;
-            tags.Add("js");
             var expected = 1;
             
             //Act
@@ -144,10 +138,9 @@ namespace EduHubTests
             var userId = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string>();
+            var tags = new List<string> { "c#" };
             var size = 3;
             var moneyPerUser = 100.0;
-            tags.Add("js");
             var idOfInvitedUser = Guid.NewGuid();
             var expectedRole = MemberRole.Creator;
             var expectedLength = 1;
@@ -170,8 +163,7 @@ namespace EduHubTests
         {
             //Arrange
             User teacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            List<string> tags = new List<string>();
-            tags.Add("The best group");
+            var tags = new List<string> { "c#" };
             Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
@@ -188,8 +180,7 @@ namespace EduHubTests
             //Arrange
             User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             User newTeacher = new User("Bogdan", new Credentials("email", "password"), true, UserType.User);
-            List<string> tags = new List<string>();
-            tags.Add("The best group");
+            var tags = new List<string> { "c#" };
             Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
@@ -202,8 +193,7 @@ namespace EduHubTests
         {
             //Arrange
             User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            List<string> tags = new List<string>();
-            tags.Add("The best group");
+            var tags = new List<string> { "c#" };
             Guid creatorId = Guid.NewGuid();
             Guid user1 = Guid.NewGuid();
             Guid user2 = Guid.NewGuid();
@@ -225,8 +215,7 @@ namespace EduHubTests
         {
             //Arrange
             User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            List<string> tags = new List<string>();
-            tags.Add("The best group");
+            var tags = new List<string> { "c#" };
             Guid creatorId = Guid.NewGuid();
             Guid user1 = Guid.NewGuid();
             Guid user2 = Guid.NewGuid();

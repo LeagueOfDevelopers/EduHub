@@ -49,7 +49,17 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult SearchGroupByTag([FromBody]SearchOfGroupRequest request)
         {
-            return Ok($"Поиск групп с тегом {request.Tag} осуществлен");
+            List<MinItemGroupResponse> response = new List<MinItemGroupResponse>();
+            List<Group> foundGroups = _groupFacade.FindByTags(request.Tags).ToList();
+
+            foreach (Group group in foundGroups)
+            {
+                int countOfMembers = _groupFacade.GetGroupMembers(group.GroupInfo.Id).Count();
+                response.Add(new MinItemGroupResponse(new MinGroupInfo(group.GroupInfo.Id, group.GroupInfo.Title, countOfMembers,
+                    group.GroupInfo.Size, group.GroupInfo.MoneyPerUser, group.GroupInfo.GroupType, group.GroupInfo.Tags)));
+            }
+
+            return Ok(response);
         }
 
         /// <summary>

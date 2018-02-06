@@ -1,6 +1,7 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Settings;
 using EnsureThat;
@@ -77,6 +78,22 @@ namespace EduHubLibrary.Facades
         public Group GetGroup(Guid id)
         {
             return _groupRepository.GetGroupById(id);
+        }
+
+        public IEnumerable<Group> FindByTags(IEnumerable<string> tags)
+        {
+            List<Group> result = new List<Group>();
+
+            _groupRepository.GetAll().ToList().ForEach(g => 
+            {
+                if (g.DoesContainsTags(tags.ToList()))
+                    result.Add(g);
+            });
+
+            result.Sort(delegate (Group group1, Group group2) 
+            { return group1.GroupInfo.Tags.Count().CompareTo(group2.GroupInfo.Tags.Count()); });
+
+            return result;
         }
 
         public IEnumerable<Member> GetGroupMembers(Guid id)

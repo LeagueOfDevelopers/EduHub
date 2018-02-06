@@ -14,20 +14,20 @@ namespace EduHubLibrary.Domain.NotificationService
         public EventBus()
         {
         }
-        
+
         public void RegisterConsumer<T>(IEventConsumer<T> consumer) where T : EventInfoBase
         {
-            //TODO: to add consumer in some collection (create way to keep consumers together)      
+            //TODO: to add consumer in some collection (create way to keep consumers together)  
         }
-        
-        public void ConsumeMessage(IEventInfo @event) 
+
+        private void ConsumeMessage<T>(T @event) where T : EventInfoBase 
         {
             //TODO: to choose consume
         }
 
         public void PublishEvent<T>(T @event) where T : EventInfoBase
         {
-            //TODO: to add event
+            ConsumeMessage(@event);
         }
     }
 }

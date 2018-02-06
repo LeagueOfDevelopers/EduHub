@@ -13,7 +13,6 @@ using System.Text;
 
 namespace EduHubTests
 { 
-    /*
     [TestClass]
     public class GroupFacadeTests
     {
@@ -29,9 +28,8 @@ namespace EduHubTests
             userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
-            
-            var tags = new List<string>();
-            tags.Add("js");
+
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -59,8 +57,7 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var tags = new List<string>();
-            tags.Add("js");
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -83,8 +80,7 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var tags = new List<string>();
-            tags.Add("js");
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -112,8 +108,7 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var tags = new List<string>();
-            tags.Add("js");
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -142,8 +137,7 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var tags = new List<string>();
-            tags.Add("js");
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -171,8 +165,7 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var tags = new List<string>();
-            tags.Add("js");
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -201,8 +194,7 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var tags = new List<string>();
-            tags.Add("js");
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -226,8 +218,7 @@ namespace EduHubTests
             List<User> allUsers = userFacade.GetUsers().ToList();
             Guid userId = allUsers[0].Id;
 
-            var tags = new List<string>();
-            tags.Add("js");
+            var tags = new List<string> { "c#" };
 
             groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
             List<Group> allGroups = groupFacade.GetGroups().ToList();
@@ -236,6 +227,38 @@ namespace EduHubTests
             //Act
             groupFacade.ChangeGroupPrice(createdGroup.GroupInfo.Id, userId, -200);
         }
+
+        [TestMethod]
+        public void TryToFindGroupUsingTags_GetRightResult()
+        {
+            //Arrange
+            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
+            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
+            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+
+            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            List<User> allUsers = userFacade.GetUsers().ToList();
+            Guid userId = allUsers[0].Id;
+
+            var tags1 = new List<string> { "Java", "C++", "C#" };
+            var tags2 = new List<string> { "C#", "Pascal", "PHP", "C++" };
+            var tags3 = new List<string> { "Delphi", "Java" };
+
+            groupFacade.CreateGroup(userId, "Some group", tags1, "You're welcome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags2, "You're welcome!", 3, 100, false, GroupType.Lecture);
+            groupFacade.CreateGroup(userId, "Some group", tags3, "You're welcome!", 3, 100, false, GroupType.Lecture);
+            List<Group> allGroups = groupFacade.GetGroups().ToList();
+
+            List<string> requiredTags = new List<string> { "C++", "C#" };
+
+            //Act
+            List<Group> foundGroups = groupFacade.FindByTags(requiredTags).ToList();
+
+            //Assert
+            List<Group> expectedGroups = new List<Group> { allGroups[0], allGroups[1] };
+            Assert.AreEqual(expectedGroups[0].GroupInfo.Id, foundGroups[0].GroupInfo.Id);
+            Assert.AreEqual(expectedGroups[1].GroupInfo.Id, foundGroups[1].GroupInfo.Id);
+        }
     }
-    */
 }
