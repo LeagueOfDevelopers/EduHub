@@ -58,8 +58,8 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
     return (
       <Col span={20} offset={2} style={{marginTop: 40}}>
         <Row type='flex' justify='space-between' align='middle'>
-          <Col span={12} style={{fontSize: 24}}>{this.state.title}</Col>
-          <Col span={12} style={{textAlign: 'right', fontSize: 14}}>
+          <Col xs={{span: 24}} sm={{span: 12}} style={{fontSize: 24}}>{this.state.title}</Col>
+          <Col xs={{span: 24}} sm={{span: 12}} className='xs-text-align-left text-align-right' style={{fontSize: 14}}>
             <Dropdown overlay={this.sortMenu} trigger={['click']} placement='bottomRight'>
               <span>
                 {this.state.sortTitle} {this.state.arrow === 'down' ?

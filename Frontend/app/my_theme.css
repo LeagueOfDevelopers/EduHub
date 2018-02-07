@@ -19,6 +19,10 @@
   cursor: default;
 }
 
+.text-align-right {
+  text-align: right;
+}
+
 .ant-form label, .ant-card-body span {
   font-size: 16px;
   font-family: Roboto, Tahoma;
@@ -118,6 +122,10 @@
 
   .xs-groups-tabs {
     width: 98%;
+  }
+
+  .xs-text-align-left {
+    text-align: left;
   }
 
 }
@@ -256,3 +264,5 @@ a:focus {
 .search-option-item .search-user-link {
   color: inherit;
 }
+
+
