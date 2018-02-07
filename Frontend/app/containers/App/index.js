@@ -32,7 +32,7 @@ export default class App extends React.Component{
         <header>
           <Header/>
         </header>
-        <ScrollFix>
+        <ScrollFix location={window.location.href}>
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route path='/create_group' component={CreateGroupPage}/>
