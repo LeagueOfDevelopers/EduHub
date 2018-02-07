@@ -24,7 +24,7 @@ namespace EduHubTests
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
             _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
 
-            Guid creatorId = _userFacade.RegUser("Alena", new Credentials("email", "password"), true, UserType.User);
+            var creatorId = _userFacade.RegUser("Alena", new Credentials("email", "password"), true, UserType.User);
             _groupCreator = _userFacade.GetUser(creatorId);
         }
 
@@ -32,9 +32,9 @@ namespace EduHubTests
         public void ChangeTitleInGroup_GetChangedTitle()
         {
             //Arrange
-            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
             
             //Act
             var expectedTitle = "new title";
@@ -49,7 +49,7 @@ namespace EduHubTests
         public void ChangeTitleInGroupWithEmptyValue_GetException()
         {
             //Arrange
-            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
@@ -60,10 +60,9 @@ namespace EduHubTests
         public void ChangeDescriptionInGroup_GetChangedDescription()
         {
             //Arrange
-            //Arrange
-            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedDescription = "new title";
@@ -78,10 +77,9 @@ namespace EduHubTests
         public void ChangeTagsInGroup_GetChangedTags()
         {
             //Arrange
-            //Arrange
-            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedTags = new List<string> { "c++" };
@@ -96,10 +94,9 @@ namespace EduHubTests
         public void ChangeSizeInGroup_GetChangedSize()
         {
             //Arrange
-            //Arrange
-            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedSize = 5;
@@ -114,10 +111,9 @@ namespace EduHubTests
         public void ChangeMoneyPerUserInGroup_GetChangedMoneyPerUser()
         {
             //Arrange
-            //Arrange
-            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedMoneyPerUser = 200;
@@ -133,8 +129,7 @@ namespace EduHubTests
         public void ChangeSizeInGroupWithInvalidValue_GetException()
         {
             //Arrange
-            //Arrange
-            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
@@ -146,7 +141,7 @@ namespace EduHubTests
         public void ChangeMoneyPerUserWithInvalidValue_GetException()
         {
             //Arrange
-            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
@@ -161,9 +156,9 @@ namespace EduHubTests
             var tags2 = new List<string> { "C#", "Pascal", "PHP", "C++" };
             var tags3 = new List<string> { "Delphi", "Java" };
 
-            Guid createdGroupId1 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags1, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            Guid createdGroupId2 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags2, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            Guid createdGroupId3 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags3, "You're welcome!", 3, 100, false, GroupType.Lecture);
+            var createdGroupId1 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags1, "You're welcome!", 3, 100, false, GroupType.Lecture);
+            var createdGroupId2 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags2, "You're welcome!", 3, 100, false, GroupType.Lecture);
+            var createdGroupId3 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags3, "You're welcome!", 3, 100, false, GroupType.Lecture);
             
             List<string> requiredTags = new List<string> { "C++", "C#" };
 

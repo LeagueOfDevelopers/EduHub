@@ -30,59 +30,7 @@ namespace EduHubTests
             Assert.AreEqual(isTeacher, actualIsTeacher);
 
         }
-
-        [TestMethod]
-        public void EditName_IsItPossible()
-        {
-            //Arrange
-            var newName = "Nikolai";
-
-            //Act
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
-            testUser.EditName(newName);
-            var actualName = testUser.UserProfile.Name;
-
-            //Assert
-            Assert.AreEqual(newName, actualName);
-        }
-
-        [ExpectedException(typeof(System.ArgumentException)), TestMethod]
-        public void EditName_IsItCorrect()
-        {
-            //Arrange
-            var newName = "";
-
-            //Act
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
-            testUser.EditName(newName);
-        }
-
-        [TestMethod]
-        public void BecomeTeacher_IsItPossible()
-        {
-            //Arrange
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
-
-            //Act
-            testUser.BecomeTeacher();
-
-            //Assert
-            Assert.AreEqual(true, testUser.UserProfile.IsTeacher);
-        }
-
-        [TestMethod]
-        public void StopToTeacher_IsItPossible()
-        {
-            //Arrange
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), true, UserType.User);
-
-            //Act
-            testUser.StopToBeTeacher();
-
-            //Assert
-            Assert.AreEqual(false, testUser.UserProfile.IsTeacher);
-        }
-
+        
         [TestMethod]
         public void DeleteProfile_IsItPossible()
         {

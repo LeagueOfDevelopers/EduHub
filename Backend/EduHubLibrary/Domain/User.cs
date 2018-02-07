@@ -36,48 +36,6 @@ namespace EduHubLibrary.Domain
             _notifies = new List<string>();
         }
 
-        #region Edit Profile Data Methods
-        public void EditName(string newName)
-        {
-            UserProfile.Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
-        }
-
-        public void EditAboutUser(string newAboutUser)
-        {
-            UserProfile.AboutUser = Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
-        }
-
-        public void EditGender(bool isMan)
-        {
-            UserProfile.IsMan = isMan;
-        }
-
-        public void EditAvatarLink(string newAvatarLink)
-        {
-            UserProfile.AvatarLink = Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
-        }
-
-        public void EditContacts(List<string> newContactData)
-        {
-            UserProfile.Contacts = Ensure.Any.IsNotNull(newContactData);
-        }
-
-        public void EditBirthYear(string newDate)
-        {
-            UserProfile.BirthYear = Ensure.String.IsNotNullOrWhiteSpace(newDate);
-        }
-
-        public void BecomeTeacher()
-        {
-            UserProfile.IsTeacher = true;
-        }
-
-        public void StopToBeTeacher()
-        {
-            UserProfile.IsTeacher = false;
-        }
-        #endregion
-
         public void ConfigureTeacherProfile(List<string> skills)
         {
             TeacherProfile.Skills = skills;

@@ -158,7 +158,7 @@ namespace EduHubLibrary.Facades
             currentGroup.OfferCurriculum(userId, description);
         }
 
-        #region Editing of group
+        #region Edit GroupInfo Data Methods
 
         public void ChangeGroupTitle(Guid idOfGroup, Guid idOfChanger, string newTitle)
         {

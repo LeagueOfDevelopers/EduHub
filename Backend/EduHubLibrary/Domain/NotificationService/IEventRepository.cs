@@ -6,7 +6,7 @@ namespace EduHubLibrary.Domain.NotificationService
 {
     public interface IEventRepository
     {
-        void AddMessage(Event @event);
+        void AddEvent(Event @event);
         IEnumerable<Event> GetAllEvents();
     }
 }

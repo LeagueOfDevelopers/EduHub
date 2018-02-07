@@ -12,7 +12,7 @@ namespace EduHubLibrary.Infrastructure
             _events = new List<Event>();
         }
 
-        public void AddMessage(Event @event)
+        public void AddEvent(Event @event)
         {
             _events.Add(@event);
         }

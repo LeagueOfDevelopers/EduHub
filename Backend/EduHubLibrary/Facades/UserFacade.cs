@@ -118,7 +118,6 @@ namespace EduHubLibrary.Facades
             
             return result.OrderBy(u => u.UserProfile.Name.Length);
         }
-     
 
         public bool DoesUserExist(string name)
         { 
@@ -134,6 +133,60 @@ namespace EduHubLibrary.Facades
         {
             _userRepository.GetUserById(userId).AddNotify(notify);
         }
+
+        #region Edit Profile Data Methods
+
+        public void EditName(Guid userId, string newName)
+        {
+            _userRepository.GetUserById(userId).UserProfile.Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
+        }
+
+        public void EditAboutUser(Guid userId, string newAboutUser)
+        {
+            _userRepository.GetUserById(userId).UserProfile.AboutUser = Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
+        }
+
+        public void EditGender(Guid userId, bool isMan)
+        {
+            _userRepository.GetUserById(userId).UserProfile.IsMan = isMan;
+        }
+
+        public void EditAvatarLink(Guid userId, string newAvatarLink)
+        {
+            _userRepository.GetUserById(userId).UserProfile.AvatarLink = Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
+        }
+
+        public void EditContacts(Guid userId, List<string> newContactData)
+        {
+            if (newContactData.Count != 0)
+            {
+                _userRepository.GetUserById(userId).UserProfile.Contacts = newContactData;
+            }
+            else throw new System.ArgumentException();
+        }
+
+        public void EditBirthYear(Guid userId, string newYear)
+        {
+            string dataFormat = @"\d{4}";
+            //System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(dataFormat);
+            if (System.Text.RegularExpressions.Regex.IsMatch(newYear, dataFormat))
+            {
+                _userRepository.GetUserById(userId).UserProfile.BirthYear = newYear;
+            }
+            else throw new System.ArgumentException();
+        }
+
+        public void BecomeTeacher(Guid userId)
+        {
+            _userRepository.GetUserById(userId).UserProfile.IsTeacher = true;
+        }
+
+        public void StopToBeTeacher(Guid userId)
+        {
+            _userRepository.GetUserById(userId).UserProfile.IsTeacher = false;
+        }
+
+        #endregion
 
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
