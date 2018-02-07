@@ -8,9 +8,9 @@ using System.Linq;
 
 namespace EduHubLibrary.Domain.Consumers
 {
-    public class GroupMembersConsumer : IEventConsumer<NewMemberEvent>
+    public class GroupEventsConsumer : IEventConsumer<NewMemberEvent>, IEventConsumer<NewCurriculumEvent>
     {
-        public GroupMembersConsumer(IUserFacade userFacade, IGroupFacade groupFacade)
+        public GroupEventsConsumer(IUserFacade userFacade, IGroupFacade groupFacade)
         {
             _userFacade = userFacade;
             _groupFacade = groupFacade;
@@ -20,6 +20,12 @@ namespace EduHubLibrary.Domain.Consumers
         {
             _groupFacade.GetGroupMembers(@event.GroupId).ToList().ForEach(
                 m => _userFacade.AddNotify(m.UserId, $"В группе {@event.GroupId} новый участник {@event.NewMemberId}"));
+        }
+
+        public void Consume(NewCurriculumEvent @event)
+        {
+            _groupFacade.GetGroupMembers(@event.GroupId).ToList().ForEach(
+               m => _userFacade.AddNotify(m.UserId, $"В группе {@event.GroupId} предложен учебный план {@event.Curriculum}"));
         }
 
         private IUserFacade _userFacade;

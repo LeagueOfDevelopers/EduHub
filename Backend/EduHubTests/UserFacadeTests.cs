@@ -18,14 +18,22 @@ namespace EduHubTests
     [TestClass]
     public class UserFacadeTests
     {
+        private InMemoryUserRepository _inMemoryUserRepository;
+        private InMemoryGroupRepository _inMemoryGroupRepository;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            _inMemoryUserRepository = new InMemoryUserRepository();
+            _inMemoryGroupRepository = new InMemoryGroupRepository();
+        }
+
         [TestMethod]
-        public void AddNewUser_HasItAdded()
+        public void AddNewUser_UserAdded()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
 
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
             var expectedName = "yaroslav";
             var expectedPass = "123123";
             var expectedEmail = "bus.yaroslav@gmail.com";
@@ -33,9 +41,8 @@ namespace EduHubTests
             var expectedStatus = false;
             
             //Act
-            userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass), expectedStatus, expectedType);
-            List<User> listOfUsers = userFacade.GetUsers().ToList();
-            User currentUser = listOfUsers[0];
+            Guid userId = userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass), expectedStatus, expectedType);
+            User currentUser = userFacade.GetUser(userId);
             
             //Assert
             Assert.AreEqual(currentUser.UserProfile.Name, expectedName);
@@ -46,47 +53,33 @@ namespace EduHubTests
         public void TryToGetAllGroupsOfUser_ReturnRightResult()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
+            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
+            GroupFacade groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository, new GroupSettings(2, 10, 0, 100));
 
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(2, 10, 0, 100));
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
+            Guid testUserId = userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            Guid creatorId = userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
             
-            List<User> listOfUsers = userFacade.GetUsers().ToList();
-            User testUser = listOfUsers[0];
-            User creator = listOfUsers[1];
+            Guid createdGroupId1 = groupFacade.CreateGroup(creatorId, "Group1", new List<string> { "c#" }, "Good group", 5, 0, false, GroupType.MasterClass);
+            Guid createdGroupId2 = groupFacade.CreateGroup(creatorId, "Group2", new List<string> { "c#" }, "The best group!", 7, 0, true, GroupType.Seminar);
 
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(creator.Id, "Group1", tags, "Good group", 5, 0, false, GroupType.MasterClass);
-            groupFacade.CreateGroup(creator.Id, "Group2", tags, "The best group!", 7, 0, true, GroupType.Seminar);
-            
-            List<Group> listOfGroups = groupFacade.GetGroups().ToList();
-            Group testGroup1 = listOfGroups[0];
-            Group testGroup2 = listOfGroups[1];
+            Group createdGroup1 = groupFacade.GetGroup(createdGroupId1);
+            Group createdGroup2 = groupFacade.GetGroup(createdGroupId2);
             
             //Act
-            testGroup1.AddMember(testUser.Id);
-            testGroup2.AddMember(testUser.Id);
-            List<Group> expected = new List<Group>();
-            expected.Add(testGroup1);
-            expected.Add(testGroup2);
-            List<Group> groups = userFacade.GetAllGroupsOfUser(testUser.Id).ToList();
+            createdGroup1.AddMember(testUserId);
+            createdGroup2.AddMember(testUserId);
+            List<Group> expected = new List<Group> { createdGroup1, createdGroup2 };
+            List<Group> groups = userFacade.GetAllGroupsOfUser(testUserId).ToList();
 
             //Assert
             Assert.AreEqual(true, expected.SequenceEqual(groups));
         }
 
         [TestMethod]
-        public void TryToFindAnyExistingUserViaFullName_ReturnTrue()
+        public void TryToFindAnyExistingUserViaFullName_GetRightResult()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
 
             userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
             userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
@@ -103,9 +96,7 @@ namespace EduHubTests
         public void TryToFindAnyExistingUserViaPartOfName_ReturnTrue()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
 
             userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
             userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
@@ -122,9 +113,7 @@ namespace EduHubTests
         public void TryToFindNotExistingUser_ReturnFalse()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
 
             userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
             userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
@@ -138,22 +127,16 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        public void TryToGetFoundUsers_ReturnListWithSorting()
+        public void TryToGetFoundUsers_ReturnRightListWithSorting()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
 
-            userFacade.RegUser("Alenka", new Credentials("email1", "password"), true, UserType.User);
-            userFacade.RegUser("Alena", new Credentials("email2", "password"), true, UserType.User);
-            userFacade.RegUser("Olena", new Credentials("email3", "password"), true, UserType.User);
+            Guid userId1 = userFacade.RegUser("Alenka", new Credentials("email1", "password"), true, UserType.User);
+            Guid userId2 = userFacade.RegUser("Alena", new Credentials("email2", "password"), true, UserType.User);
+            Guid userId3 = userFacade.RegUser("Olena", new Credentials("email3", "password"), true, UserType.User);
 
-            List<User> allUsers = inMemoryUserRepository.GetAll().ToList();
-            
-            List<User> expected = new List<User>();
-            expected.Add(allUsers[1]);
-            expected.Add(allUsers[0]);
+            List<User> expected = new List<User> { userFacade.GetUser(userId2), userFacade.GetUser(userId1) };
 
             //Act
             List<User> actual = userFacade.FindByName("Alen").ToList();
@@ -168,9 +151,7 @@ namespace EduHubTests
         public void TryToRegUserWithExistingEmail_GetException()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
 
             //Act
             userFacade.RegUser("Grisha", new Credentials("sokolov@mail.ru", "password1"), true, UserType.User);
@@ -181,29 +162,21 @@ namespace EduHubTests
         public void TryToInviteUserWithTeacherFlag_IsItPossible()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            GroupFacade groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000));
+            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
 
-            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
-            userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid creatorId = allUsers[0].Id;
-            Guid teacherId = allUsers[1].Id;
+            Guid creatorId = userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            Guid teacherId = userFacade.RegUser("Teacher", new Credentials("email2", "password"), true, UserType.User);
 
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroup = allGroups[0];
+            Guid createdGroupId = groupFacade.CreateGroup(creatorId, "Some group", 
+                new List<string> { "c#" }, "Very interesting", 1, 100, false, GroupType.Lecture);
 
             //Act
-            userFacade.Invite(creatorId, teacherId, createdGroup.GroupInfo.Id, MemberRole.Teacher);
+            userFacade.Invite(creatorId, teacherId, createdGroupId, MemberRole.Teacher);
             List <Invitation> invitations = userFacade.GetAllInvitationsForUser(teacherId).ToList();
 
             //Assert
-            Assert.AreEqual(createdGroup.GroupInfo.Id, invitations[0].GroupId);
+            Assert.AreEqual(createdGroupId, invitations[0].GroupId);
         }
 
         [TestMethod]
@@ -211,23 +184,14 @@ namespace EduHubTests
         public void TryToInviteUserWithoutTeacherFlag_GetException()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            GroupFacade groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000));
+            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
 
-            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
-            userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid creatorId = allUsers[0].Id;
-            Guid pseudoTeacherId = allUsers[1].Id;
+            Guid creatorId = userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            Guid pseudoTeacherId = userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false, UserType.User);
 
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroupId = allGroups[0].GroupInfo.Id;
-
+            Guid createdGroupId = groupFacade.CreateGroup(creatorId, "Some group", new List<string> { "c#" }, "Very interesting", 1, 100, false, GroupType.Lecture);
+           
             //Act
             userFacade.Invite(creatorId, pseudoTeacherId, createdGroupId, MemberRole.Teacher);
         }

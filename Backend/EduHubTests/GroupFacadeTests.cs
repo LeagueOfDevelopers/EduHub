@@ -16,28 +16,29 @@ namespace EduHubTests
     [TestClass]
     public class GroupFacadeTests
     {
-        [TestMethod]
-        public void TryToChangeGroupInfoTitle_IsItPossible()
+        [TestInitialize]
+        public void Initialize()
         {
-            //Arrange
             InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
             InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
+            _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+
+            Guid creatorId = _userFacade.RegUser("Alena", new Credentials("email", "password"), true, UserType.User);
+            _groupCreator = _userFacade.GetUser(creatorId);
+        }
+
+        [TestMethod]
+        public void ChangeTitleInGroup_GetChangedTitle()
+        {
+            //Arrange
+            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 100, false, GroupType.Lecture);
+            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
             
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid userId = allUsers[0].Id;
-
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroup = allGroups[0];
-
             //Act
             var expectedTitle = "new title";
-            groupFacade.ChangeGroupTitle(createdGroup.GroupInfo.Id, userId, expectedTitle);
+            _groupFacade.ChangeGroupTitle(createdGroupId, _groupCreator.Id, expectedTitle);
             var actualTitle = createdGroup.GroupInfo.Title;
 
             //Assert
@@ -45,50 +46,28 @@ namespace EduHubTests
         }
 
         [ExpectedException(typeof(System.ArgumentException)), TestMethod]
-        public void TryToChangeGroupInfoTitleWithEmptyValue_GetException()
+        public void ChangeTitleInGroupWithEmptyValue_GetException()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid userId = allUsers[0].Id;
-
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroup = allGroups[0];
+            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
-            groupFacade.ChangeGroupTitle(createdGroup.GroupInfo.Id, userId, " ");
+            _groupFacade.ChangeGroupTitle(createdGroupId, _groupCreator.Id, " ");
         }
 
         [TestMethod]
-        public void TryToChangeGroupInfoDescription_IsItPossible()
+        public void ChangeDescriptionInGroup_GetChangedDescription()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid userId = allUsers[0].Id;
-
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroup = allGroups[0];
+            //Arrange
+            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 100, false, GroupType.Lecture);
+            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedDescription = "new title";
-            groupFacade.ChangeGroupDescription(createdGroup.GroupInfo.Id, userId, expectedDescription);
+            _groupFacade.ChangeGroupDescription(createdGroupId, _groupCreator.Id, expectedDescription);
             var actualDescription = createdGroup.GroupInfo.Description;
 
             //Assert
@@ -96,28 +75,17 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        public void TryToChangeGroupInfoTags_IsItPossible()
+        public void ChangeTagsInGroup_GetChangedTags()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            //Arrange
+            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 100, false, GroupType.Lecture);
+            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid userId = allUsers[0].Id;
-
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroup = allGroups[0];
-            
             //Act
-            var expectedTags = new List<string>();
-            expectedTags.Add("c#");
-            groupFacade.ChangeGroupTags(createdGroup.GroupInfo.Id, userId, expectedTags);
+            var expectedTags = new List<string> { "c++" };
+            _groupFacade.ChangeGroupTags(createdGroupId, _groupCreator.Id, expectedTags);
             var actualTags = createdGroup.GroupInfo.Tags;
 
             //Assert
@@ -125,27 +93,17 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        public void TryToChangeGroupInfoSize_IsItPossible()
+        public void ChangeSizeInGroup_GetChangedSize()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid userId = allUsers[0].Id;
-
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroup = allGroups[0];
+            //Arrange
+            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 100, false, GroupType.Lecture);
+            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedSize = 5;
-            groupFacade.ChangeGroupSize(createdGroup.GroupInfo.Id, userId, expectedSize);
+            _groupFacade.ChangeGroupSize(createdGroupId, _groupCreator.Id, expectedSize);
             var actualSize = createdGroup.GroupInfo.Size;
 
             //Assert
@@ -153,27 +111,17 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        public void TryToChangeGroupInfoMoneyPerUser_IsItPossible()
+        public void ChangeMoneyPerUserInGroup_GetChangedMoneyPerUser()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid userId = allUsers[0].Id;
-
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroup = allGroups[0];
+            //Arrange
+            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 100, false, GroupType.Lecture);
+            Group createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedMoneyPerUser = 200;
-            groupFacade.ChangeGroupPrice(createdGroup.GroupInfo.Id, userId, expectedMoneyPerUser);
+            _groupFacade.ChangeGroupPrice(createdGroupId, _groupCreator.Id, expectedMoneyPerUser);
             var actualMoneyPerUser = createdGroup.GroupInfo.MoneyPerUser;
 
             //Assert
@@ -182,83 +130,53 @@ namespace EduHubTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TryToSetInvalidSizeOfGroup_GetException()
+        public void ChangeSizeInGroupWithInvalidValue_GetException()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid userId = allUsers[0].Id;
-
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroup = allGroups[0];
+            //Arrange
+            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
-            groupFacade.ChangeGroupSize(createdGroup.GroupInfo.Id, userId, -4);
+            _groupFacade.ChangeGroupSize(createdGroupId, _groupCreator.Id, -4);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TryToSetInvalidMoneyPerUser_GetException()
+        public void ChangeMoneyPerUserWithInvalidValue_GetException()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid userId = allUsers[0].Id;
-
-            var tags = new List<string> { "c#" };
-
-            groupFacade.CreateGroup(userId, "Some group", tags, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-            var createdGroup = allGroups[0];
+            Guid createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
-            groupFacade.ChangeGroupPrice(createdGroup.GroupInfo.Id, userId, -200);
+            _groupFacade.ChangeGroupPrice(createdGroupId, _groupCreator.Id, -200);
         }
 
         [TestMethod]
-        public void TryToFindGroupUsingTags_GetRightResult()
+        public void FindGroupUsingTags_GetRightResultWithSorting()
         {
             //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(3, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid userId = allUsers[0].Id;
-
             var tags1 = new List<string> { "Java", "C++", "C#" };
             var tags2 = new List<string> { "C#", "Pascal", "PHP", "C++" };
             var tags3 = new List<string> { "Delphi", "Java" };
 
-            groupFacade.CreateGroup(userId, "Some group", tags1, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            groupFacade.CreateGroup(userId, "Some group", tags2, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            groupFacade.CreateGroup(userId, "Some group", tags3, "You're welcome!", 3, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
-
+            Guid createdGroupId1 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags1, "You're welcome!", 3, 100, false, GroupType.Lecture);
+            Guid createdGroupId2 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags2, "You're welcome!", 3, 100, false, GroupType.Lecture);
+            Guid createdGroupId3 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags3, "You're welcome!", 3, 100, false, GroupType.Lecture);
+            
             List<string> requiredTags = new List<string> { "C++", "C#" };
 
             //Act
-            List<Group> foundGroups = groupFacade.FindByTags(requiredTags).ToList();
+            List<Group> foundGroups = _groupFacade.FindByTags(requiredTags).ToList();
 
             //Assert
-            List<Group> expectedGroups = new List<Group> { allGroups[0], allGroups[1] };
-            Assert.AreEqual(expectedGroups[0].GroupInfo.Id, foundGroups[0].GroupInfo.Id);
-            Assert.AreEqual(expectedGroups[1].GroupInfo.Id, foundGroups[1].GroupInfo.Id);
+            Assert.AreEqual(createdGroupId1, foundGroups[0].GroupInfo.Id);
+            Assert.AreEqual(createdGroupId2, foundGroups[1].GroupInfo.Id);
         }
+
+        private GroupFacade _groupFacade;
+        private UserFacade _userFacade;
+        private User _groupCreator;
     }
 }
