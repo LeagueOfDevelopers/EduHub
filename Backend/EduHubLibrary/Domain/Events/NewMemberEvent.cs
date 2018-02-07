@@ -5,9 +5,9 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Events
 {
-    public class NewMemberInGroup : EventInfoBase
+    public class NewMemberEvent : EventInfoBase
     {
-        public NewMemberInGroup(Guid groupId, Guid newMemberId)
+        public NewMemberEvent(Guid groupId, Guid newMemberId)
         {
             GroupId = groupId;
             NewMemberId = newMemberId;

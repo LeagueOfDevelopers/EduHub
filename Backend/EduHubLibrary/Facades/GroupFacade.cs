@@ -111,6 +111,18 @@ namespace EduHubLibrary.Facades
             return _groupRepository.GetGroupById(groupId).GetAllMembers();
         }
 
+        //!!!
+        public IEnumerable<Invitation> GetAllInvitations(Guid groupId)
+        {
+            return _groupRepository.GetGroupById(groupId).GetAllInvitation();
+        }
+
+        public void AddInvitation(Guid groupId, Invitation invitation)
+        {
+            _groupRepository.GetGroupById(groupId).AddInvitation(invitation);
+        }
+        //!!!
+
         public void ApproveTeacher(Guid teacherId, Guid groupId)
         {
             Ensure.Guid.IsNotEmpty(teacherId);

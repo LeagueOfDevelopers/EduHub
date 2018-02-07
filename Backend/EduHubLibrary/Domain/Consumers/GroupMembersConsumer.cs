@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace EduHubLibrary.Domain.Consumers
 {
-    public class GroupMembersConsumer : IEventConsumer<NewMemberInGroup>
+    public class GroupMembersConsumer : IEventConsumer<NewMemberEvent>
     {
         public GroupMembersConsumer(IUserFacade userFacade, IGroupFacade groupFacade)
         {
@@ -16,7 +16,7 @@ namespace EduHubLibrary.Domain.Consumers
             _groupFacade = groupFacade;
         }
 
-        public void Consume(NewMemberInGroup @event)
+        public void Consume(NewMemberEvent @event)
         {
             _groupFacade.GetGroupMembers(@event.GroupId).ToList().ForEach(
                 m => _userFacade.AddNotify(m.UserId, $"В группе {@event.GroupId} новый участник {@event.NewMemberId}"));

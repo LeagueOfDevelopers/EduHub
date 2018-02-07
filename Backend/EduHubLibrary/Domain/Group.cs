@@ -122,7 +122,7 @@ namespace EduHubLibrary.Domain
             return listOfMembers;
         }
 
-        internal List<Invitation> GetAllInvitation()
+        internal IEnumerable<Invitation> GetAllInvitation()
         {
             return listOfInvitations; 
         }
