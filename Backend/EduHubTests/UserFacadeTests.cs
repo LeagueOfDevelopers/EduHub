@@ -179,7 +179,6 @@ namespace EduHubTests
             userFacade.EditContacts(testUserId, newContacts);
         }
 
-        /*
         [ExpectedException(typeof(System.ArgumentException)), TestMethod]
         public void EditContactsOfUserWithListWithEmptyValue_GetException()
         {
@@ -191,16 +190,15 @@ namespace EduHubTests
             //Act
             userFacade.EditContacts(testUserId, newContacts);
         }
-        */
 
         [TestMethod]
-        public void EditUserBirthday_GetUserWithEditedBirthday()
+        public void EditUserWithValidBirthday_GetUserWithEditedBirthday()
         {
             //Arrange
             var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
             var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
             var testUser = userFacade.GetUser(testUserId);
-            var newBirthday = "10.10.1998";
+            var newBirthday = "1998";
 
             //Act
             userFacade.EditBirthYear(testUserId, newBirthday);
@@ -208,6 +206,19 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newBirthday, actualBirthYear);
+        }
+
+        [ExpectedException(typeof(System.ArgumentException)), TestMethod]
+        public void EditUserWithInValidBirthday_GetException()
+        {
+            //Arrange
+            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
+            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
+            var testUser = userFacade.GetUser(testUserId);
+            var newBirthday = "10.1998";
+
+            //Act
+            userFacade.EditBirthYear(testUserId, newBirthday);
         }
 
         [ExpectedException(typeof(System.ArgumentException)), TestMethod]

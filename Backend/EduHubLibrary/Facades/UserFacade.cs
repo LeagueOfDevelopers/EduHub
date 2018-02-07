@@ -158,7 +158,7 @@ namespace EduHubLibrary.Facades
 
         public void EditContacts(Guid userId, List<string> newContactData)
         {
-            if (newContactData.Count != 0)
+            if (newContactData.Count != 0 && newContactData.TrueForAll(d => !String.IsNullOrWhiteSpace(d)))
             {
                 _userRepository.GetUserById(userId).UserProfile.Contacts = newContactData;
             }
@@ -167,8 +167,8 @@ namespace EduHubLibrary.Facades
 
         public void EditBirthYear(Guid userId, string newYear)
         {
-            string dataFormat = @"\d{4}";
-            //System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(dataFormat);
+            string dataFormat = @"^\d{4}$";
+
             if (System.Text.RegularExpressions.Regex.IsMatch(newYear, dataFormat))
             {
                 _userRepository.GetUserById(userId).UserProfile.BirthYear = newYear;
