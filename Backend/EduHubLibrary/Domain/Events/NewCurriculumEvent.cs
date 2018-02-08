@@ -13,7 +13,7 @@ namespace EduHubLibrary.Domain.Events
             Curriculum = curriculum;
         }
 
-        public Guid GroupId { get; private set; }
-        public string Curriculum { get; private set; }
+        public Guid GroupId { get; }
+        public string Curriculum { get; }
     }
 }

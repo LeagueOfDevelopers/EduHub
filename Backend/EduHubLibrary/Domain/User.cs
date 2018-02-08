@@ -20,7 +20,7 @@ namespace EduHubLibrary.Domain
         public TeacherProfile TeacherProfile { get; private set; }
         public UserProfile UserProfile { get; private set; }
         public bool IsActive { get; private set; }
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public List<Invitation> ListOfInvitations { get; private set; }
 
         public User(string name, Credentials credentials, bool isTeacher, UserType type)

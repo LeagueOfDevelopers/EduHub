@@ -12,6 +12,6 @@ namespace EduHubLibrary.Domain.Events
             Invitation = invitation;
         }
 
-        public Invitation Invitation { get; private set; }
+        public Invitation Invitation { get; }
     }
 }

@@ -22,13 +22,13 @@ namespace EduHubLibrary.Domain
             MoneyPerUser = moneyPerUser;
         }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public string Title { get; internal set; }
         public string Description { get; internal set; }
         public string Curriculum { get; internal set; }
         public IEnumerable<string> Tags { get; internal set; }
-        public GroupType GroupType { get; private set; }
-        public bool IsPrivate { get; private set; }
+        public GroupType GroupType { get; }
+        public bool IsPrivate { get; }
         public bool IsActive { get; set; }
         public int Size { get; internal set; }
         public double MoneyPerUser { get; internal set; }

@@ -13,7 +13,7 @@ namespace EduHubLibrary.Domain.Events
             NewMemberId = newMemberId;
         }
 
-        public Guid GroupId { get; private set; }
-        public Guid NewMemberId { get; private set; }
+        public Guid GroupId { get; }
+        public Guid NewMemberId { get; }
     }
 }

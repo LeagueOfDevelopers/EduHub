@@ -7,15 +7,15 @@ namespace EduHubLibrary.Common
 {
     public class Credentials
     {
-        public string Email { get; }
-        public string PasswordHash { get; }
-
         public Credentials(string email, string passwordHash)
         {
             Email = email;
             PasswordHash = passwordHash;
         }
-        
+
+        public string Email { get; }
+        public string PasswordHash { get; }
+             
         public static Credentials FromRawData(string email, string rawPassword)
         {
             using (var sha256 = SHA256.Create())

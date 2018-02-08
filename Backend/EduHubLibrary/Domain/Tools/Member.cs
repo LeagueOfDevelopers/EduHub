@@ -14,7 +14,7 @@ namespace EduHubLibrary.Domain
             AcceptedCurriculum = false;
         }
 
-        public Guid UserId { get; private set; }
+        public Guid UserId { get; }
         public MemberRole MemberRole { get; set; }
         public bool Paid { get; set; }
         public bool AcceptedCurriculum { get; set; }

@@ -13,8 +13,8 @@ namespace EduHubLibrary.Domain.NotificationService
             EventInfo = eventInfo;
         }
 
-        public Guid Id { get; private set; }
-        public DateTime OccurredOn { get; private set; }
-        public IEventInfo EventInfo { get; private set; }
+        public Guid Id { get; }
+        public DateTime OccurredOn { get; }
+        public IEventInfo EventInfo { get; }
     }
 }
