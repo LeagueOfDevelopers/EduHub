@@ -189,7 +189,7 @@ namespace EduHub.Controllers
         [Route("birthyear")]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult EditBirthYear([FromBody] string newBirthYear)
+        public IActionResult EditBirthYear([FromBody] int newBirthYear)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
@@ -309,13 +309,23 @@ namespace EduHub.Controllers
         {
             var user = _userFacade.GetUser(userId);
             ProfileResponse response;
+            UserProfileModel userProfile = new UserProfileModel(user.UserProfile.Name, user.UserProfile.Email,
+                user.UserProfile.AboutUser, user.UserProfile.BirthYear, user.UserProfile.IsMan,
+                user.UserProfile.IsTeacher, user.UserProfile.AvatarLink, user.UserProfile.Contacts);
             if (user.UserProfile.IsTeacher)
             {
-                response = new ProfileResponse(user.UserProfile, user.TeacherProfile);
+                List<ReviewModel> reviews = new List<ReviewModel>();
+                user.TeacherProfile.Reviews.ForEach(r => 
+                {
+                    reviews.Add(new ReviewModel(r.FromUser, r.Title, r.Text, r.Date));
+                });
+                TeacherProfileModel teacherProfile = new TeacherProfileModel(reviews,
+                    user.TeacherProfile.Skills);
+                response = new ProfileResponse(userProfile, teacherProfile);
             }
             else
             {
-                response = new ProfileResponse(user.UserProfile);
+                response = new ProfileResponse(userProfile);
             }
             return Ok(response);
         }

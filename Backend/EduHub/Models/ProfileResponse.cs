@@ -1,19 +1,20 @@
-﻿using EduHubLibrary.Domain;
+﻿using EduHub.Models.Tools;
+using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Tools;
 
 namespace EduHub.Models
 {
     public class ProfileResponse
     {
-        public UserProfile UserProfile { get; set; }
-        public TeacherProfile TeacherProfile { get; set; }
+        public UserProfileModel UserProfile { get; set; }
+        public TeacherProfileModel TeacherProfile { get; set; }
 
-        public ProfileResponse(UserProfile userProfile)
+        public ProfileResponse(UserProfileModel userProfile)
         {
             UserProfile = userProfile;
         }
 
-        public ProfileResponse(UserProfile userProfile, TeacherProfile teacherProfile)
+        public ProfileResponse(UserProfileModel userProfile, TeacherProfileModel teacherProfile)
         {
             UserProfile = userProfile;
             TeacherProfile = teacherProfile;

@@ -164,15 +164,14 @@ namespace EduHubLibrary.Facades
             else throw new System.ArgumentException();
         }
 
-        public void EditBirthYear(Guid userId, string newYear)
+        public void EditBirthYear(Guid userId, int newYear)
         {
-            var dataFormat = @"^\d{4}$";
-
-            if (System.Text.RegularExpressions.Regex.IsMatch(newYear, dataFormat))
+            //hardcoded value
+            if (newYear > 1900 && newYear < DateTimeOffset.Now.Year)
             {
                 _userRepository.GetUserById(userId).UserProfile.BirthYear = newYear;
             }
-            else throw new System.ArgumentException();
+            else throw new IndexOutOfRangeException();
         }
 
         public void BecomeTeacher(Guid userId)
