@@ -1,50 +1,37 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 import  config from '../../config';
 import {
-  getAssembledGroupsError,
-  getAssembledGroupsSuccess,
-  getUnassembledGroupsError,
-  getUnassembledGroupsSuccess
+  getGroupsSuccess,
+  getGroupsError
 } from './actions'
 
-import { GET_ASSEMBLED_GROUPS_START, GET_UNASSEMBLED_GROUPS_START } from './constants'
+import { GET_GROUPS_START } from './constants'
 
-export function* getUnassembledGroupsSaga() {
+export function* getUnassembledGroupsSaga(action) {
   try {
-    const groups = yield call(getUnassembledGroups);
-    const unassembledGroups = groups.groups;
-    yield put(getUnassembledGroupsSuccess(unassembledGroups));
+    const groups = yield call(getGroups, action.groupsType);
+    yield put(getGroupsSuccess({groups: groups, groupsType: action.groupsType}));
   }
   catch(e) {
-    yield put(getUnassembledGroupsError(e));
+    yield put(getGroupsError(e));
   }
 }
 
-export function* getAssembledGroupsSaga() {
-  try {
-    const groups = yield call(getAssembledGroups);
-    const assembledGroups = groups.groups;
-    yield put(getAssembledGroupsSuccess(assembledGroups));
-  }
-  catch(e) {
-    yield put(getAssembledGroupsError(e));
-  }
-}
-
- function getUnassembledGroups() {
+ function getGroups(type) {
    return fetch(`${config.API_BASE_URL}/group`)
      .then(response => response.json())
-     .catch(error => error)
- }
-
- function getAssembledGroups() {
-   return fetch(`${config.API_BASE_URL}/group`)
-     .then(res => res.json())
+     .then(res => {
+       switch(type) {
+         case 'unassembledGroups':
+           return res.fillingGroups;
+         case 'assembledGroups':
+           return res.fullGroups;
+       }
+     })
      .catch(error => error)
  }
 
 export default function* () {
-  yield takeEvery(GET_UNASSEMBLED_GROUPS_START, getUnassembledGroupsSaga)
-  yield takeEvery(GET_ASSEMBLED_GROUPS_START, getAssembledGroupsSaga)
+  yield takeEvery(GET_GROUPS_START, getUnassembledGroupsSaga);
 }
 

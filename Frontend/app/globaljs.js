@@ -11,9 +11,9 @@ export function getMemberRole(enumRole) {
     case 1:
       return 'Участник';
     case 2:
-      return 'Учитель';
-    case 3:
       return 'Создатель';
+    case 3:
+      return 'Учитель';
   }
 }
 

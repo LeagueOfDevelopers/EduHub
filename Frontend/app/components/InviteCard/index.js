@@ -49,7 +49,7 @@ class InviteCard extends React.PureComponent { // eslint-disable-line react/pref
         }
         <Row style={{marginBottom: 12}}>
           <Col span={12}>
-            <span style={{fontSize: 14, opacity: 0.9}}>{this.props.fromUser}</span>
+            <span style={{fontSize: 14, opacity: 0.9}}>{this.props.fromUserName}</span>
           </Col>
           <Col span={12} style={{textAlign: 'right'}}>
             <span style={{fontSize: 14, opacity: 0.7}}>
@@ -60,7 +60,7 @@ class InviteCard extends React.PureComponent { // eslint-disable-line react/pref
         <Row>
           <Col xs={{span: 24}} sm={{span: 12}} style={{marginBottom: 10}}>
             <span style={{wordWrap: 'break-word'}}>
-              Вас пригласили в группу {this.props.groupId} на роль "{getMemberRole(this.props.suggestedRole)}"
+              Вас пригласили в группу "{this.props.toGroupTitle}" на роль "{getMemberRole(this.props.suggestedRole)}"
             </span>
           </Col>
           <Col xs={{span: 24}} sm={{span: 12}} style={{textAlign: 'right'}}>
@@ -82,8 +82,9 @@ InviteCard.propTypes = {
   readed: PropTypes.bool,
   groupId: PropTypes.string,
   id: PropTypes.string,
-  fromUser: PropTypes.string,
+  fromUserName: PropTypes.string,
   date: PropTypes.string,
+  toGroupName: PropTypes.string,
   suggestedRole: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string

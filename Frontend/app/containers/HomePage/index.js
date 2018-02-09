@@ -16,12 +16,10 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectAssembledGroups,
-         makeSelectUnassembledGroups
-} from "./selectors";
+import { makeSelectGroups } from "./selectors";
 import reducer from './reducer';
 import saga from './saga';
-import { getAssembledGroups, getUnassembledGroups } from "./actions";
+import { getGroups } from "./actions";
 import {Link} from "react-router-dom";
 import {Card, Col, Row, Button, message} from 'antd';
 import UnassembledGroupCard from 'components/UnassembledGroupCard';
@@ -91,7 +89,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       <div>
         <Col span={20} offset={2} style={{marginTop: 40}}>
           <Card
-            title='Незаполненные группы'
+            title='Идет набор'
             bordered={false}
             className='unassembled-groups-list font-size-20'
             extra={<Link to='/groups/unassembledGroups' >Показать больше</Link>}
@@ -108,10 +106,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               ) :
               (
                 <div className='cards-holder cards-holder-center'>
-                  {this.props.unassembledGroups.map((item) =>
-                    <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                      <UnassembledGroupCard {...item}/>
-                    </Link>
+                  {this.props.unassembledGroups.map((item, i) =>
+                    i < 8 ?
+                      <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                        <UnassembledGroupCard {...item}/>
+                      </Link>
+                      : null
                   )}
                 </div>
               )
@@ -124,7 +124,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         </Col>
         <Col span={20} offset={2} style={{marginTop: 40}}>
           <Card
-            title='Идет набор'
+            title='Набранные группы'
             bordered={false}
             className='assembled-groups-list font-size-20'
             extra={<Link to='/groups/assembledGroups'>Показать больше</Link>}
@@ -141,10 +141,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               ) :
               (
                 <div className='cards-holder cards-holder-center'>
-                  {this.props.assembledGroups.map((item) =>
-                    <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                      <AssembledGroupCard {...item}/>
-                    </Link>
+                  {this.props.assembledGroups.map((item, i) =>
+                    i < 8 ?
+                      <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                        <AssembledGroupCard {...item}/>
+                      </Link>
+                      : null
                   )}
                 </div>
               )
@@ -174,14 +176,14 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  unassembledGroups: makeSelectUnassembledGroups(),
-  assembledGroups: makeSelectAssembledGroups()
+  unassembledGroups: makeSelectGroups('unassembledGroups'),
+  assembledGroups: makeSelectGroups('assembledGroups')
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUnassembledGroups: () => dispatch(getUnassembledGroups()),
-    getAssembledGroups: () => dispatch(getAssembledGroups())
+    getUnassembledGroups: () => dispatch(getGroups('unassembledGroups')),
+    getAssembledGroups: () => dispatch(getGroups('assembledGroups'))
   };
 }
 

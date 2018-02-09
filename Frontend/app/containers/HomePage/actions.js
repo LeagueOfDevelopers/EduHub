@@ -5,52 +5,30 @@
  */
 
 import {
-  GET_UNASSEMBLED_GROUPS_ERROR,
-  GET_UNASSEMBLED_GROUPS_SUCCESS,
-  GET_UNASSEMBLED_GROUPS_START,
-  GET_ASSEMBLED_GROUPS_ERROR,
-  GET_ASSEMBLED_GROUPS_SUCCESS,
-  GET_ASSEMBLED_GROUPS_START
+  GET_GROUPS_START,
+  GET_GROUPS_SUCCESS,
+  GET_GROUPS_ERROR
 } from './constants';
 
-export const getUnassembledGroups = () => (
+export const getGroups = (groupsType) => (
   {
-    type: GET_UNASSEMBLED_GROUPS_START
+    type: GET_GROUPS_START,
+    groupsType
   }
 )
 
-export const getUnassembledGroupsSuccess = (groups) => (
+export const getGroupsSuccess = (payload) => (
   {
-    type: GET_UNASSEMBLED_GROUPS_SUCCESS,
-    payload: groups
+    type: GET_GROUPS_SUCCESS,
+    groups: payload.groups,
+    groupsType: payload.groupsType
   }
 )
 
-export const getUnassembledGroupsError = (error) => (
+export const getGroupsError = (error) => (
   {
-    type: GET_UNASSEMBLED_GROUPS_ERROR,
+    type: GET_GROUPS_ERROR,
     payload: error
   }
 )
-
-export const getAssembledGroups = () => (
-  {
-    type: GET_ASSEMBLED_GROUPS_START
-  }
-)
-
-export const getAssembledGroupsSuccess = (groups) => (
-  {
-    type: GET_ASSEMBLED_GROUPS_SUCCESS,
-    payload: groups
-  }
-)
-
-export const getAssembledGroupsError = (error) => (
-  {
-    type: GET_ASSEMBLED_GROUPS_ERROR,
-    payload: error
-  }
-)
-
 

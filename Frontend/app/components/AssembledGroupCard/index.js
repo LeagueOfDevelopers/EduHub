@@ -25,11 +25,11 @@ class AssembledGroupCard extends React.PureComponent { // eslint-disable-line re
         >
           <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
             <Col>Участников</Col>
-            <Col>{this.props.numberOfMembers + '/' + this.props.groupInfo.size}</Col>
+            <Col>{this.props.groupInfo.memberAmount + '/' + this.props.groupInfo.size}</Col>
           </Row>
           <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
             <Col>Оплата</Col>
-            <Col>{this.props.groupInfo.moneyPerUser} руб.</Col>
+            <Col>{this.props.groupInfo.cost} руб.</Col>
           </Row>
           <Row type='flex' justify='space-between' style={{marginBottom: 10}}>
             <Col>Тип</Col>
@@ -49,9 +49,9 @@ class AssembledGroupCard extends React.PureComponent { // eslint-disable-line re
 AssembledGroupCard.defaultProps = {
   groupInfo: {
     title: '',
-    numberOfMembers: 0,
+    memberAmount: 0,
     size: 0,
-    moneyPerUser: 0,
+    cost: 0,
     groupType: '',
     tags: []
   }
@@ -61,10 +61,10 @@ AssembledGroupCard.propTypes = {
   groupInfo: PropTypes.object,
   title: PropTypes.string,
   size: PropTypes.number,
-  moneyPerUser: PropTypes.number,
+  cost: PropTypes.number,
   groupType: PropTypes.string,
   tags: PropTypes.array,
-  numberOfMembers: PropTypes.number
+  memberAmount: PropTypes.number
 };
 
 export default AssembledGroupCard;

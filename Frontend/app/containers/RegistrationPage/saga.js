@@ -27,7 +27,7 @@ function registrate(username, email, password, isTeacher, avatarLink, inviteCode
       email: email,
       password: password,
       isTeacher: isTeacher,
-      avatarLink: avatarLink ? avatarLink : 'http://vk.com/im',
+      // avatarLink: avatarLink ? avatarLink : 'http://vk.com/im',
       inviteCode: inviteCode ? inviteCode :'string'
     })
   })

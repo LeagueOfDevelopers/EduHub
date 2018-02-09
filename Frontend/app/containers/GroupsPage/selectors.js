@@ -13,18 +13,8 @@ const selectGroupsPageDomain = (state) => state.get('groupsPage');
 /**
  * Default selector used by GroupsPage
  */
-const makeSelectUnassembledGroups = () => createSelector(
-  selectGroupsPageDomain,
-  (groupsState) => groupsState.get('unassembledGroups')
-);
 
-const makeSelectAssembledGroups = () => createSelector(
-  selectGroupsPageDomain,
-  (groupsState) => groupsState.get('assembledGroups')
-);
 
 export {
   selectGroupsPageDomain,
-  makeSelectUnassembledGroups,
-  makeSelectAssembledGroups
 };

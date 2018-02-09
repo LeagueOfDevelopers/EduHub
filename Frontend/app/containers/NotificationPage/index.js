@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectNotifies, makeSelectInvites} from './selectors';
+import {makeSelectNotifies, makeSelectInvites, makeSelectNeedUpdate} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import {getInvites, getNotifies} from "./actions";
@@ -47,17 +47,21 @@ const notifies = [
 const invites = [
   {
     id: 'dasqdsadsdfsdf',
-    fromUser: 'Имя отправителя',
+    fromUser: 'fdspijfjlkf',
+    fromUserName: 'Имя отправителя',
     date: new Date().toDateString(),
-    groupId: '32478643981654',
+    toGroup: '32478643981654',
+    toGroupTitle: 'JS Juniors',
     suggestedRole: 'Участник',
     readed: false
   },
   {
     id: 'dasqdsddsfwee',
-    fromUser: 'Имя отправителя',
+    fromUser: '324gj3h4j1',
+    fromUserName: 'Имя отправителя',
     date: new Date().toDateString(),
-    groupId: 'dr32847363274',
+    toGroup: 'dr32847363274',
+    toGroupTitle: 'C# Juniors',
     suggestedRole: 'Участник',
     readed: true
   }
@@ -66,6 +70,10 @@ const invites = [
 export class NotificationPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
+
+    this.state = {
+      needUpdate: this.props.needUpdate
+    };
   }
 
   componentDidMount() {
@@ -77,6 +85,12 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
     }
     else {
       this.props.getNotifies();
+      this.props.getInvites();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.needUpdate !== this.props.needUpdate) {
       this.props.getInvites();
     }
   }
@@ -134,7 +148,8 @@ NotificationPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   notifies: makeSelectNotifies(),
-  invites: makeSelectInvites()
+  invites: makeSelectInvites(),
+  needUpdate: makeSelectNeedUpdate()
 });
 
 function mapDispatchToProps(dispatch) {

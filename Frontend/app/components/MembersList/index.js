@@ -39,7 +39,7 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
                       src={item.avatarLink}
                     />}
                   title={<Link to="#">{item.name}</Link>}
-                  description={getMemberRole(item.memberRole)}
+                  description={getMemberRole(item.role)}
                 />
                 {this.props.isCreator &&
                     getMemberRole(item.memberRole) !== 'Создатель' ?

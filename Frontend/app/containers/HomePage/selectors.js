@@ -9,14 +9,9 @@ const selectHomePage = (state) => state.get('homePage');
  * Other specific selectors
  */
 
-const makeSelectUnassembledGroups = () => createSelector(
+const makeSelectGroups = (groupsType) => createSelector(
   selectHomePage,
-  (homeState) => homeState.get('unassembledGroups')
-);
-
-const makeSelectAssembledGroups = () => createSelector(
-  selectHomePage,
-  (homeState) => homeState.get('assembledGroups')
+  (homeState) => homeState.get(groupsType)
 );
 
 /**
@@ -25,6 +20,5 @@ const makeSelectAssembledGroups = () => createSelector(
 
 export {
   selectHomePage,
-  makeSelectUnassembledGroups,
-  makeSelectAssembledGroups
+  makeSelectGroups,
 };

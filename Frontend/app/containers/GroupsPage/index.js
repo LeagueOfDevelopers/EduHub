@@ -11,11 +11,11 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import reducer from './reducer';
-import saga from './saga';
+import reducer from '../HomePage/reducer';
+import saga from '../HomePage/saga';
 import {Link} from "react-router-dom";
-import {getUnassembledGroups} from "./actions";
-import {makeSelectUnassembledGroups} from "./selectors";
+import { getGroups } from "../HomePage/actions";
+import { makeSelectGroups } from "../HomePage/selectors";
 import {Row, Col, Menu, Dropdown, Icon} from 'antd';
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
 
@@ -44,12 +44,12 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
 
   componentDidMount() {
     if(localStorage.getItem('without_server') !== 'true') {
-      this.props.getUnassembledGroups(); // Получение групп, надо будет передавать тип групп
+      this.props.getGroups(this.props.match.params.groupsTitle);
       if(this.props.match.params.groupsTitle === 'unassembledGroups') {
-        this.setState({title: 'Незаполненные группы'});
+        this.setState({title: 'Идет набор'});
       }
       else if(this.props.match.params.groupsTitle === 'assembledGroups') {
-        this.setState({title: 'Идет набор'});
+          this.setState({title: 'Набранные группы'});
       }
     }
   }
@@ -71,11 +71,20 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
           </Col>
         </Row>
         <Row className='cards-holder cards-holder-center font-size-20' style={{marginTop: 60, marginBottom: 160}}>
-          {this.props.groups.map((item) =>
-            <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-              <UnassembledGroupCard {...item}/>
-            </Link>
-          )}
+          {this.props.match.params.groupsTitle === 'unassembledGroups' ?
+            this.props.unassembledGroups.map((item) =>
+              <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                <UnassembledGroupCard {...item}/>
+              </Link>
+            )
+            :
+            this.props.match.params.groupsTitle === 'assembledGroups' ?
+              this.props.assembledGroups.map((item) =>
+                <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                  <UnassembledGroupCard {...item}/>
+                </Link>
+              ) : null
+          }
         </Row>
       </Col>
     );
@@ -91,12 +100,13 @@ GroupsPage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  groups: makeSelectUnassembledGroups()
+  unassembledGroups: makeSelectGroups('unassembledGroups'),
+  assembledGroups: makeSelectGroups('assembledGroups')
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUnassembledGroups:() => dispatch(getUnassembledGroups()),
+    getGroups: (typeOfGroups) => dispatch(getGroups(typeOfGroups)),
   };
 }
 

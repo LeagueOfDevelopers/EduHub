@@ -8,7 +8,7 @@ import {loadCurrentUserError, loadCurrentUserSuccess} from './actions';
 function* loginSaga(action) {
   try {
     const userData = yield call(login, action.email, action.password);
-    yield put(loadCurrentUserSuccess(userData.name, userData.avatarLink, userData.token));
+    yield put(loadCurrentUserSuccess(userData));
   }
   catch(e) {
     yield put(loadCurrentUserError(e));

@@ -13,12 +13,13 @@ export function loadCurrentUser(email, password) {
   };
 }
 
-export function loadCurrentUserSuccess(name, avatarLink, token) {
+export function loadCurrentUserSuccess(payload) {
   return {
     type: LOAD_CURRENT_USER_SUCCESS,
-    name,
-    avatarLink,
-    token
+    name: payload.name,
+    avatarLink: payload.avatarLink,
+    token: payload.token,
+    statusCode: payload.statusCode
   };
 }
 

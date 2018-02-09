@@ -22,17 +22,20 @@ const initialState = fromJS({
   notifies: [],
   invites: [],
   pending: false,
-  error: false
+  error: false,
+  needUpdate: false,
 });
 
 function notificationPageReducer(state = initialState, action) {
   switch (action.type) {
     case CHANGE_INVITATION_STATUS_START:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case CHANGE_INVITATION_STATUS_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case CHANGE_INVITATION_STATUS_FAILED:
       return state
         .set('pending', false)
