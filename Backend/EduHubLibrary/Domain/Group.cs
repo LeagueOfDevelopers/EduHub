@@ -43,21 +43,21 @@ namespace EduHubLibrary.Domain
 
             bool isActive = true;
             GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
-            listOfMembers = new List<Member>();
-            listOfInvitations = new List<Invitation>();
+            _listOfMembers = new List<Member>();
+            _listOfInvitations = new List<Invitation>();
             var creator = new Member(creatorId, MemberRole.Creator);
-            listOfMembers.Add(creator);
+            _listOfMembers.Add(creator);
         }
 
         internal void AddMember(Guid newMemberId)
         {
             Ensure.Bool.IsFalse(IsMember(newMemberId), nameof(AddMember),
                 opt => opt.WithException(new AlreadyMemberException(newMemberId, GroupInfo.Id)));
-            Ensure.Bool.IsTrue(listOfMembers.Count < GroupInfo.Size, nameof(GroupInfo.Size),
+            Ensure.Bool.IsTrue(_listOfMembers.Count < GroupInfo.Size, nameof(GroupInfo.Size),
                 opt => opt.WithException(new GroupIsFullException(GroupInfo.Id)));
 
             var newMember = new Member(newMemberId, MemberRole.Member);
-            listOfMembers.Add(newMember);
+            _listOfMembers.Add(newMember);
             
         }
 
@@ -78,7 +78,7 @@ namespace EduHubLibrary.Domain
                 return;
             }
 
-            listOfMembers.Remove(deletingMember);
+            _listOfMembers.Remove(deletingMember);
         }
 
         internal void DeleteTeacher(Guid requestedPerson, Guid teacherId)
@@ -104,7 +104,7 @@ namespace EduHubLibrary.Domain
 
         internal bool IsMember(Guid userId)
         {
-            return listOfMembers.FirstOrDefault(current => current.UserId == userId) != null;
+            return _listOfMembers.FirstOrDefault(current => current.UserId == userId) != null;
         }
 
         internal bool IsTeacher(Guid userId)
@@ -114,22 +114,22 @@ namespace EduHubLibrary.Domain
 
         internal Member GetMemberById(Guid userId)
         {
-            return listOfMembers.FirstOrDefault(current => current.UserId == userId);
+            return _listOfMembers.FirstOrDefault(current => current.UserId == userId);
         }
 
         internal IEnumerable<Member> GetAllMembers()
         {
-            return listOfMembers;
+            return _listOfMembers;
         }
 
         internal IEnumerable<Invitation> GetAllInvitation()
         {
-            return listOfInvitations; 
+            return _listOfInvitations; 
         }
 
         internal void AddInvitation(Invitation invitation)
         {
-            listOfInvitations.Add(invitation);
+            _listOfInvitations.Add(invitation);
         }
         
         internal void ApproveTeacher(User teacher)
@@ -156,9 +156,9 @@ namespace EduHubLibrary.Domain
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Bool.IsTrue(IsMember(userId), nameof(IsMember),
                 opt => opt.WithException(new MemberNotFoundException(userId)));
-            Member currentMember = GetMemberById(userId);
+            var currentMember = GetMemberById(userId);
             currentMember.AcceptedCurriculum = true;
-            if (listOfMembers.All(m => m.AcceptedCurriculum))
+            if (_listOfMembers.All(m => m.AcceptedCurriculum))
             {
                 Status = CourseStatus.Started;
             }
@@ -177,19 +177,19 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(deletingCreator);
             Ensure.Bool.IsTrue(deletingCreator.MemberRole == MemberRole.Creator, nameof(DeleteCreator),
                 opt => opt.WithException(new NotEnoughPermissionsException(deletingCreator.UserId)));
-            int indexOfCreator = listOfMembers.IndexOf(deletingCreator);
-            if (indexOfCreator + 1 == listOfMembers.Count)
+            var indexOfCreator = _listOfMembers.IndexOf(deletingCreator);
+            if (indexOfCreator + 1 == _listOfMembers.Count)
             {
-                listOfMembers.Remove(deletingCreator);
+                _listOfMembers.Remove(deletingCreator);
                 GroupInfo.IsActive = false;
                 return;
             }
-            Member newCreator = listOfMembers[indexOfCreator + 1];
+            var newCreator = _listOfMembers[indexOfCreator + 1];
             newCreator.MemberRole = MemberRole.Creator;
-            listOfMembers.Remove(deletingCreator);
+            _listOfMembers.Remove(deletingCreator);
         }
 
-        private List<Member> listOfMembers;
-        private List<Invitation> listOfInvitations;
+        private List<Member> _listOfMembers;
+        private List<Invitation> _listOfInvitations;
     }
 }

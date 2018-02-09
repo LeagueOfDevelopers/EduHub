@@ -19,6 +19,12 @@ namespace EduHub.Controllers
     [Route("api/group")]
     public class GroupController : Controller
     {
+        public GroupController(IGroupFacade groupFacade, IUserFacade userFacade)
+        {
+            _groupFacade = groupFacade;
+            _userFacade = userFacade;
+        }
+
         /// <summary>
         /// Adds groups with all parameters
         /// </summary>
@@ -35,7 +41,7 @@ namespace EduHub.Controllers
             var userId = a.GetUserId();
             Ensure.Any.IsNotNull(newGroup, nameof(newGroup), 
                 opt=> opt.WithException(new ArgumentNullException(nameof(newGroup))));
-            Guid newId =_groupFacade.CreateGroup(userId, newGroup.Title, newGroup.Tags, newGroup.Description,
+            var newId =_groupFacade.CreateGroup(userId, newGroup.Title, newGroup.Tags, newGroup.Description,
                 newGroup.Size, newGroup.MoneyPerUser, newGroup.IsPrivate, newGroup.GroupType);
             CreateGroupResponse response = new CreateGroupResponse(newId);
             return Ok(response);
@@ -54,7 +60,7 @@ namespace EduHub.Controllers
 
             foreach (Group group in foundGroups)
             {
-                int countOfMembers = _groupFacade.GetGroupMembers(group.GroupInfo.Id).Count();
+                var countOfMembers = _groupFacade.GetGroupMembers(group.GroupInfo.Id).Count();
                 response.Add(new MinItemGroupResponse(new MinGroupInfo(group.GroupInfo.Id, group.GroupInfo.Title, countOfMembers,
                     group.GroupInfo.Size, group.GroupInfo.MoneyPerUser, group.GroupInfo.GroupType, group.GroupInfo.Tags)));
             }
@@ -169,7 +175,7 @@ namespace EduHub.Controllers
             List<MinItemGroupResponse> fullGroupList = new List<MinItemGroupResponse>();
             groups.ToList().ForEach(g => 
             {
-                int memberAmount = _groupFacade.GetGroupMembers(g.GroupInfo.Id).ToList().Count;
+                var memberAmount = _groupFacade.GetGroupMembers(g.GroupInfo.Id).ToList().Count;
                 MinGroupInfo groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size,
                     g.GroupInfo.MoneyPerUser, g.GroupInfo.GroupType, g.GroupInfo.Tags);
                 if (memberAmount == g.GroupInfo.Size)
@@ -194,7 +200,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetGroup([FromRoute] Guid groupId)
         {
-            Group group = _groupFacade.GetGroup(groupId);
+            var group = _groupFacade.GetGroup(groupId);
             List<Member> listOfMembers = _groupFacade.GetGroupMembers(groupId).ToList();
             FullGroupInfo groupInfo = new FullGroupInfo(group.GroupInfo.Title, group.GroupInfo.Size,
                 listOfMembers.Count, group.GroupInfo.MoneyPerUser, group.GroupInfo.GroupType, group.GroupInfo.Tags,
@@ -214,13 +220,7 @@ namespace EduHub.Controllers
             GroupResponse response = new GroupResponse(groupInfo, memberInfoList);
             return Ok(response);
         }
-        
-        public GroupController(IGroupFacade groupFacade, IUserFacade userFacade)
-        {
-            _groupFacade = groupFacade;
-            _userFacade = userFacade;
-        }
-        
+                
         private readonly IGroupFacade _groupFacade;
         private readonly IUserFacade _userFacade;
     }

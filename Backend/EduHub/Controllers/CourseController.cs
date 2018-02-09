@@ -21,6 +21,12 @@ namespace EduHub.Controllers
     [Route("api/group/{groupId}/course")]
     public class CourseController : Controller
     {
+        public CourseController(IGroupFacade groupFacade, IUserFacade userFacade)
+        {
+            _groupFacade = groupFacade;
+            _userFacade = userFacade;
+        }
+
         /// <summary>
         /// Adds suggesting plan for group
         /// </summary>
@@ -85,12 +91,6 @@ namespace EduHub.Controllers
         public IActionResult LeaveReview([FromBody]ReviewRequest review, [FromRoute] Guid groupId)
         {
             return Ok($"Отзыв '{review.Opinion}' с оценкой {review.Rating} был добавлен");
-        }
-
-        public CourseController(IGroupFacade groupFacade, IUserFacade userFacade)
-        {
-            _groupFacade = groupFacade;
-            _userFacade = userFacade;
         }
 
         private readonly IGroupFacade _groupFacade;

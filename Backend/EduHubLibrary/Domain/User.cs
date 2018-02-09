@@ -69,7 +69,7 @@ namespace EduHubLibrary.Domain
         internal void AcceptInvitation(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);
-            Invitation currentInvitation =
+            var currentInvitation =
                 Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
             if (currentInvitation.Status != InvitationStatus.InProgress)
                 throw new InvitationAlreadyChangedException(invitationId);
@@ -79,7 +79,7 @@ namespace EduHubLibrary.Domain
         internal void DeclineInvitation(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);
-            Invitation currentInvitation =
+            var currentInvitation =
                 Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
             if (currentInvitation.Status != InvitationStatus.InProgress)
                 throw new InvitationAlreadyChangedException(invitationId);

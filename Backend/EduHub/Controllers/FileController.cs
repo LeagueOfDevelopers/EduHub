@@ -17,6 +17,11 @@ namespace EduHub.Controllers
     [Route("api/file")]
     public class FileController : Controller
     {
+        public FileController(IHostingEnvironment environment, IFileFacade fileFacade)
+        {
+            _hostingEnvironment = environment;
+            _fileFacade = fileFacade;
+        }
 
         [HttpPost]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
@@ -63,12 +68,6 @@ namespace EduHub.Controllers
             var filePath = Path.Combine(downloadPath, file.Filename);
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
             return File(fileBytes, file.ContentType);
-        }
-
-        public FileController(IHostingEnvironment environment, IFileFacade fileFacade)
-        {
-            _hostingEnvironment = environment;
-            _fileFacade = fileFacade;
         }
 
         private readonly IHostingEnvironment _hostingEnvironment;

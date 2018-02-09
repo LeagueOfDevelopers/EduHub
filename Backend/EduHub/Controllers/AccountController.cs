@@ -12,6 +12,13 @@ namespace EduHub.Controllers
     [Route("api/account")]
     public class AccountController : Controller
     {
+        public AccountController(IUserFacade userFacade, SecuritySettings securitySettings, IJwtIssuer jwtIssuer)
+        {
+            _userFacade = userFacade;
+            _jwtIssuer = jwtIssuer;
+            _securitySettings = securitySettings;
+        }
+
         /// <summary>
         /// Adds user to db
         /// </summary>
@@ -21,7 +28,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult Registrate([FromBody]RegistrationRequest request)
         {
-            Guid newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
+            var newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
                 request.IsTeacher, UserType.User);
             RegistrationResponse response = new RegistrationResponse(newId);
             return Ok(response);
@@ -47,13 +54,6 @@ namespace EduHub.Controllers
             }
 
             return Unauthorized();
-        }
-
-        public AccountController(IUserFacade userFacade, SecuritySettings securitySettings, IJwtIssuer jwtIssuer)
-        {
-            _userFacade = userFacade;
-            _jwtIssuer = jwtIssuer;
-            _securitySettings = securitySettings;
         }
 
         private readonly IJwtIssuer _jwtIssuer;

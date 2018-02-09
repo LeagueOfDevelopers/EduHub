@@ -25,6 +25,7 @@ namespace EduHub.Controllers
         {
             return Ok($"К пользователю {userId} применены санкции");
         }
+
         /// <summary>
         /// Anulls sanctions for user
         /// </summary>

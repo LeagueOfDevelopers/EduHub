@@ -16,6 +16,11 @@ namespace EduHub.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
+        public UsersController(IUserFacade userFacade)
+        {
+            _userFacade = userFacade;
+        }
+
         /// <summary>
         /// Searches user somehow (for now)
         /// </summary>
@@ -54,10 +59,5 @@ namespace EduHub.Controllers
         }
 
         private readonly IUserFacade _userFacade;
-
-        public UsersController(IUserFacade userFacade)
-        {
-            _userFacade = userFacade;
-        }
     }
 }

@@ -7,9 +7,6 @@ namespace EduHubLibrary.Domain
 {
     public class UserFile
     {
-        public string Filename { get; private set; }
-        public string ContentType { get; private set; }
-
         public UserFile(string filename, string contentType)
         {
             Ensure.String.IsNotNullOrWhiteSpace(filename);
@@ -18,5 +15,8 @@ namespace EduHubLibrary.Domain
             Filename = filename;
             ContentType = contentType;
         }
+
+        public string Filename { get; private set; }
+        public string ContentType { get; private set; }
     }
 }

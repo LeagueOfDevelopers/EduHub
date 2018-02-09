@@ -9,7 +9,6 @@ namespace EduHubLibrary.Domain
         Default = 0,
         Member = 1,
         Creator = 2,
-        Teacher = 3,
-
+        Teacher = 3
     }
 }

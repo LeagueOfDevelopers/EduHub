@@ -13,7 +13,7 @@ namespace EduHubLibrary.Facades
         {
             Ensure.String.IsNotNullOrWhiteSpace(filename);
             Ensure.String.IsNotNullOrWhiteSpace(contentType);
-            UserFile userFile = new UserFile(filename, contentType);
+            var userFile = new UserFile(filename, contentType);
             _fileRepository.AddFile(userFile);
         }
 

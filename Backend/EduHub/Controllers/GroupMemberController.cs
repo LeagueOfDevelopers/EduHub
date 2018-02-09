@@ -14,6 +14,12 @@ namespace EduHub.Controllers
     [Route("api/group/{groupId}/member")]
     public class GroupMemberController : Controller
     {
+        public GroupMemberController(IUserFacade userFacade, IGroupFacade groupFacade)
+        {
+            _userFacade = userFacade;
+            _groupFacade = groupFacade;
+        }
+
         /// <summary>
         /// Invites user to group
         /// </summary>
@@ -73,14 +79,7 @@ namespace EduHub.Controllers
             return Ok();
         }
 
-        public GroupMemberController(IUserFacade userFacade, IGroupFacade groupFacade)
-        {
-            _userFacade = userFacade;
-            _groupFacade = groupFacade;
-        }
-
         private readonly IUserFacade _userFacade;
         private readonly IGroupFacade _groupFacade;
-
     }
 }

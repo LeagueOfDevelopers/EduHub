@@ -32,14 +32,13 @@ namespace EduHubLibrary.Facades
         {
             Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
                 nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
-            User user = new User(username, credentials, IsTeacher, type);
+            var user = new User(username, credentials, IsTeacher, type);
             _userRepository.Add(user);
             return user.Id;
         }
 
         public User FindByCredentials(Credentials credentials)
         {
-
             return _userRepository.GetUserByCredentials(credentials);
         }
 
@@ -47,14 +46,14 @@ namespace EduHubLibrary.Facades
         {
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Guid.IsNotEmpty(invitationId);
-            User currentUser = _userRepository.GetUserById(userId);
+            var currentUser = _userRepository.GetUserById(userId);
             if (status.Equals(InvitationStatus.Accepted))
             {
                 currentUser.AcceptInvitation(invitationId);
-                Invitation currentInvitation = currentUser.GetInvitationById(invitationId);
+                var currentInvitation = currentUser.GetInvitationById(invitationId);
                 if (currentInvitation.SuggestedRole == MemberRole.Member)
                 {
-                    Group currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
+                    var currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
                     currentGroup.AddMember(currentInvitation.ToUser);
                 }
             }
@@ -69,8 +68,8 @@ namespace EduHubLibrary.Facades
             Ensure.Guid.IsNotEmpty(inviterId);
             Ensure.Guid.IsNotEmpty(invitedId);
             Ensure.Guid.IsNotEmpty(groupId);
-            Group currentGroup = _groupRepository.GetGroupById(groupId);
-            User invitedUser = _userRepository.GetUserById(invitedId);
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            var invitedUser = _userRepository.GetUserById(invitedId);
 
             Ensure.Bool.IsTrue(currentGroup.IsMember(inviterId), nameof(Invite),
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
@@ -85,7 +84,7 @@ namespace EduHubLibrary.Facades
             }
             Ensure.Bool.IsFalse(suggestedRole == MemberRole.Teacher && _groupRepository.GetGroupById(groupId).Teacher != null,
                 nameof(Invite), opt => opt.WithException(new TeacherIsAlreadyFoundException()));
-            Invitation newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
+            var newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
 
             invitedUser.AddInvitation(newInvintation);
         }
@@ -93,7 +92,7 @@ namespace EduHubLibrary.Facades
         public IEnumerable<Invitation> GetAllInvitationsForUser(Guid userId)
         {
             Ensure.Guid.IsNotEmpty(userId);
-            User currentUser = _userRepository.GetUserById(userId);
+            var currentUser = _userRepository.GetUserById(userId);
             return currentUser.GetAllInvitation();
         }
 
@@ -167,7 +166,7 @@ namespace EduHubLibrary.Facades
 
         public void EditBirthYear(Guid userId, string newYear)
         {
-            string dataFormat = @"^\d{4}$";
+            var dataFormat = @"^\d{4}$";
 
             if (System.Text.RegularExpressions.Regex.IsMatch(newYear, dataFormat))
             {
