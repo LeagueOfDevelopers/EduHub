@@ -198,7 +198,7 @@ namespace EduHubTests
             var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
             var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
             var testUser = userFacade.GetUser(testUserId);
-            var newBirthday = "1998";
+            var newBirthday = 1998;
 
             //Act
             userFacade.EditBirthYear(testUserId, newBirthday);
@@ -208,14 +208,14 @@ namespace EduHubTests
             Assert.AreEqual(newBirthday, actualBirthYear);
         }
 
-        [ExpectedException(typeof(System.ArgumentException)), TestMethod]
+        [ExpectedException(typeof(IndexOutOfRangeException)), TestMethod]
         public void EditUserWithInValidBirthday_GetException()
         {
             //Arrange
             var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
             var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
             var testUser = userFacade.GetUser(testUserId);
-            var newBirthday = "10.1998";
+            var newBirthday = 101998;
 
             //Act
             userFacade.EditBirthYear(testUserId, newBirthday);

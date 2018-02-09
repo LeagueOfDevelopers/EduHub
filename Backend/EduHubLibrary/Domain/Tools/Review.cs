@@ -1,21 +1,22 @@
 ﻿using EnsureThat;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Domain
 {
     public class Review
     {
-        public Review(Guid evaluator, string text, int rating)
+        public Review(Guid evaluator, string title, string text)
         {
-            Evaluator = Ensure.Guid.IsNotEmpty(evaluator);
-            Text = text;
-            Rating = rating;
+            FromUser = Ensure.Guid.IsNotEmpty(evaluator);
+            Title = Ensure.String.IsNotNullOrWhiteSpace(title);
+            Text = Ensure.String.IsNotNullOrWhiteSpace(text);
+            Date = DateTimeOffset.Now;
         }
 
-        public Guid Evaluator { get; }
-        public string Text { get; private set; }
-        public int Rating { get; private set; }
+        public Guid FromUser { get; }
+        public string Title { get; }
+        public string Text { get; }
+        public DateTimeOffset Date { get;}
+
     }
 }

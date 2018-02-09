@@ -25,7 +25,7 @@ namespace EduHubLibrary.Facades
         void EditGender(Guid userId, bool isMan);
         void EditAvatarLink(Guid userId, string newAvatarLink);
         void EditContacts(Guid userId, List<string> newContactData);
-        void EditBirthYear(Guid userId, string newYear);
+        void EditBirthYear(Guid userId, int newYear);
         void BecomeTeacher(Guid userId);
         void StopToBeTeacher(Guid userId);
     }

@@ -96,7 +96,7 @@ namespace EduHubTests
             User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
             
             //Act
-            Review review = new Review(Guid.NewGuid(), "The best", 5);
+            Review review = new Review(Guid.NewGuid(), "The best", "The beast teacher of the year");
             teacher.TeacherProfile.AddReview(review);
 
             //Assert
@@ -110,7 +110,7 @@ namespace EduHubTests
             User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
             
             //Act
-            Review review = new Review(Guid.Empty, "The best", 5);
+            Review review = new Review(Guid.Empty, "The best", "The best teacher of the year");
             teacher.TeacherProfile.AddReview(review);
         }
     }
