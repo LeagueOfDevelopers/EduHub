@@ -22,9 +22,9 @@ public class UserProfilePresenter implements IUserProfilePresenter {
     }
 
     @Override
-    public void loadUserProfile(String token) {
+    public void loadUserProfile(String token,String userId) {
         EduHubApi eduHubApi= RetrofitBuilder.getApi();
-        eduHubApi.getUsersProfile("Bearer "+token)
+        eduHubApi.getUsersProfile("Bearer "+token,userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result->{

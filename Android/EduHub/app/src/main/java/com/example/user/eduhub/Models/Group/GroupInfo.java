@@ -19,27 +19,33 @@ public class GroupInfo implements Serializable {
     @SerializedName("title")
     @Expose
     private String title;
-    @SerializedName("description")
+    @SerializedName("memberAmount")
     @Expose
-    private String description;
-    @SerializedName("tags")
-    @Expose
-    private List<String> tags = null;
-    @SerializedName("groupType")
-    @Expose
-    private Integer groupType;
-    @SerializedName("isPrivate")
-    @Expose
-    private Boolean isPrivate;
-    @SerializedName("isActive")
-    @Expose
-    private Boolean isActive;
+    private Integer memberAmount;
     @SerializedName("size")
     @Expose
     private Integer size;
-    @SerializedName("moneyPerUser")
+    @SerializedName("cost")
     @Expose
-    private Integer moneyPerUser;
+    private Integer cost;
+    @SerializedName("groupType")
+    @Expose
+    private Integer groupType;
+    @SerializedName("tags")
+    @Expose
+
+    private List<String> tags = null;
+    @SerializedName("description")
+    @Expose
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getId() {
         return id;
@@ -57,44 +63,12 @@ public class GroupInfo implements Serializable {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public Integer getMemberAmount() {
+        return memberAmount;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public Integer getGroupType() {
-        return groupType;
-    }
-
-    public void setGroupType(Integer groupType) {
-        this.groupType = groupType;
-    }
-
-    public Boolean getIsPrivate() {
-        return isPrivate;
-    }
-
-    public void setIsPrivate(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setMemberAmount(Integer memberAmount) {
+        this.memberAmount = memberAmount;
     }
 
     public Integer getSize() {
@@ -105,14 +79,29 @@ public class GroupInfo implements Serializable {
         this.size = size;
     }
 
-    public Integer getMoneyPerUser() {
-        return moneyPerUser;
+    public Integer getCost() {
+        return cost;
     }
 
-    public void setMoneyPerUser(Integer moneyPerUser) {
-        this.moneyPerUser = moneyPerUser;
+    public void setCost(Integer cost) {
+        this.cost = cost;
     }
 
+    public Integer getGroupType() {
+        return groupType;
+    }
 
+    public void setGroupType(Integer groupType) {
+        this.groupType = groupType;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 }
+
 

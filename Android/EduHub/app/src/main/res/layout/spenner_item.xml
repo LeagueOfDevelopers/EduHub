@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
@@ -9,11 +11,11 @@
 
         <TextView
             android:id="@+id/spenner_item"
-            android:layout_width="200dp"
-            android:layout_height="45dp"
-            android:paddingTop="14dp"
+            android:layout_width="112dp"
+            android:layout_height="26dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
             android:text="TextView"
-            android:textSize="17dp" />
+            android:textSize="12dp" />
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>

@@ -17,6 +17,7 @@ import com.example.user.eduhub.Interfaces.View.IUserProfileView;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Models.UserProfile.UserProfile;
+import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 import com.example.user.eduhub.Presenters.UserProfilePresenter;
 import com.example.user.eduhub.R;
 
@@ -45,9 +46,9 @@ public class ProfileTransactionFragment extends Fragment implements IUserProfile
         Log.d("CHECK BUTTON",fakesButton.getCheckButton().toString());
         if(!fakesButton.getCheckButton()){
 
-            userProfilePresenter.loadUserProfile(user.getToken());}
+            userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());}
         else{
-            fakeUserProfilePresenter.loadUserProfile(user.getToken());
+            fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
         }
     return v;}
 
@@ -69,10 +70,10 @@ public class ProfileTransactionFragment extends Fragment implements IUserProfile
     }
 
     @Override
-    public void getUserProfile(UserProfile userProfile) {
+    public void getUserProfile(UserProfileResponse userProfile) {
         fragmentTransaction=getFragmentManager().beginTransaction();
-        Log.d("USER ROLE",userProfile.getIsTeacher().toString());
-        if(userProfile.getIsTeacher()){
+        Log.d("USER ROLE",userProfile.getUserProfile().getIsTeacher().toString());
+        if(userProfile.getUserProfile().getIsTeacher()){
             TeacherProfile teacherProfile=new TeacherProfile();
             teacherProfile.setUserProfile(userProfile);
             fragmentTransaction.replace(R.id.UserFragmentsConteiner,teacherProfile);

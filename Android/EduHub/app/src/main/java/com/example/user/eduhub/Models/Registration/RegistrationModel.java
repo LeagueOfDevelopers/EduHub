@@ -21,9 +21,6 @@ public class RegistrationModel {
     @SerializedName("isTeacher")
     @Expose
     private Boolean isTeacher;
-    @SerializedName("avatarLink")
-    @Expose
-    private String avatarLink;
     @SerializedName("inviteCode")
     @Expose
     private String inviteCode;
@@ -60,14 +57,6 @@ public class RegistrationModel {
         this.isTeacher = isTeacher;
     }
 
-    public String getAvatarLink() {
-        return avatarLink;
-    }
-
-    public void setAvatarLink(String avatarLink) {
-        this.avatarLink = avatarLink;
-    }
-
     public String getInviteCode() {
         return inviteCode;
     }
@@ -75,5 +64,4 @@ public class RegistrationModel {
     public void setInviteCode(String inviteCode) {
         this.inviteCode = inviteCode;
     }
-
 }

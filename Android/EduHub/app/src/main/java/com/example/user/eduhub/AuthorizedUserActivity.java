@@ -61,17 +61,20 @@ public class AuthorizedUserActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         sPref=getSharedPreferences("User",MODE_PRIVATE);
-        if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(AVATARLINK)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
-             user=savedDataRepository.loadSavedData(sPref);}
+        if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
+             user=savedDataRepository.loadSavedData(sPref);
+            bool=savedDataRepository.loadCheckButtonResult(sPref);
+            fakesButton.setCheckButton(bool);}
              else{
             Intent intent=getIntent();
             user=(User) intent.getSerializableExtra("user");
             savedDataRepository=new SavedDataRepository();
             SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail());
+
         }
 
-        bool=savedDataRepository.loadCheckButtonResult(sPref);
-        fakesButton.setCheckButton(bool);
+
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -130,7 +133,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
         MenuItem searchViewItem = menu.findItem(R.id.action_search);
         final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
         searchViewAndroidActionBar.setQueryHint("Поиск");
-        searchViewAndroidActionBar.setMaxWidth(450);
+        searchViewAndroidActionBar.setMaxWidth(1000);
         searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -209,7 +212,6 @@ public class AuthorizedUserActivity extends AppCompatActivity
         editor.putString(ID,jwt.getClaim("UserId").asString());
         editor.putString(TOKEN,token);
         editor.putString(NAME,name);
-        editor.putString(AVATARLINK,avatarLink);
         editor.putString(EMAIL,email);
         editor.commit();
     }

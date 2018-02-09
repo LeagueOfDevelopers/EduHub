@@ -7,5 +7,6 @@ import com.example.user.eduhub.Classes.MemberRole;
  */
 
 public interface IInviteUserPresenter {
-    void inviteUser(String name, MemberRole role);
+    void inviteUser(String userId, MemberRole role,String groupId,String token);
 }
+

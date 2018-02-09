@@ -1,5 +1,7 @@
 package com.example.user.eduhub.Presenters;
 
+import android.util.Log;
+
 import com.example.user.eduhub.Fragments.LoginFragment;
 import com.example.user.eduhub.Interfaces.Presenters.IRegistrPresenter;
 import com.example.user.eduhub.Interfaces.View.IRegistrView;
@@ -24,7 +26,7 @@ public class RegistrPresenter implements IRegistrPresenter {
     }
 
     @Override
-    public void RegistrationUser(String name, String email, String password, Boolean isTeacher, String avatarLink, String inviteCode) {
+    public void RegistrationUser(String name, String email, String password, Boolean isTeacher,  String inviteCode) {
         if(!email.equals("")&&!password.equals("")&&!name.equals("")){
 
             RegistrationModel registrationModel=new RegistrationModel();
@@ -33,7 +35,6 @@ public class RegistrPresenter implements IRegistrPresenter {
             registrationModel.setPassword(password);
             registrationModel.setIsTeacher(isTeacher);
             registrationModel.setInviteCode(inviteCode);
-            registrationModel.setAvatarLink(avatarLink);
             EduHubApi eduHubApi= RetrofitBuilder.getApi();
             disposable=eduHubApi.userRegistration(registrationModel)
                     .subscribeOn(Schedulers.io())
@@ -43,7 +44,7 @@ public class RegistrPresenter implements IRegistrPresenter {
                             },
                             error -> {
                                 registrView.getError(error);
-
+                                Log.e("Throwavle",error.toString());
                             },
                             ()->{
                                 LoginFragment fragment=new LoginFragment();

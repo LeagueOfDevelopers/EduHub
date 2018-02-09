@@ -13,7 +13,6 @@ import com.example.user.eduhub.Fakes.FakeGroupInformationPresenter;
 import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.View.IGroupView;
 import com.example.user.eduhub.Models.Group.Group;
-import com.example.user.eduhub.Models.Group.GroupInfo;
 import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 import com.example.user.eduhub.R;
 
@@ -73,14 +72,14 @@ public class GroupInformationFragment extends Fragment implements IGroupView {
 
     @Override
     public void getInformationAboutGroup(Group group) {
-        members.setText(group.getNumberOfMembers()+"/"+group.getGroupInfo().getSize());
-        cost.setText("$"+group.getGroupInfo().getMoneyPerUser());
+        members.setText(group.getGroupInfo().getMemberAmount()+"/"+group.getGroupInfo().getSize());
+        cost.setText("$"+group.getGroupInfo().getCost());
         for (String tag:group.getGroupInfo().getTags()
              ) {        tags.setText(tags.getText().toString()+tag+" ");
 
 
         }
 
-        discription.setText(group.getGroupInfo().getDescription());
+       // discription.setText(group.getGroupInfo().getDescription());
     }
 }

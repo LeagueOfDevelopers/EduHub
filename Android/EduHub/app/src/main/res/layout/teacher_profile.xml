@@ -305,16 +305,14 @@
                                 android:textColor="@color/black"
                                 android:textSize="12dp" />
 
-                            <TextView
+                            <android.support.v7.widget.RecyclerView
                                 android:id="@+id/skils"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="82dp"
                                 android:layout_marginRight="12dp"
-                                android:gravity="center_vertical"
-                                android:text="Занимаюсь разработкой под андроид.Также постепенно совершенствуюсь и двигаюсь вперед,с оптимизмом в будущее!"
-                                android:textColor="@color/black"
-                                android:textSize="12dp" />
+                                android:layout_marginTop="15dp"
+                                 />
                         </RelativeLayout>
 
 

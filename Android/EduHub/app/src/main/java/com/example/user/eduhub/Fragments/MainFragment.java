@@ -23,7 +23,7 @@ public class MainFragment extends Fragment {
     ViewPager pager;
     ViewPagerAdapter adapter;
     Authorized_fragment authorized_fragment;
-    Authorized_fragment authorized_fragment2;
+    AuthorizedFragmentForTeacher authorized_fragment2;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,7 +33,7 @@ public class MainFragment extends Fragment {
         toolbar.setTitle("Главная");
         authorized_fragment=new Authorized_fragment();
 
-        authorized_fragment2=new Authorized_fragment();
+        authorized_fragment2=new AuthorizedFragmentForTeacher();
 
 
 

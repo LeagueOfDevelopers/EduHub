@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public interface IGroupRepository {
 
-     void loadAllGroups();
+     void loadAllGroupsForUsers();
+     void loadAllGroupsForTeachers();
      void loadUsersGroup(String token);
 }

@@ -6,27 +6,18 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.eduhub.Fakes.FakeChangeStatusOfInvitation;
-import com.example.user.eduhub.Fakes.FakeGroupInformationPresenter;
 import com.example.user.eduhub.Fakes.FakesButton;
-import com.example.user.eduhub.Fragments.GroupInformationFragment;
-import com.example.user.eduhub.Fragments.MainGroupFragment;
 import com.example.user.eduhub.GroupActivity;
-import com.example.user.eduhub.Interfaces.Presenters.IGroupInfirmationPresenter;
 import com.example.user.eduhub.Interfaces.View.IChangeStatusOfInvitationView;
-import com.example.user.eduhub.Interfaces.View.IGroupView;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.Invitation;
 import com.example.user.eduhub.Models.User;
-import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 import com.example.user.eduhub.Presenters.СhangeStatusOfInvitationPresenter;
 import com.example.user.eduhub.R;
-import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
@@ -38,7 +29,6 @@ import com.mindorks.placeholderview.annotations.expand.SingleTop;
 import com.mindorks.placeholderview.annotations.expand.Toggle;
 
 import java.io.Serializable;
-import java.nio.file.Path;
 
 /**
  * Created by User on 01.02.2018.

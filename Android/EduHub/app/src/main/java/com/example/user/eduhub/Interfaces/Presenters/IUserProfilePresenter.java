@@ -5,5 +5,5 @@ package com.example.user.eduhub.Interfaces.Presenters;
  */
 
 public interface IUserProfilePresenter  {
-    void loadUserProfile(String token);
+    void loadUserProfile(String token,String userId);
 }

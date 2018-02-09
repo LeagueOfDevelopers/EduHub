@@ -3,40 +3,41 @@ package com.example.user.eduhub.Models.UserProfile;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by User on 30.01.2018.
  */
 
 public class UserProfile {
+
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("type")
+    @SerializedName("aboutUser")
     @Expose
-    private Integer type;
+    private String aboutUser;
+    @SerializedName("birthYear")
+    @Expose
+    private String birthYear;
+    @SerializedName("isMan")
+    @Expose
+    private Boolean isMan;
     @SerializedName("isTeacher")
     @Expose
     private Boolean isTeacher;
-    @SerializedName("teacherProfile")
+    @SerializedName("avatarLink")
     @Expose
-    private TeacherProfile teacherProfile;
-    @SerializedName("isActive")
+    private String avatarLink;
+    @SerializedName("contacts")
     @Expose
-    private Boolean isActive;
+    private List<String> contacts = null;
     @SerializedName("id")
     @Expose
     private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -54,12 +55,28 @@ public class UserProfile {
         this.email = email;
     }
 
-    public Integer getType() {
-        return type;
+    public String getAboutUser() {
+        return aboutUser;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setAboutUser(String aboutUser) {
+        this.aboutUser = aboutUser;
+    }
+
+    public String getBirthYear() {
+        return birthYear;
+    }
+
+    public void setBirthYear(String birthYear) {
+        this.birthYear = birthYear;
+    }
+
+    public Boolean getIsMan() {
+        return isMan;
+    }
+
+    public void setIsMan(Boolean isMan) {
+        this.isMan = isMan;
     }
 
     public Boolean getIsTeacher() {
@@ -70,19 +87,27 @@ public class UserProfile {
         this.isTeacher = isTeacher;
     }
 
-    public TeacherProfile getTeacherProfile() {
-        return teacherProfile;
+    public String getAvatarLink() {
+        return avatarLink;
     }
 
-    public void setTeacherProfile(TeacherProfile teacherProfile) {
-        this.teacherProfile = teacherProfile;
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public List<String> getContacts() {
+        return contacts;
     }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setContacts(List<String> contacts) {
+        this.contacts = contacts;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

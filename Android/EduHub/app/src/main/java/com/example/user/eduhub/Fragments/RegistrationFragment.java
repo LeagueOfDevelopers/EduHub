@@ -78,17 +78,26 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 boolean isTeacher;
+                if(name.getText().length()>=6){
+                    if(email.getText().length()>=6){
+                        if(password.getText().length()>=6){
                 if(checkBox.isChecked()){
                     isTeacher=true;
                 } else{
                     isTeacher=false;
                 }
                 if(!fakesButton.getCheckButton()){
-                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,"String",inviteCode.getText().toString());}
+                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,inviteCode.getText().toString());}
                 else{
-                    fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,"String",inviteCode.getText().toString());
+                    fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,inviteCode.getText().toString());
                 }
+                        }else{MakeToast("Пароль слишком короткий");}
+                    }else{
+                        MakeToast("Email слишком короткий");
+                    }
+                }else{MakeToast("Минимальная длина имен 6");}
 
             }
         });

@@ -3,6 +3,7 @@ package com.example.user.eduhub.Retrofit;
 import com.example.user.eduhub.Models.ChangeInvitationStatusModel;
 import com.example.user.eduhub.Models.CreateGroupModel;
 import com.example.user.eduhub.Models.CreateGroupResponse;
+import com.example.user.eduhub.Models.Group.GetAllGroups;
 import com.example.user.eduhub.Models.Group.GetGroupsModel;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.InvitationResponse;
@@ -12,8 +13,8 @@ import com.example.user.eduhub.Models.SearchModel;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Models.Registration.RegistrationModel;
 import com.example.user.eduhub.Models.Registration.RegistrationResponseModel;
-import com.example.user.eduhub.Models.UserProfile.UserProfile;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
+import com.example.user.eduhub.Models.UserProfile.UserSearchProfileResponse;
 
 
 import io.reactivex.Completable;
@@ -36,7 +37,7 @@ public interface EduHubApi {
     @POST("/api/account/login")
     Single<User> userLogin(@Body LoginModel loginModel);
     @GET("/api/group")
-    Observable<GetGroupsModel> getGroups();
+    Observable<GetAllGroups> getGroups();
     @GET("/api/group/{idOfGroup}")
     Observable<Group> getInformationAbotGroup(@Path("idOfGroup")String id);
     @POST("/api/group/{groupId}/member/invitation")
@@ -45,10 +46,10 @@ public interface EduHubApi {
     Observable<GetGroupsModel> getUsersGroup(@Header("Authorization") String token);
     @POST("/api/group")
     Single<CreateGroupResponse> createGroup(@Header("Authorization") String token, @Body CreateGroupModel model);
-    @GET("/api/user/profile")
-    Single<UserProfile> getUsersProfile (@Header("Authorization") String token);
+    @GET("/api/user/profile/{userId}")
+    Single<UserProfileResponse> getUsersProfile (@Header("Authorization") String token, @Path("userId") String userId);
     @POST("/api/users/search")
-    Single<UserProfileResponse> searchUser (@Body SearchModel model);
+    Single<UserSearchProfileResponse> searchUser (@Body SearchModel model);
     @POST("/api/group/{groupId}/member")
     Completable signInUserToGroup (@Header("Authorization") String token, @Path("groupId") String groupId);
     @GET("/api/user/profile/invitations")

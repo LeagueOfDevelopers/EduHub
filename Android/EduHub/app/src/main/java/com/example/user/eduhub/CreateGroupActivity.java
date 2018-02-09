@@ -2,18 +2,25 @@ package com.example.user.eduhub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.ex.chips.BaseRecipientAdapter;
+import com.android.ex.chips.RecipientEditTextView;
+import com.android.ex.chips.recipientchip.DrawableRecipientChip;
 import com.example.user.eduhub.Adapters.SpinnerAdapter;
 import com.example.user.eduhub.Classes.TypeOfEducation;
 import com.example.user.eduhub.Fakes.FakeCreateGroupPresenter;
@@ -24,6 +31,8 @@ import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Presenters.CreateGroupPresenter;
 
 import java.util.ArrayList;
+
+import mabbas007.tagsedittext.TagsEditText;
 
 public class CreateGroupActivity extends AppCompatActivity implements ICreateGroupView {
     ArrayList<String> tags=new ArrayList<>();
@@ -36,6 +45,7 @@ User user;
 SavedDataRepository savedDataRepository=new SavedDataRepository();
 FakesButton fakesButton=new FakesButton();
 FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(this);
+    Boolean flag;
 
 
     @Override
@@ -43,21 +53,30 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         sPref=getSharedPreferences("User",MODE_PRIVATE);
+        final EditText maxParticipants=findViewById(R.id.participants);
+        final EditText cost=findViewById(R.id.cost);
+        final TagsEditText tags=findViewById(R.id.tagsEditText);
+        final CheckBox checkBox=findViewById(R.id.privacy);
+        final EditText description=findViewById(R.id.about_group);
+        Button createGroup=findViewById(R.id.create_group);
         user=savedDataRepository.loadSavedData(sPref);
         Toolbar toolbar=findViewById(R.id.toolbar);
         toolbar.setTitle("Создание группы");
         CreateGroupPresenter createGroupPresenter=new CreateGroupPresenter(this);
         ImageButton backButton=findViewById(R.id.back);
-        final EditText nameOfGroup=findViewById(R.id.name);
-        final EditText maxParticipants=findViewById(R.id.participants);
-        final EditText cost=findViewById(R.id.cost);
+        CheckBox privacy=findViewById(R.id.privacy);
+         flag=false;
+        privacy.setOnClickListener(click->{
+            if(flag){
+                privacy.setButtonDrawable(R.drawable.ic_black_circle);
+                flag=false;
+            }else{
+                privacy.setButtonDrawable(R.drawable.ic_check_circle_black_24dp);
+                flag=true;
+            }
+        });
         spinner=findViewById(R.id.type_of_education);
-        final EditText editTags=findViewById(R.id.tags);
-        final CheckBox checkBox=findViewById(R.id.checkBox);
-        final EditText description=findViewById(R.id.Description);
-        Button createGroup=findViewById(R.id.create_group);
         adapter=new SpinnerAdapter(this,R.layout.spenner_item, TypeOfEducation.values());
-
         spinner.setAdapter(adapter);
         // заголовок
         spinner.setPrompt("Type of education");
@@ -76,27 +95,42 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+        EditText nameOfGroup=findViewById(R.id.name_of_group_create);
+        nameOfGroup.setOnKeyListener(new View.OnKeyListener()
+                                     {
+                                         public boolean onKey(View v, int keyCode, KeyEvent event)
+                                         {
+                                             if(
+                                                     (keyCode == KeyEvent.KEYCODE_ENTER))
+                                             {
+
+                                                 return true;
+                                             }
+                                             return false;
+                                         }
+                                     }
+        );
+
+
         backButton.setOnClickListener(click->{
             Intent intent=new Intent(this,AuthorizedUserActivity.class);
             startActivity(intent);
         });
-        createGroup.setOnClickListener(click->{
-            if(!nameOfGroup.getText().toString().equals("")&&!cost.getText().toString().equals("")&&!maxParticipants.getText().toString().equals("")&&type!=null&&!editTags.getText().toString().equals("")&&!description.getText()
-            .toString().equals("")){
-                String[] str=editTags.getText().toString().split(" ");
 
-                for(int i=0;i<str.length;i++){
-                    tags.add(str[i]);
-                }
-                if (checkBox.isChecked()) {
-                    privacy=true;
-                }else{
-                    privacy=false;
-                }
+
+
+
+
+
+        createGroup.setOnClickListener(click->{
+            if(!nameOfGroup.getText().toString().equals("")&&!cost.getText().toString().equals("")&&!maxParticipants.getText().toString().equals("")&&type!=null&&!tags.getText().toString().equals("")&&!description.getText()
+            .toString().equals("")){
+
+
                 if(!fakesButton.getCheckButton()){
-                createGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),tags,Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,privacy,user.getToken());}
+                createGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>)tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,flag,user.getToken());}
                 else{
-                    fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),tags,Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,privacy,user.getToken());
+                    fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>) tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,flag,user.getToken());
 
                 }
             }else{

@@ -7,7 +7,8 @@
     tools:context="com.example.user.eduhub.CreateGroupActivity">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/metalic">
         <android.support.design.widget.AppBarLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
@@ -35,64 +36,224 @@
             </RelativeLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="270dp"
-            android:layout_height="45dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/header"
-            android:layout_marginLeft="61dp"
-            android:layout_marginStart="61dp"
-            android:layout_marginTop="57dp"
-            android:ems="10"
-            android:hint="Название"
-            android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/participants"
-            android:layout_width="60dp"
-            android:layout_height="45dp"
-            android:layout_alignLeft="@+id/type_of_education"
-            android:layout_alignStart="@+id/type_of_education"
-            android:layout_below="@+id/type_of_education"
-            android:ems="10"
-            android:hint="14"
-            android:inputType="textPersonName" />
+            <android.support.v7.widget.CardView
+                android:id="@+id/top_card_create_group"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_below="@+id/header">
 
-        <EditText
-            android:id="@+id/cost"
-            android:layout_width="60dp"
-            android:layout_height="45dp"
-            android:layout_below="@+id/type_of_education"
-            android:layout_marginLeft="17dp"
-            android:layout_marginStart="17dp"
-            android:layout_toEndOf="@+id/participants"
-            android:layout_toRightOf="@+id/participants"
-            android:ems="10"
-            android:hint="300$"
-            android:inputType="textPersonName" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:background="@color/dark_grey">
 
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/type_of_education"
-            android:layout_width="270dp"
-            android:layout_height="45dp"
-            android:layout_alignLeft="@+id/name"
-            android:layout_alignStart="@+id/name"
-            android:layout_below="@+id/name"
-            android:ems="10"
-            android:hint="Тип обучения"
-            android:inputType="textPersonName" />
+                    <ImageView
+                        android:id="@+id/label_of_group"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp" />
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="125dp"
-            android:layout_height="45dp"
-            android:layout_alignEnd="@+id/type_of_education"
-            android:layout_alignRight="@+id/type_of_education"
-            android:layout_below="@+id/type_of_education"
-            android:layoutDirection="rtl"
-            android:text="Приватность:" />
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="12dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@color/dark_grey"
+                        android:text="Название"
+                        android:textColor="@color/black"
+                        android:textSize="9dp" />
 
+                    <EditText
+                        android:id="@+id/name_of_group_create"
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginTop="26dp"
+                        android:textSize="12dp"
+                        android:background="#FFFFFF"
+                        android:paddingLeft="5dp"
+                        android:singleLine="true"/>
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top_card_create_group"
+            android:layout_marginTop="15dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/dark_grey">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="15dp"
+            android:textSize="10dp"
+            android:text="Тип"
+            android:textColor="@color/black"/>
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/type_of_education"
+                android:layout_width="122dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="12dp"
+                android:background="#FFFFFF"
+                android:ems="10"
+                android:inputType="textPersonName" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/ic_arrow_drop_down_black_24dp"
+                    android:layout_alignRight="@+id/type_of_education"
+                    android:layout_marginTop="30dp"/>
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="15dp"
+                    android:textSize="10dp"
+                    android:layout_below="@+id/type_of_education"
+                    android:text="Стоимость"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:id="@+id/cost"
+                    android:layout_width="100dp"
+                    android:layout_height="26dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="30dp"
+                    android:textSize="12dp"
+                    android:layout_below="@+id/type_of_education"
+                    android:background="#FFFFFF"
+                    android:textColor="@color/black"
+                    android:textAlignment="gravity"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:singleLine="true"
+                    />
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="26dp"
+                    android:layout_toRightOf="@id/cost"
+                    android:layout_below="@+id/type_of_education"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/ic_dollar_24dp"
+                    android:background="@color/grey"/>
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="15dp"
+                    android:textSize="10dp"
+                    android:layout_below="@+id/cost"
+                    android:text="Размер"
+                    android:textColor="@color/black"/>
+                <EditText
+                    android:id="@+id/participants"
+                    android:layout_width="100dp"
+                    android:layout_height="26dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="30dp"
+                    android:textSize="12dp"
+                    android:inputType="numberDecimal"
+                    android:layout_below="@+id/cost"
+                    android:background="#FFFFFF"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textAlignment="gravity"
+                    android:gravity="center"/>
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="13dp"
+                    android:layout_toRightOf="@+id/participants"
+                    android:layout_marginTop="30dp"
+                    android:layout_below="@+id/cost"
+                    android:src="@drawable/ic_plus"
+                    android:background="@color/grey"/>
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="13dp"
+                    android:layout_toRightOf="@+id/participants"
+                    android:layout_marginTop="43dp"
+                    android:layout_below="@+id/cost"
+                    android:src="@drawable/ic_minus"
+                    android:background="@color/grey"/>
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="15dp"
+                    android:textSize="10dp"
+                    android:layout_below="@+id/participants"
+                    android:text="Теги"
+                    android:textColor="@color/black"/>
+
+                <mabbas007.tagsedittext.TagsEditText
+                    android:id="@+id/tagsEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_below="@id/participants"
+                    android:background="#FFFFFF"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="2dp"
+                    android:textSize="12dp"
+                    app:allowSpaceInTag="true"
+                    app:tagsCloseImageRight="@drawable/tag_close"
+                    app:tagsBackground="@color/veryGrey"
+                    app:tagsTextColor="@color/black"
+                    app:tagsTextSize="10dp"
+                    app:tagsPaddingBottom="2dp"
+                    app:tagsPaddingLeft="5dp"
+                    android:paddingLeft="5dp"
+                    android:gravity="center_vertical"
+                    />
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Запрос"
+                    android:textSize="10dp"
+                    android:layout_below="@id/tagsEditText"
+                    android:textColor="@color/black"/>
+
+                <EditText
+                    android:id="@+id/about_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tagsEditText"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="30dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="12dp" />
+
+                <CheckBox
+                    android:id="@+id/privacy"
+                    android:layout_width="100dp"
+                    android:layout_height="28dp"
+                    android:layout_below="@+id/about_group"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="10dp"
+                    android:button="@drawable/ic_black_circle"
+                    android:text="Приватная"
+                    android:textSize="10dp"
+                    android:textDirection="rtl" />
+
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
         <Button
             android:id="@+id/create_group"
             android:layout_width="match_parent"
@@ -101,26 +262,6 @@
             android:layout_centerHorizontal="true"
             android:background="@color/veryGrey"
             android:text="создать группу" />
-
-        <EditText
-            android:id="@+id/tags"
-            android:layout_width="270dp"
-            android:layout_height="45dp"
-            android:layout_alignLeft="@+id/participants"
-            android:layout_alignStart="@+id/participants"
-            android:layout_below="@+id/participants"
-            android:ems="10"
-            android:hint="tags"
-            android:inputType="textPersonName" />
-        <EditText
-            android:id="@+id/Description"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tags"
-            android:layout_alignRight="@+id/tags"
-            android:layout_below="@+id/tags"
-            android:hint="Описание"/>
-
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

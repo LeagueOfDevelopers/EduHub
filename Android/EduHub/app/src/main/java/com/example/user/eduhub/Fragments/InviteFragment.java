@@ -2,6 +2,7 @@ package com.example.user.eduhub.Fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,10 +49,7 @@ public class InviteFragment extends Fragment implements IInviteUserView {
     SavedDataRepository savedDataRepository=new SavedDataRepository();
 
 
-    public void setGroupId(String groupId) {
 
-        this.groupId = groupId;
-    }
 
     public void setToolbar(Toolbar toolbar) {
         this.toolbar = toolbar;
@@ -72,13 +70,13 @@ public class InviteFragment extends Fragment implements IInviteUserView {
         View v = inflater.inflate(R.layout.invite_user_fragment, null);
         SharedPreferences sPref=getActivity().getSharedPreferences("User",MODE_PRIVATE);
         user= savedDataRepository.loadSavedData(sPref);
-        inviteUserPresenter=new InviteUserPresenter(this,groupId,user);
+        //inviteUserPresenter=new InviteUserPresenter(this,groupId,user);
         toolbar.setTitle("Приглашение пользователя");
         EditText edit=v.findViewById(R.id.id_invited);
         Button button= v.findViewById(R.id.invite_button);
         button.setOnClickListener(click->{
             if(!edit.getText().toString().equals("")){
-                inviteUserPresenter.inviteUser(edit.getText().toString(), MemberRole.Teacher);
+               // inviteUserPresenter.inviteUser(edit.getText().toString(), MemberRole.Teacher);
 
             }else{
 

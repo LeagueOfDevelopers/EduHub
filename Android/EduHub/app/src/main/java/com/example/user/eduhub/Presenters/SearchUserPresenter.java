@@ -32,7 +32,7 @@ public class SearchUserPresenter implements ISearchUserPresenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(finish->{
-                    searchResponse.getResult(finish.getUsers().get(0));},
+                    searchResponse.getResult(finish.getUsers());},
                         error->{
                             Log.e("ERROR",error+" ");});
     }

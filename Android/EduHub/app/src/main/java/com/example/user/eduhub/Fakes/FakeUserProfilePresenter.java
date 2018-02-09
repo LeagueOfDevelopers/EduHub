@@ -8,6 +8,7 @@ import com.example.user.eduhub.Models.Group.Member;
 import com.example.user.eduhub.Models.UserProfile.Review;
 import com.example.user.eduhub.Models.UserProfile.TeacherProfile;
 import com.example.user.eduhub.Models.UserProfile.UserProfile;
+import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 
 import java.util.ArrayList;
 
@@ -23,14 +24,16 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
     }
 
     @Override
-    public void loadUserProfile(String token) {
+    public void loadUserProfile(String token,String userId) {
+        UserProfileResponse userProfileResponse=new UserProfileResponse();
         UserProfile userProfile=new UserProfile();
         userProfile.setEmail("lod.misis.ru");
         userProfile.setIsTeacher(true);
         userProfile.setName("Александр");
         TeacherProfile teacherProfile=new TeacherProfile();
         ArrayList<String> skils=new ArrayList<>();
-        skils.add("Начинающий андроид разработчик");
+        skils.add("JS");
+        skils.add("Android");
         teacherProfile.setSkills(skils);
         Review review=new Review();
         review.setEvaluator("Ярослав");
@@ -59,20 +62,27 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
         groupInfo.setDescription("Test");
         groupInfo.setSize(5);
         groupInfo.setTags(tags);
-        groupInfo.setMoneyPerUser(500);
+        groupInfo.setCost(500);
         groupInfo.setGroupType(3);
         groupInfo.setTitle("It's Fake!!!");
-        groupInfo.setId("93d08fd5-c101-42d4-8811-8e48f2434304");
+        groupInfo.setId(userId);
+        groupInfo.setMemberAmount(2);
         group.setGroupInfo(groupInfo);
         group.setNumberOfMembers(1);
         group.setMembers(members);
         for (int i=0;i<10;i++){
             groups.add(group);
         }
+        userProfile.setIsMan(true);
+        userProfile.setBirthYear("");
+        userProfile.setAboutUser("Начинающий Андроид разработчик");
         teacherProfile.setReviews(reviews);
         teacherProfile.setJobExp(groups);
-        userProfile.setTeacherProfile(teacherProfile);
+        userProfileResponse.setTeacherProfile(teacherProfile);
+        userProfileResponse.setUserProfile(userProfile);
 
-        userProfileView.getUserProfile(userProfile);
+
+
+        userProfileView.getUserProfile(userProfileResponse);
     }
 }

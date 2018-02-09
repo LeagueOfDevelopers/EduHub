@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.user.eduhub.Dialog.CreateDialog;
 import com.example.user.eduhub.Main2Activity;
 import com.example.user.eduhub.Models.UserProfile.UserProfile;
+import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 import com.example.user.eduhub.R;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -25,11 +26,11 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class UserProfileFragment extends Fragment {
-    private UserProfile userProfile;
+    private UserProfileResponse userProfile;
     CreateDialog createDialog;
     DialogInterface.OnClickListener myClickListener;
     SharedPreferences sharedPreferences;
-    public void setUserProfile(UserProfile userProfile) {
+    public void setUserProfile(UserProfileResponse userProfile) {
         this.userProfile = userProfile;
     }
 
@@ -44,13 +45,31 @@ public class UserProfileFragment extends Fragment {
         TextView userEmail2=v.findViewById(R.id.email_user_profile2);
         TextView sex=v.findViewById(R.id.sex);
         TextView birthYear=v.findViewById(R.id.birth_year);
+        TextView aboutMe=v.findViewById(R.id.aboutMe);
         Button exit=v.findViewById(R.id.exit_user);
         sharedPreferences=getActivity().getSharedPreferences("User",MODE_PRIVATE);
 
-        userEmail.setText(userProfile.getEmail());
-        userEmail2.setText(userProfile.getEmail());
-        userName.setText(userProfile.getName());
-        userName2.setText(userProfile.getName());
+        userEmail.setText(userProfile.getUserProfile().getEmail());
+        userEmail2.setText(userProfile.getUserProfile().getEmail());
+        userName.setText(userProfile.getUserProfile().getName());
+        userName2.setText(userProfile.getUserProfile().getName());
+
+        if(userProfile.getUserProfile().getIsMan()){
+            sex.setText("Мужской");
+        }else {
+            sex.setText("Женский");
+        }
+        if(userProfile.getUserProfile().getBirthYear().equals("")){
+            v.findViewById(R.id.card_of_birth).setVisibility(View.GONE);
+        }else {
+            birthYear.setText(userProfile.getUserProfile().getBirthYear());
+        }
+
+
+        if(userProfile.getUserProfile().getAboutUser()==null){
+            v.findViewById(R.id.card_of_aboutMe).setVisibility(View.GONE);
+        }else{
+            aboutMe.setText(userProfile.getUserProfile().getAboutUser());}
 
 
         myClickListener = new DialogInterface.OnClickListener() {

@@ -1,6 +1,7 @@
 package com.example.user.eduhub.Fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
+import com.example.user.eduhub.InviteUserToGroup;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
@@ -78,10 +80,10 @@ public class MainGroupFragment extends Fragment {
 
 
         inviteButton.setOnClickListener(click->{
-            InviteFragment inviteFragment=new InviteFragment();
-            inviteFragment.setGroupId(group.getGroupInfo().getId());
-            inviteFragment.setToolbar( getActivity().findViewById(R.id.toolbar));
-            fragmentsActivities.switchingFragmets(inviteFragment);
+            Intent intent=new Intent(getActivity(),InviteUserToGroup.class);
+            intent.putExtra("groupId",group.getGroupInfo().getId());
+            getActivity().startActivity(intent);
+
         });
 
 

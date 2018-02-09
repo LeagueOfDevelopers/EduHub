@@ -21,19 +21,23 @@ public class FakeGroupRepository  implements IGroupRepository{
         this.groupListView=groupListView;
     }
     @Override
-    public void loadAllGroups() {
+    public void loadAllGroupsForUsers() {
         ArrayList<Group> groups=new ArrayList<>();
         GroupInfo groupInfo=new GroupInfo();
         ArrayList<String> tags=new ArrayList<>();
         tags.add("C#");
         tags.add("Java");
+        tags.add("Javascript");
+        tags.add("JS");
+
         groupInfo.setDescription("Test");
         groupInfo.setSize(5);
         groupInfo.setTags(tags);
-        groupInfo.setMoneyPerUser(500);
+        groupInfo.setCost(500);
         groupInfo.setGroupType(3);
         groupInfo.setTitle("It's Fake!!!");
         groupInfo.setId("93d08fd5-c101-42d4-8811-8e48f2434304");
+        groupInfo.setMemberAmount(1);
         Group group=new Group();
         group.setGroupInfo(groupInfo);
         group.setNumberOfMembers(1);
@@ -45,7 +49,12 @@ public class FakeGroupRepository  implements IGroupRepository{
     }
 
     @Override
+    public void loadAllGroupsForTeachers() {
+        loadAllGroupsForUsers();
+    }
+
+    @Override
     public void loadUsersGroup(String token) {
-        loadAllGroups();
+        loadAllGroupsForUsers();
     }
 }

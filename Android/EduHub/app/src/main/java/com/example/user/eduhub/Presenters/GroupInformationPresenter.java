@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.user.eduhub.Interfaces.Presenters.IGroupInfirmationPresenter;
 import com.example.user.eduhub.Interfaces.View.IGroupView;
 import com.example.user.eduhub.Models.Group.Group;
+import com.example.user.eduhub.Models.Group.Member;
 import com.example.user.eduhub.Retrofit.EduHubApi;
 import com.example.user.eduhub.Retrofit.RetrofitBuilder;
 
@@ -36,6 +37,15 @@ public class GroupInformationPresenter implements IGroupInfirmationPresenter {
                             group=response;},
                         error->{
                             Log.e("ERROR",error+"");},
-                        ()->{groupView.getInformationAboutGroup(group);});
+                        ()->{
+                            if(group.getEducator().getName()!=null){
+                            Member teacher=new Member();
+                            teacher.setMemberRole(2);
+                            teacher.setName(group.getEducator().getName());
+                            teacher.setUserId(group.getEducator().getUserId());
+                            teacher.setAvatarLink(group.getEducator().getAvatarLink());
+                            teacher.setPaid(true);
+                            group.getMembers().add(0,teacher);}
+                            groupView.getInformationAboutGroup(group);});
     }
 }

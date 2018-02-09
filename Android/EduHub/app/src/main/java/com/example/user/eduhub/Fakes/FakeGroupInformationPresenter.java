@@ -6,7 +6,6 @@ import com.example.user.eduhub.Models.Group.Educator;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.Group.GroupInfo;
 import com.example.user.eduhub.Models.Group.Member;
-import com.example.user.eduhub.Retrofit.EduHubApi;
 
 import java.util.ArrayList;
 
@@ -40,7 +39,7 @@ public class FakeGroupInformationPresenter  implements IGroupInfirmationPresente
         groupInfo.setDescription("Test");
         groupInfo.setSize(5);
         groupInfo.setTags(tags);
-        groupInfo.setMoneyPerUser(500);
+        groupInfo.setCost(500);
         groupInfo.setGroupType(3);
         groupInfo.setTitle("It's Fake!!!");
         groupInfo.setId("93d08fd5-c101-42d4-8811-8e48f2434304");

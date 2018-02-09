@@ -18,12 +18,10 @@ import com.example.user.eduhub.Adapters.GroupAdapter;
 import com.example.user.eduhub.CreateGroupActivity;
 import com.example.user.eduhub.Fakes.FakeGroupRepository;
 import com.example.user.eduhub.Fakes.FakesButton;
-import com.example.user.eduhub.Interfaces.Presenters.IGroupRepository;
 import com.example.user.eduhub.Interfaces.View.IGroupListView;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.R;
-import com.example.user.eduhub.Retrofit.EduHubApi;
 
 import java.util.ArrayList;
 
@@ -65,8 +63,8 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupsPresenter.loadAllGroups();}else{
-                    fakeGroupRepository.loadAllGroups();
+                    groupsPresenter.loadAllGroupsForUsers();}else{
+                    fakeGroupRepository.loadAllGroupsForUsers();
                 }
             }
         });
@@ -91,10 +89,10 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView {
 
     @Override
     public void getGroups(ArrayList<Group> groups) {
-        if(groups==null){
+        if(groups.size()==0){
             recyclerView.setAdapter(emptyGroupAdapter);
         }else{
-            GroupAdapter adapter=new GroupAdapter(groups,getActivity());
+            GroupAdapter adapter=new GroupAdapter(groups,getActivity(),getContext());
 
             recyclerView.setAdapter(adapter);
         }

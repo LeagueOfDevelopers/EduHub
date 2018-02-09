@@ -3,7 +3,6 @@ package com.example.user.eduhub;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -26,17 +25,6 @@ import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Fragments.TeacherFragment;
 import com.example.user.eduhub.Fragments.UserFragment;
-import com.example.user.eduhub.Interfaces.View.IGroupListView;
-import com.example.user.eduhub.Models.Group.Group;
-import com.example.user.eduhub.Models.SavedDataRepository;
-import com.example.user.eduhub.Models.User;
-import com.example.user.eduhub.Presenters.GroupsPresenter;
-import com.example.user.eduhub.Retrofit.EduHubApi;
-import com.example.user.eduhub.Retrofit.RetrofitBuilder;
-
-import java.util.ArrayList;
-
-import io.reactivex.disposables.Disposable;
 
 public class Main2Activity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener{
 ViewPager pager;
@@ -53,9 +41,9 @@ FakesButton fakesButton=new FakesButton();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         sPref=getSharedPreferences("User",MODE_PRIVATE);
+        Log.d("pref",sPref.contains(TOKEN)+"");
 
-
-        if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(AVATARLINK)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
+        if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
 
             Intent intent=new Intent(this,AuthorizedUserActivity.class);
 
@@ -120,7 +108,7 @@ FakesButton fakesButton=new FakesButton();
         MenuItem searchViewItem = menu.findItem(R.id.action_search);
         final SearchView searchViewAndroidActionBar = (SearchView) MenuItemCompat.getActionView(searchViewItem);
         searchViewAndroidActionBar.setQueryHint("Поиск");
-        searchViewAndroidActionBar.setMaxWidth(450);
+        searchViewAndroidActionBar.setMaxWidth(1000);
         searchViewAndroidActionBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -34,7 +34,7 @@ public class GroupsPresenter implements IGroupRepository {
     }
 
     @Override
-    public void loadAllGroups() {
+    public void loadAllGroupsForUsers() {
         eduHubApi= RetrofitBuilder.getApi();
         disposable=eduHubApi.getGroups()
                 .subscribeOn(Schedulers.io())//вверх
@@ -42,15 +42,34 @@ public class GroupsPresenter implements IGroupRepository {
 
                 .subscribe(
                         next->{
-                            groups=next.getGroups();},
+                            groups=(ArrayList<Group>) next.getFillingGroups();},
                         error->{
                             Log.d("ERROR",error+"");
                         },
                         ()-> {
                             groupListView.getGroups(groups);
-                            disposable.dispose();
+
                         });
 
+    }
+
+    @Override
+    public void loadAllGroupsForTeachers() {
+        eduHubApi= RetrofitBuilder.getApi();
+        disposable=eduHubApi.getGroups()
+                .subscribeOn(Schedulers.io())//вверх
+                .observeOn(AndroidSchedulers.mainThread())//вниз
+
+                .subscribe(
+                        next->{
+                            groups=(ArrayList<Group>) next.getFullGroups();},
+                        error->{
+                            Log.d("ERROR",error+"");
+                        },
+                        ()-> {
+                            groupListView.getGroups(groups);
+
+                        });
     }
 
     @Override
@@ -71,7 +90,7 @@ public class GroupsPresenter implements IGroupRepository {
                         },
                         ()-> {
                             groupListView.getGroups(groups);
-                            disposable.dispose();
+
 
                         });
     }

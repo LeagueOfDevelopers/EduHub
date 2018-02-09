@@ -15,8 +15,8 @@ import com.example.user.eduhub.Adapters.GroupAdapter;
 import com.example.user.eduhub.Fakes.FakeGroupRepository;
 import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.View.IGroupListView;
-import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.MainActivity;
+import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.R;
 
@@ -48,16 +48,17 @@ public class TeacherFragment extends android.support.v4.app.Fragment implements 
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadAllGroups();}else{
-            fakeGroupRepository.loadAllGroups();
+            groupsPresenter.loadAllGroupsForTeachers();}else{
+            fakeGroupRepository.loadAllGroupsForTeachers();
         }
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupsPresenter.loadAllGroups();}else{
-                    fakeGroupRepository.loadAllGroups();
+                    groupsPresenter.loadAllGroupsForTeachers();}
+                    else{
+                    fakeGroupRepository.loadAllGroupsForTeachers();
                 }
             }
         });
@@ -97,7 +98,7 @@ public class TeacherFragment extends android.support.v4.app.Fragment implements 
         if(groups.size()==0){
             recyclerView.setAdapter(emptyGroupAdapter);
         }else{
-            GroupAdapter adapter=new GroupAdapter(groups,getActivity());
+            GroupAdapter adapter=new GroupAdapter(groups,getActivity(),getContext());
 
             recyclerView.setAdapter(adapter);
         }

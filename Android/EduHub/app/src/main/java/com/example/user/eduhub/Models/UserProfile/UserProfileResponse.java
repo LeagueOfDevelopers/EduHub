@@ -10,16 +10,27 @@ import java.util.List;
  */
 
 public class UserProfileResponse {
-    @SerializedName("users")
+    @SerializedName("userProfile")
     @Expose
-    private List<UserProfile> users = null;
+    private UserProfile userProfile;
+    @SerializedName("teacherProfile")
+    @Expose
+    private TeacherProfile teacherProfile;
 
-    public List<UserProfile> getUsers() {
-        return users;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 
-    public void setUsers(List<UserProfile> users) {
-        this.users = users;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    public TeacherProfile getTeacherProfile() {
+        return teacherProfile;
+    }
+
+    public void setTeacherProfile(TeacherProfile teacherProfile) {
+        this.teacherProfile = teacherProfile;
     }
 
 }

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,16 +49,16 @@ SwipeRefreshLayout swipeContainer;
         recyclerView.setLayoutManager(llm);
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadAllGroups();}else{
-            fakeGroupRepository.loadAllGroups();
+            groupsPresenter.loadAllGroupsForUsers();}else{
+            fakeGroupRepository.loadAllGroupsForUsers();
         }
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupsPresenter.loadAllGroups();}else{
-                    fakeGroupRepository.loadAllGroups();
+                    groupsPresenter.loadAllGroupsForUsers();}else{
+                    fakeGroupRepository.loadAllGroupsForUsers();
                 }
             }
         });
@@ -86,10 +87,11 @@ SwipeRefreshLayout swipeContainer;
 
     @Override
     public void getGroups(ArrayList<Group> groups) {
+        Log.d("checkButton",fakesButton.getCheckButton().toString());
         if(groups.size()==0){
             recyclerView.setAdapter(emptyGroupAdapter);
         }else{
-            GroupAdapter adapter=new GroupAdapter(groups,getActivity());
+            GroupAdapter adapter=new GroupAdapter(groups,getActivity(),getContext());
 
             recyclerView.setAdapter(adapter);
         }

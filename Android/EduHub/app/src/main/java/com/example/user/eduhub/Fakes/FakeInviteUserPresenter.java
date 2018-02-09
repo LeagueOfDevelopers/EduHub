@@ -16,7 +16,7 @@ public class FakeInviteUserPresenter  implements IInviteUserPresenter {
     }
 
     @Override
-    public void inviteUser(String name, MemberRole role) {
+    public void inviteUser(String name, MemberRole role,String groupId,String myId) {
         inviteUserView.getResponse();
     }
 }

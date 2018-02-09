@@ -5,7 +5,7 @@ package com.example.user.eduhub.Fakes;
  */
 
 public class FakesButton {
-    static Boolean checkButton=false;
+    static Boolean checkButton=true;
 
     public Boolean getCheckButton() {
         return checkButton;
