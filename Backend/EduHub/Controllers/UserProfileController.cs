@@ -56,12 +56,12 @@ namespace EduHub.Controllers
                 if (inv.Status == InvitationStatus.InProgress) { 
                     var fromUsername = _userFacade.GetUser(inv.FromUser).UserProfile.Name;
                     var toGroupTitle = _groupFacade.GetGroup(inv.GroupId).GroupInfo.Title;
-                    InvitationModel invitation = new InvitationModel(inv.Id, inv.FromUser, fromUsername, inv.ToUser,
+                    var invitation = new InvitationModel(inv.Id, inv.FromUser, fromUsername, inv.ToUser,
                         currentUsername, inv.GroupId, toGroupTitle, inv.SuggestedRole);
                     allInv.Add(invitation);
                 }
             });
-            InvitationsResponse response = new InvitationsResponse(allInv);
+            var response = new InvitationsResponse(allInv);
             return Ok(response);
         }
 
@@ -79,7 +79,7 @@ namespace EduHub.Controllers
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
             _userFacade.ChangeInvitationStatus(userId, changer.InvitationId, changer.Status);
-            Invitation invitation = _userFacade.GetAllInvitationsForUser(userId).First(i => i.Id.Equals(changer.InvitationId));
+            var invitation = _userFacade.GetAllInvitationsForUser(userId).First(i => i.Id.Equals(changer.InvitationId));
 
             if (invitation.SuggestedRole == MemberRole.Teacher && changer.Status == InvitationStatus.Accepted)
             {
@@ -290,11 +290,11 @@ namespace EduHub.Controllers
             groups.ToList().ForEach(g => 
             {
                 int memberAmount = _groupFacade.GetGroupMembers(g.GroupInfo.Id).ToList().Count;
-                MinGroupInfo groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size, 
+                var groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size, 
                     g.GroupInfo.MoneyPerUser, g.GroupInfo.GroupType, g.GroupInfo.Tags);
                 items.Add(new MinItemGroupResponse(groupInfo));
             });
-            MinGroupResponse response = new MinGroupResponse(items);
+            var response = new MinGroupResponse(items);
             return Ok(response);
         }
 
@@ -307,7 +307,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetProfile([FromRoute]Guid userId)
         {
-            User user = _userFacade.GetUser(userId);
+            var user = _userFacade.GetUser(userId);
             ProfileResponse response;
             if (user.UserProfile.IsTeacher)
             {

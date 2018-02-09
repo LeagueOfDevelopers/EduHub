@@ -43,7 +43,7 @@ namespace EduHub.Controllers
                 opt=> opt.WithException(new ArgumentNullException(nameof(newGroup))));
             var newId =_groupFacade.CreateGroup(userId, newGroup.Title, newGroup.Tags, newGroup.Description,
                 newGroup.Size, newGroup.MoneyPerUser, newGroup.IsPrivate, newGroup.GroupType);
-            CreateGroupResponse response = new CreateGroupResponse(newId);
+            var response = new CreateGroupResponse(newId);
             return Ok(response);
         }
 
@@ -176,7 +176,7 @@ namespace EduHub.Controllers
             groups.ToList().ForEach(g => 
             {
                 var memberAmount = _groupFacade.GetGroupMembers(g.GroupInfo.Id).ToList().Count;
-                MinGroupInfo groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size,
+                var groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size,
                     g.GroupInfo.MoneyPerUser, g.GroupInfo.GroupType, g.GroupInfo.Tags);
                 if (memberAmount == g.GroupInfo.Size)
                 {
@@ -187,7 +187,7 @@ namespace EduHub.Controllers
                     FillingGroupList.Add(new MinItemGroupResponse(groupInfo));
                 }
             });
-            MinFilterGroupResponse response = new MinFilterGroupResponse(fullGroupList, FillingGroupList);
+            var response = new MinFilterGroupResponse(fullGroupList, FillingGroupList);
             return Ok(response);
         }
 
@@ -202,11 +202,11 @@ namespace EduHub.Controllers
         {
             var group = _groupFacade.GetGroup(groupId);
             List<Member> listOfMembers = _groupFacade.GetGroupMembers(groupId).ToList();
-            FullGroupInfo groupInfo = new FullGroupInfo(group.GroupInfo.Title, group.GroupInfo.Size,
+            var groupInfo = new FullGroupInfo(group.GroupInfo.Title, group.GroupInfo.Size,
                 listOfMembers.Count, group.GroupInfo.MoneyPerUser, group.GroupInfo.GroupType, group.GroupInfo.Tags,
                 group.GroupInfo.Description, group.Status);
             List<MemberInfo> memberInfoList = new List<MemberInfo>();
-            MemberInfo info = new MemberInfo(group.Teacher.Id, group.Teacher.UserProfile.Name,
+            var info = new MemberInfo(group.Teacher.Id, group.Teacher.UserProfile.Name,
                 group.Teacher.UserProfile.AvatarLink, MemberRole.Teacher, false);
             memberInfoList.Add(info);
             listOfMembers.ForEach(m =>
@@ -214,10 +214,10 @@ namespace EduHub.Controllers
                 string userName = _userFacade.GetUser(m.UserId).UserProfile.Name;
                 string avatarLink = _userFacade.GetUser(m.UserId).UserProfile.AvatarLink;
 
-                MemberInfo memberInfo = new MemberInfo(m.UserId, userName, avatarLink, m.MemberRole, m.Paid);
+                var memberInfo = new MemberInfo(m.UserId, userName, avatarLink, m.MemberRole, m.Paid);
                 memberInfoList.Add(memberInfo);
             });
-            GroupResponse response = new GroupResponse(groupInfo, memberInfoList);
+            var response = new GroupResponse(groupInfo, memberInfoList);
             return Ok(response);
         }
                 

@@ -98,30 +98,23 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<Member> GetGroupMembers(Guid id)
         {
-            return _groupRepository.GetGroupById(id).GetAllMembers();
+            return _groupRepository.GetGroupById(id).Members;
         }
 
         public IEnumerable<Group> GetGroups()
         {
             return _groupRepository.GetAll();
         }
-
-        public IEnumerable<Member> GetMembersOfGroup(Guid groupId)
-        {
-            return _groupRepository.GetGroupById(groupId).GetAllMembers();
-        }
-
-        //!!!
+        
         public IEnumerable<Invitation> GetAllInvitations(Guid groupId)
         {
-            return _groupRepository.GetGroupById(groupId).GetAllInvitation();
+            return _groupRepository.GetGroupById(groupId).Invitations;
         }
 
         public void AddInvitation(Guid groupId, Invitation invitation)
         {
             _groupRepository.GetGroupById(groupId).AddInvitation(invitation);
         }
-        //!!!
 
         public void ApproveTeacher(Guid teacherId, Guid groupId)
         {
@@ -163,7 +156,7 @@ namespace EduHubLibrary.Facades
         public void ChangeGroupTitle(Guid idOfGroup, Guid idOfChanger, string newTitle)
         {
             var currentGroup = _groupRepository.GetGroupById(idOfGroup);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
+            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(idOfChanger), nameof(currentGroup.GetMember),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupTitle),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
@@ -174,7 +167,7 @@ namespace EduHubLibrary.Facades
         public void ChangeGroupDescription(Guid idOfGroup, Guid idOfChanger, string newDescription)
         {
             var currentGroup = _groupRepository.GetGroupById(idOfGroup);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
+            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(idOfChanger), nameof(currentGroup.GetMember),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupDescription),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
@@ -184,7 +177,7 @@ namespace EduHubLibrary.Facades
         public void ChangeGroupTags(Guid idOfGroup, Guid idOfChanger, List<string> newTags)
         {
             var currentGroup = _groupRepository.GetGroupById(idOfGroup);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
+            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(idOfChanger), nameof(currentGroup.GetMember),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupTags),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
@@ -194,7 +187,7 @@ namespace EduHubLibrary.Facades
         public void ChangeGroupSize(Guid idOfGroup, Guid idOfChanger, int newSize)
         {
             var currentGroup = _groupRepository.GetGroupById(idOfGroup);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
+            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(idOfChanger), nameof(currentGroup.GetMember),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupSize),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
@@ -207,7 +200,7 @@ namespace EduHubLibrary.Facades
         public void ChangeGroupPrice(Guid idOfGroup, Guid idOfChanger, double newPrice)
         {
             var currentGroup = _groupRepository.GetGroupById(idOfGroup);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMemberById(idOfChanger), nameof(currentGroup.GetMemberById),
+            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(idOfChanger), nameof(currentGroup.GetMember),
                 opt => opt.WithException(new MemberNotFoundException(idOfChanger)));
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupPrice),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));

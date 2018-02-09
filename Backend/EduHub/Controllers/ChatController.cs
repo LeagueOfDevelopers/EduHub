@@ -40,7 +40,7 @@ namespace EduHub.Controllers
         [Route("message/{messageId}")]
         public IActionResult GetMessage([FromRoute] int groupId,[FromRoute] int messageId)
         {
-            MessageResponse response = new MessageResponse();
+            var response = new MessageResponse();
             return Ok(response);
         }
 

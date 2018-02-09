@@ -102,7 +102,7 @@ namespace EduHubLibrary.Facades
 
             foreach (Group group in _groupRepository.GetAll())
             {
-                if (group.GetAllMembers().Any(member => member.UserId.Equals(userId)))
+                if (group.Members.Any(member => member.UserId.Equals(userId)))
                 {
                     groupsOfUser.Add(group);
                 }
@@ -125,7 +125,7 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<string> GetNotifies(Guid userId)
         {
-            return _userRepository.GetUserById(userId).GetNotifies();
+            return _userRepository.GetUserById(userId).Notifies;
         }
 
         public void AddNotify(Guid userId, string notify)

@@ -14,17 +14,13 @@ namespace EduHubLibrary.Domain.NotificationService
 {
     public class EventBus
     {
-        public EventBus()
+        public EventBus(IUserFacade userFacade, IGroupFacade groupFacade)
         {
             _events = new InMemoryEventRepository();
-        }
-
-        public void RegisterConsumers(GroupFacade groupFacade, UserFacade userFacade)
-        {
             _groupEventsConsumer = new GroupEventsConsumer(userFacade, groupFacade);
             _invitationConsumer = new InvitationConsumer(groupFacade);
         }
-
+        
         public void PublishEvent(InvitationEvent invitationEvent)
         {
             _invitationConsumer.Consume(invitationEvent);
@@ -43,8 +39,8 @@ namespace EduHubLibrary.Domain.NotificationService
             _events.AddEvent(new Event(newMemberEvent));
         }
 
-        private GroupEventsConsumer _groupEventsConsumer;
-        private InvitationConsumer _invitationConsumer;
-        private InMemoryEventRepository _events;
+        private readonly GroupEventsConsumer _groupEventsConsumer;
+        private readonly InvitationConsumer _invitationConsumer;
+        private readonly IEventRepository _events;
     }
 }

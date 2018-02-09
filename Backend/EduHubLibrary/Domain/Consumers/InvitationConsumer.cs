@@ -9,7 +9,7 @@ namespace EduHubLibrary.Domain.Consumers
 {
     public class InvitationConsumer : IEventConsumer<InvitationEvent>
     {
-        public InvitationConsumer(GroupFacade groupFacade)
+        public InvitationConsumer(IGroupFacade groupFacade)
         {
             _groupFacade = groupFacade;
         }
@@ -19,6 +19,6 @@ namespace EduHubLibrary.Domain.Consumers
             _groupFacade.AddInvitation(@event.Invitation.GroupId, @event.Invitation);
         }
 
-        private GroupFacade _groupFacade;
+        private IGroupFacade _groupFacade;
     }
 }

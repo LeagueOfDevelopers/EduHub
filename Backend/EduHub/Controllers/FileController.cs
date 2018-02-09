@@ -52,7 +52,7 @@ namespace EduHub.Controllers
 
             _fileFacade.AddFile(fileName, file.ContentType);
 
-            AddFileResponse response = new AddFileResponse(fileName);
+            var response = new AddFileResponse(fileName);
 
             return Ok(response);
         }
@@ -63,7 +63,7 @@ namespace EduHub.Controllers
         [Route("{filename}")]
         public IActionResult GetFile([FromRoute]string filename)
         {
-            UserFile file = _fileFacade.GetFile(filename);
+            var file = _fileFacade.GetFile(filename);
             var downloadPath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             var filePath = Path.Combine(downloadPath, file.Filename);
             byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);

@@ -36,7 +36,7 @@ namespace EduHub.Controllers
                 List<MinItemUserResponse> items = new List<MinItemUserResponse>();
                 foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name, u.UserProfile.Email,
                     u.UserProfile.IsTeacher, u.IsActive, u.UserProfile.AvatarLink)));
-                MinUserResponse response = new MinUserResponse(items);
+                var response = new MinUserResponse(items);
                 return Ok(response);
             }
             else

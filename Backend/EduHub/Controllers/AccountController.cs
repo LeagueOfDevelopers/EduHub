@@ -30,7 +30,7 @@ namespace EduHub.Controllers
         {
             var newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
                 request.IsTeacher, UserType.User);
-            RegistrationResponse response = new RegistrationResponse(newId);
+            var response = new RegistrationResponse(newId);
             return Ok(response);
         }
 
@@ -48,7 +48,7 @@ namespace EduHub.Controllers
    
             if (client != null)
             {
-                LoginResponse response = new LoginResponse(client.UserProfile.Name, client.Credentials.Email, 
+                var response = new LoginResponse(client.UserProfile.Name, client.Credentials.Email, 
                     client.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
                 return Ok(response);
             }

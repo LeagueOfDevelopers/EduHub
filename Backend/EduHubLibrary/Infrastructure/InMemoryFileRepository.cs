@@ -13,32 +13,32 @@ namespace EduHubLibrary.Infrastructure
         public void AddFile(UserFile file)
         {
             Ensure.Any.IsNotNull(file);
-            fileList.Add(file);
+            _fileList.Add(file);
         }
 
         public bool DoesFileExists(string filename)
         {
             Ensure.String.IsNotNullOrWhiteSpace(filename);
-            return fileList.Any(f => f.Filename.Equals(filename));
+            return _fileList.Any(f => f.Filename.Equals(filename));
         }
 
         public UserFile GetFile(string filename)
         {
             if (!DoesFileExists(filename))
                 throw new FileNotFoundException(filename);
-            return fileList.First(f => f.Filename.Equals(filename));
+            return _fileList.First(f => f.Filename.Equals(filename));
         }
 
         public InMemoryFileRepository()
         {
-            fileList = new List<UserFile>();
+            _fileList = new List<UserFile>();
         }
 
         public InMemoryFileRepository(List<UserFile> _fileList)
         {
-            fileList = _fileList;
+            this._fileList = _fileList;
         }
 
-        private List<UserFile> fileList;
+        private List<UserFile> _fileList;
     }
 }

@@ -25,7 +25,7 @@ namespace EduHubTests
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             //Assert
-            Assert.AreEqual(userId, someGroup.GetMemberById(userId).UserId);
+            Assert.AreEqual(userId, someGroup.GetMember(userId).UserId);
         }
 
         [ExpectedException(typeof(MemberNotFoundException)), TestMethod]
@@ -79,7 +79,7 @@ namespace EduHubTests
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             someGroup.AddMember(idOfInvitedUser);
             someGroup.DeleteMember(idOfInvitedUser, idOfInvitedUser);
-            var result = someGroup.GetAllMembers().ToArray().Length;
+            var result = someGroup.Members.Count;
             
             //Assert
             Assert.AreEqual(expected, result);
@@ -102,7 +102,7 @@ namespace EduHubTests
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             someGroup.AddMember(idOfInvitedUser);
-            var result = someGroup.GetAllMembers().ToArray().Length;
+            var result = someGroup.Members.Count;
             
             //Assert
             Assert.AreEqual(expected, result);
@@ -125,7 +125,7 @@ namespace EduHubTests
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             someGroup.AddMember(idOfInvitedUser);
             someGroup.DeleteMember(userId, idOfInvitedUser);
-            var result = someGroup.GetAllMembers().ToArray().Length;
+            var result = someGroup.Members.Count;
             
             //Assert
             Assert.AreEqual(expected, result);
@@ -149,7 +149,7 @@ namespace EduHubTests
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             someGroup.AddMember(idOfInvitedUser);
             someGroup.DeleteMember(userId, userId);
-            var listOfMembers = someGroup.GetAllMembers().ToList();
+            var listOfMembers = someGroup.Members;
             var resultRole = listOfMembers[0].MemberRole;
             var resultLength = listOfMembers.Count;
             

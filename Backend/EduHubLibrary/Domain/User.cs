@@ -21,7 +21,8 @@ namespace EduHubLibrary.Domain
         public UserProfile UserProfile { get; private set; }
         public bool IsActive { get; private set; }
         public Guid Id { get; }
-        public List<Invitation> ListOfInvitations { get; private set; }
+        public List<Invitation> Invitations { get; private set; }
+        public List<string> Notifies { get; private set; }
 
         public User(string name, Credentials credentials, bool isTeacher, UserType type)
         {
@@ -32,8 +33,8 @@ namespace EduHubLibrary.Domain
             UserProfile = new UserProfile(name, Credentials.Email, isTeacher);
             IsActive = true;
             Id = Guid.NewGuid();
-            ListOfInvitations = new List<Invitation>();
-            _notifies = new List<string>();
+            Invitations = new List<Invitation>();
+            Notifies = new List<string>();
         }
 
         public void ConfigureTeacherProfile(List<string> skills)
@@ -63,14 +64,14 @@ namespace EduHubLibrary.Domain
 
         internal void AddInvitation(Invitation newInvitation)
         {
-            ListOfInvitations.Add(newInvitation);
+            Invitations.Add(newInvitation);
         }
 
         internal void AcceptInvitation(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);
             var currentInvitation =
-                Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
+                Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
             if (currentInvitation.Status != InvitationStatus.InProgress)
                 throw new InvitationAlreadyChangedException(invitationId);
             currentInvitation.Status = InvitationStatus.Accepted;
@@ -80,7 +81,7 @@ namespace EduHubLibrary.Domain
         {
             Ensure.Guid.IsNotEmpty(invitationId);
             var currentInvitation =
-                Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
+                Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
             if (currentInvitation.Status != InvitationStatus.InProgress)
                 throw new InvitationAlreadyChangedException(invitationId);
             currentInvitation.Status = InvitationStatus.Declined;
@@ -88,25 +89,18 @@ namespace EduHubLibrary.Domain
 
         internal IEnumerable<Invitation> GetAllInvitation()
         {
-            return ListOfInvitations;
+            return Invitations;
         }
 
         internal Invitation GetInvitationById(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);
-            return Ensure.Any.IsNotNull(ListOfInvitations.Find(current => current.Id == invitationId));
+            return Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
         }
 
-        public void AddNotify(string notify)
+        internal void AddNotify(string notify)
         {
-            _notifies.Add(notify);
+            Notifies.Add(notify);
         }
-
-        public List<string> GetNotifies()
-        {
-            return _notifies;
-        }
-        
-        private List<string> _notifies;
     }
 }
