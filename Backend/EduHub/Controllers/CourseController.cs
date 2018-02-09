@@ -30,8 +30,9 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult SuggestCurriculum([FromBody]OfferCurriculum curriculum, [FromRoute] Guid groupId)
         {
-            Ensure.Any.IsNotNull(curriculum);
-            _groupFacade.OfferCurriculum(curriculum.UserId, groupId, curriculum.Description);
+            string a = Request.Headers["Authorization"];
+            var userId = a.GetUserId();
+            _groupFacade.OfferCurriculum(userId, groupId, curriculum.Description);
             return Ok($"В группу был предложен учебный план '{curriculum.Description}'");
         }
 
@@ -39,11 +40,13 @@ namespace EduHub.Controllers
         /// Approves plan for group
         /// </summary>
         [HttpPut]
-        [Route("curriculum/{userId}")]
+        [Route("curriculum")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult ApproveCurriculum([FromRoute] Guid groupId, [FromRoute] Guid userId)
+        public IActionResult ApproveCurriculum([FromRoute] Guid groupId)
         {
+            string a = Request.Headers["Authorization"];
+            var userId = a.GetUserId();
             _groupFacade.AcceptCurriculum(userId, groupId);
             return Ok("Учебный план утвержден");
         }
@@ -68,7 +71,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult CloseCourse([FromRoute] Guid groupId)
         {
-            _groupFacade.GetGroup(groupId).Status = CourseStatus.Finished;
+            //_groupFacade.GetGroup(groupId).Status = CourseStatus.Finished;
             return Ok("Курс закрыт");
         }
 

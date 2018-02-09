@@ -8,6 +8,5 @@ namespace EduHub.Models
     public class OfferCurriculum
     {
         public string Description { get; set; }
-        public Guid UserId { get; set; }
     }
 }

@@ -195,11 +195,23 @@ namespace EduHub.Controllers
         public IActionResult GetGroup([FromRoute] Guid groupId)
         {
             Group group = _groupFacade.GetGroup(groupId);
-            List<GroupMember> membersOfGroup = new List<GroupMember>();
-            _groupFacade.GetGroupMembers(groupId).ToList().ForEach(u => membersOfGroup.Add
-            (new GroupMember(u, _userFacade.GetUser(u.UserId).UserProfile.Name, _userFacade.GetUser(u.UserId).UserProfile.AvatarLink)));
+            List<Member> listOfMembers = _groupFacade.GetGroupMembers(groupId).ToList();
+            FullGroupInfo groupInfo = new FullGroupInfo(group.GroupInfo.Title, group.GroupInfo.Size,
+                listOfMembers.Count, group.GroupInfo.MoneyPerUser, group.GroupInfo.GroupType, group.GroupInfo.Tags,
+                group.GroupInfo.Description, group.Status);
+            List<MemberInfo> memberInfoList = new List<MemberInfo>();
+            MemberInfo info = new MemberInfo(group.Teacher.Id, group.Teacher.UserProfile.Name,
+                group.Teacher.UserProfile.AvatarLink, MemberRole.Teacher, false);
+            memberInfoList.Add(info);
+            listOfMembers.ForEach(m =>
+            {
+                string userName = _userFacade.GetUser(m.UserId).UserProfile.Name;
+                string avatarLink = _userFacade.GetUser(m.UserId).UserProfile.AvatarLink;
 
-            GroupResponse response = new GroupResponse(membersOfGroup, group.GroupInfo, group.Status, group.Teacher);
+                MemberInfo memberInfo = new MemberInfo(m.UserId, userName, avatarLink, m.MemberRole, m.Paid);
+                memberInfoList.Add(memberInfo);
+            });
+            GroupResponse response = new GroupResponse(groupInfo, memberInfoList);
             return Ok(response);
         }
         

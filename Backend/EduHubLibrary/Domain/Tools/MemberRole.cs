@@ -8,7 +8,8 @@ namespace EduHubLibrary.Domain
     {
         Default = 0,
         Member = 1,
-        Teacher = 2,
-        Creator = 3
+        Creator = 2,
+        Teacher = 3,
+
     }
 }
