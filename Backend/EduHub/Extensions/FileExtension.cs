@@ -19,7 +19,7 @@ namespace EduHub.Extensions
                 ".jpg", ".jpeg", ".doc", ".docx", ".pdf", ".rtf", ".png", ".gif", ".txt"
             };
 
-            string extension = Path.GetExtension(file.FileName);
+            var extension = Path.GetExtension(file.FileName);
             if (!allowedExtensions.Any(c => c.Equals(extension)))
             { 
                 return false;

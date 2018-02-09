@@ -205,14 +205,18 @@ namespace EduHub.Controllers
             var groupInfo = new FullGroupInfo(group.GroupInfo.Title, group.GroupInfo.Size,
                 listOfMembers.Count, group.GroupInfo.MoneyPerUser, group.GroupInfo.GroupType, group.GroupInfo.Tags,
                 group.GroupInfo.Description, group.Status);
-            List<MemberInfo> memberInfoList = new List<MemberInfo>();
-            var info = new MemberInfo(group.Teacher.Id, group.Teacher.UserProfile.Name,
-                group.Teacher.UserProfile.AvatarLink, MemberRole.Teacher, false);
-            memberInfoList.Add(info);
+            var memberInfoList = new List<MemberInfo>();
+            if (group.Teacher != null)
+            { 
+                var info = new MemberInfo(group.Teacher.Id, group.Teacher.UserProfile.Name,
+                    group.Teacher.UserProfile.AvatarLink, MemberRole.Teacher, false);
+                memberInfoList.Add(info);
+            }
+            
             listOfMembers.ForEach(m =>
             {
-                string userName = _userFacade.GetUser(m.UserId).UserProfile.Name;
-                string avatarLink = _userFacade.GetUser(m.UserId).UserProfile.AvatarLink;
+                var userName = _userFacade.GetUser(m.UserId).UserProfile.Name;
+                var avatarLink = _userFacade.GetUser(m.UserId).UserProfile.AvatarLink;
 
                 var memberInfo = new MemberInfo(m.UserId, userName, avatarLink, m.MemberRole, m.Paid);
                 memberInfoList.Add(memberInfo);

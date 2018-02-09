@@ -2,6 +2,7 @@
 using EduHub.Models;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
+using EnsureThat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,7 @@ namespace EduHub.Controllers
         [RequestSizeLimit(20_000_000)]
         public IActionResult AddFile(IFormFile file)
         {
+            Ensure.Any.IsNotNull(file);
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
 
@@ -66,7 +68,7 @@ namespace EduHub.Controllers
             var file = _fileFacade.GetFile(filename);
             var downloadPath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             var filePath = Path.Combine(downloadPath, file.Filename);
-            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
             return File(fileBytes, file.ContentType);
         }
 
