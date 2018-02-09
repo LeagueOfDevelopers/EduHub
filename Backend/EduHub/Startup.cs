@@ -45,12 +45,15 @@ namespace EduHub
                 Configuration.GetValue<double>("MinGroupValue"),
                 Configuration.GetValue<double>("MaxGroupValue"));
             var userRepository = new InMemoryUserRepository();
+            var fileRepository = new InMemoryFileRepository();
             var groupRepository = new InMemoryGroupRepository();
             var userFacade = new UserFacade(userRepository, groupRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
+            var fileFacade = new FileFacade(fileRepository);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
-            services.AddSingleton<IHostingEnvironment>(Env);
+            services.AddSingleton<IFileFacade>(fileFacade);
+            services.AddSingleton(Env);
             
             services.AddSwaggerGen(current =>
             {
@@ -97,6 +100,7 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseStaticFiles();
             app.UseSwagger();
 
             string path = env.ContentRootPath;

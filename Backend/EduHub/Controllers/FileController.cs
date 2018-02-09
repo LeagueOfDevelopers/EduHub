@@ -1,15 +1,14 @@
 ﻿using EduHub.Extensions;
 using EduHub.Models;
+using EduHubLibrary.Domain;
+using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EduHub.Controllers
 {
@@ -22,30 +21,57 @@ namespace EduHub.Controllers
         [HttpPost]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        [SwaggerResponse(200, Type = typeof(AddFileResponse))]
+        [RequestSizeLimit(20_000_000)]
         public IActionResult AddFile(IFormFile file)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
 
+            if (!file.IsSupportedFile())
+            {
+                throw new NotSupportedException();
+            }
+
             var fileName = userId + "_" + Guid.NewGuid() + "_" + file.FileName;
             var uploadPath =  Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             if (!Directory.Exists(uploadPath))
+            { 
                 Directory.CreateDirectory(uploadPath);
+            }
             var filePath = Path.Combine(uploadPath, fileName);
+            using (FileStream filestream = new FileStream(filePath, FileMode.Create))
+            {
+                file.CopyTo(filestream);
+            }
 
-            file.CopyTo(new FileStream(filePath, FileMode.Create));
+            _fileFacade.AddFile(fileName, file.ContentType);
 
-            var request = Request;
-            var host = request.Host.ToUriComponent();
-            var pathBase = request.PathBase.ToUriComponent();
-            var path =  $"{request.Scheme}://{host}{pathBase}/wwwroot/uploads/{fileName}";
+            AddFileResponse response = new AddFileResponse(fileName);
 
-            return Ok(path);
+            return Ok(response);
         }
-        public FileController(IHostingEnvironment environment)
+
+        [HttpGet]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(200, Type = typeof(File))]
+        [Route("{filename}")]
+        public IActionResult GetFile([FromRoute]string filename)
+        {
+            UserFile file = _fileFacade.GetFile(filename);
+            var downloadPath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+            var filePath = Path.Combine(downloadPath, file.Filename);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, file.ContentType);
+        }
+
+        public FileController(IHostingEnvironment environment, IFileFacade fileFacade)
         {
             _hostingEnvironment = environment;
+            _fileFacade = fileFacade;
         }
+
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IFileFacade _fileFacade;
     }
 }
