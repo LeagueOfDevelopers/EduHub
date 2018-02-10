@@ -53,7 +53,8 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:layout_marginLeft="12dp"
-                        android:layout_marginTop="12dp" />
+                        android:layout_marginTop="12dp"
+                        app:srcCompat="@mipmap/ic_launcher_round" />
 
                     <TextView
                         android:layout_width="110dp"
@@ -72,10 +73,11 @@
                         android:layout_marginLeft="60dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginTop="26dp"
-                        android:textSize="12dp"
                         android:background="#FFFFFF"
                         android:paddingLeft="5dp"
-                        android:singleLine="true"/>
+                        android:focusable="auto"
+                        android:singleLine="true"
+                        android:textSize="12dp" />
                 </RelativeLayout>
 
 
@@ -134,6 +136,7 @@
                     android:textColor="@color/black"
                     android:textAlignment="gravity"
                     android:gravity="center"
+                    android:focusable="auto"
                     android:inputType="numberDecimal"
                     android:singleLine="true"
                     />
@@ -167,8 +170,9 @@
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textAlignment="gravity"
-                    android:gravity="center"/>
+                    android:gravity="center" />
                 <ImageView
+                    android:id="@+id/plus"
                     android:layout_width="22dp"
                     android:layout_height="13dp"
                     android:layout_toRightOf="@+id/participants"
@@ -177,6 +181,7 @@
                     android:src="@drawable/ic_plus"
                     android:background="@color/grey"/>
                 <ImageView
+                    android:id="@+id/minus"
                     android:layout_width="22dp"
                     android:layout_height="13dp"
                     android:layout_toRightOf="@+id/participants"
@@ -233,8 +238,10 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="30dp"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingLeft="5dp"
+                    android:background="#FFFFFF"
                     android:textColor="@color/black"
                     android:textSize="12dp" />
 

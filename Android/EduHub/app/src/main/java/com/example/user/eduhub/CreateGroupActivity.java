@@ -58,6 +58,8 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
         final TagsEditText tags=findViewById(R.id.tagsEditText);
         final CheckBox checkBox=findViewById(R.id.privacy);
         final EditText description=findViewById(R.id.about_group);
+        ImageView plus=findViewById(R.id.plus);
+        ImageView minus=findViewById(R.id.minus);
         Button createGroup=findViewById(R.id.create_group);
         user=savedDataRepository.loadSavedData(sPref);
         Toolbar toolbar=findViewById(R.id.toolbar);
@@ -96,20 +98,21 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
             }
         });
         EditText nameOfGroup=findViewById(R.id.name_of_group_create);
-        nameOfGroup.setOnKeyListener(new View.OnKeyListener()
-                                     {
-                                         public boolean onKey(View v, int keyCode, KeyEvent event)
-                                         {
-                                             if(
-                                                     (keyCode == KeyEvent.KEYCODE_ENTER))
-                                             {
 
-                                                 return true;
-                                             }
-                                             return false;
-                                         }
-                                     }
-        );
+        plus.setOnClickListener(click->{
+            if(maxParticipants.getText().toString().equals("")){
+                maxParticipants.setText("0");
+            }
+            maxParticipants.setText((Integer.valueOf(maxParticipants.getText().toString())+1)+"");
+        });
+        minus.setOnClickListener(click->{
+            if(maxParticipants.getText().toString().equals("")){
+                maxParticipants.setText("0");
+            }if(Integer.valueOf(maxParticipants.getText().toString())>=0){
+            maxParticipants.setText((Integer.valueOf(maxParticipants.getText().toString())-1)+"");
+            }
+        });
+
 
 
         backButton.setOnClickListener(click->{
@@ -125,18 +128,17 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
         createGroup.setOnClickListener(click->{
             if(!nameOfGroup.getText().toString().equals("")&&!cost.getText().toString().equals("")&&!maxParticipants.getText().toString().equals("")&&type!=null&&!tags.getText().toString().equals("")&&!description.getText()
             .toString().equals("")){
-
-
-                if(!fakesButton.getCheckButton()){
-                createGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>)tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,flag,user.getToken());}
-                else{
-                    fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>) tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,flag,user.getToken());
+                if(Integer.valueOf(maxParticipants.getText().toString())<=100){
+                    if(!fakesButton.getCheckButton()){
+                        createGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>)tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,flag,user.getToken());}
+                        else{
+                        fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>) tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,flag,user.getToken());
+                    }
+                } else{MakeToast("Максимальный размер группы 100");}
+            }else {
+                    MakeToast("Заполните все поля");
 
                 }
-            }else{
-                MakeToast("Заполните все поля");
-
-            }
         });
     }
 

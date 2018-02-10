@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.eduhub.Dialog.CreateDialog;
@@ -18,6 +19,7 @@ import com.example.user.eduhub.Main2Activity;
 import com.example.user.eduhub.Models.UserProfile.UserProfile;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 import com.example.user.eduhub.R;
+import com.example.user.eduhub.RefactorProfile;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -47,6 +49,7 @@ public class UserProfileFragment extends Fragment {
         TextView birthYear=v.findViewById(R.id.birth_year);
         TextView aboutMe=v.findViewById(R.id.aboutMe);
         Button exit=v.findViewById(R.id.exit_user);
+        ImageView refactor=v.findViewById(R.id.refactor);
         sharedPreferences=getActivity().getSharedPreferences("User",MODE_PRIVATE);
 
         userEmail.setText(userProfile.getUserProfile().getEmail());
@@ -96,6 +99,11 @@ public class UserProfileFragment extends Fragment {
             createDialog=new CreateDialog(getContext(),myClickListener);
             createDialog.onCreateDialog(2).show();
 
+        });
+        refactor.setOnClickListener(click->{
+            Intent intent=new Intent(getActivity(),RefactorProfile.class);
+            intent.putExtra("User",userProfile);
+            getActivity().startActivity(intent);
         });
 
         return v;

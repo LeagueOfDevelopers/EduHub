@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.eduhub.Adapters.PlaceHolder.JobExpHeaderVIew;
@@ -27,6 +28,7 @@ import com.example.user.eduhub.Models.UserProfile.Review;
 
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 import com.example.user.eduhub.R;
+import com.example.user.eduhub.RefactorProfile;
 import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class TeacherProfile extends Fragment {
         TextView sex=v.findViewById(R.id.sex);
         TextView birthYear=v.findViewById(R.id.birth_year);
         TextView aboutMe=v.findViewById(R.id.aboutMe);
+        ImageView refactor=v.findViewById(R.id.refactor);
 
         Button exit=v.findViewById(R.id.exit);
         sharedPreferences=getActivity().getSharedPreferences("User",MODE_PRIVATE);
@@ -128,6 +131,11 @@ public class TeacherProfile extends Fragment {
             createDialog=new CreateDialog(getContext(),myClickListener);
             createDialog.onCreateDialog(2).show();
 
+        });
+        refactor.setOnClickListener(click->{
+            Intent intent=new Intent(getActivity(),RefactorProfile.class);
+            intent.putExtra("UserProfile",userProfile);
+            getActivity().startActivity(intent);
         });
         return v;
     }

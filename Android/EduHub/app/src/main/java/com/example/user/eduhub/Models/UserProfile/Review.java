@@ -3,11 +3,13 @@ package com.example.user.eduhub.Models.UserProfile;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by User on 30.01.2018.
  */
 
-public class Review {
+public class Review  implements Serializable{
 
     @SerializedName("evaluator")
     @Expose

@@ -28,7 +28,8 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CreateGroupActivity" />
-        <activity android:name=".InviteUserToGroup"></activity>
+        <activity android:name=".InviteUserToGroup" />
+        <activity android:name=".RefactorProfile"></activity>
     </application>
 
 </manifest>
