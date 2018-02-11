@@ -1,7 +1,5 @@
-﻿using EduHubLibrary.Domain.NotificationService;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubLibrary.Domain.Events
 {

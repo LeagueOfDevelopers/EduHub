@@ -1,16 +1,22 @@
-﻿using EduHubLibrary.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Common;
+using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
 {
     public class InMemoryUserRepository : IUserRepository
     {
+        private readonly List<User> _listOfUsers;
+
+        public InMemoryUserRepository()
+        {
+            _listOfUsers = new List<User>();
+        }
+
         public void Add(User user)
         {
             if (user == null)
@@ -34,7 +40,7 @@ namespace EduHubLibrary.Infrastructure
         {
             Ensure.Guid.IsNotEmpty(userId);
             return Ensure.Any.IsNotNull(_listOfUsers.Find(current => current.Id == userId), nameof(GetUserById),
-               opt => opt.WithException(new UserNotFoundException(userId)));
+                opt => opt.WithException(new UserNotFoundException(userId)));
         }
 
         public User GetUserByCredentials(Credentials credentials)
@@ -46,15 +52,9 @@ namespace EduHubLibrary.Infrastructure
         {
             if (user == null)
                 throw new ArgumentNullException();
-            var currentUser = _listOfUsers.Find(current => current.Id == user.Id) ?? throw new UserNotFoundException(user.Id);
+            var currentUser = _listOfUsers.Find(current => current.Id == user.Id) ??
+                              throw new UserNotFoundException(user.Id);
             currentUser = user;
         }
-
-        public InMemoryUserRepository()
-        {
-            _listOfUsers = new List<User>();
-        }
-
-        private List<User> _listOfUsers;
     }
 }

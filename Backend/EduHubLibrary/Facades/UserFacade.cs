@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using EduHubLibrary.Domain;
-using EnsureThat;
-using EduHubLibrary.Domain.Exceptions;
-using EduHubLibrary.Common;
 using System.Linq;
-using EduHubLibrary.Domain.Tools;
-using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Common;
+using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
+using EnsureThat;
 
 namespace EduHubLibrary.Facades
 {
     public class UserFacade : IUserFacade
     {
+        private readonly IGroupRepository _groupRepository;
+
+        private readonly IUserRepository _userRepository;
+
         public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository)
         {
             _userRepository = userRepository;
@@ -75,16 +77,16 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
             Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),
                 opt => opt.WithException(new AlreadyMemberException(invitedId, groupId)));
-            Ensure.Bool.IsFalse(invitedUser.GetAllInvitation().Any(c => c.GroupId == groupId), 
+            Ensure.Bool.IsFalse(invitedUser.GetAllInvitation().Any(c => c.GroupId == groupId),
                 nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
             if (suggestedRole == MemberRole.Teacher)
-            {
-                Ensure.Bool.IsTrue(invitedUser.UserProfile.IsTeacher, nameof(Invite), 
+                Ensure.Bool.IsTrue(invitedUser.UserProfile.IsTeacher, nameof(Invite),
                     opt => opt.WithException(new UserIsNotTeacher(invitedId)));
-            }
-            Ensure.Bool.IsFalse(suggestedRole == MemberRole.Teacher && _groupRepository.GetGroupById(groupId).Teacher != null,
+            Ensure.Bool.IsFalse(
+                suggestedRole == MemberRole.Teacher && _groupRepository.GetGroupById(groupId).Teacher != null,
                 nameof(Invite), opt => opt.WithException(new TeacherIsAlreadyFoundException()));
-            var newInvintation = new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
+            var newInvintation =
+                new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
 
             invitedUser.AddInvitation(newInvintation);
         }
@@ -100,13 +102,9 @@ namespace EduHubLibrary.Facades
         {
             var groupsOfUser = new List<Group>();
 
-            foreach (Group group in _groupRepository.GetAll())
-            {
+            foreach (var group in _groupRepository.GetAll())
                 if (group.Members.Any(member => member.UserId.Equals(userId)))
-                {
                     groupsOfUser.Add(group);
-                }
-            }
 
             return groupsOfUser;
         }
@@ -114,12 +112,12 @@ namespace EduHubLibrary.Facades
         public IEnumerable<User> FindByName(string name)
         {
             var result = _userRepository.GetAll().Where(u => u.UserProfile.Name.Contains(name));
-            
+
             return result.OrderBy(u => u.UserProfile.Name.Length);
         }
 
         public bool DoesUserExist(string name)
-        { 
+        {
             return _userRepository.GetAll().Any(user => user.UserProfile.Name.Contains(name));
         }
 
@@ -142,7 +140,8 @@ namespace EduHubLibrary.Facades
 
         public void EditAboutUser(Guid userId, string newAboutUser)
         {
-            _userRepository.GetUserById(userId).UserProfile.AboutUser = Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
+            _userRepository.GetUserById(userId).UserProfile.AboutUser =
+                Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
         }
 
         public void EditGender(Guid userId, bool isMan)
@@ -152,25 +151,22 @@ namespace EduHubLibrary.Facades
 
         public void EditAvatarLink(Guid userId, string newAvatarLink)
         {
-            _userRepository.GetUserById(userId).UserProfile.AvatarLink = Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
+            _userRepository.GetUserById(userId).UserProfile.AvatarLink =
+                Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
         }
 
         public void EditContacts(Guid userId, List<string> newContactData)
         {
-            if (newContactData.Count != 0 && newContactData.TrueForAll(d => !String.IsNullOrWhiteSpace(d)))
-            {
+            if (newContactData.Count != 0 && newContactData.TrueForAll(d => !string.IsNullOrWhiteSpace(d)))
                 _userRepository.GetUserById(userId).UserProfile.Contacts = newContactData;
-            }
-            else throw new System.ArgumentException();
+            else throw new ArgumentException();
         }
 
         public void EditBirthYear(Guid userId, int newYear)
         {
             //hardcoded value
             if (newYear > 1900 && newYear < DateTimeOffset.Now.Year)
-            {
                 _userRepository.GetUserById(userId).UserProfile.BirthYear = newYear;
-            }
             else throw new IndexOutOfRangeException();
         }
 
@@ -185,8 +181,5 @@ namespace EduHubLibrary.Facades
         }
 
         #endregion
-
-        private readonly IUserRepository _userRepository;
-        private readonly IGroupRepository _groupRepository;
     }
 }

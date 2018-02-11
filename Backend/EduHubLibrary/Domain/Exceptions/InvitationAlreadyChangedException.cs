@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
@@ -20,11 +18,13 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public InvitationAlreadyChangedException(string message, Exception innerException) : base(message, innerException)
+        public InvitationAlreadyChangedException(string message, Exception innerException) : base(message,
+            innerException)
         {
         }
 
-        protected InvitationAlreadyChangedException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected InvitationAlreadyChangedException(SerializationInfo info, StreamingContext context) : base(info,
+            context)
         {
         }
     }

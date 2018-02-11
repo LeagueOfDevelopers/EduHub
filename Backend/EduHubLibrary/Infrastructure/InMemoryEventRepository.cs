@@ -1,12 +1,12 @@
-﻿using EduHubLibrary.Domain.NotificationService;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubLibrary.Infrastructure
 {
     public class InMemoryEventRepository : IEventRepository
     {
+        private readonly List<Event> _events;
+
         public InMemoryEventRepository()
         {
             _events = new List<Event>();
@@ -21,7 +21,5 @@ namespace EduHubLibrary.Infrastructure
         {
             return _events;
         }
-
-        private List<Event> _events;
     }
 }

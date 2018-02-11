@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    class GroupIsNotFullException : Exception
+    internal class GroupIsNotFullException : Exception
     {
         public GroupIsNotFullException()
         {
@@ -11,7 +11,6 @@ namespace EduHubLibrary.Domain.Exceptions
 
         public GroupIsNotFullException(Guid idOfGroup) : base($"group with id {idOfGroup} is not full")
         {
-
         }
 
         public GroupIsNotFullException(string message) : base(message)

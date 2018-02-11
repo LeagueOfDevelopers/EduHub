@@ -1,6 +1,7 @@
-﻿using EduHub.Extensions;
+﻿using System;
+using System.IO;
+using EduHub.Extensions;
 using EduHub.Models;
-using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
 using EnsureThat;
 using Microsoft.AspNetCore.Authorization;
@@ -8,8 +9,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.IO;
 
 namespace EduHub.Controllers
 {
@@ -18,6 +17,10 @@ namespace EduHub.Controllers
     [Route("api/file")]
     public class FileController : Controller
     {
+        private readonly IFileFacade _fileFacade;
+
+        private readonly IHostingEnvironment _hostingEnvironment;
+
         public FileController(IHostingEnvironment environment, IFileFacade fileFacade)
         {
             _hostingEnvironment = environment;
@@ -35,19 +38,13 @@ namespace EduHub.Controllers
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
 
-            if (!file.IsSupportedFile())
-            {
-                throw new NotSupportedException();
-            }
+            if (!file.IsSupportedFile()) throw new NotSupportedException();
 
             var fileName = userId + "_" + Guid.NewGuid() + "_" + file.FileName;
-            var uploadPath =  Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-            if (!Directory.Exists(uploadPath))
-            { 
-                Directory.CreateDirectory(uploadPath);
-            }
+            var uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+            if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
             var filePath = Path.Combine(uploadPath, fileName);
-            using (FileStream filestream = new FileStream(filePath, FileMode.Create))
+            using (var filestream = new FileStream(filePath, FileMode.Create))
             {
                 file.CopyTo(filestream);
             }
@@ -63,7 +60,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(200, Type = typeof(File))]
         [Route("{filename}")]
-        public IActionResult GetFile([FromRoute]string filename)
+        public IActionResult GetFile([FromRoute] string filename)
         {
             var file = _fileFacade.GetFile(filename);
             var downloadPath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
@@ -71,8 +68,5 @@ namespace EduHub.Controllers
             var fileBytes = System.IO.File.ReadAllBytes(filePath);
             return File(fileBytes, file.ContentType);
         }
-
-        private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IFileFacade _fileFacade;
     }
 }

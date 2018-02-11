@@ -1,10 +1,4 @@
-﻿using EduHubLibrary.Common;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace EduHub.Security
 {
@@ -16,7 +10,7 @@ namespace EduHub.Security
             Issue = issue;
             ExpirationPeriod = expirationPeriod;
         }
-        
+
         public string EncryptionKey { get; }
         public string Issue { get; }
         public TimeSpan ExpirationPeriod { get; }

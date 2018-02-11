@@ -1,5 +1,5 @@
-﻿using EnsureThat;
-using System;
+﻿using System;
+using EnsureThat;
 
 namespace EduHubLibrary.Domain
 {
@@ -16,7 +16,6 @@ namespace EduHubLibrary.Domain
         public Guid FromUser { get; }
         public string Title { get; }
         public string Text { get; }
-        public DateTimeOffset Date { get;}
-
+        public DateTimeOffset Date { get; }
     }
 }

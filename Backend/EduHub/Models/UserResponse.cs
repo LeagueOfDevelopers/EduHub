@@ -1,15 +1,12 @@
 ﻿using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EduHub.Models
 {
     public class UserResponse
     {
-        public UserResponse(string name, string email, UserType type, bool isTeacher, TeacherProfile teacherProfile, bool isActive)
+        public UserResponse(string name, string email, UserType type, bool isTeacher, TeacherProfile teacherProfile,
+            bool isActive)
         {
             Name = name;
             Email = email;

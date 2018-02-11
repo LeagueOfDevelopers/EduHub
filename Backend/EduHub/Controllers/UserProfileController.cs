@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using EduHub.Models;
-using EduHubLibrary.Facades;
-using EduHubLibrary.Domain;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Authorization;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using EduHub.Extensions;
-using EduHubLibrary.Domain.NotificationService;
+using EduHub.Models;
 using EduHub.Models.Tools;
+using EduHubLibrary.Domain;
+using EduHubLibrary.Facades;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
@@ -18,6 +16,10 @@ namespace EduHub.Controllers
     [Route("api/user/profile")]
     public class UserProfileController : Controller
     {
+        private readonly IGroupFacade _groupFacade;
+
+        private readonly IUserFacade _userFacade;
+
         public UserProfileController(IUserFacade userFacade, IGroupFacade groupFacade)
         {
             _userFacade = userFacade;
@@ -25,7 +27,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Deletes user's profile
+        ///     Deletes user's profile
         /// </summary>
         [Authorize]
         [HttpDelete]
@@ -37,7 +39,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Returns all invitations for user
+        ///     Returns all invitations for user
         /// </summary>
         [Authorize]
         [HttpGet]
@@ -49,11 +51,12 @@ namespace EduHub.Controllers
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            List<InvitationModel> allInv = new List<InvitationModel>();
+            var allInv = new List<InvitationModel>();
             var currentUsername = _userFacade.GetUser(userId).UserProfile.Name;
             _userFacade.GetAllInvitationsForUser(userId).ToList().ForEach(inv =>
             {
-                if (inv.Status == InvitationStatus.InProgress) { 
+                if (inv.Status == InvitationStatus.InProgress)
+                {
                     var fromUsername = _userFacade.GetUser(inv.FromUser).UserProfile.Name;
                     var toGroupTitle = _groupFacade.GetGroup(inv.GroupId).GroupInfo.Title;
                     var invitation = new InvitationModel(inv.Id, inv.FromUser, fromUsername, inv.ToUser,
@@ -66,7 +69,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Changes status of invitation, add user to group
+        ///     Changes status of invitation, add user to group
         /// </summary>
         [Authorize]
         [HttpPut]
@@ -82,15 +85,13 @@ namespace EduHub.Controllers
             var invitation = _userFacade.GetAllInvitationsForUser(userId).First(i => i.Id.Equals(changer.InvitationId));
 
             if (invitation.SuggestedRole == MemberRole.Teacher && changer.Status == InvitationStatus.Accepted)
-            {
                 _groupFacade.ApproveTeacher(userId, invitation.GroupId);
-            }
 
             return Ok($"Текущий статус приглашения {changer.Status}");
         }
 
         /// <summary>
-        /// Restores user's profile
+        ///     Restores user's profile
         /// </summary>
         [Authorize]
         [HttpPost]
@@ -102,7 +103,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Edites user's name
+        ///     Edites user's name
         /// </summary>
         [HttpPut]
         [Authorize]
@@ -118,7 +119,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Edites user's aboutInfo
+        ///     Edites user's aboutInfo
         /// </summary>
         [HttpPut]
         [Authorize]
@@ -134,7 +135,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Edites user's gender
+        ///     Edites user's gender
         /// </summary>
         [HttpPut]
         [Authorize]
@@ -150,7 +151,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Edites user's avatar link
+        ///     Edites user's avatar link
         /// </summary>
         [HttpPut]
         [Authorize]
@@ -166,7 +167,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Edites user's contacts
+        ///     Edites user's contacts
         /// </summary>
         [HttpPut]
         [Authorize]
@@ -182,7 +183,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Edites user's birth year
+        ///     Edites user's birth year
         /// </summary>
         [HttpPut]
         [Authorize]
@@ -198,7 +199,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Makes user teacher
+        ///     Makes user teacher
         /// </summary>
         [Authorize]
         [HttpPost]
@@ -214,7 +215,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Makes user regular user (not teacher)
+        ///     Makes user regular user (not teacher)
         /// </summary>
         [Authorize]
         [HttpDelete]
@@ -230,7 +231,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Turns on user's notifies
+        ///     Turns on user's notifies
         /// </summary>
         [Authorize]
         [HttpPost]
@@ -243,7 +244,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Turns off user's notifies
+        ///     Turns off user's notifies
         /// </summary>
         [Authorize]
         [HttpDelete]
@@ -256,7 +257,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Returns all notifies for user
+        ///     Returns all notifies for user
         /// </summary>
         [Authorize]
         [HttpGet]
@@ -273,7 +274,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Returns all user groups
+        ///     Returns all user groups
         /// </summary>
         [Authorize]
         [HttpGet]
@@ -286,11 +287,11 @@ namespace EduHub.Controllers
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
             IEnumerable<Group> groups = _userFacade.GetAllGroupsOfUser(userId);
-            List<MinItemGroupResponse> items = new List<MinItemGroupResponse>();
-            groups.ToList().ForEach(g => 
+            var items = new List<MinItemGroupResponse>();
+            groups.ToList().ForEach(g =>
             {
                 int memberAmount = _groupFacade.GetGroupMembers(g.GroupInfo.Id).ToList().Count;
-                var groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size, 
+                var groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size,
                     g.GroupInfo.MoneyPerUser, g.GroupInfo.GroupType, g.GroupInfo.Tags);
                 items.Add(new MinItemGroupResponse(groupInfo));
             });
@@ -299,27 +300,27 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Returns user profile
+        ///     Returns user profile
         /// </summary>
         [HttpGet]
         [Route("{userId}")]
         [SwaggerResponse(200, Type = typeof(ProfileResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult GetProfile([FromRoute]Guid userId)
+        public IActionResult GetProfile([FromRoute] Guid userId)
         {
             var user = _userFacade.GetUser(userId);
             ProfileResponse response;
-            UserProfileModel userProfile = new UserProfileModel(user.UserProfile.Name, user.UserProfile.Email,
+            var userProfile = new UserProfileModel(user.UserProfile.Name, user.UserProfile.Email,
                 user.UserProfile.AboutUser, user.UserProfile.BirthYear, user.UserProfile.IsMan,
                 user.UserProfile.IsTeacher, user.UserProfile.AvatarLink, user.UserProfile.Contacts);
             if (user.UserProfile.IsTeacher)
             {
-                List<ReviewModel> reviews = new List<ReviewModel>();
-                user.TeacherProfile.Reviews.ForEach(r => 
+                var reviews = new List<ReviewModel>();
+                user.TeacherProfile.Reviews.ForEach(r =>
                 {
                     reviews.Add(new ReviewModel(r.FromUser, r.Title, r.Text, r.Date));
                 });
-                TeacherProfileModel teacherProfile = new TeacherProfileModel(reviews,
+                var teacherProfile = new TeacherProfileModel(reviews,
                     user.TeacherProfile.Skills);
                 response = new ProfileResponse(userProfile, teacherProfile);
             }
@@ -327,10 +328,8 @@ namespace EduHub.Controllers
             {
                 response = new ProfileResponse(userProfile);
             }
+
             return Ok(response);
         }
-
-        private readonly IUserFacade _userFacade;
-        private readonly IGroupFacade _groupFacade;
     }
 }

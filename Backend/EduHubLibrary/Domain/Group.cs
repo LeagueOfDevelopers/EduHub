@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using EduHubLibrary.Domain.Exceptions;
-using EnsureThat;
 using EduHubLibrary.Domain.Tools;
-using EduHubLibrary.Domain.NotificationService;
+using EnsureThat;
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EduHubTests")]
+[assembly: InternalsVisibleTo("EduHubTests")]
 
 namespace EduHubLibrary.Domain
 {
     public class Group
     {
-        public Chat Chat { get; private set; }
-        public GroupInfo GroupInfo { get; set; }
-        public User Teacher { get; private set; }
-        public CourseStatus Status { get; set; }
-        public List<Member> Members { get; private set; }
-        public List<Invitation> Invitations { get; private set; }
-
         public Group(Guid creatorId, List<Member> toWrite, string title, List<string> tags,
             string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
         {
@@ -30,7 +23,8 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(moneyPerUser);
 
             var isActive = true;
-            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
+            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size,
+                moneyPerUser);
         }
 
         public Group(Guid creatorId, string title, List<string> tags,
@@ -44,12 +38,20 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(moneyPerUser);
 
             var isActive = true;
-            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size, moneyPerUser);
+            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size,
+                moneyPerUser);
             Members = new List<Member>();
             Invitations = new List<Invitation>();
             var creator = new Member(creatorId, MemberRole.Creator);
             Members.Add(creator);
         }
+
+        public Chat Chat { get; private set; }
+        public GroupInfo GroupInfo { get; set; }
+        public User Teacher { get; private set; }
+        public CourseStatus Status { get; set; }
+        public List<Member> Members { get; }
+        public List<Invitation> Invitations { get; }
 
         internal void AddMember(Guid newMemberId)
         {
@@ -60,7 +62,6 @@ namespace EduHubLibrary.Domain
 
             var newMember = new Member(newMemberId, MemberRole.Member);
             Members.Add(newMember);
-            
         }
 
         internal void DeleteMember(Guid requestedPerson, Guid deletingPerson)
@@ -87,7 +88,7 @@ namespace EduHubLibrary.Domain
         {
             Ensure.Guid.IsNotEmpty(requestedPerson);
             Ensure.Guid.IsNotEmpty(teacherId);
-            Ensure.Bool.IsTrue(IsTeacher(teacherId), nameof(DeleteTeacher), 
+            Ensure.Bool.IsTrue(IsTeacher(teacherId), nameof(DeleteTeacher),
                 opt => opt.WithException(new InvalidOperationException()));
             if (requestedPerson == teacherId)
             {
@@ -111,22 +112,22 @@ namespace EduHubLibrary.Domain
 
         internal bool IsTeacher(Guid userId)
         {
-            return Teacher.Id  == userId;
+            return Teacher.Id == userId;
         }
 
         internal Member GetMember(Guid userId)
         {
             return Members.FirstOrDefault(current => current.UserId == userId);
         }
-        
+
         internal void AddInvitation(Invitation invitation)
         {
             Invitations.Add(invitation);
         }
-        
+
         internal void ApproveTeacher(User teacher)
         {
-            Ensure.Bool.IsTrue(Teacher == null, nameof(Teacher), 
+            Ensure.Bool.IsTrue(Teacher == null, nameof(Teacher),
                 opt => opt.WithException(new TeacherIsAlreadyFoundException()));
             /*Ensure.Bool.IsTrue(listOfMembers.Count == GroupInfo.Size, nameof(GroupInfo.Size),
                 opt => opt.WithException(new GroupIsNotFullException(GroupInfo.Id)));*/
@@ -150,18 +151,15 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new MemberNotFoundException(userId)));
             var currentMember = GetMember(userId);
             currentMember.AcceptedCurriculum = true;
-            if (Members.All(m => m.AcceptedCurriculum))
-            {
-                Status = CourseStatus.Started;
-            }
+            if (Members.All(m => m.AcceptedCurriculum)) Status = CourseStatus.Started;
         }
-        
+
         internal bool DoesContainsTags(List<string> tags)
         {
             if (tags.TrueForAll(t => GroupInfo.Tags.Contains(t)))
                 return true;
 
-            else return false;
+            return false;
         }
 
         private void DeleteCreator(Member deletingCreator)
@@ -176,6 +174,7 @@ namespace EduHubLibrary.Domain
                 GroupInfo.IsActive = false;
                 return;
             }
+
             var newCreator = Members[indexOfCreator + 1];
             newCreator.MemberRole = MemberRole.Creator;
             Members.Remove(deletingCreator);

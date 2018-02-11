@@ -1,7 +1,5 @@
-﻿using EnsureThat;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using EnsureThat;
 
 namespace EduHubLibrary.Domain
 {
@@ -22,6 +20,6 @@ namespace EduHubLibrary.Domain
         public Guid FromUser { get; }
         public Guid ToUser { get; }
         public MemberRole SuggestedRole { get; }
-        public Guid Id { get; }        
+        public Guid Id { get; }
     }
 }

@@ -10,7 +10,7 @@ namespace EduHubLibrary.Domain
             Skills = new List<string>();
         }
 
-        public List<Review> Reviews { get; private set; }
+        public List<Review> Reviews { get; }
         public List<string> Skills { get; set; }
 
         public void AddReview(Review review)

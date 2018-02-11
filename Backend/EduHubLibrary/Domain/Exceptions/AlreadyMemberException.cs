@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
@@ -11,7 +9,7 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public AlreadyMemberException(Guid userId, Guid groupId) 
+        public AlreadyMemberException(Guid userId, Guid groupId)
             : base($"user with id {userId} is already member of group with id {groupId}")
         {
         }

@@ -1,27 +1,24 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+﻿using System;
+using System.Text;
+using EduHub.Filters;
+using EduHub.Security;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
-using EduHub.Filters;
-using EduHub.Security;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Loggly.Config;
 using Loggly;
-using Serilog;
+using Loggly.Config;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Swashbuckle.AspNetCore.Examples;
-using System;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using Serilog.Events;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.Consumers;
-using EduHubLibrary.Domain.Events;
+using Swashbuckle.AspNetCore.Examples;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace EduHub
 {
@@ -54,7 +51,7 @@ namespace EduHub
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IFileFacade>(fileFacade);
             services.AddSingleton(Env);
-            
+
             services.AddSwaggerGen(current =>
             {
                 current.SwaggerDoc("v1", new Info
@@ -64,36 +61,35 @@ namespace EduHub
                 });
                 current.AddSecurityDefinition("Bearer", new ApiKeyScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
                     In = "header",
                     Type = "apiKey"
                 });
                 current.OperationFilter<ExamplesOperationFilter>();
                 current.DescribeAllEnumsAsStrings();
-                string a = string.Format(@"{0}\EduHub.xml", AppDomain.CurrentDomain.BaseDirectory);
+                var a = string.Format(@"{0}\EduHub.xml", AppDomain.CurrentDomain.BaseDirectory);
                 current.IncludeXmlComments(string.Format(@"{0}/EduHub.xml", AppDomain.CurrentDomain.BaseDirectory));
             });
             ConfigureSecurity(services);
             if (Configuration.GetValue<bool>("Authorization"))
-            {
-                services.AddMvc(o => {
+                services.AddMvc(o =>
+                {
                     o.Filters.Add(new ExceptionFilter());
                     o.Filters.Add(new ActionFilter());
                 });
-            }
             else
-            {
-                services.AddMvc(o => {
+                services.AddMvc(o =>
+                {
                     o.Filters.Add(new AllowAnonymousFilter());
                     o.Filters.Add(new ExceptionFilter());
                     o.Filters.Add(new ActionFilter());
                 });
-            }
             services.AddCors(options =>
             {
-            options.AddPolicy("AllowAnyOrigin",
-                builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+                options.AddPolicy("AllowAnyOrigin",
+                    builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
         }
 
@@ -103,16 +99,10 @@ namespace EduHub
             app.UseStaticFiles();
             app.UseSwagger();
 
-            string path = env.ContentRootPath;
+            var path = env.ContentRootPath;
 
-            app.UseSwaggerUI(current =>
-            {
-                current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API");
-            });
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseSwaggerUI(current => { current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API"); });
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
             app.UseCors("AllowAnyOrigin");
 
             app.UseMvc();
@@ -146,7 +136,8 @@ namespace EduHub
         {
             var securityConfiguration = Configuration.GetSection("Security");
             var securitySettings = new SecuritySettings(
-                securityConfiguration["EncryptionKey"], securityConfiguration["Issue"], securityConfiguration.GetValue<System.TimeSpan>("ExpirationPeriod"));
+                securityConfiguration["EncryptionKey"], securityConfiguration["Issue"],
+                securityConfiguration.GetValue<TimeSpan>("ExpirationPeriod"));
             var jwtIssuer = new JwtIssuer(securitySettings);
             services.AddSingleton(securitySettings);
             services.AddSingleton<IJwtIssuer>(jwtIssuer);
@@ -169,15 +160,18 @@ namespace EduHub
                 .AddAuthorization(options =>
                 {
                     options.DefaultPolicy =
-                    new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser().Build();
+                        new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                            .RequireAuthenticatedUser().Build();
 
-                    options.AddPolicy("GeneralAdminOnly", new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.GeneralAdmin).Build());
+                    options.AddPolicy("GeneralAdminOnly",
+                        new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                            .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.GeneralAdmin).Build());
 
-                    options.AddPolicy("AdminsOnly", new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Admin, Claims.Roles.GeneralAdmin).Build());
+                    options.AddPolicy("AdminsOnly",
+                        new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                            .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Admin, Claims.Roles.GeneralAdmin)
+                            .Build());
                 });
         }
-    } 
+    }
 }

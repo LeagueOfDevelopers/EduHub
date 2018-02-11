@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Settings;
 using EnsureThat;
-using EduHubLibrary.Domain.Exceptions;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.Events;
 
 namespace EduHubLibrary.Facades
 {
     public class GroupFacade : IGroupFacade
     {
+        private readonly IGroupRepository _groupRepository;
+        private readonly GroupSettings _groupSettings;
+        private readonly IUserRepository _userRepository;
+
         public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
             GroupSettings groupSettings)
         {
@@ -21,18 +22,19 @@ namespace EduHubLibrary.Facades
             _groupSettings = groupSettings;
         }
 
-        public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size, double totalValue, bool isPrivate,
+        public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size,
+            double totalValue, bool isPrivate,
             GroupType groupType)
         {
             Ensure.Bool.IsTrue(size <= _groupSettings.MaxGroupSize && size >= _groupSettings.MinGroupSize,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(size))));
             Ensure.Bool.IsTrue(totalValue <= _groupSettings.MaxGroupValue && totalValue >= _groupSettings.MinGroupValue,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(totalValue))));
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(userId), 
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(userId),
                 opt => opt.WithException(new UserNotFoundException(userId)));
             var group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
-            
+
             return group.GroupInfo.Id;
         }
 
@@ -57,7 +59,7 @@ namespace EduHubLibrary.Facades
             Ensure.Any.IsNotNull(_userRepository.GetUserById(requestedPerson), nameof(DeleteTeacher),
                 opt => opt.WithException(new UserNotFoundException(requestedPerson)));
             Ensure.Any.IsNotNull(_userRepository.GetUserById(teacherId), nameof(DeleteTeacher),
-                 opt => opt.WithException(new UserNotFoundException(teacherId)));
+                opt => opt.WithException(new UserNotFoundException(teacherId)));
             currentGroup.DeleteTeacher(requestedPerson, teacherId);
         }
 
@@ -84,14 +86,16 @@ namespace EduHubLibrary.Facades
         {
             var result = new List<Group>();
 
-            _groupRepository.GetAll().ToList().ForEach(g => 
+            _groupRepository.GetAll().ToList().ForEach(g =>
             {
                 if (g.DoesContainsTags(tags.ToList()))
                     result.Add(g);
             });
 
-            result.Sort((Group group1, Group group2) =>
-            { return group1.GroupInfo.Tags.Count().CompareTo(group2.GroupInfo.Tags.Count()); });
+            result.Sort((group1, group2) =>
+            {
+                return group1.GroupInfo.Tags.Count().CompareTo(group2.GroupInfo.Tags.Count());
+            });
 
             return result;
         }
@@ -104,11 +108,6 @@ namespace EduHubLibrary.Facades
         public IEnumerable<Group> GetGroups()
         {
             return _groupRepository.GetAll();
-        }
-        
-        public IEnumerable<Invitation> GetAllInvitations(Guid groupId)
-        {
-            return _groupRepository.GetGroupById(groupId).Invitations;
         }
 
         public void AddInvitation(Guid groupId, Invitation invitation)
@@ -149,6 +148,11 @@ namespace EduHubLibrary.Facades
             var currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AcceptCurriculum),
                 opt => opt.WithException(new GroupNotFoundException(groupId)));
             currentGroup.OfferCurriculum(userId, description);
+        }
+
+        public IEnumerable<Invitation> GetAllInvitations(Guid groupId)
+        {
+            return _groupRepository.GetGroupById(groupId).Invitations;
         }
 
         #region Edit GroupInfo Data Methods
@@ -193,7 +197,7 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.Any.IsNotNull(newSize);
             Ensure.Bool.IsTrue(newSize <= _groupSettings.MaxGroupSize && newSize >= _groupSettings.MinGroupSize,
-               nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newSize))));
+                nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newSize))));
             currentGroup.GroupInfo.Size = newSize;
         }
 
@@ -206,14 +210,10 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.Any.IsNotNull(newPrice);
             Ensure.Bool.IsTrue(newPrice <= _groupSettings.MaxGroupValue && newPrice >= _groupSettings.MinGroupValue,
-               nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newPrice))));
+                nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newPrice))));
             currentGroup.GroupInfo.MoneyPerUser = newPrice;
         }
 
         #endregion
-
-        private readonly IGroupRepository _groupRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly GroupSettings _groupSettings;
     }
 }

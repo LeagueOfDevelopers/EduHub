@@ -1,7 +1,6 @@
-﻿using EduHubLibrary.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using EduHubLibrary.Common;
 
 namespace EduHubLibrary.Domain
 {

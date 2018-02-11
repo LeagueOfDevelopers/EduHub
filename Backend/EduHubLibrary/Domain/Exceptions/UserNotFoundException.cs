@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    public class UserNotFoundException : System.Exception
+    public class UserNotFoundException : Exception
     {
-        public UserNotFoundException(Guid userId) 
+        public UserNotFoundException(Guid userId)
             : base($"User with id {userId} not found")
         {
         }
+
         public UserNotFoundException()
         {
         }
@@ -18,12 +18,12 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public UserNotFoundException(string message, System.Exception inner) : base(message, inner)
+        public UserNotFoundException(string message, Exception inner) : base(message, inner)
         {
         }
 
-        protected UserNotFoundException(System.Runtime.Serialization.SerializationInfo info,
-        System.Runtime.Serialization.StreamingContext context)
+        protected UserNotFoundException(SerializationInfo info,
+            StreamingContext context)
         {
         }
     }

@@ -1,9 +1,5 @@
-﻿using EduHubLibrary.Common;
+﻿using System;
 using EduHubLibrary.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EduHub.Models
 {

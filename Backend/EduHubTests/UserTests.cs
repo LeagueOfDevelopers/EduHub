@@ -1,9 +1,8 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EduHubLibrary.Domain;
-using EduHubLibrary.Common;
 using System.Collections.Generic;
-using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Common;
+using EduHubLibrary.Domain;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EduHubTests
 {
@@ -28,9 +27,8 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(userName, actualName);
             Assert.AreEqual(isTeacher, actualIsTeacher);
-
         }
-        
+
         [TestMethod]
         public void DeleteProfile_IsItPossible()
         {
@@ -60,7 +58,8 @@ namespace EduHubTests
             Assert.AreEqual(true, Actual);
         }
 
-        [ExpectedException(typeof(System.ArgumentException)), TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
         public void CreateUser_IsCorrectData()
         {
             //Arrange
@@ -94,7 +93,7 @@ namespace EduHubTests
         {
             //Arrange
             var teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            
+
             //Act
             var review = new Review(Guid.NewGuid(), "The best", "The beast teacher of the year");
             teacher.TeacherProfile.AddReview(review);
@@ -103,12 +102,13 @@ namespace EduHubTests
             Assert.AreEqual(review, teacher.TeacherProfile.Reviews[0]);
         }
 
-        [ExpectedException(typeof(System.ArgumentException)), TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
         public void AddReviewToTeacher_IsCorrectEvaluatorData()
         {
             //Arrange
             var teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            
+
             //Act
             var review = new Review(Guid.Empty, "The best", "The best teacher of the year");
             teacher.TeacherProfile.AddReview(review);

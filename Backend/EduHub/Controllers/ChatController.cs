@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using EduHub.Extensions;
 using EduHub.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Authorization;
-using System.IdentityModel.Tokens.Jwt;
-using EduHub.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
@@ -17,14 +11,14 @@ namespace EduHub.Controllers
     public class ChatController : Controller
     {
         /// <summary>
-        /// Sends message to group chat
+        ///     Sends message to group chat
         /// </summary>
         [HttpPost]
         [Authorize]
         [Route("message")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult SendMessage([FromBody]SendMessageRequest message, [FromRoute]int groupId)
+        public IActionResult SendMessage([FromBody] SendMessageRequest message, [FromRoute] int groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
@@ -32,42 +26,42 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Returns message by id
+        ///     Returns message by id
         /// </summary>
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(MessageResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [Route("message/{messageId}")]
-        public IActionResult GetMessage([FromRoute] int groupId,[FromRoute] int messageId)
+        public IActionResult GetMessage([FromRoute] int groupId, [FromRoute] int messageId)
         {
             var response = new MessageResponse();
             return Ok(response);
         }
 
         /// <summary>
-        /// Edites message by id
+        ///     Edites message by id
         /// </summary>
         [Authorize]
         [HttpPut]
         [Route("message/{messageId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditMessage([FromBody]EditMessageRequest message,
-                [FromRoute] int groupId, [FromRoute] int messageId)
+        public IActionResult EditMessage([FromBody] EditMessageRequest message,
+            [FromRoute] int groupId, [FromRoute] int messageId)
         {
             return Ok($"Текст сообщения {messageId} исправлен на '{message.NewText}' " +
-                $"в чате группы {groupId}");
+                      $"в чате группы {groupId}");
         }
 
         /// <summary>
-        /// Deletes message by id
+        ///     Deletes message by id
         /// </summary>
         [Authorize]
         [HttpDelete]
         [Route("message/{messageId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult DeleteMessage([FromRoute]int groupId, [FromRoute]int messageId)
+        public IActionResult DeleteMessage([FromRoute] int groupId, [FromRoute] int messageId)
         {
             return Ok($"Сообщение {messageId} удалено из чата группы {groupId}");
         }

@@ -1,8 +1,6 @@
-﻿using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.NotificationService;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using EduHubLibrary.Domain;
 
 namespace EduHubLibrary.Facades
 {
@@ -10,6 +8,7 @@ namespace EduHubLibrary.Facades
     {
         Guid CreateGroup(Guid userId, string title, List<string> tags, string description,
             int size, double totalValue, bool isPrivate, GroupType groupType);
+
         void ApproveTeacher(Guid teacherId, Guid groupId);
         void AcceptCurriculum(Guid userId, Guid groupId);
         void OfferCurriculum(Guid userId, Guid groupId, string description);

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
@@ -13,7 +11,6 @@ namespace EduHubLibrary.Domain.Exceptions
 
         public GroupIsFullException(Guid idOfGroup) : base($"group with id {idOfGroup} is full")
         {
-
         }
 
         public GroupIsFullException(string message) : base(message)

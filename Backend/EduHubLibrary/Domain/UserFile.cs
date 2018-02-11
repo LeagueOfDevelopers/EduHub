@@ -1,7 +1,4 @@
 ﻿using EnsureThat;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Domain
 {
@@ -16,7 +13,7 @@ namespace EduHubLibrary.Domain
             ContentType = contentType;
         }
 
-        public string Filename { get; private set; }
-        public string ContentType { get; private set; }
+        public string Filename { get; }
+        public string ContentType { get; }
     }
 }

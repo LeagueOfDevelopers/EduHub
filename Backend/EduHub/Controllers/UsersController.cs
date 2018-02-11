@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using EduHub.Models;
-using EduHubLibrary.Facades;
 using EduHubLibrary.Domain;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
@@ -16,48 +13,47 @@ namespace EduHub.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
+        private readonly IUserFacade _userFacade;
+
         public UsersController(IUserFacade userFacade)
         {
             _userFacade = userFacade;
         }
 
         /// <summary>
-        /// Searches user somehow (for now)
+        ///     Searches user somehow (for now)
         /// </summary>
         [HttpPost]
         [Route("search")]
         [SwaggerResponse(200, typeof(MinUserResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult SearchUser([FromBody]SearchOfUserRequest user)
+        public IActionResult SearchUser([FromBody] SearchOfUserRequest user)
         {
             if (_userFacade.DoesUserExist(user.Name))
             {
                 IEnumerable<User> foundUsers = _userFacade.FindByName(user.Name);
-                List<MinItemUserResponse> items = new List<MinItemUserResponse>();
-                foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name, u.UserProfile.Email,
+                var items = new List<MinItemUserResponse>();
+                foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name,
+                    u.UserProfile.Email,
                     u.UserProfile.IsTeacher, u.IsActive, u.UserProfile.AvatarLink)));
                 var response = new MinUserResponse(items);
                 return Ok(response);
             }
-            else
-            {
-                return Ok($"Пользователь с именем {user.Name} не найден");
-            }
+
+            return Ok($"Пользователь с именем {user.Name} не найден");
         }
 
         /// <summary>
-        /// Reports user somehow (for now)
+        ///     Reports user somehow (for now)
         /// </summary>
         [Authorize]
         [HttpPost]
         [Route("{userId}/report")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult Report([FromRoute]int userId)
+        public IActionResult Report([FromRoute] int userId)
         {
             return Ok($"Жалоба на пользователя добавлена");
         }
-
-        private readonly IUserFacade _userFacade;
     }
 }

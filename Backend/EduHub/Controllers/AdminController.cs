@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
@@ -15,7 +10,7 @@ namespace EduHub.Controllers
     public class AdminController : Controller
     {
         /// <summary>
-        /// Generates invitation for admin account
+        ///     Generates invitation for admin account
         /// </summary>
         [HttpPost]
         [Route("{userId}/invitation")]
@@ -27,7 +22,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Makes user admin
+        ///     Makes user admin
         /// </summary>
         [HttpPost]
         [Route("{userId}")]
@@ -39,7 +34,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Makes user regular user (not admin)
+        ///     Makes user regular user (not admin)
         /// </summary>
         [HttpDelete]
         [Route("{userId}")]

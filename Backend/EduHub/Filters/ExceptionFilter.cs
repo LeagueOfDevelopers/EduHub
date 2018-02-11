@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System;
+﻿using System;
 using EduHubLibrary.Domain.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Serilog;
 
 namespace EduHub.Filters
@@ -11,7 +11,8 @@ namespace EduHub.Filters
         public override void OnException(ExceptionContext context)
         {
             Log.Error(context.Exception, "Error");
-            switch (context.Exception) {
+            switch (context.Exception)
+            {
                 case ArgumentOutOfRangeException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
@@ -46,7 +47,6 @@ namespace EduHub.Filters
                     };
                     return;
             }
-
         }
     }
 }

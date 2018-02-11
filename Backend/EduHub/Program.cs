@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Events;
-using System;
 
 namespace EduHub
 {
@@ -27,12 +27,14 @@ namespace EduHub
             }
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseSerilog()
                 .UseSetting("detailedErrors", "true")
                 .CaptureStartupErrors(true)
                 .Build();
+        }
     }
 }

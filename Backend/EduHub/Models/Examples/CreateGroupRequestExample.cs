@@ -1,8 +1,6 @@
-﻿using Swashbuckle.AspNetCore.Examples;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using EduHubLibrary.Domain;
+using Swashbuckle.AspNetCore.Examples;
 
 namespace EduHub.Models.Examples
 {
@@ -14,10 +12,10 @@ namespace EduHub.Models.Examples
             {
                 Title = "some Group",
                 Description = "some Description",
-                Tags = new List<string> { "js", "c#" },
+                Tags = new List<string> {"js", "c#"},
                 Size = 3,
                 MoneyPerUser = 100,
-                GroupType = EduHubLibrary.Domain.GroupType.Lecture,
+                GroupType = GroupType.Lecture,
                 IsPrivate = false
             };
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -15,7 +10,7 @@ namespace EduHub.Controllers
     public class SanctionController : Controller
     {
         /// <summary>
-        /// Applies sanctions for user
+        ///     Applies sanctions for user
         /// </summary>
         [HttpPost]
         [Route("{userId}")]
@@ -27,7 +22,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Anulls sanctions for user
+        ///     Anulls sanctions for user
         /// </summary>
         [HttpDelete]
         [Route("{userId}")]

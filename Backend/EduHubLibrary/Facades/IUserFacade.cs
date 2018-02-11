@@ -1,8 +1,7 @@
-﻿using EduHubLibrary.Common;
-using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.NotificationService;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using EduHubLibrary.Common;
+using EduHubLibrary.Domain;
 
 namespace EduHubLibrary.Facades
 {

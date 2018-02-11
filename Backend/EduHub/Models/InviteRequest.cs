@@ -1,8 +1,5 @@
-﻿using EduHubLibrary.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using EduHubLibrary.Domain;
 
 namespace EduHub.Models
 {
@@ -10,6 +7,7 @@ namespace EduHub.Models
     {
         /// <summary>Inviting User's id</summary>
         public Guid InvitedId { get; set; }
+
         /// <summary>Proposed role</summary>
         public MemberRole Role { get; set; }
     }

@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    public class MemberNotFoundException : System.Exception
+    public class MemberNotFoundException : Exception
     {
-        public MemberNotFoundException(Guid userId) 
+        public MemberNotFoundException(Guid userId)
             : base($"Member with id {userId} not found")
         {
         }
+
         public MemberNotFoundException()
         {
         }
@@ -18,12 +18,12 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public MemberNotFoundException(string message, System.Exception inner) : base(message, inner)
+        public MemberNotFoundException(string message, Exception inner) : base(message, inner)
         {
         }
 
-        protected MemberNotFoundException(System.Runtime.Serialization.SerializationInfo info,
-        System.Runtime.Serialization.StreamingContext context)
+        protected MemberNotFoundException(SerializationInfo info,
+            StreamingContext context)
         {
         }
     }

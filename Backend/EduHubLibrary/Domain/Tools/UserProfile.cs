@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace EduHubLibrary.Domain.Tools
 {
@@ -20,6 +18,6 @@ namespace EduHubLibrary.Domain.Tools
         public bool IsMan { get; internal set; }
         public bool IsTeacher { get; internal set; }
         public string AvatarLink { get; internal set; }
-        public List<string> Contacts { get; internal set; }        
+        public List<string> Contacts { get; internal set; }
     }
 }

@@ -1,15 +1,25 @@
-﻿using EduHubLibrary.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
-using EnsureThat;
+using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
 {
     public class InMemoryFileRepository : IFileRepository
     {
+        private readonly List<UserFile> _fileList;
+
+        public InMemoryFileRepository()
+        {
+            _fileList = new List<UserFile>();
+        }
+
+        public InMemoryFileRepository(List<UserFile> _fileList)
+        {
+            this._fileList = _fileList;
+        }
+
         public void AddFile(UserFile file)
         {
             Ensure.Any.IsNotNull(file);
@@ -28,17 +38,5 @@ namespace EduHubLibrary.Infrastructure
                 throw new FileNotFoundException(filename);
             return _fileList.First(f => f.Filename.Equals(filename));
         }
-
-        public InMemoryFileRepository()
-        {
-            _fileList = new List<UserFile>();
-        }
-
-        public InMemoryFileRepository(List<UserFile> _fileList)
-        {
-            this._fileList = _fileList;
-        }
-
-        private List<UserFile> _fileList;
     }
 }

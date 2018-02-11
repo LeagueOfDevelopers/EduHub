@@ -1,14 +1,19 @@
-﻿using EduHubLibrary.Domain;
+﻿using System;
+using System.Collections.Generic;
+using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EnsureThat;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Infrastructure
 {
     public class InMemoryGroupRepository : IGroupRepository
     {
+        private readonly List<Group> _listOfGroups;
+
+        public InMemoryGroupRepository()
+        {
+            _listOfGroups = new List<Group>();
+        }
 
         public void Add(Group group)
         {
@@ -43,15 +48,9 @@ namespace EduHubLibrary.Infrastructure
         public void Update(Group group)
         {
             Ensure.Any.IsNotNull(group);
-            var currentGroup = _listOfGroups.Find(current => current.GroupInfo.Id == group.GroupInfo.Id) ?? throw new GroupNotFoundException(group.GroupInfo.Id); 
+            var currentGroup = _listOfGroups.Find(current => current.GroupInfo.Id == group.GroupInfo.Id) ??
+                               throw new GroupNotFoundException(group.GroupInfo.Id);
             currentGroup = group;
         }
-
-        public InMemoryGroupRepository()
-        {
-            _listOfGroups = new List<Group>();
-        }
-
-        private List<Group> _listOfGroups;
     }
 }

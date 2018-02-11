@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    public class GroupNotFoundException : System.Exception
+    public class GroupNotFoundException : Exception
     {
-        public GroupNotFoundException(Guid groupId) 
+        public GroupNotFoundException(Guid groupId)
             : base($"Group with id {groupId} not found")
         {
         }
+
         public GroupNotFoundException()
         {
         }
@@ -18,12 +18,12 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public GroupNotFoundException(string message, System.Exception inner) : base(message, inner)
+        public GroupNotFoundException(string message, Exception inner) : base(message, inner)
         {
         }
 
-        protected GroupNotFoundException(System.Runtime.Serialization.SerializationInfo info,
-        System.Runtime.Serialization.StreamingContext context)
+        protected GroupNotFoundException(SerializationInfo info,
+            StreamingContext context)
         {
         }
     }

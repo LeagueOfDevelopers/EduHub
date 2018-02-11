@@ -1,10 +1,10 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.Exceptions;
-using System.Linq;
 using System.Collections.Generic;
 using EduHubLibrary.Common;
+using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.Tools;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EduHubTests
 {
@@ -18,33 +18,36 @@ namespace EduHubTests
             var userId = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var size = 3;
             var moneyPerUser = 100.0;
-            var info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size,
+                moneyPerUser);
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             //Assert
             Assert.AreEqual(userId, someGroup.GetMember(userId).UserId);
         }
 
-        [ExpectedException(typeof(MemberNotFoundException)), TestMethod]
+        [ExpectedException(typeof(MemberNotFoundException))]
+        [TestMethod]
         public void TryToDeleteNotExistingMember_IsItPossible()
         {
             //Arrange
             var userId = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var size = 3;
             var moneyPerUser = 100.0;
-            
+
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             someGroup.DeleteMember(userId, Guid.NewGuid());
         }
 
-        [ExpectedException(typeof(NotEnoughPermissionsException)), TestMethod]
+        [ExpectedException(typeof(NotEnoughPermissionsException))]
+        [TestMethod]
         public void TryToDeleteWithNotEnoughtRights_IsItPossible()
         {
             //Arrange
@@ -52,10 +55,10 @@ namespace EduHubTests
             var idOfInvitedUser = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var size = 3;
             var moneyPerUser = 100.0;
-            
+
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             someGroup.AddMember(idOfInvitedUser);
@@ -71,16 +74,16 @@ namespace EduHubTests
             var expected = 1;
             var title = "some group";
             var description = "some description";
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var size = 3;
             var moneyPerUser = 100.0;
-            
+
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             someGroup.AddMember(idOfInvitedUser);
             someGroup.DeleteMember(idOfInvitedUser, idOfInvitedUser);
             var result = someGroup.Members.Count;
-            
+
             //Assert
             Assert.AreEqual(expected, result);
         }
@@ -92,18 +95,18 @@ namespace EduHubTests
             var userId = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             tags.Add("js");
             var idOfInvitedUser = Guid.NewGuid();
             var expected = 2;
             var size = 3;
             var moneyPerUser = 100.0;
-            
+
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             someGroup.AddMember(idOfInvitedUser);
             var result = someGroup.Members.Count;
-            
+
             //Assert
             Assert.AreEqual(expected, result);
         }
@@ -116,17 +119,17 @@ namespace EduHubTests
             var idOfInvitedUser = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var size = 3;
             var moneyPerUser = 100.0;
             var expected = 1;
-            
+
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             someGroup.AddMember(idOfInvitedUser);
             someGroup.DeleteMember(userId, idOfInvitedUser);
             var result = someGroup.Members.Count;
-            
+
             //Assert
             Assert.AreEqual(expected, result);
         }
@@ -138,7 +141,7 @@ namespace EduHubTests
             var userId = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var size = 3;
             var moneyPerUser = 100.0;
             var idOfInvitedUser = Guid.NewGuid();
@@ -152,7 +155,7 @@ namespace EduHubTests
             var listOfMembers = someGroup.Members;
             var resultRole = listOfMembers[0].MemberRole;
             var resultLength = listOfMembers.Count;
-            
+
             //Assert
             Assert.AreEqual(expectedRole, resultRole);
             Assert.AreEqual(expectedLength, resultLength);
@@ -163,7 +166,7 @@ namespace EduHubTests
         {
             //Arrange
             var teacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
@@ -180,7 +183,7 @@ namespace EduHubTests
             //Arrange
             var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             var newTeacher = new User("Bogdan", new Credentials("email", "password"), true, UserType.User);
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
@@ -193,19 +196,19 @@ namespace EduHubTests
         {
             //Arrange
             var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var creatorId = Guid.NewGuid();
             var user1 = Guid.NewGuid();
             var user2 = Guid.NewGuid();
             var group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
             var expectedCurriculum = "Awesome course";
-            
+
             //Act
             group.AddMember(user1);
             group.AddMember(user2);
             group.ApproveTeacher(approvedTeacher);
             group.OfferCurriculum(approvedTeacher.Id, expectedCurriculum);
-            
+
             //Assert
             Assert.IsNotNull(group.GroupInfo.Curriculum);
         }
@@ -215,7 +218,7 @@ namespace EduHubTests
         {
             //Arrange
             var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var creatorId = Guid.NewGuid();
             var user1 = Guid.NewGuid();
             var user2 = Guid.NewGuid();
@@ -230,9 +233,9 @@ namespace EduHubTests
             group.AcceptCurriculum(creatorId);
             group.AcceptCurriculum(user1);
             group.AcceptCurriculum(user2);
-            
+
             //Assert
-            Assert.AreEqual(group.Status, EduHubLibrary.Domain.Tools.CourseStatus.Started);
+            Assert.AreEqual(group.Status, CourseStatus.Started);
         }
     }
 }

@@ -9,7 +9,8 @@ namespace EduHub.Extensions
         public static Guid GetUserId(this string auth)
         {
             var handler = new JwtSecurityTokenHandler();
-            var userId = Guid.Parse(handler.ReadJwtToken(auth.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            var userId =
+                Guid.Parse(handler.ReadJwtToken(auth.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
             return userId;
         }
     }

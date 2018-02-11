@@ -1,18 +1,13 @@
-﻿using EduHubLibrary.Domain;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using EduHubLibrary.Domain;
 
 namespace EduHub.Models
 {
     public class ChangeStatusOfInvitationRequest
     {
-        [Required]
-        public Guid InvitationId { get; set; }
+        [Required] public Guid InvitationId { get; set; }
+
         /// <summary>New invitation status</summary>
         [Required]
         public InvitationStatus Status { get; set; }

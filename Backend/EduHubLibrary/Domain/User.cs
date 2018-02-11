@@ -1,29 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EnsureThat;
+using System.Runtime.CompilerServices;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain.Exceptions;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Domain.Tools;
+using EnsureThat;
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("EventBusTests")]
+[assembly: InternalsVisibleTo("EventBusTests")]
 
 namespace EduHubLibrary.Domain
 {
     public class User
     {
-        public Credentials Credentials { get; private set; }
-        public UserType Type { get; set; }
-        public TeacherProfile TeacherProfile { get; private set; }
-        public UserProfile UserProfile { get; private set; }
-        public bool IsActive { get; private set; }
-        public Guid Id { get; }
-        public List<Invitation> Invitations { get; private set; }
-        public List<string> Notifies { get; private set; }
-
         public User(string name, Credentials credentials, bool isTeacher, UserType type)
         {
             Ensure.String.IsNotNullOrWhiteSpace(name);
@@ -36,6 +24,15 @@ namespace EduHubLibrary.Domain
             Invitations = new List<Invitation>();
             Notifies = new List<string>();
         }
+
+        public Credentials Credentials { get; }
+        public UserType Type { get; set; }
+        public TeacherProfile TeacherProfile { get; }
+        public UserProfile UserProfile { get; }
+        public bool IsActive { get; private set; }
+        public Guid Id { get; }
+        public List<Invitation> Invitations { get; }
+        public List<string> Notifies { get; }
 
         public void ConfigureTeacherProfile(List<string> skills)
         {

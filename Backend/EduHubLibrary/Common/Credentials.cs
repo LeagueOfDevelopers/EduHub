@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -15,7 +14,7 @@ namespace EduHubLibrary.Common
 
         public string Email { get; }
         public string PasswordHash { get; }
-             
+
         public static Credentials FromRawData(string email, string rawPassword)
         {
             using (var sha256 = SHA256.Create())
@@ -41,7 +40,7 @@ namespace EduHubLibrary.Common
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(PasswordHash);
             return hashCode;
         }
-        
+
         public static bool operator ==(Credentials credentials1, Credentials credentials2)
         {
             return EqualityComparer<Credentials>.Default.Equals(credentials1, credentials2);

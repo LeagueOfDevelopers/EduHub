@@ -1,10 +1,9 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using EduHub.Models;
-using EduHubLibrary.Facades;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using EduHubLibrary.Common;
+﻿using EduHub.Models;
 using EduHub.Security;
+using EduHubLibrary.Common;
+using EduHubLibrary.Facades;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
@@ -12,6 +11,10 @@ namespace EduHub.Controllers
     [Route("api/account")]
     public class AccountController : Controller
     {
+        private readonly IJwtIssuer _jwtIssuer;
+        private readonly SecuritySettings _securitySettings;
+        private readonly IUserFacade _userFacade;
+
         public AccountController(IUserFacade userFacade, SecuritySettings securitySettings, IJwtIssuer jwtIssuer)
         {
             _userFacade = userFacade;
@@ -20,13 +23,13 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Adds user to db
+        ///     Adds user to db
         /// </summary>
         [HttpPost]
         [Route("registration")]
         [SwaggerResponse(200, typeof(RegistrationResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult Registrate([FromBody]RegistrationRequest request)
+        public IActionResult Registrate([FromBody] RegistrationRequest request)
         {
             var newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
                 request.IsTeacher, UserType.User);
@@ -35,29 +38,25 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Returns user's token and other information
+        ///     Returns user's token and other information
         /// </summary>
         [HttpPost]
         [Route("login")]
         [SwaggerResponse(200, typeof(LoginResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult Login([FromBody]LoginRequest loginRequest)
+        public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
             var creditials = Credentials.FromRawData(loginRequest.Email, loginRequest.Password);
             var client = _userFacade.FindByCredentials(creditials);
-   
+
             if (client != null)
             {
-                var response = new LoginResponse(client.UserProfile.Name, client.Credentials.Email, 
+                var response = new LoginResponse(client.UserProfile.Name, client.Credentials.Email,
                     client.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
                 return Ok(response);
             }
 
             return Unauthorized();
         }
-
-        private readonly IJwtIssuer _jwtIssuer;
-        private readonly SecuritySettings _securitySettings;
-        private readonly IUserFacade _userFacade;
     }
 }

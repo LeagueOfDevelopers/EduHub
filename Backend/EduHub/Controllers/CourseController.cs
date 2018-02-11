@@ -1,17 +1,9 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using EduHub.Extensions;
 using EduHub.Models;
 using EduHubLibrary.Facades;
-using EnsureThat;
-using EduHubLibrary.Domain;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
-using EduHub.Extensions;
-using EduHubLibrary.Domain.Tools;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
@@ -21,6 +13,9 @@ namespace EduHub.Controllers
     [Route("api/group/{groupId}/course")]
     public class CourseController : Controller
     {
+        private readonly IGroupFacade _groupFacade;
+        private readonly IUserFacade _userFacade;
+
         public CourseController(IGroupFacade groupFacade, IUserFacade userFacade)
         {
             _groupFacade = groupFacade;
@@ -28,13 +23,13 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Adds suggesting plan for group
+        ///     Adds suggesting plan for group
         /// </summary>
         [HttpPost]
         [Route("curriculum")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult SuggestCurriculum([FromBody]OfferCurriculum curriculum, [FromRoute] Guid groupId)
+        public IActionResult SuggestCurriculum([FromBody] OfferCurriculum curriculum, [FromRoute] Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
@@ -43,7 +38,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Approves plan for group
+        ///     Approves plan for group
         /// </summary>
         [HttpPut]
         [Route("curriculum")]
@@ -58,7 +53,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Rejects plan for group
+        ///     Rejects plan for group
         /// </summary>
         [HttpDelete]
         [Route("curriculum")]
@@ -70,7 +65,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Closes course for group
+        ///     Closes course for group
         /// </summary>
         [HttpDelete]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
@@ -82,18 +77,15 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Adds review for teacher by course
+        ///     Adds review for teacher by course
         /// </summary>
         [HttpPost]
         [Route("review")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult LeaveReview([FromBody]ReviewRequest review, [FromRoute] Guid groupId)
+        public IActionResult LeaveReview([FromBody] ReviewRequest review, [FromRoute] Guid groupId)
         {
             return Ok($"Отзыв '{review.Opinion}' с оценкой {review.Rating} был добавлен");
         }
-
-        private readonly IGroupFacade _groupFacade;
-        private readonly IUserFacade _userFacade;
     }
 }

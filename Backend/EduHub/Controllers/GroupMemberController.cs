@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.AspNetCore.Mvc;
+using EduHub.Extensions;
 using EduHub.Models;
 using EduHubLibrary.Facades;
-using EduHubLibrary.Domain;
 using Microsoft.AspNetCore.Authorization;
-using EduHub.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
@@ -14,6 +13,10 @@ namespace EduHub.Controllers
     [Route("api/group/{groupId}/member")]
     public class GroupMemberController : Controller
     {
+        private readonly IGroupFacade _groupFacade;
+
+        private readonly IUserFacade _userFacade;
+
         public GroupMemberController(IUserFacade userFacade, IGroupFacade groupFacade)
         {
             _userFacade = userFacade;
@@ -21,13 +24,13 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Invites user to group
+        ///     Invites user to group
         /// </summary>
         [HttpPost]
         [Route("invitation")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult Invite([FromRoute] Guid groupId, [FromBody]InviteRequest request)
+        public IActionResult Invite([FromRoute] Guid groupId, [FromBody] InviteRequest request)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
@@ -36,8 +39,9 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Adds user to group as member
-        /// </summary>]
+        ///     Adds user to group as member
+        /// </summary>
+        /// ]
         [HttpPost]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
@@ -50,7 +54,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Deletes member from group
+        ///     Deletes member from group
         /// </summary>
         [HttpDelete]
         [Route("{memberId}")]
@@ -65,7 +69,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        /// Deletes teacher from group
+        ///     Deletes teacher from group
         /// </summary>
         [HttpDelete]
         [Route("teacher/{memberId}")]
@@ -78,8 +82,5 @@ namespace EduHub.Controllers
             _groupFacade.DeleteTeacher(groupId, requestedId, memberId);
             return Ok();
         }
-
-        private readonly IUserFacade _userFacade;
-        private readonly IGroupFacade _groupFacade;
     }
 }

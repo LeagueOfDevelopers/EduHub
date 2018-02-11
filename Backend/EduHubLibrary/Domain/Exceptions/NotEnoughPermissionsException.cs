@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.Serialization;
 
 namespace EduHubLibrary.Domain.Exceptions
 {
-    public class NotEnoughPermissionsException : System.Exception
+    public class NotEnoughPermissionsException : Exception
     {
-        public NotEnoughPermissionsException(Guid userId) 
+        public NotEnoughPermissionsException(Guid userId)
             : base($"Member with id {userId} hasn't enough permissions to this action")
         {
         }
+
         public NotEnoughPermissionsException()
         {
         }
@@ -18,12 +18,12 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public NotEnoughPermissionsException(string message, System.Exception inner) : base(message, inner)
+        public NotEnoughPermissionsException(string message, Exception inner) : base(message, inner)
         {
         }
 
-        protected NotEnoughPermissionsException(System.Runtime.Serialization.SerializationInfo info,
-        System.Runtime.Serialization.StreamingContext context)
+        protected NotEnoughPermissionsException(SerializationInfo info,
+            StreamingContext context)
         {
         }
     }
