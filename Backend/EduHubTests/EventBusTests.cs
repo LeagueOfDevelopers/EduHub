@@ -33,7 +33,7 @@ namespace EduHubTests
         public void SendMessageOfOneTypeToEventBus_GetMessageInNotifies()
         {
             //Arrange
-            EventBus eventBus = new EventBus();
+            var eventBus = new EventBus();
             eventBus.RegisterConsumer<NewMemberEvent>(new GroupEventsConsumer(_userFacade, _groupFacade), EventType.NewMemberEvent);
 
             var creatorId = _userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
@@ -43,12 +43,12 @@ namespace EduHubTests
             eventBus.PublishEvent(new NewMemberEvent(createdGroupId, Guid.NewGuid()));
 
             //Assert
-            List<string> notifies = _userFacade.GetNotifies(creatorId).ToList();
+            var notifies = _userFacade.GetNotifies(creatorId).ToList();
             Assert.AreEqual(1, notifies.Count);
         }
   
         [TestMethod]
-        public void SendMessageOfTwoTypesInEventBus_GetMessageInBothCases()
+        public void SendMessageOfTwoTypesToEventBus_GetMessageInBothCases()
         {
             //Arrange
             EventBus eventBus = new EventBus();
@@ -65,10 +65,10 @@ namespace EduHubTests
             eventBus.PublishEvent(new InvitationEvent(new Invitation(creatorId, invitedId, createdGroupId, MemberRole.Member, InvitationStatus.InProgress)));
 
             //Assert
-            List<string> notifies = _userFacade.GetNotifies(creatorId).ToList();
+            var notifies = _userFacade.GetNotifies(creatorId).ToList();
             Assert.AreEqual(1, notifies.Count);
 
-            List<Invitation> groupInvitations = _groupFacade.GetAllInvitations(createdGroupId).ToList();
+            var groupInvitations = _groupFacade.GetAllInvitations(createdGroupId).ToList();
             Assert.AreEqual(1, groupInvitations.Count);
         }
     }

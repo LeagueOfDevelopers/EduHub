@@ -7,13 +7,13 @@ namespace EduHub.Models
 {
     public class NotifyResponse
     {
-        public NotifyResponse(string text, DateTime date)
+        public NotifyResponse(string text, DateTimeOffset date)
         {
             Text = text;
             Date = date;
         }
 
         public string Text { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace EduHubTests
             var tags = new List<string> { "c#" };
             var size = 3;
             var moneyPerUser = 100.0;
-            GroupInfo info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
+            var info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size, moneyPerUser);
             //Act
             var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
             //Assert
@@ -162,9 +162,9 @@ namespace EduHubTests
         public void TryToApproveTeacher_TeacherIsSet()
         {
             //Arrange
-            User teacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
+            var teacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             var tags = new List<string> { "c#" };
-            Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
+            var group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
             group.ApproveTeacher(teacher);
@@ -178,10 +178,10 @@ namespace EduHubTests
         public void TryToApproveAnotherTeacherWithApprovedTeacher_GetException()
         {
             //Arrange
-            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            User newTeacher = new User("Bogdan", new Credentials("email", "password"), true, UserType.User);
+            var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
+            var newTeacher = new User("Bogdan", new Credentials("email", "password"), true, UserType.User);
             var tags = new List<string> { "c#" };
-            Group group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
+            var group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
             group.ApproveTeacher(approvedTeacher);
@@ -192,13 +192,13 @@ namespace EduHubTests
         public void TryToOfferCourseWithApprovedTeacher_IsItPossible()
         {
             //Arrange
-            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
+            var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             var tags = new List<string> { "c#" };
-            Guid creatorId = Guid.NewGuid();
-            Guid user1 = Guid.NewGuid();
-            Guid user2 = Guid.NewGuid();
-            Group group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
-            string expectedCurriculum = "Awesome course";
+            var creatorId = Guid.NewGuid();
+            var user1 = Guid.NewGuid();
+            var user2 = Guid.NewGuid();
+            var group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
+            var expectedCurriculum = "Awesome course";
             
             //Act
             group.AddMember(user1);
@@ -214,13 +214,13 @@ namespace EduHubTests
         public void TryToStartCourseWithApprovedTeacherAndAllReadyMembers_IsItPossible()
         {
             //Arrange
-            User approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
+            var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             var tags = new List<string> { "c#" };
-            Guid creatorId = Guid.NewGuid();
-            Guid user1 = Guid.NewGuid();
-            Guid user2 = Guid.NewGuid();
-            Group group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
-            string expectedCurriculum = "Awesome course";
+            var creatorId = Guid.NewGuid();
+            var user1 = Guid.NewGuid();
+            var user2 = Guid.NewGuid();
+            var group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
+            var expectedCurriculum = "Awesome course";
 
             //Act
             group.AddMember(user1);

@@ -29,7 +29,7 @@ namespace EduHubTests
         public void AddNewUser_UserAdded()
         {
             //Arrange
-            UserFacade userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
+            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
 
             var expectedName = "yaroslav";
             var expectedPass = "123123";
@@ -157,7 +157,7 @@ namespace EduHubTests
             var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
             var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
             var testUser = userFacade.GetUser(testUserId);
-            List<string> newContacts = new List<string> { "friend", "best friend" };
+            var newContacts = new List<string> { "friend", "best friend" };
 
             //Act
             userFacade.EditContacts(testUserId, newContacts);
@@ -173,7 +173,7 @@ namespace EduHubTests
             //Arrange
             var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
             var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
-            List<string> newContacts = new List<string>();
+            var newContacts = new List<string>();
 
             //Act
             userFacade.EditContacts(testUserId, newContacts);
@@ -185,7 +185,7 @@ namespace EduHubTests
             //Arrange
             var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
             var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
-            List<string> newContacts = new List<string> { " ", "friend" };
+            var newContacts = new List<string> { " ", "friend" };
 
             //Act
             userFacade.EditContacts(testUserId, newContacts);
@@ -282,8 +282,8 @@ namespace EduHubTests
             //Act
             createdGroup1.AddMember(testUserId);
             createdGroup2.AddMember(testUserId);
-            List<Group> expected = new List<Group> { createdGroup1, createdGroup2 };
-            List<Group> groups = userFacade.GetAllGroupsOfUser(testUserId).ToList();
+            var expected = new List<Group> { createdGroup1, createdGroup2 };
+            var groups = userFacade.GetAllGroupsOfUser(testUserId).ToList();
 
             //Assert
             Assert.AreEqual(true, expected.SequenceEqual(groups));
@@ -350,10 +350,10 @@ namespace EduHubTests
             var userId2 = userFacade.RegUser("Alena", new Credentials("email2", "password"), true, UserType.User);
             var userId3 = userFacade.RegUser("Olena", new Credentials("email3", "password"), true, UserType.User);
 
-            List<User> expected = new List<User> { userFacade.GetUser(userId2), userFacade.GetUser(userId1) };
+            var expected = new List<User> { userFacade.GetUser(userId2), userFacade.GetUser(userId1) };
 
             //Act
-            List<User> actual = userFacade.FindByName("Alen").ToList();
+            var actual = userFacade.FindByName("Alen").ToList();
 
             //Assert
             Assert.AreEqual(expected[0], actual[0]);
@@ -387,7 +387,7 @@ namespace EduHubTests
 
             //Act
             userFacade.Invite(creatorId, teacherId, createdGroupId, MemberRole.Teacher);
-            List<Invitation> invitations = userFacade.GetAllInvitationsForUser(teacherId).ToList();
+            var invitations = userFacade.GetAllInvitationsForUser(teacherId).ToList();
 
             //Assert
             Assert.AreEqual(createdGroupId, invitations[0].GroupId);
@@ -424,15 +424,15 @@ namespace EduHubTests
 
             userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
             userFacade.RegUser("Invited", new Credentials("email2", "password"), false, UserType.User);
-            List<User> allUsers = userFacade.GetUsers().ToList();
-            Guid creatorId = allUsers[0].Id;
-            Guid invitedId = allUsers[1].Id;
+            var allUsers = userFacade.GetUsers().ToList();
+            var creatorId = allUsers[0].Id;
+            var invitedId = allUsers[1].Id;
 
             var tags = new List<string>();
             tags.Add("js");
 
-            Guid groupId = groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
-            List<Group> allGroups = groupFacade.GetGroups().ToList();
+            var groupId = groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
+            var allGroups = groupFacade.GetGroups().ToList();
             var createdGroupId = allGroups[0].GroupInfo.Id;
 
             //Act

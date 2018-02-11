@@ -9,12 +9,12 @@ namespace EduHubLibrary.Domain.NotificationService
         public Event(IEventInfo eventInfo)
         {
             Id = Guid.NewGuid();
-            OccurredOn = DateTime.Now;
+            OccurredOn = DateTimeOffset.Now;
             EventInfo = eventInfo;
         }
 
         public Guid Id { get; }
-        public DateTime OccurredOn { get; }
+        public DateTimeOffset OccurredOn { get; }
         public IEventInfo EventInfo { get; }
     }
 }

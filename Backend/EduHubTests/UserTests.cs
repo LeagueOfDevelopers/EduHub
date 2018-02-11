@@ -18,7 +18,7 @@ namespace EduHubTests
             var email = "sokolov@gmail.com";
             var password = "sokolov";
             var isTeacher = false;
-            UserType type = UserType.User;
+            var type = UserType.User;
 
             //Act
             var testUser = new User(userName, Credentials.FromRawData(email, password), isTeacher, type);
@@ -35,7 +35,7 @@ namespace EduHubTests
         public void DeleteProfile_IsItPossible()
         {
             //Arrange
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
+            var testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
 
             //Act
             testUser.DeleteProfile();
@@ -49,7 +49,7 @@ namespace EduHubTests
         public void RestoreProfile_IsItPossible()
         {
             //Arrange
-            User testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
+            var testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
 
             //Act
             testUser.DeleteProfile();
@@ -67,18 +67,18 @@ namespace EduHubTests
             var nameOfUser = "";
             var email = "";
             var isTeacher = false;
-            UserType type = UserType.Admin;
+            var type = UserType.Admin;
 
             //Act
-            User testUser = new User(nameOfUser, Credentials.FromRawData(email, "1"), isTeacher, type);
+            var testUser = new User(nameOfUser, Credentials.FromRawData(email, "1"), isTeacher, type);
         }
 
         [TestMethod]
         public void ConfigureSkills_IsItPossible()
         {
             //Arrange
-            User testUser = new User("Ivan", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            List<string> skills = new List<string>();
+            var testUser = new User("Ivan", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
+            var skills = new List<string>();
             skills.Add("Math");
             skills.Add("Biology");
 
@@ -93,10 +93,10 @@ namespace EduHubTests
         public void AddReviewToTeacher_IsItPossibleWithCorrectData()
         {
             //Arrange
-            User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
+            var teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
             
             //Act
-            Review review = new Review(Guid.NewGuid(), "The best", "The beast teacher of the year");
+            var review = new Review(Guid.NewGuid(), "The best", "The beast teacher of the year");
             teacher.TeacherProfile.AddReview(review);
 
             //Assert
@@ -107,10 +107,10 @@ namespace EduHubTests
         public void AddReviewToTeacher_IsCorrectEvaluatorData()
         {
             //Arrange
-            User teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
+            var teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
             
             //Act
-            Review review = new Review(Guid.Empty, "The best", "The best teacher of the year");
+            var review = new Review(Guid.Empty, "The best", "The best teacher of the year");
             teacher.TeacherProfile.AddReview(review);
         }
     }

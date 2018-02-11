@@ -160,10 +160,10 @@ namespace EduHubTests
             var createdGroupId2 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags2, "You're welcome!", 3, 100, false, GroupType.Lecture);
             var createdGroupId3 = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", tags3, "You're welcome!", 3, 100, false, GroupType.Lecture);
             
-            List<string> requiredTags = new List<string> { "C++", "C#" };
+            var requiredTags = new List<string> { "C++", "C#" };
 
             //Act
-            List<Group> foundGroups = _groupFacade.FindByTags(requiredTags).ToList();
+            var foundGroups = _groupFacade.FindByTags(requiredTags).ToList();
 
             //Assert
             Assert.AreEqual(createdGroupId1, foundGroups[0].GroupInfo.Id);

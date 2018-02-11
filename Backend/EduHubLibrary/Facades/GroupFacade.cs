@@ -82,7 +82,7 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<Group> FindByTags(IEnumerable<string> tags)
         {
-            List<Group> result = new List<Group>();
+            var result = new List<Group>();
 
             _groupRepository.GetAll().ToList().ForEach(g => 
             {
@@ -90,7 +90,7 @@ namespace EduHubLibrary.Facades
                     result.Add(g);
             });
 
-            result.Sort(delegate (Group group1, Group group2) 
+            result.Sort((Group group1, Group group2) =>
             { return group1.GroupInfo.Tags.Count().CompareTo(group2.GroupInfo.Tags.Count()); });
 
             return result;

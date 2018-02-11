@@ -9,6 +9,6 @@ namespace EduHub.Models
     {
         public string Text { get; set; }
         public string NameSender { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
     }
 }

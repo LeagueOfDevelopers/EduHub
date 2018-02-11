@@ -33,7 +33,7 @@ namespace EduHubLibrary.Domain.NotificationService
 
         private void ConsumeEvent<T>(T @event) where T : IEventInfo
         {
-            EventType eventType = @event.GetEventType();
+            var eventType = @event.GetEventType();
 
             IEventConsumer<T> eventConsumer = (IEventConsumer<T>)_consumers[eventType];
             eventConsumer.Consume(@event);

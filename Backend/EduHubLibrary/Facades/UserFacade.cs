@@ -98,7 +98,7 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<Group> GetAllGroupsOfUser(Guid userId)
         {
-            List<Group> groupsOfUser = new List<Group>();
+            var groupsOfUser = new List<Group>();
 
             foreach (Group group in _groupRepository.GetAll())
             {
@@ -113,7 +113,7 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<User> FindByName(string name)
         {
-            IEnumerable<User> result = _userRepository.GetAll().Where(u => u.UserProfile.Name.Contains(name));
+            var result = _userRepository.GetAll().Where(u => u.UserProfile.Name.Contains(name));
             
             return result.OrderBy(u => u.UserProfile.Name.Length);
         }
