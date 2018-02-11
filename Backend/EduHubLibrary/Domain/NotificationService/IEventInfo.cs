@@ -6,6 +6,6 @@ namespace EduHubLibrary.Domain.NotificationService
 {
     public interface IEventInfo
     {
-        string GetEventType();
+        EventType GetEventType();
     }
 }

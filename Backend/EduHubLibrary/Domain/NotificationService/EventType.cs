@@ -4,8 +4,11 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
-    public interface IEventConsumer<T> where T : IEventInfo
+    public enum EventType
     {
-        void Consume(T @event);
+        Default = 0,
+        InvitationEvent = 1,
+        NewCurriculumEvent = 2,
+        NewMemberEvent = 3
     }
 }

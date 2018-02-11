@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Events
 {
-    public class NewCurriculumEvent : EventInfoBase
+    public class NewCurriculumEvent : IEventInfo
     {
         public NewCurriculumEvent(Guid groupId, string curriculum)
         {
@@ -15,5 +15,10 @@ namespace EduHubLibrary.Domain.Events
 
         public Guid GroupId { get; }
         public string Curriculum { get; }
+
+        public EventType GetEventType()
+        {
+            return EventType.NewCurriculumEvent;
+        }
     }
 }

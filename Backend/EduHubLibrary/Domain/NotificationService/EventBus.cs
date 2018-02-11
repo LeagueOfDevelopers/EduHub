@@ -12,35 +12,34 @@ using EduHubLibrary.Infrastructure;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
-    public class EventBus
+    public class EventBus : IEventBus
     {
-        public EventBus(IUserFacade userFacade, IGroupFacade groupFacade)
+        public EventBus()
         {
             _events = new InMemoryEventRepository();
-            _groupEventsConsumer = new GroupEventsConsumer(userFacade, groupFacade);
-            _invitationConsumer = new InvitationConsumer(groupFacade);
+            _consumers = new Dictionary<EventType, object>();
         }
         
-        public void PublishEvent(InvitationEvent invitationEvent)
+        public void RegisterConsumer<T>(IEventConsumer<T> consumer, EventType eventType) where T : IEventInfo
         {
-            _invitationConsumer.Consume(invitationEvent);
-            _events.AddEvent(new Event(invitationEvent));
+            _consumers.Add(eventType, consumer);
         }
 
-        public void PublishEvent(NewCurriculumEvent newCurriculumEvent)
+        public void PublishEvent<T>(T @event) where T : IEventInfo
         {
-            _groupEventsConsumer.Consume(newCurriculumEvent);
-            _events.AddEvent(new Event(newCurriculumEvent));
+            _events.AddEvent(new Event(@event));
+            ConsumeEvent(@event);
         }
 
-        public void PublishEvent(NewMemberEvent newMemberEvent)
+        private void ConsumeEvent<T>(T @event) where T : IEventInfo
         {
-            _groupEventsConsumer.Consume(newMemberEvent);
-            _events.AddEvent(new Event(newMemberEvent));
+            EventType eventType = @event.GetEventType();
+
+            IEventConsumer<T> eventConsumer = (IEventConsumer<T>)_consumers[eventType];
+            eventConsumer.Consume(@event);
         }
 
-        private readonly GroupEventsConsumer _groupEventsConsumer;
-        private readonly InvitationConsumer _invitationConsumer;
+        private Dictionary<EventType, object> _consumers;
         private readonly IEventRepository _events;
     }
 }

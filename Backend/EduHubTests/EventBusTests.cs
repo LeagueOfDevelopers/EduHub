@@ -33,7 +33,8 @@ namespace EduHubTests
         public void SendMessageOfOneTypeToEventBus_GetMessageInNotifies()
         {
             //Arrange
-            EventBus eventBus = new EventBus(_userFacade, _groupFacade);
+            EventBus eventBus = new EventBus();
+            eventBus.RegisterConsumer<NewMemberEvent>(new GroupEventsConsumer(_userFacade, _groupFacade), EventType.NewMemberEvent);
 
             var creatorId = _userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
             var createdGroupId = _groupFacade.CreateGroup(creatorId, "Some group", new List<string> { "c#" }, "You're welcome!", 3, 100, false, GroupType.Lecture);
@@ -50,7 +51,9 @@ namespace EduHubTests
         public void SendMessageOfTwoTypesInEventBus_GetMessageInBothCases()
         {
             //Arrange
-            EventBus eventBus = new EventBus(_userFacade, _groupFacade);
+            EventBus eventBus = new EventBus();
+            eventBus.RegisterConsumer<NewMemberEvent>(new GroupEventsConsumer(_userFacade, _groupFacade), EventType.NewMemberEvent);
+            eventBus.RegisterConsumer(new InvitationConsumer(_groupFacade), EventType.InvitationEvent);
 
             var creatorId = _userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
             var invitedId = _userFacade.RegUser("Somebody", new Credentials("email2", "password"), true, UserType.User);

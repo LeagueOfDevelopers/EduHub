@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Events
 {
-    public class InvitationEvent : EventInfoBase
+    public class InvitationEvent : IEventInfo
     {
         public InvitationEvent(Invitation invitation)
         {
@@ -13,5 +13,10 @@ namespace EduHubLibrary.Domain.Events
         }
 
         public Invitation Invitation { get; }
+
+        public EventType GetEventType()
+        {
+            return EventType.InvitationEvent;
+        }
     }
 }
