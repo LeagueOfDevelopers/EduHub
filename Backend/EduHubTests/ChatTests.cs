@@ -1,10 +1,8 @@
-﻿using EduHubLibrary.Domain;
+﻿using System;
+using System.Linq;
+using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace EduHubTests
 {

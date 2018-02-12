@@ -59,7 +59,7 @@ namespace EduHub.Controllers
         public IActionResult SearchGroupByTag([FromBody] SearchOfGroupRequest request)
         {
             var response = new List<MinItemGroupResponse>();
-            List<Group> foundGroups = _groupFacade.FindByTags(request.Tags).ToList();
+            var foundGroups = _groupFacade.FindByTags(request.Tags).ToList();
 
             foreach (var group in foundGroups)
             {
@@ -175,7 +175,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult All()
         {
-            IEnumerable<Group> groups = _groupFacade.GetGroups();
+            var groups = _groupFacade.GetGroups();
             var FillingGroupList = new List<MinItemGroupResponse>();
             var fullGroupList = new List<MinItemGroupResponse>();
             groups.ToList().ForEach(g =>
@@ -202,7 +202,7 @@ namespace EduHub.Controllers
         public IActionResult GetGroup([FromRoute] Guid groupId)
         {
             var group = _groupFacade.GetGroup(groupId);
-            List<Member> listOfMembers = _groupFacade.GetGroupMembers(groupId).ToList();
+            var listOfMembers = _groupFacade.GetGroupMembers(groupId).ToList();
             var groupInfo = new FullGroupInfo(group.GroupInfo.Title, group.GroupInfo.Size,
                 listOfMembers.Count, group.GroupInfo.MoneyPerUser, group.GroupInfo.GroupType, group.GroupInfo.Tags,
                 group.GroupInfo.Description, group.Status);

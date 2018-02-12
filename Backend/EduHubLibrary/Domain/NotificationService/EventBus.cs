@@ -5,9 +5,8 @@ namespace EduHubLibrary.Domain.NotificationService
 {
     public class EventBus : IEventBus
     {
-        private readonly IEventRepository _events;
-
         private readonly Dictionary<EventType, object> _consumers;
+        private readonly IEventRepository _events;
 
         public EventBus()
         {

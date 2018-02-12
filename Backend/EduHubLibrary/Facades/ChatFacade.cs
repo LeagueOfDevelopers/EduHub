@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EduHubLibrary.Facades
+﻿namespace EduHubLibrary.Facades
 {
-    class ChatFacade
+    internal class ChatFacade
     {
     }
 }

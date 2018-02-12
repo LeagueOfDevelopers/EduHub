@@ -1,10 +1,9 @@
-﻿using EduHubLibrary.Domain.Exceptions;
-using EduHubLibrary.Domain.Tools;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
+using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.Tools;
 
 [assembly: InternalsVisibleTo("ChatTests")]
 
@@ -18,6 +17,11 @@ namespace EduHubLibrary.Domain
         }
 
         public IEnumerable<Message> Messages { get; private set; }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
 
         internal Guid SendMessage(Guid senderId, Guid groupId, string text)
         {
@@ -44,7 +48,7 @@ namespace EduHubLibrary.Domain
             newMessageList.First(m => m.Id.Equals(messageId)).Text = newText;
             Messages = newMessageList;
         }
-        
+
         internal Message GetMessage(Guid messageId)
         {
             CheckMessageId(messageId);
@@ -53,15 +57,7 @@ namespace EduHubLibrary.Domain
 
         private void CheckMessageId(Guid messageId)
         {
-            if (!Messages.Any(m => m.Id.Equals(messageId)))
-            {
-                throw new MessageNotFoundException(messageId);
-            }
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            if (!Messages.Any(m => m.Id.Equals(messageId))) throw new MessageNotFoundException(messageId);
         }
     }
 }
