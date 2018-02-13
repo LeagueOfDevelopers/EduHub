@@ -74,7 +74,7 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("invitations")]
-        [SwaggerResponse(200, Type = typeof(ChangeStatusOfInvitationRequest))]
+        [SwaggerResponse(200, Type = typeof(ChangeInvitationStatusResponse))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult ChangeStatusOfInvitation([FromBody] ChangeStatusOfInvitationRequest changer)
@@ -86,8 +86,8 @@ namespace EduHub.Controllers
 
             if (invitation.SuggestedRole == MemberRole.Teacher && changer.Status == InvitationStatus.Accepted)
                 _groupFacade.ApproveTeacher(userId, invitation.GroupId);
-
-            return Ok($"Текущий статус приглашения {changer.Status}");
+            var response = new ChangeInvitationStatusResponse(invitation.GroupId);
+            return Ok(response);
         }
 
         /// <summary>

@@ -81,12 +81,12 @@ namespace EduHub.Controllers
         [Route("{groupId}/title")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupTitle([FromBody] string newTitle, [FromRoute] Guid groupId)
+        public IActionResult EditGroupTitle([FromBody] EditGroupTitleRequest request, [FromRoute] Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangeGroupTitle(groupId, userId, newTitle);
-            return Ok($"Название группы изменено на {newTitle}");
+            _groupFacade.ChangeGroupTitle(groupId, userId, request.GroupTitle);
+            return Ok();
         }
 
         /// <summary>
@@ -97,12 +97,13 @@ namespace EduHub.Controllers
         [Route("{groupId}/description")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupDescription([FromBody] string newDescription, [FromRoute] Guid groupId)
+        public IActionResult EditGroupDescription([FromBody] EditGroupDescriptionRequest request,
+            [FromRoute] Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangeGroupDescription(groupId, userId, newDescription);
-            return Ok($"Описание группы изменено на {newDescription}");
+            _groupFacade.ChangeGroupDescription(groupId, userId, request.GroupDescription);
+            return Ok();
         }
 
         /// <summary>
@@ -113,12 +114,12 @@ namespace EduHub.Controllers
         [Route("{groupId}/tags")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupTags([FromBody] List<string> newTags, [FromRoute] Guid groupId)
+        public IActionResult EditGroupTags([FromBody] EditGroupTagsRequest request, [FromRoute] Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangeGroupTags(groupId, userId, newTags);
-            return Ok($"Теги группы изменены");
+            _groupFacade.ChangeGroupTags(groupId, userId, request.GroupTags);
+            return Ok();
         }
 
         /// <summary>
@@ -129,12 +130,12 @@ namespace EduHub.Controllers
         [Route("{groupId}/size")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupSize([FromBody] int newSize, [FromRoute] Guid groupId)
+        public IActionResult EditGroupSize([FromBody] EditGroupSizeRequest request, [FromRoute] Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangeGroupSize(groupId, userId, newSize);
-            return Ok($"Размер группы изменен на {newSize}");
+            _groupFacade.ChangeGroupSize(groupId, userId, request.GroupSize);
+            return Ok();
         }
 
         /// <summary>
@@ -145,25 +146,12 @@ namespace EduHub.Controllers
         [Route("{groupId}/price")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupPrice([FromBody] double newPrice, [FromRoute] Guid groupId)
+        public IActionResult EditGroupPrice([FromBody] EditGroupPriceRequest request, [FromRoute] Guid groupId)
         {
             string a = Request.Headers["Authorization"];
             var userId = a.GetUserId();
-            _groupFacade.ChangeGroupPrice(groupId, userId, newPrice);
-            return Ok($"Оплата за обучение в группе изменена на {newPrice}");
-        }
-
-        /// <summary>
-        ///     Deletes group
-        /// </summary>
-        [Authorize]
-        [HttpDelete]
-        [Route("{groupId}")]
-        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult DeleteGroup([FromRoute] int groupId)
-        {
-            return Ok($"Группа {groupId} удалена");
+            _groupFacade.ChangeGroupPrice(groupId, userId, request.GroupPrice);
+            return Ok();
         }
 
         /// <summary>
@@ -176,7 +164,7 @@ namespace EduHub.Controllers
         public IActionResult All()
         {
             var groups = _groupFacade.GetGroups();
-            var FillingGroupList = new List<MinItemGroupResponse>();
+            var fillingGroupList = new List<MinItemGroupResponse>();
             var fullGroupList = new List<MinItemGroupResponse>();
             groups.ToList().ForEach(g =>
             {
@@ -186,9 +174,9 @@ namespace EduHub.Controllers
                 if (memberAmount == g.GroupInfo.Size)
                     fullGroupList.Add(new MinItemGroupResponse(groupInfo));
                 else
-                    FillingGroupList.Add(new MinItemGroupResponse(groupInfo));
+                    fillingGroupList.Add(new MinItemGroupResponse(groupInfo));
             });
-            var response = new MinFilterGroupResponse(fullGroupList, FillingGroupList);
+            var response = new MinFilterGroupResponse(fullGroupList, fillingGroupList);
             return Ok(response);
         }
 
