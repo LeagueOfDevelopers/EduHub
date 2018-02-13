@@ -32,17 +32,17 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
           <List
             dataSource={this.props.members}
             renderItem={item => (
-              <List.Item key={item.id}>
+              <List.Item key={item.userId}>
                 <List.Item.Meta
                   avatar={
                     <Avatar
                       src={item.avatarLink}
                     />}
-                  title={<Link to="#">{item.name}</Link>}
+                  title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
                   description={getMemberRole(item.role)}
                 />
                 {this.props.isCreator &&
-                    getMemberRole(item.memberRole) !== 'Создатель' ?
+                    getMemberRole(item.role) !== 'Создатель' ?
                       (<Popconfirm title='Удалить участника?' onConfirm={this.confirm} okText="Да" cancelText="Нет">
                         <Icon
                           style={{fontSize: 18, cursor: 'pointer'}}

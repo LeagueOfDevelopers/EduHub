@@ -17,7 +17,7 @@ import { enterGroup, leaveGroup} from "./actions";
 import {Link} from "react-router-dom";
 import config from "../../config";
 import {getGroupType, parseJwt, getMemberRole} from "../../globalJS";
-import {Col, Row, Button, message} from 'antd';
+import {Col, Row, Button, message, Input, Select, InputNumber, Switch} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
 import InviteMemberSelect from '../../components/InviteMemberSelect/Loadable';
@@ -77,7 +77,7 @@ export class GroupPage extends React.Component {
           isActive: true,
           tags: [],
           cost: null,
-          size: null,
+          size: 0,
           groupType: '',
         },
         members: [],
@@ -88,12 +88,28 @@ export class GroupPage extends React.Component {
       isCreator: false,
       needUpdate: false,
       signInVisible: false,
+      isEditing: false,
+      titleInput: '',
+      descInput: '',
+      tagsInput: [],
+      sizeInput: '',
+      priceInput: '',
+      groupTypeInput: '',
+      privateInput: null
     };
 
     this.onSetResult = this.onSetResult.bind(this);
     this.getCurrentGroup = this.getCurrentGroup.bind(this);
     this.onSignInClick = this.onSignInClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.changeGroupData = this.changeGroupData.bind(this);
+    this.onChangeTitleHandle = this.onChangeTitleHandle.bind(this);
+    this.onChangeDescriptionHandle = this.onChangeDescriptionHandle.bind(this);
+    this.onChangePriceHandle = this.onChangePriceHandle.bind(this);
+    this.onChangeSizeHandle = this.onChangeSizeHandle.bind(this);
+    this.onChangeTagsHandle = this.onChangeTagsHandle.bind(this);
+    this.onHandleGroupTypeChange = this.onHandleGroupTypeChange.bind(this);
+    this.onHandlePrivateChange = this.onHandlePrivateChange.bind(this);
   }
 
   onSignInClick = () => {
@@ -109,7 +125,7 @@ export class GroupPage extends React.Component {
       fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
         headers: {
           'Content-Type': 'application/json-patch+json',
-          // 'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       })
         .then(response => response.json())
@@ -139,14 +155,54 @@ export class GroupPage extends React.Component {
         members: result.members,
         educator: result.educator
       },
+      titleInput: result.groupInfo.title,
+      descInput: result.groupInfo.description,
+      sizeInput: result.groupInfo.size,
+      priceInput: result.groupInfo.cost,
+      tagsInput: result.groupInfo.tags,
+      groupTypeInput: getGroupType(result.groupInfo.groupType),
+      privateInput: result.groupInfo.isPrivate,
       isInGroup: this.state.userData ?
-        Boolean(result.members.find(item => item.userId === this.state.userData.UserId)) : false,
+        Boolean(result.members.find(item => item.userId === this.state.userData.UserId)) : false
       });
     this.setState({
       isCreator: this.state.isInGroup ?
         getMemberRole(result.members.find(item =>
           item.userId === this.state.userData.UserId).role) === 'Создатель' : false });
   }
+
+  onChangeTitleHandle = (e) => {
+    this.setState({titleInput: e.target.value})
+  };
+
+  onChangeDescriptionHandle = (e) => {
+    this.setState({descInput: e.target.value})
+  };
+
+  onChangeSizeHandle = (e) => {
+    this.setState({sizeInput: e})
+  };
+
+  onChangePriceHandle = (e) => {
+    this.setState({priceInput: e})
+  };
+
+  onChangeTagsHandle = (e) => {
+    this.setState({tagsInput: e})
+  };
+
+  onHandleGroupTypeChange = (e) => {
+    this.setState({groupTypeInput: e})
+  };
+
+  onHandlePrivateChange = (e) => {
+    this.setState({privateInput: e})
+  };
+
+  changeGroupData = () => {
+    this.setState({isEditing: false});
+    this.setState({needUpdate: true})
+  };
 
   render() {
     return (
@@ -155,32 +211,80 @@ export class GroupPage extends React.Component {
           <Col className='md-offset-16px' md={{span: 10}} lg={{span: 7}}>
             <Row style={{width: 248}}>
               <Row style={{marginBottom: 26}}>
-                <h3 style={{margin: 0, fontSize: 22}}>{this.state.groupData.groupInfo.title}</h3>
+                <Col span={24}>
+                  <h3 style={{margin: 0, fontSize: 22}}>
+                    {this.state.isEditing ?
+                      <Input onChange={this.onChangeTitleHandle} value={this.state.titleInput}/>
+                      : this.state.groupData.groupInfo.title}
+                  </h3>
+                </Col>
                 { this.state.groupData.educator ?
                   (<span style={{color: 'rgba(0,0,0,0.6)'}}>Преподаватель найден</span>)
                   : (<span style={{color: 'rgba(0,0,0,0.6)'}}>Идет поиск преподавателя</span>)
                 }
               </Row>
-              <Row gutter={6} type='flex' justify='start' style={{marginBottom: 8}}>
-                {this.state.groupData.groupInfo.tags.map((item) =>
+              <Row gutter={6} type='flex' justify='start' align='middle' style={{marginBottom: 8}}>
+                {this.state.isEditing ?
+                  <Select onChange={this.onChangeTagsHandle} value={this.state.tagsInput} mode="tags" style={{width: '100%'}}>
+                    <Select.Option value="html">html</Select.Option>
+                    <Select.Option value="css">css</Select.Option>
+                    <Select.Option value="js">js</Select.Option>
+                    <Select.Option value="c#">c#</Select.Option>
+                  </Select>
+                  : this.state.groupData.groupInfo.tags.map((item) =>
                   <Link key={item} to="#">{item}</Link>
                 )}
               </Row>
-              <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
+              <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
                 <Col>Формат</Col>
-                <Col>{getGroupType(this.state.groupData.groupInfo.groupType)}</Col>
+                <Col>
+                  {this.state.isEditing ?
+                    <Select onChange={this.onHandleGroupTypeChange} value={this.state.groupTypeInput} style={{minWidth: 114}}>
+                      <Select.Option value="Lecture">Лекция</Select.Option>
+                      <Select.Option value="MasterClass">Мастер-класс</Select.Option>
+                      <Select.Option value="Seminar">Семинар</Select.Option>
+                    </Select>
+                    : getGroupType(this.state.groupData.groupInfo.groupType)
+                  }
+                </Col>
               </Row>
-              <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
+              <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
                 <Col>Стоимость</Col>
-                <Col>{this.state.groupData.groupInfo.cost} руб.</Col>
+                <Col>
+                  {this.state.isEditing ?
+                    <InputNumber min={0} value={this.state.priceInput} onChange={this.onChangePriceHandle}/>
+                    : this.state.groupData.groupInfo.cost} руб.
+                </Col>
               </Row>
-              <Row type='flex' justify='flex-start' style={{marginBottom: 12}}>
-                {this.state.groupData.groupInfo.isPrivate ?
-                  (<Col>Эта группа является приватной</Col>)
-                  : (<Col>Эта группа не является приватной</Col>)
-                }
-              </Row>
+              {this.state.isEditing ?
+                <Row type='flex' align='middle' style={{width: 248, marginBottom: 12}}>
+                  <Col span={16}>
+                    <label htmlFor="privacy">Приватная группа</label>
+                  </Col>
+                  <Col span={8} style={{textAlign: 'right'}}>
+                    <Switch value={this.state.privateInput} id='privacy' onChange={this.onHandlePrivateChange}/>
+                  </Col>
+                </Row>
+                : this.state.groupData.groupInfo.isPrivate ?
+                  (<Row style={{marginBottom: 12}}>
+                    <Col>Эта группа является приватной</Col>
+                  </Row>)
+                  : (<Row style={{marginBottom: 12}}>
+                    <Col>Эта группа не является приватной</Col>
+                  </Row>)
+              }
             </Row>
+            {this.state.isEditing ?
+              <Row type='flex' align='middle' style={{width: 248, marginBottom: 12}}>
+                <Col span={10}>
+                  <label htmlFor="size">Участников</label>
+                </Col>
+                <Col span={14} style={{textAlign: 'right'}}>
+                  <InputNumber min={0} id='size' value={this.state.sizeInput} onChange={this.onChangeSizeHandle} style={{width: 64}}/>
+                </Col>
+              </Row>
+              : null
+            }
             <Row style={{marginLeft: -16, marginBottom: 20}}>
               <MemberList members={this.state.groupData.members} size={this.state.groupData.groupInfo.size} isCreator={this.state.isCreator}/>
             </Row>
@@ -191,29 +295,39 @@ export class GroupPage extends React.Component {
                 </Row>) : null
               }
             </Row>
+            <Row>
+              {this.state.isCreator && !this.state.isEditing ?
+                <Button type='dashed' onClick={() => this.setState({isEditing: true})} style={{width: 280, marginLeft: -16, marginTop: 10}}>Редактировать</Button>
+                : this.state.isEditing ?
+                  <Button onClick={this.changeGroupData} style={{width: 280, marginLeft: -16, marginTop: 10}}>Подтвердить</Button>
+                  : null
+              }
+            </Row>
           </Col>
           <Col xs={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
             <Row className='md-center-container' style={{textAlign: 'right', marginTop: 8}}>
-              {this.state.isInGroup ?
-                (<Button onClick={() => {
-                  this.setState({needUpdate: true});
-                  this.props.leaveGroup(this.state.id, this.state.userData.UserId)
-                }}
-                >
-                  Покинуть группу
-                </Button>)
-                : (<Button type='primary' onClick={() => {
-                  if(this.state.userData) {
-                    this.props.enterGroup(this.state.id);
+              {this.state.groupData.groupInfo.size !== this.state.groupData.members.length ?
+                this.state.isInGroup ?
+                  (<Button onClick={() => {
                     this.setState({needUpdate: true});
-                  }
-                  else {
-                    this.onSignInClick()
-                  }
-                }}
-                >
-                  Вступить в группу
-                </Button>)
+                    this.props.leaveGroup(this.state.id, this.state.userData.UserId)
+                  }}
+                  >
+                    Покинуть группу
+                  </Button>)
+                  : (<Button type='primary' onClick={() => {
+                    if(this.state.userData) {
+                      this.props.enterGroup(this.state.id);
+                      this.setState({needUpdate: true});
+                    }
+                    else {
+                      this.onSignInClick()
+                    }
+                  }}
+                  >
+                    Вступить в группу
+                  </Button>)
+                : null
               }
             </Row>
             <Row>
@@ -222,7 +336,9 @@ export class GroupPage extends React.Component {
               </Row>
               <Row style={{marginBottom: 40}}>
                 <p>
-                  {this.state.groupData.groupInfo.description}
+                  {this.state.isEditing ?
+                    <Input.TextArea onChange={this.onChangeAboutHandle} defaultValue={this.state.descInput} autosize/>
+                    : this.state.groupData.groupInfo.description}
                 </p>
               </Row>
             </Row>
