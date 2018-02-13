@@ -13,7 +13,15 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
-import { enterGroup, leaveGroup} from "./actions";
+import {
+  enterGroup,
+  leaveGroup,
+  editGroupTitle,
+  editGroupDescription,
+  editGroupTags,
+  editGroupSize,
+  editGroupPrice
+} from "./actions";
 import {Link} from "react-router-dom";
 import config from "../../config";
 import {getGroupType, parseJwt, getMemberRole} from "../../globalJS";
@@ -110,6 +118,7 @@ export class GroupPage extends React.Component {
     this.onChangeTagsHandle = this.onChangeTagsHandle.bind(this);
     this.onHandleGroupTypeChange = this.onHandleGroupTypeChange.bind(this);
     this.onHandlePrivateChange = this.onHandlePrivateChange.bind(this);
+    this.cancelChanges = this.cancelChanges.bind(this);
   }
 
   onSignInClick = () => {
@@ -199,7 +208,35 @@ export class GroupPage extends React.Component {
     this.setState({privateInput: e})
   };
 
+  cancelChanges = () => {
+    this.setState({
+      isEditing: false,
+      titleInput: this.state.groupData.groupInfo.title,
+      descInput: this.state.groupData.groupInfo.description,
+      sizeInput: this.state.groupData.groupInfo.size,
+      priceInput: this.state.groupData.groupInfo.cost,
+      tagsInput: this.state.groupData.groupInfo.tags
+    })
+  };
+
   changeGroupData = () => {
+    if(this.state.titleInput !== this.state.groupData.groupInfo.title) {
+      this.props.editGroupTitle(this.state.id, this.state.titleInput);
+    }
+    if(this.state.descInput !== this.state.groupData.groupInfo.description) {
+      this.props.editGroupDescription(this.state.id, this.state.descInput);
+    }
+    if(this.state.sizeInput !== this.state.groupData.groupInfo.size) {
+      this.props.editGroupSize(this.state.id, this.state.sizeInput);
+    }
+    if(this.state.priceInput !== this.state.groupData.groupInfo.cost) {
+      this.props.editGroupPrice(this.state.id, this.state.priceInput);
+    }
+    if(this.state.tagsInput.length !== this.state.groupData.groupInfo.tags.length || this.state.tagsInput.map((item, i) =>
+        item !== this.state.groupData.groupInfo.tags[i]
+      )) {
+      this.props.editGroupTags(this.state.id, this.state.tagsInput)
+    }
     this.setState({isEditing: false});
     this.setState({needUpdate: true})
   };
@@ -297,9 +334,12 @@ export class GroupPage extends React.Component {
             </Row>
             <Row>
               {this.state.isCreator && !this.state.isEditing ?
-                <Button type='dashed' onClick={() => this.setState({isEditing: true})} style={{width: 280, marginLeft: -16, marginTop: 10}}>Редактировать</Button>
+                <Button type='dashed' onClick={() => this.setState({isEditing: true})} style={{width: 280, marginLeft: -16, marginTop: 12}}>Редактировать</Button>
                 : this.state.isEditing ?
-                  <Button onClick={this.changeGroupData} style={{width: 280, marginLeft: -16, marginTop: 10}}>Подтвердить</Button>
+                  <div>
+                    <Button type='primary' onClick={this.changeGroupData} style={{width: 280, marginLeft: -16, marginTop: 22}}>Подтвердить</Button>
+                    <Button type='danger' onClick={this.cancelChanges} style={{width: 280, marginLeft: -16, marginTop: 10}}>Отмена</Button>
+                  </div>
                   : null
               }
             </Row>
@@ -337,7 +377,7 @@ export class GroupPage extends React.Component {
               <Row style={{marginBottom: 40}}>
                 <p>
                   {this.state.isEditing ?
-                    <Input.TextArea onChange={this.onChangeAboutHandle} defaultValue={this.state.descInput} autosize/>
+                    <Input.TextArea onChange={this.onChangeDescriptionHandle} defaultValue={this.state.descInput} autosize/>
                     : this.state.groupData.groupInfo.description}
                 </p>
               </Row>
@@ -382,7 +422,12 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     enterGroup: (groupId) => dispatch(enterGroup(groupId)),
-    leaveGroup: (groupId, memberId) => dispatch(leaveGroup(groupId, memberId))
+    leaveGroup: (groupId, memberId) => dispatch(leaveGroup(groupId, memberId)),
+    editGroupTitle: (id, title) => dispatch(editGroupTitle(id, title)),
+    editGroupDescription: (id, description) => dispatch(editGroupDescription(id, description)),
+    editGroupTags: (id, tags) => dispatch(editGroupTags(id, tags)),
+    editGroupSize: (id, size) => dispatch(editGroupSize(id, size)),
+    editGroupPrice: (id, price) => dispatch(editGroupPrice(id, price))
   };
 }
 

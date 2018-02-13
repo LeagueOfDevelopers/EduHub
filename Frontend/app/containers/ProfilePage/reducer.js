@@ -20,7 +20,10 @@ import {
   EDIT_BIRTH_YEAR_FAILED,
   EDIT_GENDER,
   EDIT_GENDER_SUCCESS,
-  EDIT_GENDER_FAILED
+  EDIT_GENDER_FAILED,
+  EDIT_CONTACTS,
+  EDIT_CONTACTS_SUCCESS,
+  EDIT_CONTACTS_FAILED
 } from './constants';
 
 const initialState = fromJS({
@@ -80,6 +83,16 @@ function profilePageReducer(state = initialState, action) {
       return state
         .set('pending', false);
     case EDIT_GENDER_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
+    case EDIT_CONTACTS:
+      return state
+        .set('pending', true);
+    case EDIT_CONTACTS_SUCCESS:
+      return state
+        .set('pending', false);
+    case EDIT_CONTACTS_FAILED:
       return state
         .set('pending', false)
         .set('error', true);

@@ -4,7 +4,8 @@ import {
   EDIT_NAME,
   EDIT_ABOUT_USER_INFO,
   EDIT_BIRTH_YEAR,
-  EDIT_GENDER
+  EDIT_GENDER,
+  EDIT_CONTACTS
 } from "./constants";
 import {
   getCurrentUserGroupsSuccess,
@@ -16,7 +17,9 @@ import {
   editBirthYearSuccess,
   editBirthYearFailed,
   editGenderSuccess,
-  editGenderFailed
+  editGenderFailed,
+  editContactsSuccess,
+  editContactsFailed
 } from "./actions";
 import config from '../../config';
 
@@ -143,10 +146,36 @@ function editBirthYear(birthYear) {
     .catch(error => error)
 }
 
+function* editContactsSaga(action) {
+  try {
+    yield call(editContacts, action.contacts);
+    yield put(editContactsSuccess())
+  }
+  catch(e) {
+    yield put(editContactsFailed(e))
+  }
+}
+
+function editContacts(contacts) {
+  return fetch(`${config.API_BASE_URL}/user/profile/contacts`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      contacts: contacts
+    })
+  })
+    .then(res => res.json())
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(GET_CURRENT_USER_GROUPS, getUserGroupsSaga);
   yield takeEvery(EDIT_NAME, editUsernameSaga);
   yield takeEvery(EDIT_ABOUT_USER_INFO, editAboutUserSaga);
   yield takeEvery(EDIT_GENDER, editGenderSaga);
   yield takeEvery(EDIT_BIRTH_YEAR, editBirthYearSaga);
+  yield takeEvery(EDIT_CONTACTS, editContactsSaga);
 }

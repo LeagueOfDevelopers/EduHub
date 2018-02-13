@@ -17,7 +17,8 @@ import {
   editUsername,
   editAboutUserInfo,
   editGender,
-  editBirthYear
+  editBirthYear,
+  editContacts
 } from "./actions";
 import reducer from './reducer';
 import saga from './saga';
@@ -29,15 +30,17 @@ import {Card, Col, Row, Avatar, Tabs, Input, InputNumber, Select, Button, Icon} 
 const TabPane = Tabs.TabPane;
 
 const defaultUserData = {
-  name: 'Имя пользователя',
-  tags: ['js', 'c#'],
-  sex: 'Мужской',
-  years: 19,
-  experience: 3,
-  description:
-  'Краткая инфа о себе. Краткая инфа о себе. Краткая инфа о себе.\n' +
-  '                  Краткая инфа о себе.',
-  links: ['LinkedIn', 'Vk']
+  userProfile: {
+    name: 'Имя пользователя',
+    tags: ['js', 'c#'],
+    sex: 'Мужской',
+    years: 19,
+    experience: 3,
+    description:
+    'Краткая инфа о себе. Краткая инфа о себе. Краткая инфа о себе.\n' +
+    '                  Краткая инфа о себе.',
+    links: ['LinkedIn', 'Vk']
+  }
 };
 
 const defaultMyGroups = [
@@ -124,6 +127,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.changeProfileData = this.changeProfileData.bind(this);
     this.addContact = this.addContact.bind(this);
     this.removeContact = this.removeContact.bind(this);
+    this.cancelChanges = this.cancelChanges.bind(this);
   }
 
   componentDidMount() {
@@ -187,15 +191,27 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   };
 
   removeContact = (i) => {
-    this.setState({contactsInputs: this.state.contactsInputs.filter((item, index) => index !== i)}) //непрвильно удаляет
-    setTimeout(() => console.log(this.state.contactsInputs), 0)
+    this.setState({contactsInputs: this.state.contactsInputs.filter((item, index) => index !== i)})
   };
 
-  onHandleChangeContact = (i) => {
-    this.setState({contactsInputs: this.state.contactsInputs.reduce((item) => console.log(i))}) //неправильно изменяет
+  onHandleChangeContact = (e, i) => {
+    this.setState({contactsInputs: this.state.contactsInputs.map((item, index) =>
+      index === i ? e.target.value : item
+    )})
+  };
+
+  cancelChanges = () => {
+    this.setState({
+      isEditing: false,
+      nameInput: this.state.userProfile.name,
+      aboutInput: this.state.userProfile.aboutUser,
+      birthYearInput: this.state.userProfile.birthYear,
+      contactsInputs: this.state.userProfile.contacts ? this.state.userProfile.contacts : []
+    })
   };
 
   changeProfileData = () => {
+    this.setState({contactsInputs: this.state.contactsInputs.filter(item => item !== '')});
     if(this.state.nameInput !== this.state.userProfile.name) {
       this.props.editUsername(this.state.nameInput);
       localStorage.setItem('name', `${this.state.nameInput}`);
@@ -206,6 +222,11 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     if(this.state.birthYearInput !== this.state.userProfile.birthYear) {
       this.props.editBirthYear(this.state.birthYearInput);
     }
+    if(this.state.contactsInputs.length !== this.state.userProfile.contacts || this.state.contactsInputs.map((item, i) =>
+        item !== this.state.userProfile.contacts[i]
+      )) {
+      setTimeout(() => this.props.editContacts(this.state.contactsInputs), 0)
+    }
     this.setState({isEditing: false});
     this.setState({needUpdate: true})
   };
@@ -213,7 +234,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   render() {
     return (
       <div>
-        <Col span={20} offset={2} style={{marginTop: 40}} className='md-center-container'>
+        <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 40}} className='md-center-container'>
           <Col md={{span: 24}} lg={{span: 6}} className='lg-center-container-item'>
             <Card
               title={
@@ -234,11 +255,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                     <Col span={2} style={{textAlign: 'right'}}>
                       <img src={require('../../images/edit.svg')} onClick={() => this.setState({isEditing: true})} style={{width: 20, cursor: 'pointer'}}/>
                     </Col>
-                    : this.state.isEditing ?
-                      <Col span={2} style={{textAlign: 'right'}}>
-                        <img src={require('../../images/confirm.svg')} onClick={this.changeProfileData} style={{width: 20, cursor: 'pointer', color: '#40a9ff'}}/>
-                      </Col>
-                      : null
+                    : null
                   }
                 </Row>
 
@@ -302,19 +319,22 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 <div>Ссылки</div>
                 <div>
                   {this.state.userProfile.contacts && this.state.userProfile.contacts.length !== 0 && !this.state.isEditing
-                    ? this.state.userProfile.contacts.map((item) =>
-                      <div>
-                        <Link to='#' key={item} className='user-link' style={{fontSize: 16}}>
-                          {item}
-                        </Link>
-                      </div>
+                    ? this.state.userProfile.contacts.map((item, i) =>
+                      <Link to='#' key={i} className='user-link' style={{fontSize: 16}}>
+                        {item}
+                      </Link>
                     ) :
                     this.state.isEditing ?
                       <div>
                         {this.state.contactsInputs.map((item, i) =>
-                          <div>
+                          <div key={i}>
                             <Col span={20}>
-                              <Input placeholder='Ссылка на профиль' style={{marginBottom: 8, width: '100%'}}/>
+                              <Input
+                                placeholder='Ссылка на профиль'
+                                onChange={(e) => this.onHandleChangeContact(e, i)}
+                                value={this.state.contactsInputs[i]}
+                                style={{marginBottom: 8, width: '100%'}}
+                              />
                             </Col>
                             <Col span={4} style={{textAlign: 'right'}}>
                               <Icon
@@ -335,6 +355,17 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   }
                 </div>
               </Row>
+              {this.state.isEditing ?
+                <div>
+                  <Col span={24}>
+                    <Button type='primary' onClick={this.changeProfileData} style={{width: '100%'}}>Подтвердить</Button>
+                  </Col>
+                  <Col span={24}>
+                    <Button type='danger' onClick={this.cancelChanges} style={{marginTop: 6, width: '100%'}}>Отмена</Button>
+                  </Col>
+                </div>
+                : null
+              }
             </Card>
           </Col>
           <Col sm={{span: 24}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>
@@ -383,6 +414,7 @@ function mapDispatchToProps(dispatch) {
     editUsername: (newName) => dispatch(editUsername(newName)),
     editAboutUser: (aboutUser) => dispatch(editAboutUserInfo(aboutUser)),
     editBirthYear: (birthYear) => dispatch(editBirthYear(birthYear)),
+    editContacts: (contacts) => dispatch(editContacts(contacts))
   };
 }
 

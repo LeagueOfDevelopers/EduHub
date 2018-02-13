@@ -19,7 +19,10 @@ import {
   EDIT_BIRTH_YEAR_FAILED,
   EDIT_GENDER,
   EDIT_GENDER_SUCCESS,
-  EDIT_GENDER_FAILED
+  EDIT_GENDER_FAILED,
+  EDIT_CONTACTS,
+  EDIT_CONTACTS_SUCCESS,
+  EDIT_CONTACTS_FAILED
 } from './constants';
 
 export function getCurrentUserGroups(id) {
@@ -124,6 +127,27 @@ export function editGenderSuccess() {
 export function editGenderFailed(error) {
   return {
     type: EDIT_GENDER_FAILED,
+    error
+  };
+}
+
+export function editContacts(contacts) {
+  return {
+    type: EDIT_CONTACTS,
+    contacts
+  };
+}
+
+export function editContactsSuccess() {
+  return {
+    type: EDIT_CONTACTS_SUCCESS
+  };
+}
+
+
+export function editContactsFailed(error) {
+  return {
+    type: EDIT_CONTACTS_FAILED,
     error
   };
 }
