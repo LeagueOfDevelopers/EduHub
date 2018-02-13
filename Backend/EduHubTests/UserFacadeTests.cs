@@ -4,6 +4,7 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
@@ -152,11 +153,11 @@ namespace EduHubTests
             var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
-            var newGender = false;
+            var newGender = Gender.Man;
 
             //Act
             userFacade.EditGender(testUserId, newGender);
-            var actualGender = testUser.UserProfile.IsMan;
+            var actualGender = testUser.UserProfile.Gender;
 
             //Assert
             Assert.AreEqual(newGender, actualGender);

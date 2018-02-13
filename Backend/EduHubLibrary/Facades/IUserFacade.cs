@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Facades
 {
@@ -21,7 +22,7 @@ namespace EduHubLibrary.Facades
         void AddNotify(Guid userId, string notify);
         void EditName(Guid userId, string newName);
         void EditAboutUser(Guid userId, string newAboutUser);
-        void EditGender(Guid userId, bool isMan);
+        void EditGender(Guid userId, Gender gender);
         void EditAvatarLink(Guid userId, string newAvatarLink);
         void EditContacts(Guid userId, List<string> newContactData);
         void EditBirthYear(Guid userId, int newYear);

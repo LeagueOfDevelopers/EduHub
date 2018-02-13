@@ -4,6 +4,7 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.Tools;
 using EnsureThat;
 
 namespace EduHubLibrary.Facades
@@ -144,9 +145,9 @@ namespace EduHubLibrary.Facades
                 Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
         }
 
-        public void EditGender(Guid userId, bool isMan)
+        public void EditGender(Guid userId, Gender gender)
         {
-            _userRepository.GetUserById(userId).UserProfile.IsMan = isMan;
+            _userRepository.GetUserById(userId).UserProfile.Gender = gender;
         }
 
         public void EditAvatarLink(Guid userId, string newAvatarLink)

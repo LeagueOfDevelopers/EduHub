@@ -15,7 +15,7 @@ namespace EduHubLibrary.Domain.Tools
         public string Email { get; internal set; }
         public string AboutUser { get; internal set; }
         public int BirthYear { get; internal set; }
-        public bool IsMan { get; internal set; }
+        public Gender Gender { get; internal set; }
         public bool IsTeacher { get; internal set; }
         public string AvatarLink { get; internal set; }
         public List<string> Contacts { get; internal set; }

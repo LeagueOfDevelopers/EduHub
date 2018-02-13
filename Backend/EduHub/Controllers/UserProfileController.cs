@@ -138,11 +138,11 @@ namespace EduHub.Controllers
         [Route("gender")]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult EditGender([FromBody] bool newGender)
+        public IActionResult EditGender([FromBody] EditUserGenderRequest request)
         {
             var userId = Request.GetUserId();
-            _userFacade.EditGender(userId, newGender);
-            return Ok($"Новый пол пользователя '{newGender}'(is man?)");
+            _userFacade.EditGender(userId, request.Gender);
+            return Ok();
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace EduHub.Controllers
             var user = _userFacade.GetUser(userId);
             ProfileResponse response;
             var userProfile = new UserProfileModel(user.UserProfile.Name, user.UserProfile.Email,
-                user.UserProfile.AboutUser, user.UserProfile.BirthYear, user.UserProfile.IsMan,
+                user.UserProfile.AboutUser, user.UserProfile.BirthYear, user.UserProfile.Gender,
                 user.UserProfile.IsTeacher, user.UserProfile.AvatarLink, user.UserProfile.Contacts);
             if (user.UserProfile.IsTeacher)
             {
