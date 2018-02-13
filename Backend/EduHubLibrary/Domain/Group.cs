@@ -25,6 +25,7 @@ namespace EduHubLibrary.Domain
             var isActive = true;
             GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size,
                 moneyPerUser);
+            Chat = new Chat();
         }
 
         public Group(Guid creatorId, string title, List<string> tags,
@@ -44,6 +45,7 @@ namespace EduHubLibrary.Domain
             Invitations = new List<Invitation>();
             var creator = new Member(creatorId, MemberRole.Creator);
             Members.Add(creator);
+            Chat = new Chat();
         }
 
         public Chat Chat { get; private set; }

@@ -20,7 +20,7 @@ namespace EduHubLibrary.Domain
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            ///!!!
         }
 
         internal Guid SendMessage(Guid senderId, Guid groupId, string text)
