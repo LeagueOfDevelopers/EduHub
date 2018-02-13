@@ -12,6 +12,7 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Applies sanctions for user
         /// </summary>
+        [Authorize]
         [HttpPost]
         [Route("{userId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
@@ -24,6 +25,7 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Anulls sanctions for user
         /// </summary>
+        [Authorize]
         [HttpDelete]
         [Route("{userId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]

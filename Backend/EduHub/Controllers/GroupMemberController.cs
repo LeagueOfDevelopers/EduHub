@@ -26,14 +26,14 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Invites user to group
         /// </summary>
+        [Authorize]
         [HttpPost]
         [Route("invitation")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult Invite([FromRoute] Guid groupId, [FromBody] InviteRequest request)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.Invite(userId, request.InvitedId, groupId, request.Role);
             return Ok($"Пользователь {request.InvitedId} приглашен на роль {request.Role}");
         }
@@ -42,13 +42,13 @@ namespace EduHub.Controllers
         ///     Adds user to group as member
         /// </summary>
         /// ]
+        [Authorize]
         [HttpPost]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult AddMember([FromRoute] Guid groupId)
         {
-            string a = Request.Headers["Authorization"];
-            var requestedId = a.GetUserId();
+            var requestedId = Request.GetUserId();
             _groupFacade.AddMember(groupId, requestedId);
             return Ok();
         }
@@ -56,14 +56,14 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Deletes member from group
         /// </summary>
+        [Authorize]
         [HttpDelete]
         [Route("{memberId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult DeleteMember([FromRoute] Guid groupId, [FromRoute] Guid memberId)
         {
-            string a = Request.Headers["Authorization"];
-            var requestedId = a.GetUserId();
+            var requestedId = Request.GetUserId();
             _groupFacade.DeleteMember(groupId, requestedId, memberId);
             return Ok();
         }
@@ -71,14 +71,14 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Deletes teacher from group
         /// </summary>
+        [Authorize]
         [HttpDelete]
         [Route("teacher/{memberId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult DeleteTeacher([FromRoute] Guid groupId, [FromRoute] Guid memberId)
         {
-            string a = Request.Headers["Authorization"];
-            var requestedId = a.GetUserId();
+            var requestedId = Request.GetUserId();
             _groupFacade.DeleteTeacher(groupId, requestedId, memberId);
             return Ok();
         }

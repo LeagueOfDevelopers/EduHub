@@ -31,8 +31,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult SuggestCurriculum([FromBody] OfferCurriculum curriculum, [FromRoute] Guid groupId)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _groupFacade.OfferCurriculum(userId, groupId, curriculum.Description);
             return Ok($"В группу был предложен учебный план '{curriculum.Description}'");
         }
@@ -46,8 +45,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult ApproveCurriculum([FromRoute] Guid groupId)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _groupFacade.AcceptCurriculum(userId, groupId);
             return Ok("Учебный план утвержден");
         }

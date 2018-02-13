@@ -20,8 +20,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult SendMessage([FromBody] SendMessageRequest message, [FromRoute] int groupId)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             return Ok($"Чату {message.ChatId} было отправлено сообщение '{message.Text}' от пользователя {userId}");
         }
 
@@ -49,6 +48,7 @@ namespace EduHub.Controllers
         public IActionResult EditMessage([FromBody] EditMessageRequest message,
             [FromRoute] int groupId, [FromRoute] int messageId)
         {
+            var userId = Request.GetUserId();
             return Ok($"Текст сообщения {messageId} исправлен на '{message.NewText}' " +
                       $"в чате группы {groupId}");
         }
@@ -63,6 +63,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult DeleteMessage([FromRoute] int groupId, [FromRoute] int messageId)
         {
+            var userId = Request.GetUserId();
             return Ok($"Сообщение {messageId} удалено из чата группы {groupId}");
         }
     }

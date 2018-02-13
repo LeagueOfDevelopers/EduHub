@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace EduHub.Extensions
 {
@@ -8,6 +9,15 @@ namespace EduHub.Extensions
     {
         public static Guid GetUserId(this string auth)
         {
+            var handler = new JwtSecurityTokenHandler();
+            var userId =
+                Guid.Parse(handler.ReadJwtToken(auth.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            return userId;
+        }
+
+        public static Guid GetUserId(this HttpRequest request)
+        {
+            var auth = request.Headers["Authorization"].ToString();
             var handler = new JwtSecurityTokenHandler();
             var userId =
                 Guid.Parse(handler.ReadJwtToken(auth.Substring(7)).Claims.First(c => c.Type == "UserId").Value);

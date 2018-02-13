@@ -35,8 +35,7 @@ namespace EduHub.Controllers
         public IActionResult AddFile(IFormFile file)
         {
             Ensure.Any.IsNotNull(file);
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
 
             if (!file.IsSupportedFile()) throw new NotSupportedException();
 

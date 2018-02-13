@@ -28,18 +28,14 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult SearchUser([FromBody] SearchOfUserRequest user)
         {
-            if (_userFacade.DoesUserExist(user.Name))
-            {
-                var foundUsers = _userFacade.FindByName(user.Name);
-                var items = new List<MinItemUserResponse>();
-                foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name,
-                    u.UserProfile.Email,
-                    u.UserProfile.IsTeacher, u.IsActive, u.UserProfile.AvatarLink)));
-                var response = new MinUserResponse(items);
-                return Ok(response);
-            }
-
-            return Ok($"Пользователь с именем {user.Name} не найден");
+            if (!_userFacade.DoesUserExist(user.Name)) return Ok();
+            var foundUsers = _userFacade.FindByName(user.Name);
+            var items = new List<MinItemUserResponse>();
+            foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name,
+                u.UserProfile.Email,
+                u.UserProfile.IsTeacher, u.IsActive, u.UserProfile.AvatarLink)));
+            var response = new MinUserResponse(items);
+            return Ok(response);
         }
 
         /// <summary>

@@ -40,8 +40,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult AddGroup([FromBody] CreateGroupRequest newGroup)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             Ensure.Any.IsNotNull(newGroup, nameof(newGroup),
                 opt => opt.WithException(new ArgumentNullException(nameof(newGroup))));
             var newId = _groupFacade.CreateGroup(userId, newGroup.Title, newGroup.Tags, newGroup.Description,
@@ -83,8 +82,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupTitle([FromBody] EditGroupTitleRequest request, [FromRoute] Guid groupId)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _groupFacade.ChangeGroupTitle(groupId, userId, request.GroupTitle);
             return Ok();
         }
@@ -100,8 +98,7 @@ namespace EduHub.Controllers
         public IActionResult EditGroupDescription([FromBody] EditGroupDescriptionRequest request,
             [FromRoute] Guid groupId)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _groupFacade.ChangeGroupDescription(groupId, userId, request.GroupDescription);
             return Ok();
         }
@@ -116,8 +113,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupTags([FromBody] EditGroupTagsRequest request, [FromRoute] Guid groupId)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _groupFacade.ChangeGroupTags(groupId, userId, request.GroupTags);
             return Ok();
         }
@@ -132,8 +128,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupSize([FromBody] EditGroupSizeRequest request, [FromRoute] Guid groupId)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _groupFacade.ChangeGroupSize(groupId, userId, request.GroupSize);
             return Ok();
         }
@@ -148,8 +143,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupPrice([FromBody] EditGroupPriceRequest request, [FromRoute] Guid groupId)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _groupFacade.ChangeGroupPrice(groupId, userId, request.GroupPrice);
             return Ok();
         }

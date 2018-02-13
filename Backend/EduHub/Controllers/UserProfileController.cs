@@ -49,8 +49,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetInvitations()
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             var allInv = new List<InvitationModel>();
             var currentUsername = _userFacade.GetUser(userId).UserProfile.Name;
             _userFacade.GetAllInvitationsForUser(userId).ToList().ForEach(inv =>
@@ -79,8 +78,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult ChangeStatusOfInvitation([FromBody] ChangeStatusOfInvitationRequest changer)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.ChangeInvitationStatus(userId, changer.InvitationId, changer.Status);
             var invitation = _userFacade.GetAllInvitationsForUser(userId).First(i => i.Id.Equals(changer.InvitationId));
 
@@ -112,8 +110,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult EditName([FromBody] ChangeUserNameRequest request)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.EditName(userId, request.UserName);
             return Ok($"Новое имя пользователя '{request.UserName}'");
         }
@@ -128,8 +125,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult EditAboutUser([FromBody] EditAboutUserRequest request)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.EditAboutUser(userId, request.AboutUser);
             return Ok($"Новое описание пользователя '{request.AboutUser}'");
         }
@@ -144,8 +140,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult EditGender([FromBody] bool newGender)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.EditGender(userId, newGender);
             return Ok($"Новый пол пользователя '{newGender}'(is man?)");
         }
@@ -160,8 +155,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult EditAvatarLink([FromBody] EditAvatarLinkRequest request)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.EditAvatarLink(userId, request.AvatarLink);
             return Ok($"Новая ссылка на аватарку пользователя '{request.AvatarLink}'");
         }
@@ -176,8 +170,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult EditContacts([FromBody] EditContactListRequest request)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.EditContacts(userId, request.Contacts);
             return Ok();
         }
@@ -192,8 +185,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult EditBirthYear([FromBody] EditBirthYearRequest request)
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.EditBirthYear(userId, request.BirthYear);
             return Ok($"Новый год рождения пользователя '{request.BirthYear}'");
         }
@@ -208,8 +200,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult BecomeTeacher()
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.BecomeTeacher(userId);
             return Ok("Пользователь стал преподавателем");
         }
@@ -224,8 +215,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult StopToBeTeacher()
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             _userFacade.StopToBeTeacher(userId);
             return Ok("Пользователь перестал быть преподавателем");
         }
@@ -267,8 +257,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetNotifies()
         {
-            string a = Request.Headers["Authorization"];
-            var userId = a.GetUserId();
+            var userId = Request.GetUserId();
             var notifies = _userFacade.GetNotifies(userId).ToList();
             return Ok(notifies);
         }
@@ -276,11 +265,9 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Returns all user groups
         /// </summary>
-        [Authorize]
         [HttpGet]
         [Route("groups/{userId}")]
         [SwaggerResponse(200, Type = typeof(MinGroupResponse))]
-        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetGroups([FromRoute] Guid userId)
         {
