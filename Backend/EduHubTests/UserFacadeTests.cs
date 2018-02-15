@@ -97,6 +97,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newName, actualName);
+            Assert.AreEqual(newName, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.Name);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -129,6 +130,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newAbout, actualAbout);
+            Assert.AreEqual(newAbout, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.AboutUser);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -161,6 +163,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newGender, actualGender);
+            Assert.AreEqual(newGender, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.Gender);
         }
 
         [TestMethod]
@@ -179,6 +182,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newAvatarLink, actualAvatarLink);
+            Assert.AreEqual(newAvatarLink, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.AvatarLink);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -211,6 +215,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newContacts, actualContacts);
+            Assert.AreEqual(newContacts, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.Contacts);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -257,6 +262,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newBirthday, actualBirthYear);
+            Assert.AreEqual(newBirthday, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.BirthYear);
         }
 
         [ExpectedException(typeof(IndexOutOfRangeException))]
@@ -302,6 +308,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(true, testUser.UserProfile.IsTeacher);
+            Assert.AreEqual(true, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.IsTeacher);
         }
 
         [TestMethod]
@@ -318,6 +325,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(false, testUser.UserProfile.IsTeacher);
+            Assert.AreEqual(false, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.IsTeacher);
         }
 
         [TestMethod]
@@ -348,9 +356,9 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(true, expected.SequenceEqual(groups));
         }
-
+        
         [TestMethod]
-        public void TryToFindAnyExistingUserViaFullName_GetRightResult()
+        public void TryToFindNotExistingUser_ReturnEmptyList()
         {
             //Arrange
             var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
@@ -359,49 +367,14 @@ namespace EduHubTests
             userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
 
             //Act
-            var actual = userFacade.DoesUserExist("Alena");
-            var expected = true;
+            var actual = userFacade.FindByName("Grisha");
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(0, actual.Count());
         }
 
         [TestMethod]
-        public void TryToFindAnyExistingUserViaPartOfName_ReturnTrue()
-        {
-            //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
-
-            //Act
-            var actual = userFacade.DoesUserExist("Gal");
-            var expected = true;
-
-            //Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void TryToFindNotExistingUser_ReturnFalse()
-        {
-            //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
-
-            //Act
-            var actual = userFacade.DoesUserExist("Grisha");
-            var expected = false;
-
-            //Assert
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void TryToGetFoundUsers_ReturnRightListWithSorting()
+        public void TryToFindExistingUsers_ReturnRightListWithSorting()
         {
             //Arrange
             var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);

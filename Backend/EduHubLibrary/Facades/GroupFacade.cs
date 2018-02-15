@@ -166,6 +166,7 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             Ensure.String.IsNotNullOrWhiteSpace(newTitle);
             currentGroup.GroupInfo.Title = newTitle;
+            _groupRepository.Update(currentGroup);
         }
 
         public void ChangeGroupDescription(Guid idOfGroup, Guid idOfChanger, string newDescription)
@@ -176,6 +177,7 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupDescription),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             currentGroup.GroupInfo.Description = newDescription;
+            _groupRepository.Update(currentGroup);
         }
 
         public void ChangeGroupTags(Guid idOfGroup, Guid idOfChanger, List<string> newTags)
@@ -186,6 +188,7 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupTags),
                 opt => opt.WithException(new NotEnoughPermissionsException(idOfChanger)));
             currentGroup.GroupInfo.Tags = newTags;
+            _groupRepository.Update(currentGroup);
         }
 
         public void ChangeGroupSize(Guid idOfGroup, Guid idOfChanger, int newSize)
@@ -199,6 +202,7 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(newSize <= _groupSettings.MaxGroupSize && newSize >= _groupSettings.MinGroupSize,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newSize))));
             currentGroup.GroupInfo.Size = newSize;
+            _groupRepository.Update(currentGroup);
         }
 
         public void ChangeGroupPrice(Guid idOfGroup, Guid idOfChanger, double newPrice)
@@ -212,6 +216,7 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(newPrice <= _groupSettings.MaxGroupValue && newPrice >= _groupSettings.MinGroupValue,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newPrice))));
             currentGroup.GroupInfo.MoneyPerUser = newPrice;
+            _groupRepository.Update(currentGroup);
         }
 
         #endregion

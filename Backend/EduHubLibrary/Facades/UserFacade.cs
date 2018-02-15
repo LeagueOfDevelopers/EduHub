@@ -131,49 +131,66 @@ namespace EduHubLibrary.Facades
 
         public void EditName(Guid userId, string newName)
         {
-            _userRepository.GetUserById(userId).UserProfile.Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
+            var currentUser = _userRepository.GetUserById(userId);
+            currentUser.UserProfile.Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
+            _userRepository.Update(currentUser);
         }
 
         public void EditAboutUser(Guid userId, string newAboutUser)
         {
-            _userRepository.GetUserById(userId).UserProfile.AboutUser =
-                Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
+            var currentUser = _userRepository.GetUserById(userId);
+            currentUser.UserProfile.AboutUser = Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
+            _userRepository.Update(currentUser);
         }
 
         public void EditGender(Guid userId, Gender gender)
         {
-            _userRepository.GetUserById(userId).UserProfile.Gender = gender;
+            var currentUser = _userRepository.GetUserById(userId);
+            currentUser.UserProfile.Gender = gender;
+            _userRepository.Update(currentUser);
         }
 
         public void EditAvatarLink(Guid userId, string newAvatarLink)
         {
-            _userRepository.GetUserById(userId).UserProfile.AvatarLink =
-                Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
+            var currentUser = _userRepository.GetUserById(userId);
+            currentUser.UserProfile.AvatarLink = Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
+            _userRepository.Update(currentUser);
         }
 
         public void EditContacts(Guid userId, List<string> newContactData)
         {
+            var currentUser = _userRepository.GetUserById(userId);
+
             if (newContactData.Count != 0 && newContactData.TrueForAll(d => !string.IsNullOrWhiteSpace(d)))
-                _userRepository.GetUserById(userId).UserProfile.Contacts = newContactData;
+                currentUser.UserProfile.Contacts = newContactData;
             else throw new ArgumentException();
+
+            _userRepository.Update(currentUser);
         }
 
         public void EditBirthYear(Guid userId, int newYear)
         {
+            var currentUser = _userRepository.GetUserById(userId);
+
             //hardcoded value
-            if (newYear > 1900 && newYear < DateTimeOffset.Now.Year)
-                _userRepository.GetUserById(userId).UserProfile.BirthYear = newYear;
+            if (newYear > 1900 && newYear < DateTimeOffset.Now.Year) currentUser.UserProfile.BirthYear = newYear;
             else throw new IndexOutOfRangeException();
+
+            _userRepository.Update(currentUser);
         }
 
         public void BecomeTeacher(Guid userId)
         {
-            _userRepository.GetUserById(userId).UserProfile.IsTeacher = true;
+            var currentUser = _userRepository.GetUserById(userId);
+            currentUser.UserProfile.IsTeacher = true;
+            _userRepository.Update(currentUser);
         }
 
         public void StopToBeTeacher(Guid userId)
         {
-            _userRepository.GetUserById(userId).UserProfile.IsTeacher = false;
+            var currentUser = _userRepository.GetUserById(userId);
+            currentUser.UserProfile.IsTeacher = false;
+            _userRepository.Update(currentUser);
         }
 
         #endregion

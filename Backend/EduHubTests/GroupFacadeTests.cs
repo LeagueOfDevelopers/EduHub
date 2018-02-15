@@ -46,6 +46,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(expectedTitle, actualTitle);
+            Assert.AreEqual(expectedTitle, _groupFacade.GetGroup(createdGroupId).GroupInfo.Title);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -75,6 +76,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(expectedDescription, actualDescription);
+            Assert.AreEqual(expectedDescription, _groupFacade.GetGroup(createdGroupId).GroupInfo.Description);
         }
 
         [TestMethod]
@@ -92,6 +94,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(expectedTags, actualTags);
+            Assert.AreEqual(expectedTags, _groupFacade.GetGroup(createdGroupId).GroupInfo.Tags);
         }
 
         [TestMethod]
@@ -109,6 +112,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(expectedSize, actualSize);
+            Assert.AreEqual(expectedSize, _groupFacade.GetGroup(createdGroupId).GroupInfo.Size);
         }
 
         [TestMethod]
@@ -126,6 +130,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(expectedMoneyPerUser, actualMoneyPerUser);
+            Assert.AreEqual(expectedMoneyPerUser, _groupFacade.GetGroup(createdGroupId).GroupInfo.MoneyPerUser);
         }
 
         [TestMethod]
