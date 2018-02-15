@@ -42,6 +42,7 @@ public class AuthorizedFragmentForTeacher extends android.support.v4.app.Fragmen
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_for_users_and_teachers, null);
+        v.findViewById(R.id.btn).setVisibility(View.GONE);
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());

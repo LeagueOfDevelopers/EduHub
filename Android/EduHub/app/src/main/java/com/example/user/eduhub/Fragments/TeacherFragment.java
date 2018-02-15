@@ -38,7 +38,7 @@ public class TeacherFragment extends android.support.v4.app.Fragment implements 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_for_users_and_teachers, null);
-        Button btn=getActivity().findViewById(R.id.btn);
+        Button btn=v.findViewById(R.id.btn);
         btn.setText("ЗАРЕГИСТРИРОВАТЬСЯ И НАЧАТЬ ПРЕПОДАВАТЬ");
         btn.setTextSize(10);
         recyclerView=v.findViewById(R.id.recycler);

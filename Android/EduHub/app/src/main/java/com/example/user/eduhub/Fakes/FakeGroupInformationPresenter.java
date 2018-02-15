@@ -41,14 +41,10 @@ public class FakeGroupInformationPresenter  implements IGroupInfirmationPresente
         groupInfo.setTags(tags);
         groupInfo.setCost(500);
         groupInfo.setGroupType(3);
+        groupInfo.setMemberAmount(1);
         groupInfo.setTitle("It's Fake!!!");
         groupInfo.setId("93d08fd5-c101-42d4-8811-8e48f2434304");
         group.setGroupInfo(groupInfo);
-        Educator educator=new Educator();
-        educator.setName("Саня");
-        educator.setUserId("93d08fd5-c101-42d4-8811-8e48f2434304");
-        group.setEducator(educator);
-        group.setNumberOfMembers(1);
         group.setMembers(members);
 
 

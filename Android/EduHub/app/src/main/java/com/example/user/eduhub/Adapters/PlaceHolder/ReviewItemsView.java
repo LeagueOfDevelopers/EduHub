@@ -47,7 +47,7 @@ public class ReviewItemsView {
     private void onResolved() {
         reviewTitle.setText("Заголовок");
         reviewText.setText(review.getText());
-        author.setText(review.getEvaluator());
+        author.setText(review.getFromUser());
         date.setText("2 декабря 2018");
 
     }

@@ -12,5 +12,5 @@ public interface IGroupRepository {
 
      void loadAllGroupsForUsers();
      void loadAllGroupsForTeachers();
-     void loadUsersGroup(String token);
+     void loadUsersGroup(String token,String userId);
 }

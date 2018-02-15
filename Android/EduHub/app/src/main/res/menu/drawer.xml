@@ -16,9 +16,6 @@
             android:id="@+id/myGroups"
             android:title="Мои группы" />
         <item
-            android:id="@+id/becameTeacher"
-            android:title="Стать преподавателем" />
-        <item
                 android:id="@+id/settings"
                 android:title="Настройки" />
         <item

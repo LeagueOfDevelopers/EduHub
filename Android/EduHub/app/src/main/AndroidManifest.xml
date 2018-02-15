@@ -12,7 +12,8 @@
         <activity
             android:name=".Main2Activity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,14 +23,22 @@
         <activity
             android:name=".AuthorizedUserActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".GroupActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CreateGroupActivity" />
-        <activity android:name=".InviteUserToGroup" />
-        <activity android:name=".RefactorProfile"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CreateGroupActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"/>
+        <activity android:name=".InviteUserToGroup"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"/>
+        <activity android:name=".RefactorProfile"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"></activity>
     </application>
 
 </manifest>

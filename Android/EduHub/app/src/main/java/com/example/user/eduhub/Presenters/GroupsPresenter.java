@@ -73,10 +73,10 @@ public class GroupsPresenter implements IGroupRepository {
     }
 
     @Override
-    public void loadUsersGroup(String token) {
+    public void loadUsersGroup(String token,String userId) {
         Log.d("TOKEN",token);
         eduHubApi= RetrofitBuilder.getApi();
-        disposable=eduHubApi.getUsersGroup("Bearer "+token)
+        disposable=eduHubApi.getUsersGroup("Bearer "+token,userId)
                 .subscribeOn(Schedulers.io())//вверх
                 .observeOn(AndroidSchedulers.mainThread())//вниз
 

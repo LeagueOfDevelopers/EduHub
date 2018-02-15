@@ -36,8 +36,7 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
         skils.add("Android");
         teacherProfile.setSkills(skils);
         Review review=new Review();
-        review.setEvaluator("Ярослав");
-        review.setRating(2);
+        review.setFromUser("Ярослав");
         review.setText("Так себе препод,но человек хороший");
         ArrayList<Review> reviews=new ArrayList<>();
         for (int i=0;i<10;i++){
@@ -66,15 +65,15 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
         groupInfo.setGroupType(3);
         groupInfo.setTitle("It's Fake!!!");
         groupInfo.setId(userId);
+        groupInfo.setMemberAmount(1);
         groupInfo.setMemberAmount(2);
         group.setGroupInfo(groupInfo);
-        group.setNumberOfMembers(1);
         group.setMembers(members);
         for (int i=0;i<10;i++){
             groups.add(group);
         }
         userProfile.setIsMan(true);
-        userProfile.setBirthYear("");
+        userProfile.setBirthYear(1999);
         userProfile.setAboutUser("Начинающий Андроид разработчик");
         teacherProfile.setReviews(reviews);
         teacherProfile.setJobExp(groups);

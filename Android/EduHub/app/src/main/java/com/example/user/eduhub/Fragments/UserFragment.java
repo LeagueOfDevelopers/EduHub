@@ -39,7 +39,7 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_for_users_and_teachers, null);
-        Button btn=getActivity().findViewById(R.id.btn);
+        Button btn=v.findViewById(R.id.btn);
 
         btn.setText("ЗАРЕГИСТРИРОВАТЬСЯ И НАЧАТЬ РАБОТУ");
         btn.setTextSize(10);

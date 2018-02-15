@@ -28,6 +28,7 @@ public class GroupInformationPresenter implements IGroupInfirmationPresenter {
 
     @Override
     public void loadGroupInformation(String groupId) {
+        Log.d("GroupIfInPresenter",groupId);
         EduHubApi eduHubApi= RetrofitBuilder.getApi();
         disposable= eduHubApi.getInformationAbotGroup(groupId)
                 .subscribeOn(Schedulers.io())
@@ -38,14 +39,7 @@ public class GroupInformationPresenter implements IGroupInfirmationPresenter {
                         error->{
                             Log.e("ERROR",error+"");},
                         ()->{
-                            if(group.getEducator().getName()!=null){
-                            Member teacher=new Member();
-                            teacher.setMemberRole(2);
-                            teacher.setName(group.getEducator().getName());
-                            teacher.setUserId(group.getEducator().getUserId());
-                            teacher.setAvatarLink(group.getEducator().getAvatarLink());
-                            teacher.setPaid(true);
-                            group.getMembers().add(0,teacher);}
+
                             groupView.getInformationAboutGroup(group);});
     }
 }

@@ -11,22 +11,34 @@ import java.io.Serializable;
 
 public class Review  implements Serializable{
 
-    @SerializedName("evaluator")
+
+    @SerializedName("fromUser")
     @Expose
-    private String evaluator;
+    private String fromUser;
+    @SerializedName("title")
+    @Expose
+    private String title;
     @SerializedName("text")
     @Expose
     private String text;
-    @SerializedName("rating")
+    @SerializedName("date")
     @Expose
-    private Integer rating;
+    private String date;
 
-    public String getEvaluator() {
-        return evaluator;
+    public String getFromUser() {
+        return fromUser;
     }
 
-    public void setEvaluator(String evaluator) {
-        this.evaluator = evaluator;
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getText() {
@@ -37,12 +49,14 @@ public class Review  implements Serializable{
         this.text = text;
     }
 
-    public Integer getRating() {
-        return rating;
+    public String getDate() {
+        return date;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setDate(String date) {
+        this.date = date;
     }
+
 }
+
 

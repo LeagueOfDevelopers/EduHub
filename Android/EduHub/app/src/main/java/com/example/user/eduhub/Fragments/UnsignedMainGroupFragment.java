@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,10 +91,11 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
 
         tabLayout.setupWithViewPager(pager);
         signInToGroup.setOnClickListener(click->{
-            if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(AVATARLINK)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
+            if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
 
                user=savedDataRepository.loadSavedData(sPref);
                 if(!fakessButton.getCheckButton()){
+                    Log.d("CheckButton",fakessButton.getCheckButton().toString());
                signInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId());}
                else{
                     fakeSignInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId());

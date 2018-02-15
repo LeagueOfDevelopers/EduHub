@@ -38,12 +38,12 @@ public interface EduHubApi {
     Single<User> userLogin(@Body LoginModel loginModel);
     @GET("/api/group")
     Observable<GetAllGroups> getGroups();
-    @GET("/api/group/{idOfGroup}")
-    Observable<Group> getInformationAbotGroup(@Path("idOfGroup")String id);
+    @GET(" /api/group/{groupId}")
+    Observable<Group> getInformationAbotGroup(@Path("groupId")String id);
     @POST("/api/group/{groupId}/member/invitation")
     Single<String> invitedUser(@Header("Authorization") String token, @Path("groupId") String groupId, @Body InviteUserModel model);
-    @GET("/api/user/profile/groups")
-    Observable<GetGroupsModel> getUsersGroup(@Header("Authorization") String token);
+    @GET("/api/user/profile/groups/{userId}")
+    Observable<GetGroupsModel> getUsersGroup(@Header("Authorization") String token,@Path("userId") String userId);
     @POST("/api/group")
     Single<CreateGroupResponse> createGroup(@Header("Authorization") String token, @Body CreateGroupModel model);
     @GET("/api/user/profile/{userId}")

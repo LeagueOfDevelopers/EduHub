@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageButton;
 
 import com.example.user.eduhub.Fakes.FakeGroupInformationPresenter;
@@ -43,9 +44,10 @@ public class GroupActivity extends AppCompatActivity
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         SharedPreferences sPref=getSharedPreferences("User",MODE_PRIVATE);
-        if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(AVATARLINK)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
+        if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
         user= savedDataRepository.loadSavedData(sPref);
         if(!fakesButton.getCheckButton()){
+            Log.d("GroupId",group.getGroupInfo().getId());
             groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
         }else{
             fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
@@ -107,16 +109,17 @@ public class GroupActivity extends AppCompatActivity
 
     @Override
     public void getInformationAboutGroup(Group group) {
+        Log.d("MyId",user.getUserId());
+        group.getGroupInfo().setId(this.group.getGroupInfo().getId());
         Boolean flag=false;
         for (Member member:group.getMembers()) {
             if(user.getUserId().equals(member.getUserId())){
+                Log.d("memberId",member.getUserId());
                 flag=true;
             }
 
         }
-        if(group.getEducator().getUserId().equals(user.getUserId())){
-            flag=true;
-        }
+
         if(flag){
         mainGroupFragment=new MainGroupFragment();
         mainGroupFragment.setGroup(group);

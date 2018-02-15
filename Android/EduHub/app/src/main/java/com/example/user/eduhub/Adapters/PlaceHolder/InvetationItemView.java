@@ -64,7 +64,7 @@ public class InvetationItemView {
 
     @Resolve
     private void onResolved() {
-        participants.setText(group.getNumberOfMembers()+"/"+group.getGroupInfo().getSize());
+        participants.setText(group.getGroupInfo().getMemberAmount()+"/"+group.getGroupInfo().getSize());
         name.setText(group.getGroupInfo().getTitle());
         switch (String.valueOf(group.getGroupInfo().getGroupType())){
             case "1":{type.setText(TypeOfEducation.Lecture.toString());break;}

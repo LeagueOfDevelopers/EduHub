@@ -62,10 +62,10 @@ public class UserProfileFragment extends Fragment {
         }else {
             sex.setText("Женский");
         }
-        if(userProfile.getUserProfile().getBirthYear().equals("")){
+        if(userProfile.getUserProfile().getBirthYear().toString().equals("0")){
             v.findViewById(R.id.card_of_birth).setVisibility(View.GONE);
         }else {
-            birthYear.setText(userProfile.getUserProfile().getBirthYear());
+            birthYear.setText(userProfile.getUserProfile().getBirthYear().toString());
         }
 
 
@@ -102,7 +102,7 @@ public class UserProfileFragment extends Fragment {
         });
         refactor.setOnClickListener(click->{
             Intent intent=new Intent(getActivity(),RefactorProfile.class);
-            intent.putExtra("User",userProfile);
+            intent.putExtra("UserProfile",userProfile);
             getActivity().startActivity(intent);
         });
 

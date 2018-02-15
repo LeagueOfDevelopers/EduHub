@@ -32,8 +32,8 @@ public class FakeSearchUsers implements ISearchUserPresenter {
         TeacherProfile teacherProfile=new TeacherProfile();
         teacherProfile.setSkills(new ArrayList<String>());
         Review review=new Review();
-        review.setEvaluator("Ярослав");
-        review.setRating(2);
+        review.setFromUser("Ярослав");
+        review.setDate("25.05.11");
         review.setText("Так себе препод,но человек хороший");
         ArrayList<Review> reviews=new ArrayList<>();
         for (int i=0;i<10;i++){

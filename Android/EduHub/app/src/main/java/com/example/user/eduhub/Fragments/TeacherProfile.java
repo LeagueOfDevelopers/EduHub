@@ -76,10 +76,10 @@ public class TeacherProfile extends Fragment {
         }else {
             sex.setText("Женский");
         }
-        if(userProfile.getUserProfile().getBirthYear().equals("")){
+        if(userProfile.getUserProfile().getBirthYear().toString().equals("")){
            v.findViewById(R.id.card_of_birth).setVisibility(View.GONE);
         }else {
-        birthYear.setText(userProfile.getUserProfile().getBirthYear());
+        birthYear.setText(userProfile.getUserProfile().getBirthYear()+"");
         }
 
 

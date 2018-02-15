@@ -35,12 +35,12 @@ public class FakeGroupRepository  implements IGroupRepository{
         groupInfo.setTags(tags);
         groupInfo.setCost(500);
         groupInfo.setGroupType(3);
+        groupInfo.setMemberAmount(1);
         groupInfo.setTitle("It's Fake!!!");
         groupInfo.setId("93d08fd5-c101-42d4-8811-8e48f2434304");
         groupInfo.setMemberAmount(1);
         Group group=new Group();
         group.setGroupInfo(groupInfo);
-        group.setNumberOfMembers(1);
         for(int i=0;i<10;i++){
             groups.add(group);
         }
@@ -54,7 +54,7 @@ public class FakeGroupRepository  implements IGroupRepository{
     }
 
     @Override
-    public void loadUsersGroup(String token) {
+    public void loadUsersGroup(String token,String userId) {
         loadAllGroupsForUsers();
     }
 }

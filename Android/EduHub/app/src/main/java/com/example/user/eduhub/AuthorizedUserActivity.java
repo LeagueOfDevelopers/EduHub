@@ -178,13 +178,11 @@ public class AuthorizedUserActivity extends AppCompatActivity
             fragmentTransaction.commit();
         } else if (id == R.id.myGroups) {
             UsersGroupsFragment usersGroupsFragment=new UsersGroupsFragment();
-            usersGroupsFragment.setToken(user.getToken());
+            usersGroupsFragment.setToken(user);
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_fragments_conteiner,usersGroupsFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-        } else if (id == R.id.becameTeacher) {
-
         } else if (id == R.id.settings) {
 
         } else if (id == R.id.notification) {

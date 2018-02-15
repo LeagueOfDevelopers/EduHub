@@ -20,6 +20,7 @@ import com.example.user.eduhub.Fakes.FakeGroupRepository;
 import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.View.IGroupListView;
 import com.example.user.eduhub.Models.Group.Group;
+import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.R;
 
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 
 public class UsersGroupsFragment extends Fragment implements IGroupListView {
     RecyclerView recyclerView;
-    private String token;
+    private User user;
     SwipeRefreshLayout swipeContainer;
     GroupsPresenter groupsPresenter=new GroupsPresenter(this);
     FakeGroupRepository fakeGroupRepository=new FakeGroupRepository(this);
@@ -52,8 +53,8 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView {
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadUsersGroup(token);}else{
-            fakeGroupRepository.loadUsersGroup(token);
+            groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId());}else{
+            fakeGroupRepository.loadUsersGroup(user.getToken(),user.getUserId());
         }
         button.setOnClickListener(click->{
             Intent intent=new Intent(getActivity(), CreateGroupActivity.class);
@@ -99,7 +100,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView {
         swipeContainer.setRefreshing(false);
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setToken(User user) {
+        this.user = user;
     }
 }

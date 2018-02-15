@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
         recyclerView=v.findViewById(R.id.recycler);
         swipeConteiner=v.findViewById(R.id.swipeConteinerForMembers);
         if(!fakesButton.getCheckButton()){
+            Log.d("GroupIdMembersFrag",group.getGroupInfo().getId());
             groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
         else {
 

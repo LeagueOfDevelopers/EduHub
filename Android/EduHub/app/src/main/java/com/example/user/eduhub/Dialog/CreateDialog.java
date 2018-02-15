@@ -28,7 +28,7 @@ public class CreateDialog {
             // сообщение
             adb.setMessage(R.string.areShureSignInToGroup);
             // иконка
-            adb.setIcon(android.R.drawable.ic_dialog_info);
+
             // кнопка отрицательного ответа
             adb.setNegativeButton(R.string.no, myClickListener);
             // кнопка положительного ответа
@@ -46,7 +46,6 @@ public class CreateDialog {
             // сообщение
             adb.setMessage(R.string.areShureExit);
             // иконка
-            adb.setIcon(android.R.drawable.ic_dialog_info);
             // кнопка отрицательного ответа
             adb.setNegativeButton(R.string.no, myClickListener);
             // кнопка положительного ответа

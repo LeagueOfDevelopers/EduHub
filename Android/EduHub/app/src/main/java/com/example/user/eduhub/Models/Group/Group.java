@@ -17,18 +17,8 @@ public class Group implements Serializable{
     @SerializedName("groupInfo")
     @Expose
     private GroupInfo groupInfo;
-    @SerializedName("status")
-    @Expose
-    private String status;
-    @SerializedName("educator")
-    @Expose
-    private Educator educator;
-    @SerializedName("numberOfMembers")
-    @Expose
-    private Integer numberOfMembers;
-    @SerializedName("chat")
-    @Expose
-    private Chat chat;
+
+
 
     public List<Member> getMembers() {
         return members;
@@ -46,27 +36,5 @@ public class Group implements Serializable{
         this.groupInfo = groupInfo;
     }
 
-    public Integer getNumberOfMembers() {
-        return numberOfMembers;
-    }
 
-    public void setNumberOfMembers(Integer numberOfMembers) {
-        this.numberOfMembers = numberOfMembers;
-    }
-
-    public Educator getEducator() {
-        return educator;
-    }
-
-    public void setEducator(Educator educator) {
-        this.educator = educator;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

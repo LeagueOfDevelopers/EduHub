@@ -151,9 +151,6 @@ FakesButton fakesButton=new FakesButton();
         } else if (id == R.id.myGroups) {
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
-        } else if (id == R.id.becameTeacher) {
-            Intent intent = new Intent(this,MainActivity.class);
-            startActivity(intent);
         } else if (id == R.id.settings) {
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
