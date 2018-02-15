@@ -28,7 +28,6 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult SearchUser([FromBody] SearchOfUserRequest user)
         {
-            if (!_userFacade.DoesUserExist(user.Name)) return Ok();
             var foundUsers = _userFacade.FindByName(user.Name);
             var items = new List<MinItemUserResponse>();
             foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name,

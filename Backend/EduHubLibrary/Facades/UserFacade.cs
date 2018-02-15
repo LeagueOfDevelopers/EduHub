@@ -112,14 +112,9 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<User> FindByName(string name)
         {
-            var result = _userRepository.GetAll().Where(u => u.UserProfile.Name.Contains(name));
+            var result = _userRepository.GetAll().ToList().FindAll(u => u.UserProfile.Name.Contains(name));
 
             return result.OrderBy(u => u.UserProfile.Name.Length);
-        }
-
-        public bool DoesUserExist(string name)
-        {
-            return _userRepository.GetAll().Any(user => user.UserProfile.Name.Contains(name));
         }
 
         public IEnumerable<string> GetNotifies(Guid userId)

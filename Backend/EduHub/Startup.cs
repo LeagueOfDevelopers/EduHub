@@ -19,6 +19,7 @@ using Serilog;
 using Serilog.Events;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
+using EduHubLibrary.Domain;
 
 namespace EduHub
 {
@@ -47,9 +48,11 @@ namespace EduHub
             var userFacade = new UserFacade(userRepository, groupRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
             var fileFacade = new FileFacade(fileRepository);
+            var tagsManager = new TagsManager();
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IFileFacade>(fileFacade);
+            services.AddSingleton(tagsManager);
             services.AddSingleton(Env);
 
             services.AddSwaggerGen(current =>

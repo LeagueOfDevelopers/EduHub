@@ -16,7 +16,6 @@ namespace EduHubLibrary.Facades
         void Invite(Guid inviterId, Guid invitedId, Guid groupId, MemberRole suggestedRole);
         IEnumerable<Invitation> GetAllInvitationsForUser(Guid userId);
         IEnumerable<Group> GetAllGroupsOfUser(Guid userId);
-        bool DoesUserExist(string name);
         IEnumerable<User> FindByName(string name);
         IEnumerable<string> GetNotifies(Guid userId);
         void AddNotify(Guid userId, string notify);
