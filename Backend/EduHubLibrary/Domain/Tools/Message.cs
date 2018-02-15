@@ -10,11 +10,13 @@ namespace EduHubLibrary.Domain.Tools
             SenderId = senderId;
             ReceiverId = receiverId;
             Text = text;
+            SentOn = DateTimeOffset.Now;
         }
 
         public Guid Id { get; }
         public Guid SenderId { get; }
         public Guid ReceiverId { get; }
+        public DateTimeOffset SentOn { get; }
         public string Text { get; internal set; }
     }
 }

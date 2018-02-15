@@ -1,10 +1,12 @@
 ﻿using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Tools;
 using EnsureThat;
 using System;
+using System.Linq;
 
 namespace EduHubLibrary.Facades
 {
-    internal class ChatFacade : IChatFacade
+    public class ChatFacade : IChatFacade
     {
         public ChatFacade(IGroupRepository groupRepository)
         {
@@ -39,6 +41,11 @@ namespace EduHubLibrary.Facades
             {
                 chat.DeleteMessage(messageId);
             }
+        }
+
+        public Message GetMessage(Guid messageId, Guid groupId)
+        {
+            return _groupRepository.GetGroupById(groupId).Chat.Messages.ToList().Find(m => m.Id.Equals(messageId));
         }
 
         private readonly IGroupRepository _groupRepository;

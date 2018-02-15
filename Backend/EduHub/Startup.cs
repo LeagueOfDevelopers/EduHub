@@ -48,10 +48,12 @@ namespace EduHub
             var userFacade = new UserFacade(userRepository, groupRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
             var fileFacade = new FileFacade(fileRepository);
+            var chatFacade = new ChatFacade(groupRepository);
             var tagsManager = new TagsManager();
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IFileFacade>(fileFacade);
+            services.AddSingleton<IChatFacade>(chatFacade);
             services.AddSingleton(tagsManager);
             services.AddSingleton(Env);
 

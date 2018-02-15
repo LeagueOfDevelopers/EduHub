@@ -1,27 +1,35 @@
 ﻿using EduHub.Extensions;
 using EduHub.Models;
+using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 
 namespace EduHub.Controllers
 {
     [Produces("application/json")]
-    [Route("api/group/{idOfGroup}/chat")]
+    [Route("api/group/{groupId}/chat")]
     public class ChatController : Controller
     {
+        public ChatController(IChatFacade chatFacade, IGroupFacade groupFacade)
+        {
+            _chatFacade = chatFacade;
+            _groupFacade = groupFacade;
+        }
+
         /// <summary>
         ///     Sends message to group chat
         /// </summary>
         [HttpPost]
         [Authorize]
-        [Route("message")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult SendMessage([FromBody] SendMessageRequest message, [FromRoute] int groupId)
+        public IActionResult SendMessage([FromBody] SendMessageRequest messageRequest, [FromRoute] Guid groupId)
         {
             var userId = Request.GetUserId();
-            return Ok($"Чату {message.ChatId} было отправлено сообщение '{message.Text}' от пользователя {userId}");
+            var response = new MessageSentResponse(_chatFacade.SendMessage(userId, groupId, messageRequest.Text));
+            return Ok(response);
         }
 
         /// <summary>
@@ -30,10 +38,11 @@ namespace EduHub.Controllers
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(MessageResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        [Route("message/{messageId}")]
-        public IActionResult GetMessage([FromRoute] int groupId, [FromRoute] int messageId)
+        [Route("{messageId}")]
+        public IActionResult GetMessage([FromRoute] Guid groupId, [FromRoute] Guid messageId)
         {
-            var response = new MessageResponse();
+            var message = _chatFacade.GetMessage(messageId, groupId);
+            var response = new MessageResponse(message.Text, message.SenderId, message.SentOn);
             return Ok(response);
         }
 
@@ -42,15 +51,15 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpPut]
-        [Route("message/{messageId}")]
+        [Route("{messageId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditMessage([FromBody] EditMessageRequest message,
-            [FromRoute] int groupId, [FromRoute] int messageId)
+            [FromRoute] Guid groupId, [FromRoute] Guid messageId)
         {
             var userId = Request.GetUserId();
-            return Ok($"Текст сообщения {messageId} исправлен на '{message.NewText}' " +
-                      $"в чате группы {groupId}");
+            _chatFacade.EditMessage(messageId, groupId, message.NewText);
+            return Ok();
         }
 
         /// <summary>
@@ -58,13 +67,23 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpDelete]
-        [Route("message/{messageId}")]
+        [Route("{messageId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult DeleteMessage([FromRoute] int groupId, [FromRoute] int messageId)
+        public IActionResult DeleteMessage([FromRoute] Guid groupId, [FromRoute] Guid messageId)
         {
             var userId = Request.GetUserId();
-            return Ok($"Сообщение {messageId} удалено из чата группы {groupId}");
+            _chatFacade.DeleteMessage(messageId, groupId);
+            return Ok();
         }
+
+        [HttpGet]
+        public IActionResult GetAllMessages([FromRoute] Guid groupId)
+        {
+            return Ok(_groupFacade.GetGroup(groupId).Chat);
+        }
+
+        private readonly IChatFacade _chatFacade;
+        private readonly IGroupFacade _groupFacade;
     }
 }
