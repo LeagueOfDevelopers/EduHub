@@ -29,17 +29,26 @@ const initialState = fromJS({
 function notificationPageReducer(state = initialState, action) {
   switch (action.type) {
     case CHANGE_INVITATION_STATUS_START:
-      return state
-        .set('pending', true)
-        .set('needUpdate', true);
+      if(action.status === 'Accepted') {
+        return state
+          .set('pending', true)
+          .set('needUpdate', false);
+      }
+      else {
+        return state
+          .set('pending', true)
+          .set('needUpdate', true);
+      }
     case CHANGE_INVITATION_STATUS_SUCCESS:
+      action.groupId && action.status === 'Accepted' ? location.assign(`/group/${action.groupId}`) : null;
       return state
         .set('pending', false)
         .set('needUpdate', false);
     case CHANGE_INVITATION_STATUS_FAILED:
       return state
         .set('pending', false)
-        .set('error', true);
+        .set('error', true)
+        .set('needUpdate', false);
     case GET_NOTIFIES_START:
       return state
         .set('pending', true);

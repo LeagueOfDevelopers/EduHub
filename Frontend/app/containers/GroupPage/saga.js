@@ -41,7 +41,7 @@ function* enterGroupSaga(action) {
 
 function* leaveGroupSaga(action) {
   try {
-    yield call(leaveGroup, action.groupId, action.memberId);
+    yield call(leaveGroup, action.groupId, action.memberId, action.role);
     yield put(leaveGroupSuccess());
   }
   catch(e) {
@@ -85,15 +85,27 @@ function enterGroup(groupId) {
     .catch(error => error);
 }
 
-function leaveGroup(groupId, memberId) {
-  return fetch(`${config.API_BASE_URL}/group/${groupId}/member/${memberId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json-patch+json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  })
-    .catch(error => error);
+function leaveGroup(groupId, memberId, role) {
+  if(role === 'Member') {
+    return fetch(`${config.API_BASE_URL}/group/${groupId}/member/${memberId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .catch(error => error);
+  }
+  else if(role === 'Teacher') {
+    return fetch(`${config.API_BASE_URL}/group/${groupId}/member/teacher/${memberId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .catch(error => error);
+  }
 }
 
 function* editGroupTitleSaga(action) {

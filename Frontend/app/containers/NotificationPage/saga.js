@@ -13,8 +13,9 @@ import {
 
 function* changeInvitationStatusSaga(action) {
   try {
-    yield call(changeInvitationStatus, action.invitationId, action.status);
-    yield put(changeInvitationStatusSuccess());
+    const status = action.status;
+    const groupData = yield call(changeInvitationStatus, action.invitationId, action.status);
+    yield put(changeInvitationStatusSuccess(groupData.groupId, status));
   }
   catch(error) {
     yield put(changeInvitationStatusFailed(error));
@@ -33,8 +34,8 @@ function* getNotifiesSaga() {
 
 function* getInvitesSaga() {
   try {
-    const invites = yield call(getInvites);
-    yield put(getInvitesSuccess(invites))
+    const data = yield call(getInvites);
+    yield put(getInvitesSuccess(data.invitations))
   }
   catch(e) {
     yield put(getInvitesFailed(e))
@@ -60,7 +61,7 @@ function getInvites() {
     }
   })
     .then(response => response.json())
-    .then(response => response.invitations)
+    .then(response => response)
     .catch(error => error);
 }
 
@@ -76,6 +77,7 @@ function changeInvitationStatus(idOfInvitation, statusOfInvitation) {
       status: statusOfInvitation
     })
   })
+    .then(res => res.json())
     .catch(error => error)
 }
 

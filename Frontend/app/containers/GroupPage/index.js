@@ -88,12 +88,12 @@ export class GroupPage extends React.Component {
           size: 0,
           groupType: '',
         },
-        members: [],
-        educator: null,
+        members: []
       },
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
       isInGroup: false,
       isCreator: false,
+      isTeacher: false,
       needUpdate: false,
       signInVisible: false,
       isEditing: false,
@@ -161,8 +161,7 @@ export class GroupPage extends React.Component {
     this.setState({
       groupData: {
         groupInfo: result.groupInfo,
-        members: result.members,
-        educator: result.educator
+        members: result.members
       },
       titleInput: result.groupInfo.title,
       descInput: result.groupInfo.description,
@@ -175,9 +174,11 @@ export class GroupPage extends React.Component {
         Boolean(result.members.find(item => item.userId === this.state.userData.UserId)) : false
       });
     this.setState({
-      isCreator: this.state.isInGroup ?
-        getMemberRole(result.members.find(item =>
-          item.userId === this.state.userData.UserId).role) === 'Создатель' : false });
+      isCreator: this.state.isInGroup ? Boolean(result.members.find(item =>
+          item.userId === this.state.userData.UserId).role === 2) : false,
+      isTeacher: this.state.isInGroup ? Boolean(result.members.find(item =>
+        item.userId === this.state.userData.UserId).role === 3) : false
+    });
   }
 
   onChangeTitleHandle = (e) => {
@@ -244,9 +245,9 @@ export class GroupPage extends React.Component {
   render() {
     return (
       <div>
-        <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 160, fontSize: 16}} className='md-center-container'>
-          <Col className='md-offset-16px' md={{span: 10}} lg={{span: 7}}>
-            <Row style={{width: 248}}>
+        <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 160, fontSize: 16}}>
+          <Col className='md-center-container' xs={{span: 24}} md={{span: 10}} lg={{span: 7}}>
+            <Row className='main-group-info'>
               <Row style={{marginBottom: 26}}>
                 <Col span={24}>
                   <h3 style={{margin: 0, fontSize: 22}}>
@@ -255,7 +256,8 @@ export class GroupPage extends React.Component {
                       : this.state.groupData.groupInfo.title}
                   </h3>
                 </Col>
-                { this.state.groupData.educator ?
+                { Boolean(this.state.groupData.members.find(item =>
+                  item.role == 3)) ?
                   (<span style={{color: 'rgba(0,0,0,0.6)'}}>Преподаватель найден</span>)
                   : (<span style={{color: 'rgba(0,0,0,0.6)'}}>Идет поиск преподавателя</span>)
                 }
@@ -294,7 +296,7 @@ export class GroupPage extends React.Component {
                 </Col>
               </Row>
               {this.state.isEditing ?
-                <Row type='flex' align='middle' style={{width: 248, marginBottom: 12}}>
+                <Row type='flex' align='middle' style={{marginBottom: 12}}>
                   <Col span={16}>
                     <label htmlFor="privacy">Приватная группа</label>
                   </Col>
@@ -310,63 +312,71 @@ export class GroupPage extends React.Component {
                     <Col>Эта группа не является приватной</Col>
                   </Row>)
               }
+              {this.state.isEditing ?
+                <Row type='flex' align='middle' style={{marginBottom: 12}}>
+                  <Col span={10}>
+                    <label htmlFor="size">Участников</label>
+                  </Col>
+                  <Col span={14} style={{textAlign: 'right'}}>
+                    <InputNumber min={0} id='size' value={this.state.sizeInput} onChange={this.onChangeSizeHandle} style={{width: 64}}/>
+                  </Col>
+                </Row>
+                : null
+              }
             </Row>
-            {this.state.isEditing ?
-              <Row type='flex' align='middle' style={{width: 248, marginBottom: 12}}>
-                <Col span={10}>
-                  <label htmlFor="size">Участников</label>
-                </Col>
-                <Col span={14} style={{textAlign: 'right'}}>
-                  <InputNumber min={0} id='size' value={this.state.sizeInput} onChange={this.onChangeSizeHandle} style={{width: 64}}/>
-                </Col>
-              </Row>
-              : null
-            }
-            <Row style={{marginLeft: -16, marginBottom: 20}}>
+            <Row style={{width: '100%', marginBottom: 20}}>
               <MemberList members={this.state.groupData.members} size={this.state.groupData.groupInfo.size} isCreator={this.state.isCreator}/>
             </Row>
-            <Row>
-              {this.state.isCreator ?
-                (<Row className='md-center-container'>
-                  <InviteMemberSelect groupId={this.state.id}/>
-                </Row>) : null
-              }
-            </Row>
-            <Row>
-              {this.state.isCreator && !this.state.isEditing ?
-                <Button type='dashed' onClick={() => this.setState({isEditing: true})} style={{width: 280, marginLeft: -16, marginTop: 12}}>Редактировать</Button>
-                : this.state.isEditing ?
-                  <div>
-                    <Button type='primary' onClick={this.changeGroupData} style={{width: 280, marginLeft: -16, marginTop: 22}}>Подтвердить</Button>
-                    <Button type='danger' onClick={this.cancelChanges} style={{width: 280, marginLeft: -16, marginTop: 10}}>Отмена</Button>
-                  </div>
-                  : null
-              }
-            </Row>
+            {this.state.isCreator ?
+              (<Row style={{width: '100%'}} className='md-center-container'>
+                <InviteMemberSelect groupId={this.state.id}/>
+              </Row>) : null
+            }
+            {this.state.isCreator && !this.state.isEditing ?
+              <Row>
+                <Button type='dashed' className='md-center-container md-offset-16px' onClick={() => this.setState({isEditing: true})} style={{width: 280, marginTop: 12}}>Редактировать</Button>
+              </Row>
+              : this.state.isEditing ?
+                <Row>
+                  <Col span={24} className='md-center-container md-offset-16px'>
+                    <Button type='primary' onClick={this.changeGroupData} style={{width: 280, marginTop: 22}}>Подтвердить</Button>
+                  </Col>
+                  <Col span={24} className='md-center-container md-offset-16px'>
+                    <Button type='danger' onClick={this.cancelChanges} style={{width: 280, marginTop: 10}}>Отмена</Button>
+                  </Col>
+                </Row>
+                : null
+            }
           </Col>
-          <Col xs={{span: 24}} md={{span: 13, offset: 1}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
-            <Row className='md-center-container' style={{textAlign: 'right', marginTop: 8}}>
+          <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
+            <Row style={{textAlign: 'right', marginTop: 8}}>
               {this.state.groupData.groupInfo.size !== this.state.groupData.members.length ?
                 this.state.isInGroup ?
-                  (<Button onClick={() => {
-                    this.setState({needUpdate: true});
-                    this.props.leaveGroup(this.state.id, this.state.userData.UserId)
-                  }}
-                  >
-                    Покинуть группу
-                  </Button>)
-                  : (<Button type='primary' onClick={() => {
-                    if(this.state.userData) {
-                      this.props.enterGroup(this.state.id);
-                      this.setState({needUpdate: true});
-                    }
-                    else {
-                      this.onSignInClick()
-                    }
-                  }}
-                  >
-                    Вступить в группу
-                  </Button>)
+                  (<Row className='md-center-container'>
+                      <Button onClick={() => {
+                        this.setState({needUpdate: true});
+                        this.props.leaveGroup(this.state.id, this.state.userData.UserId, this.state.isTeacher ? 'Teacher' : 'Member')
+                      }}
+                      >
+                        Покинуть группу
+                      </Button>
+                    </Row>
+                  )
+                  : (<Row className='md-center-container'>
+                      <Button type='primary' onClick={() => {
+                        if(this.state.userData) {
+                          this.props.enterGroup(this.state.id);
+                          this.setState({needUpdate: true});
+                        }
+                        else {
+                          this.onSignInClick()
+                        }
+                      }}
+                      >
+                        Вступить в группу
+                      </Button>
+                    </Row>
+                  )
                 : null
               }
             </Row>
@@ -422,7 +432,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     enterGroup: (groupId) => dispatch(enterGroup(groupId)),
-    leaveGroup: (groupId, memberId) => dispatch(leaveGroup(groupId, memberId)),
+    leaveGroup: (groupId, memberId, role) => dispatch(leaveGroup(groupId, memberId, role)),
     editGroupTitle: (id, title) => dispatch(editGroupTitle(id, title)),
     editGroupDescription: (id, description) => dispatch(editGroupDescription(id, description)),
     editGroupTags: (id, tags) => dispatch(editGroupTags(id, tags)),

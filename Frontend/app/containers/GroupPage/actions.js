@@ -53,11 +53,12 @@ export function enterGroupFailed(error) {
   };
 }
 
-export function leaveGroup(groupId, memberId) {
+export function leaveGroup(groupId, memberId, role) {
   return {
     type: LEAVE_GROUP_START,
     groupId,
-    memberId
+    memberId,
+    role
   };
 }
 

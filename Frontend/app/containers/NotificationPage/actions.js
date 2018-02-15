@@ -24,9 +24,11 @@ export function changeInvitationStatus(invitationId, status) {
   };
 }
 
-export function changeInvitationStatusSuccess() {
+export function changeInvitationStatusSuccess(groupId, status) {
   return {
-    type: CHANGE_INVITATION_STATUS_SUCCESS
+    type: CHANGE_INVITATION_STATUS_SUCCESS,
+    groupId,
+    status
   };
 }
 

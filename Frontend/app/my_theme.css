@@ -69,6 +69,19 @@
   justify-content: center;
 }
 
+.main-group-info {
+  width: 248px;
+}
+
+.group-member-list {
+  width: 280px;
+  margin-left: -16px;
+}
+
+.md-offset-16px {
+  margin-left: -16px;
+}
+
 @media screen and (max-width: 1200px) {
   .sm-row-center {
     text-align: center;
@@ -98,7 +111,15 @@
   }
 
   .md-offset-16px {
-    margin-left: 16px;
+    margin-left: 0;
+  }
+
+  .main-group-info {
+    width: 100%;
+  }
+
+  .group-member-list {
+    width: calc(100% + 32px);
   }
 }
 
