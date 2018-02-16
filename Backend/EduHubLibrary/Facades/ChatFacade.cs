@@ -1,4 +1,5 @@
 ﻿using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
 using System;
@@ -15,19 +16,18 @@ namespace EduHubLibrary.Facades
 
         public Guid SendMessage(Guid senderId, Guid groupId, string text)
         {
-            Ensure.Bool.IsTrue(!String.IsNullOrWhiteSpace(text), nameof(SendMessage),
-                   opt => opt.WithException(new ArgumentException()));
+            Ensure.String.IsNotNullOrWhiteSpace(text);
 
             using (var chat = _groupRepository.GetGroupById(groupId).Chat)
             {
-                return chat.SendMessage(senderId, groupId, text);
+                return chat.SendMessage(senderId, text);
             }
         }
 
-        public void EditMessage(Guid messageId, Guid groupId, string newText)
+        public void EditMessage(Guid userId, Guid messageId, Guid groupId, string newText)
         {
-            Ensure.Bool.IsTrue(!String.IsNullOrWhiteSpace(newText), nameof(EditMessage), 
-                opt => opt.WithException(new ArgumentException()));
+            CheckUserRights(userId, messageId, groupId);
+            Ensure.String.IsNotNullOrWhiteSpace(newText);
 
             using (var chat = _groupRepository.GetGroupById(groupId).Chat)
             {
@@ -35,8 +35,9 @@ namespace EduHubLibrary.Facades
             }
         }
 
-        public void DeleteMessage(Guid messageId, Guid groupId)
+        public void DeleteMessage(Guid userId, Guid messageId, Guid groupId)
         {
+            CheckUserRights(userId, messageId, groupId);
             using (var chat = _groupRepository.GetGroupById(groupId).Chat)
             {
                 chat.DeleteMessage(messageId);
@@ -45,7 +46,14 @@ namespace EduHubLibrary.Facades
 
         public Message GetMessage(Guid messageId, Guid groupId)
         {
-            return _groupRepository.GetGroupById(groupId).Chat.Messages.ToList().Find(m => m.Id.Equals(messageId));
+            return _groupRepository.GetGroupById(groupId).Chat.GetMessage(messageId);
+        }
+
+        private void CheckUserRights(Guid userId, Guid messageId, Guid groupId)
+        {
+            var senderId = GetMessage(messageId, groupId).SenderId;
+
+            if (!senderId.Equals(userId)) throw new NotEnoughPermissionsException(userId);
         }
 
         private readonly IGroupRepository _groupRepository;

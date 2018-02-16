@@ -4,18 +4,16 @@ namespace EduHubLibrary.Domain.Tools
 {
     public class Message
     {
-        public Message(Guid senderId, Guid receiverId, string text)
+        public Message(Guid senderId, string text)
         {
             Id = Guid.NewGuid();
             SenderId = senderId;
-            ReceiverId = receiverId;
             Text = text;
             SentOn = DateTimeOffset.Now;
         }
 
         public Guid Id { get; }
         public Guid SenderId { get; }
-        public Guid ReceiverId { get; }
         public DateTimeOffset SentOn { get; }
         public string Text { get; internal set; }
     }

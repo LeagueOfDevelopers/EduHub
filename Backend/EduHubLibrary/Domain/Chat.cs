@@ -23,9 +23,9 @@ namespace EduHubLibrary.Domain
             ///!!!
         }
 
-        internal Guid SendMessage(Guid senderId, Guid groupId, string text)
+        internal Guid SendMessage(Guid senderId, string text)
         {
-            var message = new Message(senderId, groupId, text);
+            var message = new Message(senderId, text);
             var newMessageList = new List<Message>(Messages);
             newMessageList.Add(message);
             Messages = newMessageList;

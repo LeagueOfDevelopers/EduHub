@@ -19,13 +19,12 @@ namespace EduHubTests
             var groupId = Guid.NewGuid();
 
             //Act
-            var messageId = testChat.SendMessage(senderId, groupId, messageText);
+            var messageId = testChat.SendMessage(senderId, messageText);
 
             //Assert
             var gotMessage = testChat.GetMessage(messageId);
             Assert.AreEqual(messageText, gotMessage.Text);
             Assert.AreEqual(senderId, gotMessage.SenderId);
-            Assert.AreEqual(groupId, gotMessage.ReceiverId);
         }
 
         [TestMethod]
@@ -33,7 +32,7 @@ namespace EduHubTests
         {
             //Arrange
             var testChat = new Chat();
-            var messageId = testChat.SendMessage(Guid.NewGuid(), Guid.NewGuid(), "Some message");
+            var messageId = testChat.SendMessage(Guid.NewGuid(), "Some message");
 
             //Act
             testChat.DeleteMessage(messageId);
@@ -49,7 +48,7 @@ namespace EduHubTests
         {
             //Arrange
             var testChat = new Chat();
-            testChat.SendMessage(Guid.NewGuid(), Guid.NewGuid(), "Some message");
+            testChat.SendMessage(Guid.NewGuid(), "Some message");
 
             var invalidGuid = Guid.NewGuid();
 
@@ -63,7 +62,7 @@ namespace EduHubTests
             //Arrange
             var testChat = new Chat();
             var oldText = "Old";
-            var messageId = testChat.SendMessage(Guid.NewGuid(), Guid.NewGuid(), oldText);
+            var messageId = testChat.SendMessage(Guid.NewGuid(), oldText);
 
             //Act
             var newText = "New";
@@ -80,7 +79,7 @@ namespace EduHubTests
         {
             //Arrange
             var testChat = new Chat();
-            testChat.SendMessage(Guid.NewGuid(), Guid.NewGuid(), "Some message");
+            testChat.SendMessage(Guid.NewGuid(), "Some message");
 
             var invalidGuid = Guid.NewGuid();
 

@@ -1,5 +1,6 @@
 ﻿using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
@@ -66,7 +67,7 @@ namespace EduHubTests
 
             //Act
             var newText = "New text";
-            chatFacade.EditMessage(messageId, _testGroupId, newText);
+            chatFacade.EditMessage(_creatorId, messageId, _testGroupId, newText);
 
             //Assert
             var newMessage = _groupRepository.GetGroupById(_testGroupId).Chat.GetMessage(messageId);
@@ -82,7 +83,19 @@ namespace EduHubTests
             var messageId = chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
 
             //Act
-            chatFacade.EditMessage(messageId, _testGroupId, " ");
+            chatFacade.EditMessage(_creatorId, messageId, _testGroupId, " ");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotEnoughPermissionsException))]
+        public void TryToEditMessageByNotSender_GetException()
+        {
+            //Arrange
+            var chatFacade = new ChatFacade(_groupRepository);
+            var messageId = chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
+
+            //Act
+            chatFacade.EditMessage(Guid.NewGuid(), messageId, _testGroupId, "New text");
         }
 
         [TestMethod]
@@ -93,10 +106,22 @@ namespace EduHubTests
             var messageId = chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
 
             //Act
-            chatFacade.DeleteMessage(messageId, _testGroupId);
+            chatFacade.DeleteMessage(_creatorId, messageId, _testGroupId);
 
             //Assert
             Assert.AreEqual(0, _groupRepository.GetGroupById(_testGroupId).Chat.Messages.Count());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotEnoughPermissionsException))]
+        public void TryToDeleteMessageByNotSender_GetException()
+        {
+            //Arrange
+            var chatFacade = new ChatFacade(_groupRepository);
+            var messageId = chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
+
+            //Act
+            chatFacade.DeleteMessage(Guid.NewGuid(), messageId, _testGroupId);
         }
     }
 }

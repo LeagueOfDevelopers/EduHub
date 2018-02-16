@@ -58,7 +58,7 @@ namespace EduHub.Controllers
             [FromRoute] Guid groupId, [FromRoute] Guid messageId)
         {
             var userId = Request.GetUserId();
-            _chatFacade.EditMessage(messageId, groupId, message.NewText);
+            _chatFacade.EditMessage(userId, messageId, groupId, message.NewText);
             return Ok();
         }
 
@@ -73,10 +73,14 @@ namespace EduHub.Controllers
         public IActionResult DeleteMessage([FromRoute] Guid groupId, [FromRoute] Guid messageId)
         {
             var userId = Request.GetUserId();
-            _chatFacade.DeleteMessage(messageId, groupId);
+            _chatFacade.DeleteMessage(userId, messageId, groupId);
             return Ok();
         }
 
+        /// <summary>
+        ///     Return all messages of group
+        /// </summary>
+        [Authorize]
         [HttpGet]
         public IActionResult GetAllMessages([FromRoute] Guid groupId)
         {
