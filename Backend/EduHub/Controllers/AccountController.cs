@@ -12,10 +12,10 @@ namespace EduHub.Controllers
     [Route("api/account")]
     public class AccountController : Controller
     {
+        private readonly IAuthUserFacade _authUserFacade;
         private readonly IJwtIssuer _jwtIssuer;
         private readonly SecuritySettings _securitySettings;
         private readonly IUserFacade _userFacade;
-        private readonly IAuthUserFacade _authUserFacade;
 
 
         public AccountController(IUserFacade userFacade, SecuritySettings securitySettings,

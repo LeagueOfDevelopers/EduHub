@@ -356,7 +356,7 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(true, expected.SequenceEqual(groups));
         }
-        
+
         [TestMethod]
         public void TryToFindNotExistingUser_ReturnEmptyList()
         {

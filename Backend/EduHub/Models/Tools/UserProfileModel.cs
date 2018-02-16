@@ -5,7 +5,8 @@ namespace EduHub.Models.Tools
 {
     public class UserProfileModel
     {
-        public UserProfileModel(string name, string email, string aboutUser, int birthYear, Gender gender, bool isTeacher,
+        public UserProfileModel(string name, string email, string aboutUser, int birthYear, Gender gender,
+            bool isTeacher,
             string avatarLink, List<string> contacts)
         {
             Name = name;

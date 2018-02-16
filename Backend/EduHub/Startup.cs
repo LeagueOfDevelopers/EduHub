@@ -3,6 +3,7 @@ using System.Text;
 using EduHub.Filters;
 using EduHub.Security;
 using EduHubLibrary.Common;
+using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
@@ -20,7 +21,6 @@ using Serilog;
 using Serilog.Events;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
-using EduHubLibrary.Domain;
 
 namespace EduHub
 {
@@ -116,8 +116,6 @@ namespace EduHub
         {
             app.UseStaticFiles();
             app.UseSwagger();
-
-            var path = env.ContentRootPath;
 
             app.UseSwaggerUI(current => { current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API"); });
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();

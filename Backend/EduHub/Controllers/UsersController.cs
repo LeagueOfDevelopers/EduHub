@@ -37,6 +37,26 @@ namespace EduHub.Controllers
             return Ok(response);
         }
 
+
+        /// <summary>
+        ///     Searches user for invitation
+        /// </summary>
+        [HttpPost]
+        [Route("searchForInvitation")]
+        [SwaggerResponse(200, typeof(MinUserForInvitationResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        public IActionResult SearchUserForInvitation([FromBody] SearchUserForInvitationRequest request)
+        {
+            var result = _userFacade.FindUsersForInvite(request.Username, request.GroupId);
+            var items = new List<MinUserForInvitationItem>();
+            result.ToList().ForEach(res => items.Add(
+                new MinUserForInvitationItem(res.Invited, res.Username, res.IsTeacher,
+                    res.Id, res.Email, res.AvatarLink)
+            ));
+            var response = new MinUserForInvitationResponse(items);
+            return Ok(response);
+        }
+
         /// <summary>
         ///     Reports user somehow (for now)
         /// </summary>

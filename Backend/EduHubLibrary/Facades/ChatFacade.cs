@@ -1,14 +1,15 @@
-﻿using EduHubLibrary.Domain;
+﻿using System;
+using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
-using System;
-using System.Linq;
 
 namespace EduHubLibrary.Facades
 {
     public class ChatFacade : IChatFacade
     {
+        private readonly IGroupRepository _groupRepository;
+
         public ChatFacade(IGroupRepository groupRepository)
         {
             _groupRepository = groupRepository;
@@ -55,7 +56,5 @@ namespace EduHubLibrary.Facades
 
             if (!senderId.Equals(userId)) throw new NotEnoughPermissionsException(userId);
         }
-
-        private readonly IGroupRepository _groupRepository;
     }
 }

@@ -19,8 +19,8 @@ namespace EduHub.Controllers
     [Route("api/group")]
     public class GroupController : Controller
     {
-        private readonly IGroupFacade _groupFacade;
         private readonly IGroupEditFacade _groupEditFacade;
+        private readonly IGroupFacade _groupFacade;
 
         private readonly IUserFacade _userFacade;
 

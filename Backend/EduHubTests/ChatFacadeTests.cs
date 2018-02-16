@@ -1,23 +1,22 @@
-﻿using EduHubLibrary.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace EduHubTests
 {
     [TestClass]
     public class ChatFacadeTests
     {
+        private Guid _creatorId;
         private InMemoryGroupRepository _groupRepository;
         private Guid _testGroupId;
-        private Guid _creatorId;
 
         [TestInitialize]
         public void Initialize()
@@ -27,10 +26,10 @@ namespace EduHubTests
             var userRepository = new InMemoryUserRepository();
             var groupSettings = new GroupSettings(3, 100, 100, 1000);
             var groupFacade = new GroupFacade(_groupRepository, userRepository, groupSettings);
-            var userFacade = new UserFacade(userRepository, _groupRepository);
-            
+            var userFacade = new AuthUserFacade(userRepository, _groupRepository);
+
             _creatorId = userFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, UserType.User);
-            _testGroupId = groupFacade.CreateGroup(_creatorId, "Some group", new List<string> { "c#" }, "Interesting",
+            _testGroupId = groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"c#"}, "Interesting",
                 3, 100, false, GroupType.Lecture);
         }
 

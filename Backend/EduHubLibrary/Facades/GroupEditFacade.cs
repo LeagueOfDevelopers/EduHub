@@ -9,7 +9,6 @@ namespace EduHubLibrary.Facades
 {
     public class GroupEditFacade : IGroupEditFacade
     {
-
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
 

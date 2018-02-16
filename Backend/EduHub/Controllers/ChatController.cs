@@ -1,10 +1,10 @@
-﻿using EduHub.Extensions;
+﻿using System;
+using EduHub.Extensions;
 using EduHub.Models;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
 
 namespace EduHub.Controllers
 {
@@ -12,6 +12,9 @@ namespace EduHub.Controllers
     [Route("api/group/{groupId}/chat")]
     public class ChatController : Controller
     {
+        private readonly IChatFacade _chatFacade;
+        private readonly IGroupFacade _groupFacade;
+
         public ChatController(IChatFacade chatFacade, IGroupFacade groupFacade)
         {
             _chatFacade = chatFacade;
@@ -86,8 +89,5 @@ namespace EduHub.Controllers
         {
             return Ok(_groupFacade.GetGroup(groupId).Chat);
         }
-
-        private readonly IChatFacade _chatFacade;
-        private readonly IGroupFacade _groupFacade;
     }
 }

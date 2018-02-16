@@ -48,7 +48,7 @@ namespace EduHubLibrary.Domain
             Chat = new Chat();
         }
 
-        public Chat Chat { get; private set; }
+        public Chat Chat { get; }
         public GroupInfo GroupInfo { get; set; }
         public User Teacher { get; private set; }
         public CourseStatus Status { get; set; }
@@ -120,7 +120,7 @@ namespace EduHubLibrary.Domain
         internal Member GetMember(Guid userId)
         {
             return Ensure.Any.IsNotNull(Members.Find(current => current.UserId == userId), nameof(GetMember),
-                   opt => opt.WithException(new MemberNotFoundException(userId)));
+                opt => opt.WithException(new MemberNotFoundException(userId)));
         }
 
         internal void AddInvitation(Invitation invitation)

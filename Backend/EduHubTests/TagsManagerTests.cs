@@ -1,9 +1,7 @@
-﻿using EduHubLibrary.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using EduHubLibrary.Domain;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EduHubTests
 {
@@ -22,7 +20,7 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(1, tagsManager.Tags.Count());
         }
-        
+
         [TestMethod]
         public void TryToFindExistingTagsWithPartOfWord_GetListOfFoundTags()
         {
@@ -33,7 +31,7 @@ namespace EduHubTests
             tagsManager.AddTag("Teg3");
 
             //Act
-            var expectedTags = new List<string> { "Tag1", "Tag2" };
+            var expectedTags = new List<string> {"Tag1", "Tag2"};
             var actualTags = tagsManager.FindTag("Tag").ToList();
 
             //Assert

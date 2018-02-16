@@ -5,6 +5,7 @@ using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Facades.Models;
 using EnsureThat;
 
 namespace EduHubLibrary.Facades
@@ -29,15 +30,6 @@ namespace EduHubLibrary.Facades
         public IEnumerable<User> GetUsers()
         {
             return _userRepository.GetAll();
-        }
-
-        public Guid RegUser(string username, Credentials credentials, bool IsTeacher, UserType type)
-        {
-            Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
-                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
-            var user = new User(username, credentials, IsTeacher, type);
-            _userRepository.Add(user);
-            return user.Id;
         }
 
         public User FindByCredentials(Credentials credentials)
@@ -125,6 +117,26 @@ namespace EduHubLibrary.Facades
         public void AddNotify(Guid userId, string notify)
         {
             _userRepository.GetUserById(userId).AddNotify(notify);
+        }
+
+        public IEnumerable<UserInviteInfo> FindUsersForInvite(string name, Guid groupId)
+        {
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            var targets = _userRepository.GetAll().ToList()
+                .FindAll(u => u.UserProfile.Name.Contains(name))
+                .Where(u => !currentGroup.IsMember(u.Id));
+            var result = new List<UserInviteInfo>();
+            targets.ToList().ForEach(t => result.Add(
+                new UserInviteInfo(
+                    t.Invitations.Any(inv => inv.GroupId == groupId),
+                    t.UserProfile.Name,
+                    t.UserProfile.IsTeacher,
+                    t.Id,
+                    t.UserProfile.Email,
+                    t.UserProfile.AvatarLink,
+                    t.IsActive
+                )));
+            return result;
         }
 
         #region Edit Profile Data Methods

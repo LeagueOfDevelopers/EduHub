@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Facades.Models;
 
 namespace EduHubLibrary.Facades
 {
     public interface IUserFacade
     {
-        Guid RegUser(string username, Credentials credentials, bool IsTeacher, UserType type);
         IEnumerable<User> GetUsers();
         User GetUser(Guid id);
         User FindByCredentials(Credentials credentials);
@@ -17,6 +17,7 @@ namespace EduHubLibrary.Facades
         IEnumerable<Invitation> GetAllInvitationsForUser(Guid userId);
         IEnumerable<Group> GetAllGroupsOfUser(Guid userId);
         IEnumerable<User> FindByName(string name);
+        IEnumerable<UserInviteInfo> FindUsersForInvite(string name, Guid groupId);
         IEnumerable<string> GetNotifies(Guid userId);
         void AddNotify(Guid userId, string notify);
         void EditName(Guid userId, string newName);
