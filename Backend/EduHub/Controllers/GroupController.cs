@@ -20,12 +20,16 @@ namespace EduHub.Controllers
     public class GroupController : Controller
     {
         private readonly IGroupFacade _groupFacade;
+        private readonly IGroupEditFacade _groupEditFacade;
+
         private readonly IUserFacade _userFacade;
 
-        public GroupController(IGroupFacade groupFacade, IUserFacade userFacade)
+        public GroupController(IGroupFacade groupFacade, IUserFacade userFacade,
+            IGroupEditFacade groupEditFacade)
         {
             _groupFacade = groupFacade;
             _userFacade = userFacade;
+            _groupEditFacade = groupEditFacade;
         }
 
         /// <summary>
@@ -83,7 +87,7 @@ namespace EduHub.Controllers
         public IActionResult EditGroupTitle([FromBody] EditGroupTitleRequest request, [FromRoute] Guid groupId)
         {
             var userId = Request.GetUserId();
-            _groupFacade.ChangeGroupTitle(groupId, userId, request.GroupTitle);
+            _groupEditFacade.ChangeGroupTitle(groupId, userId, request.GroupTitle);
             return Ok();
         }
 
@@ -99,7 +103,7 @@ namespace EduHub.Controllers
             [FromRoute] Guid groupId)
         {
             var userId = Request.GetUserId();
-            _groupFacade.ChangeGroupDescription(groupId, userId, request.GroupDescription);
+            _groupEditFacade.ChangeGroupDescription(groupId, userId, request.GroupDescription);
             return Ok();
         }
 
@@ -114,7 +118,7 @@ namespace EduHub.Controllers
         public IActionResult EditGroupTags([FromBody] EditGroupTagsRequest request, [FromRoute] Guid groupId)
         {
             var userId = Request.GetUserId();
-            _groupFacade.ChangeGroupTags(groupId, userId, request.GroupTags);
+            _groupEditFacade.ChangeGroupTags(groupId, userId, request.GroupTags);
             return Ok();
         }
 
@@ -129,7 +133,7 @@ namespace EduHub.Controllers
         public IActionResult EditGroupSize([FromBody] EditGroupSizeRequest request, [FromRoute] Guid groupId)
         {
             var userId = Request.GetUserId();
-            _groupFacade.ChangeGroupSize(groupId, userId, request.GroupSize);
+            _groupEditFacade.ChangeGroupSize(groupId, userId, request.GroupSize);
             return Ok();
         }
 
@@ -144,7 +148,37 @@ namespace EduHub.Controllers
         public IActionResult EditGroupPrice([FromBody] EditGroupPriceRequest request, [FromRoute] Guid groupId)
         {
             var userId = Request.GetUserId();
-            _groupFacade.ChangeGroupPrice(groupId, userId, request.GroupPrice);
+            _groupEditFacade.ChangeGroupPrice(groupId, userId, request.GroupPrice);
+            return Ok();
+        }
+
+        /// <summary>
+        ///     Changes group type
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("{groupId}/type")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        public IActionResult EditGroupType([FromBody] EditGroupTypeRequest request, [FromRoute] Guid groupId)
+        {
+            var userId = Request.GetUserId();
+            _groupEditFacade.ChangeGroupType(groupId, userId, request.GroupType);
+            return Ok();
+        }
+
+        /// <summary>
+        ///     Changes group privacy
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("{groupId}/privacy")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        public IActionResult EditGroupPrivacy([FromBody] EditGroupPrivacy request, [FromRoute] Guid groupId)
+        {
+            var userId = Request.GetUserId();
+            _groupEditFacade.ChangeGroupPrivacy(groupId, userId, request.IsPrivate);
             return Ok();
         }
 

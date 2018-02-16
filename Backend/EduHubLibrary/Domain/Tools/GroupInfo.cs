@@ -24,8 +24,8 @@ namespace EduHubLibrary.Domain
         public string Description { get; internal set; }
         public string Curriculum { get; internal set; }
         public IEnumerable<string> Tags { get; internal set; }
-        public GroupType GroupType { get; }
-        public bool IsPrivate { get; }
+        public GroupType GroupType { get; internal set; }
+        public bool IsPrivate { get; internal set; }
         public bool IsActive { get; set; }
         public int Size { get; internal set; }
         public double MoneyPerUser { get; internal set; }

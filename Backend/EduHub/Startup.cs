@@ -47,7 +47,6 @@ namespace EduHub
             var fileRepository = new InMemoryFileRepository();
             var groupRepository = new InMemoryGroupRepository();
             var keysRepository = new InMemoryKeysRepository();
-
             var emailSettings = new EmailSettings(Configuration.GetValue<string>("EmailLogin"),
                 Configuration.GetValue<string>("Email"),
                 Configuration.GetValue<string>("EmailPassword"),
@@ -56,6 +55,7 @@ namespace EduHub
                 Configuration.GetValue<int>("SmtpPort"));
             var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository);
+            var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings);
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository);
@@ -65,6 +65,7 @@ namespace EduHub
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IFileFacade>(fileFacade);
             services.AddSingleton<IChatFacade>(chatFacade);
+            services.AddSingleton<IGroupEditFacade>(groupEditFacade);
             services.AddSingleton(tagsManager);
             services.AddSingleton<IAuthUserFacade>(authUserFacade);
             services.AddSingleton(Env);

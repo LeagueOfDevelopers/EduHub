@@ -6,12 +6,12 @@ namespace EduHub.Models.Tools
 {
     public class FullGroupInfo
     {
-        public FullGroupInfo(string title, int size, int currentAmount, double cost, GroupType groupType,
+        public FullGroupInfo(string title, int size, int memberAmount, double cost, GroupType groupType,
             IEnumerable<string> tags, string description, CourseStatus courseStatus)
         {
             Title = title;
             Size = size;
-            CurrentAmount = currentAmount;
+            MemberAmount = memberAmount;
             Cost = cost;
             GroupType = groupType;
             Tags = tags;
@@ -21,7 +21,7 @@ namespace EduHub.Models.Tools
 
         public string Title { get; set; }
         public int Size { get; set; }
-        public int CurrentAmount { get; set; }
+        public int MemberAmount { get; set; }
         public double Cost { get; set; }
         public GroupType GroupType { get; set; }
         public IEnumerable<string> Tags { get; set; }
