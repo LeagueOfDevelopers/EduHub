@@ -40,7 +40,7 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
 
   handleSelectChange = (value) => {
     this.setState({selectValue: value});
-    this.props.getUsers(value)
+    setTimeout(() => this.props.getUsers(this.state.selectValue), 0)
   };
 
   tryInviteMember(invitedId) {
@@ -65,12 +65,12 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
         overlay={(
           <Menu>
             {!this.state.inviteMemberRole ?
-              <div>
-                <Button onClick={() => this.setState({inviteMemberRole: 'Member'})} style={{width: '100%', marginBottom: 1}}>Участник</Button>
-                <Button onClick={() => this.setState({inviteMemberRole: 'Teacher'})} style={{width: '100%'}}>Учитель</Button>
-              </div>
-              :
               <Menu.Item className='unhover' key='0'>
+                <Button onClick={() => this.setState({inviteMemberRole: 'Member'})} style={{display: 'block', width: '100%', marginBottom: 1}}>Участник</Button>
+                <Button onClick={() => this.setState({inviteMemberRole: 'Teacher'})} style={{display: 'block', width: '100%'}}>Учитель</Button>
+              </Menu.Item>
+              :
+              <Menu.Item className='unhover' key='1'>
                 <Select
                   mode='combobox'
                   className='unhover'
@@ -80,6 +80,7 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
                   placeholder='Введите имя пользователя'
                   defaultActiveFirstOption={false}
                   showArrow={false}
+                  onSelect={(e) => console.log(e)}
                 >
                   {this.props.users.map(item =>
                     <Select.Option key={item.name}>

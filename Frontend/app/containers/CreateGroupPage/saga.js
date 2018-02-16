@@ -5,7 +5,7 @@ import config from '../../config';
 
 function* createGroupPageSaga(action) {
   try {
-    const groupId = yield call(
+    const data = yield call(
       createGroup,
       action.title,
       action.desc,
@@ -16,7 +16,7 @@ function* createGroupPageSaga(action) {
       action.isPrivate
     );
 
-    yield put(createGroupSuccess(groupId));
+    yield put(createGroupSuccess(data));
   }
   catch (e) {
     yield put(createGroupFailed(e))
@@ -40,8 +40,8 @@ function createGroup(title, desc, tags, size, moneyPerUser, groupType, isPrivate
       isPrivate: isPrivate
     })
   })
-    .then(res => res.json())
-    .then(res => res.id)
+    .then(res => res.ok ? res.json() : res.status)
+    .then(res => res)
     .catch(error => error)
 }
 

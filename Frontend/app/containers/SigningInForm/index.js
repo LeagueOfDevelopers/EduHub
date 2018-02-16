@@ -50,27 +50,32 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
     this.setState({password: e.target.value})
   };
 
-  login = () => {
-    if(this.state.email !== '' && this.state.password !== '') {
-      if(localStorage.getItem('without_server') === 'true') {
-        localStorage.setItem('name', 'Имя пользователя');
-        localStorage.setItem('avatarLink', '');
-        localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' +
-          '.eyJSb2xlIjoiVXNlciIsIlVzZXJJZCI6Ijg0OGEzMjAyLTcwODUt' +
-          'NGNiYS04NDJmLTA3ZDA3ZWZmN2IzNSIsImV4cCI6MTUxNTk2NDk3MCwia' +
-          'XNzIjoibG9kLW1pc2lzLnJ1In0.N9tSh9SPHz1cvWjsq9ZkmEKl0NBDh-ebtj4Eo-IsG5o');
-        location.reload();
-      }
-      else {
-        this.props.login(this.state.email, this.state.password);
-      }
+  login = (email, password) => {
+    if(localStorage.getItem('without_server') === 'true') {
+      localStorage.setItem('name', 'Имя пользователя');
+      localStorage.setItem('avatarLink', '');
+      localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' +
+        '.eyJSb2xlIjoiVXNlciIsIlVzZXJJZCI6Ijg0OGEzMjAyLTcwODUt' +
+        'NGNiYS04NDJmLTA3ZDA3ZWZmN2IzNSIsImV4cCI6MTUxNTk2NDk3MCwia' +
+        'XNzIjoibG9kLW1pc2lzLnJ1In0.N9tSh9SPHz1cvWjsq9ZkmEKl0NBDh-ebtj4Eo-IsG5o');
+      location.reload();
     }
     else {
-      message.error('Введите все данные')
+      this.props.login(email, password);
     }
   };
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, value) => {
+      if(!err) {
+        this.login(value.email, value.password)
+      }
+    })
+  };
+
   render() {
+    const {getFieldDecorator} = this.props.form;
     return (
       <Modal
         visible={this.props.visible}
@@ -83,21 +88,31 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
             <Col><Link to='#'>Забыли пароль?</Link></Col>
             <Col>
               <Button onClick={this.props.handleCancel}>Отмена</Button>
-              <Button type="primary" htmlType='submit' form='sign-in-form' onClick={this.login}>Войти</Button>
+              <Button type="primary" htmlType='submit' form='sign-in-form'>Войти</Button>
             </Col>
           </Row>
         ]}
       >
-        <Form id='sign-in-form'>
+        <Form id='sign-in-form' onSubmit={this.handleSubmit}>
           <FormItem
             label="Ваш email"
           >
-            <Input value={this.state.email} onChange={this.onHandleEmailChange} placeholder=""/>
+            {getFieldDecorator('email', {
+              rules: [{required: true, message: 'Пожалуйста введите ваш email!'}],
+              initialValue: this.state.email
+            })(
+              <Input onChange={this.onHandleEmailChange} placeholder=""/>)
+            }
           </FormItem>
           <FormItem
             label="Введите пароль"
           >
-            <Input value={this.state.password} onChange={this.onHandlePasswordChange} type='password' placeholder=""/>
+            {getFieldDecorator('password', {
+              rules: [{required: true, message: 'Пожалуйста введите ваш пароль!'}],
+              initialValue: this.state.password
+            })(
+              <Input onChange={this.onHandlePasswordChange} type='password' placeholder=""/>)
+            }
           </FormItem>
           {this.props.isExists ? null :
             <div style={{color: 'red'}}>
@@ -150,5 +165,5 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(SingingInForm);
+)(Form.create()(SingingInForm));
 

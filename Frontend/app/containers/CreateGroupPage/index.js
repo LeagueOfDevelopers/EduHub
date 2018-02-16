@@ -51,7 +51,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     this.state = {
       members: [],
       title: '',
-      size: 1,
+      size: null,
       techs: [],
       type: '',
       description: '',
@@ -68,24 +68,20 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     this.onHandleTypeChange = this.onHandleTypeChange.bind(this);
     this.onHandlePriceChange = this.onHandlePriceChange.bind(this);
     this.onHandlePrivateChange = this.onHandlePrivateChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   createGroup = () => {
-    if(this.state.title !== '') {
-      (localStorage.getItem('without_server') !== 'true') ?
-        this.props.createGroup(
-          this.state.title,
-          this.state.description,
-          this.state.techs,
-          this.state.size,
-          this.state.price,
-          this.state.type,
-          this.state.isPrivate
-        ) : null
-    }
-    else {
-      message.error('Введите название группы')
-    }
+    (localStorage.getItem('without_server') !== 'true') ?
+      this.props.createGroup(
+        this.state.title,
+        this.state.description,
+        this.state.techs,
+        this.state.size,
+        this.state.price,
+        this.state.type,
+        this.state.isPrivate
+      ) : null
   };
 
   goBack = () => {
@@ -121,61 +117,101 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     this.setState({isPrivate: e})
   };
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.createGroup(values.title, values.desc , values.tags , values.size, values.price, values.type, values.privacy);
+      }
+    });
+  };
+
   render() {
+    const { getFieldDecorator } = this.props.form;
     return (
       <div>
         <Row style={{textAlign: 'center', marginTop: 30}}><h3>Создание группы</h3></Row>
         <Row><Divider/></Row>
         <Row style={{marginTop: 20}}>
-          <Form className='form'>
+          <Form onSubmit={this.handleSubmit} className='form'>
             <FormItem
               {...formItemLayout}
               label="Название группы"
             >
-              <Input value={this.state.title} onChange={this.onHandleTitleChange} placeholder="Введите название группы"/>
+              {getFieldDecorator('title', {
+                rules: [{required: true, message: 'Пожалуйста введите название группы!'}],
+                initialValue: this.state.title
+              })(
+                <Input onChange={this.onHandleTitleChange} placeholder="Введите название группы"/>)
+              }
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Человек в группе"
             >
-              <InputNumber onChange={this.onHandleSizeChange} min={1} placeholder="1"/>
+              {getFieldDecorator('size', {
+                rules: [{required: true, message: 'Пожалуйста введите количество человек!'}],
+                initialValue: this.state.size
+              })(
+                <InputNumber onChange={this.onHandleSizeChange} min={1} placeholder="1"/>)
+              }
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Изучаемые технологии"
             >
-              <Select onChange={this.onHandleTechsChange} mode="tags" placeholder="Введите, что хотите изучить">
-                <Option value="html">html</Option>
-                <Option value="css">css</Option>
-                <Option value="js">js</Option>
-                <Option value="c#">c#</Option>
-              </Select>
+              {getFieldDecorator('tags', {
+                rules: [{required: true, message: 'Пожалуйста введите изучаемые технологии!'}],
+                initialValue: this.state.techs
+              })(
+                <Select onChange={this.onHandleTechsChange} mode="tags" placeholder="Введите, что хотите изучить">
+                  <Option value="html">html</Option>
+                  <Option value="css">css</Option>
+                  <Option value="js">js</Option>
+                  <Option value="c#">c#</Option>
+                </Select>)
+              }
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Формат занятий"
             >
-              <Col span={8}>
-                <Select onChange={this.onHandleTypeChange} placeholder="Выберите формат">
-                  <Option value="Lecture">Лекция</Option>
-                  <Option value="MasterClass">Мастер-класс</Option>
-                  <Option value="Seminar">Семинар</Option>
-                </Select>
-              </Col>
+              {/*<Col span={24}>*/}
+                {getFieldDecorator('type', {
+                  rules: [{required: true, message: 'Пожалуйста выберите формат обучения!'}],
+                  initialValue: this.state.type
+                })(
+                  <Select onChange={this.onHandleTypeChange} placeholder="Выберите формат">
+                    <Option value="Lecture">Лекция</Option>
+                    <Option value="MasterClass">Мастер-класс</Option>
+                    <Option value="Seminar">Семинар</Option>
+                  </Select>)
+                }
+              {/*</Col>*/}
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Описание группы"
             >
-              <TextArea value={this.state.description} onChange={this.onHandleDescChange} rows={4} />
+              {getFieldDecorator('desc', {
+                rules: [{required: true, message: 'Пожалуйста введите описание!'}],
+                initialValue: this.state.description
+              })(
+                <TextArea onChange={this.onHandleDescChange} rows={4}/>)
+              }
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Стоимость"
             >
-              <Col span={6}>
-                <Input value={this.state.price} onChange={this.onHandlePriceChange}/>
-              </Col>
+              {/*<Col span={24}>*/}
+                {getFieldDecorator('price', {
+                  rules: [{required: true, message: 'Пожалуйста введите стоимость занятия!'}],
+                  initialValue: this.state.price
+                })(
+                  <Input onChange={this.onHandlePriceChange}/>)
+                }
+              {/*</Col>*/}
             </FormItem >
             {/*<FormItem*/}
               {/*{...formItemLayout}*/}
@@ -195,12 +231,16 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               {...formItemLayout}
               label="Приватная группа"
             >
-              <Switch value={this.state.isPrivate} onChange={this.onHandlePrivateChange}/>
+              {getFieldDecorator('privacy', {
+                initialValue: this.state.isPrivate
+              })(
+                <Switch onChange={this.onHandlePrivateChange}/>)
+              }
             </FormItem >
             <Col offset={10} className='sm-row-center' style={{marginTop: 20}}>
               <FormItem {...tailFormItemLayout}>
                 <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
-                <Button type="primary" htmlType="submit" onClick={this.createGroup}>Создать группу</Button>
+                <Button type="primary" htmlType="submit">Создать группу</Button>
               </FormItem>
             </Col>
           </Form>
@@ -243,4 +283,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(CreateGroupPage);
+)(Form.create()(CreateGroupPage));

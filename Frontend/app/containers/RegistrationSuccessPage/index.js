@@ -15,10 +15,10 @@ export class RegistrationSuccessPage extends React.PureComponent { // eslint-dis
     return (
       <Row style={{marginTop: 40, padding: 40, backgroundColor: 'rgba(0,0,0,0.1)'}}>
         <Col span={24} style={{marginBottom: 30}}>
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            Вы успешно зарегистрированы.
+          <div style={{textAlign: 'center'}}>
+            Заявка на регистрацию принята.
           </div>
-          <div style={{display: 'flex', justifyContent: 'center'}}>
+          <div style={{textAlign: 'center'}}>
             Дальнейшие инструкции высланы вам на почту.
           </div>
         </Col>

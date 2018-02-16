@@ -10,6 +10,7 @@ import {
   CREATE_GROUP_SUCCESS,
   CREATE_GROUP_FAILED
 } from './constants';
+import {message} from 'antd';
 
 const initialState = fromJS({
   pending: false,
@@ -22,7 +23,7 @@ function createGroupPageReducer(state = initialState, action) {
       return state
         .set('pending', true);
     case CREATE_GROUP_SUCCESS:
-      location.assign(`/group/${action.groupId}`);
+      action.payload.id ? location.assign(`/group/${action.payload.id}`) : message.error('Что-то пошло не так. Попробуйте заново.');
       return state
         .set('pending', false);
     case CREATE_GROUP_FAILED:

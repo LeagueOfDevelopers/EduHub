@@ -23,10 +23,10 @@ export function createGroup(title, desc, tags, size, moneyPerUser, groupType, is
   };
 }
 
-export function createGroupSuccess(groupId) {
+export function createGroupSuccess(data) {
   return {
     type: CREATE_GROUP_SUCCESS,
-    groupId
+    payload: data
   };
 }
 

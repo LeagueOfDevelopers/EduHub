@@ -25,8 +25,8 @@ import config from '../../config';
 
 function* getUserGroupsSaga(action) {
   try {
-    const groups = yield call(getGroups, action.id);
-    yield put(getCurrentUserGroupsSuccess(groups))
+    const data = yield call(getGroups, action.id);
+    yield put(getCurrentUserGroupsSuccess(data.groups))
   }
   catch(e) {
     yield put(getCurrentUserGroupsFailed(e))
@@ -42,7 +42,7 @@ function getGroups(id) {
     }
   })
     .then(res => res.json())
-    .then(res => res.groups)
+    .then(res => res)
     .catch(error => error)
 }
 

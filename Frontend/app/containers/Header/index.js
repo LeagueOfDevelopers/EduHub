@@ -23,7 +23,6 @@ const {Option, OptGroup} = Select;
 
 const Logo = styled.div`
   font-size: 36px;
-  cursor: pointer;
 `;
 
 const selectItemsCount = 4;
@@ -105,14 +104,14 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
   render() {
     return (
       <Row type="flex" align="middle" className='header' style={{width: '100hr'}}>
-        <Col span={2} offset={2}>
-          <div style={{width: 80}}>
-            <Link to='/' style={{color: 'rgba(0,0,0,0.65)', textDecoration: 'none'}}>
-              <Logo>EduHub</Logo>
+        <Col xs={{span: 8, offset: 2}} md={{span: 4, offset: 2}}>
+          <Logo>
+            <Link to='/' style={{color: 'rgba(0,0,0,0.65)'}}>
+              EduHub
             </Link>
-          </div>
+          </Logo>
         </Col>
-        <Col span={6} offset={2} style={{position: 'relative'}}>
+        <Col md={{span: 9, offset: 1}} lg={{span: 7, offset: 0}} style={{position: 'relative'}}>
           <Select
             mode="combobox"
             className='search'
@@ -173,29 +172,28 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                 style={{fontSize: 20, position: 'absolute', top: 10, right: 10, opacity: 0.8}}/>
         </Col>
         {localStorage.getItem('token') ? (
-            <Col span={4} offset={6} style={{display: 'flex', justifyContent: 'flex-end'}}>
-              <Dropdown overlay={this.acc_menu} trigger={['click']}>
-                <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
-                  <Avatar
-                    src={localStorage.getItem('avatarLink')}
-                    size='large'
-                    style={{
-                      backgroundColor: "#fff",
-                      color: "rgba(0,0,0,0.65)",
-                      minHeight: 40,
-                      minWidth: 40,
-                      marginRight: 10,
-                      cursor: 'pointer'
-                    }}
-                  />
-                  <span className='userName'
-                        style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>{localStorage.getItem('name')}</span>
-                </div>
-              </Dropdown>
-            </Col>
+          <Col xs={{span: 12}} md={{span: 6}} lg={{span: 9}} style={{display: 'flex', justifyContent: 'flex-end'}}>
+            <Dropdown overlay={this.acc_menu} trigger={['click']}>
+              <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
+                <Avatar
+                  src={localStorage.getItem('avatarLink')}
+                  size='large'
+                  style={{
+                    backgroundColor: "#fff",
+                    color: "rgba(0,0,0,0.65)",
+                    minHeight: 40,
+                    minWidth: 40,
+                    cursor: 'pointer'
+                  }}
+                />
+                <span className='userName'
+                      style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>{localStorage.getItem('name')}</span>
+              </div>
+            </Dropdown>
+          </Col>
           )
           : (
-            <Col span={6} offset={4} style={{display: 'flex', justifyContent: 'flex-end'}}>
+            <Col xs={{span: 12}} md={{span: 6}} lg={{span: 9}} style={{display: 'flex', justifyContent: 'flex-end'}}>
               <Dropdown className="unregistered-person" overlay={this.menu} trigger={['click']}>
                 <img className='menu-btn' style={{width: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
               </Dropdown>

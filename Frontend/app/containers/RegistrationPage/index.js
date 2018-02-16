@@ -69,6 +69,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.onHandleTeacherStatusChange = this.onHandleTeacherStatusChange.bind(this);
     this.onHandleAvatarLinkChange = this.onHandleAvatarLinkChange.bind(this);
     this.onHandleInviteCodeChange = this.onHandleInviteCodeChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   onSignInClick = () => {
@@ -107,72 +108,105 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.setState({inviteCode: e.target.value})
   };
 
-  registrate = () => {
-    if(this.state.username !== '' && this.state.email !== '' && this.state.password !== '') {
-      (localStorage.getItem('without_server') === 'true') ?
-        location.assign('/')
-        :
-        this.props.signUp(
-          this.state.username,
-          this.state.email,
-          this.state.password,
-          this.state.isTeacher,
-          this.state.avatarLink,
-          this.state.inviteCode
-        );
+  registrate = (username, email, password, isTeacher, avatarLink, inviteCode) => {
+    (localStorage.getItem('without_server') === 'true') ?
+      location.assign('/')
+      :
+      this.props.signUp(
+        username,
+        email,
+        password,
+        isTeacher,
+        avatarLink,
+        inviteCode
+      );
+  };
 
-    } else
-      message.error('Введите все данные')
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, value) => {
+      if(!err) {
+        this.registrate(value.name, value.email, value.password, value.isTeacher, value.avatar, value.inviteCode)
+      }
+    })
   };
 
   render() {
+    const {getFieldDecorator} = this.props.form;
     return (
       <div>
         <Row style={{textAlign: 'center', marginTop: 30}}><h3>Регистрация</h3></Row>
         <Row><Divider/></Row>
         <Row style={{marginTop: 20}}>
-          <Form className='form'>
+          <Form className='form' onSubmit={this.handleSubmit}>
             <FormItem
               {...formItemLayout}
               label="Имя"
             >
-              <Input value={this.state.username} onChange={this.onHandleUsernameChange} placeholder="Так вас будут видеть на сайте"/>
+              {getFieldDecorator('name', {
+                rules: [{required: true, message: 'Имя должно быть не меньше 6 символов!', min: 6}],
+                initialValue: this.state.username
+              })(
+                <Input onChange={this.onHandleUsernameChange} placeholder="Так вас будут видеть на сайте"/>)
+              }
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Ваш email"
             >
-              <Input value={this.state.email} onChange={this.onHandleEmailChange} placeholder="Введите ваш email"/>
+              {getFieldDecorator('email', {
+                rules: [{required: true, message: 'Email должно быть не меньше 6 символов!', min: 6}],
+                initialValue: this.state.email
+              })(
+                <Input onChange={this.onHandleEmailChange} placeholder="Введите ваш email"/>)
+              }
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Придумайте пароль"
             >
-              <Input value={this.state.password} onChange={this.onHandlePasswordChange} type='password' placeholder="Введите пароль"/>
+              {getFieldDecorator('password', {
+                rules: [{required: true, message: 'Пароль должен быть не меньше 6 символов!', min: 6}],
+                initialValue: this.state.password
+              })(
+                <Input onChange={this.onHandlePasswordChange} type='password' placeholder="Введите пароль"/>)
+              }
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Преподаватель"
             >
-              <Switch value={this.state.isTeacher} onChange={this.onHandleTeacherStatusChange}/>
+              {getFieldDecorator('isTeacher', {
+                initialValue: this.state.isTeacher
+              })(
+                <Switch onChange={this.onHandleTeacherStatusChange}/>)
+              }
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Ссылка на аватарку"
             >
-              <Input value={this.state.avatarLink} onChange={this.onHandleAvatarLinkChange} placeholder="Можете оставить поле пустым"/>
+              {getFieldDecorator('avatar', {
+                initialValue: this.state.avatarLink
+              })(
+                <Input onChange={this.onHandleAvatarLinkChange} placeholder="Можете оставить поле пустым"/>)
+              }
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="Код приглашения"
             >
-              <Input value={this.state.inviteCode} onChange={this.onHandleInviteCodeChange} placeholder="Можете оставить поле пустым"/>
+              {getFieldDecorator('inviteCode', {
+                initialValue: this.state.inviteCode
+              })(
+                <Input onChange={this.onHandleInviteCodeChange} placeholder="Можете оставить поле пустым"/>)
+              }
             </FormItem>
             <Col offset={10} className='sm-row-center' style={{marginTop: 20}}>
               <FormItem {...tailFormItemLayout}>
                 <div>
                   <Button htmlType="button" style={{marginRight: '2%'}} onClick={this.goBack}>Отменить</Button>
-                  <Button type="primary" htmlType="submit" onClick={this.registrate}>Зарегистрироваться</Button>
+                  <Button type="primary" htmlType="submit">Зарегистрироваться</Button>
                 </div>
                 <div>
                   <span style={{marginRight: 10}}>Уже есть аккаунт?</span>
@@ -215,4 +249,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(RegistrationPage);
+)(Form.create()(RegistrationPage));

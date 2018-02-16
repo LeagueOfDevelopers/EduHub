@@ -161,7 +161,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   onSetResult = (result) => {
     this.setState({
       userProfile: result.userProfile ? result.userProfile : {},
-      teacherProfile: result.teacherProfile ? result.teacherProfile : {},
+      teacherProfile: result.teacherProfile,
       nameInput: result.userProfile.name,
       sexInput: result.userProfile.isMan.toString(),
       birthYearInput: result.userProfile.birthYear,
@@ -191,7 +191,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   };
 
   removeContact = (i) => {
-    this.setState({contactsInputs: this.state.contactsInputs.filter((item, index) => index !== i)})
+    this.setState({contactsInputs: this.state.contactsInputs.filter((item, index) => index !== i)});
   };
 
   onHandleChangeContact = (e, i) => {
@@ -222,9 +222,9 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     if(this.state.birthYearInput !== this.state.userProfile.birthYear) {
       this.props.editBirthYear(this.state.birthYearInput);
     }
-    if(this.state.contactsInputs.length !== this.state.userProfile.contacts || this.state.contactsInputs.map((item, i) =>
+    if(this.state.contactsInputs.length !== this.state.userProfile.contacts || this.state.contactsInputs.filter((item, i) =>
         item !== this.state.userProfile.contacts[i]
-      )) {
+      ).length !== 0) {
       setTimeout(() => this.props.editContacts(this.state.contactsInputs), 0)
     }
     this.setState({isEditing: false});
@@ -235,11 +235,11 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     return (
       <div>
         <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 40}} className='md-center-container'>
-          <Col md={{span: 24}} lg={{span: 6}} className='lg-center-container-item'>
+          <Col xs={{span: 24}} md={{span: 10}} lg={{span: 6}} className='lg-center-container-item'>
             <Card
               title={
                 <Row type='flex' align='middle'>
-                  <Col span={22} style={{display: 'flex', alignItems: 'center'}}>
+                  <Col span={21} style={{display: 'flex', alignItems: 'center'}}>
                     <Avatar
                       src={this.state.userProfile.avatarLink}
                       style={{minHeight: 50, minWidth: 50, marginRight: 20, borderRadius: '50%'}}
@@ -252,7 +252,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   </span>
                   </Col>
                   {localStorage.getItem('token') && !this.state.isEditing && parseJwt(localStorage.getItem('token')).UserId === this.state.id ?
-                    <Col span={2} style={{textAlign: 'right'}}>
+                    <Col span={3} style={{textAlign: 'right'}}>
                       <img src={require('../../images/edit.svg')} onClick={() => this.setState({isEditing: true})} style={{width: 20, cursor: 'pointer'}}/>
                     </Col>
                     : null
@@ -297,10 +297,11 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               <Row style={{marginBottom: 20}}>
                 <div>Основные навыки</div>
                 <Row gutter={6}>
-                  {this.state.teacherProfile.skills &&
+                  {this.state.teacherProfile &&
+                    this.state.teacherProfile.skills &&
                     this.state.teacherProfile.skills.length !== 0 ?
                       this.state.teacherProfile.skills.map((item) =>
-                    <Link to="#" key={item}>{item}</Link>
+                        <Link to="#" key={item}>{item}</Link>
                   ) : <div style={{fontSize: 16, color: '#000'}}>Не указано</div>}
                 </Row>
               </Row>
@@ -320,7 +321,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 <div>
                   {this.state.userProfile.contacts && this.state.userProfile.contacts.length !== 0 && !this.state.isEditing
                     ? this.state.userProfile.contacts.map((item, i) =>
-                      <Link to='#' key={i} className='user-link' style={{fontSize: 16}}>
+                      <Link to='#' key={i} className='user-link' style={{fontSize: 16, display: 'block'}}>
                         {item}
                       </Link>
                     ) :
@@ -367,19 +368,31 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 : null
               }
             </Card>
+            <Link to='/create_group'>
+              <Button type='primary' size='large' style={{width: '100%', marginTop: 20, minWidth: 280}}>Создать группу</Button>
+            </Link>
+            {!this.state.teacherProfile ?
+              <Button type='primary' style={{width: '100%', marginTop: 20, minWidth: 280}}>Стать преподавателем</Button>
+              :
+              <Button style={{width: '100%', marginTop: 12, minWidth: 280}}>Стать учеником</Button>
+            }
           </Col>
-          <Col sm={{span: 24}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>
+          <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>
             <Tabs defaultActiveKey="1" type='card'>
               <TabPane tab="Группы" key="1">
                 {(
                   <div className='cards-holder md-cards-holder-center' style={{margin: '30px 0'}}>
                     {localStorage.getItem('withoutServer') === 'true' ?
                       defaultMyGroups.map((item, i) =>
-                        <UnassembledGroupCard key={item.groupInfo.id} {...item}/>
+                        <Link to={`/group/${item.groupInfo.id}`} key={item.groupInfo.id}>
+                          <UnassembledGroupCard {...item}/>
+                        </Link>
                       )
                       :
                       this.props.myGroups.map((item, i) =>
-                        <UnassembledGroupCard key={item.groupInfo.id} {...item}/>
+                        <Link to={`/group/${item.groupInfo.id}`} key={item.groupInfo.id}>
+                          <UnassembledGroupCard {...item}/>
+                        </Link>
                       )
                     }
                   </div>

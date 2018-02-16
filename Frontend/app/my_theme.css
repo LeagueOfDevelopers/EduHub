@@ -15,7 +15,7 @@
 }
 
 .profile-card {
-  min-width: 290px;
+  min-width: 280px;
   cursor: default;
 }
 
@@ -31,6 +31,10 @@
 .header {
   background-color: #c4c4c4;
   height: 60px;
+}
+
+.userName {
+  margin-left: 10px;
 }
 
 .header .menu-btn {
@@ -97,6 +101,14 @@
   .md-cards-holder-center {
     justify-content: center;
   }
+
+  .header .menu-btn {
+    display: block;
+  }
+
+  .header .profile {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -126,14 +138,7 @@
 @media screen and (max-width: 576px) {
   .header .userName {
     display: none;
-  }
-
-  .header .menu-btn {
-    display: block;
-  }
-
-  .header .profile {
-    display: none;
+    margin-left: 0;
   }
 
   .form .ant-row {
