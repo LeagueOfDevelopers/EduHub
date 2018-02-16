@@ -175,7 +175,7 @@ namespace EduHub.Controllers
         [Route("{groupId}/privacy")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupPrivacy([FromBody] EditGroupPrivacy request, [FromRoute] Guid groupId)
+        public IActionResult EditGroupPrivacy([FromBody] EditGroupPrivacyRequest request, [FromRoute] Guid groupId)
         {
             var userId = Request.GetUserId();
             _groupEditFacade.ChangeGroupPrivacy(groupId, userId, request.IsPrivate);
