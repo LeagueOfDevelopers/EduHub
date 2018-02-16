@@ -30,8 +30,7 @@ namespace EduHubLibrary.Facades
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(size))));
             Ensure.Bool.IsTrue(totalValue <= _groupSettings.MaxGroupValue && totalValue >= _groupSettings.MinGroupValue,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(totalValue))));
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(userId),
-                opt => opt.WithException(new UserNotFoundException(userId)));
+            CheckUserExistence(userId);
             var group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
 
@@ -42,10 +41,9 @@ namespace EduHubLibrary.Facades
         {
             Ensure.Guid.IsNotEmpty(groupId);
             Ensure.Guid.IsNotEmpty(newMemberId);
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(newMemberId), nameof(newMemberId),
-                opt => opt.WithException(new UserNotFoundException(newMemberId)));
-            var currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AddMember),
-                opt => opt.WithException(new GroupNotFoundException(groupId)));
+            CheckUserExistence(newMemberId);
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.AddMember(newMemberId);
         }
 
@@ -54,12 +52,10 @@ namespace EduHubLibrary.Facades
             Ensure.Guid.IsNotEmpty(groupId);
             Ensure.Guid.IsNotEmpty(requestedPerson);
             Ensure.Guid.IsNotEmpty(teacherId);
-            var currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(DeleteTeacher),
-                opt => opt.WithException(new GroupNotFoundException(groupId)));
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(requestedPerson), nameof(DeleteTeacher),
-                opt => opt.WithException(new UserNotFoundException(requestedPerson)));
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(teacherId), nameof(DeleteTeacher),
-                opt => opt.WithException(new UserNotFoundException(teacherId)));
+            CheckUserExistence(requestedPerson);
+            CheckUserExistence(teacherId);
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.DeleteTeacher(requestedPerson, teacherId);
         }
 
@@ -68,12 +64,10 @@ namespace EduHubLibrary.Facades
             Ensure.Guid.IsNotEmpty(requestedPerson);
             Ensure.Guid.IsNotEmpty(deletingPerson);
             Ensure.Guid.IsNotEmpty(groupId);
-            var currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(DeleteMember),
-                opt => opt.WithException(new GroupNotFoundException(groupId)));
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(requestedPerson), nameof(DeleteMember),
-                opt => opt.WithException(new UserNotFoundException(requestedPerson)));
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(deletingPerson), nameof(DeleteMember),
-                opt => opt.WithException(new UserNotFoundException(deletingPerson)));
+            CheckUserExistence(requestedPerson);
+            CheckUserExistence(deletingPerson);
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.DeleteMember(requestedPerson, deletingPerson);
         }
 
@@ -119,11 +113,8 @@ namespace EduHubLibrary.Facades
         {
             Ensure.Guid.IsNotEmpty(teacherId);
             Ensure.Guid.IsNotEmpty(groupId);
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(teacherId), nameof(ApproveTeacher),
-                opt => opt.WithException(new UserNotFoundException(teacherId)));
-            var currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(ApproveTeacher),
-                opt => opt.WithException(new GroupNotFoundException(groupId)));
 
+            var currentGroup = _groupRepository.GetGroupById(groupId);
             var teacher = _userRepository.GetUserById(teacherId);
             currentGroup.ApproveTeacher(teacher);
         }
@@ -132,10 +123,9 @@ namespace EduHubLibrary.Facades
         {
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Guid.IsNotEmpty(groupId);
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AcceptCurriculum),
-                opt => opt.WithException(new UserNotFoundException(userId)));
-            var currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AcceptCurriculum),
-                opt => opt.WithException(new GroupNotFoundException(groupId)));
+            CheckUserExistence(userId);
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.AcceptCurriculum(userId);
         }
 
@@ -143,10 +133,9 @@ namespace EduHubLibrary.Facades
         {
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Guid.IsNotEmpty(groupId);
-            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AcceptCurriculum),
-                opt => opt.WithException(new UserNotFoundException(userId)));
-            var currentGroup = Ensure.Any.IsNotNull(_groupRepository.GetGroupById(groupId), nameof(AcceptCurriculum),
-                opt => opt.WithException(new GroupNotFoundException(groupId)));
+            CheckUserExistence(userId);
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.OfferCurriculum(userId, description);
         }
 
@@ -159,66 +148,70 @@ namespace EduHubLibrary.Facades
 
         public void ChangeGroupTitle(Guid groupId, Guid changerId, string newTitle)
         {
-            var currentGroup = _groupRepository.GetGroupById(groupId);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(changerId), nameof(currentGroup.GetMember),
-                opt => opt.WithException(new MemberNotFoundException(changerId)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupTitle),
-                opt => opt.WithException(new NotEnoughPermissionsException(changerId)));
+            CheckMemberPermissions(changerId, groupId);
             Ensure.String.IsNotNullOrWhiteSpace(newTitle);
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.GroupInfo.Title = newTitle;
             _groupRepository.Update(currentGroup);
         }
 
         public void ChangeGroupDescription(Guid groupId, Guid changerId, string newDescription)
         {
+            CheckMemberPermissions(changerId, groupId);
+            Ensure.String.IsNotNullOrWhiteSpace(newDescription);
+
             var currentGroup = _groupRepository.GetGroupById(groupId);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(changerId), nameof(currentGroup.GetMember),
-                opt => opt.WithException(new MemberNotFoundException(changerId)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupDescription),
-                opt => opt.WithException(new NotEnoughPermissionsException(changerId)));
             currentGroup.GroupInfo.Description = newDescription;
             _groupRepository.Update(currentGroup);
         }
 
         public void ChangeGroupTags(Guid groupId, Guid changerId, List<string> newTags)
         {
+            CheckMemberPermissions(changerId, groupId);
+
             var currentGroup = _groupRepository.GetGroupById(groupId);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(changerId), nameof(currentGroup.GetMember),
-                opt => opt.WithException(new MemberNotFoundException(changerId)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupTags),
-                opt => opt.WithException(new NotEnoughPermissionsException(changerId)));
             currentGroup.GroupInfo.Tags = newTags;
             _groupRepository.Update(currentGroup);
         }
 
         public void ChangeGroupSize(Guid groupId, Guid changerId, int newSize)
         {
-            var currentGroup = _groupRepository.GetGroupById(groupId);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(changerId), nameof(currentGroup.GetMember),
-                opt => opt.WithException(new MemberNotFoundException(changerId)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupSize),
-                opt => opt.WithException(new NotEnoughPermissionsException(changerId)));
+            CheckMemberPermissions(changerId, groupId);
             Ensure.Any.IsNotNull(newSize);
             Ensure.Bool.IsTrue(newSize <= _groupSettings.MaxGroupSize && newSize >= _groupSettings.MinGroupSize,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newSize))));
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.GroupInfo.Size = newSize;
             _groupRepository.Update(currentGroup);
         }
 
         public void ChangeGroupPrice(Guid groupId, Guid changerId, double newPrice)
         {
-            var currentGroup = _groupRepository.GetGroupById(groupId);
-            var current = Ensure.Any.IsNotNull(currentGroup.GetMember(changerId), nameof(currentGroup.GetMember),
-                opt => opt.WithException(new MemberNotFoundException(changerId)));
-            Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(ChangeGroupPrice),
-                opt => opt.WithException(new NotEnoughPermissionsException(changerId)));
+            CheckMemberPermissions(changerId, groupId);
             Ensure.Any.IsNotNull(newPrice);
             Ensure.Bool.IsTrue(newPrice <= _groupSettings.MaxGroupValue && newPrice >= _groupSettings.MinGroupValue,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newPrice))));
+            
+            var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.GroupInfo.MoneyPerUser = newPrice;
             _groupRepository.Update(currentGroup);
         }
 
         #endregion
+        
+        private void CheckUserExistence(Guid userId)
+        {
+            _userRepository.GetUserById(userId);
+        }
+
+        private void CheckMemberPermissions(Guid memberId, Guid groupId)
+        {
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            var member = currentGroup.GetMember(memberId);
+            Ensure.Bool.IsTrue(member.MemberRole == MemberRole.Creator, nameof(CheckMemberPermissions),
+                opt => opt.WithException(new NotEnoughPermissionsException(memberId)));
+        }
     }
 }

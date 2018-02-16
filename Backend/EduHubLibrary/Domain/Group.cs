@@ -119,7 +119,8 @@ namespace EduHubLibrary.Domain
 
         internal Member GetMember(Guid userId)
         {
-            return Members.FirstOrDefault(current => current.UserId == userId);
+            return Ensure.Any.IsNotNull(Members.Find(current => current.UserId == userId), nameof(GetMember),
+                   opt => opt.WithException(new MemberNotFoundException(userId)));
         }
 
         internal void AddInvitation(Invitation invitation)
