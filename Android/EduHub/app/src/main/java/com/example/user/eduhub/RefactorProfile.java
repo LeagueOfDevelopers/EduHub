@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
@@ -19,6 +20,8 @@ FragmentTransaction fragmentTransaction;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refactor_profile);
         ImageButton back=findViewById(R.id.back);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        toolbar.setTitle("Редактирование профиля");
 
         Intent getIntent=getIntent();
         userProfile=(UserProfileResponse) getIntent.getSerializableExtra("UserProfile");
@@ -27,6 +30,7 @@ FragmentTransaction fragmentTransaction;
         fragmentTransaction=getSupportFragmentManager().beginTransaction();
         if(userProfile.getUserProfile().getIsTeacher()){
             RefactorTeacherProfile refactorTeacherProfile=new RefactorTeacherProfile();
+            refactorTeacherProfile.setUserProfile(userProfile);
             fragmentTransaction.add(R.id.conteiner_for_refactor_fragments,refactorTeacherProfile);
             fragmentTransaction.commit();
         }else {

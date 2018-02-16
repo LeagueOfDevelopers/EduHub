@@ -13,6 +13,7 @@ import com.example.user.eduhub.Models.SearchModel;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Models.Registration.RegistrationModel;
 import com.example.user.eduhub.Models.Registration.RegistrationResponseModel;
+import com.example.user.eduhub.Models.UserProfile.RefactorUserRequestModel;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 import com.example.user.eduhub.Models.UserProfile.UserSearchProfileResponse;
 
@@ -56,5 +57,17 @@ public interface EduHubApi {
     Observable<InvitationResponse> getInvitations(@Header("Authorization") String token);
     @PUT("/api/user/profile/invitations")
     Single<String> changeStatusOfInvitation(@Header("Authorization") String token, @Body ChangeInvitationStatusModel model);
+    @PUT("/api/user/profile/name")
+    Single<String> changesUserName(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    @PUT("/api/user/profile/about")
+    Single<String> changesAboutUser(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    @PUT("/api/user/profile/avatar")
+    Single<String> changesUserAvatar(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    @PUT("/api/user/profile/contacts")
+    Single<String> changesUsersContacts(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    @PUT("/api/user/profile/birthYear")
+    Single<String> changesUsersBirthYear(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    @PUT("/api/user/profile/gender")
+    Single<String> changesUsersGender(@Header("Authorization") String token, @Body Boolean sex);
 
 }

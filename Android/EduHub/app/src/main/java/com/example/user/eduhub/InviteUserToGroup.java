@@ -79,8 +79,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
                                      {
                                          public boolean onKey(View v, int keyCode, KeyEvent event)
                                          {
-                                             if(
-                                                     (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                                             if((keyCode == KeyEvent.KEYCODE_ENTER)) {
                                                  if(!edit.getText().toString().equals("")){
                                                      if(!fakesButton.getCheckButton()){
                                                          searchUserPresenter.searchUser(edit.getText().toString());}

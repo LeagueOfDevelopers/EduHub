@@ -31,6 +31,10 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
         userProfile.setIsTeacher(true);
         userProfile.setName("Александр");
         TeacherProfile teacherProfile=new TeacherProfile();
+        ArrayList<String> contacts=new ArrayList<>();
+        contacts.add("id12342123");
+        contacts.add("@user");
+        userProfile.setContacts(contacts);
         ArrayList<String> skils=new ArrayList<>();
         skils.add("JS");
         skils.add("Android");
@@ -77,6 +81,7 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
         userProfile.setAboutUser("Начинающий Андроид разработчик");
         teacherProfile.setReviews(reviews);
         teacherProfile.setJobExp(groups);
+
         userProfileResponse.setTeacherProfile(teacherProfile);
         userProfileResponse.setUserProfile(userProfile);
 

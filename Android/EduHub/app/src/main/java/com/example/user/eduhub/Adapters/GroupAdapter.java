@@ -27,7 +27,6 @@ import java.util.ArrayList;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder>{
     private ArrayList<Group> groups;
     private Activity activity;
-    private User user;
     private Context context;
     public GroupAdapter(ArrayList<Group> groups, Activity activity,Context context){
         this.groups=groups;
