@@ -2,6 +2,7 @@
 using System.Text;
 using EduHub.Filters;
 using EduHub.Security;
+using EduHubLibrary.Common;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
@@ -45,16 +46,27 @@ namespace EduHub
             var userRepository = new InMemoryUserRepository();
             var fileRepository = new InMemoryFileRepository();
             var groupRepository = new InMemoryGroupRepository();
+            var keysRepository = new InMemoryKeysRepository();
+
+            var emailSettings = new EmailSettings(Configuration.GetValue<string>("EmailLogin"),
+                Configuration.GetValue<string>("Email"),
+                Configuration.GetValue<string>("EmailPassword"),
+                Configuration.GetValue<string>("SmtpAddress"),
+                Configuration.GetValue<string>("ConfirmAddress"),
+                Configuration.GetValue<int>("SmtpPort"));
+            var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository);
             var tagsManager = new TagsManager();
+            var authUserFacade = new AuthUserFacade(keysRepository, userRepository, emailSender);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IFileFacade>(fileFacade);
             services.AddSingleton<IChatFacade>(chatFacade);
             services.AddSingleton(tagsManager);
+            services.AddSingleton<IAuthUserFacade>(authUserFacade);
             services.AddSingleton(Env);
 
             services.AddSwaggerGen(current =>

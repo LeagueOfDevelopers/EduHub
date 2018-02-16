@@ -2,7 +2,9 @@
 {
     public enum UserType
     {
-        Admin,
-        User
+        Unknown = 0,
+        UnConfirmed = 1,
+        User = 2,
+        Admin = 3
     }
 }

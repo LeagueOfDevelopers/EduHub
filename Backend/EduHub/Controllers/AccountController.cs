@@ -1,4 +1,5 @@
-﻿using EduHub.Models;
+﻿using System;
+using EduHub.Models;
 using EduHub.Security;
 using EduHubLibrary.Common;
 using EduHubLibrary.Facades;
@@ -14,12 +15,16 @@ namespace EduHub.Controllers
         private readonly IJwtIssuer _jwtIssuer;
         private readonly SecuritySettings _securitySettings;
         private readonly IUserFacade _userFacade;
+        private readonly IAuthUserFacade _authUserFacade;
 
-        public AccountController(IUserFacade userFacade, SecuritySettings securitySettings, IJwtIssuer jwtIssuer)
+
+        public AccountController(IUserFacade userFacade, SecuritySettings securitySettings,
+            IJwtIssuer jwtIssuer, IAuthUserFacade authUserFacade)
         {
             _userFacade = userFacade;
             _jwtIssuer = jwtIssuer;
             _securitySettings = securitySettings;
+            _authUserFacade = authUserFacade;
         }
 
         /// <summary>
@@ -31,8 +36,8 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult Registrate([FromBody] RegistrationRequest request)
         {
-            var newId = _userFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
-                request.IsTeacher, UserType.User);
+            var newId = _authUserFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
+                request.IsTeacher, UserType.UnConfirmed);
             var response = new RegistrationResponse(newId);
             return Ok(response);
         }
@@ -57,6 +62,16 @@ namespace EduHub.Controllers
             }
 
             return Unauthorized();
+        }
+
+        [HttpPost]
+        [Route("confirm/{key}")]
+        [SwaggerResponse(200, typeof(LoginResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        public IActionResult Confirm([FromRoute] Guid key)
+        {
+            _authUserFacade.ConfirmUser(key);
+            return Ok();
         }
     }
 }
