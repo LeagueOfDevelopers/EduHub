@@ -16,17 +16,23 @@ namespace EduHubTests
     [TestClass]
     public class EventBusTests
     {
-        private GroupFacade _groupFacade;
-        private UserFacade _userFacade;
+        private IGroupFacade _groupFacade;
+        private IUserFacade _userFacade;
+        private IAuthUserFacade _authUserFacade;
 
         [TestInitialize]
         public void Initialize()
         {
             var inMemoryUserRepository = new InMemoryUserRepository();
             var inMemoryGroupRepository = new InMemoryGroupRepository();
+            var inMemoryKeysRepository = new InMemoryKeysRepository();
+            var emailSettings = new EmailSettings("", "", "", "", "",4);
+            var emailSender = new EmailSender(emailSettings);
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository,
                 new GroupSettings(3, 100, 0, 1000));
             _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
+            _authUserFacade = new AuthUserFacade(inMemoryKeysRepository, inMemoryUserRepository,
+                emailSender);
         }
 
         [TestMethod]
@@ -37,7 +43,7 @@ namespace EduHubTests
             eventBus.RegisterConsumer<NewMemberEvent>(new GroupEventsConsumer(_userFacade, _groupFacade),
                 EventType.NewMemberEvent);
 
-            var creatorId = _userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            var creatorId = _authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
             var createdGroupId = _groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
 
@@ -58,8 +64,8 @@ namespace EduHubTests
                 EventType.NewMemberEvent);
             eventBus.RegisterConsumer(new InvitationConsumer(_groupFacade), EventType.InvitationEvent);
 
-            var creatorId = _userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            var invitedId = _userFacade.RegUser("Somebody", new Credentials("email2", "password"), true, UserType.User);
+            var creatorId = _authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            var invitedId = _authUserFacade.RegUser("Somebody", new Credentials("email2", "password"), true, UserType.User);
 
             var createdGroupId = _groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 100, false, GroupType.Lecture);

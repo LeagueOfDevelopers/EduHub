@@ -15,18 +15,21 @@ namespace EduHubTests
     public class ChatFacadeTests
     {
         private Guid _creatorId;
-        private InMemoryGroupRepository _groupRepository;
         private Guid _testGroupId;
+        private IGroupRepository _groupRepository;
 
         [TestInitialize]
         public void Initialize()
         {
-            _groupRepository = new InMemoryGroupRepository();
-
+            var keyRepository = new InMemoryKeysRepository();
             var userRepository = new InMemoryUserRepository();
+            _groupRepository = new InMemoryGroupRepository();
             var groupSettings = new GroupSettings(3, 100, 100, 1000);
+            var emailSettings = new EmailSettings("", "", "", "", "", 3);
+            var sender = new EmailSender(emailSettings);
             var groupFacade = new GroupFacade(_groupRepository, userRepository, groupSettings);
-            var userFacade = new AuthUserFacade(userRepository, _groupRepository);
+            var userFacade = new AuthUserFacade(keyRepository, userRepository,
+                sender);
 
             _creatorId = userFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, UserType.User);
             _testGroupId = groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"c#"}, "Interesting",

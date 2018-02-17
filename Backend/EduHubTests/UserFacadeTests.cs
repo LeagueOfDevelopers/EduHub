@@ -15,56 +15,29 @@ namespace EduHubTests
     [TestClass]
     public class UserFacadeTests
     {
-        private InMemoryGroupRepository _inMemoryGroupRepository;
-
-        //This function has not yet been implemented
-
-        /*
-        [TestMethod]
-        public void TryToInviteUser_GetAddedInvitationInGroup()
-        {
-            //Arrange
-            InMemoryUserRepository inMemoryUserRepository = new InMemoryUserRepository();
-            InMemoryGroupRepository inMemoryGroupRepository = new InMemoryGroupRepository();
-            GroupFacade groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, new GroupSettings(1, 100, 0, 1000));
-            UserFacade userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-
-            userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
-            userFacade.RegUser("Invited", new Credentials("email2", "password"), false, UserType.User);
-            var allUsers = userFacade.GetUsers().ToList();
-            var creatorId = allUsers[0].Id;
-            var invitedId = allUsers[1].Id;
-
-            var tags = new List<string>();
-            tags.Add("js");
-
-            var groupId = groupFacade.CreateGroup(creatorId, "Some group", tags, "Very interesting", 1, 100, false, GroupType.Lecture);
-            var allGroups = groupFacade.GetGroups().ToList();
-            var createdGroupId = allGroups[0].GroupInfo.Id;
-
-            //Act
-            userFacade.Invite(creatorId, invitedId, createdGroupId, MemberRole.Member);
-
-            //Assert
-            Assert.AreEqual(groupFacade.GetGroup(groupId).GetAllInvitation().Count, 1);
-        }
-        */
-
-        private InMemoryUserRepository _inMemoryUserRepository;
+        private IGroupRepository _groupRepository;
+        private IUserRepository _userRepository;
+        private IKeysRepository _keysRepository;
+        private EmailSender emailSender;
+        private EmailSettings emailSettings;
 
         [TestInitialize]
         public void Initialize()
         {
-            _inMemoryUserRepository = new InMemoryUserRepository();
-            _inMemoryGroupRepository = new InMemoryGroupRepository();
+            _userRepository = new InMemoryUserRepository();
+            _keysRepository = new InMemoryKeysRepository();
+            _groupRepository = new InMemoryGroupRepository();
+            emailSettings = new EmailSettings("", "", "", "", "", 4);
+            emailSender = new EmailSender(emailSettings);
         }
 
         [TestMethod]
         public void AddNewUser_UserAdded()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-
+            var authUserFacade = new AuthUserFacade(_keysRepository, 
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
             var expectedName = "yaroslav";
             var expectedPass = "123123";
             var expectedEmail = "bus.yaroslav@gmail.com";
@@ -72,7 +45,7 @@ namespace EduHubTests
             var expectedStatus = false;
 
             //Act
-            var userId = userFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass),
+            var userId = authUserFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass),
                 expectedStatus, expectedType);
             var currentUser = userFacade.GetUser(userId);
 
@@ -85,8 +58,10 @@ namespace EduHubTests
         public void EditName_GetUserWithEditedName()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
             var newName = "Nikolai";
@@ -97,7 +72,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newName, actualName);
-            Assert.AreEqual(newName, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.Name);
+            Assert.AreEqual(newName, _userRepository.GetUserById(testUserId).UserProfile.Name);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -105,8 +80,10 @@ namespace EduHubTests
         public void EditNameWithEmptyValue_GetException()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var newName = "";
 
@@ -118,8 +95,10 @@ namespace EduHubTests
         public void EditAboutUser_GetUserWithEditedAboutInfo()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
             var newAbout = "I'm student";
@@ -130,7 +109,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newAbout, actualAbout);
-            Assert.AreEqual(newAbout, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.AboutUser);
+            Assert.AreEqual(newAbout, _userRepository.GetUserById(testUserId).UserProfile.AboutUser);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -138,8 +117,10 @@ namespace EduHubTests
         public void EditAboutInfoWithEmptyValue_GetException()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var newAbout = "";
 
@@ -151,8 +132,10 @@ namespace EduHubTests
         public void EditUserGender_GetUserWithEditedGender()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
             var newGender = Gender.Man;
@@ -163,15 +146,17 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newGender, actualGender);
-            Assert.AreEqual(newGender, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.Gender);
+            Assert.AreEqual(newGender, _userRepository.GetUserById(testUserId).UserProfile.Gender);
         }
 
         [TestMethod]
         public void EditAvatarLinkOfUser_GetUserWithEditedAvatarLink()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
             var newAvatarLink = "new avatar";
@@ -182,7 +167,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newAvatarLink, actualAvatarLink);
-            Assert.AreEqual(newAvatarLink, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.AvatarLink);
+            Assert.AreEqual(newAvatarLink, _userRepository.GetUserById(testUserId).UserProfile.AvatarLink);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -190,8 +175,10 @@ namespace EduHubTests
         public void EditAvatarLinkOfUserWithEmptyValue_GetException()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var newAvatarLink = "";
 
@@ -203,8 +190,10 @@ namespace EduHubTests
         public void EditContactsOfUser_GetUserWithEditedContacts()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
             var newContacts = new List<string> {"friend", "best friend"};
@@ -215,7 +204,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newContacts, actualContacts);
-            Assert.AreEqual(newContacts, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.Contacts);
+            Assert.AreEqual(newContacts, _userRepository.GetUserById(testUserId).UserProfile.Contacts);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -223,8 +212,10 @@ namespace EduHubTests
         public void EditContactsOfUserWithEmptyList_GetException()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var newContacts = new List<string>();
 
@@ -237,8 +228,10 @@ namespace EduHubTests
         public void EditContactsOfUserWithListWithEmptyValue_GetException()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var newContacts = new List<string> {" ", "friend"};
 
@@ -250,8 +243,10 @@ namespace EduHubTests
         public void EditUserWithValidBirthday_GetUserWithEditedBirthday()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
             var newBirthday = 1998;
@@ -262,7 +257,7 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(newBirthday, actualBirthYear);
-            Assert.AreEqual(newBirthday, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.BirthYear);
+            Assert.AreEqual(newBirthday, _userRepository.GetUserById(testUserId).UserProfile.BirthYear);
         }
 
         [ExpectedException(typeof(IndexOutOfRangeException))]
@@ -270,8 +265,10 @@ namespace EduHubTests
         public void EditUserWithInValidBirthday_GetException()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
             var newBirthday = 101998;
@@ -285,8 +282,10 @@ namespace EduHubTests
         public void EditUserBirthdayWithEmptyValue_GetException()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var newBirthYear = "";
 
@@ -298,8 +297,10 @@ namespace EduHubTests
         public void BecomeTeacher_IsItPossible()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
 
@@ -308,15 +309,17 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(true, testUser.UserProfile.IsTeacher);
-            Assert.AreEqual(true, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.IsTeacher);
+            Assert.AreEqual(true, _userRepository.GetUserById(testUserId).UserProfile.IsTeacher);
         }
 
         [TestMethod]
         public void StopToTeacher_IsItPossible()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var testUserId = userFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 UserType.User);
             var testUser = userFacade.GetUser(testUserId);
 
@@ -325,19 +328,21 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(false, testUser.UserProfile.IsTeacher);
-            Assert.AreEqual(false, _inMemoryUserRepository.GetUserById(testUserId).UserProfile.IsTeacher);
+            Assert.AreEqual(false, _userRepository.GetUserById(testUserId).UserProfile.IsTeacher);
         }
 
         [TestMethod]
         public void TryToGetAllGroupsOfUser_ReturnRightResult()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
-            var groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository,
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository,
                 new GroupSettings(2, 10, 0, 100));
 
-            var testUserId = userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            var creatorId = userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
+            var testUserId = authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            var creatorId = authUserFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
 
             var createdGroupId1 = groupFacade.CreateGroup(creatorId, "Group1", new List<string> {"c#"}, "Good group", 5,
                 0, false, GroupType.MasterClass);
@@ -361,10 +366,12 @@ namespace EduHubTests
         public void TryToFindNotExistingUser_ReturnEmptyList()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
 
-            userFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
-            userFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
+            authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            authUserFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
 
             //Act
             var actual = userFacade.FindByName("Grisha");
@@ -377,11 +384,13 @@ namespace EduHubTests
         public void TryToFindExistingUsers_ReturnRightListWithSorting()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
 
-            var userId1 = userFacade.RegUser("Alenka", new Credentials("email1", "password"), true, UserType.User);
-            var userId2 = userFacade.RegUser("Alena", new Credentials("email2", "password"), true, UserType.User);
-            var userId3 = userFacade.RegUser("Olena", new Credentials("email3", "password"), true, UserType.User);
+            var userId1 = authUserFacade.RegUser("Alenka", new Credentials("email1", "password"), true, UserType.User);
+            var userId2 = authUserFacade.RegUser("Alena", new Credentials("email2", "password"), true, UserType.User);
+            var userId3 = authUserFacade.RegUser("Olena", new Credentials("email3", "password"), true, UserType.User);
 
             var expected = new List<User> {userFacade.GetUser(userId2), userFacade.GetUser(userId1)};
 
@@ -399,23 +408,27 @@ namespace EduHubTests
         public void TryToRegUserWithExistingEmail_GetException()
         {
             //Arrange
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
 
             //Act
-            userFacade.RegUser("Grisha", new Credentials("sokolov@mail.ru", "password1"), true, UserType.User);
-            userFacade.RegUser("Sasha", new Credentials("sokolov@mail.ru", "password2"), false, UserType.User);
+            authUserFacade.RegUser("Grisha", new Credentials("sokolov@mail.ru", "password1"), true, UserType.User);
+            authUserFacade.RegUser("Sasha", new Credentials("sokolov@mail.ru", "password2"), false, UserType.User);
         }
 
         [TestMethod]
         public void TryToInviteUserWithTeacherFlag_IsItPossible()
         {
             //Arrange
-            var groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository,
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository,
                 new GroupSettings(1, 100, 0, 1000));
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
 
-            var creatorId = userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
-            var teacherId = userFacade.RegUser("Teacher", new Credentials("email2", "password"), true, UserType.User);
+            var creatorId = authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            var teacherId = authUserFacade.RegUser("Teacher", new Credentials("email2", "password"), true, UserType.User);
 
             var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group",
                 new List<string> {"c#"}, "Very interesting", 1, 100, false, GroupType.Lecture);
@@ -433,12 +446,14 @@ namespace EduHubTests
         public void TryToInviteUserWithoutTeacherFlag_GetException()
         {
             //Arrange
-            var groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository,
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository,
                 new GroupSettings(1, 100, 0, 1000));
-            var userFacade = new UserFacade(_inMemoryUserRepository, _inMemoryGroupRepository);
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
 
-            var creatorId = userFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
-            var pseudoTeacherId = userFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false,
+            var creatorId = authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            var pseudoTeacherId = authUserFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false,
                 UserType.User);
 
             var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"},

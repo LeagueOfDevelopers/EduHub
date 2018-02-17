@@ -15,19 +15,27 @@ namespace EduHubTests
     {
         private User _groupCreator;
 
-        private GroupFacade _groupFacade;
-        private UserFacade _userFacade;
+        private IGroupFacade _groupFacade;
+        private IGroupEditFacade _groupEditFacade;
+        private IUserFacade _userFacade;
+        private IAuthUserFacade _authUserFacade;
 
         [TestInitialize]
         public void Initialize()
         {
             var inMemoryUserRepository = new InMemoryUserRepository();
             var inMemoryGroupRepository = new InMemoryGroupRepository();
+            var inMemoryKeyRepository = new InMemoryKeysRepository();
+            var groupSettings = new GroupSettings(2, 10, 0, 1000);
+            var emailSettings = new EmailSettings("", "", "", "", "", 4);
+            var emailSender = new EmailSender(emailSettings);
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository,
                 new GroupSettings(3, 100, 0, 1000));
             _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
-
-            var creatorId = _userFacade.RegUser("Alena", new Credentials("email", "password"), true, UserType.User);
+            _authUserFacade = new AuthUserFacade(inMemoryKeyRepository, inMemoryUserRepository,
+                emailSender);
+            _groupEditFacade = new GroupEditFacade(inMemoryGroupRepository, groupSettings);
+            var creatorId = _authUserFacade.RegUser("Alena", new Credentials("email", "password"), true, UserType.User);
             _groupCreator = _userFacade.GetUser(creatorId);
         }
 
@@ -41,7 +49,7 @@ namespace EduHubTests
 
             //Act
             var expectedTitle = "new title";
-            _groupFacade.ChangeGroupTitle(createdGroupId, _groupCreator.Id, expectedTitle);
+            _groupEditFacade.ChangeGroupTitle(createdGroupId, _groupCreator.Id, expectedTitle);
             var actualTitle = createdGroup.GroupInfo.Title;
 
             //Assert
@@ -58,7 +66,7 @@ namespace EduHubTests
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
-            _groupFacade.ChangeGroupTitle(createdGroupId, _groupCreator.Id, " ");
+            _groupEditFacade.ChangeGroupTitle(createdGroupId, _groupCreator.Id, " ");
         }
 
         [TestMethod]
@@ -71,7 +79,7 @@ namespace EduHubTests
 
             //Act
             var expectedDescription = "new title";
-            _groupFacade.ChangeGroupDescription(createdGroupId, _groupCreator.Id, expectedDescription);
+            _groupEditFacade.ChangeGroupDescription(createdGroupId, _groupCreator.Id, expectedDescription);
             var actualDescription = createdGroup.GroupInfo.Description;
 
             //Assert
@@ -89,7 +97,7 @@ namespace EduHubTests
 
             //Act
             var expectedTags = new List<string> {"c++"};
-            _groupFacade.ChangeGroupTags(createdGroupId, _groupCreator.Id, expectedTags);
+            _groupEditFacade.ChangeGroupTags(createdGroupId, _groupCreator.Id, expectedTags);
             var actualTags = createdGroup.GroupInfo.Tags;
 
             //Assert
@@ -107,7 +115,7 @@ namespace EduHubTests
 
             //Act
             var expectedSize = 5;
-            _groupFacade.ChangeGroupSize(createdGroupId, _groupCreator.Id, expectedSize);
+            _groupEditFacade.ChangeGroupSize(createdGroupId, _groupCreator.Id, expectedSize);
             var actualSize = createdGroup.GroupInfo.Size;
 
             //Assert
@@ -125,7 +133,7 @@ namespace EduHubTests
 
             //Act
             var expectedMoneyPerUser = 200;
-            _groupFacade.ChangeGroupPrice(createdGroupId, _groupCreator.Id, expectedMoneyPerUser);
+            _groupEditFacade.ChangeGroupPrice(createdGroupId, _groupCreator.Id, expectedMoneyPerUser);
             var actualMoneyPerUser = createdGroup.GroupInfo.MoneyPerUser;
 
             //Assert
@@ -142,7 +150,7 @@ namespace EduHubTests
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
-            _groupFacade.ChangeGroupSize(createdGroupId, _groupCreator.Id, -4);
+            _groupEditFacade.ChangeGroupSize(createdGroupId, _groupCreator.Id, -4);
         }
 
         [TestMethod]
@@ -154,7 +162,7 @@ namespace EduHubTests
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
-            _groupFacade.ChangeGroupPrice(createdGroupId, _groupCreator.Id, -200);
+            _groupEditFacade.ChangeGroupPrice(createdGroupId, _groupCreator.Id, -200);
         }
 
         [TestMethod]
