@@ -111,7 +111,9 @@ public class NotificationFragment extends Fragment implements IInvitationsView,I
 
     @Override
     public void getInformationAboutGroup(Group group) {
+
         groups.add(group);
+        groups.get(i).getGroupInfo().setId(invitations.get(i).getGroupId());
         Log.d("groups",groups.size()+"");
 
             expandablePlaceHolderView.addView(new InvitationHeaderView(getContext(),invitations.get(i),getActivity(),user,groups.get(i)));

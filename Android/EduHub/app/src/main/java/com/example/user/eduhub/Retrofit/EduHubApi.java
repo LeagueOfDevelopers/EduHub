@@ -22,6 +22,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -69,5 +70,9 @@ public interface EduHubApi {
     Single<String> changesUsersBirthYear(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @PUT("/api/user/profile/gender")
     Single<String> changesUsersGender(@Header("Authorization") String token, @Body Boolean sex);
+    @DELETE("/api/group/{groupId}/member/{memberId}")
+    Completable exitFromGroup(@Header("Authorization") String token,@Path("groupId") String groupId,@Path("memberId") String userId);
+    @DELETE("/api/group/{groupId}/member/teacher/{memberId}")
+    Completable exitFromGroupForTeacher(@Header("Authorization") String token,@Path("groupId") String groupId,@Path("memberId") String userId);
 
 }

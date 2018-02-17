@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.user.eduhub.Adapters.TagsAdapter;
@@ -64,7 +65,7 @@ public class InvetationItemView {
 
     @Resolve
     private void onResolved() {
-        participants.setText(group.getGroupInfo().getMemberAmount()+"/"+group.getGroupInfo().getSize());
+        participants.setText(group.getGroupInfo().getCurrentAmount()+"/"+group.getGroupInfo().getSize());
         name.setText(group.getGroupInfo().getTitle());
         switch (String.valueOf(group.getGroupInfo().getGroupType())){
             case "1":{type.setText(TypeOfEducation.Lecture.toString());break;}
@@ -72,6 +73,7 @@ public class InvetationItemView {
             case "3":{type.setText(TypeOfEducation.MasterClass.toString());break;}
         }
         cost.setText(group.getGroupInfo().getCost()+"");
+        Log.d("GroupIdPlaceHolder",group.getGroupInfo().getId());
 
         recyclerView.setHasFixedSize(true);
         StaggeredGridLayoutManager staggeredGridLayoutManager=new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL);

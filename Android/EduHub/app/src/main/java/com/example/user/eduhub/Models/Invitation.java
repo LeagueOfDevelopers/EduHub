@@ -11,9 +11,9 @@ public class Invitation {
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("groupId")
+    @SerializedName("toGroup")
     @Expose
-    private String groupId;
+    private String toGroup;
     @SerializedName("fromUser")
     @Expose
     private String fromUser;
@@ -32,6 +32,9 @@ public class Invitation {
     @SerializedName("toUserName")
     @Expose
     private String toUserName;
+    @SerializedName("toGroupTitle")
+    @Expose
+    private String toGroupTotle;
 
     public String getStatus() {
         return status;
@@ -42,11 +45,11 @@ public class Invitation {
     }
 
     public String getGroupId() {
-        return groupId;
+        return toGroup;
     }
 
     public void setGroupId(String groupId) {
-        this.groupId = groupId;
+        this.toGroup = groupId;
     }
 
     public String getFromUser() {

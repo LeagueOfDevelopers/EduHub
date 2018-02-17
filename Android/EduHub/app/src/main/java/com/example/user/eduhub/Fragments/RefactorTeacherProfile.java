@@ -77,14 +77,18 @@ public class RefactorTeacherProfile extends Fragment implements IRefreshList{
         userEmail.setText(userProfile.getUserProfile().getEmail());
         editUserName.setText(userProfile.getUserProfile().getName());
         editUserEmail.setText(userProfile.getUserProfile().getEmail());
+        if(userProfile.getTeacherProfile().getSkills()!=null){
         skils=new String[userProfile.getTeacherProfile().getSkills().size()];
         for (int i=0;i<skils.length;i++){
             skils[i]=userProfile.getTeacherProfile().getSkills().get(i);
         }
-        editSkils.setTags( skils);
-        editAboutMe.setText(userProfile.getUserProfile().getAboutUser());
-        editBirthYear.setText(userProfile.getUserProfile().getBirthYear()+"");
-        contacts.addAll(userProfile.getUserProfile().getContacts());
+        editSkils.setTags( skils);}
+        if(userProfile.getUserProfile().getAboutUser()!=null){
+        editAboutMe.setText(userProfile.getUserProfile().getAboutUser());}
+        if(!userProfile.getUserProfile().getBirthYear().toString().equals("0")){
+        editBirthYear.setText(userProfile.getUserProfile().getBirthYear()+"");}
+        if(userProfile.getUserProfile().getContacts()!=null){
+        contacts.addAll(userProfile.getUserProfile().getContacts());}
         recyclerView.setHasFixedSize(true);
         adapter1=new Contacts_adapter(contacts,getActivity(),getContext(),this);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());

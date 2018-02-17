@@ -38,6 +38,17 @@ public class GroupInfo implements Serializable {
     @SerializedName("description")
     @Expose
     private String description;
+    @SerializedName("currentAmount")
+    @Expose
+    private Integer currentAmount;
+
+    public Integer getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void setCurrentAmount(Integer currentAmount) {
+        this.currentAmount = currentAmount;
+    }
 
     public String getDescription() {
         return description;

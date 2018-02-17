@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.user.eduhub.Adapters.Contacts_adapter;
+import com.example.user.eduhub.Adapters.Contacts_adapter_profile;
 import com.example.user.eduhub.Adapters.PlaceHolder.JobExpHeaderVIew;
 import com.example.user.eduhub.Adapters.PlaceHolder.JobExpItemView;
 import com.example.user.eduhub.Adapters.PlaceHolder.ReviewItemsView;
@@ -60,6 +63,8 @@ public class TeacherProfile extends Fragment {
         TextView birthYear=v.findViewById(R.id.birth_year);
         TextView aboutMe=v.findViewById(R.id.aboutMe);
         ImageView refactor=v.findViewById(R.id.refactor);
+        RecyclerView contacts=v.findViewById(R.id.contacts);
+
 
         Button exit=v.findViewById(R.id.exit);
         sharedPreferences=getActivity().getSharedPreferences("User",MODE_PRIVATE);
@@ -76,12 +81,20 @@ public class TeacherProfile extends Fragment {
         }else {
             sex.setText("Женский");
         }
-        if(userProfile.getUserProfile().getBirthYear().toString().equals("")){
+        if(userProfile.getUserProfile().getBirthYear().toString().equals("0")){
            v.findViewById(R.id.card_of_birth).setVisibility(View.GONE);
         }else {
         birthYear.setText(userProfile.getUserProfile().getBirthYear()+"");
         }
-
+        if(userProfile.getUserProfile().getContacts()==null){
+            v.findViewById(R.id.links).setVisibility(View.GONE);
+        }else{
+        contacts.setHasFixedSize(true);
+       Contacts_adapter_profile adapter1=new Contacts_adapter_profile((ArrayList<String>) userProfile.getUserProfile().getContacts(),getActivity(),getContext());
+       StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);
+        contacts.setLayoutManager(llm);
+        contacts.setAdapter(adapter1);
+        }
 
         if(userProfile.getUserProfile().getAboutUser()==null){
             v.findViewById(R.id.card_of_aboutMe).setVisibility(View.GONE);

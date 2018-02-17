@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.user.eduhub.Adapters.Contacts_adapter_profile;
 import com.example.user.eduhub.Dialog.CreateDialog;
 import com.example.user.eduhub.Main2Activity;
 import com.example.user.eduhub.Models.UserProfile.UserProfile;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.RefactorProfile;
+
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -50,6 +55,8 @@ public class UserProfileFragment extends Fragment {
         TextView aboutMe=v.findViewById(R.id.aboutMe);
         Button exit=v.findViewById(R.id.exit_user);
         ImageView refactor=v.findViewById(R.id.refactor);
+        RecyclerView contacts=v.findViewById(R.id.contacts);
+
         sharedPreferences=getActivity().getSharedPreferences("User",MODE_PRIVATE);
 
         userEmail.setText(userProfile.getUserProfile().getEmail());
@@ -66,6 +73,15 @@ public class UserProfileFragment extends Fragment {
             v.findViewById(R.id.card_of_birth).setVisibility(View.GONE);
         }else {
             birthYear.setText(userProfile.getUserProfile().getBirthYear().toString());
+        }
+        if(userProfile.getUserProfile().getContacts()==null){
+            v.findViewById(R.id.links).setVisibility(View.GONE);
+        }else{
+            contacts.setHasFixedSize(true);
+            Contacts_adapter_profile adapter1=new Contacts_adapter_profile((ArrayList<String>) userProfile.getUserProfile().getContacts(),getActivity(),getContext());
+            StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);
+            contacts.setLayoutManager(llm);
+            contacts.setAdapter(adapter1);
         }
 
 
