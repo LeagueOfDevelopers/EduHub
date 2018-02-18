@@ -56,6 +56,7 @@ namespace EduHub
             var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings);
+            var userEditFacade = new UserEditFacade(userRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository);
@@ -66,6 +67,7 @@ namespace EduHub
             services.AddSingleton<IFileFacade>(fileFacade);
             services.AddSingleton<IChatFacade>(chatFacade);
             services.AddSingleton<IGroupEditFacade>(groupEditFacade);
+            services.AddSingleton<IUserEditFacade>(userEditFacade);
             services.AddSingleton(tagsManager);
             services.AddSingleton<IAuthUserFacade>(authUserFacade);
             services.AddSingleton(Env);

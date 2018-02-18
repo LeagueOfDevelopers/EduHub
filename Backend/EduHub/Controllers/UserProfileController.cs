@@ -17,12 +17,13 @@ namespace EduHub.Controllers
     public class UserProfileController : Controller
     {
         private readonly IGroupFacade _groupFacade;
-
+        private readonly IUserEditFacade _userEditFacade;
         private readonly IUserFacade _userFacade;
 
-        public UserProfileController(IUserFacade userFacade, IGroupFacade groupFacade)
+        public UserProfileController(IUserFacade userFacade, IGroupFacade groupFacade, IUserEditFacade userEditFacade)
         {
             _userFacade = userFacade;
+            _userEditFacade = userEditFacade;
             _groupFacade = groupFacade;
         }
 
@@ -111,7 +112,7 @@ namespace EduHub.Controllers
         public IActionResult EditName([FromBody] ChangeUserNameRequest request)
         {
             var userId = Request.GetUserId();
-            _userFacade.EditName(userId, request.UserName);
+            _userEditFacade.EditName(userId, request.UserName);
             return Ok($"Новое имя пользователя '{request.UserName}'");
         }
 
@@ -126,7 +127,7 @@ namespace EduHub.Controllers
         public IActionResult EditAboutUser([FromBody] EditAboutUserRequest request)
         {
             var userId = Request.GetUserId();
-            _userFacade.EditAboutUser(userId, request.AboutUser);
+            _userEditFacade.EditAboutUser(userId, request.AboutUser);
             return Ok($"Новое описание пользователя '{request.AboutUser}'");
         }
 
@@ -141,7 +142,7 @@ namespace EduHub.Controllers
         public IActionResult EditGender([FromBody] EditUserGenderRequest request)
         {
             var userId = Request.GetUserId();
-            _userFacade.EditGender(userId, request.Gender);
+            _userEditFacade.EditGender(userId, request.Gender);
             return Ok();
         }
 
@@ -156,7 +157,7 @@ namespace EduHub.Controllers
         public IActionResult EditAvatarLink([FromBody] EditAvatarLinkRequest request)
         {
             var userId = Request.GetUserId();
-            _userFacade.EditAvatarLink(userId, request.AvatarLink);
+            _userEditFacade.EditAvatarLink(userId, request.AvatarLink);
             return Ok($"Новая ссылка на аватарку пользователя '{request.AvatarLink}'");
         }
 
@@ -171,7 +172,7 @@ namespace EduHub.Controllers
         public IActionResult EditContacts([FromBody] EditContactListRequest request)
         {
             var userId = Request.GetUserId();
-            _userFacade.EditContacts(userId, request.Contacts);
+            _userEditFacade.EditContacts(userId, request.Contacts);
             return Ok();
         }
 
@@ -186,7 +187,7 @@ namespace EduHub.Controllers
         public IActionResult EditBirthYear([FromBody] EditBirthYearRequest request)
         {
             var userId = Request.GetUserId();
-            _userFacade.EditBirthYear(userId, request.BirthYear);
+            _userEditFacade.EditBirthYear(userId, request.BirthYear);
             return Ok($"Новый год рождения пользователя '{request.BirthYear}'");
         }
 
@@ -201,7 +202,7 @@ namespace EduHub.Controllers
         public IActionResult BecomeTeacher()
         {
             var userId = Request.GetUserId();
-            _userFacade.BecomeTeacher(userId);
+            _userEditFacade.BecomeTeacher(userId);
             return Ok("Пользователь стал преподавателем");
         }
 
@@ -216,7 +217,7 @@ namespace EduHub.Controllers
         public IActionResult StopToBeTeacher()
         {
             var userId = Request.GetUserId();
-            _userFacade.StopToBeTeacher(userId);
+            _userEditFacade.StopToBeTeacher(userId);
             return Ok("Пользователь перестал быть преподавателем");
         }
 

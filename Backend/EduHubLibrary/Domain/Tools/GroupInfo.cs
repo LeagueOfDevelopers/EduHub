@@ -26,7 +26,7 @@ namespace EduHubLibrary.Domain
         public IEnumerable<string> Tags { get; internal set; }
         public GroupType GroupType { get; internal set; }
         public bool IsPrivate { get; internal set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; internal set; }
         public int Size { get; internal set; }
         public double MoneyPerUser { get; internal set; }
     }

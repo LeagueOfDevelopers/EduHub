@@ -20,13 +20,5 @@ namespace EduHubLibrary.Facades
         IEnumerable<UserInviteInfo> FindUsersForInvite(string name, Guid groupId);
         IEnumerable<string> GetNotifies(Guid userId);
         void AddNotify(Guid userId, string notify);
-        void EditName(Guid userId, string newName);
-        void EditAboutUser(Guid userId, string newAboutUser);
-        void EditGender(Guid userId, Gender gender);
-        void EditAvatarLink(Guid userId, string newAvatarLink);
-        void EditContacts(Guid userId, List<string> newContactData);
-        void EditBirthYear(Guid userId, int newYear);
-        void BecomeTeacher(Guid userId);
-        void StopToBeTeacher(Guid userId);
     }
 }

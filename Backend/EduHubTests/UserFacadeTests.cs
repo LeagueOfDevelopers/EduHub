@@ -18,8 +18,7 @@ namespace EduHubTests
         private IGroupRepository _groupRepository;
         private IUserRepository _userRepository;
         private IKeysRepository _keysRepository;
-        private EmailSender emailSender;
-        private EmailSettings emailSettings;
+        private EmailSender _emailSender;
 
         [TestInitialize]
         public void Initialize()
@@ -27,8 +26,9 @@ namespace EduHubTests
             _userRepository = new InMemoryUserRepository();
             _keysRepository = new InMemoryKeysRepository();
             _groupRepository = new InMemoryGroupRepository();
-            emailSettings = new EmailSettings("", "", "", "", "", 4);
-            emailSender = new EmailSender(emailSettings);
+
+             var emailSettings = new EmailSettings("", "", "", "", "", 4);
+            _emailSender = new EmailSender(emailSettings);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace EduHubTests
         {
             //Arrange
             var authUserFacade = new AuthUserFacade(_keysRepository, 
-                _userRepository, emailSender);
+                _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
             var expectedName = "yaroslav";
             var expectedPass = "123123";
@@ -55,288 +55,11 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        public void EditName_GetUserWithEditedName()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var testUser = userFacade.GetUser(testUserId);
-            var newName = "Nikolai";
-
-            //Act
-            userFacade.EditName(testUserId, newName);
-            var actualName = testUser.UserProfile.Name;
-
-            //Assert
-            Assert.AreEqual(newName, actualName);
-            Assert.AreEqual(newName, _userRepository.GetUserById(testUserId).UserProfile.Name);
-        }
-
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditNameWithEmptyValue_GetException()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var newName = "";
-
-            //Act
-            userFacade.EditName(testUserId, newName);
-        }
-
-        [TestMethod]
-        public void EditAboutUser_GetUserWithEditedAboutInfo()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var testUser = userFacade.GetUser(testUserId);
-            var newAbout = "I'm student";
-
-            //Act
-            userFacade.EditAboutUser(testUserId, newAbout);
-            var actualAbout = testUser.UserProfile.AboutUser;
-
-            //Assert
-            Assert.AreEqual(newAbout, actualAbout);
-            Assert.AreEqual(newAbout, _userRepository.GetUserById(testUserId).UserProfile.AboutUser);
-        }
-
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditAboutInfoWithEmptyValue_GetException()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var newAbout = "";
-
-            //Act
-            userFacade.EditAboutUser(testUserId, newAbout);
-        }
-
-        [TestMethod]
-        public void EditUserGender_GetUserWithEditedGender()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var testUser = userFacade.GetUser(testUserId);
-            var newGender = Gender.Man;
-
-            //Act
-            userFacade.EditGender(testUserId, newGender);
-            var actualGender = testUser.UserProfile.Gender;
-
-            //Assert
-            Assert.AreEqual(newGender, actualGender);
-            Assert.AreEqual(newGender, _userRepository.GetUserById(testUserId).UserProfile.Gender);
-        }
-
-        [TestMethod]
-        public void EditAvatarLinkOfUser_GetUserWithEditedAvatarLink()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var testUser = userFacade.GetUser(testUserId);
-            var newAvatarLink = "new avatar";
-
-            //Act
-            userFacade.EditAvatarLink(testUserId, newAvatarLink);
-            var actualAvatarLink = testUser.UserProfile.AvatarLink;
-
-            //Assert
-            Assert.AreEqual(newAvatarLink, actualAvatarLink);
-            Assert.AreEqual(newAvatarLink, _userRepository.GetUserById(testUserId).UserProfile.AvatarLink);
-        }
-
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditAvatarLinkOfUserWithEmptyValue_GetException()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var newAvatarLink = "";
-
-            //Act
-            userFacade.EditAvatarLink(testUserId, newAvatarLink);
-        }
-
-        [TestMethod]
-        public void EditContactsOfUser_GetUserWithEditedContacts()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var testUser = userFacade.GetUser(testUserId);
-            var newContacts = new List<string> {"friend", "best friend"};
-
-            //Act
-            userFacade.EditContacts(testUserId, newContacts);
-            var actualContacts = testUser.UserProfile.Contacts;
-
-            //Assert
-            Assert.AreEqual(newContacts, actualContacts);
-            Assert.AreEqual(newContacts, _userRepository.GetUserById(testUserId).UserProfile.Contacts);
-        }
-
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditContactsOfUserWithEmptyList_GetException()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var newContacts = new List<string>();
-
-            //Act
-            userFacade.EditContacts(testUserId, newContacts);
-        }
-
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditContactsOfUserWithListWithEmptyValue_GetException()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var newContacts = new List<string> {" ", "friend"};
-
-            //Act
-            userFacade.EditContacts(testUserId, newContacts);
-        }
-
-        [TestMethod]
-        public void EditUserWithValidBirthday_GetUserWithEditedBirthday()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var testUser = userFacade.GetUser(testUserId);
-            var newBirthday = 1998;
-
-            //Act
-            userFacade.EditBirthYear(testUserId, newBirthday);
-            var actualBirthYear = testUser.UserProfile.BirthYear;
-
-            //Assert
-            Assert.AreEqual(newBirthday, actualBirthYear);
-            Assert.AreEqual(newBirthday, _userRepository.GetUserById(testUserId).UserProfile.BirthYear);
-        }
-
-        [ExpectedException(typeof(IndexOutOfRangeException))]
-        [TestMethod]
-        public void EditUserWithInValidBirthday_GetException()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var testUser = userFacade.GetUser(testUserId);
-            var newBirthday = 101998;
-
-            //Act
-            userFacade.EditBirthYear(testUserId, newBirthday);
-        }
-
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditUserBirthdayWithEmptyValue_GetException()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var newBirthYear = "";
-
-            //Act
-            userFacade.EditAvatarLink(testUserId, newBirthYear);
-        }
-
-        [TestMethod]
-        public void BecomeTeacher_IsItPossible()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var testUser = userFacade.GetUser(testUserId);
-
-            //Act
-            userFacade.BecomeTeacher(testUserId);
-
-            //Assert
-            Assert.AreEqual(true, testUser.UserProfile.IsTeacher);
-            Assert.AreEqual(true, _userRepository.GetUserById(testUserId).UserProfile.IsTeacher);
-        }
-
-        [TestMethod]
-        public void StopToTeacher_IsItPossible()
-        {
-            //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
-            var userFacade = new UserFacade(_userRepository, _groupRepository);
-            var testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
-            var testUser = userFacade.GetUser(testUserId);
-
-            //Act
-            userFacade.StopToBeTeacher(testUserId);
-
-            //Assert
-            Assert.AreEqual(false, testUser.UserProfile.IsTeacher);
-            Assert.AreEqual(false, _userRepository.GetUserById(testUserId).UserProfile.IsTeacher);
-        }
-
-        [TestMethod]
         public void TryToGetAllGroupsOfUser_ReturnRightResult()
         {
             //Arrange
             var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
+                _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
                 new GroupSettings(2, 10, 0, 100));
@@ -367,7 +90,7 @@ namespace EduHubTests
         {
             //Arrange
             var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
+                _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
 
             authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
@@ -385,7 +108,7 @@ namespace EduHubTests
         {
             //Arrange
             var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
+                _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
 
             var userId1 = authUserFacade.RegUser("Alenka", new Credentials("email1", "password"), true, UserType.User);
@@ -409,7 +132,7 @@ namespace EduHubTests
         {
             //Arrange
             var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
+                _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
 
             //Act
@@ -424,7 +147,7 @@ namespace EduHubTests
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
                 new GroupSettings(1, 100, 0, 1000));
             var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
+                _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
 
             var creatorId = authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
@@ -449,7 +172,7 @@ namespace EduHubTests
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
                 new GroupSettings(1, 100, 0, 1000));
             var authUserFacade = new AuthUserFacade(_keysRepository,
-                _userRepository, emailSender);
+                _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
 
             var creatorId = authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
