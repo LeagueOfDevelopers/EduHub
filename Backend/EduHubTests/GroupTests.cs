@@ -76,6 +76,21 @@ namespace EduHubTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(GroupIsNotActiveException))]
+        public void TryToAddUserToInactiveGroup_GetException()
+        {
+            //Arrange
+            var creatorId = Guid.NewGuid();
+            var invitedUserId = Guid.NewGuid();
+            var someGroup = new Group(creatorId, "SomeGroup", new List<string> { "c#" },
+                "The best", 3, 0, false, GroupType.Seminar);
+            someGroup.DeleteMember(creatorId, creatorId);
+
+            //Act
+            someGroup.AddMember(invitedUserId);
+        }
+
+        [TestMethod]
         public void DeleteUserFromGroupByAdmin_UserWasDeleted()
         {
             //Arrange

@@ -57,6 +57,8 @@ namespace EduHubLibrary.Domain
 
         internal void AddMember(Guid newMemberId)
         {
+            Ensure.Bool.IsTrue(GroupInfo.IsActive, nameof(AddMember),
+                opt => opt.WithException(new GroupIsNotActiveException(GroupInfo.Id)));
             Ensure.Bool.IsFalse(IsMember(newMemberId), nameof(AddMember),
                 opt => opt.WithException(new AlreadyMemberException(newMemberId, GroupInfo.Id)));
             Ensure.Bool.IsTrue(Members.Count < GroupInfo.Size, nameof(GroupInfo.Size),
