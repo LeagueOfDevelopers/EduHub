@@ -12,168 +12,218 @@ namespace EduHubTests
     public class GroupTests
     {
         [TestMethod]
-        public void CreateGroupWithSomeData_IsGroupCorrect()
+        public void CreateGroupWithSomeData_GroupWasCreated()
         {
             //Arrange
-            var userId = Guid.NewGuid();
+            var creatorId = Guid.NewGuid();
             var title = "some group";
             var description = "some description";
             var tags = new List<string> {"c#"};
             var size = 3;
             var moneyPerUser = 100.0;
-            var info = new GroupInfo(Guid.NewGuid(), title, description, tags, GroupType.Lecture, false, true, size,
-                moneyPerUser);
+            
             //Act
-            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+            var someGroup = new Group(creatorId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
+
             //Assert
-            Assert.AreEqual(userId, someGroup.GetMember(userId).UserId);
+            Assert.AreEqual(creatorId, someGroup.GetMember(creatorId).UserId);
+        }
+
+        [TestMethod]
+        public void AddUserToGroup_UserWasAddedToGroup()
+        {
+            //Arrange
+            var creatorId = Guid.NewGuid();
+            var invitedUserId = Guid.NewGuid();
+            var someGroup = new Group(creatorId, "SomeGroup", new List<string> { "c#" }, 
+                "The best", 3, 0, false, GroupType.Seminar);
+
+            //Act
+            someGroup.AddMember(invitedUserId);
+            var expectedQuantity = 2;
+            var actualQuantity = someGroup.Members.Count;
+
+            //Assert
+            Assert.AreEqual(expectedQuantity, actualQuantity);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(GroupIsFullException))]
+        public void TryToAddUserToFullGroup_GetException()
+        {
+            //Arrange
+            var creatorId = Guid.NewGuid();
+            var someGroup = new Group(creatorId, "SomeGroup", new List<string> { "c#" },
+                "The best", 1, 0, false, GroupType.Seminar);
+
+            //Act
+            someGroup.AddMember(Guid.NewGuid());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AlreadyMemberException))]
+        public void TryToAddAlreadyAddedUser_GetException()
+        {
+            //Arrange
+            var creatorId = Guid.NewGuid();
+            var invitedUserId = Guid.NewGuid();
+            var someGroup = new Group(creatorId, "SomeGroup", new List<string> { "c#" },
+                "The best", 3, 0, false, GroupType.Seminar);
+            someGroup.AddMember(invitedUserId);
+
+            //Act
+            someGroup.AddMember(invitedUserId);
+        }
+
+        [TestMethod]
+        public void DeleteUserFromGroupByAdmin_UserWasDeleted()
+        {
+            //Arrange
+            var creatorId = Guid.NewGuid();
+            var invitedUserId = Guid.NewGuid();
+            var someGroup = new Group(creatorId, "SomeGroup", new List<string> { "c#" },
+                "The best", 3, 0, false, GroupType.Seminar);
+
+            //Act
+            someGroup.AddMember(invitedUserId);
+            someGroup.DeleteMember(creatorId, invitedUserId);
+            var expectedQuantity = 1;
+            var resultQuantity = someGroup.Members.Count;
+
+            //Assert
+            Assert.AreEqual(expectedQuantity, resultQuantity);
         }
 
         [ExpectedException(typeof(MemberNotFoundException))]
         [TestMethod]
-        public void TryToDeleteNotExistingMember_IsItPossible()
+        public void TryToDeleteNotExistingMember_GetException()
         {
             //Arrange
-            var userId = Guid.NewGuid();
-            var title = "some group";
-            var description = "some description";
-            var tags = new List<string> {"c#"};
-            var size = 3;
-            var moneyPerUser = 100.0;
+            var creatorId = Guid.NewGuid();
+            var someGroup = new Group(creatorId, "SomeGroup", new List<string> { "c#" },
+                "The best", 3, 0, false, GroupType.Seminar);
 
             //Act
-            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.DeleteMember(userId, Guid.NewGuid());
+            someGroup.DeleteMember(creatorId, Guid.NewGuid());
         }
 
         [ExpectedException(typeof(NotEnoughPermissionsException))]
         [TestMethod]
-        public void TryToDeleteWithNotEnoughtRights_IsItPossible()
+        public void TryToDeleteWithNotEnoughtRights_GetException()
         {
             //Arrange
-            var userId = Guid.NewGuid();
-            var idOfInvitedUser = Guid.NewGuid();
-            var title = "some group";
-            var description = "some description";
-            var tags = new List<string> {"c#"};
-            var size = 3;
-            var moneyPerUser = 100.0;
+            var creatorId = Guid.NewGuid();
+            var invitedUserId = Guid.NewGuid();
+            var someGroup = new Group(creatorId, "SomeGroup", new List<string> { "c#" },
+                "The best", 3, 0, false, GroupType.Seminar);
 
             //Act
-            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(idOfInvitedUser);
-            someGroup.DeleteMember(idOfInvitedUser, userId);
+            someGroup.AddMember(invitedUserId);
+            someGroup.DeleteMember(invitedUserId, creatorId);
         }
 
         [TestMethod]
-        public void TryToDeleteYourselfFromGroup_HasItDeleted()
+        public void DeleteYourselfFromGroup_ToBeDeleted()
         {
             //Arrange
-            var userId = Guid.NewGuid();
-            var idOfInvitedUser = Guid.NewGuid();
-            var expected = 1;
-            var title = "some group";
-            var description = "some description";
-            var tags = new List<string> {"c#"};
-            var size = 3;
-            var moneyPerUser = 100.0;
+            var creatorId = Guid.NewGuid();
+            var invitedUserId = Guid.NewGuid();
+            var someGroup = new Group(creatorId, "SomeGroup", new List<string> { "c#" },
+                "The best", 3, 0, false, GroupType.Seminar);
 
             //Act
-            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(idOfInvitedUser);
-            someGroup.DeleteMember(idOfInvitedUser, idOfInvitedUser);
-            var result = someGroup.Members.Count;
+            someGroup.AddMember(invitedUserId);
+            someGroup.DeleteMember(invitedUserId, invitedUserId);
+            var expectedQuantity = 1;
+            var resultQuantity = someGroup.Members.Count;
 
             //Assert
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expectedQuantity, resultQuantity);
         }
 
         [TestMethod]
-        public void TryToAddUserToGroup_HasItAdded()
+        public void CreatorLeftTheGroup_MemberBecameCreator()
         {
             //Arrange
-            var userId = Guid.NewGuid();
-            var title = "some group";
-            var description = "some description";
-            var tags = new List<string> {"c#"};
-            tags.Add("js");
-            var idOfInvitedUser = Guid.NewGuid();
-            var expected = 2;
-            var size = 3;
-            var moneyPerUser = 100.0;
-
+            var creatorId = Guid.NewGuid();
+            var invitedUserId = Guid.NewGuid();
+            var someGroup = new Group(creatorId, "SomeGroup", new List<string> { "c#" },
+                "The best", 3, 0, false, GroupType.Seminar);
+            
             //Act
-            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(idOfInvitedUser);
-            var result = someGroup.Members.Count;
+            someGroup.AddMember(invitedUserId);
+            someGroup.DeleteMember(creatorId, creatorId);
 
-            //Assert
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void TryToDeleteUserFromGroupByAdmin_HasItDeleted()
-        {
-            //Arrange
-            var userId = Guid.NewGuid();
-            var idOfInvitedUser = Guid.NewGuid();
-            var title = "some group";
-            var description = "some description";
-            var tags = new List<string> {"c#"};
-            var size = 3;
-            var moneyPerUser = 100.0;
-            var expected = 1;
-
-            //Act
-            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(idOfInvitedUser);
-            someGroup.DeleteMember(userId, idOfInvitedUser);
-            var result = someGroup.Members.Count;
-
-            //Assert
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void CreatorLeftTheGroup_HasNewOneAppeared()
-        {
-            //Arrange
-            var userId = Guid.NewGuid();
-            var title = "some group";
-            var description = "some description";
-            var tags = new List<string> {"c#"};
-            var size = 3;
-            var moneyPerUser = 100.0;
-            var idOfInvitedUser = Guid.NewGuid();
             var expectedRole = MemberRole.Creator;
-            var expectedLength = 1;
-
-            //Act
-            var someGroup = new Group(userId, title, tags, description, size, moneyPerUser, false, GroupType.Lecture);
-            someGroup.AddMember(idOfInvitedUser);
-            someGroup.DeleteMember(userId, userId);
-            var listOfMembers = someGroup.Members;
-            var resultRole = listOfMembers[0].MemberRole;
-            var resultLength = listOfMembers.Count;
+            var expectedQuantity = 1;
+            var resultRole = someGroup.Members[0].MemberRole;
+            var resultLength = someGroup.Members.Count;
 
             //Assert
             Assert.AreEqual(expectedRole, resultRole);
-            Assert.AreEqual(expectedLength, resultLength);
+            Assert.AreEqual(expectedQuantity, resultLength);
         }
 
         [TestMethod]
-        public void TryToApproveTeacher_TeacherIsSet()
+        public void ApproveTeacher_TeacherIsSet()
         {
             //Arrange
             var teacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            var tags = new List<string> {"c#"};
-            var group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
+            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> { "c#" }, 
+                "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
             group.ApproveTeacher(teacher);
 
             //Assert
             Assert.AreEqual(teacher, group.Teacher);
+        }
+        
+        [TestMethod]
+        public void AddInvitation_GetRightListOfInvitations()
+        {
+            //Arrange
+            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> { "c#" }, 
+                "The best", 1, 0, false, GroupType.Seminar);
+            var invitation = new Invitation(Guid.NewGuid(), Guid.NewGuid(), group.GroupInfo.Id,
+                MemberRole.Member, InvitationStatus.InProgress);
+
+            //Act
+            group.AddInvitation(invitation);
+
+            //Assert
+            Assert.AreEqual(1, group.Invitations.Count);
+            Assert.AreEqual(invitation, group.Invitations[0]);
+        }
+
+        [TestMethod]
+        public void CheckIfGroupContainsExistingTags_GetTrue()
+        {
+            //Arrange
+            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> { "c#", "c++", "js" }, 
+                "The best", 1, 0, false, GroupType.Seminar);
+
+            //Act
+            var expected = true;
+            var actual = group.DoesContainsTags(new List<string> { "c++", "c#" });
+
+            //Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CheckIfGroupContainsNotExistingTags_GetFalse()
+        {
+            //Arrange
+            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> { "c#", "c++", "js" },
+                "The best", 1, 0, false, GroupType.Seminar);
+
+            //Act
+            var expected = false;
+            var actual = group.DoesContainsTags(new List<string> { "c++", "ada" });
+
+            //Assert
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -183,8 +233,8 @@ namespace EduHubTests
             //Arrange
             var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             var newTeacher = new User("Bogdan", new Credentials("email", "password"), true, UserType.User);
-            var tags = new List<string> {"c#"};
-            var group = new Group(Guid.NewGuid(), "SomeGroup", tags, "The best", 1, 0, false, GroupType.Seminar);
+            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> { "c#" }, 
+                "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
             group.ApproveTeacher(approvedTeacher);
@@ -192,47 +242,45 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        public void TryToOfferCourseWithApprovedTeacher_IsItPossible()
+        public void OfferCourseWithApprovedTeacher_GetOfferedCourse()
         {
             //Arrange
             var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            var tags = new List<string> {"c#"};
             var creatorId = Guid.NewGuid();
-            var user1 = Guid.NewGuid();
-            var user2 = Guid.NewGuid();
-            var group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
+            var invitedUserId = Guid.NewGuid();
+            var group = new Group(creatorId, "SomeGroup", new List<string> { "c#" }, 
+                "The best", 2, 0, false, GroupType.Seminar);
             var expectedCurriculum = "Awesome course";
 
             //Act
-            group.AddMember(user1);
-            group.AddMember(user2);
+            group.AddMember(invitedUserId);
             group.ApproveTeacher(approvedTeacher);
             group.OfferCurriculum(approvedTeacher.Id, expectedCurriculum);
 
             //Assert
-            Assert.IsNotNull(group.GroupInfo.Curriculum);
+            Assert.AreEqual(group.GroupInfo.Curriculum, expectedCurriculum);
         }
 
         [TestMethod]
-        public void TryToStartCourseWithApprovedTeacherAndAllReadyMembers_IsItPossible()
+        public void StartCourseWithApprovedTeacherAndAllReadyMembers_CourseWasStarted()
         {
             //Arrange
             var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            var tags = new List<string> {"c#"};
             var creatorId = Guid.NewGuid();
-            var user1 = Guid.NewGuid();
-            var user2 = Guid.NewGuid();
-            var group = new Group(creatorId, "SomeGroup", tags, "The best", 3, 0, false, GroupType.Seminar);
+            var user1Id = Guid.NewGuid();
+            var user2Id = Guid.NewGuid();
+            var group = new Group(creatorId, "SomeGroup", new List<string> { "c#" }, 
+                "The best", 3, 0, false, GroupType.Seminar);
             var expectedCurriculum = "Awesome course";
 
             //Act
-            group.AddMember(user1);
-            group.AddMember(user2);
+            group.AddMember(user1Id);
+            group.AddMember(user2Id);
             group.ApproveTeacher(approvedTeacher);
             group.OfferCurriculum(approvedTeacher.Id, expectedCurriculum);
             group.AcceptCurriculum(creatorId);
-            group.AcceptCurriculum(user1);
-            group.AcceptCurriculum(user2);
+            group.AcceptCurriculum(user1Id);
+            group.AcceptCurriculum(user2Id);
 
             //Assert
             Assert.AreEqual(group.Status, CourseStatus.Started);

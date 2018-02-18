@@ -61,7 +61,9 @@ namespace EduHubLibrary.Domain
 
         internal void AddInvitation(Invitation newInvitation)
         {
-            Invitations.Add(newInvitation);
+            if (newInvitation.ToUser.Equals(Id)) Invitations.Add(newInvitation);
+            //TODO: create exception class
+            else throw new ArgumentException("User's ids are not equal");
         }
 
         internal void AcceptInvitation(Guid invitationId)
@@ -83,13 +85,8 @@ namespace EduHubLibrary.Domain
                 throw new InvitationAlreadyChangedException(invitationId);
             currentInvitation.Status = InvitationStatus.Declined;
         }
-
-        internal IEnumerable<Invitation> GetAllInvitation()
-        {
-            return Invitations;
-        }
-
-        internal Invitation GetInvitationById(Guid invitationId)
+        
+        internal Invitation GetInvitation(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);
             return Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
@@ -97,6 +94,7 @@ namespace EduHubLibrary.Domain
 
         internal void AddNotify(string notify)
         {
+            Ensure.String.IsNotNullOrWhiteSpace(notify);
             Notifies.Add(notify);
         }
     }

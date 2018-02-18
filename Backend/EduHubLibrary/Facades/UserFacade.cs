@@ -45,7 +45,7 @@ namespace EduHubLibrary.Facades
             if (status.Equals(InvitationStatus.Accepted))
             {
                 currentUser.AcceptInvitation(invitationId);
-                var currentInvitation = currentUser.GetInvitationById(invitationId);
+                var currentInvitation = currentUser.GetInvitation(invitationId);
                 if (currentInvitation.SuggestedRole == MemberRole.Member)
                 {
                     var currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
@@ -70,7 +70,7 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
             Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),
                 opt => opt.WithException(new AlreadyMemberException(invitedId, groupId)));
-            Ensure.Bool.IsFalse(invitedUser.GetAllInvitation().Any(c => c.GroupId == groupId),
+            Ensure.Bool.IsFalse(invitedUser.Invitations.Any(c => c.GroupId == groupId),
                 nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
             if (suggestedRole == MemberRole.Teacher)
                 Ensure.Bool.IsTrue(invitedUser.UserProfile.IsTeacher, nameof(Invite),
@@ -88,7 +88,7 @@ namespace EduHubLibrary.Facades
         {
             Ensure.Guid.IsNotEmpty(userId);
             var currentUser = _userRepository.GetUserById(userId);
-            return currentUser.GetAllInvitation();
+            return currentUser.Invitations;
         }
 
         public IEnumerable<Group> GetAllGroupsOfUser(Guid userId)

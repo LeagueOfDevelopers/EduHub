@@ -7,6 +7,7 @@ using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubTests
 {
@@ -54,6 +55,51 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(createdGroupId1, foundGroups[0].GroupInfo.Id);
             Assert.AreEqual(createdGroupId2, foundGroups[1].GroupInfo.Id);
+        }
+        
+        [TestMethod]
+        public void CreateGroupByGroupFacadeWithValidValues_GroupWasCreated()
+        {
+            //Arrange
+            var creatorId = _authUserFacade.RegUser("Alena", Credentials.FromRawData("Email", "Password"), 
+                false, UserType.User);
+            var title = "some group";
+            var description = "some description";
+            var tags = new List<string> { "c#" };
+            var size = 3;
+            var moneyPerUser = 100.0;
+
+            //Act
+            var groupId = _groupFacade.CreateGroup(creatorId, title, tags, description, size, moneyPerUser, 
+                false, GroupType.Seminar);
+
+            //Assert
+            Assert.IsNotNull(_groupFacade.GetGroup(groupId));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UserNotFoundException))]
+        public void TryToCreateGroupByNotExistingUser_GetException()
+        {
+            //Arrange
+            var invalidUserId = Guid.NewGuid();
+
+            //Act
+            _groupFacade.CreateGroup(invalidUserId, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 100, false, GroupType.Lecture);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TryToCreateGroupWithInvalidSettings_GetException()
+        {
+            //Arrange
+            var creatorId = _authUserFacade.RegUser("Alena", Credentials.FromRawData("Email", "Password"),
+                false, UserType.User);
+
+            //Act
+            _groupFacade.CreateGroup(creatorId, "Some group", new List<string> { "c#" },
+                "You're welcome!", 2, 2000, false, GroupType.Lecture);
         }
 
         private User _groupCreator;
