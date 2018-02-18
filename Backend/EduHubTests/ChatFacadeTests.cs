@@ -46,7 +46,7 @@ namespace EduHubTests
             chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
 
             //Arrange
-            Assert.AreEqual(1, _groupRepository.GetGroupById(_testGroupId).Chat.Messages.Count());
+            Assert.AreEqual(1, _groupRepository.GetGroupById(_testGroupId).Messages.Count());
         }
 
         [TestMethod]
@@ -58,72 +58,6 @@ namespace EduHubTests
 
             //Act
             chatFacade.SendMessage(_creatorId, _testGroupId, " ");
-        }
-
-        [TestMethod]
-        public void EditMessageInChat_GetEditedMessageInChat()
-        {
-            //Arrange
-            var chatFacade = new ChatFacade(_groupRepository);
-            var messageId = chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
-
-            //Act
-            var newText = "New text";
-            chatFacade.EditMessage(_creatorId, messageId, _testGroupId, newText);
-
-            //Assert
-            var newMessage = _groupRepository.GetGroupById(_testGroupId).Chat.GetMessage(messageId);
-            Assert.AreEqual(newText, newMessage.Text);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void EditMessageWithInvalidValueInChat_GetException()
-        {
-            //Arrange
-            var chatFacade = new ChatFacade(_groupRepository);
-            var messageId = chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
-
-            //Act
-            chatFacade.EditMessage(_creatorId, messageId, _testGroupId, " ");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(NotEnoughPermissionsException))]
-        public void TryToEditMessageByNotSender_GetException()
-        {
-            //Arrange
-            var chatFacade = new ChatFacade(_groupRepository);
-            var messageId = chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
-
-            //Act
-            chatFacade.EditMessage(Guid.NewGuid(), messageId, _testGroupId, "New text");
-        }
-
-        [TestMethod]
-        public void DeleteMessageInChat_GetEmptyListOfMessages()
-        {
-            //Arrange
-            var chatFacade = new ChatFacade(_groupRepository);
-            var messageId = chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
-
-            //Act
-            chatFacade.DeleteMessage(_creatorId, messageId, _testGroupId);
-
-            //Assert
-            Assert.AreEqual(0, _groupRepository.GetGroupById(_testGroupId).Chat.Messages.Count());
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(NotEnoughPermissionsException))]
-        public void TryToDeleteMessageByNotSender_GetException()
-        {
-            //Arrange
-            var chatFacade = new ChatFacade(_groupRepository);
-            var messageId = chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
-
-            //Act
-            chatFacade.DeleteMessage(Guid.NewGuid(), messageId, _testGroupId);
         }
     }
 }

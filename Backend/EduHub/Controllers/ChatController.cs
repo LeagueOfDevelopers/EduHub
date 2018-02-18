@@ -49,36 +49,6 @@ namespace EduHub.Controllers
             return Ok(response);
         }
 
-        /// <summary>
-        ///     Edites message by id
-        /// </summary>
-        [Authorize]
-        [HttpPut]
-        [Route("{messageId}")]
-        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditMessage([FromBody] EditMessageRequest message,
-            [FromRoute] Guid groupId, [FromRoute] Guid messageId)
-        {
-            var userId = Request.GetUserId();
-            _chatFacade.EditMessage(userId, messageId, groupId, message.NewText);
-            return Ok();
-        }
-
-        /// <summary>
-        ///     Deletes message by id
-        /// </summary>
-        [Authorize]
-        [HttpDelete]
-        [Route("{messageId}")]
-        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult DeleteMessage([FromRoute] Guid groupId, [FromRoute] Guid messageId)
-        {
-            var userId = Request.GetUserId();
-            _chatFacade.DeleteMessage(userId, messageId, groupId);
-            return Ok();
-        }
 
         /// <summary>
         ///     Return all messages of group
@@ -87,7 +57,7 @@ namespace EduHub.Controllers
         [HttpGet]
         public IActionResult GetAllMessages([FromRoute] Guid groupId)
         {
-            return Ok(_groupFacade.GetGroup(groupId).Chat);
+            return Ok(_groupFacade.GetGroup(groupId).Messages);
         }
     }
 }

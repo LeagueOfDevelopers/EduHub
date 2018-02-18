@@ -25,7 +25,7 @@ namespace EduHubLibrary.Domain
             var isActive = true;
             GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size,
                 moneyPerUser);
-            Chat = new Chat();
+            Messages = new List<Message>();
         }
 
         public Group(Guid creatorId, string title, List<string> tags,
@@ -45,10 +45,10 @@ namespace EduHubLibrary.Domain
             Invitations = new List<Invitation>();
             var creator = new Member(creatorId, MemberRole.Creator);
             Members.Add(creator);
-            Chat = new Chat();
+            Messages = new List<Message>();
         }
 
-        public Chat Chat { get; }
+        public IEnumerable<Message> Messages { get; private set; }
         public GroupInfo GroupInfo { get; set; }
         public User Teacher { get; private set; }
         public CourseStatus Status { get; set; }
@@ -163,6 +163,13 @@ namespace EduHubLibrary.Domain
                 return true;
 
             return false;
+        }
+
+        internal void CommitChatSession(IEnumerable<Message> newMessages)
+        {
+            List<Message> newMessageList = new List<Message>(Messages);
+            newMessages.ToList().ForEach(m => newMessageList.Add(m));
+            Messages = newMessageList;
         }
 
         private void DeleteCreator(Member deletingCreator)
