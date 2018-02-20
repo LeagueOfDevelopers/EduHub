@@ -1,10 +1,12 @@
 ﻿using System;
 using EduHub.Models;
 using EduHub.Security;
+using EduHub.Extensions;
 using EduHubLibrary.Common;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub.Controllers
 {
@@ -43,7 +45,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     Returns user's token and other information
+        ///     Returns user's token and another information
         /// </summary>
         [HttpPost]
         [Route("login")]
@@ -58,6 +60,29 @@ namespace EduHub.Controllers
             {
                 var response = new LoginResponse(client.UserProfile.Name, client.Credentials.Email,
                     client.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
+                return Ok(response);
+            }
+
+            return Unauthorized();
+        }
+
+        /// <summary>
+        ///     Refresh user's token and returns a new one with another information
+        /// </summary>
+        [Authorize]
+        [HttpGet]
+        [Route("refresh")]
+        [SwaggerResponse(200, Type = typeof(LoginResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        public IActionResult RefreshToken()
+        {
+            var userId = Request.GetUserId();
+            var user = _userFacade.GetUser(userId);
+
+            if (user != null)
+            {
+                var response = new LoginResponse(user.UserProfile.Name, user.Credentials.Email,
+                    user.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, userId));
                 return Ok(response);
             }
 
