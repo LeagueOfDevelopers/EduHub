@@ -7,9 +7,18 @@ import {
 
 import { GET_GROUPS_START } from './constants'
 
-export function* getUnassembledGroupsSaga(action) {
+export function* getGroupsSaga(action) {
   try {
-    const groups = yield call(getGroups, action.groupsType);
+    const data = yield call(getGroups, action.groupsType);
+    let groups;
+    switch(action.groupsType) {
+      case 'unassembledGroups':
+        groups = data.fillingGroups;
+        break;
+      case 'assembledGroups':
+        groups = data.fullGroups;
+        break;
+    }
     yield put(getGroupsSuccess({groups: groups, groupsType: action.groupsType}));
   }
   catch(e) {
@@ -20,18 +29,11 @@ export function* getUnassembledGroupsSaga(action) {
  function getGroups(type) {
    return fetch(`${config.API_BASE_URL}/group`)
      .then(response => response.json())
-     .then(res => {
-       switch(type) {
-         case 'unassembledGroups':
-           return res.fillingGroups;
-         case 'assembledGroups':
-           return res.fullGroups;
-       }
-     })
+     .then(res => res)
      .catch(error => error)
  }
 
 export default function* () {
-  yield takeEvery(GET_GROUPS_START, getUnassembledGroupsSaga);
+  yield takeEvery(GET_GROUPS_START, getGroupsSaga);
 }
 

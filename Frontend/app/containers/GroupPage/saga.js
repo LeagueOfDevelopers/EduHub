@@ -15,7 +15,13 @@ import {
   editGroupSizeSuccess,
   editGroupSizeFailed,
   editGroupPriceSuccess,
-  editGroupPriceFailed
+  editGroupPriceFailed,
+  editGroupTypeSuccess,
+  editGroupTypeFailed,
+  editPrivacySuccess,
+  editPrivacyFailed,
+  searchInvitationMemberSuccess,
+  searchInvitationMemberFailed
 } from "./actions";
 import {
   ENTER_GROUP_START,
@@ -25,7 +31,10 @@ import {
   EDIT_GROUP_DESCRIPTION,
   EDIT_GROUP_TAGS,
   EDIT_GROUP_SIZE,
-  EDIT_GROUP_PRICE
+  EDIT_GROUP_PRICE,
+  EDIT_GROUP_TYPE,
+  EDIT_GROUP_PRIVACY,
+  SEARCH_INVITATION_MEMBER
 } from "./constants";
 import config from '../../config';
 
@@ -114,7 +123,7 @@ function* editGroupTitleSaga(action) {
     yield put(editGroupTitleSuccess())
   }
   catch(e) {
-    yield put(editGroupTitleSuccess(e))
+    yield put(editGroupTitleFailed(e))
   }
 }
 
@@ -127,6 +136,56 @@ function editGroupTitle(id, title) {
     },
     body: JSON.stringify({
       groupTitle: title
+    })
+  })
+    .then(res => res.json())
+    .catch(error => error)
+}
+
+function* editGroupTypeSaga(action) {
+  try {
+    yield call(editGroupType, action.id, action.groupType);
+    yield put(editGroupTypeSuccess())
+  }
+  catch(e) {
+    yield put(editGroupTypeFailed(e))
+  }
+}
+
+function editGroupType(id, type) {
+  return fetch(`${config.API_BASE_URL}/group/${id}/type`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      groupType: type
+    })
+  })
+    .then(res => res.json())
+    .catch(error => error)
+}
+
+function* editPrivacySaga(action) {
+  try {
+    yield call(editPrivacy, action.id, action.isPrivate);
+    yield put(editPrivacySuccess())
+  }
+  catch(e) {
+    yield put(editPrivacyFailed(e))
+  }
+}
+
+function editPrivacy(id, isPrivate) {
+  return fetch(`${config.API_BASE_URL}/group/${id}/privacy`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      isPrivate: isPrivate
     })
   })
     .then(res => res.json())
@@ -233,6 +292,32 @@ function editGroupPrice(id, price) {
     .catch(error => error)
 }
 
+function* searchInvitationUsersSaga(action) {
+  try {
+    const data = yield call(getUsers, action.groupId, action.username);
+    yield put(searchInvitationMemberSuccess(data.users));
+  }
+  catch(e) {
+    yield put(searchInvitationMemberFailed(e))
+  }
+}
+
+function getUsers(groupId, username) {
+  return fetch(`${config.API_BASE_URL}/users/searchForInvitation`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json-patch+json'
+    },
+    body: JSON.stringify({
+      groupId: groupId,
+      username: username
+    })
+  })
+    .then(res => res.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(ENTER_GROUP_START, enterGroupSaga);
   yield takeEvery(LEAVE_GROUP_START, leaveGroupSaga);
@@ -242,4 +327,7 @@ export default function* () {
   yield takeEvery(EDIT_GROUP_TAGS, editGroupTagsSaga);
   yield takeEvery(EDIT_GROUP_SIZE, editGroupSizeSaga);
   yield takeEvery(EDIT_GROUP_PRICE, editGroupPriceSaga);
+  yield takeEvery(EDIT_GROUP_PRIVACY, editPrivacySaga);
+  yield takeEvery(EDIT_GROUP_TYPE, editGroupTypeSaga);
+  yield takeEvery(SEARCH_INVITATION_MEMBER, searchInvitationUsersSaga);
 }

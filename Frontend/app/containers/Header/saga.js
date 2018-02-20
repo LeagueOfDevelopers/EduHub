@@ -6,8 +6,8 @@ import config from '../../config';
 
 function* getUsersSaga(action) {
   try {
-    const users = yield call(getUsers, action.name);
-    yield put(getUsersSuccess(users));
+    const data = yield call(getUsers, action.name);
+    yield put(getUsersSuccess(data.users));
   }
   catch(e) {
     yield put(getUsersFailed(e))
@@ -25,7 +25,7 @@ function getUsers(name) {
     })
   })
     .then(res => res.json())
-    .then(res => res.users)
+    .then(res => res)
     .catch(error => error)
 }
 

@@ -5,7 +5,9 @@ import {
   EDIT_ABOUT_USER_INFO,
   EDIT_BIRTH_YEAR,
   EDIT_GENDER,
-  EDIT_CONTACTS
+  EDIT_CONTACTS,
+  MAKE_TEACHER,
+  MAKE_NOT_TEACHER
 } from "./constants";
 import {
   getCurrentUserGroupsSuccess,
@@ -19,7 +21,11 @@ import {
   editGenderSuccess,
   editGenderFailed,
   editContactsSuccess,
-  editContactsFailed
+  editContactsFailed,
+  makeNotTeacherSuccess,
+  makeNotTeacherFailed,
+  makeTeacherFailed,
+  makeTeacherSuccess
 } from "./actions";
 import config from '../../config';
 
@@ -43,6 +49,50 @@ function getGroups(id) {
   })
     .then(res => res.json())
     .then(res => res)
+    .catch(error => error)
+}
+
+function* makeTeacherSaga(action) {
+  try {
+    yield call(makeTeacher);
+    yield put(makeTeacherSuccess())
+  }
+  catch(e) {
+    yield put(makeTeacherFailed(e))
+  }
+}
+
+function makeTeacher() {
+  return fetch(`${config.API_BASE_URL}/user/profile/teaching`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+    .then(res => res.json())
+    .catch(error => error)
+}
+
+function* makeNotTeacherSaga(action) {
+  try {
+    yield call(makeNotTeacher);
+    yield put(makeNotTeacherSuccess())
+  }
+  catch(e) {
+    yield put(makeNotTeacherFailed(e))
+  }
+}
+
+function makeNotTeacher() {
+  return fetch(`${config.API_BASE_URL}/user/profile/teaching`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+    .then(res => res.json())
     .catch(error => error)
 }
 
@@ -178,4 +228,6 @@ export default function* () {
   yield takeEvery(EDIT_GENDER, editGenderSaga);
   yield takeEvery(EDIT_BIRTH_YEAR, editBirthYearSaga);
   yield takeEvery(EDIT_CONTACTS, editContactsSaga);
+  yield takeEvery(MAKE_TEACHER, makeTeacherSaga);
+  yield takeEvery(MAKE_NOT_TEACHER, makeNotTeacherSaga);
 }

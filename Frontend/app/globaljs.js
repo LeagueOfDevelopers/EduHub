@@ -17,6 +17,7 @@ export function getMemberRole(enumRole) {
   }
 }
 
+
 export function getGroupType(enumType) {
   switch (enumType) {
     case 0:
@@ -25,5 +26,16 @@ export function getGroupType(enumType) {
       return 'Семинар';
     case 2:
       return 'Мастер-класс';
+  }
+}
+
+export function getGender(enumType) {
+  switch (enumType) {
+    case 0:
+      return 'Неизвестно';
+    case 1:
+      return 'Мужской';
+    case 2:
+      return 'Женский';
   }
 }

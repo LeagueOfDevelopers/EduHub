@@ -18,11 +18,13 @@ import {
   editAboutUserInfo,
   editGender,
   editBirthYear,
-  editContacts
+  editContacts,
+  makeTeacher,
+  makeNotTeacher
 } from "./actions";
 import reducer from './reducer';
 import saga from './saga';
-import {parseJwt} from "../../globalJS";
+import {parseJwt, getGender} from "../../globalJS";
 import config from '../../config';
 import {Link} from "react-router-dom";
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
@@ -100,18 +102,15 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
         name: '',
         email: '',
         avatarLink: '',
-        isMan: '',
+        gender: '',
         birthYear: '',
         aboutUser: '',
         contacts: []
       },
-      teacherProfile: {
-        reviews: [],
-        skills: []
-      },
+      teacherProfile: null,
       isEditing: false,
       nameInput: '',
-      sexInput: '',
+      genderInput: '',
       birthYearInput: '',
       aboutInput: '',
       contactsInputs: [],
@@ -121,7 +120,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.onSetResult = this.onSetResult.bind(this);
     this.getCurrentUser = this.getCurrentUser.bind(this);
     this.onChangeNameHandle = this.onChangeNameHandle.bind(this);
-    this.onChangeSexHandle = this.onChangeSexHandle.bind(this);
+    this.onChangeGenderHandle = this.onChangeGenderHandle.bind(this);
     this.onChangebirthYearHandle = this.onChangebirthYearHandle.bind(this);
     this.onChangeAboutHandle = this.onChangeAboutHandle.bind(this);
     this.changeProfileData = this.changeProfileData.bind(this);
@@ -163,7 +162,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       userProfile: result.userProfile ? result.userProfile : {},
       teacherProfile: result.teacherProfile,
       nameInput: result.userProfile.name,
-      sexInput: result.userProfile.isMan.toString(),
+      genderInput: getGender(result.userProfile.gender),
       birthYearInput: result.userProfile.birthYear,
       aboutInput: result.userProfile.aboutUser,
       contactsInputs: result.userProfile.contacts ? result.userProfile.contacts : []
@@ -174,8 +173,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.setState({nameInput: e.target.value})
   };
 
-  onChangeSexHandle = (e) => {
-    this.setState({sexInput: e})
+  onChangeGenderHandle = (e) => {
+    this.setState({genderInput: e})
   };
 
   onChangebirthYearHandle = (e) => {
@@ -222,10 +221,13 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     if(this.state.birthYearInput !== this.state.userProfile.birthYear) {
       this.props.editBirthYear(this.state.birthYearInput);
     }
-    if(this.state.contactsInputs.length !== this.state.userProfile.contacts || this.state.contactsInputs.filter((item, i) =>
+    if(this.state.genderInput !== getGender(this.state.userProfile.gender)) {
+      this.props.editGender(this.state.genderInput);
+    }
+    if(this.state.contactsInputs.length !== this.state.userProfile.contacts.length || this.state.contactsInputs.filter((item, i) =>
         item !== this.state.userProfile.contacts[i]
       ).length !== 0) {
-      setTimeout(() => this.props.editContacts(this.state.contactsInputs), 0)
+      this.props.editContacts(this.state.contactsInputs)
     }
     this.setState({isEditing: false});
     this.setState({needUpdate: true})
@@ -258,7 +260,6 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                     : null
                   }
                 </Row>
-
               }
               hoverable
               className='profile-card font-size-20 without-border-bottom'
@@ -272,14 +273,12 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               <Row style={{marginBottom: 20}}>
                 <div>Пол</div>
                 <div style={{fontSize: 16, color: '#000'}}>
-                  {
-                    this.state.isEditing ?
-                      <Select onChange={this.onChangeSexHandle} value={this.state.sexInput}>
-                        <Select.Option value={'true'}>Мужской</Select.Option>
-                        <Select.Option value={'false'}>Женский</Select.Option>
-                      </Select>
-                      : this.state.userProfile.isMan ?
-                      'Мужской' : 'Женский'
+                  {this.state.isEditing ?
+                    <Select onChange={this.onChangeGenderHandle} value={this.state.genderInput} style={{minWidth: 100}}>
+                      <Select.Option value='Man'>Мужской</Select.Option>
+                      <Select.Option value='Woman'>Женский</Select.Option>
+                    </Select>
+                    : getGender(this.state.userProfile.gender)
                   }
                 </div>
               </Row>
@@ -294,17 +293,32 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   }
                 </div>
               </Row>
-              <Row style={{marginBottom: 20}}>
-                <div>Основные навыки</div>
-                <Row gutter={6}>
-                  {this.state.teacherProfile &&
-                    this.state.teacherProfile.skills &&
-                    this.state.teacherProfile.skills.length !== 0 ?
-                      this.state.teacherProfile.skills.map((item) =>
-                        <Link to="#" key={item}>{item}</Link>
-                  ) : <div style={{fontSize: 16, color: '#000'}}>Не указано</div>}
+              {this.state.teacherProfile ? (
+                <Row>
+                  <Row style={{marginBottom: 20}}>
+                    <div>Основные навыки</div>
+                    <Row gutter={6}>
+                      {this.state.teacherProfile.skills &&
+                      this.state.teacherProfile.skills.length !== 0 ?
+                        this.state.teacherProfile.skills.map((item) =>
+                          <Link to="#" key={item}>{item}</Link>
+                        )
+                        :
+                        !this.state.isEditing ? (
+                            <div>
+                              <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
+                              <span onClick={() => this.setState({isEditing: true})} style={{color: '#52c41a', marginTop: 4, cursor: 'pointer'}}>
+                                Теперь вы можете указать свои навыки!
+                              </span>
+                            </div>
+                          )
+                          : null
+                      }
+                    </Row>
+                  </Row>
                 </Row>
-              </Row>
+              ) : null
+              }
               <Row style={{marginBottom: 20}}>
                 <div>О себе</div>
                 <div style={{fontSize: 16, color: '#000'}}>
@@ -372,9 +386,26 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               <Button type='primary' size='large' style={{width: '100%', marginTop: 20, minWidth: 280}}>Создать группу</Button>
             </Link>
             {!this.state.teacherProfile ?
-              <Button type='primary' style={{width: '100%', marginTop: 20, minWidth: 280}}>Стать преподавателем</Button>
+              <Button
+                type='primary'
+                onClick={() => {
+                  this.props.makeTeacher();
+                  this.setState({needUpdate: true})
+                }}
+                style={{width: '100%', marginTop: 12, minWidth: 280}}
+              >
+                Стать преподавателем
+              </Button>
               :
-              <Button style={{width: '100%', marginTop: 12, minWidth: 280}}>Стать учеником</Button>
+              <Button
+                onClick={() => {
+                  this.props.makeNotTeacher();
+                  this.setState({needUpdate: true})
+                }}
+                style={{width: '100%', marginTop: 12, minWidth: 280}}
+              >
+                Стать учеником
+              </Button>
             }
           </Col>
           <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>
@@ -398,9 +429,12 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   </div>
                 )}
               </TabPane>
-              <TabPane tab="Профиль преподавателя" key="3">
+              {this.state.teacherProfile ? (
+                <TabPane tab="Профиль преподавателя" key="3">
 
-              </TabPane>
+                </TabPane>
+              ) : null
+              }
             </Tabs>
           </Col>
         </Col>
@@ -427,7 +461,10 @@ function mapDispatchToProps(dispatch) {
     editUsername: (newName) => dispatch(editUsername(newName)),
     editAboutUser: (aboutUser) => dispatch(editAboutUserInfo(aboutUser)),
     editBirthYear: (birthYear) => dispatch(editBirthYear(birthYear)),
-    editContacts: (contacts) => dispatch(editContacts(contacts))
+    editContacts: (contacts) => dispatch(editContacts(contacts)),
+    editGender: (gender) => dispatch(editGender(gender)),
+    makeTeacher: () => dispatch(makeTeacher()),
+    makeNotTeacher: () => dispatch(makeNotTeacher())
   };
 }
 

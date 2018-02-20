@@ -20,7 +20,9 @@ import {
   editGroupDescription,
   editGroupTags,
   editGroupSize,
-  editGroupPrice
+  editGroupPrice,
+  editPrivacy,
+  editGroupType
 } from "./actions";
 import {Link} from "react-router-dom";
 import config from "../../config";
@@ -87,7 +89,7 @@ export class GroupPage extends React.Component {
           cost: null,
           size: 0,
           groupType: '',
-          currentAmount: 0
+          memberAmount: 0
         },
         members: []
       },
@@ -234,6 +236,12 @@ export class GroupPage extends React.Component {
     if(this.state.priceInput !== this.state.groupData.groupInfo.cost) {
       this.props.editGroupPrice(this.state.id, this.state.priceInput);
     }
+    if(this.state.groupTypeInput !== getGroupType(this.state.groupData.groupInfo.groupType)) {
+      this.props.editGroupType(this.state.id, this.state.groupTypeInput);
+    }
+    if(this.state.privateInput !== this.state.groupData.groupInfo.isPrivate) {
+      this.props.editPrivacy(this.state.id, this.state.privateInput);
+    }
     if(this.state.tagsInput.length !== this.state.groupData.groupInfo.tags.length || this.state.tagsInput.filter((item, i) =>
         item !== this.state.groupData.groupInfo.tags[i]
       ).length !== 0) {
@@ -265,7 +273,7 @@ export class GroupPage extends React.Component {
               </Row>
               <Row gutter={6} type='flex' justify='start' align='middle' style={{marginBottom: 8}}>
                 {this.state.isEditing ?
-                  <Select onChange={this.onChangeTagsHandle} value={this.state.tagsInput} mode="tags" style={{width: '100%'}}>
+                  <Select onChange={this.onChangeTagsHandle} defaultActiveFirstOption={false} value={this.state.tagsInput} mode="tags" style={{width: '100%'}}>
                     <Select.Option value="html">html</Select.Option>
                     <Select.Option value="css">css</Select.Option>
                     <Select.Option value="js">js</Select.Option>
@@ -279,10 +287,10 @@ export class GroupPage extends React.Component {
                 <Col>Формат</Col>
                 <Col>
                   {this.state.isEditing ?
-                    <Select onChange={this.onHandleGroupTypeChange} value={this.state.groupTypeInput} style={{minWidth: 114}}>
-                      <Select.Option value="Lecture">Лекция</Select.Option>
-                      <Select.Option value="MasterClass">Мастер-класс</Select.Option>
-                      <Select.Option value="Seminar">Семинар</Select.Option>
+                    <Select onChange={this.onHandleGroupTypeChange} defaultActiveFirstOption={false} value={this.state.groupTypeInput} style={{minWidth: 114}}>
+                      <Select.Option value='Lecture'>Лекция</Select.Option>
+                      <Select.Option value='MasterClass'>Мастер-класс</Select.Option>
+                      <Select.Option value='Seminar'>Семинар</Select.Option>
                     </Select>
                     : getGroupType(this.state.groupData.groupInfo.groupType)
                   }
@@ -326,7 +334,7 @@ export class GroupPage extends React.Component {
               }
             </Row>
             <Row style={{width: '100%', marginBottom: 20}}>
-              <MemberList members={this.state.groupData.members} memberAmount={this.state.groupData.groupInfo.currentAmount} size={this.state.groupData.groupInfo.size} isCreator={this.state.isCreator}/>
+              <MemberList members={this.state.groupData.members} memberAmount={this.state.groupData.groupInfo.memberAmount} size={this.state.groupData.groupInfo.size} isCreator={this.state.isCreator}/>
             </Row>
             {this.state.isCreator ?
               (<Row style={{width: '100%'}} className='md-center-container'>
@@ -351,7 +359,7 @@ export class GroupPage extends React.Component {
           </Col>
           <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
             <Row style={{textAlign: 'right', marginTop: 8}}>
-              {this.state.groupData.groupInfo.currentAmount < this.state.groupData.groupInfo.size ?
+              {this.state.groupData.groupInfo.memberAmount < this.state.groupData.groupInfo.size ?
                 this.state.isInGroup ?
                   (<Row className='md-center-container'>
                       <Button onClick={() => {
@@ -438,7 +446,9 @@ function mapDispatchToProps(dispatch) {
     editGroupDescription: (id, description) => dispatch(editGroupDescription(id, description)),
     editGroupTags: (id, tags) => dispatch(editGroupTags(id, tags)),
     editGroupSize: (id, size) => dispatch(editGroupSize(id, size)),
-    editGroupPrice: (id, price) => dispatch(editGroupPrice(id, price))
+    editGroupPrice: (id, price) => dispatch(editGroupPrice(id, price)),
+    editPrivacy: (id, isPrivate) => dispatch(editPrivacy(id, isPrivate)),
+    editGroupType: (id, type) => dispatch(editGroupType(id, type)),
   };
 }
 

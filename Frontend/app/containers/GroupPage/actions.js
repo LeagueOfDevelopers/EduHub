@@ -28,7 +28,16 @@ import {
   EDIT_GROUP_TAGS_SUCCESS,
   EDIT_GROUP_TITLE,
   EDIT_GROUP_TITLE_FAILED,
-  EDIT_GROUP_TITLE_SUCCESS
+  EDIT_GROUP_TITLE_SUCCESS,
+  EDIT_GROUP_PRIVACY,
+  EDIT_GROUP_PRIVACY_FAILED,
+  EDIT_GROUP_PRIVACY_SUCCESS,
+  EDIT_GROUP_TYPE,
+  EDIT_GROUP_TYPE_FAILED,
+  EDIT_GROUP_TYPE_SUCCESS,
+  SEARCH_INVITATION_MEMBER,
+  SEARCH_INVITATION_MEMBER_SUCCESS,
+  SEARCH_INVITATION_MEMBER_FAILED
 } from './constants';
 
 
@@ -198,6 +207,70 @@ export function editGroupPriceSuccess() {
 export function editGroupPriceFailed(error) {
   return {
     type: EDIT_GROUP_PRICE_FAILED,
+    error
+  };
+}
+
+export function editGroupType(id, groupType) {
+  return {
+    type: EDIT_GROUP_TYPE,
+    id,
+    groupType
+  };
+}
+
+export function editGroupTypeSuccess() {
+  return {
+    type: EDIT_GROUP_TYPE_SUCCESS
+  };
+}
+
+export function editGroupTypeFailed(error) {
+  return {
+    type: EDIT_GROUP_TYPE_FAILED,
+    error
+  };
+}
+
+export function editPrivacy(id, isPrivate) {
+  return {
+    type: EDIT_GROUP_PRIVACY,
+    id,
+    isPrivate
+  };
+}
+
+export function editPrivacySuccess() {
+  return {
+    type: EDIT_GROUP_PRIVACY_SUCCESS
+  };
+}
+
+export function editPrivacyFailed(error) {
+  return {
+    type: EDIT_GROUP_PRIVACY_FAILED,
+    error
+  };
+}
+
+export function searchInvitationMember(groupId, username) {
+  return {
+    type: SEARCH_INVITATION_MEMBER,
+    groupId,
+    username
+  };
+}
+
+export function searchInvitationMemberSuccess(users) {
+  return {
+    type: SEARCH_INVITATION_MEMBER_SUCCESS,
+    payload: users ? users : []
+  };
+}
+
+export function searchInvitationMemberFailed(error) {
+  return {
+    type: SEARCH_INVITATION_MEMBER_FAILED,
     error
   };
 }

@@ -1,6 +1,6 @@
 /**
  * app.js
- *
+ *Manshin loh
  * This is the entry file for the application, only setup and boilerplate
  * code.
  */

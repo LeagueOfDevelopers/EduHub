@@ -20,6 +20,7 @@ import { makeSelectGroups } from "./selectors";
 import reducer from './reducer';
 import saga from './saga';
 import { getGroups } from "./actions";
+import { makeTeacher } from "../ProfilePage/actions";
 import {Link} from "react-router-dom";
 import {Card, Col, Row, Button, message} from 'antd';
 import UnassembledGroupCard from 'components/UnassembledGroupCard';
@@ -63,6 +64,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     this.state = {
       signInVisible: false,
+      isTeacher: false
     }
   }
 
@@ -75,10 +77,17 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   makeTeacher() {
     if(localStorage.getItem('token'))
-      message.success('Теперь вы можете преподавать!');
+      localStorage.getItem('withoutServer') === 'true' ?
+        message.success('Теперь вы можете преподавать!')
+        :
+        () => {
+          // this.props.makeTeacher();
+          this.setState({isTeacher: true});
+        };
     else {
       this.setState({signInVisible: true})
-  }}
+    }
+  }
 
   handleCancel = () => {
     this.setState({signInVisible: false})
@@ -103,18 +112,19 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     </Link>
                   )}
                 </div>
-              ) :
+              )
+              :
               (
                 <div className='cards-holder cards-holder-center'>
                   {this.props.unassembledGroups.map((item, i) =>
                     i < 8 ?
                       <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                        <UnassembledGroupCard {...item}/>
-                      </Link>
-                      : null
-                  )}
-                </div>
-              )
+                         <UnassembledGroupCard {...item}/>
+                       </Link>
+                       : null
+                   )}
+                 </div>
+               )
             }
             <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
               <Col style={{fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
@@ -138,7 +148,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     </Link>
                   )}
                 </div>
-              ) :
+              )
+              :
               (
                 <div className='cards-holder cards-holder-center'>
                   {this.props.assembledGroups.map((item, i) =>
@@ -151,11 +162,17 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </div>
               )
             }
-            <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
-              <Col style={{fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
-              <Button type="primary" onClick={this.makeTeacher}>Стать преподавателем</Button>
-              <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
-            </Row>
+            {!this.state.isTeacher ?
+              <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
+                <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
+                <Button type="primary" onClick={this.makeTeacher}>Стать преподавателем</Button>
+              </Row>
+              :
+              <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
+                <Col style={{fontSize: 18}}>Вы можете преподавать!</Col>
+              </Row>
+            }
+            <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
           </Card>
         </Col>
       </div>
@@ -183,7 +200,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getUnassembledGroups: () => dispatch(getGroups('unassembledGroups')),
-    getAssembledGroups: () => dispatch(getGroups('assembledGroups'))
+    getAssembledGroups: () => dispatch(getGroups('assembledGroups')),
+    makeTeacher: () => dispatch(makeTeacher())
   };
 }
 

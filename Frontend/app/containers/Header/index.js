@@ -195,7 +195,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
           : (
             <Col xs={{span: 12}} md={{span: 6}} lg={{span: 9}} style={{display: 'flex', justifyContent: 'flex-end'}}>
               <Dropdown className="unregistered-person" overlay={this.menu} trigger={['click']}>
-                <img className='menu-btn' style={{width: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
+                <img className='menu-btn' style={{width: 26, height: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
               </Dropdown>
               <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '4%'}}>Войти</Button>
               <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>

@@ -22,7 +22,13 @@ import {
   EDIT_GENDER_FAILED,
   EDIT_CONTACTS,
   EDIT_CONTACTS_SUCCESS,
-  EDIT_CONTACTS_FAILED
+  EDIT_CONTACTS_FAILED,
+  MAKE_TEACHER,
+  MAKE_NOT_TEACHER,
+  MAKE_NOT_TEACHER_FAILED,
+  MAKE_NOT_TEACHER_SUCCESS,
+  MAKE_TEACHER_FAILED,
+  MAKE_TEACHER_SUCCESS
 } from './constants';
 
 export function getCurrentUserGroups(id) {
@@ -148,6 +154,46 @@ export function editContactsSuccess() {
 export function editContactsFailed(error) {
   return {
     type: EDIT_CONTACTS_FAILED,
+    error
+  };
+}
+
+export function makeTeacher() {
+  return {
+    type: MAKE_TEACHER
+  };
+}
+
+export function makeTeacherSuccess() {
+  return {
+    type: MAKE_TEACHER_SUCCESS
+  };
+}
+
+
+export function makeTeacherFailed(error) {
+  return {
+    type: MAKE_TEACHER_FAILED,
+    error
+  };
+}
+
+export function makeNotTeacher() {
+  return {
+    type: MAKE_NOT_TEACHER
+  };
+}
+
+export function makeNotTeacherSuccess() {
+  return {
+    type: MAKE_NOT_TEACHER_SUCCESS
+  };
+}
+
+
+export function makeNotTeacherFailed(error) {
+  return {
+    type: MAKE_NOT_TEACHER_FAILED,
     error
   };
 }

@@ -8,9 +8,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { inviteMember } from "../../containers/GroupPage/actions";
-import { getUsers } from "../../containers/Header/actions";
-import { makeSelectUsers } from "../../containers/Header/selectors";
+import { inviteMember, searchInvitationMember } from "../../containers/GroupPage/actions";
+import { makeSelectUsers } from "../../containers/GroupPage/selectors";
 import {Dropdown, Button, Menu, Select, message, Col} from 'antd';
 
 
@@ -40,7 +39,7 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
 
   handleSelectChange = (value) => {
     this.setState({selectValue: value});
-    setTimeout(() => this.props.getUsers(this.state.selectValue), 0)
+    setTimeout(() => this.props.searchInvitationUsers(this.props.groupId, value), 0);
   };
 
   tryInviteMember(invitedId) {
@@ -70,7 +69,7 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
                 <Button onClick={() => this.setState({inviteMemberRole: 'Teacher'})} style={{display: 'block', width: '100%'}}>Учитель</Button>
               </Menu.Item>
               :
-              <Menu.Item className='unhover' key='1'>
+              <Menu.Item className='unhover'>
                 <Select
                   mode='combobox'
                   className='unhover'
@@ -80,12 +79,12 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
                   placeholder='Введите имя пользователя'
                   defaultActiveFirstOption={false}
                   showArrow={false}
-                  onSelect={(e) => console.log(e)}
                 >
                   {this.props.users.map(item =>
-                    <Select.Option key={item.name}>
-                      <div onClick={() => this.tryInviteMember(item.id)}>{item.name}</div>
-                    </Select.Option>)}
+                    <Select.Option key={item.username}>
+                      <div onClick={() => this.tryInviteMember(item.id)}>{item.username}</div>
+                    </Select.Option>)
+                  }
                 </Select>
               </Menu.Item>
             }
@@ -123,7 +122,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUsers: (name) => dispatch(getUsers(name)),
+    searchInvitationUsers: (groupId, username) => dispatch(searchInvitationMember(groupId, username)),
     inviteMember: (groupId, invitedId, role) => dispatch(inviteMember(groupId, invitedId, role))
   };
 }

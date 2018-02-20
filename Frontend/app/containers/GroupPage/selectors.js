@@ -5,6 +5,11 @@ import { createSelector } from 'reselect';
  */
 const selectGroupPage = (state) => state.get('groupPage');
 
+const makeSelectUsers = () => createSelector(
+  selectGroupPage,
+  (groupPageState) => groupPageState.get('users')
+);
+
 export {
-  selectGroupPage
+  makeSelectUsers
 };

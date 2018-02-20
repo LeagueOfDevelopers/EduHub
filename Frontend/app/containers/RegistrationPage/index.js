@@ -55,7 +55,6 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
       email: '',
       password: '',
       isTeacher: false,
-      avatarLink: '',
       inviteCode: ''
     };
 
@@ -67,7 +66,6 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.onHandleEmailChange = this.onHandleEmailChange.bind(this);
     this.onHandlePasswordChange = this.onHandlePasswordChange.bind(this);
     this.onHandleTeacherStatusChange = this.onHandleTeacherStatusChange.bind(this);
-    this.onHandleAvatarLinkChange = this.onHandleAvatarLinkChange.bind(this);
     this.onHandleInviteCodeChange = this.onHandleInviteCodeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -100,15 +98,11 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     this.setState({isTeacher: e})
   };
 
-  onHandleAvatarLinkChange = (e) => {
-    this.setState({avatarLink: e.target.value})
-  };
-
   onHandleInviteCodeChange = (e) => {
     this.setState({inviteCode: e.target.value})
   };
 
-  registrate = (username, email, password, isTeacher, avatarLink, inviteCode) => {
+  registrate = (username, email, password, isTeacher, inviteCode) => {
     (localStorage.getItem('without_server') === 'true') ?
       location.assign('/')
       :
@@ -117,7 +111,6 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
         email,
         password,
         isTeacher,
-        avatarLink,
         inviteCode
       );
   };
@@ -126,7 +119,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     e.preventDefault();
     this.props.form.validateFields((err, value) => {
       if(!err) {
-        this.registrate(value.name, value.email, value.password, value.isTeacher, value.avatar, value.inviteCode)
+        this.registrate(value.name, value.email, value.password, value.isTeacher, value.inviteCode)
       }
     })
   };
@@ -184,16 +177,6 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="Ссылка на аватарку"
-            >
-              {getFieldDecorator('avatar', {
-                initialValue: this.state.avatarLink
-              })(
-                <Input onChange={this.onHandleAvatarLinkChange} placeholder="Можете оставить поле пустым"/>)
-              }
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
               label="Код приглашения"
             >
               {getFieldDecorator('inviteCode', {
@@ -235,8 +218,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    signUp: (username, email, password, isTeacher, avatarLink, inviteCode) =>
-      dispatch(registrate(username, email, password, isTeacher, avatarLink, inviteCode))
+    signUp: (username, email, password, isTeacher, inviteCode) =>
+      dispatch(registrate(username, email, password, isTeacher, inviteCode))
   };
 }
 

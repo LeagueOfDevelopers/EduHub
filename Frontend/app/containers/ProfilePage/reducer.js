@@ -23,7 +23,13 @@ import {
   EDIT_GENDER_FAILED,
   EDIT_CONTACTS,
   EDIT_CONTACTS_SUCCESS,
-  EDIT_CONTACTS_FAILED
+  EDIT_CONTACTS_FAILED,
+  MAKE_TEACHER,
+  MAKE_NOT_TEACHER,
+  MAKE_NOT_TEACHER_FAILED,
+  MAKE_NOT_TEACHER_SUCCESS,
+  MAKE_TEACHER_FAILED,
+  MAKE_TEACHER_SUCCESS
 } from './constants';
 
 const initialState = fromJS({
@@ -93,6 +99,26 @@ function profilePageReducer(state = initialState, action) {
       return state
         .set('pending', false);
     case EDIT_CONTACTS_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
+    case MAKE_TEACHER:
+      return state
+        .set('pending', true);
+    case MAKE_TEACHER_SUCCESS:
+      return state
+        .set('pending', false);
+    case MAKE_TEACHER_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
+    case MAKE_NOT_TEACHER:
+      return state
+        .set('pending', true);
+    case MAKE_NOT_TEACHER_SUCCESS:
+      return state
+        .set('pending', false);
+    case MAKE_NOT_TEACHER_FAILED:
       return state
         .set('pending', false)
         .set('error', true);

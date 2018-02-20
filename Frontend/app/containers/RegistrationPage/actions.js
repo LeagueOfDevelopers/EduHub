@@ -10,14 +10,13 @@ import {
   REGISTRATION_SUCCESS
 } from './constants';
 
-export function registrate(name, email, password, isTeacher, avatarLink, inviteCode) {
+export function registrate(name, email, password, isTeacher, inviteCode) {
   return {
     type: REGISTRATION_START,
     name,
     email,
     password,
     isTeacher,
-    avatarLink,
     inviteCode
   };
 }

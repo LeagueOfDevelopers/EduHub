@@ -10,7 +10,6 @@
   # If somebody opens a folder, hide all files from the resulting folder list
   IndexIgnore */*
 
-
   #######################################################################
   # REWRITING                                                           #
   #######################################################################

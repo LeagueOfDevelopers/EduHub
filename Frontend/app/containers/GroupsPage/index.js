@@ -18,6 +18,7 @@ import { getGroups } from "../HomePage/actions";
 import { makeSelectGroups } from "../HomePage/selectors";
 import {Row, Col, Menu, Dropdown, Icon} from 'antd';
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
+import AssembledGroupCard from "../../components/AssembledGroupCard/index";
 
 export class GroupsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -81,7 +82,7 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
             this.props.match.params.groupsTitle === 'assembledGroups' ?
               this.props.assembledGroups.map((item) =>
                 <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                  <UnassembledGroupCard {...item}/>
+                  <AssembledGroupCard {...item}/>
                 </Link>
               ) : null
           }
