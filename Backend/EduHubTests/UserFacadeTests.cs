@@ -126,8 +126,8 @@ namespace EduHubTests
             Assert.AreEqual(expected.Count, actual.Count);
         }
 
-        [ExpectedException(typeof(UserAlreadyExistsException))]
         [TestMethod]
+        [ExpectedException(typeof(UserAlreadyExistsException))]
         public void TryToRegUserWithExistingEmail_GetException()
         {
             //Arrange
@@ -162,6 +162,30 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(createdGroupId, invitations[0].GroupId);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(TeacherIsAlreadyFoundException))]
+        public void TryToInviteTeacherToGroupWithApprovedTeacher_GetException()
+        {
+            //Arrange
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository,
+                new GroupSettings(1, 100, 0, 1000));
+            var authUserFacade = new AuthUserFacade(_keysRepository,
+                _userRepository, _emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository);
+
+            var creatorId = authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            var teacherId = authUserFacade.RegUser("Teacher", new Credentials("email2", "password"), true, UserType.User);
+            var anotherTeacherId = authUserFacade.RegUser("Another teacher", new Credentials("email3", "password"), true, UserType.User);
+            
+            var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group",
+                new List<string> { "c#" }, "Very interesting", 1, 100, false, GroupType.Lecture);
+            var createdGroup = groupFacade.GetGroup(createdGroupId);
+            createdGroup.ApproveTeacher(userFacade.GetUser(teacherId));
+
+            //Act
+            userFacade.Invite(creatorId, anotherTeacherId, createdGroupId, MemberRole.Teacher);
         }
 
         [TestMethod]

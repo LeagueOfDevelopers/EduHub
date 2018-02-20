@@ -69,7 +69,7 @@ namespace EduHub.Controllers
                 var countOfMembers = _groupFacade.GetGroupMembers(group.GroupInfo.Id).Count();
                 response.Add(new MinItemGroupResponse(new MinGroupInfo(group.GroupInfo.Id, group.GroupInfo.Title,
                     countOfMembers,
-                    group.GroupInfo.Size, group.GroupInfo.MoneyPerUser, group.GroupInfo.GroupType,
+                    group.GroupInfo.Size, group.GroupInfo.Price, group.GroupInfo.GroupType,
                     group.GroupInfo.Tags)));
             }
 
@@ -198,7 +198,7 @@ namespace EduHub.Controllers
             {
                 var memberAmount = _groupFacade.GetGroupMembers(g.GroupInfo.Id).ToList().Count;
                 var groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size,
-                    g.GroupInfo.MoneyPerUser, g.GroupInfo.GroupType, g.GroupInfo.Tags);
+                    g.GroupInfo.Price, g.GroupInfo.GroupType, g.GroupInfo.Tags);
                 if (memberAmount == g.GroupInfo.Size)
                     fullGroupList.Add(new MinItemGroupResponse(groupInfo));
                 else
@@ -220,7 +220,7 @@ namespace EduHub.Controllers
             var group = _groupFacade.GetGroup(groupId);
             var listOfMembers = _groupFacade.GetGroupMembers(groupId).ToList();
             var groupInfo = new FullGroupInfo(group.GroupInfo.Title, group.GroupInfo.Size,
-                listOfMembers.Count, group.GroupInfo.MoneyPerUser, group.GroupInfo.GroupType, group.GroupInfo.Tags,
+                listOfMembers.Count, group.GroupInfo.Price, group.GroupInfo.GroupType, group.GroupInfo.Tags,
                 group.GroupInfo.Description, group.Status);
             var memberInfoList = new List<MemberInfo>();
             if (group.Teacher != null)

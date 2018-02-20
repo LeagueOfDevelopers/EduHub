@@ -132,11 +132,11 @@ namespace EduHubTests
             //Act
             var expectedMoneyPerUser = 200;
             _groupEditFacade.ChangeGroupPrice(createdGroupId, _groupCreatorId, expectedMoneyPerUser);
-            var actualMoneyPerUser = createdGroup.GroupInfo.MoneyPerUser;
+            var actualMoneyPerUser = createdGroup.GroupInfo.Price;
 
             //Assert
             Assert.AreEqual(expectedMoneyPerUser, actualMoneyPerUser);
-            Assert.AreEqual(expectedMoneyPerUser, _groupFacade.GetGroup(createdGroupId).GroupInfo.MoneyPerUser);
+            Assert.AreEqual(expectedMoneyPerUser, _groupFacade.GetGroup(createdGroupId).GroupInfo.Price);
         }
 
         [TestMethod]

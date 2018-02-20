@@ -55,6 +55,7 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(createdGroupId1, foundGroups[0].GroupInfo.Id);
             Assert.AreEqual(createdGroupId2, foundGroups[1].GroupInfo.Id);
+            Assert.AreEqual(2, foundGroups.Count);
         }
         
         [TestMethod]
@@ -100,6 +101,34 @@ namespace EduHubTests
             //Act
             _groupFacade.CreateGroup(creatorId, "Some group", new List<string> { "c#" },
                 "You're welcome!", 2, 2000, false, GroupType.Lecture);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UserNotFoundException))]
+        public void TryToAddNotExistingUserToGroup_GetException()
+        {
+            //Arrange
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 20, false, GroupType.Lecture);
+
+            //Act
+            _groupFacade.AddMember(createdGroupId, Guid.NewGuid());
+        }
+
+        [TestMethod]
+        public void DeleteTeacherFromGroup_TeacherWasDeleted()
+        {
+            //Arrange
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 20, false, GroupType.Lecture);
+            var teacherId = _authUserFacade.RegUser("Teacher", Credentials.FromRawData("email2", "password"), true, UserType.User);
+            _groupFacade.ApproveTeacher(teacherId, createdGroupId);
+
+            //Act
+            _groupFacade.DeleteTeacher(createdGroupId, _groupCreator.Id, teacherId);
+
+            //Assert
+            Assert.AreEqual(null, _groupFacade.GetGroup(createdGroupId).Teacher);
         }
 
         private User _groupCreator;

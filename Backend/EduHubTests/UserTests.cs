@@ -24,10 +24,12 @@ namespace EduHubTests
             var testUser = new User(userName, Credentials.FromRawData(email, password), isTeacher, type);
             var actualName = testUser.UserProfile.Name;
             var actualIsTeacher = testUser.UserProfile.IsTeacher;
+            var actualType = testUser.Type;
 
             //Assert
             Assert.AreEqual(userName, actualName);
             Assert.AreEqual(isTeacher, actualIsTeacher);
+            Assert.AreEqual(type, actualType);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -35,13 +37,13 @@ namespace EduHubTests
         public void TryToCreateUserWithInvalidValues_GetException()
         {
             //Arrange
-            var nameOfUser = "";
+            var userName = "";
             var email = "";
             var isTeacher = false;
             var type = UserType.Admin;
 
             //Act
-            var testUser = new User(nameOfUser, Credentials.FromRawData(email, "1"), isTeacher, type);
+            var testUser = new User(userName, Credentials.FromRawData(email, "1"), isTeacher, type);
         }
 
         [TestMethod]
@@ -88,7 +90,7 @@ namespace EduHubTests
         public void ChangeUserTypeToUser_AdminBecameUser()
         {
             //Arrange
-            var testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
+            var testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.Admin);
 
             //Act
             testUser.StopToBeAdmin();
@@ -186,7 +188,7 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        public void DeclineInvitation_GetAcceptedInvitation()
+        public void DeclineInvitation_GetDeclinedInvitation()
         {
             //Arrange
             var testUser = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);

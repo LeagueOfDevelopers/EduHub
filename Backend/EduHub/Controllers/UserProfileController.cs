@@ -278,7 +278,7 @@ namespace EduHub.Controllers
             {
                 var memberAmount = _groupFacade.GetGroupMembers(g.GroupInfo.Id).ToList().Count;
                 var groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size,
-                    g.GroupInfo.MoneyPerUser, g.GroupInfo.GroupType, g.GroupInfo.Tags);
+                    g.GroupInfo.Price, g.GroupInfo.GroupType, g.GroupInfo.Tags);
                 items.Add(new MinItemGroupResponse(groupInfo));
             });
             var response = new MinGroupResponse(items);

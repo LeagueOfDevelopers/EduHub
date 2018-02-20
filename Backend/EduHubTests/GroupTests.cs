@@ -5,6 +5,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace EduHubTests
 {
@@ -299,6 +300,24 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(group.Status, CourseStatus.Started);
+        }
+
+        [TestMethod]
+        public void CommitChatSession_GetUpdatedChatHistory()
+        {
+            //Arrange
+            var creatorId = Guid.NewGuid();
+            var group = new Group(creatorId, "SomeGroup", new List<string> { "c#" }, 
+            "The best", 3, 0, false, GroupType.Seminar);
+
+            var someMessages = new List<Message>
+            { new Message(creatorId, "message1"), new Message(creatorId, "message2"), new Message(creatorId, "message3") };
+
+            //Act
+            group.CommitChatSession(someMessages);
+
+            //Assert
+            Assert.AreEqual(true, someMessages.SequenceEqual(group.Messages));
         }
     }
 }

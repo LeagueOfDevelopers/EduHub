@@ -67,7 +67,7 @@ namespace EduHubLibrary.Facades
                 nameof(ChangeGroupPrice), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newPrice))));
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
-            currentGroup.GroupInfo.MoneyPerUser = newPrice;
+            currentGroup.GroupInfo.Price = newPrice;
             _groupRepository.Update(currentGroup);
         }
 

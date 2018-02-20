@@ -6,7 +6,7 @@ namespace EduHubLibrary.Domain
     public class GroupInfo
     {
         public GroupInfo(Guid id, string title, string description, IEnumerable<string> tags, GroupType groupType,
-            bool isPrivate, bool isActive, int size, double moneyPerUser)
+            bool isPrivate, bool isActive, int size, double price)
         {
             Id = id;
             Title = title;
@@ -16,7 +16,7 @@ namespace EduHubLibrary.Domain
             IsPrivate = isPrivate;
             IsActive = isActive;
             Size = size;
-            MoneyPerUser = moneyPerUser;
+            Price = price;
         }
 
         public Guid Id { get; }
@@ -28,6 +28,6 @@ namespace EduHubLibrary.Domain
         public bool IsPrivate { get; internal set; }
         public bool IsActive { get; internal set; }
         public int Size { get; internal set; }
-        public double MoneyPerUser { get; internal set; }
+        public double Price { get; internal set; }
     }
 }
