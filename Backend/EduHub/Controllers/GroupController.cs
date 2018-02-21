@@ -221,7 +221,7 @@ namespace EduHub.Controllers
             var listOfMembers = _groupFacade.GetGroupMembers(groupId).ToList();
             var groupInfo = new FullGroupInfo(group.GroupInfo.Title, group.GroupInfo.Size,
                 listOfMembers.Count, group.GroupInfo.Price, group.GroupInfo.GroupType, group.GroupInfo.Tags,
-                group.GroupInfo.Description, group.Status);
+                group.GroupInfo.Description, group.Status, group.GroupInfo.IsPrivate);
             var memberInfoList = new List<MemberInfo>();
             if (group.Teacher != null)
             {

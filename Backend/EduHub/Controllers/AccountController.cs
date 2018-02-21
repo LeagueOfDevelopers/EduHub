@@ -59,7 +59,8 @@ namespace EduHub.Controllers
             if (client != null)
             {
                 var response = new LoginResponse(client.UserProfile.Name, client.Credentials.Email,
-                    client.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id));
+                    client.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id),
+                    client.UserProfile.IsTeacher);
                 return Ok(response);
             }
 
@@ -82,7 +83,8 @@ namespace EduHub.Controllers
             if (user != null)
             {
                 var response = new LoginResponse(user.UserProfile.Name, user.Credentials.Email,
-                    user.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, userId));
+                    user.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, userId),
+                    user.UserProfile.IsTeacher);
                 return Ok(response);
             }
 
