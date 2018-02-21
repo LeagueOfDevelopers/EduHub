@@ -106,6 +106,8 @@ namespace EduHubLibrary.Domain
                 Ensure.Bool.IsTrue(current.MemberRole == MemberRole.Creator, nameof(DeleteCreator),
                     opt => opt.WithException(new NotEnoughPermissionsException(requestedPerson)));
                 Teacher = null;
+                Status = CourseStatus.Searching;
+                GroupInfo.Curriculum = null;
             }
         }
 
@@ -134,9 +136,6 @@ namespace EduHubLibrary.Domain
         {
             Ensure.Bool.IsTrue(Teacher == null, nameof(Teacher),
                 opt => opt.WithException(new TeacherIsAlreadyFoundException()));
-            /*Ensure.Bool.IsTrue(listOfMembers.Count == GroupInfo.Size, nameof(GroupInfo.Size),
-                opt => opt.WithException(new GroupIsNotFullException(GroupInfo.Id)));*/
-            // because of waffle task 103 this line is commented
             Teacher = Ensure.Any.IsNotNull(teacher);
         }
 
@@ -147,6 +146,8 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
             Ensure.String.IsNotNullOrWhiteSpace(curriculum);
             GroupInfo.Curriculum = curriculum;
+            Status = CourseStatus.InProgress;
+            ClearMemberCourseData();
         }
 
         internal void AcceptCurriculum(Guid userId)
@@ -154,22 +155,40 @@ namespace EduHubLibrary.Domain
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Bool.IsTrue(IsMember(userId), nameof(IsMember),
                 opt => opt.WithException(new MemberNotFoundException(userId)));
+            Ensure.Bool.IsTrue(Status == CourseStatus.InProgress, nameof(AcceptCurriculum),
+                opt => opt.WithException(new CourseNotOfferedException()));
+
             var currentMember = GetMember(userId);
-            currentMember.AcceptedCurriculum = true;
-            if (Members.All(m => m.AcceptedCurriculum)) Status = CourseStatus.Started;
+            currentMember.CurriculumStatus = MemberCurriculumStatus.Accepted;
+            if (Members.All(m =>
+                m.CurriculumStatus == MemberCurriculumStatus.Accepted))
+            {
+                Status = CourseStatus.Started;
+            }
+        }
+
+        internal void DeclineCurriculum(Guid userId)
+        {
+            Ensure.Guid.IsNotEmpty(userId);
+            Ensure.Bool.IsTrue(IsMember(userId), nameof(IsMember),
+                opt => opt.WithException(new MemberNotFoundException(userId)));
+            Ensure.Bool.IsTrue(Status == CourseStatus.InProgress, nameof(AcceptCurriculum),
+                opt => opt.WithException(new CourseNotOfferedException()));
+
+            var currentMember = GetMember(userId);
+            currentMember.CurriculumStatus = MemberCurriculumStatus.Declined;
+            GroupInfo.Curriculum = null;
+            Status = CourseStatus.Searching;
         }
 
         internal bool DoesContainsTags(List<string> tags)
         {
-            if (tags.TrueForAll(t => GroupInfo.Tags.Contains(t)))
-                return true;
-
-            return false;
+            return tags.TrueForAll(t => GroupInfo.Tags.Contains(t));
         }
 
         internal void CommitChatSession(IEnumerable<Message> newMessages)
         {
-            List<Message> newMessageList = new List<Message>(Messages);
+            var newMessageList = new List<Message>(Messages);
             newMessages.ToList().ForEach(m => newMessageList.Add(m));
             Messages = newMessageList;
         }
@@ -179,17 +198,26 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(deletingCreator);
             Ensure.Bool.IsTrue(deletingCreator.MemberRole == MemberRole.Creator, nameof(DeleteCreator),
                 opt => opt.WithException(new NotEnoughPermissionsException(deletingCreator.UserId)));
-            var indexOfCreator = Members.IndexOf(deletingCreator);
-            if (indexOfCreator + 1 == Members.Count)
+
+            var creatorIndex = Members.IndexOf(deletingCreator);
+            if (creatorIndex + 1 == Members.Count)
             {
                 Members.Remove(deletingCreator);
                 GroupInfo.IsActive = false;
                 return;
             }
 
-            var newCreator = Members[indexOfCreator + 1];
+            var newCreator = Members[creatorIndex + 1];
             newCreator.MemberRole = MemberRole.Creator;
             Members.Remove(deletingCreator);
+        }
+
+        private void ClearMemberCourseData()
+        {
+            Members.ForEach(m =>
+            {
+                m.CurriculumStatus = MemberCurriculumStatus.InProgress;
+            });
         }
     }
 }

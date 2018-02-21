@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Settings;
 using EnsureThat;
 
@@ -126,6 +127,21 @@ namespace EduHubLibrary.Facades
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.AcceptCurriculum(userId);
+        }
+
+        public void DeclineCurriculum(Guid userId, Guid groupId, string reason)
+        {
+            Ensure.Guid.IsNotEmpty(userId);
+            Ensure.Guid.IsNotEmpty(groupId);
+            CheckUserExistence(userId);
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            currentGroup.DeclineCurriculum(userId);
+
+            using (var cs = new ChatSession(currentGroup))
+            {
+                cs.SendMessage(userId, reason);
+            }
         }
 
         public void OfferCurriculum(Guid userId, Guid groupId, string description)

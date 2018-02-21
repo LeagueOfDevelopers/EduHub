@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Facades
 {
@@ -11,6 +12,7 @@ namespace EduHubLibrary.Facades
 
         void ApproveTeacher(Guid teacherId, Guid groupId);
         void AcceptCurriculum(Guid userId, Guid groupId);
+        void DeclineCurriculum(Guid userId, Guid groupId, string reason);
         void OfferCurriculum(Guid userId, Guid groupId, string description);
         IEnumerable<Group> GetGroups();
         Group GetGroup(Guid id);

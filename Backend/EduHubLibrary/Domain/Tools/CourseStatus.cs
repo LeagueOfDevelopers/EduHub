@@ -2,8 +2,9 @@
 {
     public enum CourseStatus
     {
-        InProgress = 0,
-        Started = 1,
-        Finished = 2
+        Searching = 0,
+        InProgress = 1,
+        Started = 2,
+        Finished = 3
     }
 }

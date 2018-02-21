@@ -34,6 +34,6 @@ namespace EduHubLibrary.Domain
             return message.Id;
         }
 
-        private Group _group;
+        private readonly Group _group;
     }
 }

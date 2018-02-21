@@ -47,7 +47,7 @@ namespace EduHub.Controllers
         {
             var userId = Request.GetUserId();
             _groupFacade.AcceptCurriculum(userId, groupId);
-            return Ok("Учебный план утвержден");
+            return Ok();
         }
 
         /// <summary>
@@ -57,9 +57,12 @@ namespace EduHub.Controllers
         [Route("curriculum")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult RejectCurriculum([FromRoute] Guid groupId)
+        public IActionResult RejectCurriculum([FromRoute] Guid groupId,
+            [FromBody] DeclineCurriculumRequest request)
         {
-            return Ok("Учебный план отклонен");
+            var userId = Request.GetUserId();
+            _groupFacade.DeclineCurriculum(userId, groupId, request.Reason);
+            return Ok();
         }
 
         /// <summary>

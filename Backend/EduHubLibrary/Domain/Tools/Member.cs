@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EduHubLibrary.Domain
+namespace EduHubLibrary.Domain.Tools
 {
     public class Member
     {
@@ -9,12 +9,12 @@ namespace EduHubLibrary.Domain
             UserId = userId;
             MemberRole = memberRole;
             Paid = false;
-            AcceptedCurriculum = false;
+            CurriculumStatus = MemberCurriculumStatus.InProgress;
         }
 
         public Guid UserId { get; }
-        public MemberRole MemberRole { get; set; }
-        public bool Paid { get; set; }
-        public bool AcceptedCurriculum { get; set; }
+        public MemberRole MemberRole { get; internal set; }
+        public bool Paid { get; internal set; }
+        public MemberCurriculumStatus CurriculumStatus { get; internal set; }
     }
 }

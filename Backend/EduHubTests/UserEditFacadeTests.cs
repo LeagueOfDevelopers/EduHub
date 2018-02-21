@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubTests
 {
@@ -26,9 +27,10 @@ namespace EduHubTests
             var keysRepository = new InMemoryKeysRepository();
             var groupRepository = new InMemoryGroupRepository();
             var userRepository = new InMemoryUserRepository();
+            var fileRepository = new InMemoryFileRepository();
             var authUserFacade = new AuthUserFacade(keysRepository, userRepository, emailSender);
 
-            _userEditFacade = new UserEditFacade(userRepository);
+            _userEditFacade = new UserEditFacade(userRepository, fileRepository);
             _userFacade = new UserFacade(userRepository, groupRepository);
 
             _testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
@@ -105,6 +107,7 @@ namespace EduHubTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(FileDoesNotExistException))]
         public void EditAvatarLinkOfUser_GetUserWithEditedAvatarLink()
         {
             //Arrange
