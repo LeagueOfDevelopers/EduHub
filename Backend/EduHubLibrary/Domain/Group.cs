@@ -189,7 +189,7 @@ namespace EduHubLibrary.Domain
         internal void CommitChatSession(IEnumerable<Message> newMessages)
         {
             var newMessageList = new List<Message>(Messages);
-            newMessages.ToList().ForEach(m => newMessageList.Add(m));
+            newMessageList.AddRange(newMessages);
             Messages = newMessageList;
         }
 

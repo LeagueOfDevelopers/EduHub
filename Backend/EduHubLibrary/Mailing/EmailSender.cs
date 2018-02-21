@@ -1,7 +1,8 @@
 ﻿using EduHubLibrary.Settings;
+using MailKit.Net.Smtp;
 using MimeKit;
 
-namespace EduHubLibrary.Common
+namespace EduHubLibrary.Mailing
 {
     public class EmailSender
     {
@@ -25,8 +26,8 @@ namespace EduHubLibrary.Common
             {
                 Text = text
             };
-
-            /*using (var client = new SmtpClient())
+            /*
+            using (var client = new SmtpClient())
             {
                 client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 

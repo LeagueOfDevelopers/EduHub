@@ -3,6 +3,7 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Mailing;
 using EnsureThat;
 
 namespace EduHubLibrary.Facades
@@ -29,12 +30,13 @@ namespace EduHubLibrary.Facades
 
             var user = new User(username, credentials, isTeacher, userType);
             var key = new Key(user.Id);
+            var text = string.Format(EmailTemplates.ConfirmEmail,
+                username, _sender.ConfirmAdress,  key.Value);
+            var theme = EmailTemplates.ConfirmEmailTheme.ToString();
+            
+            _sender.SendMessage(username, credentials.Email, text, theme);
             _keysRepository.AddKey(key);
             _userRepository.Add(user);
-            var text = "Подтвердите регистрацию на сайте EduHub, перейдя по ссылке " +
-                       $"{_sender.ConfirmAdress}/{key.Value}";
-            var theme = "Подтверждение аккаунта";
-            _sender.SendMessage(username, credentials.Email, text, theme);
             return user.Id;
         }
 

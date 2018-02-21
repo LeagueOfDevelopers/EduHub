@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;

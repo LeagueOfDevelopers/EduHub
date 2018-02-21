@@ -2,10 +2,10 @@
 using System.Text;
 using EduHub.Filters;
 using EduHub.Security;
-using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
+using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Loggly;
 using Loggly.Config;
