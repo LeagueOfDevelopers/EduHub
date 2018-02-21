@@ -56,7 +56,7 @@ namespace EduHub
             var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings);
-            var userEditFacade = new UserEditFacade(userRepository);
+            var userEditFacade = new UserEditFacade(userRepository, fileRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository);

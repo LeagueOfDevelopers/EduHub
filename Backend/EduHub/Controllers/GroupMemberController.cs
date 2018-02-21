@@ -41,7 +41,6 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Adds user to group as member
         /// </summary>
-        /// ]
         [Authorize]
         [HttpPost]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]

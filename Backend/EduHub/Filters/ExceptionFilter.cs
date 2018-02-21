@@ -40,6 +40,9 @@ namespace EduHub.Filters
                 case UserAlreadyExistsException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case FileDoesNotExistException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {

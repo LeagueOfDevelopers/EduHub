@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Tools;
-using EduHubLibrary.Facades.Models;
+using EduHubLibrary.Facades.Views;
 
 namespace EduHubLibrary.Facades
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EduHubLibrary.Facades.Models
+namespace EduHubLibrary.Facades.Views
 {
     public class UserInviteInfo
     {

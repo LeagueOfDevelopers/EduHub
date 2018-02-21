@@ -3,15 +3,17 @@ using EduHubLibrary.Domain.Tools;
 using EnsureThat;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubLibrary.Facades
 {
     public class UserEditFacade : IUserEditFacade
     {
-        public UserEditFacade(IUserRepository userRepository)
+        public UserEditFacade(IUserRepository userRepository,
+            IFileRepository fileRepository)
         {
             _userRepository = userRepository;
+            _fileRepository = fileRepository;
         }
 
         public void EditName(Guid userId, string newName)
@@ -37,8 +39,13 @@ namespace EduHubLibrary.Facades
 
         public void EditAvatarLink(Guid userId, string newAvatarLink)
         {
+            Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
+            Ensure.Bool.IsTrue(_fileRepository.DoesFileExists(newAvatarLink),
+                nameof(EditAboutUser), 
+                opt => opt.WithException(new FileDoesNotExistException()));
+
             var currentUser = _userRepository.GetUserById(userId);
-            currentUser.UserProfile.AvatarLink = Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
+            currentUser.UserProfile.AvatarLink = newAvatarLink; 
             _userRepository.Update(currentUser);
         }
 
@@ -79,5 +86,6 @@ namespace EduHubLibrary.Facades
         }
 
         private readonly IUserRepository _userRepository;
+        private readonly IFileRepository _fileRepository;
     }
 }

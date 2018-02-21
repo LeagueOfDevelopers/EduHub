@@ -4,8 +4,7 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
-using EduHubLibrary.Domain.Tools;
-using EduHubLibrary.Facades.Models;
+using EduHubLibrary.Facades.Views;
 using EnsureThat;
 
 namespace EduHubLibrary.Facades
