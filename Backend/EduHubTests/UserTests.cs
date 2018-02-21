@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EduHubLibrary.Domain.Exceptions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EduHubTests
 {
@@ -104,7 +104,7 @@ namespace EduHubTests
         {
             //Arrange
             var testUser = new User("Ivan", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            var skills = new List<string> { "c#", "c++" };
+            var skills = new List<string> {"c#", "c++"};
 
             //Act
             testUser.ConfigureTeacherProfile(skills);
@@ -126,13 +126,13 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(review, teacher.TeacherProfile.Reviews[0]);
         }
-        
+
         [TestMethod]
         public void AddInvitationWithRightReceiverToUser_GetRightInvitationList()
         {
             //Arrange
             var testUser = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            var invitation = new Invitation(Guid.NewGuid(), testUser.Id, Guid.NewGuid(), 
+            var invitation = new Invitation(Guid.NewGuid(), testUser.Id, Guid.NewGuid(),
                 MemberRole.Member, InvitationStatus.InProgress);
 
             //Act

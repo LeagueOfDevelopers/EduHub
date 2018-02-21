@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Linq;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
-using System.Linq;
 
 namespace EduHubLibrary.Facades
 {
@@ -25,7 +24,7 @@ namespace EduHubLibrary.Facades
                 return chat.SendMessage(senderId, text);
             }
         }
-        
+
         public Message GetMessage(Guid messageId, Guid groupId)
         {
             return _groupRepository.GetGroupById(groupId).Messages.ToList().Find(m => m.Id.Equals(messageId));

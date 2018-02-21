@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
-using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
+using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -15,10 +14,10 @@ namespace EduHubTests
     [TestClass]
     public class UserFacadeTests
     {
-        private IGroupRepository _groupRepository;
-        private IUserRepository _userRepository;
-        private IKeysRepository _keysRepository;
         private EmailSender _emailSender;
+        private IGroupRepository _groupRepository;
+        private IKeysRepository _keysRepository;
+        private IUserRepository _userRepository;
 
         [TestInitialize]
         public void Initialize()
@@ -27,7 +26,7 @@ namespace EduHubTests
             _keysRepository = new InMemoryKeysRepository();
             _groupRepository = new InMemoryGroupRepository();
 
-             var emailSettings = new EmailSettings("", "", "", "", "", 4);
+            var emailSettings = new EmailSettings("", "", "", "", "", 4);
             _emailSender = new EmailSender(emailSettings);
         }
 
@@ -35,7 +34,7 @@ namespace EduHubTests
         public void AddNewUser_UserAdded()
         {
             //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository, 
+            var authUserFacade = new AuthUserFacade(_keysRepository,
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
             var expectedName = "yaroslav";
@@ -64,7 +63,8 @@ namespace EduHubTests
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
                 new GroupSettings(2, 10, 0, 100));
 
-            var testUserId = authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
+            var testUserId =
+                authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
             var creatorId = authUserFacade.RegUser("Galya", new Credentials("email2", "password"), true, UserType.User);
 
             var createdGroupId1 = groupFacade.CreateGroup(creatorId, "Group1", new List<string> {"c#"}, "Good group", 5,
@@ -150,8 +150,10 @@ namespace EduHubTests
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
 
-            var creatorId = authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
-            var teacherId = authUserFacade.RegUser("Teacher", new Credentials("email2", "password"), true, UserType.User);
+            var creatorId =
+                authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            var teacherId =
+                authUserFacade.RegUser("Teacher", new Credentials("email2", "password"), true, UserType.User);
 
             var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group",
                 new List<string> {"c#"}, "Very interesting", 1, 100, false, GroupType.Lecture);
@@ -175,12 +177,15 @@ namespace EduHubTests
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
 
-            var creatorId = authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
-            var teacherId = authUserFacade.RegUser("Teacher", new Credentials("email2", "password"), true, UserType.User);
-            var anotherTeacherId = authUserFacade.RegUser("Another teacher", new Credentials("email3", "password"), true, UserType.User);
-            
+            var creatorId =
+                authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            var teacherId =
+                authUserFacade.RegUser("Teacher", new Credentials("email2", "password"), true, UserType.User);
+            var anotherTeacherId = authUserFacade.RegUser("Another teacher", new Credentials("email3", "password"),
+                true, UserType.User);
+
             var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group",
-                new List<string> { "c#" }, "Very interesting", 1, 100, false, GroupType.Lecture);
+                new List<string> {"c#"}, "Very interesting", 1, 100, false, GroupType.Lecture);
             var createdGroup = groupFacade.GetGroup(createdGroupId);
             createdGroup.ApproveTeacher(userFacade.GetUser(teacherId));
 
@@ -199,7 +204,8 @@ namespace EduHubTests
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
 
-            var creatorId = authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
+            var creatorId =
+                authUserFacade.RegUser("Creator", new Credentials("email1", "password"), false, UserType.User);
             var pseudoTeacherId = authUserFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false,
                 UserType.User);
 

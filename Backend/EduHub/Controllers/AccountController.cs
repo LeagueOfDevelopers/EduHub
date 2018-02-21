@@ -1,12 +1,12 @@
 ﻿using System;
+using EduHub.Extensions;
 using EduHub.Models;
 using EduHub.Security;
-using EduHub.Extensions;
 using EduHubLibrary.Common;
 using EduHubLibrary.Facades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.AspNetCore.Authorization;
 
 namespace EduHub.Controllers
 {

@@ -162,9 +162,7 @@ namespace EduHubLibrary.Domain
             currentMember.CurriculumStatus = MemberCurriculumStatus.Accepted;
             if (Members.All(m =>
                 m.CurriculumStatus == MemberCurriculumStatus.Accepted))
-            {
                 Status = CourseStatus.Started;
-            }
         }
 
         internal void DeclineCurriculum(Guid userId)
@@ -214,10 +212,7 @@ namespace EduHubLibrary.Domain
 
         private void ClearMemberCourseData()
         {
-            Members.ForEach(m =>
-            {
-                m.CurriculumStatus = MemberCurriculumStatus.InProgress;
-            });
+            Members.ForEach(m => { m.CurriculumStatus = MemberCurriculumStatus.InProgress; });
         }
     }
 }

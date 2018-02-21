@@ -85,7 +85,7 @@ namespace EduHubLibrary.Domain
                 throw new InvitationAlreadyChangedException(invitationId);
             currentInvitation.Status = InvitationStatus.Declined;
         }
-        
+
         internal Invitation GetInvitation(Guid invitationId)
         {
             Ensure.Guid.IsNotEmpty(invitationId);

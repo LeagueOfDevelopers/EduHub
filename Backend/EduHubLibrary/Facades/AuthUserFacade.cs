@@ -31,9 +31,9 @@ namespace EduHubLibrary.Facades
             var user = new User(username, credentials, isTeacher, userType);
             var key = new Key(user.Id);
             var text = string.Format(EmailTemplates.ConfirmEmail,
-                username, _sender.ConfirmAdress,  key.Value);
-            var theme = EmailTemplates.ConfirmEmailTheme.ToString();
-            
+                username, _sender.ConfirmAdress, key.Value);
+            var theme = EmailTemplates.ConfirmEmailTheme;
+
             _sender.SendMessage(username, credentials.Email, text, theme);
             _keysRepository.AddKey(key);
             _userRepository.Add(user);

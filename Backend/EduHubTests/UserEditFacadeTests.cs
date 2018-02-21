@@ -1,23 +1,22 @@
-﻿using EduHubLibrary.Common;
-using EduHubLibrary.Domain;
+﻿using System;
+using System.Collections.Generic;
+using EduHubLibrary.Common;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
+using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubTests
 {
     [TestClass]
     public class UserEditFacadeTests
-    {  
+    {
         private Guid _testUserId;
-        private IUserFacade _userFacade;
         private IUserEditFacade _userEditFacade;
+        private IUserFacade _userFacade;
 
         [TestInitialize]
         public void Initialize()
@@ -33,9 +32,10 @@ namespace EduHubTests
             _userEditFacade = new UserEditFacade(userRepository, fileRepository);
             _userFacade = new UserFacade(userRepository, groupRepository);
 
-            _testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
+            _testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+                UserType.User);
         }
-    
+
         [TestMethod]
         public void EditName_GetUserWithEditedName()
         {
@@ -139,7 +139,7 @@ namespace EduHubTests
         {
             //Arrange
             var testUser = _userFacade.GetUser(_testUserId);
-            var newContacts = new List<string> { "friend", "best friend" };
+            var newContacts = new List<string> {"friend", "best friend"};
 
             //Act
             _userEditFacade.EditContacts(_testUserId, newContacts);
@@ -166,7 +166,7 @@ namespace EduHubTests
         public void EditContactsOfUserWithListWithEmptyValue_GetException()
         {
             //Arrange
-            var newContacts = new List<string> { " ", "friend" };
+            var newContacts = new List<string> {" ", "friend"};
 
             //Act
             _userEditFacade.EditContacts(_testUserId, newContacts);

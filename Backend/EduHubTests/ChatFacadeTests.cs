@@ -5,6 +5,7 @@ using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
+using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,8 +15,8 @@ namespace EduHubTests
     public class ChatFacadeTests
     {
         private Guid _creatorId;
-        private Guid _testGroupId;
         private IGroupRepository _groupRepository;
+        private Guid _testGroupId;
 
         [TestInitialize]
         public void Initialize()

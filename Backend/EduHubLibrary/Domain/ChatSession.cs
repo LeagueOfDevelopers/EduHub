@@ -9,6 +9,8 @@ namespace EduHubLibrary.Domain
 {
     public class ChatSession : IDisposable
     {
+        private readonly Group _group;
+
         public ChatSession(Group group)
         {
             Messages = new List<Message>();
@@ -16,7 +18,7 @@ namespace EduHubLibrary.Domain
         }
 
         public IEnumerable<Message> Messages { get; private set; }
-       
+
         public void Dispose()
         {
             _group.CommitChatSession(Messages);
@@ -31,7 +33,5 @@ namespace EduHubLibrary.Domain
 
             return message.Id;
         }
-
-        private readonly Group _group;
     }
 }

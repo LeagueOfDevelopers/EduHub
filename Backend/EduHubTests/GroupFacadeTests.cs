@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
+using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubTests
 {
     [TestClass]
     public class GroupFacadeTests
     {
+        private IAuthUserFacade _authUserFacade;
+
+        private User _groupCreator;
+        private IGroupFacade _groupFacade;
+        private IUserFacade _userFacade;
+
         [TestInitialize]
         public void Initialize()
         {
@@ -57,21 +64,21 @@ namespace EduHubTests
             Assert.AreEqual(createdGroupId2, foundGroups[1].GroupInfo.Id);
             Assert.AreEqual(2, foundGroups.Count);
         }
-        
+
         [TestMethod]
         public void CreateGroupByGroupFacadeWithValidValues_GroupWasCreated()
         {
             //Arrange
-            var creatorId = _authUserFacade.RegUser("Alena", Credentials.FromRawData("Email", "Password"), 
+            var creatorId = _authUserFacade.RegUser("Alena", Credentials.FromRawData("Email", "Password"),
                 false, UserType.User);
             var title = "some group";
             var description = "some description";
-            var tags = new List<string> { "c#" };
+            var tags = new List<string> {"c#"};
             var size = 3;
             var moneyPerUser = 100.0;
 
             //Act
-            var groupId = _groupFacade.CreateGroup(creatorId, title, tags, description, size, moneyPerUser, 
+            var groupId = _groupFacade.CreateGroup(creatorId, title, tags, description, size, moneyPerUser,
                 false, GroupType.Seminar);
 
             //Assert
@@ -86,7 +93,7 @@ namespace EduHubTests
             var invalidUserId = Guid.NewGuid();
 
             //Act
-            _groupFacade.CreateGroup(invalidUserId, "Some group", new List<string> { "c#" },
+            _groupFacade.CreateGroup(invalidUserId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
         }
 
@@ -99,7 +106,7 @@ namespace EduHubTests
                 false, UserType.User);
 
             //Act
-            _groupFacade.CreateGroup(creatorId, "Some group", new List<string> { "c#" },
+            _groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 2, 2000, false, GroupType.Lecture);
         }
 
@@ -108,7 +115,7 @@ namespace EduHubTests
         public void TryToAddNotExistingUserToGroup_GetException()
         {
             //Arrange
-            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
 
             //Act
@@ -119,9 +126,10 @@ namespace EduHubTests
         public void DeleteTeacherFromGroup_TeacherWasDeleted()
         {
             //Arrange
-            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
-            var teacherId = _authUserFacade.RegUser("Teacher", Credentials.FromRawData("email2", "password"), true, UserType.User);
+            var teacherId = _authUserFacade.RegUser("Teacher", Credentials.FromRawData("email2", "password"), true,
+                UserType.User);
             _groupFacade.ApproveTeacher(teacherId, createdGroupId);
 
             //Act
@@ -130,10 +138,5 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(null, _groupFacade.GetGroup(createdGroupId).Teacher);
         }
-
-        private User _groupCreator;
-        private IGroupFacade _groupFacade;
-        private IUserFacade _userFacade;
-        private IAuthUserFacade _authUserFacade;
     }
 }
