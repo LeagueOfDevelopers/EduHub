@@ -55,7 +55,6 @@ public class GroupActivity extends AppCompatActivity
         }else{
             UnsignedMainGroupFragment unsignedMainGroupFragment=new UnsignedMainGroupFragment();
             unsignedMainGroupFragment.setGroup(group);
-
             transaction=getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.group_fragments_conteiner,unsignedMainGroupFragment);
             transaction.commit();
@@ -63,9 +62,7 @@ public class GroupActivity extends AppCompatActivity
 
 
         back.setOnClickListener(click->{
-            Intent intent1 = new Intent(this,AuthorizedUserActivity.class);
-
-            startActivity(intent1);
+           onBackPressed();
         });
 
     }
@@ -134,8 +131,13 @@ public class GroupActivity extends AppCompatActivity
             transaction.add(R.id.group_fragments_conteiner,unsignedMainGroupFragment);
             transaction.commit();
         }
+    }
 
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, AuthorizedUserActivity.class);
+        intent.putExtra("group",group);
+        startActivity(intent);
     }
 }

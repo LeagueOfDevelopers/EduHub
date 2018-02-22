@@ -128,7 +128,8 @@ public class InvitationHeaderView implements IChangeStatusOfInvitationView {
                 // положительная кнопка
                 case Dialog.BUTTON_POSITIVE:
                     if(!fakesButton.getCheckButton()){
-                    сhangeStatusOfInvitationPresenter.changeStatus("Accepted",user.getToken(),heading.getId());}
+                    сhangeStatusOfInvitationPresenter.changeStatus("Accepted",user.getToken(),heading.getId());
+                    }
                     else {
                         fakeChangeStatusOfInvitation.changeStatus("Accepted",user.getToken(),heading.getId());
                     }

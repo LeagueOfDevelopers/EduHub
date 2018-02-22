@@ -27,10 +27,10 @@ public class CreateGroupPresenter implements ICreateGroupPresenter {
     }
 
     @Override
-    public void createGroup(String title, String description, ArrayList<String> tags, int size, int cost, TypeOfEducation groupType, Boolean isPrivate,String token) {
+    public void createGroup(String title, String description, ArrayList<String> tags, int size, Double cost, TypeOfEducation groupType, Boolean isPrivate,String token) {
         createGroupModel.setDescription(description);
         Log.d("description",description);
-        createGroupModel.setGroupType(groupType.ordinal()+1);
+        createGroupModel.setGroupType(groupType.ordinal());
         Log.d("NUMBER TYPE OFEDUCATION",(groupType.ordinal())+"");
         createGroupModel.setIsPrivate(isPrivate);
         Log.d("isPrivate",isPrivate.toString());

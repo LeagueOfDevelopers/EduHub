@@ -64,10 +64,14 @@ public class UserProfileFragment extends Fragment {
         userName.setText(userProfile.getUserProfile().getName());
         userName2.setText(userProfile.getUserProfile().getName());
 
-        if(userProfile.getUserProfile().getIsMan()){
-            sex.setText("Мужской");
+        if(!userProfile.getUserProfile().getGender().equals("0")){
+            if (userProfile.getUserProfile().getGender().equals("1")){
+                sex.setText("Мужской");
+            }else{
+                sex.setText("Женский");
+            }
         }else {
-            sex.setText("Женский");
+            v.findViewById(R.id.card_of_sex).setVisibility(View.GONE);
         }
         if(userProfile.getUserProfile().getBirthYear().toString().equals("0")){
             v.findViewById(R.id.card_of_birth).setVisibility(View.GONE);

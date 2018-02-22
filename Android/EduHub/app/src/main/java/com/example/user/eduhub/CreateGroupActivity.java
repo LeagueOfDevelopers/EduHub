@@ -116,8 +116,7 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
 
 
         backButton.setOnClickListener(click->{
-            Intent intent=new Intent(this,AuthorizedUserActivity.class);
-            startActivity(intent);
+            onBackPressed();
         });
 
 
@@ -130,9 +129,9 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
             .toString().equals("")){
                 if(Integer.valueOf(maxParticipants.getText().toString())<=100){
                     if(!fakesButton.getCheckButton()){
-                        createGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>)tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,flag,user.getToken());}
+                        createGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>)tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Double.valueOf( cost.getText().toString()),type,flag,user.getToken());}
                         else{
-                        fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>) tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Integer.valueOf( cost.getText().toString()),type,flag,user.getToken());
+                        fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>) tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Double.valueOf( cost.getText().toString()),type,flag,user.getToken());
                     }
                 } else{MakeToast("Максимальный размер группы 100");}
             }else {

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,6 +71,7 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         TextView groupTitle=v.findViewById(R.id.GroupTitle);
         groupTitle.setText(group.getGroupInfo().getTitle());
         Button signInToGroup=v.findViewById(R.id.signed_to_group);
+
         sPref =getActivity().getSharedPreferences("User",MODE_PRIVATE);
         pager = v.findViewById(R.id.pager);
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
@@ -77,8 +79,9 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         imageView.setImageResource(R.mipmap.ic_launcher_round);
         groupInformationFragment = new GroupInformationFragment();
         groupInformationFragment.setGroup(group);
+        groupInformationFragment.setFlag(true);
         chat = new ChatFragment();
-
+        chat.setFlag(true);
         groupMembersFragment = new GroupMembersFragment();
         groupMembersFragment.setGroup(group);
 

@@ -6,8 +6,8 @@ package com.example.user.eduhub.Classes;
 
 public enum MemberRole
 {
-    Default,
-    Member,
-    Teacher,
-    Creator
+    Участник,
+    Создатель,
+    Учитель
+
 }

@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements IFragmentsActivit
     public void switchingFragmets(Fragment fragment) {
         fTransaction=getSupportFragmentManager().beginTransaction();
         fTransaction.replace(R.id.fragments_conteiner,fragment);
-        fTransaction.addToBackStack(null);
         fTransaction.commit();
     }
 

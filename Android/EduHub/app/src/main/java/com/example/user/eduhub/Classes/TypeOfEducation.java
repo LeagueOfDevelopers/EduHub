@@ -5,7 +5,7 @@ package com.example.user.eduhub.Classes;
  */
 
 public enum TypeOfEducation {
-        Lecture,
-        Seminar,
-        MasterClass
+        Лекция,
+        Семинар,
+        МастерКласс,
 }

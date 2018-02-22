@@ -24,7 +24,7 @@ public class CreateGroupModel {
     private Integer size;
     @SerializedName("moneyPerUser")
     @Expose
-    private Integer moneyPerUser;
+    private Double moneyPerUser;
     @SerializedName("groupType")
     @Expose
     private Integer groupType;
@@ -64,11 +64,11 @@ public class CreateGroupModel {
         this.size = size;
     }
 
-    public Integer getMoneyPerUser() {
+    public Double getMoneyPerUser() {
         return moneyPerUser;
     }
 
-    public void setMoneyPerUser(Integer moneyPerUser) {
+    public void setMoneyPerUser(Double moneyPerUser) {
         this.moneyPerUser = moneyPerUser;
     }
 

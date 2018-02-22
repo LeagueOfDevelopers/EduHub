@@ -72,8 +72,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
 
         });
         backButton.setOnClickListener(click->{
-            Intent intent2=new Intent(this,AuthorizedUserActivity.class);
-            startActivity(intent2);
+            onBackPressed();
         });
         edit.setOnKeyListener(new View.OnKeyListener()
                                      {
@@ -127,7 +126,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
 
     @Override
     public void getResult(List<UserSearchProfile> userProfile) {
-        InviteUsersAdapter inviteUsersAdapter=new InviteUsersAdapter(userProfile,this,groupId,0,user.getToken());
+        InviteUsersAdapter inviteUsersAdapter=new InviteUsersAdapter(userProfile,this,groupId,role,user.getToken());
         recyclerView.setAdapter(inviteUsersAdapter);
     }
 

@@ -27,7 +27,7 @@ public class GroupInfo implements Serializable {
     private Integer size;
     @SerializedName("cost")
     @Expose
-    private Integer cost;
+    private Double cost;
     @SerializedName("groupType")
     @Expose
     private Integer groupType;
@@ -90,11 +90,11 @@ public class GroupInfo implements Serializable {
         this.size = size;
     }
 
-    public Integer getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(Integer cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 

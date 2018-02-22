@@ -34,12 +34,11 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
     @Override
     public void onBindViewHolder(GroupMembersViewHolder holder, int i) {
         holder.userImage.setImageResource(R.drawable.ic_launcher_background);
-        Log.e("Error Role",members.get(i).getMemberRole()+"");
-        switch (members.get(i).getMemberRole()+""){
-            case 0+"":{holder.userRole.setText(MemberRole.Default.toString()); break;}
-            case 1+"":{holder.userRole.setText(MemberRole.Member.toString()); break;}
-            case 2+"":{holder.userRole.setText(MemberRole.Teacher.toString());break;}
-            case 3+"":{holder.userRole.setText(MemberRole.Creator.toString()); break;}
+        Log.e("Error Role",members.get(i).getRole()+"");
+        switch (members.get(i).getRole()+""){
+            case 1+"":{holder.userRole.setText(MemberRole.Участник.toString()); break;}
+            case 2+"":{holder.userRole.setText(MemberRole.Создатель.toString());break;}
+            case 3+"":{holder.userRole.setText(MemberRole.Учитель.toString()); break;}
         }
         holder.userName.setText(members.get(i).getName());
         if(members.get(i).getPaid()){

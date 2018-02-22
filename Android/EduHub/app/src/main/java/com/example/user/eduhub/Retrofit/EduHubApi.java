@@ -6,6 +6,7 @@ import com.example.user.eduhub.Models.CreateGroupResponse;
 import com.example.user.eduhub.Models.Group.GetAllGroups;
 import com.example.user.eduhub.Models.Group.GetGroupsModel;
 import com.example.user.eduhub.Models.Group.Group;
+import com.example.user.eduhub.Models.GroupChangeInviteStatusResponse;
 import com.example.user.eduhub.Models.InvitationResponse;
 import com.example.user.eduhub.Models.InviteUserModel;
 import com.example.user.eduhub.Models.LoginModel;
@@ -57,7 +58,7 @@ public interface EduHubApi {
     @GET("/api/user/profile/invitations")
     Observable<InvitationResponse> getInvitations(@Header("Authorization") String token);
     @PUT("/api/user/profile/invitations")
-    Single<String> changeStatusOfInvitation(@Header("Authorization") String token, @Body ChangeInvitationStatusModel model);
+    Single<GroupChangeInviteStatusResponse> changeStatusOfInvitation(@Header("Authorization") String token, @Body ChangeInvitationStatusModel model);
     @PUT("/api/user/profile/name")
     Single<String> changesUserName(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @PUT("/api/user/profile/about")

@@ -51,7 +51,7 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
         ArrayList<Member> members=new ArrayList<>();
         Member member=new Member();
         member.setPaid(true);
-        member.setMemberRole(2);
+        member.setRole(2);
         Member member_=new Member();
 
         member.setName("Александр");
@@ -65,7 +65,7 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
         groupInfo.setDescription("Test");
         groupInfo.setSize(5);
         groupInfo.setTags(tags);
-        groupInfo.setCost(500);
+        groupInfo.setCost(500.0);
         groupInfo.setGroupType(3);
         groupInfo.setTitle("It's Fake!!!");
         groupInfo.setId(userId);
@@ -76,7 +76,7 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
         for (int i=0;i<10;i++){
             groups.add(group);
         }
-        userProfile.setIsMan(true);
+        userProfile.setGender("2");
         userProfile.setBirthYear(1999);
         userProfile.setAboutUser("Начинающий Андроид разработчик");
         teacherProfile.setReviews(reviews);

@@ -66,9 +66,9 @@ public class JobExpItemView {
         participants.setText(group.getGroupInfo().getMemberAmount()+"/"+group.getGroupInfo().getSize());
         name.setText(group.getGroupInfo().getTitle());
         switch (String.valueOf(group.getGroupInfo().getGroupType())){
-            case "1":{type.setText(TypeOfEducation.Lecture.toString());break;}
-            case "2":{type.setText(TypeOfEducation.Seminar.toString());break;}
-            case "3":{type.setText(TypeOfEducation.MasterClass.toString());break;}
+            case "1":{type.setText(TypeOfEducation.Лекция.toString());break;}
+            case "2":{type.setText(TypeOfEducation.Семинар.toString());break;}
+            case "3":{type.setText(TypeOfEducation.МастерКласс.toString());break;}
         }
         Log.d("Tags",group.getGroupInfo().getTags().toString());
         recyclerView.setHasFixedSize(true);
@@ -76,7 +76,7 @@ public class JobExpItemView {
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         TagsAdapter adapter=new TagsAdapter((ArrayList<String>) group.getGroupInfo().getTags());
         recyclerView.setAdapter(adapter);
-        cost.setText(group.getGroupInfo().getCost());
+        cost.setText(group.getGroupInfo().getCost().toString());
 
     }
 }

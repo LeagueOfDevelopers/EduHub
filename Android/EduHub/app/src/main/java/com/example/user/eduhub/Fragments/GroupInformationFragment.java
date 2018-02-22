@@ -40,6 +40,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GroupInformationFragment extends Fragment implements IGroupView,IExitFromGroupView {
     private Group group;
+    private Boolean flag=false;
 
 
     public void setGroup(Group group) {
@@ -64,6 +65,11 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         final View v = inflater.inflate(R.layout.group_information_fragment, null);
         sharedPreferences=getActivity().getSharedPreferences("User",MODE_PRIVATE);
         user=savedDataRepository.loadSavedData(sharedPreferences);
+        if(flag){
+            Button exitFromGroup=v.findViewById(R.id.exit);
+
+            exitFromGroup.setVisibility(View.GONE);
+        }
         members=v.findViewById(R.id.members);
         cost=v.findViewById(R.id.cost);
         recyclerView=v.findViewById(R.id.tags);
@@ -81,7 +87,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                 for (Member member :group.getMembers()
                      ) {
                     if(member.getUserId().equals(user.getUserId())){
-                        if(member.getMemberRole()==2){
+                        if(member.getRole()==2){
                             isTeacher=true;
                         }
 
@@ -117,7 +123,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
 
     @Override
     public void getInformationAboutGroup(Group group) {
-        members.setText(group.getGroupInfo().getCurrentAmount()+"/"+group.getGroupInfo().getSize());
+        members.setText(group.getGroupInfo().getMemberAmount()+"/"+group.getGroupInfo().getSize());
         cost.setText("$"+group.getGroupInfo().getCost());
 
         recyclerView.setHasFixedSize(true);
@@ -134,5 +140,9 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         Intent intent1 = new Intent(getActivity(),AuthorizedUserActivity.class);
 
         startActivity(intent1);
+    }
+
+    public void setFlag(Boolean flag) {
+        this.flag = flag;
     }
 }

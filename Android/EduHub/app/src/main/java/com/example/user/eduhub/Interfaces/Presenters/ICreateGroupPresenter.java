@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface ICreateGroupPresenter {
-    void createGroup(String title, String description, ArrayList<String> tags, int size, int cost, TypeOfEducation groupType,Boolean isPrivate,String token);
+    void createGroup(String title, String description, ArrayList<String> tags, int size, Double cost, TypeOfEducation groupType,Boolean isPrivate,String token);
 }

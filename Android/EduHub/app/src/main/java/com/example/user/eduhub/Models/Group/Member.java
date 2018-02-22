@@ -20,9 +20,9 @@ public class Member implements Serializable{
     @SerializedName("avatarLink")
     @Expose
     private String avatarLink;
-    @SerializedName("memberRole")
+    @SerializedName("role")
     @Expose
-    private int memberRole;
+    private int role;
     @SerializedName("paid")
     @Expose
     private Boolean paid;
@@ -54,12 +54,12 @@ public class Member implements Serializable{
         this.avatarLink = avatarLink;
     }
 
-    public int getMemberRole() {
-        return memberRole;
+    public int getRole() {
+        return role;
     }
 
-    public void setMemberRole(int memberRole) {
-        this.memberRole = memberRole;
+    public void setRole(int role) {
+        this.role = role;
     }
 
     public Boolean getPaid() {

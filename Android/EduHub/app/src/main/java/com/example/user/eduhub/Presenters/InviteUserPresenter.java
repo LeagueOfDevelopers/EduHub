@@ -35,10 +35,22 @@ public class InviteUserPresenter implements IInviteUserPresenter {
     public void inviteUser(String userId, MemberRole role,String groupId,String token) {
         InviteUserModel inviteUserModel = new InviteUserModel();
         inviteUserModel.setInvitedId(userId);
-        inviteUserModel.setRole(role.toString());
+        if(role.toString().equals("Участник")){
+            inviteUserModel.setRole("Member");
+        }else{
+            if(role.toString().equals("Создатель")){
+                inviteUserModel.setRole("Creator");
+            }
+            if(role.toString().equals("Учитель")){
+                inviteUserModel.setRole("Teacher");
+            }
+
+        }
+
         Log.d("Role", inviteUserModel.getRole());
         Log.d("ID", inviteUserModel.getInvitedId());
-        Log.d("MYid",token);
+        Log.d("MYtoken",token);
+        Log.d("groupId",groupId);
         EduHubApi eduHubApi = RetrofitBuilder.getApi();
         eduHubApi.invitedUser("Bearer "+token, groupId, inviteUserModel)
                 .subscribeOn(Schedulers.io())

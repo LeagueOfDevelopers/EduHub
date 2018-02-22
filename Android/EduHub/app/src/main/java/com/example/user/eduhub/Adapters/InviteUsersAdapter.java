@@ -30,11 +30,11 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUsersAdapter.
     private Activity activity;
     private String myId;
     private String groupId;
-    private int role;
+    private MemberRole role;
     private InviteUserPresenter inviteUserPresenter=new InviteUserPresenter(this);
     FakesButton fakesButton=new FakesButton();
     FakeInviteUserPresenter fakeInviteUserPresenter=new FakeInviteUserPresenter(this);
-    public InviteUsersAdapter(List<UserSearchProfile> userSearchProfiles, Activity activity,String groupId,int role,String myId){
+    public InviteUsersAdapter(List<UserSearchProfile> userSearchProfiles, Activity activity,String groupId,MemberRole role,String myId){
         this.userSearchProfiles=userSearchProfiles;
         this.activity=activity;
         this.groupId=groupId;
@@ -53,10 +53,10 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUsersAdapter.
         holder.name.setText(userSearchProfiles.get(position).getName());
         holder.cv.setOnClickListener(click->{
             if(!fakesButton.getCheckButton()){
-            inviteUserPresenter.inviteUser(userSearchProfiles.get(position).getId(), MemberRole.Teacher,groupId,myId);}
+            inviteUserPresenter.inviteUser(userSearchProfiles.get(position).getId(),role,groupId,myId);}
             else {
             fakeInviteUserPresenter
-                    .inviteUser(userSearchProfiles.get(position).getId(), MemberRole.Teacher,groupId,myId);
+                    .inviteUser(userSearchProfiles.get(position).getId(), role,groupId,myId);
             }
         });
 

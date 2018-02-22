@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(llm);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        Log.d("UserId",user.getUserId());
         if(!fakesButton.getCheckButton()){
 
             groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId());}else{

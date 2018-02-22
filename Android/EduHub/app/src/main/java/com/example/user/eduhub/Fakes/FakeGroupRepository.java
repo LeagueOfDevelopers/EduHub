@@ -33,7 +33,7 @@ public class FakeGroupRepository  implements IGroupRepository{
         groupInfo.setDescription("Test");
         groupInfo.setSize(5);
         groupInfo.setTags(tags);
-        groupInfo.setCost(500);
+        groupInfo.setCost(500.0);
         groupInfo.setGroupType(3);
         groupInfo.setMemberAmount(1);
         groupInfo.setTitle("It's Fake!!!");

@@ -24,9 +24,9 @@ public class UserProfile implements Serializable {
     @SerializedName("birthYear")
     @Expose
     private Integer birthYear;
-    @SerializedName("isMan")
+    @SerializedName("gender")
     @Expose
-    private Boolean isMan;
+    private String gender;
     @SerializedName("isTeacher")
     @Expose
     private Boolean isTeacher;
@@ -69,13 +69,6 @@ public class UserProfile implements Serializable {
         this.birthYear = birthYear;
     }
 
-    public Boolean getIsMan() {
-        return isMan;
-    }
-
-    public void setIsMan(Boolean isMan) {
-        this.isMan = isMan;
-    }
 
     public Boolean getIsTeacher() {
         return isTeacher;
@@ -101,4 +94,11 @@ public class UserProfile implements Serializable {
         this.contacts = contacts;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 }

@@ -25,7 +25,7 @@ public class FakeGroupInformationPresenter  implements IGroupInfirmationPresente
         ArrayList<Member> members=new ArrayList<>();
         Member member=new Member();
         member.setPaid(true);
-        member.setMemberRole(2);
+        member.setRole(2);
         Member member_=new Member();
 
         member.setName("Александр");
@@ -39,7 +39,7 @@ public class FakeGroupInformationPresenter  implements IGroupInfirmationPresente
         groupInfo.setDescription("Test");
         groupInfo.setSize(5);
         groupInfo.setTags(tags);
-        groupInfo.setCost(500);
+        groupInfo.setCost(500.0);
         groupInfo.setGroupType(3);
         groupInfo.setMemberAmount(1);
         groupInfo.setTitle("It's Fake!!!");

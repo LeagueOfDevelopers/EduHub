@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
 import com.example.user.eduhub.Fakes.FakesButton;
+import com.example.user.eduhub.Fragments.Authorized_fragment;
 import com.example.user.eduhub.Fragments.MainFragment;
 import com.example.user.eduhub.Fragments.NotificationFragment;
 import com.example.user.eduhub.Fragments.ProfileTransactionFragment;
@@ -122,7 +123,10 @@ public class AuthorizedUserActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
         }
     }
 
@@ -168,20 +172,22 @@ public class AuthorizedUserActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.main ) {
-            Intent intent=new Intent(this,AuthorizedUserActivity.class);
-            startActivity(intent);
+            MainFragment mainFragment=new MainFragment();
+            fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.main_fragments_conteiner,mainFragment);
+            fragmentTransaction.commit();
         } else if (id == R.id.profile) {
             ProfileTransactionFragment profileTransactionFragment=new ProfileTransactionFragment();
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_fragments_conteiner,profileTransactionFragment);
-            fragmentTransaction.addToBackStack(null);
+
             fragmentTransaction.commit();
         } else if (id == R.id.myGroups) {
             UsersGroupsFragment usersGroupsFragment=new UsersGroupsFragment();
             usersGroupsFragment.setToken(user);
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_fragments_conteiner,usersGroupsFragment);
-            fragmentTransaction.addToBackStack(null);
+
             fragmentTransaction.commit();
         } else if (id == R.id.settings) {
 
@@ -189,7 +195,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
             NotificationFragment notificationFragment=new NotificationFragment();
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_fragments_conteiner,notificationFragment);
-            fragmentTransaction.addToBackStack(null);
+
             fragmentTransaction.commit();
 
         }
@@ -198,11 +204,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        disposable.dispose();
-    }
+
     private void SaveUser(String token,String name,String avatarLink,String email){
         android.content.SharedPreferences.Editor editor=sPref.edit();
         JWT jwt = new JWT(token);
@@ -218,6 +220,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
         editor.putBoolean("CheckButton",bool);
         editor.commit();
     }
+
 
 
 }
