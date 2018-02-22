@@ -27,7 +27,7 @@ function groupsPageReducer(state = initialState, action) {
     case GET_GROUPS_SUCCESS:
       return state
         .set('pending', false)
-        .set(action.groupsType, action.groups);
+        .set(action.payload.groupsType, action.payload.groups);
     case GET_GROUPS_ERROR:
       return state
         .set('pending', false)

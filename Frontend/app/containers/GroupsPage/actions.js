@@ -17,10 +17,10 @@ export const getGroups = (groupsType) => (
   }
 )
 
-export const getGroupsSuccess = (payload) => (
+export const getGroupsSuccess = (data) => (
   {
     type: GET_GROUPS_SUCCESS,
-    payload: payload
+    payload: data
   }
 )
 

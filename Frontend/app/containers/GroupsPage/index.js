@@ -11,11 +11,11 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import reducer from '../HomePage/reducer';
-import saga from '../HomePage/saga';
+import reducer from './reducer';
+import saga from './saga';
 import {Link} from "react-router-dom";
-import { getGroups } from "../HomePage/actions";
-import { makeSelectGroups } from "../HomePage/selectors";
+import { getGroups } from "./actions";
+import { makeSelectGroups } from "./selectors";
 import {Row, Col, Menu, Dropdown, Icon} from 'antd';
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
 import AssembledGroupCard from "../../components/AssembledGroupCard/index";
@@ -93,7 +93,9 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
 }
 
 GroupsPage.defaultProps = {
-  title: 'Группы'
+  title: 'Группы',
+  unassembledGroups: [],
+  assembledGroups: []
 };
 
 GroupsPage.propTypes = {
