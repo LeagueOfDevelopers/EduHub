@@ -101,7 +101,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             title='Идет набор'
             bordered={false}
             className='unassembled-groups-list font-size-20'
-            extra={<Link to='/groups/unassembledGroups' >Показать больше</Link>}
           >
             {(localStorage.getItem('without_server') === 'true') ?
               (
@@ -126,9 +125,14 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                  </div>
                )
             }
-            <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
-              <Col style={{fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
-              <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>
+            <Row type='flex' align='middle' style={{marginTop: 30}}>
+              <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 12}} style={{fontSize: 16}}>
+                <Link to='/groups/unassembledGroups'>Показать больше</Link>
+              </Col>
+              <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 12}}>
+                <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
+                <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>
+              </Col>
             </Row>
           </Card>
         </Col>
@@ -137,7 +141,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             title='Набранные группы'
             bordered={false}
             className='assembled-groups-list font-size-20'
-            extra={<Link to='/groups/assembledGroups'>Показать больше</Link>}
           >
             {(localStorage.getItem('without_server') === 'true') ?
               (
@@ -163,9 +166,14 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               )
             }
             {!this.state.isTeacher ?
-              <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
-                <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
-                <Button type="primary" onClick={this.makeTeacher}>Стать преподавателем</Button>
+              <Row type='flex' align='middle' style={{marginTop: 30}}>
+                <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
+                  <Link to='/groups/assembledGroups'>Показать больше</Link>
+                </Col>
+                <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                  <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
+                  <Link to='/create_group'><Button type="primary" onClick={this.makeTeacher}>Стать преподавателем</Button></Link>
+                </Col>
               </Row>
               :
               <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>

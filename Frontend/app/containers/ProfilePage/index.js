@@ -266,13 +266,13 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             >
               <Row style={{marginBottom: 20}}>
                 <div>Почтовый адрес</div>
-                <div style={{fontSize: 16, color: '#000'}}>
+                <p style={{fontSize: 16, color: '#000'}}>
                   {this.state.userProfile.email}
-                </div>
+                </p>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Пол</div>
-                <div style={{fontSize: 16, color: '#000'}}>
+                <p style={{fontSize: 16, color: '#000'}}>
                   {this.state.isEditing ?
                     <Select onChange={this.onChangeGenderHandle} value={this.state.genderInput} style={{minWidth: 100}}>
                       <Select.Option value='Man'>Мужской</Select.Option>
@@ -280,40 +280,42 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                     </Select>
                     : getGender(this.state.userProfile.gender)
                   }
-                </div>
+                </p>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Год рождения</div>
-                <div style={{fontSize: 16, color: '#000'}}>
+                <p style={{fontSize: 16, color: '#000'}}>
                   {
                     this.state.isEditing ?
                       <InputNumber onChange={this.onChangebirthYearHandle} style={{width: 150}} value={this.state.birthYearInput}/>
                       : this.state.userProfile.birthYear ?
                       this.state.userProfile.birthYear : 'Не указано'
                   }
-                </div>
+                </p>
               </Row>
               {this.state.teacherProfile ? (
                 <Row>
                   <Row style={{marginBottom: 20}}>
                     <div>Основные навыки</div>
                     <Row gutter={6}>
-                      {this.state.teacherProfile.skills &&
-                      this.state.teacherProfile.skills.length !== 0 ?
-                        this.state.teacherProfile.skills.map((item) =>
-                          <Link to="#" key={item}>{item}</Link>
-                        )
-                        :
-                        !this.state.isEditing ? (
-                            <div>
-                              <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
-                              <span onClick={() => this.setState({isEditing: true})} style={{color: '#52c41a', marginTop: 4, cursor: 'pointer'}}>
+                      <p>
+                        {this.state.teacherProfile.skills &&
+                        this.state.teacherProfile.skills.length !== 0 ?
+                          this.state.teacherProfile.skills.map((item) =>
+                            <Link to="#" key={item}>{item}</Link>
+                          )
+                          :
+                          !this.state.isEditing ? (
+                              <div>
+                                <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
+                                <span onClick={() => this.setState({isEditing: true})} style={{color: '#52c41a', marginTop: 4, cursor: 'pointer'}}>
                                 Теперь вы можете указать свои навыки!
                               </span>
-                            </div>
-                          )
-                          : null
-                      }
+                              </div>
+                            )
+                            : null
+                        }
+                      </p>
                     </Row>
                   </Row>
                 </Row>
@@ -321,18 +323,18 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               }
               <Row style={{marginBottom: 20}}>
                 <div>О себе</div>
-                <div style={{fontSize: 16, color: '#000'}}>
+                <p className='word-break' style={{fontSize: 16, color: '#000'}}>
                   {
                     this.state.isEditing ?
                       <Input.TextArea onChange={this.onChangeAboutHandle} defaultValue={this.state.aboutInput} autosize/>
                       : this.state.userProfile.aboutUser ?
                       this.state.userProfile.aboutUser : 'Не указано'
                   }
-                </div>
+                </p>
               </Row>
               <Row style={{marginBottom: 20}}>
                 <div>Ссылки</div>
-                <div>
+                <p>
                   {this.state.userProfile.contacts && this.state.userProfile.contacts.length !== 0 && !this.state.isEditing
                     ? this.state.userProfile.contacts.map((item, i) =>
                       <Link to='#' key={i} className='user-link' style={{fontSize: 16, display: 'block'}}>
@@ -368,7 +370,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                       :
                       <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
                   }
-                </div>
+                </p>
               </Row>
               {this.state.isEditing ?
                 <div>

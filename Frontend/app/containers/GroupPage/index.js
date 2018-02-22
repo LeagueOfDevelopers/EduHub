@@ -259,7 +259,7 @@ export class GroupPage extends React.Component {
             <Row className='main-group-info'>
               <Row style={{marginBottom: 26}}>
                 <Col span={24}>
-                  <h3 style={{margin: 0, fontSize: 22}}>
+                  <h3 className='word-break' style={{margin: 0, fontSize: 22}}>
                     {this.state.isEditing ?
                       <Input onChange={this.onChangeTitleHandle} value={this.state.titleInput}/>
                       : this.state.groupData.groupInfo.title}
@@ -394,7 +394,7 @@ export class GroupPage extends React.Component {
                 <Col><h3 style={{fontSize: 18}}>Описание</h3></Col>
               </Row>
               <Row style={{marginBottom: 40}}>
-                <p>
+                <p className='word-break'>
                   {this.state.isEditing ?
                     <Input.TextArea onChange={this.onChangeDescriptionHandle} defaultValue={this.state.descInput} autosize/>
                     : this.state.groupData.groupInfo.description}
