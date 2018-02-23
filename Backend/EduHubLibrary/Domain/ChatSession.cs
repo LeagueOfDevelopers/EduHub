@@ -10,26 +10,23 @@ namespace EduHubLibrary.Domain
     public class ChatSession : IDisposable
     {
         private readonly Group _group;
+        private List<Message> _messages;
 
         public ChatSession(Group group)
         {
-            Messages = new List<Message>();
+            _messages = new List<Message>();
             _group = group;
         }
 
-        public IEnumerable<Message> Messages { get; private set; }
-
         public void Dispose()
         {
-            _group.CommitChatSession(Messages);
+            _group.CommitChatSession(_messages);
         }
 
         internal Guid SendMessage(Guid senderId, string text)
         {
             var message = new Message(senderId, text);
-            var newMessageList = new List<Message>(Messages);
-            newMessageList.Add(message);
-            Messages = newMessageList;
+            _messages.Add(message);
 
             return message.Id;
         }
