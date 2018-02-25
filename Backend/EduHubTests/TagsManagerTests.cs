@@ -32,12 +32,12 @@ namespace EduHubTests
             tagsManager.AddTag("Teg3");
 
             //Act
-            var expectedTags = new List<Tag> { new Tag("Tag1"), new Tag("Tag2") };
+            var expectedTags = new List<string> { "Tag1", "Tag2" };
             var actualTags = tagsManager.FindTag("Tag").ToList();
 
             //Assert
-            Assert.AreEqual(expectedTags[0].Name, actualTags[0].Name);
-            Assert.AreEqual(expectedTags[1].Name, actualTags[1].Name);
+            Assert.AreEqual(expectedTags[0], actualTags[0]);
+            Assert.AreEqual(expectedTags[1], actualTags[1]);
             Assert.AreEqual(expectedTags.Count, actualTags.Count);
         }
 
@@ -92,13 +92,13 @@ namespace EduHubTests
             tagsManager.FindTag("Tag3");
 
             //Act
-            var expectedTags = new List<Tag> { new Tag("Tag2"), new Tag("Tag3"), new Tag("Tag1") };
+            var expectedTags = new List<string> { "Tag2", "Tag3", "Tag1" };
             var actualTags = tagsManager.FindTag("Tag").ToList();
 
             //Assert
-            Assert.AreEqual(expectedTags[0].Name, actualTags[0].Name);
-            Assert.AreEqual(expectedTags[1].Name, actualTags[1].Name);
-            Assert.AreEqual(expectedTags[2].Name, actualTags[2].Name);
+            Assert.AreEqual(expectedTags[0], actualTags[0]);
+            Assert.AreEqual(expectedTags[1], actualTags[1]);
+            Assert.AreEqual(expectedTags[2], actualTags[2]);
             Assert.AreEqual(expectedTags.Count, actualTags.Count);
         }
     }

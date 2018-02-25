@@ -20,15 +20,18 @@ namespace EduHubLibrary.Domain
             Tags = newTagsList;
         }
 
-        public IEnumerable<Tag> FindTag(string tag)
+        public IEnumerable<string> FindTag(string tag)
         {
             UpdatePopularity(tag);
-            var result = Tags.ToList().FindAll(t => t.Name.Contains(tag));
+            var foundTags = Tags.ToList().FindAll(t => t.Name.Contains(tag));
 
-            result.Sort((tag1, tag2) =>
+            foundTags.Sort((tag1, tag2) =>
             {
                 return tag2.Popularity.CompareTo(tag1.Popularity);
             });
+
+            var result = new List<string>();
+            foundTags.ForEach(t => result.Add(t.Name));
 
             return result;
         }
