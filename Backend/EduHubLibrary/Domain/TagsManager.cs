@@ -1,6 +1,6 @@
-﻿using EduHubLibrary.Domain.Tools;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Domain
 {
@@ -25,10 +25,7 @@ namespace EduHubLibrary.Domain
             UpdatePopularity(tag);
             var foundTags = Tags.ToList().FindAll(t => t.Name.Contains(tag));
 
-            foundTags.Sort((tag1, tag2) =>
-            {
-                return tag2.Popularity.CompareTo(tag1.Popularity);
-            });
+            foundTags.Sort((tag1, tag2) => { return tag2.Popularity.CompareTo(tag1.Popularity); });
 
             var result = new List<string>();
             foundTags.ForEach(t => result.Add(t.Name));

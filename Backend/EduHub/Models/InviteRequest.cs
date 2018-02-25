@@ -7,8 +7,5 @@ namespace EduHub.Models
     {
         /// <summary>Inviting User's id</summary>
         public Guid InvitedId { get; set; }
-
-        /// <summary>Proposed role</summary>
-        public MemberRole Role { get; set; }
     }
 }

@@ -88,15 +88,15 @@ namespace EduHubLibrary.Domain
             Members.Remove(deletingMember);
         }
 
-        internal void DeleteTeacher(Guid requestedPerson, Guid teacherId)
+        internal void DeleteTeacher(Guid requestedPerson)
         {
             Ensure.Guid.IsNotEmpty(requestedPerson);
-            Ensure.Guid.IsNotEmpty(teacherId);
-            Ensure.Bool.IsTrue(IsTeacher(teacherId), nameof(DeleteTeacher),
-                opt => opt.WithException(new InvalidOperationException()));
-            if (requestedPerson == teacherId)
+
+            if (requestedPerson == Teacher.Id)
             {
                 Teacher = null;
+                Status = CourseStatus.Searching;
+                GroupInfo.Curriculum = null;
             }
             else
             {

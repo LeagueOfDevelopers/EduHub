@@ -47,16 +47,14 @@ namespace EduHubLibrary.Facades
             currentGroup.AddMember(newMemberId);
         }
 
-        public void DeleteTeacher(Guid groupId, Guid requestedPerson, Guid teacherId)
+        public void DeleteTeacher(Guid groupId, Guid requestedPerson)
         {
             Ensure.Guid.IsNotEmpty(groupId);
             Ensure.Guid.IsNotEmpty(requestedPerson);
-            Ensure.Guid.IsNotEmpty(teacherId);
             CheckUserExistence(requestedPerson);
-            CheckUserExistence(teacherId);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
-            currentGroup.DeleteTeacher(requestedPerson, teacherId);
+            currentGroup.DeleteTeacher(requestedPerson);
         }
 
         public void DeleteMember(Guid groupId, Guid requestedPerson, Guid deletingPerson)

@@ -149,7 +149,7 @@ namespace EduHubTests
             Assert.AreEqual(newContacts, actualContacts);
             Assert.AreEqual(newContacts, _userFacade.GetUser(_testUserId).UserProfile.Contacts);
         }
-        
+
         [TestMethod]
         public void EditContactsOfUserWithEmptyList_GetEmptyContacts()
         {

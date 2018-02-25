@@ -10,7 +10,7 @@ namespace EduHubLibrary.Domain
     public class ChatSession : IDisposable
     {
         private readonly Group _group;
-        private List<Message> _messages;
+        private readonly List<Message> _messages;
 
         public ChatSession(Group group)
         {

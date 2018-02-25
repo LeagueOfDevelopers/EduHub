@@ -2,7 +2,6 @@
 using System.Linq;
 using EduHubLibrary.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EduHubLibrary.Domain.Tools;
 
 namespace EduHubTests
 {
@@ -32,7 +31,7 @@ namespace EduHubTests
             tagsManager.AddTag("Teg3");
 
             //Act
-            var expectedTags = new List<string> { "Tag1", "Tag2" };
+            var expectedTags = new List<string> {"Tag1", "Tag2"};
             var actualTags = tagsManager.FindTag("Tag").ToList();
 
             //Assert
@@ -92,7 +91,7 @@ namespace EduHubTests
             tagsManager.FindTag("Tag3");
 
             //Act
-            var expectedTags = new List<string> { "Tag2", "Tag3", "Tag1" };
+            var expectedTags = new List<string> {"Tag2", "Tag3", "Tag1"};
             var actualTags = tagsManager.FindTag("Tag").ToList();
 
             //Assert

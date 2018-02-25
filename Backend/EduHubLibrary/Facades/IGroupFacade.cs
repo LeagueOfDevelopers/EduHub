@@ -20,7 +20,7 @@ namespace EduHubLibrary.Facades
         IEnumerable<Member> GetGroupMembers(Guid groupId);
         void DeleteMember(Guid groupId, Guid requestedPerson, Guid requestingPerson);
         void AddMember(Guid groupId, Guid requestedPerson);
-        void DeleteTeacher(Guid groupId, Guid requestedPerson, Guid teacherId);
+        void DeleteTeacher(Guid groupId, Guid requestedPerson);
         void AddInvitation(Guid groupId, Invitation invitation);
         IEnumerable<Invitation> GetAllInvitations(Guid groupId);
     }
