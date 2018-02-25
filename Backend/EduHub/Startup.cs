@@ -52,7 +52,7 @@ namespace EduHub
                 Configuration.GetValue<string>("EmailPassword"),
                 Configuration.GetValue<string>("SmtpAddress"),
                 Configuration.GetValue<string>("ConfirmAddress"),
-                Configuration.GetValue<int>("SmtpPort"));
+                int.Parse(Configuration.GetValue<string>("SmtpPort")));
             var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings);
