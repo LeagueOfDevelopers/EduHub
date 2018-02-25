@@ -19,7 +19,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult ApplySanction([FromRoute] int userId)
         {
-            return Ok($"К пользователю {userId} применены санкции");
+            return Ok();
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult AnullSanction([FromRoute] int userId)
         {
-            return Ok($"Санкции с пользователя {userId} сняты");
+            return Ok();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult GenerateInvitation([FromRoute] int userId)
         {
-            return Ok($"Приглашение {userId} сгенерировано");
+            return Ok();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult AddAdmin([FromRoute] int userId)
         {
-            return Ok($"Администратор {userId} добавлен");
+            return Ok();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult DeleteAdmin([FromRoute] int userId)
         {
-            return Ok($"Администратор {userId} удален");
+            return Ok();
         }
     }
 }

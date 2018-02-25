@@ -67,7 +67,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult Report([FromRoute] int userId)
         {
-            return Ok($"Жалоба на пользователя добавлена");
+            return Ok();
         }
     }
 }
