@@ -3,6 +3,7 @@ using EduHubLibrary.Infrastructure;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
+    /*
     public class EventBus : IEventBus
     {
         private readonly Dictionary<EventType, object> _consumers;
@@ -13,12 +14,12 @@ namespace EduHubLibrary.Domain.NotificationService
             _events = new InMemoryEventRepository();
             _consumers = new Dictionary<EventType, object>();
         }
-
+        
         public void RegisterConsumer<T>(IEventConsumer<T> consumer, EventType eventType) where T : IEventInfo
         {
             _consumers.Add(eventType, consumer);
         }
-
+        
         public void PublishEvent<T>(T @event) where T : IEventInfo
         {
             _events.AddEvent(new Event(@event));
@@ -33,4 +34,5 @@ namespace EduHubLibrary.Domain.NotificationService
             eventConsumer.Consume(@event);
         }
     }
+    */
 }

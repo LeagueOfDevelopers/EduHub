@@ -3,7 +3,7 @@ using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubLibrary.Domain.Events
 {
-    public class NewMemberEvent : IEventInfo
+    public class NewMemberEvent : EventInfoBase
     {
         public NewMemberEvent(Guid groupId, Guid newMemberId)
         {
@@ -14,7 +14,7 @@ namespace EduHubLibrary.Domain.Events
         public Guid GroupId { get; }
         public Guid NewMemberId { get; }
 
-        public EventType GetEventType()
+        public override EventType GetEventType()
         {
             return EventType.NewMemberEvent;
         }
