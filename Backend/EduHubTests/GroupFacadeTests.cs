@@ -133,7 +133,7 @@ namespace EduHubTests
             _groupFacade.ApproveTeacher(teacherId, createdGroupId);
 
             //Act
-            _groupFacade.DeleteTeacher(createdGroupId, _groupCreator.Id, teacherId);
+            _groupFacade.DeleteTeacher(createdGroupId, _groupCreator.Id);
 
             //Assert
             Assert.AreEqual(null, _groupFacade.GetGroup(createdGroupId).Teacher);
