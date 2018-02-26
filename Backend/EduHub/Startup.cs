@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using EduHub.Filters;
 using EduHub.Security;
@@ -116,8 +117,8 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseStaticFiles();
             app.UseSwagger();
+            app.UseStaticFiles();
 
             app.UseSwaggerUI(current => { current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API"); });
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();

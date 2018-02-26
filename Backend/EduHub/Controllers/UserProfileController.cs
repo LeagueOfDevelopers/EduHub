@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EduHub.Extensions;
 using EduHub.Models;
+using EduHub.Models.NotificationsModels;
 using EduHub.Models.Tools;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
@@ -253,7 +254,7 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpGet]
         [Route("notifies")]
-        [SwaggerResponse(200, Type = typeof(List<NotifyResponse>))]
+        [SwaggerResponse(200, Type = typeof(AllPossibleNotifies))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetNotifies()
