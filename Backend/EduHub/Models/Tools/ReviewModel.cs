@@ -13,7 +13,7 @@ namespace EduHub.Models.Tools
             Date = date;
         }
 
-        public Guid FromUser { get;}
+        public Guid FromUser { get; }
         public Guid FromGroup { get; }
         public string Title { get; }
         public string Text { get; }

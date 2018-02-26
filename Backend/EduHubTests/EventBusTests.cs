@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EduHubLibrary.Common;
-using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.Consumers;
-using EduHubLibrary.Domain.Events;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Facades;
+﻿using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
@@ -35,6 +27,7 @@ namespace EduHubTests
             _authUserFacade = new AuthUserFacade(inMemoryKeysRepository, inMemoryUserRepository,
                 emailSender);
         }
+
         /*
         [TestMethod]
         public void SendMessageOfOneTypeToEventBus_GetMessageInNotifies()

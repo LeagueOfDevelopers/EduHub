@@ -7,601 +7,1036 @@
 	},
 	"item": [
 		{
-			"name": "RegCreatorUser",
-			"event": [
+			"name": "GroupLifeTests",
+			"description": "",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"",
-							"postman.setEnvironmentVariable(\"creatorId\", jsonData.id);",
-							"",
-							"pm.test(\"response is ok\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"creator\",\r\n  \"email\": \"creator@creator.creator\",\r\n  \"password\": \"creator123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
-				},
-				"url": {
-					"raw": "{{url}}/api/account/registration",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"account",
-						"registration"
-					]
-				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "RegInvitedUser",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"",
-							"postman.setEnvironmentVariable(\"invitedId\", jsonData.id);",
-							"",
-							"pm.test(\"response is ok\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"invited\",\r\n  \"email\": \"invited@invited.invited\",\r\n  \"password\": \"invited123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
-				},
-				"url": {
-					"raw": "{{url}}/api/account/registration",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"account",
-						"registration"
-					]
-				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "RegTeacher",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"",
-							"postman.setEnvironmentVariable(\"teacherId\", jsonData.id);",
-							""
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"teacher\",\r\n  \"email\": \"teacher@teacher.teacher\",\r\n  \"password\": \"teacher123\",\r\n  \"isTeacher\": true,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
-				},
-				"url": {
-					"raw": "{{url}}/api/account/registration",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"account",
-						"registration"
-					]
-				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "LoginAsCreator",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"postman.setEnvironmentVariable(\"creatorToken\", jsonData.token);"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"email\":\"creator@creator.creator\",\n  \"password\":\"creator123\"\n}"
-				},
-				"url": {
-					"raw": "{{url}}/api/account/login/",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"account",
-						"login",
-						""
-					]
-				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "LoginAsInvited",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"postman.setEnvironmentVariable(\"invitedToken\", jsonData.token);"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"email\":\"invited@invited.invited\",\n  \"password\":\"invited123\"\n}"
-				},
-				"url": {
-					"raw": "{{url}}/api/account/login/",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"account",
-						"login",
-						""
-					]
-				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "LoginAsTeacher",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"postman.setEnvironmentVariable(\"teacherToken\", jsonData.token);"
-						]
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"email\":\"teacher@teacher.teacher\",\n  \"password\":\"teacher123\"\n}"
-				},
-				"url": {
-					"raw": "{{url}}/api/account/login/",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"account",
-						"login",
-						""
-					]
-				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "CreateGroup",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"postman.setEnvironmentVariable(\"groupId\", jsonData.id);",
-							"pm.test(\"response is ok\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						]
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"name": "RegCreatorUser",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{creatorToken}}",
-							"type": "string"
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"postman.setEnvironmentVariable(\"creatorId\", jsonData.id);",
+									"",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
 						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"title\": \"some Group\",\r\n  \"description\": \"some Description\",\r\n  \"tags\": [\r\n    \"js\",\r\n    \"c#\"\r\n  ],\r\n  \"size\": 3,\r\n  \"moneyPerUser\": 100,\r\n  \"groupType\": 0,\r\n  \"isPrivate\": false\r\n}"
-				},
-				"url": {
-					"raw": "{{url}}/api/group/",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"group",
-						""
-					]
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"creator\",\r\n  \"email\": \"creator@creator.creator\",\r\n  \"password\": \"creator123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/registration",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"registration"
+							]
+						},
+						"description": null
+					},
+					"response": []
 				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "InviteUserToGroup",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"response is ok\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						]
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"name": "RegInvitedUser",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{creatorToken}}",
-							"type": "string"
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"postman.setEnvironmentVariable(\"invitedId\", jsonData.id);",
+									"",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
 						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/api/group/{{groupId}}/member/invite/{{invitedId}}",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"group",
-						"{{groupId}}",
-						"member",
-						"invite",
-						"{{invitedId}}"
-					]
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"invited\",\r\n  \"email\": \"invited@invited.invited\",\r\n  \"password\": \"invited123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/registration",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"registration"
+							]
+						},
+						"description": null
+					},
+					"response": []
 				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "GetInvitationsForInvited",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"postman.setEnvironmentVariable(\"invitationId\", jsonData.invitations[0].id);",
-							"pm.test(\"response is ok\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						]
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"name": "RegTeacher",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{invitedToken}}",
-							"type": "string"
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"postman.setEnvironmentVariable(\"teacherId\", jsonData.id);",
+									""
+								]
+							}
 						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/api/user/profile/invitations/",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"user",
-						"profile",
-						"invitations",
-						""
-					]
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"teacher\",\r\n  \"email\": \"teacher@teacher.teacher\",\r\n  \"password\": \"teacher123\",\r\n  \"isTeacher\": true,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/registration",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"registration"
+							]
+						},
+						"description": null
+					},
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "AcceptInvitation",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"response is ok\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						]
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"name": "LoginAsCreator",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{invitedToken}}",
-							"type": "string"
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"postman.setEnvironmentVariable(\"creatorToken\", jsonData.token);"
+								]
+							}
 						}
-					]
-				},
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"invitationId\": \"{{invitationId}}\" ,\r\n  \"status\": 2\r\n}"
-				},
-				"url": {
-					"raw": "{{url}}/api/group/{{groupId}}/member",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"group",
-						"{{groupId}}",
-						"member"
-					]
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"creator@creator.creator\",\n  \"password\":\"creator123\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/login/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"login",
+								""
+							]
+						},
+						"description": null
+					},
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "GetGroupsForInvitedUser",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"var expected = 1;",
-							"pm.test(\"group was added\", function () {",
-							"    var result = jsonData.groups.length;",
-							"     pm.expect(expected).to.equal(result);",
-							"});"
-						]
-					}
+					"name": "LoginAsInvited",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"postman.setEnvironmentVariable(\"invitedToken\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"invited@invited.invited\",\n  \"password\":\"invited123\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/login/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"login",
+								""
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "LoginAsTeacher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"postman.setEnvironmentVariable(\"teacherToken\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"teacher@teacher.teacher\",\n  \"password\":\"teacher123\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/login/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"login",
+								""
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "CreateGroup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"postman.setEnvironmentVariable(\"groupId\", jsonData.id);",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"some Group\",\r\n  \"description\": \"some Description\",\r\n  \"tags\": [\r\n    \"js\",\r\n    \"c#\"\r\n  ],\r\n  \"size\": 3,\r\n  \"moneyPerUser\": 100,\r\n  \"groupType\": 0,\r\n  \"isPrivate\": false\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/group/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								""
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "InviteUserToGroup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"invitedId\": \"{{invitedId}}\",\r\n  \"role\": \"Member\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/member/invitation/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"member",
+								"invitation",
+								""
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "GetInvitationsForInvited",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"postman.setEnvironmentVariable(\"invitationId\", jsonData.invitations[0].id);",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{invitedToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/api/user/profile/invitations/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"invitations",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "AcceptInvitedInvitation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{invitedToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"invitationId\": \"{{invitationId}}\" ,\r\n  \"status\": 2\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/user/profile/invitations/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"invitations",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GetGroupsForInvitedUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"var expected = 1;",
+									"pm.test(\"group was added\", function () {",
+									"    var result = jsonData.groups.length;",
+									"     pm.expect(expected).to.equal(result);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{invitedToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/api/user/profile/groups/{{invitedId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"groups",
+								"{{invitedId}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "InviteTeacher",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{invitedToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"invitedId\": \"{{teacherId}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/teacher/invitation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"teacher",
+								"invitation"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GetInvitationsForTeacher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"postman.setEnvironmentVariable(\"invitationId\", jsonData.invitations[0].id);",
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{teacherToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/api/user/profile/invitations/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"invitations",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "AcceptTeacherInvitation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{teacherToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"invitationId\": \"{{invitationId}}\",\r\n  \"status\": 2\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/user/profile/invitations/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"invitations",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "EditGroupSize",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"groupSize\": 2\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/size",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"size"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "SuggestCurriculum",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{teacherToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"string\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/course/curriculum",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"course",
+								"curriculum"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "CreatorAcceptCurriculum",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/course/curriculum",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"course",
+								"curriculum"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "InvitedAcceptCurriculum",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{invitedToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/course/curriculum",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"course",
+								"curriculum"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "CloseCourse",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{teacherToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/course/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"course",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "CreatorAddReview",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"string\",\r\n  \"text\": \"string\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/course/review",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"course",
+								"review"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GetTeacherProfile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"string\",\r\n  \"text\": \"string\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/user/profile/{{teacherId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"{{teacherId}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
 				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{invitedToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/api/user/profile/groups",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"user",
-						"profile",
-						"groups"
-					]
-				},
-				"description": ""
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "JoinGroup",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
+			"name": "FileTests",
+			"description": "",
+			"item": [
+				{
+					"name": "UploadFile",
+					"event": [
 						{
-							"key": "token",
-							"value": "{{invitedToken}}",
-							"type": "string"
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"postman.setEnvironmentVariable(\"filename\", jsonData.filename);"
+								]
+							}
 						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/api/group/{{groupId}}/member",
-					"host": [
-						"{{url}}"
 					],
-					"path": [
-						"api",
-						"group",
-						"{{groupId}}",
-						"member"
-					]
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "",
+									"type": "file",
+									"src": "d6d3ca60c7d8da1eef27309698d68e61.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/file",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"file"
+							]
+						},
+						"description": null
+					},
+					"response": []
 				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "ExitGroup",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{creatorToken}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "DELETE",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/api/group/{{groupId}}/member/{{creatorId}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"group",
-						"{{groupId}}",
-						"member",
-						"{{creatorId}}"
-					]
-				},
-				"description": null
-			},
-			"response": []
-		},
-		{
-			"name": "GetFullGroupInfo",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{url}}/api/group/{{groupId}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"group",
-						"{{groupId}}"
-					]
-				},
-				"description": null
-			},
-			"response": []
+				{
+					"name": "GetFile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/api/file/{{filename}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"file",
+								"{{filename}}"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
