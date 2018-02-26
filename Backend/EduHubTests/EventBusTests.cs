@@ -86,7 +86,7 @@ namespace EduHubTests
             var groupInvitations = _groupFacade.GetAllInvitations(createdGroupId).ToList();
             Assert.AreEqual(1, groupInvitations.Count);
         }
-        */
+        
 
         [TestMethod]
         public void FirstTestOfRabbit()
@@ -115,5 +115,6 @@ namespace EduHubTests
             var groupInvitations = _groupFacade.GetAllInvitations(createdGroupId).ToList();
             Assert.AreEqual(1, groupInvitations.Count);
         }
+        */
     }
 }

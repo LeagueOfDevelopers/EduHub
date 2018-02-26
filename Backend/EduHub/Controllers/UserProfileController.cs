@@ -304,7 +304,7 @@ namespace EduHub.Controllers
                 var reviews = new List<ReviewModel>();
                 user.TeacherProfile.Reviews.ForEach(r =>
                 {
-                    reviews.Add(new ReviewModel(r.FromUser, r.Title, r.Text, r.Date));
+                    reviews.Add(new ReviewModel(r.FromUser, r.Title, r.Text, r.Date, r.FromGroup));
                 });
                 var teacherProfile = new TeacherProfileModel(reviews,
                     user.TeacherProfile.Skills);

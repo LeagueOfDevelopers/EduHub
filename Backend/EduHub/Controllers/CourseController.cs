@@ -87,6 +87,8 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult LeaveReview([FromBody] ReviewRequest review, [FromRoute] Guid groupId)
         {
+            var userId = Request.GetUserId();
+            _groupFacade.AddReview(groupId, userId, review.Title, review.Text);
             return Ok();
         }
     }

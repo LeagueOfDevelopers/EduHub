@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EduHubTests
@@ -120,11 +121,12 @@ namespace EduHubTests
             var teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
 
             //Act
-            var review = new Review(Guid.NewGuid(), "The best", "The beast teacher of the year");
-            teacher.TeacherProfile.AddReview(review);
+            var guid = Guid.NewGuid();
+            var review = new Review(guid, "The best", "The beast teacher of the year", guid);
+            teacher.TeacherProfile.AddReview(guid, "The best", "The beast teacher of the year", guid);
 
             //Assert
-            Assert.AreEqual(review, teacher.TeacherProfile.Reviews[0]);
+            Assert.AreEqual(review.Text, teacher.TeacherProfile.Reviews[0].Text);
         }
 
         [TestMethod]

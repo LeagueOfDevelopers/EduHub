@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EduHubLibrary.Domain.Tools
 {
@@ -13,9 +14,10 @@ namespace EduHubLibrary.Domain.Tools
         public List<Review> Reviews { get; }
         public List<string> Skills { get; set; }
 
-        public void AddReview(Review review)
+        public void AddReview(Guid fromUser, string title, string text, Guid fromGroup)
         {
-            Reviews.Add(review);
+            var newReview = new Review(fromUser, title, text, fromGroup);
+            Reviews.Add(newReview);
         }
     }
 }

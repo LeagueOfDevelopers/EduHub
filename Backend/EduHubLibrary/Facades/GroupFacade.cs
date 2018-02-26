@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Settings;
 using EnsureThat;
@@ -165,6 +166,26 @@ namespace EduHubLibrary.Facades
             CheckUserExistence(userId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.FinishCurriculum(userId);
+        }
+
+        public void AddReview(Guid groupId, Guid userId, string title,
+            string text)
+        {
+            Ensure.Guid.IsNotEmpty(groupId);
+            Ensure.Guid.IsNotEmpty(userId);
+            Ensure.String.IsNotNullOrWhiteSpace(title);
+            Ensure.String.IsNotNullOrWhiteSpace(text);
+            CheckUserExistence(userId);
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            var teacher = _userRepository.GetUserById(currentGroup.Teacher.Id);
+
+            Ensure.Bool.IsTrue(currentGroup.Status == CourseStatus.Finished, nameof(CourseStatus),
+                opt => opt.WithException(new InvalidOperationException()));
+            Ensure.Bool.IsTrue(currentGroup.IsMember(userId), nameof(userId),
+                opt => opt.WithException(new NotEnoughPermissionsException(userId)));
+
+            teacher.TeacherProfile.AddReview(userId, title, text, groupId);
         }
 
         private void CheckUserExistence(Guid userId)
