@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EasyNetQ;
+﻿using EasyNetQ;
 using EasyNetQ.Topology;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
     public class EventPublisher : IEventPublisher
     {
+        private readonly IAdvancedBus _bus;
+        private readonly IExchange _exchange;
+
         public EventPublisher(IAdvancedBus bus, IExchange exchange)
         {
             _bus = bus;
@@ -20,8 +20,5 @@ namespace EduHubLibrary.Domain.NotificationService
             var message = new Message<T>(@event);
             _bus.Publish(_exchange, routingKey, false, message);
         }
-
-        private readonly IAdvancedBus _bus;
-        private readonly IExchange _exchange;
     }
 }

@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EduHubLibrary.Domain.NotificationService
+﻿namespace EduHubLibrary.Domain.NotificationService
 {
     public class EventBusSettings
     {
+        public string HostName;
+        public string Password;
+        public string UserName;
+        public string VirtualHost;
+
         public EventBusSettings(string hostName, string virtualHost, string userName, string password)
         {
             HostName = hostName;
@@ -13,10 +14,5 @@ namespace EduHubLibrary.Domain.NotificationService
             UserName = userName;
             Password = password;
         }
-
-        public string HostName;
-        public string VirtualHost;
-        public string UserName;
-        public string Password;
     }
 }

@@ -157,6 +157,16 @@ namespace EduHubLibrary.Facades
             return _groupRepository.GetGroupById(groupId).Invitations;
         }
 
+        public void FinishCurriculum(Guid groupId, Guid userId)
+        {
+            Ensure.Guid.IsNotEmpty(groupId);
+            Ensure.Guid.IsNotEmpty(userId);
+
+            CheckUserExistence(userId);
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            currentGroup.FinishCurriculum(userId);
+        }
+
         private void CheckUserExistence(Guid userId)
         {
             _userRepository.GetUserById(userId);

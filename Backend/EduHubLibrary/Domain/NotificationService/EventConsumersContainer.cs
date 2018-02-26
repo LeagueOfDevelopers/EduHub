@@ -1,14 +1,18 @@
-﻿using EasyNetQ;
-using EasyNetQ.Topology;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using EasyNetQ;
+using EasyNetQ.Topology;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
     public class EventConsumersContainer : IEventConsumersContainer
     {
+        private const string mainExchangeName = "all-events";
+
+        private readonly EventBusSettings _eventBusSettings;
+        private IAdvancedBus _bus;
+        private IExchange _mainExchange;
+
         public EventConsumersContainer(EventBusSettings eventBusSettings)
         {
             _eventBusSettings = eventBusSettings;
@@ -20,23 +24,18 @@ namespace EduHubLibrary.Domain.NotificationService
             var routingKey = GetRoutingKeyForEvent<T>();
             _bus.Bind(_mainExchange, queue, routingKey);
             _bus.Consume<T>(queue, (message, info) =>
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    consumer.Consume(message.Body);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-            }
-            ));
-        }
-
-        public IEventPublisher GetEventPublisher()
-        {
-            return new EventPublisher(_bus, _mainExchange);
+                Task.Factory.StartNew(() =>
+                    {
+                        try
+                        {
+                            consumer.Consume(message.Body);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception(ex.Message);
+                        }
+                    }
+                ));
         }
 
         public void StartListening()
@@ -47,6 +46,11 @@ namespace EduHubLibrary.Domain.NotificationService
         public void StopListening()
         {
             _bus.SafeDispose();
+        }
+
+        public IEventPublisher GetEventPublisher()
+        {
+            return new EventPublisher(_bus, _mainExchange);
         }
 
         private static string GetQueueNameForConsumer<T>(IEventConsumer<T> consumer)
@@ -70,10 +74,5 @@ namespace EduHubLibrary.Domain.NotificationService
             _bus = RabbitHutch.CreateBus("host=localhost").Advanced;
             _mainExchange = _bus.ExchangeDeclare(mainExchangeName, ExchangeType.Direct);
         }
-        
-        private readonly EventBusSettings _eventBusSettings;
-        private IAdvancedBus _bus;
-        private IExchange _mainExchange;
-        const string mainExchangeName = "all-events";
     }
 }

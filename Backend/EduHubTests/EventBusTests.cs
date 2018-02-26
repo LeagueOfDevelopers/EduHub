@@ -94,19 +94,19 @@ namespace EduHubTests
             //Arrange
             var bus = new EventConsumersContainer(new EventBusSettings("localhost", "", "", ""));
             bus.StartListening();
-            bus.RegisterConsumer<InvitationEvent>(new InvitationConsumer(_groupFacade));
+            bus.RegisterConsumer(new InvitationConsumer(_groupFacade));
 
             var creatorId =
                 _authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
             var invitedId =
                 _authUserFacade.RegUser("Somebody", new Credentials("email2", "password"), true, UserType.User);
 
-            var createdGroupId = _groupFacade.CreateGroup(creatorId, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
 
             //Act
-            bus.GetEventPublisher().PublishEvent<InvitationEvent>(new InvitationEvent(new Invitation(
-            Guid.NewGuid(), invitedId, createdGroupId, MemberRole.Member, InvitationStatus.InProgress)));
+            bus.GetEventPublisher().PublishEvent(new InvitationEvent(new Invitation(
+                Guid.NewGuid(), invitedId, createdGroupId, MemberRole.Member, InvitationStatus.InProgress)));
 
             //Assert
             var notifies = _userFacade.GetNotifies(creatorId).ToList();

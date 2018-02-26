@@ -2,7 +2,7 @@
 {
     public class ReviewRequest
     {
+        public string Title { get; set; }
         public string Opinion { get; set; }
-        public int Rating { get; set; }
     }
 }

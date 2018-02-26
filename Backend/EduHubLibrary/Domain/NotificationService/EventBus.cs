@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using EduHubLibrary.Infrastructure;
-
-namespace EduHubLibrary.Domain.NotificationService
+﻿namespace EduHubLibrary.Domain.NotificationService
 {
     /*
     public class EventBus : IEventBus

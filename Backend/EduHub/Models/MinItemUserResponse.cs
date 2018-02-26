@@ -1,5 +1,5 @@
 ﻿using System;
-using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHub.Models
 {

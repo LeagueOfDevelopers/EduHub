@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EduHubLibrary.Domain
+namespace EduHubLibrary.Domain.Tools
 {
     public class TeacherProfile
     {

@@ -73,7 +73,8 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult CloseCourse([FromRoute] Guid groupId)
         {
-            //_groupFacade.GetGroup(groupId).Status = CourseStatus.Finished;
+            var userId = Request.GetUserId();
+            _groupFacade.FinishCurriculum(groupId, userId);
             return Ok();
         }
 

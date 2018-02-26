@@ -22,6 +22,7 @@ namespace EduHubLibrary.Facades
         void AddMember(Guid groupId, Guid requestedPerson);
         void DeleteTeacher(Guid groupId, Guid requestedPerson);
         void AddInvitation(Guid groupId, Invitation invitation);
+        void FinishCurriculum(Guid groupId, Guid userId);
         IEnumerable<Invitation> GetAllInvitations(Guid groupId);
     }
 }

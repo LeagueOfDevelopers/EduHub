@@ -78,6 +78,8 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new MemberNotFoundException(deletingPerson)));
             Ensure.Bool.IsTrue(requestedPerson == deletingPerson || requestedMember.MemberRole == MemberRole.Creator,
                 nameof(DeleteMember), opt => opt.WithException(new NotEnoughPermissionsException(requestedPerson)));
+            Ensure.Bool.IsTrue(Status == CourseStatus.Searching || Status == CourseStatus.InProgress,
+                nameof(CourseStatus), opt => opt.WithException(new InvalidOperationException()));
 
             if (deletingMember.MemberRole == MemberRole.Creator)
             {
@@ -91,6 +93,8 @@ namespace EduHubLibrary.Domain
         internal void DeleteTeacher(Guid requestedPerson)
         {
             Ensure.Guid.IsNotEmpty(requestedPerson);
+            Ensure.Bool.IsTrue(Status == CourseStatus.Searching || Status == CourseStatus.InProgress,
+                nameof(CourseStatus), opt => opt.WithException(new InvalidOperationException()));
 
             if (requestedPerson == Teacher.Id)
             {
@@ -136,6 +140,7 @@ namespace EduHubLibrary.Domain
         {
             Ensure.Bool.IsTrue(Teacher == null, nameof(Teacher),
                 opt => opt.WithException(new TeacherIsAlreadyFoundException()));
+
             Teacher = Ensure.Any.IsNotNull(teacher);
         }
 
@@ -144,6 +149,8 @@ namespace EduHubLibrary.Domain
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Bool.IsTrue(IsTeacher(userId), nameof(OfferCurriculum),
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
+            Ensure.Bool.IsTrue(Status == CourseStatus.Searching, nameof(AcceptCurriculum),
+                opt => opt.WithException(new InvalidOperationException()));
             Ensure.String.IsNotNullOrWhiteSpace(curriculum);
             GroupInfo.Curriculum = curriculum;
             Status = CourseStatus.InProgress;
@@ -177,6 +184,17 @@ namespace EduHubLibrary.Domain
             currentMember.CurriculumStatus = MemberCurriculumStatus.Declined;
             GroupInfo.Curriculum = null;
             Status = CourseStatus.Searching;
+        }
+
+        internal void FinishCurriculum(Guid userId)
+        {
+            Ensure.Guid.IsNotEmpty(userId);
+            Ensure.Bool.IsTrue(userId == Teacher.Id, nameof(userId),
+                opt => opt.WithException(new NotEnoughPermissionsException(userId)));
+            Ensure.Bool.IsTrue(Status == CourseStatus.Started, nameof(CourseStatus),
+                opt => opt.WithException(new InvalidOperationException()));
+
+            Status = CourseStatus.Finished;
         }
 
         internal bool DoesContainsTags(List<string> tags)
