@@ -24,10 +24,11 @@ namespace EduHubTests
             var keyRepository = new InMemoryKeysRepository();
             var userRepository = new InMemoryUserRepository();
             _groupRepository = new InMemoryGroupRepository();
+            var tagsManager = new TagsManager();
             var groupSettings = new GroupSettings(3, 100, 100, 1000);
             var emailSettings = new EmailSettings("", "", "", "", "", 3);
             var sender = new EmailSender(emailSettings);
-            var groupFacade = new GroupFacade(_groupRepository, userRepository, groupSettings);
+            var groupFacade = new GroupFacade(_groupRepository, userRepository, groupSettings, tagsManager);
             var userFacade = new AuthUserFacade(keyRepository, userRepository,
                 sender);
 

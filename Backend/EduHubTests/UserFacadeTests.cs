@@ -61,7 +61,7 @@ namespace EduHubTests
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
-                new GroupSettings(2, 10, 0, 100));
+                new GroupSettings(2, 10, 0, 100), new TagsManager());
 
             var testUserId =
                 authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
@@ -145,7 +145,7 @@ namespace EduHubTests
         {
             //Arrange
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
-                new GroupSettings(1, 100, 0, 1000));
+                new GroupSettings(1, 100, 0, 1000), new TagsManager());
             var authUserFacade = new AuthUserFacade(_keysRepository,
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
@@ -172,7 +172,7 @@ namespace EduHubTests
         {
             //Arrange
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
-                new GroupSettings(1, 100, 0, 1000));
+                new GroupSettings(1, 100, 0, 1000), new TagsManager());
             var authUserFacade = new AuthUserFacade(_keysRepository,
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
@@ -199,7 +199,7 @@ namespace EduHubTests
         {
             //Arrange
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
-                new GroupSettings(1, 100, 0, 1000));
+                new GroupSettings(1, 100, 0, 1000), new TagsManager());
             var authUserFacade = new AuthUserFacade(_keysRepository,
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);

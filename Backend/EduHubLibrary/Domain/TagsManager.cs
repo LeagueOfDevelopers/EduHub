@@ -22,7 +22,6 @@ namespace EduHubLibrary.Domain
 
         public IEnumerable<string> FindTag(string tag)
         {
-            UpdatePopularity(tag);
             var foundTags = Tags.ToList().FindAll(t => t.Name.Contains(tag));
 
             foundTags.Sort((tag1, tag2) => { return tag2.Popularity.CompareTo(tag1.Popularity); });
@@ -32,10 +31,12 @@ namespace EduHubLibrary.Domain
 
             return result;
         }
-
-        private void UpdatePopularity(string updatingTag)
+        
+        internal void UpdatePopularity(List<string> updatingTags)
         {
-            Tags.ToList().FindAll(t => t.Name.Contains(updatingTag)).ForEach(t => t.AddPopularity());
+            updatingTags.ForEach(updatingTag => Tags.ToList().FindAll(
+                existingTag => existingTag.Name.Contains(updatingTag)).
+                ForEach(tag => tag.AddPopularity()));
         }
     }
 }

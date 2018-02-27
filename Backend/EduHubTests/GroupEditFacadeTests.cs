@@ -26,14 +26,15 @@ namespace EduHubTests
             var inMemoryUserRepository = new InMemoryUserRepository();
             var inMemoryGroupRepository = new InMemoryGroupRepository();
             var inMemoryKeyRepository = new InMemoryKeysRepository();
+            var tagsManager = new TagsManager();
             var groupSettings = new GroupSettings(2, 10, 0, 1000);
             var emailSettings = new EmailSettings("", "", "", "", "", 4);
             var emailSender = new EmailSender(emailSettings);
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository,
-                new GroupSettings(3, 100, 0, 1000));
+                new GroupSettings(3, 100, 0, 1000), tagsManager);
             _authUserFacade = new AuthUserFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender);
-            _groupEditFacade = new GroupEditFacade(inMemoryGroupRepository, groupSettings);
+            _groupEditFacade = new GroupEditFacade(inMemoryGroupRepository, groupSettings, tagsManager);
             _groupCreatorId =
                 _authUserFacade.RegUser("Alena", new Credentials("email", "password"), true, UserType.User);
         }

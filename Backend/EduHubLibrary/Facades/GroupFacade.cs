@@ -14,14 +14,17 @@ namespace EduHubLibrary.Facades
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
         private readonly IUserRepository _userRepository;
+        private readonly TagsManager _tagsManager;
 
         public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
-            GroupSettings groupSettings)
+            GroupSettings groupSettings, TagsManager tagsManager)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
             _groupSettings = groupSettings;
+            _tagsManager = tagsManager;
         }
+        
 
         public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size,
             double totalValue, bool isPrivate,
@@ -34,6 +37,8 @@ namespace EduHubLibrary.Facades
             CheckUserExistence(userId);
             var group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
+
+            _tagsManager.UpdatePopularity(tags);
 
             return group.GroupInfo.Id;
         }
