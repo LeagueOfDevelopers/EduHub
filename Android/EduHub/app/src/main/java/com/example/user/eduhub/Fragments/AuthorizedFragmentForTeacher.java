@@ -1,5 +1,6 @@
 package com.example.user.eduhub.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.eduhub.Adapters.EmptyGroupAdapter;
 import com.example.user.eduhub.Adapters.GroupAdapter;
+import com.example.user.eduhub.AuthorizedUserActivity;
 import com.example.user.eduhub.Fakes.FakeGroupRepository;
 import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.View.IGroupListView;
@@ -20,7 +23,9 @@ import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Retrofit.EduHubApi;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 /**
@@ -83,7 +88,16 @@ public class AuthorizedFragmentForTeacher extends android.support.v4.app.Fragmen
 
     @Override
     public void getError(Throwable error) {
-
+        if(error instanceof HttpException){
+            switch (((HttpException) error).code()){
+                case 401:{
+                    Intent intent=new Intent(getActivity(), AuthorizedUserActivity.class);
+                getActivity().startActivity(intent);}
+            }
+        }
+        if(error instanceof SocketTimeoutException){
+            MakeToast("Возможно у Вас пропалосоединение с интернетом");
+        }
     }
 
     @Override
@@ -97,6 +111,11 @@ public class AuthorizedFragmentForTeacher extends android.support.v4.app.Fragmen
             recyclerView.setAdapter(adapter);
         }
         swipeContainer.setRefreshing(false);
+    }
+    private void MakeToast(String s) {
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                (s), Toast.LENGTH_LONG);
+        toast.show();
     }
 }
 

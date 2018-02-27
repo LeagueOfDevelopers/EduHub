@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.eduhub.Adapters.EmptyGroupAdapter;
 import com.example.user.eduhub.Adapters.GroupAdapter;
@@ -20,7 +21,9 @@ import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Retrofit.EduHubApi;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 /**
@@ -83,7 +86,14 @@ SwipeRefreshLayout swipeContainer;
 
     @Override
     public void getError(Throwable error) {
-
+        if(error instanceof HttpException){
+            switch (((HttpException) error).code()){
+                case 401:{}
+            }
+        }
+        if(error instanceof SocketTimeoutException){
+            MakeToast("Возможно у Вас пропалосоединение с интернетом");
+        }
     }
 
     @Override
@@ -97,5 +107,10 @@ SwipeRefreshLayout swipeContainer;
             recyclerView.setAdapter(adapter);
         }
         swipeContainer.setRefreshing(false);
+    }
+    private void MakeToast(String s) {
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                (s), Toast.LENGTH_LONG);
+        toast.show();
     }
 }

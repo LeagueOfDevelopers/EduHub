@@ -3,6 +3,7 @@ package com.example.user.eduhub;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,24 +29,33 @@ import com.example.user.eduhub.Adapters.SpinnerAdapterForSex;
 import com.example.user.eduhub.Fragments.RefactorTeacherProfile;
 import com.example.user.eduhub.Fragments.RefactorUserProfile;
 import com.example.user.eduhub.Interfaces.IRefreshList;
+import com.example.user.eduhub.Interfaces.Presenters.IChangeUsersDataPresenter;
+import com.example.user.eduhub.Interfaces.View.IChangeUsersDataView;
+import com.example.user.eduhub.Models.SavedDataRepository;
+import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
+import com.example.user.eduhub.Presenters.ChangeUserDataPresenter;
 
 import java.util.ArrayList;
 
 import mabbas007.tagsedittext.TagsEditText;
 
-public class RefactorProfile extends AppCompatActivity implements IRefreshList {
+public class RefactorProfile extends AppCompatActivity implements IRefreshList,IChangeUsersDataView {
 UserProfileResponse userProfile;
     ArrayList<String> contacts=new ArrayList<>();
     ArrayList<String> sexes=new ArrayList<>();
     String str;
     String[] skils;
+    User user;
     Boolean flag=false;
     Contacts_adapter adapter1;
     IRefreshList refreshList;
     RecyclerView recyclerView;
     Activity activity=this;
     Context context=this;
+    SharedPreferences sharedPreferences;
+    SavedDataRepository savedDataRepository=new SavedDataRepository();
+    ChangeUserDataPresenter changeUsersDataPresenter=new ChangeUserDataPresenter(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +63,8 @@ UserProfileResponse userProfile;
         ImageButton back=findViewById(R.id.back);
         Toolbar toolbar=findViewById(R.id.toolbar);
         toolbar.setTitle("Редактирование профиля");
-
+        sharedPreferences=getSharedPreferences("User",MODE_PRIVATE);
+        user=savedDataRepository.loadSavedData(sharedPreferences);
         Intent getIntent=getIntent();
         userProfile=(UserProfileResponse) getIntent.getSerializableExtra("UserProfile");
 
@@ -71,6 +82,7 @@ UserProfileResponse userProfile;
         recyclerView=findViewById(R.id.contacts);
         TagsEditText editSkils=findViewById(R.id.edit_skils);
         Switch isTeacher=findViewById(R.id.isTeacher);
+        isTeacher.setChecked(userProfile.getUserProfile().getIsTeacher());
         Spinner sex=findViewById(R.id.sex);
         sexes.add("Мужской");
         sexes.add("Женский");
@@ -95,6 +107,7 @@ UserProfileResponse userProfile;
             editAboutMe.setText(userProfile.getUserProfile().getAboutUser());}
         if(!userProfile.getUserProfile().getBirthYear().toString().equals("0")){
             editBirthYear.setText(userProfile.getUserProfile().getBirthYear()+"");}
+            else{editBirthYear.setText(userProfile.getUserProfile().getBirthYear()+"");}
         if(userProfile.getUserProfile().getContacts()!=null){
             contacts.addAll(userProfile.getUserProfile().getContacts());}
         recyclerView.setHasFixedSize(true);
@@ -139,11 +152,19 @@ UserProfileResponse userProfile;
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 userProfile.getUserProfile().setIsTeacher(b);
+                if(b){
+                    findViewById(R.id.card_of_skils).setVisibility(View.VISIBLE);
+                }else{
+                    findViewById(R.id.card_of_skils).setVisibility(View.GONE);
+                }
 
             }
         });
         back.setOnClickListener(click->{
             onBackPressed();
+        });
+        saveButton.setOnClickListener(click->{
+            changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),"string",str,userProfile.getUserProfile().getIsTeacher(),skils);
         });
     }
 
@@ -151,5 +172,25 @@ UserProfileResponse userProfile;
     public void refreshContacts(ArrayList<String> contacts) {
         adapter1=new Contacts_adapter(contacts,this,this,refreshList);
         recyclerView.setAdapter(adapter1);
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void stopLoading() {
+
+    }
+
+    @Override
+    public void getError(Throwable error) {
+
+    }
+
+    @Override
+    public void getResponse() {
+        onBackPressed();
     }
 }

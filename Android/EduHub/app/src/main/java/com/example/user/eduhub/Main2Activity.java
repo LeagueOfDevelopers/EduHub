@@ -25,6 +25,9 @@ import com.example.user.eduhub.Adapters.ViewPagerAdapter;
 import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Fragments.TeacherFragment;
 import com.example.user.eduhub.Fragments.UserFragment;
+import com.example.user.eduhub.Models.SavedDataRepository;
+
+import java.util.Date;
 
 public class Main2Activity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener{
 ViewPager pager;
@@ -35,6 +38,8 @@ SharedPreferences sPref;
 Button btn;
 CheckBox checkFakes;
 FakesButton fakesButton=new FakesButton();
+Integer exp;
+SavedDataRepository savedDataRepository=new SavedDataRepository();
     final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +51,6 @@ FakesButton fakesButton=new FakesButton();
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
 
             Intent intent=new Intent(this,AuthorizedUserActivity.class);
-
             startActivity(intent);
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

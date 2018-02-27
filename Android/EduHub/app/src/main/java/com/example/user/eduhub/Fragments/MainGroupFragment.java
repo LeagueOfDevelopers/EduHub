@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class MainGroupFragment extends Fragment {
     Group group;
     User user;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
+    Toolbar toolbar;
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -51,7 +53,8 @@ public class MainGroupFragment extends Fragment {
     }
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.main_group_fragment, null);
-        Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
+        Log.d("Group",group.toString());
+         toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(group.getGroupInfo().getTitle());
         TextView groupTitle=v.findViewById(R.id.GroupTitle);
         groupTitle.setText(group.getGroupInfo().getTitle());

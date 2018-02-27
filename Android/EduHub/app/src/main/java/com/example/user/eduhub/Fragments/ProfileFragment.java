@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.user.eduhub.Adapters.Contacts_adapter_profile;
 import com.example.user.eduhub.Adapters.PlaceHolder.JobExpHeaderVIew;
@@ -27,6 +28,7 @@ import com.example.user.eduhub.Adapters.TagsAdapter;
 import com.example.user.eduhub.Dialog.CreateDialog;
 import com.example.user.eduhub.Fakes.FakeUserProfilePresenter;
 import com.example.user.eduhub.Fakes.FakesButton;
+import com.example.user.eduhub.Interfaces.View.IRefreshTokenView;
 import com.example.user.eduhub.Interfaces.View.IUserProfileView;
 import com.example.user.eduhub.Main2Activity;
 import com.example.user.eduhub.Models.Group.Group;
@@ -34,11 +36,14 @@ import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Models.UserProfile.Review;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
+import com.example.user.eduhub.Presenters.RefreshTokenPresenter;
 import com.example.user.eduhub.Presenters.UserProfilePresenter;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.RefactorProfile;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -47,7 +52,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by User on 30.01.2018.
  */
 
-public class ProfileTransactionFragment extends Fragment implements IUserProfileView {
+public class ProfileFragment extends Fragment implements IUserProfileView,IRefreshTokenView{
     FragmentTransaction fragmentTransaction;
     UserProfilePresenter userProfilePresenter=new UserProfilePresenter(this);
     FakesButton fakesButton=new FakesButton();
@@ -69,6 +74,8 @@ public class ProfileTransactionFragment extends Fragment implements IUserProfile
     ExpandablePlaceHolderView expandablePlaceHolderView2;
     CreateDialog createDialog;
     DialogInterface.OnClickListener myClickListener;
+    RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
+    User user;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,23 +93,28 @@ public class ProfileTransactionFragment extends Fragment implements IUserProfile
 
 
          exit=v.findViewById(R.id.exit);
-         expandablePlaceHolderView=v.findViewById(R.id.expandableView);
-         expandablePlaceHolderView2=v.findViewById(R.id.expandableView2);
+
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Мой профиль");
         sharedPreferences =getActivity().getSharedPreferences("User",MODE_PRIVATE);
-        User user=savedDataRepository.loadSavedData(sharedPreferences);
+        user=savedDataRepository.loadSavedData(sharedPreferences);
         Log.d("TOKEN",user.getToken());
         Log.d("CHECK BUTTON",fakesButton.getCheckButton().toString());
-        if(!fakesButton.getCheckButton()){
+        expandablePlaceHolderView=v.findViewById(R.id.expandableView);
+        expandablePlaceHolderView2=v.findViewById(R.id.expandableView2);
 
+    return v;}
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(!fakesButton.getCheckButton()){
+            Log.d("TOKEN",user.getToken());
             userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());}
         else{
             fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
         }
-    return v;}
-
-
+    }
 
     @Override
     public void showLoading() {
@@ -117,16 +129,34 @@ public class ProfileTransactionFragment extends Fragment implements IUserProfile
     @Override
     public void getError(Throwable error) {
 
+        if(error instanceof HttpException){
+            switch (((HttpException) error).code()){
+                case 401:{refreshTokenPresenter.refreshToken(user.getToken());}
+
+            }
+        }
+        if(error instanceof SocketTimeoutException){
+            MakeToast("Возможно у Вас пропалосоединение с интернетом");
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        expandablePlaceHolderView.removeAllViews();
+        expandablePlaceHolderView2.removeAllViews();
     }
 
     @Override
     public void getUserProfile(UserProfileResponse userProfile) {
+        Log.d("Role",userProfile.getUserProfile().getIsTeacher().toString());
         userEmail.setText(userProfile.getUserProfile().getEmail());
         userEmail2.setText(userProfile.getUserProfile().getEmail());
         userName.setText(userProfile.getUserProfile().getName());
         userName2.setText(userProfile.getUserProfile().getName());
 
         if(!userProfile.getUserProfile().getGender().equals("0")){
+            v.findViewById(R.id.card_of_sex).setVisibility(View.VISIBLE);
             if (userProfile.getUserProfile().getGender().equals("1")){
                 sex.setText("Мужской");
             }else{
@@ -138,11 +168,13 @@ public class ProfileTransactionFragment extends Fragment implements IUserProfile
         if(userProfile.getUserProfile().getBirthYear().toString().equals("0")){
             v.findViewById(R.id.card_of_birth).setVisibility(View.GONE);
         }else {
+            v.findViewById(R.id.card_of_birth).setVisibility(View.VISIBLE);
             birthYear.setText(userProfile.getUserProfile().getBirthYear()+"");
         }
-        if(userProfile.getUserProfile().getContacts()==null){
+        if(userProfile.getUserProfile().getContacts().size()==0){
             v.findViewById(R.id.links).setVisibility(View.GONE);
         }else{
+            v.findViewById(R.id.links).setVisibility(View.VISIBLE);
             contacts.setHasFixedSize(true);
             Contacts_adapter_profile adapter1=new Contacts_adapter_profile((ArrayList<String>) userProfile.getUserProfile().getContacts(),getActivity(),getContext());
             StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);
@@ -153,11 +185,14 @@ public class ProfileTransactionFragment extends Fragment implements IUserProfile
         if(userProfile.getUserProfile().getAboutUser()==null){
             v.findViewById(R.id.card_of_aboutMe).setVisibility(View.GONE);
         }else{
+            v.findViewById(R.id.card_of_aboutMe).setVisibility(View.VISIBLE);
             aboutMe.setText(userProfile.getUserProfile().getAboutUser());}
             if(userProfile.getUserProfile().getIsTeacher()){
         if(userProfile.getTeacherProfile().getSkills().size()==0){
+            v.findViewById(R.id.card_of_skils).setVisibility(View.VISIBLE);
             v.findViewById(R.id.card_of_skils).setVisibility(View.GONE);
         }else{
+            v.findViewById(R.id.card_of_skils).setVisibility(View.VISIBLE);
             RecyclerView recyclerView=v.findViewById(R.id.skils);
             recyclerView.setHasFixedSize(true);
             StaggeredGridLayoutManager staggeredGridLayoutManager=new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);
@@ -167,7 +202,11 @@ public class ProfileTransactionFragment extends Fragment implements IUserProfile
         }}else{
                 v.findViewById(R.id.card_of_skils).setVisibility(View.GONE);
             }
+
         if(userProfile.getUserProfile().getIsTeacher()){
+            expandablePlaceHolderView.setVisibility(View.VISIBLE);
+            expandablePlaceHolderView2.setVisibility(View.VISIBLE);
+            Log.d("ROLE2",userProfile.getUserProfile().getIsTeacher().toString());
         expandablePlaceHolderView.addView(new ReviewsHeaderView(getContext(),userProfile.getTeacherProfile().getReviews().size()+" отзывов"));
         for(Review review:userProfile.getTeacherProfile().getReviews()){
             expandablePlaceHolderView.addView(new ReviewItemsView(getContext(),review));
@@ -211,5 +250,26 @@ public class ProfileTransactionFragment extends Fragment implements IUserProfile
             intent.putExtra("UserProfile",userProfile);
             getActivity().startActivity(intent);
         });
+
+    }
+    private void MakeToast(String s) {
+        Toast toast = Toast.makeText(getActivity().getApplicationContext(),
+                (s), Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    @Override
+    public void getResponse(User user) {
+        savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),sharedPreferences);
+        userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
+    }
+
+    @Override
+    public void getThrowable() {
+        Intent intent=new Intent(getActivity(), Main2Activity.class);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+        getActivity().startActivity(intent);
     }
 }
