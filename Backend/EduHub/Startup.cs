@@ -22,6 +22,7 @@ using Serilog;
 using Serilog.Events;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHub
 {
@@ -55,6 +56,16 @@ namespace EduHub
                 Configuration.GetValue<string>("SmtpAddress"),
                 Configuration.GetValue<string>("ConfirmAddress"),
                 int.Parse(Configuration.GetValue<string>("SmtpPort")));
+
+            //RabbitMQ
+            /*
+            var rabbitMqConfiguration = Configuration.GetSection("RabbitMQ");
+            var eventBusSettings = new EventBusSettings(rabbitMqConfiguration["HostName"],
+              rabbitMqConfiguration["VirtualHost"], rabbitMqConfiguration["UserName"], rabbitMqConfiguration["Password"]);
+            var eventBus = new EventBus(eventBusSettings);
+            eventBus.StartListening();
+            */
+
             var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings, tagsManager);
