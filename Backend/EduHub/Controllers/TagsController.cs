@@ -1,5 +1,9 @@
-﻿using EduHubLibrary.Domain;
+﻿using EduHub.Models.Tools;
+using EduHubLibrary.Domain;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EduHub.Controllers
 {
@@ -14,13 +18,24 @@ namespace EduHub.Controllers
             _tagsManager = tagsManager;
         }
 
+        /// <summary>
+        ///     Find tag among existing tags
+        /// </summary>
         [HttpPost]
+        [SwaggerResponse(200, Type = typeof(TagModel))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [Route("search")]
         public IActionResult FindTag([FromBody] string tag)
         {
-            return Ok(_tagsManager.FindTag(tag));
+            var foundTags = _tagsManager.FindTag(tag);
+            var response = new List<TagModel>();
+            foundTags.ToList().ForEach(t => response.Add(new TagModel(t)));
+            return Ok(response);
         }
 
+        /// <summary>
+        ///     Add new tag
+        /// </summary>
         [HttpPost]
         public IActionResult AddTag([FromBody] string tag)
         {
