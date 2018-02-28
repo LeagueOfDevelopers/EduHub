@@ -27,6 +27,10 @@ public class RefactorUserRequestModel {
     @Expose
     private Integer birthYear;
 
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+
     public String getUserName() {
         return userName;
     }
@@ -65,5 +69,13 @@ public class RefactorUserRequestModel {
 
     public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

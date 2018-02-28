@@ -1,8 +1,11 @@
-﻿namespace EduHub.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EduHub.Models
 {
     public class ReviewRequest
     {
-        public string Opinion { get; set; }
-        public int Rating { get; set; }
+        [Required] public string Title { get; set; }
+
+        [Required] public string Text { get; set; }
     }
 }

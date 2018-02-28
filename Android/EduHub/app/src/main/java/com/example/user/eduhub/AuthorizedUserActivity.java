@@ -21,21 +21,23 @@ import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
 import com.example.user.eduhub.Fakes.FakesButton;
-import com.example.user.eduhub.Fragments.Authorized_fragment;
 import com.example.user.eduhub.Fragments.MainFragment;
 import com.example.user.eduhub.Fragments.NotificationFragment;
-import com.example.user.eduhub.Fragments.ProfileTransactionFragment;
-import com.example.user.eduhub.Fragments.UserProfileFragment;
+import com.example.user.eduhub.Fragments.ProfileFragment;
 import com.example.user.eduhub.Fragments.UsersGroupsFragment;
+import com.example.user.eduhub.Interfaces.View.IRefreshTokenView;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
+import com.example.user.eduhub.Presenters.RefreshTokenPresenter;
 import com.example.user.eduhub.Retrofit.EduHubApi;
+
+import java.util.Date;
 
 import io.reactivex.disposables.Disposable;
 
 public class AuthorizedUserActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,IRefreshTokenView{
 
     FragmentTransaction fragmentTransaction;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
@@ -48,7 +50,8 @@ public class AuthorizedUserActivity extends AppCompatActivity
     Toolbar toolbar;
     GroupsPresenter groupsPresenter;
     CheckBox checkFakes;
-    final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE";
+    final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE",EXP="EXP";
+    RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
 
 
 
@@ -63,14 +66,25 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
         sPref=getSharedPreferences("User",MODE_PRIVATE);
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
+           Integer exp=savedDataRepository.loadExp(sPref);
+            Date date=new Date();
+            if(exp>= date.getTime()){
              user=savedDataRepository.loadSavedData(sPref);
             bool=savedDataRepository.loadCheckButtonResult(sPref);
-            fakesButton.setCheckButton(bool);}
+            fakesButton.setCheckButton(bool);
+            drawer();}else{
+                refreshTokenPresenter.refreshToken(savedDataRepository.loadSavedData(sPref).getToken());
+            }
+        }
              else{
             Intent intent=getIntent();
             user=(User) intent.getSerializableExtra("user");
             savedDataRepository=new SavedDataRepository();
-            SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail());
+            JWT jwt = new JWT(user.getToken());
+            user.setUserId(jwt.getClaim("UserId").asString());
+
+            savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),sPref);
+            drawer();
 
         }
 
@@ -78,41 +92,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        Log.d("User name",user.getName());
-
-        navigationView.setNavigationItemSelectedListener(this);
-        MainFragment mainFragment=new MainFragment();
-        fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.main_fragments_conteiner,mainFragment);
-        fragmentTransaction.commit();
-
-
-
-
-        ViewTreeObserver vto = navigationView.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener
-                (new ViewTreeObserver.OnGlobalLayoutListener() { @Override public void onGlobalLayout() {
-                    TextView textView=findViewById(R.id.name_user);
-                    textView.setText(user.getName());
-                    TextView textView1=findViewById(R.id.email_user);
-                    textView1.setText(user.getEmail());
-                    checkFakes=findViewById(R.id.checkFakes);
-                    checkFakes.setChecked(fakesButton.getCheckButton());
-                    checkFakes.setOnClickListener(click->{
-                        fakesButton.setCheckButton(checkFakes.isChecked());
-                        Log.d("CheckBUtoon" ,fakesButton.getCheckButton().toString());
-                        SaveCheckButtonResult(fakesButton.getCheckButton());
-                    });
-
-
-        } });
 
 
     }
@@ -177,7 +157,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
             fragmentTransaction.add(R.id.main_fragments_conteiner,mainFragment);
             fragmentTransaction.commit();
         } else if (id == R.id.profile) {
-            ProfileTransactionFragment profileTransactionFragment=new ProfileTransactionFragment();
+            ProfileFragment profileTransactionFragment=new ProfileFragment();
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_fragments_conteiner,profileTransactionFragment);
 
@@ -205,22 +185,73 @@ public class AuthorizedUserActivity extends AppCompatActivity
         return true;
     }
 
-    private void SaveUser(String token,String name,String avatarLink,String email){
-        android.content.SharedPreferences.Editor editor=sPref.edit();
-        JWT jwt = new JWT(token);
-        editor.putString(ROLE,jwt.getClaim("Role").asString());
-        editor.putString(ID,jwt.getClaim("UserId").asString());
-        editor.putString(TOKEN,token);
-        editor.putString(NAME,name);
-        editor.putString(EMAIL,email);
-        editor.commit();
-    }
-    private void SaveCheckButtonResult(Boolean bool){
-        android.content.SharedPreferences.Editor editor=sPref.edit();
-        editor.putBoolean("CheckButton",bool);
-        editor.commit();
+
+
+
+    @Override
+    public void showLoading() {
+
     }
 
+    @Override
+    public void stopLoading() {
+
+    }
+
+    @Override
+    public void getError(Throwable error) {
+        Intent intent=new Intent(this, Main2Activity.class);
+        SharedPreferences.Editor editor=sPref.edit();
+        editor.clear();
+        editor.commit();
+        startActivity(intent);
+    }
+
+    @Override
+    public void getResponse(User user) {
+        this.user=user;
+        savedDataRepository=new SavedDataRepository();
+        savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),sPref);
+        drawer();
+    }
+
+    @Override
+    public void getThrowable() {
+
+    }
+
+    private void drawer(){
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Log.d("User name",user.getName());
+
+        navigationView.setNavigationItemSelectedListener(this);
+        MainFragment mainFragment=new MainFragment();
+        fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.main_fragments_conteiner,mainFragment);
+        fragmentTransaction.commit();
+
+        ViewTreeObserver vto = navigationView.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener
+                (new ViewTreeObserver.OnGlobalLayoutListener() { @Override public void onGlobalLayout() {
+                    TextView textView=findViewById(R.id.name_user);
+                    textView.setText(user.getName());
+                    TextView textView1=findViewById(R.id.email_user);
+                    textView1.setText(user.getEmail());
+                    checkFakes=findViewById(R.id.checkFakes);
+                    checkFakes.setChecked(fakesButton.getCheckButton());
+                    checkFakes.setOnClickListener(click->{
+                        fakesButton.setCheckButton(checkFakes.isChecked());
+                        Log.d("CheckBUtoon" ,fakesButton.getCheckButton().toString());
+                        savedDataRepository.SaveCheckButtonResult(fakesButton.getCheckButton(),sPref);
+                    });
 
 
+                } });
+    }
 }

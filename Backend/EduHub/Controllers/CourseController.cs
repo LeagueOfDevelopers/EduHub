@@ -33,7 +33,7 @@ namespace EduHub.Controllers
         {
             var userId = Request.GetUserId();
             _groupFacade.OfferCurriculum(userId, groupId, curriculum.Description);
-            return Ok($"В группу был предложен учебный план '{curriculum.Description}'");
+            return Ok();
         }
 
         /// <summary>
@@ -73,8 +73,9 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult CloseCourse([FromRoute] Guid groupId)
         {
-            //_groupFacade.GetGroup(groupId).Status = CourseStatus.Finished;
-            return Ok("Курс закрыт");
+            var userId = Request.GetUserId();
+            _groupFacade.FinishCurriculum(groupId, userId);
+            return Ok();
         }
 
         /// <summary>
@@ -86,7 +87,9 @@ namespace EduHub.Controllers
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult LeaveReview([FromBody] ReviewRequest review, [FromRoute] Guid groupId)
         {
-            return Ok($"Отзыв '{review.Opinion}' с оценкой {review.Rating} был добавлен");
+            var userId = Request.GetUserId();
+            _groupFacade.AddReview(groupId, userId, review.Title, review.Text);
+            return Ok();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using EduHub.Filters;
 using EduHub.Security;
@@ -21,6 +22,7 @@ using Serilog;
 using Serilog.Events;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHub
 {
@@ -47,20 +49,30 @@ namespace EduHub
             var fileRepository = new InMemoryFileRepository();
             var groupRepository = new InMemoryGroupRepository();
             var keysRepository = new InMemoryKeysRepository();
+            var tagsManager = new TagsManager();
             var emailSettings = new EmailSettings(Configuration.GetValue<string>("EmailLogin"),
                 Configuration.GetValue<string>("Email"),
                 Configuration.GetValue<string>("EmailPassword"),
                 Configuration.GetValue<string>("SmtpAddress"),
                 Configuration.GetValue<string>("ConfirmAddress"),
-                Configuration.GetValue<int>("SmtpPort"));
+                int.Parse(Configuration.GetValue<string>("SmtpPort")));
+
+            //RabbitMQ
+            /*
+            var rabbitMqConfiguration = Configuration.GetSection("RabbitMQ");
+            var eventBusSettings = new EventBusSettings(rabbitMqConfiguration["HostName"],
+              rabbitMqConfiguration["VirtualHost"], rabbitMqConfiguration["UserName"], rabbitMqConfiguration["Password"]);
+            var eventBus = new EventBus(eventBusSettings);
+            eventBus.StartListening();
+            */
+
             var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository);
-            var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings);
+            var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings, tagsManager);
             var userEditFacade = new UserEditFacade(userRepository, fileRepository);
-            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings);
+            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings, tagsManager);
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository);
-            var tagsManager = new TagsManager();
             var authUserFacade = new AuthUserFacade(keysRepository, userRepository, emailSender);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
@@ -116,8 +128,8 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseStaticFiles();
             app.UseSwagger();
+            app.UseStaticFiles();
 
             app.UseSwaggerUI(current => { current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API"); });
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();

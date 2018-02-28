@@ -30,6 +30,7 @@ namespace EduHub
         public static IWebHost BuildWebHost(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
+                .UseWebRoot("wwwroot")
                 .UseStartup<Startup>()
                 .UseSerilog()
                 .UseSetting("detailedErrors", "true")

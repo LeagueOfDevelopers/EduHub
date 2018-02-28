@@ -2,7 +2,7 @@
 
 namespace EduHubLibrary.Domain.Events
 {
-    public class InvitationEvent : IEventInfo
+    public class InvitationEvent : EventInfoBase
     {
         public InvitationEvent(Invitation invitation)
         {
@@ -11,7 +11,7 @@ namespace EduHubLibrary.Domain.Events
 
         public Invitation Invitation { get; }
 
-        public EventType GetEventType()
+        public override EventType GetEventType()
         {
             return EventType.InvitationEvent;
         }

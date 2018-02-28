@@ -5,7 +5,7 @@ namespace EduHub.Models
     public class RegistrationRequest
     {
         [Required]
-        [StringLength(20, MinimumLength = 6)]
+        [StringLength(20, MinimumLength = 2)]
         public string Name { get; set; }
 
         [Required]

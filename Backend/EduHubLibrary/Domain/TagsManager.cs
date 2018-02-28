@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Domain
 {
@@ -7,21 +8,35 @@ namespace EduHubLibrary.Domain
     {
         public TagsManager()
         {
-            Tags = new List<string>();
+            Tags = new List<Tag>();
         }
 
-        public IEnumerable<string> Tags { get; private set; }
+        public IEnumerable<Tag> Tags { get; private set; }
 
         public void AddTag(string newTag)
         {
-            var newTagsList = new List<string>(Tags);
-            newTagsList.Add(newTag);
+            var newTagsList = new List<Tag>(Tags);
+            newTagsList.Add(new Tag(newTag));
             Tags = newTagsList;
         }
 
         public IEnumerable<string> FindTag(string tag)
         {
-            return Tags.ToList().FindAll(t => t.Contains(tag));
+            var foundTags = Tags.ToList().FindAll(t => t.Name.Contains(tag));
+
+            foundTags.Sort((tag1, tag2) => { return tag2.Popularity.CompareTo(tag1.Popularity); });
+
+            var result = new List<string>();
+            foundTags.ForEach(t => result.Add(t.Name));
+
+            return result;
+        }
+        
+        internal void UpdatePopularity(List<string> updatingTags)
+        {
+            updatingTags.ForEach(updatingTag => Tags.ToList().FindAll(
+                existingTag => existingTag.Name.Contains(updatingTag)).
+                ForEach(tag => tag.AddPopularity()));
         }
     }
 }

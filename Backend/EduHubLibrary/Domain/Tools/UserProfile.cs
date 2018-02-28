@@ -9,6 +9,7 @@ namespace EduHubLibrary.Domain.Tools
             Email = email;
             Name = name;
             IsTeacher = isTeacher;
+            Contacts = new List<string>();
         }
 
         public string Name { get; internal set; }

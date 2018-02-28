@@ -6,6 +6,7 @@ import com.example.user.eduhub.Models.CreateGroupResponse;
 import com.example.user.eduhub.Models.Group.GetAllGroups;
 import com.example.user.eduhub.Models.Group.GetGroupsModel;
 import com.example.user.eduhub.Models.Group.Group;
+import com.example.user.eduhub.Models.Group.RefactorGroupRequestModel;
 import com.example.user.eduhub.Models.GroupChangeInviteStatusResponse;
 import com.example.user.eduhub.Models.InvitationResponse;
 import com.example.user.eduhub.Models.InviteUserModel;
@@ -60,20 +61,41 @@ public interface EduHubApi {
     @PUT("/api/user/profile/invitations")
     Single<GroupChangeInviteStatusResponse> changeStatusOfInvitation(@Header("Authorization") String token, @Body ChangeInvitationStatusModel model);
     @PUT("/api/user/profile/name")
-    Single<String> changesUserName(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    Completable changesUserName(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @PUT("/api/user/profile/about")
-    Single<String> changesAboutUser(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    Completable changesAboutUser(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @PUT("/api/user/profile/avatar")
-    Single<String> changesUserAvatar(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    Completable changesUserAvatar(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @PUT("/api/user/profile/contacts")
-    Single<String> changesUsersContacts(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    Completable changesUsersContacts(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @PUT("/api/user/profile/birthYear")
-    Single<String> changesUsersBirthYear(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
+    Completable changesUsersBirthYear(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @PUT("/api/user/profile/gender")
-    Single<String> changesUsersGender(@Header("Authorization") String token, @Body Boolean sex);
+    Completable changesUsersGender(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @DELETE("/api/group/{groupId}/member/{memberId}")
     Completable exitFromGroup(@Header("Authorization") String token,@Path("groupId") String groupId,@Path("memberId") String userId);
     @DELETE("/api/group/{groupId}/member/teacher/{memberId}")
     Completable exitFromGroupForTeacher(@Header("Authorization") String token,@Path("groupId") String groupId,@Path("memberId") String userId);
+    @DELETE("/api/user/profile/teaching")
+    Completable becomeSimpleUser(@Header("Authorization") String token);
+    @POST("/api/user/profile/teaching")
+    Completable becomeTeacher(@Header("Authorization") String token);
+    @PUT("/api/group/{groupId}/title")
+    Completable changeGroupTitle(@Header("Authorization") String token,@Path("groupId") String groupId,@Body RefactorGroupRequestModel model);
+    @PUT("/api/group/{groupId}/description")
+   Completable changeGroupDescription(@Header("Authorization") String token,@Path("groupId") String groupId,@Body RefactorGroupRequestModel model);
+    @PUT("/api/group/{groupId}/tags")
+    Completable changeGroupTags(@Header("Authorization") String token,@Path("groupId") String groupId,@Body RefactorGroupRequestModel model);
+    @PUT("/api/group/{groupId}/size")
+    Completable changeGroupSize(@Header("Authorization") String token,@Path("groupId") String groupId,@Body RefactorGroupRequestModel model);
+    @PUT("/api/group/{groupId}/price")
+    Completable changeGroupPrice(@Header("Authorization") String token,@Path("groupId") String groupId,@Body RefactorGroupRequestModel model);
+    @PUT("/api/group/{groupId}/type")
+    Completable changeGroupType(@Header("Authorization") String token,@Path("groupId") String groupId,@Body RefactorGroupRequestModel model);
+    @PUT("/api/group/{groupId}/privacy")
+    Completable changeGroupPrivacy(@Header("Authorization") String token,@Path("groupId") String groupId,@Body RefactorGroupRequestModel model);
+    @GET("/api/account/refresh")
+    Single<User> refreshToken(@Header("Authorization") String token);
+
 
 }

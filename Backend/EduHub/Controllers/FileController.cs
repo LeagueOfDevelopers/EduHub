@@ -34,7 +34,7 @@ namespace EduHub.Controllers
         [RequestSizeLimit(20_000_000)]
         public IActionResult AddFile(IFormFile file)
         {
-            Ensure.Any.IsNotNull(file);
+            Ensure.Any.IsNotNull(file) ;
             var userId = Request.GetUserId();
 
             if (!file.IsSupportedFile()) throw new NotSupportedException();

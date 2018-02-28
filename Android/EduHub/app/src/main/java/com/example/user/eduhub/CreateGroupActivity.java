@@ -118,12 +118,6 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
         backButton.setOnClickListener(click->{
             onBackPressed();
         });
-
-
-
-
-
-
         createGroup.setOnClickListener(click->{
             if(!nameOfGroup.getText().toString().equals("")&&!cost.getText().toString().equals("")&&!maxParticipants.getText().toString().equals("")&&type!=null&&!tags.getText().toString().equals("")&&!description.getText()
             .toString().equals("")){

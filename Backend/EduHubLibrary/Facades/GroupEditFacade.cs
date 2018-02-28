@@ -11,11 +11,13 @@ namespace EduHubLibrary.Facades
     {
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
+        private readonly TagsManager _tagsManager;
 
-        public GroupEditFacade(IGroupRepository groupRepository, GroupSettings groupSettings)
+        public GroupEditFacade(IGroupRepository groupRepository, GroupSettings groupSettings, TagsManager tagsManager)
         {
             _groupRepository = groupRepository;
             _groupSettings = groupSettings;
+            _tagsManager = tagsManager;
         }
 
         public void ChangeGroupTitle(Guid groupId, Guid changerId, string newTitle)
@@ -45,6 +47,8 @@ namespace EduHubLibrary.Facades
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.GroupInfo.Tags = newTags;
             _groupRepository.Update(currentGroup);
+
+            _tagsManager.UpdatePopularity(newTags);
         }
 
         public void ChangeGroupSize(Guid groupId, Guid changerId, int newSize)

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -28,6 +29,7 @@ import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Presenters.ExitFromGroupPresenter;
 import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 import com.example.user.eduhub.R;
+import com.example.user.eduhub.Refactor_group;
 
 import java.util.ArrayList;
 
@@ -81,6 +83,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
             fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
         }
         Button exit=v.findViewById(R.id.exit);
+        ImageView refactorButton=v.findViewById(R.id.refactor_group_settings);
 
         exit.setOnClickListener(click->{
             if(!fakesButton.getCheckButton()){
@@ -101,6 +104,11 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
             }else{
                 fakeExitFromGroupPresenter.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId(),user.getUserId());
             }
+        });
+        refactorButton.setOnClickListener(click->{
+            Intent intent=new Intent(getActivity(),Refactor_group.class);
+            intent.putExtra("Group",group);
+            getActivity().startActivity(intent);
         });
         return v;
     }

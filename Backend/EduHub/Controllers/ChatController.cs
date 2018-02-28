@@ -5,6 +5,8 @@ using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EduHub.Controllers
 {
@@ -26,6 +28,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Authorize]
+        [SwaggerResponse(200, Type = typeof(MessageSentResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult SendMessage([FromBody] SendMessageRequest messageRequest, [FromRoute] Guid groupId)
@@ -39,13 +42,13 @@ namespace EduHub.Controllers
         ///     Returns message by id
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(200, Type = typeof(MessageResponse))]
+        [SwaggerResponse(200, Type = typeof(MessageInfoResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [Route("{messageId}")]
         public IActionResult GetMessage([FromRoute] Guid groupId, [FromRoute] Guid messageId)
         {
             var message = _chatFacade.GetMessage(messageId, groupId);
-            var response = new MessageResponse(message.Text, message.SenderId, message.SentOn);
+            var response = new MessageInfoResponse(message.Id, message.SenderId, message.SentOn, message.Text);
             return Ok(response);
         }
 
@@ -55,9 +58,14 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpGet]
+        [SwaggerResponse(200, Type = typeof(MessageInfoResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetAllMessages([FromRoute] Guid groupId)
         {
-            return Ok(_groupFacade.GetGroup(groupId).Messages);
+            var response = new List<MessageInfoResponse>();
+            _groupFacade.GetGroup(groupId).Messages.ToList().ForEach(
+                m => response.Add(new MessageInfoResponse(m.Id, m.SenderId, m.SentOn, m.Text)));
+            return Ok(response);
         }
     }
 }

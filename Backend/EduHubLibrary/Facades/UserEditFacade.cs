@@ -57,7 +57,7 @@ namespace EduHubLibrary.Facades
         {
             var currentUser = _userRepository.GetUserById(userId);
 
-            if (newContactData.Count != 0 && newContactData.TrueForAll(d => !string.IsNullOrWhiteSpace(d)))
+            if (newContactData.TrueForAll(d => !string.IsNullOrWhiteSpace(d)))
                 currentUser.UserProfile.Contacts = newContactData;
             else throw new ArgumentException();
 

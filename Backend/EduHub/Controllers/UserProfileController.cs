@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EduHub.Extensions;
 using EduHub.Models;
+using EduHub.Models.NotificationsModels;
 using EduHub.Models.Tools;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
@@ -36,7 +37,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult DeleteProfile([FromRoute] int userId)
         {
-            return Ok("Профиль удален");
+            return Ok();
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult RestoreProfile([FromRoute] int userId)
         {
-            return Ok("Профиль восстановлен");
+            return Ok();
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace EduHub.Controllers
         {
             var userId = Request.GetUserId();
             _userEditFacade.EditName(userId, request.UserName);
-            return Ok($"Новое имя пользователя '{request.UserName}'");
+            return Ok();
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace EduHub.Controllers
         {
             var userId = Request.GetUserId();
             _userEditFacade.EditAboutUser(userId, request.AboutUser);
-            return Ok($"Новое описание пользователя '{request.AboutUser}'");
+            return Ok();
         }
 
         /// <summary>
@@ -158,7 +159,7 @@ namespace EduHub.Controllers
         {
             var userId = Request.GetUserId();
             _userEditFacade.EditAvatarLink(userId, request.AvatarLink);
-            return Ok($"Новая ссылка на аватарку пользователя '{request.AvatarLink}'");
+            return Ok();
         }
 
         /// <summary>
@@ -188,7 +189,7 @@ namespace EduHub.Controllers
         {
             var userId = Request.GetUserId();
             _userEditFacade.EditBirthYear(userId, request.BirthYear);
-            return Ok($"Новый год рождения пользователя '{request.BirthYear}'");
+            return Ok();
         }
 
         /// <summary>
@@ -203,7 +204,7 @@ namespace EduHub.Controllers
         {
             var userId = Request.GetUserId();
             _userEditFacade.BecomeTeacher(userId);
-            return Ok("Пользователь стал преподавателем");
+            return Ok();
         }
 
         /// <summary>
@@ -218,7 +219,7 @@ namespace EduHub.Controllers
         {
             var userId = Request.GetUserId();
             _userEditFacade.StopToBeTeacher(userId);
-            return Ok("Пользователь перестал быть преподавателем");
+            return Ok();
         }
 
         /// <summary>
@@ -231,7 +232,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult TurnOnNotify([FromRoute] int userId)
         {
-            return Ok("Уведомления включены");
+            return Ok();
         }
 
         /// <summary>
@@ -244,7 +245,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult TurnOffNotify([FromRoute] int userId)
         {
-            return Ok("Уведомления выключены");
+            return Ok();
         }
 
         /// <summary>
@@ -253,7 +254,7 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpGet]
         [Route("notifies")]
-        [SwaggerResponse(200, Type = typeof(List<NotifyResponse>))]
+        [SwaggerResponse(200, Type = typeof(AllPossibleNotifies))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetNotifies()
@@ -304,7 +305,7 @@ namespace EduHub.Controllers
                 var reviews = new List<ReviewModel>();
                 user.TeacherProfile.Reviews.ForEach(r =>
                 {
-                    reviews.Add(new ReviewModel(r.FromUser, r.Title, r.Text, r.Date));
+                    reviews.Add(new ReviewModel(r.FromUser, r.Title, r.Text, r.Date, r.FromGroup));
                 });
                 var teacherProfile = new TeacherProfileModel(reviews,
                     user.TeacherProfile.Skills);

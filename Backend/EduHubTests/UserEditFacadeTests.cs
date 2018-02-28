@@ -150,15 +150,17 @@ namespace EduHubTests
             Assert.AreEqual(newContacts, _userFacade.GetUser(_testUserId).UserProfile.Contacts);
         }
 
-        [ExpectedException(typeof(ArgumentException))]
         [TestMethod]
-        public void EditContactsOfUserWithEmptyList_GetException()
+        public void EditContactsOfUserWithEmptyList_GetEmptyContacts()
         {
             //Arrange
             var newContacts = new List<string>();
 
             //Act
             _userEditFacade.EditContacts(_testUserId, newContacts);
+
+            //Assert
+            Assert.AreEqual(0, _userFacade.GetUser(_testUserId).UserProfile.Contacts.Count);
         }
 
         [ExpectedException(typeof(ArgumentException))]

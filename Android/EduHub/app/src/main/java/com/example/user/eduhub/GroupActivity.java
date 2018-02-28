@@ -33,6 +33,7 @@ public class GroupActivity extends AppCompatActivity
     FakesButton fakesButton=new FakesButton();
     FakeGroupInformationPresenter fakeGroupInformationPresenter=new FakeGroupInformationPresenter(this);
     final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE";
+    SharedPreferences sPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +44,27 @@ public class GroupActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        SharedPreferences sPref=getSharedPreferences("User",MODE_PRIVATE);
+        sPref=getSharedPreferences("User",MODE_PRIVATE);
+
+
+
+        back.setOnClickListener(click->{
+            onBackPressed();
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
-        user= savedDataRepository.loadSavedData(sPref);
-        if(!fakesButton.getCheckButton()){
-            Log.d("GroupId",group.getGroupInfo().getId());
-            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
-        }else{
-            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
-        }
+            user= savedDataRepository.loadSavedData(sPref);
+            if(!fakesButton.getCheckButton()){
+                Log.d("GroupId",group.getGroupInfo().getId());
+                groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+            }else{
+                fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+            }
         }else{
             UnsignedMainGroupFragment unsignedMainGroupFragment=new UnsignedMainGroupFragment();
             unsignedMainGroupFragment.setGroup(group);
@@ -59,18 +72,7 @@ public class GroupActivity extends AppCompatActivity
             transaction.add(R.id.group_fragments_conteiner,unsignedMainGroupFragment);
             transaction.commit();
         }
-
-
-        back.setOnClickListener(click->{
-           onBackPressed();
-        });
-
     }
-
-
-
-
-
 
     @Override
     public void switchingFragmets(Fragment fragment) {
@@ -136,8 +138,12 @@ public class GroupActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
         Intent intent = new Intent(this, AuthorizedUserActivity.class);
         intent.putExtra("group",group);
-        startActivity(intent);
+        startActivity(intent);}else{
+            Intent intent1=new Intent(this,Main2Activity.class);
+            startActivity(intent1);
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace EduHubTests
             var emailSettings = new EmailSettings("", "", "", "", "", 4);
             var emailSender = new EmailSender(emailSettings);
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository,
-                new GroupSettings(3, 100, 0, 1000));
+                new GroupSettings(3, 100, 0, 1000), new TagsManager());
             _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
             _authUserFacade = new AuthUserFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender);
@@ -133,7 +133,7 @@ namespace EduHubTests
             _groupFacade.ApproveTeacher(teacherId, createdGroupId);
 
             //Act
-            _groupFacade.DeleteTeacher(createdGroupId, _groupCreator.Id, teacherId);
+            _groupFacade.DeleteTeacher(createdGroupId, _groupCreator.Id);
 
             //Assert
             Assert.AreEqual(null, _groupFacade.GetGroup(createdGroupId).Teacher);

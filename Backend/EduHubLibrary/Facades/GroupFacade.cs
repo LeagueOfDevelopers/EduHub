@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Settings;
 using EnsureThat;
@@ -13,14 +14,17 @@ namespace EduHubLibrary.Facades
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
         private readonly IUserRepository _userRepository;
+        private readonly TagsManager _tagsManager;
 
         public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
-            GroupSettings groupSettings)
+            GroupSettings groupSettings, TagsManager tagsManager)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
             _groupSettings = groupSettings;
+            _tagsManager = tagsManager;
         }
+        
 
         public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size,
             double totalValue, bool isPrivate,
@@ -33,6 +37,8 @@ namespace EduHubLibrary.Facades
             CheckUserExistence(userId);
             var group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
+
+            _tagsManager.UpdatePopularity(tags);
 
             return group.GroupInfo.Id;
         }
@@ -47,16 +53,14 @@ namespace EduHubLibrary.Facades
             currentGroup.AddMember(newMemberId);
         }
 
-        public void DeleteTeacher(Guid groupId, Guid requestedPerson, Guid teacherId)
+        public void DeleteTeacher(Guid groupId, Guid requestedPerson)
         {
             Ensure.Guid.IsNotEmpty(groupId);
             Ensure.Guid.IsNotEmpty(requestedPerson);
-            Ensure.Guid.IsNotEmpty(teacherId);
             CheckUserExistence(requestedPerson);
-            CheckUserExistence(teacherId);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
-            currentGroup.DeleteTeacher(requestedPerson, teacherId);
+            currentGroup.DeleteTeacher(requestedPerson);
         }
 
         public void DeleteMember(Guid groupId, Guid requestedPerson, Guid deletingPerson)
@@ -157,6 +161,36 @@ namespace EduHubLibrary.Facades
         public IEnumerable<Invitation> GetAllInvitations(Guid groupId)
         {
             return _groupRepository.GetGroupById(groupId).Invitations;
+        }
+
+        public void FinishCurriculum(Guid groupId, Guid userId)
+        {
+            Ensure.Guid.IsNotEmpty(groupId);
+            Ensure.Guid.IsNotEmpty(userId);
+
+            CheckUserExistence(userId);
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            currentGroup.FinishCurriculum(userId);
+        }
+
+        public void AddReview(Guid groupId, Guid userId, string title,
+            string text)
+        {
+            Ensure.Guid.IsNotEmpty(groupId);
+            Ensure.Guid.IsNotEmpty(userId);
+            Ensure.String.IsNotNullOrWhiteSpace(title);
+            Ensure.String.IsNotNullOrWhiteSpace(text);
+            CheckUserExistence(userId);
+
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            var teacher = _userRepository.GetUserById(currentGroup.Teacher.Id);
+
+            Ensure.Bool.IsTrue(currentGroup.Status == CourseStatus.Finished, nameof(CourseStatus),
+                opt => opt.WithException(new InvalidOperationException()));
+            Ensure.Bool.IsTrue(currentGroup.IsMember(userId), nameof(userId),
+                opt => opt.WithException(new NotEnoughPermissionsException(userId)));
+
+            teacher.TeacherProfile.AddReview(userId, title, text, groupId);
         }
 
         private void CheckUserExistence(Guid userId)
