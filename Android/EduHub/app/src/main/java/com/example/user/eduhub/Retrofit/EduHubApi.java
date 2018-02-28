@@ -45,7 +45,9 @@ public interface EduHubApi {
     @GET(" /api/group/{groupId}")
     Observable<Group> getInformationAbotGroup(@Path("groupId")String id);
     @POST("/api/group/{groupId}/member/invitation")
-    Single<String> invitedUser(@Header("Authorization") String token, @Path("groupId") String groupId, @Body InviteUserModel model);
+    Completable invitedUser(@Header("Authorization") String token, @Path("groupId") String groupId, @Body InviteUserModel model);
+    @POST("/api/group/{groupId}/teacher/invitation")
+    Completable invitedTeacher(@Header("Authorization") String token, @Path("groupId") String groupId, @Body InviteUserModel model);
     @GET("/api/user/profile/groups/{userId}")
     Observable<GetGroupsModel> getUsersGroup(@Header("Authorization") String token,@Path("userId") String userId);
     @POST("/api/group")
@@ -54,6 +56,8 @@ public interface EduHubApi {
     Single<UserProfileResponse> getUsersProfile (@Header("Authorization") String token, @Path("userId") String userId);
     @POST("/api/users/search")
     Single<UserSearchProfileResponse> searchUser (@Body SearchModel model);
+    @POST("/api/users/searchForInvitation")
+    Single<UserSearchProfileResponse> searchUserForInvitation (@Body SearchModel model);
     @POST("/api/group/{groupId}/member")
     Completable signInUserToGroup (@Header("Authorization") String token, @Path("groupId") String groupId);
     @GET("/api/user/profile/invitations")

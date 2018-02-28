@@ -33,6 +33,7 @@ import com.example.user.eduhub.Models.UserProfile.UserSearchProfile;
 import com.example.user.eduhub.Presenters.InviteUserPresenter;
 import com.example.user.eduhub.Presenters.SearchUserPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InviteUserToGroup extends AppCompatActivity implements ISearchResponse {
@@ -44,7 +45,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
     SearchUserPresenter searchUserPresenter=new SearchUserPresenter(this);
     FakesButton fakesButton=new FakesButton();
     FakeSearchUsers fakeSearchUsers=new FakeSearchUsers(this);
-    MemberRole role;
+    String role;
     Boolean flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
         searchUser.setOnClickListener(click->{
             if(!edit.getText().toString().equals("")){
                 if(!fakesButton.getCheckButton()){
-                searchUserPresenter.searchUser(edit.getText().toString());}
+                searchUserPresenter.searchUserForInvitation(edit.getText().toString(),groupId);}
                 else {fakeSearchUsers.searchUser(edit.getText().toString());}}
 
         });
@@ -90,7 +91,8 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
                                      }
         );
         Spinner spinner=findViewById(R.id.UserRole);
-        SpinnerAdapterForMemberRole adapter=new SpinnerAdapterForMemberRole(this,R.layout.spinner_item_for_members_role, MemberRole.values());
+        String[] roles={"Ученик","Учитель"};
+        SpinnerAdapterForMemberRole adapter=new SpinnerAdapterForMemberRole(this,R.layout.spinner_item_for_members_role, roles);
         spinner.setAdapter(adapter);
         // заголовок
         spinner.setPrompt("Type of education");
@@ -102,7 +104,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 // показываем позиция нажатого элемента
-                role=MemberRole.values()[position];
+                role=roles[position];
 
             }
             @Override

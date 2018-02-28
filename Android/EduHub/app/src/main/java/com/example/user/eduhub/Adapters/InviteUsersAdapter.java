@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +31,11 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUsersAdapter.
     private Activity activity;
     private String myId;
     private String groupId;
-    private MemberRole role;
+    private String role;
     private InviteUserPresenter inviteUserPresenter=new InviteUserPresenter(this);
     FakesButton fakesButton=new FakesButton();
     FakeInviteUserPresenter fakeInviteUserPresenter=new FakeInviteUserPresenter(this);
-    public InviteUsersAdapter(List<UserSearchProfile> userSearchProfiles, Activity activity,String groupId,MemberRole role,String myId){
+    public InviteUsersAdapter(List<UserSearchProfile> userSearchProfiles, Activity activity,String groupId,String role,String myId){
         this.userSearchProfiles=userSearchProfiles;
         this.activity=activity;
         this.groupId=groupId;
@@ -52,6 +53,7 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUsersAdapter.
     public void onBindViewHolder(InviteUsersAdapter.InviteUsersViewHolder holder, final int position) {
         holder.name.setText(userSearchProfiles.get(position).getName());
         holder.cv.setOnClickListener(click->{
+            Log.d("sdvsd","sdfsdgsdf");
             if(!fakesButton.getCheckButton()){
             inviteUserPresenter.inviteUser(userSearchProfiles.get(position).getId(),role,groupId,myId);}
             else {

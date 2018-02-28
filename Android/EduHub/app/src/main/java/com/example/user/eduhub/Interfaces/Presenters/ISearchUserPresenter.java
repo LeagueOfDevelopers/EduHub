@@ -7,4 +7,5 @@ package com.example.user.eduhub.Interfaces.Presenters;
 public interface ISearchUserPresenter {
 
     void searchUser(String name);
+    void searchUserForInvitation(String name,String groupId);
 }

@@ -34,20 +34,24 @@
 
                 <TextView
                     android:id="@+id/name_of_group"
-                    android:layout_width="95dp"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_toRightOf="@+id/participants"
                     android:gravity="center"
                     android:text="TextView"
+                    android:minWidth="95dp"
+                    android:maxWidth="120dp"
                     android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/type_of_education"
-                    android:layout_width="80dp"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_toRightOf="@+id/name_of_group"
                     android:gravity="center"
                     android:text="TextView"
+                    android:minWidth="80dp"
+                    android:maxWidth="120dp"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -63,8 +67,9 @@
                     android:id="@+id/recycler_tags"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@+id/cost" />
+                    android:layout_toRightOf="@+id/cost"
+
+                    android:layout_marginTop="5dp" />
 
             </RelativeLayout>
         </FrameLayout>

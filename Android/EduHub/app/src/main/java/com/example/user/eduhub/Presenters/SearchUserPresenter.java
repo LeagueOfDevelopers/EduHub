@@ -36,4 +36,20 @@ public class SearchUserPresenter implements ISearchUserPresenter {
                         error->{
                             Log.e("ERROR",error+" ");});
     }
+
+    @Override
+    public void searchUserForInvitation(String name, String groupId) {
+        Log.d("NAME",name);
+        SearchModel searchModel=new SearchModel();
+        searchModel.setUsername(name);
+        searchModel.setGroupId(groupId);
+        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        eduHubApi.searchUserForInvitation(searchModel)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(finish->{
+                            searchResponse.getResult(finish.getUsers());},
+                        error->{
+                            Log.e("ERROR",error+" ");});
+    }
 }

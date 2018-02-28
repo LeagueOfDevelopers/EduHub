@@ -82,7 +82,6 @@ public class GroupActivity extends AppCompatActivity
             ((MainGroupFragment) fragment).setGroup(group);
         }
         transaction.replace(R.id.group_fragments_conteiner,fragment);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 

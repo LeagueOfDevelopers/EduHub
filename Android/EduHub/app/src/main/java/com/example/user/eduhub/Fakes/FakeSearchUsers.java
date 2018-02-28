@@ -48,4 +48,9 @@ public class FakeSearchUsers implements ISearchUserPresenter {
         Log.d("СюдаПроходит?fakesearch",userSearchProfiles.size()+"");
         searchResponse.getResult(userSearchProfiles);
     }
+
+    @Override
+    public void searchUserForInvitation(String name, String groupId) {
+        searchUser(name);
+    }
 }

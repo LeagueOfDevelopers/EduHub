@@ -32,36 +32,43 @@ public class InviteUserPresenter implements IInviteUserPresenter {
     }
 
     @Override
-    public void inviteUser(String userId, MemberRole role,String groupId,String token) {
+    public void inviteUser(String userId, String role,String groupId,String token) {
+        EduHubApi eduHubApi = RetrofitBuilder.getApi();
         InviteUserModel inviteUserModel = new InviteUserModel();
         inviteUserModel.setInvitedId(userId);
-        if(role.toString().equals("Участник")){
-            inviteUserModel.setRole("Member");
+
+        if(role.toString().equals("Ученик")){
+
+            eduHubApi.invitedUser("Bearer "+token, groupId, inviteUserModel)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                                inviteUserView.getResponse();
+                            },
+                            error -> {
+                                Log.e("ERRORORORO", error + "");
+                                inviteUserView.getError(error);
+                            });
         }else{
-            if(role.toString().equals("Создатель")){
-                inviteUserModel.setRole("Creator");
-            }
+
             if(role.toString().equals("Учитель")){
-                inviteUserModel.setRole("Teacher");
+
+                eduHubApi.invitedTeacher("Bearer "+token, groupId, inviteUserModel)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                                    inviteUserView.getResponse();
+                                },
+                                error -> {
+                                    Log.e("ERRORORORO", error + "");
+                                    inviteUserView.getError(error);
+                                });
             }
 
         }
 
-        Log.d("Role", inviteUserModel.getRole());
-        Log.d("ID", inviteUserModel.getInvitedId());
-        Log.d("MYtoken",token);
-        Log.d("groupId",groupId);
-        EduHubApi eduHubApi = RetrofitBuilder.getApi();
-        eduHubApi.invitedUser("Bearer "+token, groupId, inviteUserModel)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(finish -> {
-                            inviteUserView.getResponse();
-                        },
-                        error -> {
-                            Log.e("ERRORORORO", error + "");
-                            inviteUserView.getError(error);
-                        });
+
+
     }
 
 }

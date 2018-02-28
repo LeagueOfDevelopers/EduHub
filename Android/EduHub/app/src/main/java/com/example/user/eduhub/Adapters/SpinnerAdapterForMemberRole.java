@@ -15,11 +15,11 @@ import com.example.user.eduhub.R;
  * Created by User on 07.02.2018.
  */
 
-public class SpinnerAdapterForMemberRole extends ArrayAdapter<MemberRole> {
+public class SpinnerAdapterForMemberRole extends ArrayAdapter<String> {
     private LayoutInflater mInflater;
     private int mLayout;
-    private MemberRole[] memberRoles;
-    public SpinnerAdapterForMemberRole(Context context, int resource, MemberRole[] memberRoles) {
+    private String[] memberRoles;
+    public SpinnerAdapterForMemberRole(Context context, int resource, String[] memberRoles) {
         super(context, resource,memberRoles);
         this.memberRoles=memberRoles;
         this.mLayout = resource;

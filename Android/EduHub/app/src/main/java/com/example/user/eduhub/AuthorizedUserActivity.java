@@ -67,14 +67,10 @@ public class AuthorizedUserActivity extends AppCompatActivity
         sPref=getSharedPreferences("User",MODE_PRIVATE);
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
            Integer exp=savedDataRepository.loadExp(sPref);
-            Date date=new Date();
-            if(exp>= date.getTime()){
-             user=savedDataRepository.loadSavedData(sPref);
+            user=savedDataRepository.loadSavedData(sPref);
             bool=savedDataRepository.loadCheckButtonResult(sPref);
             fakesButton.setCheckButton(bool);
-            drawer();}else{
-                refreshTokenPresenter.refreshToken(savedDataRepository.loadSavedData(sPref).getToken());
-            }
+            refreshTokenPresenter.refreshToken(savedDataRepository.loadSavedData(sPref).getToken());
         }
              else{
             Intent intent=getIntent();
@@ -210,6 +206,9 @@ public class AuthorizedUserActivity extends AppCompatActivity
     @Override
     public void getResponse(User user) {
         this.user=user;
+        JWT jwt = new JWT(user.getToken());
+        user.setUserId(jwt.getClaim("UserId").asString());
+        Log.d("USERID",user.getUserId());
         savedDataRepository=new SavedDataRepository();
         savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),sPref);
         drawer();
