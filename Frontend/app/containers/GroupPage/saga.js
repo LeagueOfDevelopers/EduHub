@@ -69,18 +69,32 @@ function* inviteMemberSaga(action) {
 }
 
 function inviteMember(groupId, invitedId, role) {
-  return fetch(`${config.API_BASE_URL}/group/${groupId}/member/invitation`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json-patch+json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    },
-    body: JSON.stringify({
-      invitedId: invitedId,
-      role: role
+  if(role === 'Member') {
+    return fetch(`${config.API_BASE_URL}/group/${groupId}/member/invitation`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({
+        invitedId: invitedId
+      })
     })
-  })
-    .catch(error => error)
+      .catch(error => error)
+  }
+  else if(role === 'Teacher') {
+    return fetch(`${config.API_BASE_URL}/group/${groupId}/teacher/invitation`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({
+        invitedId: invitedId
+      })
+    })
+      .catch(error => error)
+  }
 }
 
 function enterGroup(groupId) {
@@ -106,7 +120,7 @@ function leaveGroup(groupId, memberId, role) {
       .catch(error => error);
   }
   else if(role === 'Teacher') {
-    return fetch(`${config.API_BASE_URL}/group/${groupId}/member/teacher/${memberId}`, {
+    return fetch(`${config.API_BASE_URL}/group/${groupId}/teacher`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json-patch+json',

@@ -107,6 +107,10 @@
     margin-bottom: 40px;
   }
 
+  .md-center-container > .group-btn, .lg-center-container-item > .group-btn {
+    width: 100%
+  }
+
   .md-cards-holder-center {
     justify-content: center;
   }
@@ -125,7 +129,7 @@
     display: none;
   }
 
-  .md-center-container {
+  .md-center-container, .lg-center-container-item {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

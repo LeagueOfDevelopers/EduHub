@@ -19,7 +19,7 @@ export function loadCurrentUserSuccess(payload) {
     name: payload.name,
     avatarLink: payload.avatarLink,
     token: payload.token,
-    statusCode: payload.statusCode
+    isTeacher: payload.isTeacher,
   };
 }
 

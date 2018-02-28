@@ -24,10 +24,11 @@ import {
   editPrivacy,
   editGroupType
 } from "./actions";
+import { makeSelectNeedUpdate } from "./selectors";
 import {Link} from "react-router-dom";
 import config from "../../config";
 import {getGroupType, parseJwt, getMemberRole} from "../../globalJS";
-import {Col, Row, Button, message, Input, Select, InputNumber, Switch} from 'antd';
+import {Col, Row, Button, message, Input, Select, InputNumber, Switch, Upload, Icon} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
 import InviteMemberSelect from '../../components/InviteMemberSelect/Loadable';
@@ -97,7 +98,6 @@ export class GroupPage extends React.Component {
       isInGroup: false,
       isCreator: false,
       isTeacher: false,
-      needUpdate: false,
       signInVisible: false,
       isEditing: false,
       titleInput: '',
@@ -106,7 +106,9 @@ export class GroupPage extends React.Component {
       sizeInput: '',
       priceInput: '',
       groupTypeInput: '',
-      privateInput: null
+      privateInput: null,
+      file: null,
+      uploading: false
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -122,7 +124,39 @@ export class GroupPage extends React.Component {
     this.onHandleGroupTypeChange = this.onHandleGroupTypeChange.bind(this);
     this.onHandlePrivateChange = this.onHandlePrivateChange.bind(this);
     this.cancelChanges = this.cancelChanges.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
+
+  handleUpload = () => {
+    this.setState({
+      uploading: true,
+    });
+
+    console.log(this.state.file)
+
+    fetch(`${config.API_BASE_URL}/file`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({
+        file: this.state.file
+      })
+    })
+      .then(() => {
+        this.setState({
+          file: null,
+          uploading: false,
+        });
+        message.success('upload successfully.');
+      })
+      .catch(error => {
+        this.setState({
+          uploading: false,
+        });
+        return error
+      });
+  };
 
   onSignInClick = () => {
     this.setState({signInVisible: true})
@@ -136,8 +170,7 @@ export class GroupPage extends React.Component {
     if(localStorage.getItem('without_server') !== 'true') {
       fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
         headers: {
-          'Content-Type': 'application/json-patch+json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Content-Type': 'application/json-patch+json'
         }
       })
         .then(response => response.json())
@@ -154,9 +187,8 @@ export class GroupPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.needUpdate !== this.state.needUpdate) {
+    if(prevProps.needUpdate !== this.props.needUpdate) {
       this.getCurrentGroup();
-      this.setState({needUpdate: false});
     }
   }
 
@@ -248,10 +280,20 @@ export class GroupPage extends React.Component {
       this.props.editGroupTags(this.state.id, this.state.tagsInput)
     }
     this.setState({isEditing: false});
-    this.setState({needUpdate: true})
   };
 
   render() {
+    const props = {
+      name: 'file',
+      accept: 'text/plain, .pdf',
+      beforeUpload: (file) => {
+        this.setState({
+          file: file,
+        });
+        return false;
+      },
+    };
+
     return (
       <div>
         <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 160, fontSize: 16}}>
@@ -334,7 +376,13 @@ export class GroupPage extends React.Component {
               }
             </Row>
             <Row style={{width: '100%', marginBottom: 20}}>
-              <MemberList members={this.state.groupData.members} memberAmount={this.state.groupData.groupInfo.memberAmount} size={this.state.groupData.groupInfo.size} isCreator={this.state.isCreator}/>
+              <MemberList
+                groupId={this.state.id}
+                members={this.state.groupData.members}
+                memberAmount={this.state.groupData.groupInfo.memberAmount}
+                size={this.state.groupData.groupInfo.size}
+                isCreator={this.state.isCreator}
+              />
             </Row>
             {this.state.isCreator ?
               (<Row style={{width: '100%'}} className='md-center-container'>
@@ -358,36 +406,57 @@ export class GroupPage extends React.Component {
             }
           </Col>
           <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
-            <Row style={{textAlign: 'right', marginTop: 8}}>
-              {this.state.groupData.groupInfo.memberAmount < this.state.groupData.groupInfo.size ?
-                this.state.isInGroup ?
-                  (<Row className='md-center-container'>
-                      <Button onClick={() => {
-                        this.setState({needUpdate: true});
-                        this.props.leaveGroup(this.state.id, this.state.userData.UserId, this.state.isTeacher ? 'Teacher' : 'Member')
-                      }}
-                      >
-                        Покинуть группу
-                      </Button>
-                    </Row>
-                  )
-                  : (<Row className='md-center-container'>
-                      <Button type='primary' onClick={() => {
-                        if(this.state.userData) {
-                          this.props.enterGroup(this.state.id);
-                          this.setState({needUpdate: true});
-                        }
-                        else {
-                          this.onSignInClick()
-                        }
-                      }}
-                      >
-                        Вступить в группу
-                      </Button>
-                    </Row>
-                  )
-                : null
-              }
+            <Row style={{textAlign: 'left', marginTop: 8}}>
+              <Col xs={{span: 24}} lg={{span: 12}}>
+                {this.state.isTeacher ?
+                  <Row className='lg-center-container-item'>
+                        <Upload {...props} style={{width: '100%'}}>
+                          <Button type='primary' className='group-btn' style={{marginBottom: 10}}>
+                            <Icon type="upload" /> Предложить учебный план
+                          </Button>
+                        </Upload>
+                        <Button
+                          type="primary"
+                          onClick={this.handleUpload}
+                          loading={this.state.uploading}
+                          disabled={!this.state.file}
+                          style={{width: '100%'}}
+                        >
+                          {this.state.uploading ? 'Загрузка' : 'Начать загрузку' }
+                        </Button>
+                  </Row>
+                  : null
+                }
+              </Col>
+              <Col xs={{span: 24}} lg={{span: 12}} style={{textAlign: 'right'}}>
+                {this.state.groupData.groupInfo.memberAmount < this.state.groupData.groupInfo.size ?
+                  this.state.isInGroup ?
+                    (<Row className='lg-center-container-item'>
+                        <Button className='group-btn' onClick={() => {
+                          this.props.leaveGroup(this.state.id, this.state.userData.UserId, this.state.isTeacher ? 'Teacher' : 'Member')
+                        }}
+                        >
+                          Покинуть группу
+                        </Button>
+                      </Row>
+                    )
+                    : (<Row className='lg-center-container-item'>
+                        <Button type='primary' className='group-btn' onClick={() => {
+                          if(this.state.userData) {
+                            this.props.enterGroup(this.state.id);
+                          }
+                          else {
+                            this.onSignInClick()
+                          }
+                        }}
+                        >
+                          Вступить в группу
+                        </Button>
+                      </Row>
+                    )
+                  : null
+                }
+              </Col>
             </Row>
             <Row>
               <Row style={{marginTop: 42}}>
@@ -436,6 +505,7 @@ GroupPage.defaultProps = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  needUpdate: makeSelectNeedUpdate()
 });
 
 function mapDispatchToProps(dispatch) {

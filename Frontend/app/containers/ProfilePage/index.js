@@ -227,7 +227,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     if(this.state.contactsInputs.length !== this.state.userProfile.contacts.length || this.state.contactsInputs.filter((item, i) =>
         item !== this.state.userProfile.contacts[i]
       ).length !== 0) {
-      this.props.editContacts(this.state.contactsInputs)
+      setTimeout(() => this.props.editContacts(this.state.contactsInputs), 0);
     }
     this.setState({isEditing: false});
     this.setState({needUpdate: true})

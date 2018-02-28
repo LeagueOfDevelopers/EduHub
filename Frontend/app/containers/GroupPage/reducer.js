@@ -46,6 +46,7 @@ const initialState = fromJS({
   username: '',
   groupId: '',
   users: [],
+  needUpdate: false,
   pending: false,
   error: false
 });
@@ -54,20 +55,24 @@ function groupPageReducer(state = initialState, action) {
   switch (action.type) {
     case ENTER_GROUP_START:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case ENTER_GROUP_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case ENTER_GROUP_FAILED:
       return state
         .set('pending', false)
         .set('error', true);
     case LEAVE_GROUP_START:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case LEAVE_GROUP_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case LEAVE_GROUP_FAILED:
       return state
         .set('pending', false)
@@ -85,70 +90,84 @@ function groupPageReducer(state = initialState, action) {
         .set('error', true);
     case EDIT_GROUP_TITLE:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_GROUP_TITLE_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_GROUP_TITLE_FAILED:
       return state
         .set('pending', false)
         .set('error', true);
     case EDIT_GROUP_DESCRIPTION:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_GROUP_DESCRIPTION_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_GROUP_DESCRIPTION_FAILED:
       return state
         .set('pending', false)
         .set('error', true);
     case EDIT_GROUP_TAGS:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_GROUP_TAGS_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_GROUP_TAGS_FAILED:
       return state
         .set('pending', false)
         .set('error', true);
     case EDIT_GROUP_SIZE:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_GROUP_SIZE_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_GROUP_SIZE_FAILED:
       return state
         .set('pending', false)
         .set('error', true);
     case EDIT_GROUP_PRICE:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_GROUP_PRICE_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_GROUP_PRICE_FAILED:
       return state
         .set('pending', false)
         .set('error', true);
     case EDIT_GROUP_TYPE:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_GROUP_TYPE_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_GROUP_TYPE_FAILED:
       return state
         .set('pending', false)
         .set('error', true);
     case EDIT_GROUP_PRIVACY:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_GROUP_PRIVACY_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_GROUP_PRIVACY_FAILED:
       return state
         .set('pending', false)

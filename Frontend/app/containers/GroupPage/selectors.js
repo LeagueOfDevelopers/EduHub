@@ -10,6 +10,12 @@ const makeSelectUsers = () => createSelector(
   (groupPageState) => groupPageState.get('users')
 );
 
+const makeSelectNeedUpdate = () => createSelector(
+  selectGroupPage,
+  (groupPageState) => groupPageState.get('needUpdate')
+);
+
 export {
-  makeSelectUsers
+  makeSelectUsers,
+  makeSelectNeedUpdate
 };

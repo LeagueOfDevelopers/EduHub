@@ -62,7 +62,7 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
           <Col xs={{span: 24}} sm={{span: 12}} style={{fontSize: 24}}>{this.state.title}</Col>
           <Col xs={{span: 24}} sm={{span: 12}} className='xs-text-align-left text-align-right' style={{fontSize: 14}}>
             <Dropdown overlay={this.sortMenu} trigger={['click']} placement='bottomRight'>
-              <span>
+              <span style={{cursor: 'pointer'}}>
                 {this.state.sortTitle} {this.state.arrow === 'down' ?
                 (<Icon type="down"/>)
                 :

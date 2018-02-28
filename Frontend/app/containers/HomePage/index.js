@@ -20,8 +20,8 @@ import { makeSelectGroups } from "./selectors";
 import reducer from '../GroupsPage/reducer';
 import saga from '../GroupsPage/saga';
 import { getGroups } from "../GroupsPage/actions";
-import { makeTeacher } from "../ProfilePage/actions";
 import {Link} from "react-router-dom";
+import { parseJwt } from "../../globalJS";
 import {Card, Col, Row, Button, message} from 'antd';
 import UnassembledGroupCard from 'components/UnassembledGroupCard';
 import AssembledGroupCard from 'components/AssembledGroupCard';
@@ -59,12 +59,18 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   constructor(props) {
     super(props);
 
-    this.makeTeacher = this.makeTeacher.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
 
     this.state = {
-      signInVisible: false,
-      isTeacher: false
+      signInVisible: false
+    }
+  }
+
+  componentWillMount() {
+    if(localStorage.getItem('token') && parseJwt(localStorage.getItem('token')).exp - parseInt(Date.now()/1000) < 0) {
+      localStorage.setItem('name', '');
+      localStorage.setItem('avatarLink', '');
+      localStorage.setItem('token', '');
     }
   }
 
@@ -72,20 +78,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     if(localStorage.getItem('without_server') !== 'true') {
       this.props.getUnassembledGroups();
       this.props.getAssembledGroups();
-    }
-  }
-
-  makeTeacher() {
-    if(localStorage.getItem('token'))
-      localStorage.getItem('withoutServer') === 'true' ?
-        message.success('Теперь вы можете преподавать!')
-        :
-        () => {
-          // this.props.makeTeacher();
-          this.setState({isTeacher: true});
-        };
-    else {
-      this.setState({signInVisible: true})
     }
   }
 
@@ -126,13 +118,20 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                )
             }
             <Row type='flex' align='middle' style={{marginTop: 30}}>
-              <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 12}} style={{fontSize: 16}}>
+              <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
                 <Link to='/groups/unassembledGroups'>Показать больше</Link>
               </Col>
-              <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 12}}>
-                <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
-                <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>
-              </Col>
+              {localStorage.getItem('token') ?
+                <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                  <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
+                  <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>
+                </Col>
+                :
+                <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                  <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
+                  <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Создать группу</Button>
+                </Col>
+              }
             </Row>
           </Card>
         </Col>
@@ -165,21 +164,22 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </div>
               )
             }
-            {!this.state.isTeacher ?
-              <Row type='flex' align='middle' style={{marginTop: 30}}>
-                <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
-                  <Link to='/groups/assembledGroups'>Показать больше</Link>
-                </Col>
+            <Row type='flex' align='middle' style={{marginTop: 30}}>
+              <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
+                <Link to='/groups/assembledGroups'>Показать больше</Link>
+              </Col>
+              {localStorage.getItem('token') ?
                 <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
                   <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
-                  <Link to='/create_group'><Button type="primary" onClick={this.makeTeacher}>Стать преподавателем</Button></Link>
+                  <Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}><Button type="primary">Стать преподавателем</Button></Link>
                 </Col>
-              </Row>
-              :
-              <Row type='flex' justify='end' align='middle' style={{marginTop: 30}}>
-                <Col style={{fontSize: 18}}>Вы можете преподавать!</Col>
-              </Row>
-            }
+                :
+                <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                  <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
+                  <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Стать преподавателем</Button>
+                </Col>
+              }
+            </Row>
             <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
           </Card>
         </Col>
@@ -208,8 +208,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getUnassembledGroups: () => dispatch(getGroups('unassembledGroups')),
-    getAssembledGroups: () => dispatch(getGroups('assembledGroups')),
-    makeTeacher: () => dispatch(makeTeacher())
+    getAssembledGroups: () => dispatch(getGroups('assembledGroups'))
   };
 }
 

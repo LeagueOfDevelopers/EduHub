@@ -6,8 +6,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {parseJwt, getMemberRole} from "../../globalJS";
 import {Link} from "react-router-dom";
+import { createStructuredSelector } from 'reselect';
+import { leaveGroup } from "../../containers/GroupPage/actions";
 import { List, Avatar, Icon, Popconfirm, message, Row, Col } from 'antd';
 
 class MembersList extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -42,7 +45,19 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
                   description={getMemberRole(item.role)}
                 />
                 {this.props.isCreator && item.role !== 2 ?
-                  (<Popconfirm title='Удалить участника?' onConfirm={this.confirm} okText="Да" cancelText="Нет">
+                  (<Popconfirm
+                    title='Удалить участника?'
+                    onConfirm={() =>
+                      this.props.leaveGroup(this.props.groupId, item.userId, item.role === 3 ?
+                        'Teacher'
+                        : item.role === 1 ?
+                        'Member'
+                          : null
+                      )
+                    }
+                    okText="Да"
+                    cancelText="Нет"
+                  >
                     <Icon
                       style={{fontSize: 18, cursor: 'pointer'}}
                       type="close"
@@ -69,4 +84,13 @@ MembersList.propTypes = {
   members: PropTypes.array
 };
 
-export default MembersList;
+const mapStateToProps = createStructuredSelector({
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    leaveGroup: (groupId, memberId, role) => dispatch(leaveGroup(groupId, memberId, role))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MembersList);
