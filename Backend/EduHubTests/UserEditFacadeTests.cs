@@ -52,17 +52,6 @@ namespace EduHubTests
             Assert.AreEqual(newName, _userFacade.GetUser(_testUserId).UserProfile.Name);
         }
 
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditNameWithEmptyValue_GetException()
-        {
-            //Arrange
-            var newName = "";
-
-            //Act
-            _userEditFacade.EditName(_testUserId, newName);
-        }
-
         [TestMethod]
         public void EditAboutUser_GetUserWithEditedAboutInfo()
         {
@@ -77,17 +66,6 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(newAbout, actualAbout);
             Assert.AreEqual(newAbout, _userFacade.GetUser(_testUserId).UserProfile.AboutUser);
-        }
-
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditAboutInfoWithEmptyValue_GetException()
-        {
-            //Arrange
-            var newAbout = "";
-
-            //Act
-            _userEditFacade.EditAboutUser(_testUserId, newAbout);
         }
 
         [TestMethod]
@@ -121,17 +99,6 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(newAvatarLink, actualAvatarLink);
             Assert.AreEqual(newAvatarLink, _userFacade.GetUser(_testUserId).UserProfile.AvatarLink);
-        }
-
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditAvatarLinkOfUserWithEmptyValue_GetException()
-        {
-            //Arrange
-            var newAvatarLink = "";
-
-            //Act
-            _userEditFacade.EditAvatarLink(_testUserId, newAvatarLink);
         }
 
         [TestMethod]
@@ -199,17 +166,6 @@ namespace EduHubTests
 
             //Act
             _userEditFacade.EditBirthYear(_testUserId, newBirthday);
-        }
-
-        [ExpectedException(typeof(ArgumentException))]
-        [TestMethod]
-        public void EditUserBirthdayWithEmptyValue_GetException()
-        {
-            //Arrange
-            var newBirthYear = "";
-
-            //Act
-            _userEditFacade.EditAvatarLink(_testUserId, newBirthYear);
         }
 
         [TestMethod]

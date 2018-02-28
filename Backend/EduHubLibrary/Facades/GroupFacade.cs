@@ -4,6 +4,7 @@ using System.Linq;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Facades.Views.GroupViews;
 using EduHubLibrary.Settings;
 using EnsureThat;
 
@@ -13,8 +14,8 @@ namespace EduHubLibrary.Facades
     {
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
-        private readonly IUserRepository _userRepository;
         private readonly TagsManager _tagsManager;
+        private readonly IUserRepository _userRepository;
 
         public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
             GroupSettings groupSettings, TagsManager tagsManager)
@@ -24,7 +25,7 @@ namespace EduHubLibrary.Facades
             _groupSettings = groupSettings;
             _tagsManager = tagsManager;
         }
-        
+
 
         public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size,
             double totalValue, bool isPrivate,
@@ -75,9 +76,41 @@ namespace EduHubLibrary.Facades
             currentGroup.DeleteMember(requestedPerson, deletingPerson);
         }
 
-        public Group GetGroup(Guid id)
+        public FullGroupView GetGroup(Guid id)
         {
-            return _groupRepository.GetGroupById(id);
+            var currentGroup = _groupRepository.GetGroupById(id);
+            var members = currentGroup.Members;
+            var memberAmount = currentGroup.Members.Count;
+            var groupInfo = currentGroup.GroupInfo;
+            var groupInfoView = new GroupInfoView(groupInfo.Id,
+                groupInfo.Title, groupInfo.Size,
+                memberAmount, groupInfo.Price, groupInfo.GroupType,
+                groupInfo.Tags, groupInfo.Description, groupInfo.Curriculum,
+                groupInfo.IsPrivate, groupInfo.IsActive,
+                currentGroup.Status);
+
+            var membersInfo = new List<GroupMemberInfo>();
+            members.ForEach(m =>
+            {
+                var currentMember = _userRepository.GetUserById(m.UserId);
+                membersInfo.Add(new GroupMemberInfo(m.UserId, currentMember.UserProfile.Name,
+                    currentMember.UserProfile.AvatarLink, m.MemberRole, m.Paid, m.CurriculumStatus));
+            });
+            if (currentGroup.Teacher != null)
+            {
+                var teacher = _userRepository.GetUserById(currentGroup.Teacher.Id);
+                membersInfo.Add(new GroupMemberInfo(currentGroup.Teacher.Id,
+                    teacher.UserProfile.Name, teacher.UserProfile.AvatarLink,
+                    MemberRole.Teacher, false, MemberCurriculumStatus.Unknown));
+            }
+
+            var messagesList = new List<MessageView>();
+
+            currentGroup.Messages.ToList().ForEach(m => messagesList.Add(new MessageView(m.Id, m.SenderId,
+                m.SentOn, m.Text)));
+
+            var responseView = new FullGroupView(groupInfoView, membersInfo, messagesList);
+            return responseView;
         }
 
         public IEnumerable<Group> FindByTags(IEnumerable<string> tags)

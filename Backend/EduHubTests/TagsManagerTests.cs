@@ -1,23 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
-using EduHubLibrary.Settings;
 using EduHubLibrary.Mailing;
-using EduHubLibrary.Common;
-using System;
+using EduHubLibrary.Settings;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EduHubTests
 {
     [TestClass]
     public class TagsManagerTests
     {
-        private InMemoryUserRepository _inMemoryUserRepository;
-        private InMemoryGroupRepository _inMemoryGroupRepository;
+        private Guid _creatorId;
         private GroupSettings _groupSettings;
-        private Guid _creatorId; 
+        private InMemoryGroupRepository _inMemoryGroupRepository;
+        private InMemoryUserRepository _inMemoryUserRepository;
 
         [TestInitialize]
         public void Initialize()
@@ -87,10 +87,11 @@ namespace EduHubTests
             //Arrange
             var tagsManager = new TagsManager();
             tagsManager.AddTag("Tag");
-            var groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository, _groupSettings, tagsManager);
+            var groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository, _groupSettings,
+                tagsManager);
 
             //Act
-            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> { "Tag" },
+            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"Tag"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
             var tag = tagsManager.Tags.First(t => t.Name == "Tag");
 
@@ -105,13 +106,14 @@ namespace EduHubTests
             var tagsManager = new TagsManager();
             tagsManager.AddTag("Tag1");
             tagsManager.AddTag("Tag2");
-            var groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository, _groupSettings, tagsManager);
+            var groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository, _groupSettings,
+                tagsManager);
             var groupEditFacade = new GroupEditFacade(_inMemoryGroupRepository, _groupSettings, tagsManager);
 
             //Act
-            var createdGroupId = groupFacade.CreateGroup(_creatorId, "Some group", new List<string> { "Tag1" },
+            var createdGroupId = groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"Tag1"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
-            groupEditFacade.ChangeGroupTags(createdGroupId, _creatorId, new List<string> { "Tag2" });
+            groupEditFacade.ChangeGroupTags(createdGroupId, _creatorId, new List<string> {"Tag2"});
             var tag = tagsManager.Tags.First(t => t.Name == "Tag2");
 
             //Assert
@@ -126,21 +128,22 @@ namespace EduHubTests
             tagsManager.AddTag("Tag1");
             tagsManager.AddTag("Tag2");
             tagsManager.AddTag("Tag3");
-            var groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository, _groupSettings, tagsManager);
+            var groupFacade = new GroupFacade(_inMemoryGroupRepository, _inMemoryUserRepository, _groupSettings,
+                tagsManager);
 
-            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> { "Tag1" },
-                "You're welcome!", 3, 20, false, GroupType.Lecture);
-
-            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> { "Tag2" },
-                "You're welcome!", 3, 20, false, GroupType.Lecture);
-            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> { "Tag2" },
-                "You're welcome!", 3, 20, false, GroupType.Lecture);
-            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> { "Tag2" },
+            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"Tag1"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
 
-            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> { "Tag3" },
+            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"Tag2"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
-            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> { "Tag3" },
+            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"Tag2"},
+                "You're welcome!", 3, 20, false, GroupType.Lecture);
+            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"Tag2"},
+                "You're welcome!", 3, 20, false, GroupType.Lecture);
+
+            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"Tag3"},
+                "You're welcome!", 3, 20, false, GroupType.Lecture);
+            groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"Tag3"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
 
             //Act

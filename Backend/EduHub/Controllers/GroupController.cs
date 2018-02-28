@@ -5,7 +5,6 @@ using EduHub.Extensions;
 using EduHub.Models;
 using EduHub.Models.Examples;
 using EduHub.Models.Tools;
-using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
 using EnsureThat;
 using Microsoft.AspNetCore.Authorization;
@@ -218,27 +217,17 @@ namespace EduHub.Controllers
         public IActionResult GetGroup([FromRoute] Guid groupId)
         {
             var group = _groupFacade.GetGroup(groupId);
-            var listOfMembers = _groupFacade.GetGroupMembers(groupId).ToList();
-            var groupInfo = new FullGroupInfo(group.GroupInfo.Title, group.GroupInfo.Size,
-                listOfMembers.Count, group.GroupInfo.Price, group.GroupInfo.GroupType, group.GroupInfo.Tags,
-                group.GroupInfo.Description, group.Status, group.GroupInfo.IsPrivate);
-            var memberInfoList = new List<MemberInfo>();
-            if (group.Teacher != null)
-            {
-                var info = new MemberInfo(group.Teacher.Id, group.Teacher.UserProfile.Name,
-                    group.Teacher.UserProfile.AvatarLink, MemberRole.Teacher, false);
-                memberInfoList.Add(info);
-            }
-
-            listOfMembers.ForEach(m =>
-            {
-                var userName = _userFacade.GetUser(m.UserId).UserProfile.Name;
-                var avatarLink = _userFacade.GetUser(m.UserId).UserProfile.AvatarLink;
-
-                var memberInfo = new MemberInfo(m.UserId, userName, avatarLink, m.MemberRole, m.Paid);
-                memberInfoList.Add(memberInfo);
-            });
-            var response = new GroupResponse(groupInfo, memberInfoList);
+            var groupInfoView = group.GroupInfoView;
+            var groupMembersInfo = group.GroupMemberInfo;
+            var fullGroupInfo = new FullGroupInfo(groupInfoView.Title, groupInfoView.Size,
+                groupInfoView.MemberAmount, groupInfoView.Price, groupInfoView.GroupType,
+                groupInfoView.Tags, groupInfoView.Description, groupInfoView.CourseStatus, groupInfoView.IsPrivate,
+                groupInfoView.Curriculum);
+            var membersInfo = new List<MemberInfo>();
+            groupMembersInfo.ToList().ForEach(m =>
+                membersInfo.Add(new MemberInfo(m.UserId, m.Username, m.AvatarLink, m.MemberRole,
+                    m.Paid, m.CurriculumStatus)));
+            var response = new GroupResponse(fullGroupInfo, membersInfo);
             return Ok(response);
         }
     }

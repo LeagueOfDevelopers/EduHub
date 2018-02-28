@@ -8,7 +8,7 @@ namespace EduHub.Models.Tools
     {
         public FullGroupInfo(string title, int size, int memberAmount, double cost, GroupType groupType,
             IEnumerable<string> tags, string description, CourseStatus courseStatus,
-            bool isPrivate)
+            bool isPrivate, string curriculum)
         {
             Title = title;
             Size = size;
@@ -19,16 +19,18 @@ namespace EduHub.Models.Tools
             Description = description;
             CourseStatus = courseStatus;
             IsPrivate = isPrivate;
+            Curriculum = curriculum;
         }
 
-        public string Title { get; set; }
-        public int Size { get; set; }
-        public int MemberAmount { get; set; }
-        public double Cost { get; set; }
-        public GroupType GroupType { get; set; }
-        public IEnumerable<string> Tags { get; set; }
-        public string Description { get; set; }
-        public bool IsPrivate { get; set; }
-        public CourseStatus CourseStatus { get; set; }
+        public string Title { get; }
+        public int Size { get; }
+        public int MemberAmount { get; }
+        public double Cost { get; }
+        public GroupType GroupType { get; }
+        public IEnumerable<string> Tags { get; }
+        public string Description { get; }
+        public bool IsPrivate { get; }
+        public CourseStatus CourseStatus { get; }
+        public string Curriculum { get; }
     }
 }

@@ -4,6 +4,7 @@ using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Facades;
+using EduHubLibrary.Facades.Views.GroupViews;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
@@ -76,13 +77,13 @@ namespace EduHubTests
             var createdGroup2 = groupFacade.GetGroup(createdGroupId2);
 
             //Act
-            createdGroup1.AddMember(testUserId);
-            createdGroup2.AddMember(testUserId);
-            var expected = new List<Group> {createdGroup1, createdGroup2};
+            groupFacade.AddMember(createdGroup1.GroupInfoView.GroupId, testUserId);
+            groupFacade.AddMember(createdGroup2.GroupInfoView.GroupId, testUserId);
+            var expected = new List<FullGroupView> {createdGroup1, createdGroup2};
             var groups = userFacade.GetAllGroupsOfUser(testUserId).ToList();
 
             //Assert
-            Assert.AreEqual(true, expected.SequenceEqual(groups));
+            Assert.AreEqual(groups.Count, expected.Count);
         }
 
         [TestMethod]
@@ -187,7 +188,7 @@ namespace EduHubTests
             var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group",
                 new List<string> {"c#"}, "Very interesting", 1, 100, false, GroupType.Lecture);
             var createdGroup = groupFacade.GetGroup(createdGroupId);
-            createdGroup.ApproveTeacher(userFacade.GetUser(teacherId));
+            groupFacade.ApproveTeacher(userFacade.GetUser(teacherId).Id, createdGroupId);
 
             //Act
             userFacade.Invite(creatorId, anotherTeacherId, createdGroupId, MemberRole.Teacher);

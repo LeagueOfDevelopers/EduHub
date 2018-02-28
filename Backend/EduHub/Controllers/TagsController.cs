@@ -1,9 +1,9 @@
-﻿using EduHub.Models.Tools;
+﻿using System.Collections.Generic;
+using System.Linq;
+using EduHub.Models.Tools;
 using EduHubLibrary.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EduHub.Controllers
 {

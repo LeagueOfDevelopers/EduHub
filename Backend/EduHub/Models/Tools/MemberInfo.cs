@@ -1,17 +1,20 @@
 ﻿using System;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHub.Models.Tools
 {
     public class MemberInfo
     {
-        public MemberInfo(Guid userId, string name, string avatarLink, MemberRole role, bool paid)
+        public MemberInfo(Guid userId, string name, string avatarLink, MemberRole role, bool paid,
+            MemberCurriculumStatus curriculumStatus)
         {
             UserId = userId;
             Name = name;
             AvatarLink = avatarLink;
             Role = role;
             Paid = paid;
+            CurriculumStatus = curriculumStatus;
         }
 
         public Guid UserId { get; set; }
@@ -19,5 +22,6 @@ namespace EduHub.Models.Tools
         public string AvatarLink { get; set; }
         public MemberRole Role { get; set; }
         public bool Paid { get; set; }
+        public MemberCurriculumStatus CurriculumStatus { get; }
     }
 }

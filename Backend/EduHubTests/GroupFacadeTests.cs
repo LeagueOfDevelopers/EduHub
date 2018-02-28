@@ -131,12 +131,12 @@ namespace EduHubTests
             var teacherId = _authUserFacade.RegUser("Teacher", Credentials.FromRawData("email2", "password"), true,
                 UserType.User);
             _groupFacade.ApproveTeacher(teacherId, createdGroupId);
-
+            var expected = 1;
             //Act
             _groupFacade.DeleteTeacher(createdGroupId, _groupCreator.Id);
 
             //Assert
-            Assert.AreEqual(null, _groupFacade.GetGroup(createdGroupId).Teacher);
+            Assert.AreEqual(expected, _groupFacade.GetGroup(createdGroupId).GroupMemberInfo.Count());
         }
     }
 }

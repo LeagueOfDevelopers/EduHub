@@ -63,6 +63,8 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new AlreadyMemberException(newMemberId, GroupInfo.Id)));
             Ensure.Bool.IsTrue(Members.Count < GroupInfo.Size, nameof(GroupInfo.Size),
                 opt => opt.WithException(new GroupIsFullException(GroupInfo.Id)));
+            Ensure.Bool.IsTrue(Status == CourseStatus.Searching || Status == CourseStatus.InProgress,
+                nameof(CourseStatus), opt => opt.WithException(new InvalidOperationException()));
 
             var newMember = new Member(newMemberId, MemberRole.Member);
             Members.Add(newMember);
@@ -78,8 +80,6 @@ namespace EduHubLibrary.Domain
                 opt => opt.WithException(new MemberNotFoundException(deletingPerson)));
             Ensure.Bool.IsTrue(requestedPerson == deletingPerson || requestedMember.MemberRole == MemberRole.Creator,
                 nameof(DeleteMember), opt => opt.WithException(new NotEnoughPermissionsException(requestedPerson)));
-            Ensure.Bool.IsTrue(Status == CourseStatus.Searching || Status == CourseStatus.InProgress,
-                nameof(CourseStatus), opt => opt.WithException(new InvalidOperationException()));
 
             if (deletingMember.MemberRole == MemberRole.Creator)
             {

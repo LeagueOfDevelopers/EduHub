@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Facades.Views.GroupViews;
 
 namespace EduHubLibrary.Facades
 {
@@ -15,7 +16,7 @@ namespace EduHubLibrary.Facades
         void DeclineCurriculum(Guid userId, Guid groupId, string reason);
         void OfferCurriculum(Guid userId, Guid groupId, string description);
         IEnumerable<Group> GetGroups();
-        Group GetGroup(Guid id);
+        FullGroupView GetGroup(Guid id);
         IEnumerable<Group> FindByTags(IEnumerable<string> tags);
         IEnumerable<Member> GetGroupMembers(Guid groupId);
         void DeleteMember(Guid groupId, Guid requestedPerson, Guid requestingPerson);
@@ -23,8 +24,10 @@ namespace EduHubLibrary.Facades
         void DeleteTeacher(Guid groupId, Guid requestedPerson);
         void AddInvitation(Guid groupId, Invitation invitation);
         void FinishCurriculum(Guid groupId, Guid userId);
+
         void AddReview(Guid groupId, Guid userId, string title,
             string text);
+
         IEnumerable<Invitation> GetAllInvitations(Guid groupId);
     }
 }

@@ -45,16 +45,16 @@ namespace EduHubTests
             //Arrange
             var createdGroupId = _groupFacade.CreateGroup(_groupCreatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            var createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedTitle = "new title";
             _groupEditFacade.ChangeGroupTitle(createdGroupId, _groupCreatorId, expectedTitle);
-            var actualTitle = createdGroup.GroupInfo.Title;
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var actualTitle = createdGroup.GroupInfoView.Title;
 
             //Assert
             Assert.AreEqual(expectedTitle, actualTitle);
-            Assert.AreEqual(expectedTitle, _groupFacade.GetGroup(createdGroupId).GroupInfo.Title);
+            Assert.AreEqual(expectedTitle, _groupFacade.GetGroup(createdGroupId).GroupInfoView.Title);
         }
 
         [ExpectedException(typeof(ArgumentException))]
@@ -75,16 +75,16 @@ namespace EduHubTests
             //Arrange
             var createdGroupId = _groupFacade.CreateGroup(_groupCreatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            var createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedDescription = "new title";
             _groupEditFacade.ChangeGroupDescription(createdGroupId, _groupCreatorId, expectedDescription);
-            var actualDescription = createdGroup.GroupInfo.Description;
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var actualDescription = createdGroup.GroupInfoView.Description;
 
             //Assert
             Assert.AreEqual(expectedDescription, actualDescription);
-            Assert.AreEqual(expectedDescription, _groupFacade.GetGroup(createdGroupId).GroupInfo.Description);
+            Assert.AreEqual(expectedDescription, _groupFacade.GetGroup(createdGroupId).GroupInfoView.Description);
         }
 
         [TestMethod]
@@ -93,16 +93,16 @@ namespace EduHubTests
             //Arrange
             var createdGroupId = _groupFacade.CreateGroup(_groupCreatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            var createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedTags = new List<string> {"c++"};
             _groupEditFacade.ChangeGroupTags(createdGroupId, _groupCreatorId, expectedTags);
-            var actualTags = createdGroup.GroupInfo.Tags;
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var actualTags = createdGroup.GroupInfoView.Tags;
 
             //Assert
             Assert.AreEqual(expectedTags, actualTags);
-            Assert.AreEqual(expectedTags, _groupFacade.GetGroup(createdGroupId).GroupInfo.Tags);
+            Assert.AreEqual(expectedTags, _groupFacade.GetGroup(createdGroupId).GroupInfoView.Tags);
         }
 
         [TestMethod]
@@ -111,16 +111,16 @@ namespace EduHubTests
             //Arrange
             var createdGroupId = _groupFacade.CreateGroup(_groupCreatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            var createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedSize = 5;
             _groupEditFacade.ChangeGroupSize(createdGroupId, _groupCreatorId, expectedSize);
-            var actualSize = createdGroup.GroupInfo.Size;
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var actualSize = createdGroup.GroupInfoView.Size;
 
             //Assert
             Assert.AreEqual(expectedSize, actualSize);
-            Assert.AreEqual(expectedSize, _groupFacade.GetGroup(createdGroupId).GroupInfo.Size);
+            Assert.AreEqual(expectedSize, _groupFacade.GetGroup(createdGroupId).GroupInfoView.Size);
         }
 
         [TestMethod]
@@ -129,16 +129,16 @@ namespace EduHubTests
             //Arrange
             var createdGroupId = _groupFacade.CreateGroup(_groupCreatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 100, false, GroupType.Lecture);
-            var createdGroup = _groupFacade.GetGroup(createdGroupId);
 
             //Act
             var expectedMoneyPerUser = 200;
             _groupEditFacade.ChangeGroupPrice(createdGroupId, _groupCreatorId, expectedMoneyPerUser);
-            var actualMoneyPerUser = createdGroup.GroupInfo.Price;
+            var createdGroup = _groupFacade.GetGroup(createdGroupId);
+            var actualMoneyPerUser = createdGroup.GroupInfoView.Price;
 
             //Assert
             Assert.AreEqual(expectedMoneyPerUser, actualMoneyPerUser);
-            Assert.AreEqual(expectedMoneyPerUser, _groupFacade.GetGroup(createdGroupId).GroupInfo.Price);
+            Assert.AreEqual(expectedMoneyPerUser, _groupFacade.GetGroup(createdGroupId).GroupInfoView.Price);
         }
 
         [TestMethod]

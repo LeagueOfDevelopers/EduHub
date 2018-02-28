@@ -31,12 +31,11 @@ namespace EduHubLibrary.Domain
 
             return result;
         }
-        
+
         internal void UpdatePopularity(List<string> updatingTags)
         {
             updatingTags.ForEach(updatingTag => Tags.ToList().FindAll(
-                existingTag => existingTag.Name.Contains(updatingTag)).
-                ForEach(tag => tag.AddPopularity()));
+                existingTag => existingTag.Name.Contains(updatingTag)).ForEach(tag => tag.AddPopularity()));
         }
     }
 }

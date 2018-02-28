@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using EduHub.Extensions;
 using EduHub.Models;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EduHub.Controllers
 {
@@ -63,7 +63,8 @@ namespace EduHub.Controllers
         public IActionResult GetAllMessages([FromRoute] Guid groupId)
         {
             var response = new List<MessageInfoResponse>();
-            _groupFacade.GetGroup(groupId).Messages.ToList().ForEach(
+            var messagesView = _groupFacade.GetGroup(groupId);
+            messagesView.MessageView.ToList().ForEach(
                 m => response.Add(new MessageInfoResponse(m.Id, m.SenderId, m.SentOn, m.Text)));
             return Ok(response);
         }

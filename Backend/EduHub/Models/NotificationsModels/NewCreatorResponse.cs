@@ -4,14 +4,7 @@ namespace EduHub.Models.NotificationsModels
 {
     public class NewCreatorResponse
     {
-        public Guid GroupId { get; }
-        public string GroupTitle { get; }
-        public Guid ExCreator { get; }
-        public string ExCreatorUsername { get; }
-        public Guid NewCreator { get; }
-        public string NewCreatorUsername { get; }
-
-        public NewCreatorResponse(Guid groupId, string groupTitle, Guid exCreator, 
+        public NewCreatorResponse(Guid groupId, string groupTitle, Guid exCreator,
             string exCreatorUsername, Guid newCreator, string newCreatorUsername)
         {
             GroupId = groupId;
@@ -21,5 +14,12 @@ namespace EduHub.Models.NotificationsModels
             NewCreator = newCreator;
             NewCreatorUsername = newCreatorUsername;
         }
+
+        public Guid GroupId { get; }
+        public string GroupTitle { get; }
+        public Guid ExCreator { get; }
+        public string ExCreatorUsername { get; }
+        public Guid NewCreator { get; }
+        public string NewCreatorUsername { get; }
     }
 }

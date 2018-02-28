@@ -23,14 +23,14 @@ namespace EduHubLibrary.Facades
         public void EditName(Guid userId, string newName)
         {
             var currentUser = _userRepository.GetUserById(userId);
-            currentUser.UserProfile.Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
+            currentUser.UserProfile.Name = Ensure.Any.IsNotNull(newName);
             _userRepository.Update(currentUser);
         }
 
         public void EditAboutUser(Guid userId, string newAboutUser)
         {
             var currentUser = _userRepository.GetUserById(userId);
-            currentUser.UserProfile.AboutUser = Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
+            currentUser.UserProfile.AboutUser = Ensure.Any.IsNotNull(newAboutUser);
             _userRepository.Update(currentUser);
         }
 
@@ -43,12 +43,19 @@ namespace EduHubLibrary.Facades
 
         public void EditAvatarLink(Guid userId, string newAvatarLink)
         {
-            Ensure.String.IsNotNullOrWhiteSpace(newAvatarLink);
+            Ensure.Any.IsNotNull(newAvatarLink);
+            var currentUser = _userRepository.GetUserById(userId);
+            if (newAvatarLink.Length == 0)
+            {
+                currentUser.UserProfile.AvatarLink = newAvatarLink;
+                return;
+            }
+
             Ensure.Bool.IsTrue(_fileRepository.DoesFileExists(newAvatarLink),
                 nameof(EditAboutUser),
                 opt => opt.WithException(new FileDoesNotExistException()));
 
-            var currentUser = _userRepository.GetUserById(userId);
+
             currentUser.UserProfile.AvatarLink = newAvatarLink;
             _userRepository.Update(currentUser);
         }
@@ -56,6 +63,8 @@ namespace EduHubLibrary.Facades
         public void EditContacts(Guid userId, List<string> newContactData)
         {
             var currentUser = _userRepository.GetUserById(userId);
+
+            Ensure.Any.IsNotNull(newContactData);
 
             if (newContactData.TrueForAll(d => !string.IsNullOrWhiteSpace(d)))
                 currentUser.UserProfile.Contacts = newContactData;
@@ -69,7 +78,8 @@ namespace EduHubLibrary.Facades
             var currentUser = _userRepository.GetUserById(userId);
 
             //hardcoded value
-            if (newYear > 1900 && newYear < DateTimeOffset.Now.Year) currentUser.UserProfile.BirthYear = newYear;
+            if (newYear > 1900 && newYear < DateTimeOffset.Now.Year || newYear == 0)
+                currentUser.UserProfile.BirthYear = newYear;
             else throw new IndexOutOfRangeException();
 
             _userRepository.Update(currentUser);

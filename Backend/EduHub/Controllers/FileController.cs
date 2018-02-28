@@ -30,11 +30,11 @@ namespace EduHub.Controllers
         [HttpPost]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        [SwaggerResponse(200, Type = typeof(AddFileResponse))]
+        [SwaggerResponse(200, Type = typeof(IFormFile))]
         [RequestSizeLimit(20_000_000)]
         public IActionResult AddFile(IFormFile file)
         {
-            Ensure.Any.IsNotNull(file) ;
+            Ensure.Any.IsNotNull(file);
             var userId = Request.GetUserId();
 
             if (!file.IsSupportedFile()) throw new NotSupportedException();

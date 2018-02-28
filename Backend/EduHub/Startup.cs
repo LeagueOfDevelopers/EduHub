@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using EduHub.Filters;
 using EduHub.Security;
@@ -22,7 +21,6 @@ using Serilog;
 using Serilog.Events;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
-using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHub
 {
