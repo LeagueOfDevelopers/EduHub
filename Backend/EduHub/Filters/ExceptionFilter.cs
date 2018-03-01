@@ -49,6 +49,9 @@ namespace EduHub.Filters
                 case CourseNotAcceptedException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case ReviewAlreadyAddedException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {
