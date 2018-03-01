@@ -223,7 +223,7 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(currentGroup.IsMember(userId), nameof(userId),
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
             Ensure.Bool.IsTrue(teacher.TeacherProfile.Reviews.All(
-                r => r.FromGroup != currentGroup.GroupInfo.Id || r.FromUser != userId),
+                    r => r.FromGroup != currentGroup.GroupInfo.Id || r.FromUser != userId),
                 nameof(teacher), opt => opt.WithException(new ReviewAlreadyAddedException(userId, teacher.Id)));
 
             teacher.TeacherProfile.AddReview(userId, title, text, groupId);

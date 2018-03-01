@@ -21,7 +21,6 @@ using Serilog;
 using Serilog.Events;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
-using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHub
 {
@@ -62,7 +61,7 @@ namespace EduHub
             var eventBus = new EventBus(eventBusSettings);
             eventBus.StartListening();
             */
-            
+
 
             var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository);
