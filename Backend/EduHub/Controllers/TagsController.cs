@@ -33,14 +33,11 @@ namespace EduHub.Controllers
             return Ok(response);
         }
 
-        /// <summary>
-        ///     Add new tag
-        /// </summary>
-        [HttpPost]
-        public IActionResult AddTag([FromBody] string tag)
+        //TODO: delete (was created for testing) 
+        [HttpGet]
+        public IActionResult All()
         {
-            _tagsManager.AddTag(tag);
-            return Ok();
+            return Ok(_tagsManager.Tags);
         }
     }
 }

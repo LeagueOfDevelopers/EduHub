@@ -4,6 +4,8 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Settings;
 using EnsureThat;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.Events;
 
 namespace EduHubLibrary.Facades
 {
@@ -11,13 +13,13 @@ namespace EduHubLibrary.Facades
     {
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
-        private readonly TagsManager _tagsManager;
+        private readonly IEventPublisher _publisher; 
 
-        public GroupEditFacade(IGroupRepository groupRepository, GroupSettings groupSettings, TagsManager tagsManager)
+        public GroupEditFacade(IGroupRepository groupRepository, GroupSettings groupSettings, IEventPublisher publisher)
         {
             _groupRepository = groupRepository;
             _groupSettings = groupSettings;
-            _tagsManager = tagsManager;
+            _publisher = publisher;
         }
 
         public void ChangeGroupTitle(Guid groupId, Guid changerId, string newTitle)
@@ -48,7 +50,7 @@ namespace EduHubLibrary.Facades
             currentGroup.GroupInfo.Tags = newTags;
             _groupRepository.Update(currentGroup);
 
-            _tagsManager.UpdatePopularity(newTags);
+            newTags.ForEach(tag => _publisher.PublishEvent(new UsingTagEvent(tag)));
         }
 
         public void ChangeGroupSize(Guid groupId, Guid changerId, int newSize)

@@ -18,6 +18,7 @@ namespace EduHubTests
         private IGroupRepository _groupRepository;
         private Guid _testGroupId;
 
+        /*
         [TestInitialize]
         public void Initialize()
         {
@@ -60,5 +61,6 @@ namespace EduHubTests
             //Act
             chatFacade.SendMessage(_creatorId, _testGroupId, " ");
         }
+        */
     }
 }

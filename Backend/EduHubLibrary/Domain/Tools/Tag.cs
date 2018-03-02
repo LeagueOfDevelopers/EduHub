@@ -5,7 +5,7 @@
         public Tag(string name)
         {
             Name = name;
-            Popularity = 0;
+            Popularity = 1;
         }
 
         public string Name { get; }

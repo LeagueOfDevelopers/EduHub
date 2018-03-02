@@ -7,6 +7,8 @@ using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades.Views.GroupViews;
 using EduHubLibrary.Settings;
 using EnsureThat;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.Events;
 
 namespace EduHubLibrary.Facades
 {
@@ -14,16 +16,16 @@ namespace EduHubLibrary.Facades
     {
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
-        private readonly TagsManager _tagsManager;
         private readonly IUserRepository _userRepository;
+        private readonly IEventPublisher _publisher;
 
         public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
-            GroupSettings groupSettings, TagsManager tagsManager)
+            GroupSettings groupSettings, IEventPublisher publisher)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
             _groupSettings = groupSettings;
-            _tagsManager = tagsManager;
+            _publisher = publisher;
         }
 
 
@@ -39,7 +41,7 @@ namespace EduHubLibrary.Facades
             var group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             _groupRepository.Add(group);
 
-            _tagsManager.UpdatePopularity(tags);
+            tags.ForEach(tag => _publisher.PublishEvent(new UsingTagEvent(tag)));
 
             return group.GroupInfo.Id;
         }

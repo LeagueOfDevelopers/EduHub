@@ -13,13 +13,6 @@ namespace EduHubLibrary.Domain
 
         public IEnumerable<Tag> Tags { get; private set; }
 
-        public void AddTag(string newTag)
-        {
-            var newTagsList = new List<Tag>(Tags);
-            newTagsList.Add(new Tag(newTag));
-            Tags = newTagsList;
-        }
-
         public IEnumerable<string> FindTag(string tag)
         {
             var foundTags = Tags.ToList().FindAll(t => t.Name.Contains(tag));
@@ -32,10 +25,21 @@ namespace EduHubLibrary.Domain
             return result;
         }
 
-        internal void UpdatePopularity(List<string> updatingTags)
+        internal void AddTag(string newTag)
         {
-            updatingTags.ForEach(updatingTag => Tags.ToList().FindAll(
-                existingTag => existingTag.Name.Contains(updatingTag)).ForEach(tag => tag.AddPopularity()));
+            var newTagsList = new List<Tag>(Tags);
+            newTagsList.Add(new Tag(newTag));
+            Tags = newTagsList;
+        }
+
+        internal void AddPopularity(string updatingTag)
+        {
+            Tags.ToList().Find(existingTag => existingTag.Name.Equals(updatingTag)).AddPopularity();
+        }
+
+        internal bool DoesExist(string tag)
+        {
+            return Tags.Any(t => t.Name == tag);
         }
     }
 }

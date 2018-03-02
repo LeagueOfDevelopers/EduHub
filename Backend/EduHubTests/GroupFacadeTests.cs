@@ -21,6 +21,7 @@ namespace EduHubTests
         private IGroupFacade _groupFacade;
         private IUserFacade _userFacade;
 
+        /*
         [TestInitialize]
         public void Initialize()
         {
@@ -138,5 +139,6 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(expected, _groupFacade.GetGroup(createdGroupId).GroupMemberInfo.Count());
         }
+        */
     }
 }

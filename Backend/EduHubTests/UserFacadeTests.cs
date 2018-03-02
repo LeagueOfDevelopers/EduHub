@@ -20,6 +20,7 @@ namespace EduHubTests
         private IKeysRepository _keysRepository;
         private IUserRepository _userRepository;
 
+        /*
         [TestInitialize]
         public void Initialize()
         {
@@ -216,5 +217,6 @@ namespace EduHubTests
             //Act
             userFacade.Invite(creatorId, pseudoTeacherId, createdGroupId, MemberRole.Teacher);
         }
+        */
     }
 }

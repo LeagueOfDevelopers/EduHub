@@ -14,6 +14,7 @@ namespace EduHubTests
         private IGroupFacade _groupFacade;
         private IUserFacade _userFacade;
 
+        /*
         [TestInitialize]
         public void Initialize()
         {
@@ -29,7 +30,6 @@ namespace EduHubTests
                 emailSender);
         }
 
-        /*
         [TestMethod]
         public void SendMessageOfOneTypeToEventBus_GetMessageInNotifies()
         {
