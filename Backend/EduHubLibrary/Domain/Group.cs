@@ -74,6 +74,8 @@ namespace EduHubLibrary.Domain
         {
             var deletingMember = GetMember(Ensure.Guid.IsNotEmpty(deletingPerson));
             var requestedMember = GetMember(Ensure.Guid.IsNotEmpty(requestedPerson));
+            Ensure.Bool.IsTrue(Status == CourseStatus.Searching || Status == CourseStatus.InProgress,
+                nameof(CourseStatus), opt => opt.WithException(new InvalidOperationException()));
             Ensure.Bool.IsTrue(IsMember(requestedPerson), nameof(IsMember),
                 opt => opt.WithException(new MemberNotFoundException(requestedPerson)));
             Ensure.Bool.IsTrue(IsMember(deletingPerson), nameof(IsMember),
@@ -149,7 +151,8 @@ namespace EduHubLibrary.Domain
             Ensure.Guid.IsNotEmpty(userId);
             Ensure.Bool.IsTrue(IsTeacher(userId), nameof(OfferCurriculum),
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
-            Ensure.Bool.IsTrue(Status == CourseStatus.Searching, nameof(AcceptCurriculum),
+            Ensure.Bool.IsTrue(Status == CourseStatus.Searching || Status == CourseStatus.InProgress,
+                nameof(AcceptCurriculum),
                 opt => opt.WithException(new InvalidOperationException()));
             Ensure.String.IsNotNullOrWhiteSpace(curriculum);
             GroupInfo.Curriculum = curriculum;
