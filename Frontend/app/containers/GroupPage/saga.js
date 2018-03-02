@@ -21,7 +21,15 @@ import {
   editPrivacySuccess,
   editPrivacyFailed,
   searchInvitationMemberSuccess,
-  searchInvitationMemberFailed
+  searchInvitationMemberFailed,
+  addPlanSuccess,
+  addPlanFailed,
+  acceptPlanFailed,
+  acceptPlanSuccess,
+  declinePlanFailed,
+  declinePlanSuccess,
+  getCurrentPlanFailed,
+  getCurrentPlanSuccess
 } from "./actions";
 import {
   ENTER_GROUP_START,
@@ -34,7 +42,11 @@ import {
   EDIT_GROUP_PRICE,
   EDIT_GROUP_TYPE,
   EDIT_GROUP_PRIVACY,
-  SEARCH_INVITATION_MEMBER
+  SEARCH_INVITATION_MEMBER,
+  ADD_PLAN_START,
+  ACCEPT_PLAN_START,
+  DECLINE_PLAN_START,
+  GET_CURRENT_PLAN_START
 } from "./constants";
 import config from '../../config';
 
@@ -332,6 +344,96 @@ function getUsers(groupId, username) {
     .catch(error => error)
 }
 
+function* addPlanSaga(action) {
+  try {
+    yield call(addPlan, action.groupId, action.plan);
+    yield put(addPlanSuccess());
+  }
+  catch(e) {
+    yield put(addPlanFailed(e))
+  }
+}
+
+function addPlan(groupId, plan) {
+  return fetch(`${config.API_BASE_URL}/group/${groupId}/course/curriculum`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      description: plan
+    })
+  })
+    .catch(error => error)
+}
+
+function* acceptPlanSaga(action) {
+  try {
+    yield call(acceptPlan, action.groupId);
+    yield put(acceptPlanSuccess());
+  }
+  catch(e) {
+    yield put(acceptPlanFailed(e))
+  }
+}
+
+function acceptPlan(groupId) {
+  return fetch(`${config.API_BASE_URL}/group/${groupId}/course/curriculum`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+    .catch(error => error)
+}
+
+function* declinePlanSaga(action) {
+  try {
+    yield call(declinePlan, action.groupId);
+    yield put(declinePlanSuccess());
+  }
+  catch(e) {
+    yield put(declinePlanFailed(e))
+  }
+}
+
+function declinePlan(groupId) {
+  return fetch(`${config.API_BASE_URL}/group/${groupId}/course/curriculum`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      reason: ''
+    })
+  })
+    .catch(error => error)
+}
+
+function* getCurrentPlanSaga(action) {
+  try {
+    const file = yield call(getCurrentPlan, action.filename);
+    yield put(getCurrentPlanSuccess(file));
+  }
+  catch(e) {
+    yield put(getCurrentPlanFailed(e))
+  }
+}
+
+function getCurrentPlan(filename) {
+  return fetch(`${config.API_BASE_URL}/file/${filename}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(ENTER_GROUP_START, enterGroupSaga);
   yield takeEvery(LEAVE_GROUP_START, leaveGroupSaga);
@@ -344,4 +446,8 @@ export default function* () {
   yield takeEvery(EDIT_GROUP_PRIVACY, editPrivacySaga);
   yield takeEvery(EDIT_GROUP_TYPE, editGroupTypeSaga);
   yield takeEvery(SEARCH_INVITATION_MEMBER, searchInvitationUsersSaga);
+  yield takeEvery(ADD_PLAN_START, addPlanSaga);
+  yield takeEvery(ACCEPT_PLAN_START, acceptPlanSaga);
+  yield takeEvery(DECLINE_PLAN_START, declinePlanSaga);
+  yield takeEvery(GET_CURRENT_PLAN_START, getCurrentPlanSaga);
 }

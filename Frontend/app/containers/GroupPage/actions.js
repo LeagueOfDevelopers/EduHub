@@ -37,7 +37,19 @@ import {
   EDIT_GROUP_TYPE_SUCCESS,
   SEARCH_INVITATION_MEMBER,
   SEARCH_INVITATION_MEMBER_SUCCESS,
-  SEARCH_INVITATION_MEMBER_FAILED
+  SEARCH_INVITATION_MEMBER_FAILED,
+  ADD_PLAN_START,
+  ADD_PLAN_SUCCESS,
+  ADD_PLAN_FAILED,
+  ACCEPT_PLAN_FAILED,
+  ACCEPT_PLAN_START,
+  ACCEPT_PLAN_SUCCESS,
+  DECLINE_PLAN_FAILED,
+  DECLINE_PLAN_START,
+  DECLINE_PLAN_SUCCESS,
+  GET_CURRENT_PLAN_FAILED,
+  GET_CURRENT_PLAN_START,
+  GET_CURRENT_PLAN_SUCCESS
 } from './constants';
 
 
@@ -271,6 +283,88 @@ export function searchInvitationMemberSuccess(users) {
 export function searchInvitationMemberFailed(error) {
   return {
     type: SEARCH_INVITATION_MEMBER_FAILED,
+    error
+  };
+}
+
+export function addPlan(groupId, plan) {
+  return {
+    type: ADD_PLAN_START,
+    groupId,
+    plan
+  };
+}
+
+export function addPlanSuccess() {
+  return {
+    type: ADD_PLAN_SUCCESS
+  };
+}
+
+export function addPlanFailed(error) {
+  return {
+    type: ADD_PLAN_FAILED,
+    error
+  };
+}
+
+export function acceptPlan(groupId) {
+  return {
+    type: ACCEPT_PLAN_START,
+    groupId
+  };
+}
+
+export function acceptPlanSuccess() {
+  return {
+    type: ACCEPT_PLAN_SUCCESS
+  };
+}
+
+export function acceptPlanFailed(error) {
+  return {
+    type: ACCEPT_PLAN_FAILED,
+    error
+  };
+}
+
+export function declinePlan(groupId) {
+  return {
+    type: DECLINE_PLAN_START,
+    groupId
+  };
+}
+
+export function declinePlanSuccess() {
+  return {
+    type: DECLINE_PLAN_SUCCESS
+  };
+}
+
+export function declinePlanFailed(error) {
+  return {
+    type: DECLINE_PLAN_FAILED,
+    error
+  };
+}
+
+export function getCurrentPlan(filename) {
+  return {
+    type: GET_CURRENT_PLAN_START,
+    filename
+  };
+}
+
+export function getCurrentPlanSuccess(file) {
+  return {
+    type: GET_CURRENT_PLAN_SUCCESS,
+    file
+  };
+}
+
+export function getCurrentPlanFailed(error) {
+  return {
+    type: GET_CURRENT_PLAN_FAILED,
     error
   };
 }

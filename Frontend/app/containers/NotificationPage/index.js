@@ -87,7 +87,6 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
       this.props.getNotifies();
       this.props.getInvites();
     }
-    console.log(this.props.invites)
   }
 
   componentDidUpdate(prevProps, prevState) {

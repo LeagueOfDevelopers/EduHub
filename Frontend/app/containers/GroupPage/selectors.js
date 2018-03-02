@@ -15,7 +15,13 @@ const makeSelectNeedUpdate = () => createSelector(
   (groupPageState) => groupPageState.get('needUpdate')
 );
 
+const makeSelectPlan = () => createSelector(
+  selectGroupPage,
+  (groupPageState) => groupPageState.get('currentPlan')
+);
+
 export {
   makeSelectUsers,
-  makeSelectNeedUpdate
+  makeSelectNeedUpdate,
+  makeSelectPlan
 };

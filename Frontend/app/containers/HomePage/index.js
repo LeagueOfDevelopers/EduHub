@@ -71,6 +71,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       localStorage.setItem('name', '');
       localStorage.setItem('avatarLink', '');
       localStorage.setItem('token', '');
+      location.reload();
     }
   }
 
@@ -87,103 +88,107 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   render() {
     return (
-      <div>
-        <Col span={20} offset={2} style={{marginTop: 40}}>
-          <Card
-            title='Идет набор'
-            bordered={false}
-            className='unassembled-groups-list font-size-20'
-          >
-            {(localStorage.getItem('without_server') === 'true') ?
-              (
-                <div className='cards-holder cards-holder-center'>
-                  {unassembledGroups.map((item) =>
-                    <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                      <UnassembledGroupCard {...item}/>
-                    </Link>
-                  )}
-                </div>
-              )
-              :
-              (
-                <div className='cards-holder cards-holder-center'>
-                  {this.props.unassembledGroups.map((item, i) =>
-                    i < 8 ?
-                      <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                         <UnassembledGroupCard {...item}/>
-                       </Link>
-                       : null
-                   )}
-                 </div>
-               )
-            }
-            <Row type='flex' align='middle' style={{marginTop: 30}}>
-              <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
-                <Link to='/groups/unassembledGroups'>Показать больше</Link>
-              </Col>
-              {localStorage.getItem('token') ?
-                <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
-                  <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
-                  <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>
-                </Col>
-                :
-                <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
-                  <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
-                  <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Создать группу</Button>
-                </Col>
-              }
-            </Row>
-          </Card>
-        </Col>
-        <Col span={20} offset={2} style={{marginTop: 40}}>
-          <Card
-            title='Набранные группы'
-            bordered={false}
-            className='assembled-groups-list font-size-20'
-          >
-            {(localStorage.getItem('without_server') === 'true') ?
-              (
-                <div className='cards-holder cards-holder-center'>
-                  {assembledGroups.map((item) =>
-                    <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                      <AssembledGroupCard {...item}/>
-                    </Link>
-                  )}
-                </div>
-              )
-              :
-              (
-                <div className='cards-holder cards-holder-center'>
-                  {this.props.assembledGroups.map((item, i) =>
-                    i < 8 ?
-                      <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                        <AssembledGroupCard {...item}/>
-                      </Link>
-                      : null
-                  )}
-                </div>
-              )
-            }
-            <Row type='flex' align='middle' style={{marginTop: 30}}>
-              <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
-                <Link to='/groups/assembledGroups'>Показать больше</Link>
-              </Col>
-              {localStorage.getItem('token') ?
-                <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
-                  <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
-                  <Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}><Button type="primary">Стать преподавателем</Button></Link>
-                </Col>
-                :
-                <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
-                  <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
-                  <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Стать преподавателем</Button>
-                </Col>
-              }
-            </Row>
-            <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
-          </Card>
-        </Col>
-      </div>
+      localStorage.getItem('token') && parseJwt(localStorage.getItem('token')).exp - parseInt(Date.now()/1000) > 0 || !localStorage.getItem('token') ?
+        (
+          <div>
+            <Col span={20} offset={2} style={{marginTop: 40}}>
+              <Card
+                title='Идет набор'
+                bordered={false}
+                className='unassembled-groups-list font-size-20'
+              >
+                {(localStorage.getItem('without_server') === 'true') ?
+                  (
+                    <div className='cards-holder cards-holder-center'>
+                      {unassembledGroups.map((item) =>
+                        <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                          <UnassembledGroupCard {...item}/>
+                        </Link>
+                      )}
+                    </div>
+                  )
+                  :
+                  (
+                    <div className='cards-holder cards-holder-center'>
+                      {this.props.unassembledGroups.map((item, i) =>
+                        i < 8 ?
+                          <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                            <UnassembledGroupCard {...item}/>
+                          </Link>
+                          : null
+                      )}
+                    </div>
+                  )
+                }
+                <Row type='flex' align='middle' style={{marginTop: 30}}>
+                  <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
+                    <Link to='/groups/unassembledGroups'>Показать больше</Link>
+                  </Col>
+                  {localStorage.getItem('token') ?
+                    <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                      <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
+                      <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>
+                    </Col>
+                    :
+                    <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                      <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
+                      <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Создать группу</Button>
+                    </Col>
+                  }
+                </Row>
+              </Card>
+            </Col>
+            <Col span={20} offset={2} style={{marginTop: 40}}>
+              <Card
+                title='Набранные группы'
+                bordered={false}
+                className='assembled-groups-list font-size-20'
+              >
+                {(localStorage.getItem('without_server') === 'true') ?
+                  (
+                    <div className='cards-holder cards-holder-center'>
+                      {assembledGroups.map((item) =>
+                        <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                          <AssembledGroupCard {...item}/>
+                        </Link>
+                      )}
+                    </div>
+                  )
+                  :
+                  (
+                    <div className='cards-holder cards-holder-center'>
+                      {this.props.assembledGroups.map((item, i) =>
+                        i < 8 ?
+                          <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                            <AssembledGroupCard {...item}/>
+                          </Link>
+                          : null
+                      )}
+                    </div>
+                  )
+                }
+                <Row type='flex' align='middle' style={{marginTop: 30}}>
+                  <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
+                    <Link to='/groups/assembledGroups'>Показать больше</Link>
+                  </Col>
+                  {localStorage.getItem('token') ?
+                    <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                      <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
+                      <Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}><Button type="primary">Стать преподавателем</Button></Link>
+                    </Col>
+                    :
+                    <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                      <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
+                      <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Стать преподавателем</Button>
+                    </Col>
+                  }
+                </Row>
+                <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
+              </Card>
+            </Col>
+          </div>
+        )
+        : null
     );
   }
 }

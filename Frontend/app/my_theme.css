@@ -95,6 +95,10 @@
   text-align: right;
 }
 
+.plan-file-btn {
+  text-align: left;
+}
+
 @media screen and (max-width: 1200px) {
   .sm-row-center {
     text-align: center;
@@ -102,7 +106,7 @@
   }
 }
 
-@media screen and (max-width: 992px){
+@media screen and (max-width: 991px){
   .md-center-container .lg-center-container-item {
     margin-bottom: 40px;
   }
@@ -121,6 +125,10 @@
 
   .header .profile {
     display: none;
+  }
+
+  .plan-file-btn {
+    text-align: center;
   }
 }
 
@@ -317,4 +325,8 @@ a:focus {
 }
 .dynamic-delete-button:hover {
   color: #777;
+}
+
+.ant-upload-list {
+  margin-bottom: 10px;
 }

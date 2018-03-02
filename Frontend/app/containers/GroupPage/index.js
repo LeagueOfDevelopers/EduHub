@@ -22,17 +22,19 @@ import {
   editGroupSize,
   editGroupPrice,
   editPrivacy,
-  editGroupType
+  editGroupType,
+  getCurrentPlan
 } from "./actions";
-import { makeSelectNeedUpdate } from "./selectors";
+import { makeSelectNeedUpdate, makeSelectPlan } from "./selectors";
 import {Link} from "react-router-dom";
 import config from "../../config";
 import {getGroupType, parseJwt, getMemberRole} from "../../globalJS";
-import {Col, Row, Button, message, Input, Select, InputNumber, Switch, Upload, Icon} from 'antd';
+import {Col, Row, Button, message, Input, Select, InputNumber, Switch} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
 import InviteMemberSelect from '../../components/InviteMemberSelect/Loadable';
 import SigningInForm from "../../containers/SigningInForm/index";
+import SuggestPlanForm from '../../components/SuggestPlanForm';
 
 const groupData = {
     groupInfo: {
@@ -90,7 +92,8 @@ export class GroupPage extends React.Component {
           cost: null,
           size: 0,
           groupType: '',
-          memberAmount: 0
+          memberAmount: 0,
+          curriculum: null
         },
         members: []
       },
@@ -106,9 +109,7 @@ export class GroupPage extends React.Component {
       sizeInput: '',
       priceInput: '',
       groupTypeInput: '',
-      privateInput: null,
-      file: null,
-      uploading: false
+      privateInput: null
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -124,39 +125,7 @@ export class GroupPage extends React.Component {
     this.onHandleGroupTypeChange = this.onHandleGroupTypeChange.bind(this);
     this.onHandlePrivateChange = this.onHandlePrivateChange.bind(this);
     this.cancelChanges = this.cancelChanges.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
   }
-
-  handleUpload = () => {
-    this.setState({
-      uploading: true,
-    });
-
-    console.log(this.state.file)
-
-    fetch(`${config.API_BASE_URL}/file`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify({
-        file: this.state.file
-      })
-    })
-      .then(() => {
-        this.setState({
-          file: null,
-          uploading: false,
-        });
-        message.success('upload successfully.');
-      })
-      .catch(error => {
-        this.setState({
-          uploading: false,
-        });
-        return error
-      });
-  };
 
   onSignInClick = () => {
     this.setState({signInVisible: true})
@@ -183,7 +152,7 @@ export class GroupPage extends React.Component {
   };
 
   componentDidMount() {
-    this.getCurrentGroup()
+    this.getCurrentGroup();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -214,6 +183,9 @@ export class GroupPage extends React.Component {
       isTeacher: this.state.isInGroup ? Boolean(result.members.find(item =>
         item.userId === this.state.userData.UserId).role === 3) : false
     });
+    this.state.groupData.groupInfo.curriculum ?
+      setTimeout(() => this.props.getCurrentPlan(this.state.groupData.groupInfo.curriculum), 0)
+      : null
   }
 
   onChangeTitleHandle = (e) => {
@@ -283,17 +255,6 @@ export class GroupPage extends React.Component {
   };
 
   render() {
-    const props = {
-      name: 'file',
-      accept: 'text/plain, .pdf',
-      beforeUpload: (file) => {
-        this.setState({
-          file: file,
-        });
-        return false;
-      },
-    };
-
     return (
       <div>
         <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 160, fontSize: 16}}>
@@ -407,28 +368,17 @@ export class GroupPage extends React.Component {
           </Col>
           <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
             <Row style={{textAlign: 'left', marginTop: 8}}>
-              <Col xs={{span: 24}} lg={{span: 12}}>
-                {this.state.isTeacher ?
-                  <Row className='lg-center-container-item'>
-                        <Upload {...props} style={{width: '100%'}}>
-                          <Button type='primary' className='group-btn' style={{marginBottom: 10}}>
-                            <Icon type="upload" /> Предложить учебный план
-                          </Button>
-                        </Upload>
-                        <Button
-                          type="primary"
-                          onClick={this.handleUpload}
-                          loading={this.state.uploading}
-                          disabled={!this.state.file}
-                          style={{width: '100%'}}
-                        >
-                          {this.state.uploading ? 'Загрузка' : 'Начать загрузку' }
-                        </Button>
-                  </Row>
-                  : null
-                }
+              <Col xs={{span: 24}} lg={{span: 17}}>
+                <SuggestPlanForm
+                  members={this.state.groupData.members}
+                  groupId={this.state.id}
+                  curriculum={this.state.groupData.groupInfo.curriculum}
+                  isTeacher={this.state.isTeacher}
+                  currentUserData={this.state.userData}
+                  currentPlan={this.props.currentPlan}
+                />
               </Col>
-              <Col xs={{span: 24}} lg={{span: 12}} style={{textAlign: 'right'}}>
+              <Col xs={{span: 24}} lg={{span: 7}} style={{textAlign: 'right'}}>
                 {this.state.groupData.groupInfo.memberAmount < this.state.groupData.groupInfo.size ?
                   this.state.isInGroup ?
                     (<Row className='lg-center-container-item'>
@@ -505,7 +455,8 @@ GroupPage.defaultProps = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  needUpdate: makeSelectNeedUpdate()
+  needUpdate: makeSelectNeedUpdate(),
+  currentPlan: makeSelectPlan()
 });
 
 function mapDispatchToProps(dispatch) {
@@ -519,6 +470,7 @@ function mapDispatchToProps(dispatch) {
     editGroupPrice: (id, price) => dispatch(editGroupPrice(id, price)),
     editPrivacy: (id, isPrivate) => dispatch(editPrivacy(id, isPrivate)),
     editGroupType: (id, type) => dispatch(editGroupType(id, type)),
+    getCurrentPlan: (filename) => dispatch(getCurrentPlan(filename))
   };
 }
 
