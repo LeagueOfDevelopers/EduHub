@@ -78,7 +78,7 @@ namespace EduHub
             services.AddSingleton<IChatFacade>(chatFacade);
             services.AddSingleton<IGroupEditFacade>(groupEditFacade);
             services.AddSingleton<IUserEditFacade>(userEditFacade);
-            services.AddSingleton(tagsManager);
+            services.AddSingleton<ITagsManager>(tagsManager);
             services.AddSingleton<IAuthUserFacade>(authUserFacade);
             services.AddSingleton(Env);
 

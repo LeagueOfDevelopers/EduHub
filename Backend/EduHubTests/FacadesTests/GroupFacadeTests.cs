@@ -9,6 +9,8 @@ using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubTests
 {
@@ -16,12 +18,10 @@ namespace EduHubTests
     public class GroupFacadeTests
     {
         private IAuthUserFacade _authUserFacade;
-
         private User _groupCreator;
         private IGroupFacade _groupFacade;
         private IUserFacade _userFacade;
-
-        /*
+        
         [TestInitialize]
         public void Initialize()
         {
@@ -31,8 +31,10 @@ namespace EduHubTests
             var groupSettings = new GroupSettings(2, 10, 0, 1000);
             var emailSettings = new EmailSettings("", "", "", "", "", 4);
             var emailSender = new EmailSender(emailSettings);
+            var publisher = new Mock<IEventPublisher>();
+
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository,
-                new GroupSettings(3, 100, 0, 1000), new TagsManager());
+                new GroupSettings(3, 100, 0, 1000), publisher.Object);
             _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository);
             _authUserFacade = new AuthUserFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender);
@@ -139,6 +141,5 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(expected, _groupFacade.GetGroup(createdGroupId).GroupMemberInfo.Count());
         }
-        */
     }
 }

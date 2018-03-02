@@ -11,9 +11,9 @@ namespace EduHub.Controllers
     [Route("api/tags")]
     public class TagsController : Controller
     {
-        private readonly TagsManager _tagsManager;
+        private readonly ITagsManager _tagsManager;
 
-        public TagsController(TagsManager tagsManager)
+        public TagsController(ITagsManager tagsManager)
         {
             _tagsManager = tagsManager;
         }
@@ -31,13 +31,6 @@ namespace EduHub.Controllers
             var response = new List<TagModel>();
             foundTags.ToList().ForEach(t => response.Add(new TagModel(t)));
             return Ok(response);
-        }
-
-        //TODO: delete (was created for testing) 
-        [HttpGet]
-        public IActionResult All()
-        {
-            return Ok(_tagsManager.Tags);
         }
     }
 }

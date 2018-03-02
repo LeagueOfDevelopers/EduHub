@@ -7,6 +7,8 @@ using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EduHubLibrary.Domain.NotificationService;
+using Moq;
 
 namespace EduHubTests
 {
@@ -14,12 +16,10 @@ namespace EduHubTests
     public class GroupEditFacadeTests
     {
         private IAuthUserFacade _authUserFacade;
-
         private Guid _groupCreatorId;
         private IGroupEditFacade _groupEditFacade;
-
         private IGroupFacade _groupFacade;
-        /*
+   
         [TestInitialize]
         public void Initialize()
         {
@@ -29,11 +29,13 @@ namespace EduHubTests
             var groupSettings = new GroupSettings(2, 10, 0, 1000);
             var emailSettings = new EmailSettings("", "", "", "", "", 4);
             var emailSender = new EmailSender(emailSettings);
+            var publisher = new Mock<IEventPublisher>();
+
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository,
-                new GroupSettings(3, 100, 0, 1000));
+                new GroupSettings(3, 100, 0, 1000), publisher.Object);
             _authUserFacade = new AuthUserFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender);
-            _groupEditFacade = new GroupEditFacade(inMemoryGroupRepository, groupSettings);
+            _groupEditFacade = new GroupEditFacade(inMemoryGroupRepository, groupSettings, publisher.Object);
             _groupCreatorId =
                 _authUserFacade.RegUser("Alena", new Credentials("email", "password"), true, UserType.User);
         }
@@ -163,6 +165,5 @@ namespace EduHubTests
             //Act
             _groupEditFacade.ChangeGroupPrice(createdGroupId, _groupCreatorId, -200);
         }
-        */
     }
 }

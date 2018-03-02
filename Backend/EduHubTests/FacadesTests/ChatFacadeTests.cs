@@ -8,6 +8,8 @@ using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubTests
 {
@@ -18,18 +20,17 @@ namespace EduHubTests
         private IGroupRepository _groupRepository;
         private Guid _testGroupId;
 
-        /*
         [TestInitialize]
         public void Initialize()
         {
             var keyRepository = new InMemoryKeysRepository();
             var userRepository = new InMemoryUserRepository();
             _groupRepository = new InMemoryGroupRepository();
-            var tagsManager = new TagsManager();
+            var publisher = new Mock<IEventPublisher>();
             var groupSettings = new GroupSettings(3, 100, 100, 1000);
             var emailSettings = new EmailSettings("", "", "", "", "", 3);
             var sender = new EmailSender(emailSettings);
-            var groupFacade = new GroupFacade(_groupRepository, userRepository, groupSettings, tagsManager);
+            var groupFacade = new GroupFacade(_groupRepository, userRepository, groupSettings, publisher.Object);
             var userFacade = new AuthUserFacade(keyRepository, userRepository,
                 sender);
 
@@ -61,6 +62,5 @@ namespace EduHubTests
             //Act
             chatFacade.SendMessage(_creatorId, _testGroupId, " ");
         }
-        */
     }
 }

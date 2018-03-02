@@ -4,7 +4,7 @@ using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Domain
 {
-    public class TagsManager
+    public class TagsManager : ITagsManager
     {
         public TagsManager()
         {

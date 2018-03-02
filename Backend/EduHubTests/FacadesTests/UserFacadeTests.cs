@@ -9,6 +9,8 @@ using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EduHubLibrary.Domain.NotificationService;
+using Moq;
 
 namespace EduHubTests
 {
@@ -20,7 +22,6 @@ namespace EduHubTests
         private IKeysRepository _keysRepository;
         private IUserRepository _userRepository;
 
-        /*
         [TestInitialize]
         public void Initialize()
         {
@@ -62,8 +63,9 @@ namespace EduHubTests
             var authUserFacade = new AuthUserFacade(_keysRepository,
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
+            var publisher = new Mock<IEventPublisher>();
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
-                new GroupSettings(2, 10, 0, 100), new TagsManager());
+                new GroupSettings(2, 10, 0, 100), publisher.Object);
 
             var testUserId =
                 authUserFacade.RegUser("Alena", new Credentials("email1", "password"), true, UserType.User);
@@ -146,8 +148,9 @@ namespace EduHubTests
         public void TryToInviteUserWithTeacherFlag_IsItPossible()
         {
             //Arrange
+            var publisher = new Mock<IEventPublisher>();
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
-                new GroupSettings(1, 100, 0, 1000), new TagsManager());
+                new GroupSettings(1, 100, 0, 1000), publisher.Object);
             var authUserFacade = new AuthUserFacade(_keysRepository,
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
@@ -173,8 +176,9 @@ namespace EduHubTests
         public void TryToInviteTeacherToGroupWithApprovedTeacher_GetException()
         {
             //Arrange
+            var publisher = new Mock<IEventPublisher>();
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
-                new GroupSettings(1, 100, 0, 1000), new TagsManager());
+                new GroupSettings(1, 100, 0, 1000), publisher.Object);
             var authUserFacade = new AuthUserFacade(_keysRepository,
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
@@ -200,8 +204,9 @@ namespace EduHubTests
         public void TryToInviteUserWithoutTeacherFlag_GetException()
         {
             //Arrange
+            var publisher = new Mock<IEventPublisher>();
             var groupFacade = new GroupFacade(_groupRepository, _userRepository,
-                new GroupSettings(1, 100, 0, 1000), new TagsManager());
+                new GroupSettings(1, 100, 0, 1000), publisher.Object);
             var authUserFacade = new AuthUserFacade(_keysRepository,
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository);
@@ -217,6 +222,5 @@ namespace EduHubTests
             //Act
             userFacade.Invite(creatorId, pseudoTeacherId, createdGroupId, MemberRole.Teacher);
         }
-        */
     }
 }
