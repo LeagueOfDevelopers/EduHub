@@ -19,6 +19,7 @@ import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
 import com.mindorks.placeholderview.annotations.expand.ChildPosition;
 import com.mindorks.placeholderview.annotations.expand.ParentPosition;
+import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -76,8 +77,8 @@ public class InvetationItemView {
         Log.d("GroupIdPlaceHolder",group.getGroupInfo().getId());
 
         recyclerView.setHasFixedSize(true);
-        StaggeredGridLayoutManager staggeredGridLayoutManager=new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
+        recyclerView.setLayoutManager(new FlowLayoutManager());
         TagsAdapter adapter=new TagsAdapter((ArrayList<String>) group.getGroupInfo().getTags());
         recyclerView.setAdapter(adapter);
 

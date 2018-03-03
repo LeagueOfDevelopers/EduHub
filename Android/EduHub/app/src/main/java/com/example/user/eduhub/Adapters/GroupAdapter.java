@@ -17,6 +17,7 @@ import com.example.user.eduhub.GroupActivity;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.R;
+import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         holder.name.setText(groups.get(position).getGroupInfo().getTitle());
         holder.users.setText(groups.get(position).getGroupInfo().getMemberAmount()+"/"+groups.get(position).getGroupInfo().getSize());
         holder.cost.setText("$"+groups.get(position).getGroupInfo().getCost());
-        holder.tags.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL));
+        holder.tags.setLayoutManager(new FlowLayoutManager());
         TagsAdapter adapter=new TagsAdapter((ArrayList<String>) groups.get(position).getGroupInfo().getTags());
         holder.tags.setAdapter(adapter);
         switch (String.valueOf(groups.get(position).getGroupInfo().getGroupType())){

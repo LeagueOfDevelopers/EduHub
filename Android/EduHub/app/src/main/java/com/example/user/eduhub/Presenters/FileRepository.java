@@ -12,7 +12,6 @@ import com.example.user.eduhub.Models.AddFileResponseModel;
 import com.example.user.eduhub.Retrofit.EduHubApi;
 import com.example.user.eduhub.Retrofit.RetrofitBuilder;
 
-import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 
