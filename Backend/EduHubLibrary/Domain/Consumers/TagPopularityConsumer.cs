@@ -9,23 +9,16 @@ namespace EduHubLibrary.Domain.Consumers
 {
     public class TagPopularityConsumer : IEventConsumer<UsingTagEvent>
     {
-        public TagPopularityConsumer(TagsManager tagManager)
+        public TagPopularityConsumer(ITagFacade tagFacade)
         {
-            _tagManager = tagManager;
+            _tagFacade = tagFacade;
         }
 
         public void Consume(UsingTagEvent @event)
         {
-            if (_tagManager.DoesExist(@event.Tag))
-            {
-                _tagManager.AddPopularity(@event.Tag);
-            }
-            else
-            {
-                _tagManager.AddTag(@event.Tag);
-            }
+            _tagFacade.UseTag(@event.Tag);
         }
 
-        private TagsManager _tagManager;        
+        private ITagFacade _tagFacade;        
     }
 }

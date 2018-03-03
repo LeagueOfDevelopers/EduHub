@@ -49,13 +49,14 @@ namespace EduHub
             var fileRepository = new InMemoryFileRepository();
             var groupRepository = new InMemoryGroupRepository();
             var keysRepository = new InMemoryKeysRepository();
-            var tagsManager = new TagsManager();
+            var tagRepository = new InMemoryTagRepository();
             var emailSettings = new EmailSettings(Configuration.GetValue<string>("EmailLogin"),
                 Configuration.GetValue<string>("Email"),
                 Configuration.GetValue<string>("EmailPassword"),
                 Configuration.GetValue<string>("SmtpAddress"),
                 Configuration.GetValue<string>("ConfirmAddress"),
                 int.Parse(Configuration.GetValue<string>("SmtpPort")));
+            var tagFacade = new TagFacade(tagRepository);
 
             var eventBusSettings = new EventBusSettings(Configuration.GetValue<string>("RabbitMqServerHostName"),
                 Configuration.GetValue<string>("RabbitMqServerVirtualHost"),
@@ -64,7 +65,7 @@ namespace EduHub
             var eventBus = new EventBus(eventBusSettings);
             eventBus.StartListening();
 
-            eventBus.RegisterConsumer(new TagPopularityConsumer(tagsManager));
+            eventBus.RegisterConsumer(new TagPopularityConsumer(tagFacade));
             var publisher = eventBus.GetEventPublisher();
 
             var emailSender = new EmailSender(emailSettings);
@@ -81,7 +82,7 @@ namespace EduHub
             services.AddSingleton<IChatFacade>(chatFacade);
             services.AddSingleton<IGroupEditFacade>(groupEditFacade);
             services.AddSingleton<IUserEditFacade>(userEditFacade);
-            services.AddSingleton<ITagsManager>(tagsManager);
+            services.AddSingleton<ITagFacade>(tagFacade);
             services.AddSingleton<IAuthUserFacade>(authUserFacade);
             services.AddSingleton(Env);
 

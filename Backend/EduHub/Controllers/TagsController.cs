@@ -11,9 +11,9 @@ namespace EduHub.Controllers
     [Route("api/tags")]
     public class TagsController : Controller
     {
-        private readonly ITagsManager _tagsManager;
+        private readonly ITagFacade _tagsManager;
 
-        public TagsController(ITagsManager tagsManager)
+        public TagsController(ITagFacade tagsManager)
         {
             _tagsManager = tagsManager;
         }
