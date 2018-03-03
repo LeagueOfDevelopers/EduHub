@@ -56,11 +56,8 @@ namespace EduHub
                 Configuration.GetValue<string>("SmtpAddress"),
                 Configuration.GetValue<string>("ConfirmAddress"),
                 int.Parse(Configuration.GetValue<string>("SmtpPort")));
-            
             var eventBusSettings = new EventBusSettings(Configuration.GetValue<string>("RabbitMqServerHostName"),
-                Configuration.GetValue<string>("RabbitMqServerVirtualHost"), 
-                Configuration.GetValue<string>("RabbitMqAdminUserName"), 
-                Configuration.GetValue<string>("RabbitMqAdminPassword"));
+                "/", "guest", "guest");
             var eventBus = new EventBus(eventBusSettings);
             eventBus.StartListening();
 
