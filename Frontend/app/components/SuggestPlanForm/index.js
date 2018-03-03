@@ -23,10 +23,6 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    console.log(this.props.curriculum)
-  }
-
   handleChange = (info) => {
     let fileList = info.fileList;
 
@@ -58,11 +54,11 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
         (
           <Row className='lg-center-container-item' type='flex' justify='flex-start'>
             {
-              this.props.curriculum ?
-                <div style={{backgroundColor: 'red', width: '100%', height: 20, marginBottom: 10}}>
-                </div>
-                :
-                null
+              this.props.currentPlan ?
+                <Col span={24} className='word-break' style={{marginBottom: 10}}>
+                  {this.props.currentPlan.data}
+                </Col>
+                : null
             }
             <Col xs={{span: 24}} lg={{span: 10}} xl={{span: 8}} xxl={{span: 6}} className='group-btn plan-file-btn'>
               <Upload {...props} fileList={this.state.fileList}>
@@ -76,7 +72,8 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
                 className='group-btn'
                 type="primary"
                 onClick={() => {
-                  this.props.addPlan(this.props.groupId, this.state.fileList[0].response.filename)
+                  this.props.addPlan(this.props.groupId, this.state.fileList[0].response.filename);
+                  this.setState({fileList: []});
                 }}
                 disabled={this.state.fileList.length === 0}
                 style={{marginBottom: 10}}
@@ -88,8 +85,13 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
         )
         : !this.props.isTeacher && this.props.curriculum ?
           <Row>
-            <Col style={{backgroundColor: 'blue', height: 20, marginBottom: 10}}>
-            </Col>
+            {
+              this.props.currentPlan ?
+                <Row className='word-break' style={{marginBottom: 10}}>
+                  {this.props.currentPlan.data}
+                </Row>
+                : null
+            }
             {
               this.props.members.find(item =>
                 item.userId === this.props.currentUserData.UserId).curriculumStatus  === 0 ||

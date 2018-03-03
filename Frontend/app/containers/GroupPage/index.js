@@ -35,6 +35,7 @@ import Chat from '../../components/Chat/Loadable';
 import InviteMemberSelect from '../../components/InviteMemberSelect/Loadable';
 import SigningInForm from "../../containers/SigningInForm/index";
 import SuggestPlanForm from '../../components/SuggestPlanForm';
+import ReviewModal from '../../components/ReviewModal';
 
 const groupData = {
     groupInfo: {
@@ -102,6 +103,7 @@ export class GroupPage extends React.Component {
       isCreator: false,
       isTeacher: false,
       signInVisible: false,
+      reviewVisible: false,
       isEditing: false,
       titleInput: '',
       descInput: '',
@@ -115,7 +117,9 @@ export class GroupPage extends React.Component {
     this.onSetResult = this.onSetResult.bind(this);
     this.getCurrentGroup = this.getCurrentGroup.bind(this);
     this.onSignInClick = this.onSignInClick.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
+    this.handleSignInCancel = this.handleSignInCancel.bind(this);
+    this.onReviewClick = this.onReviewClick.bind(this);
+    this.handleReviewCancel = this.handleReviewCancel.bind(this);
     this.changeGroupData = this.changeGroupData.bind(this);
     this.onChangeTitleHandle = this.onChangeTitleHandle.bind(this);
     this.onChangeDescriptionHandle = this.onChangeDescriptionHandle.bind(this);
@@ -131,8 +135,16 @@ export class GroupPage extends React.Component {
     this.setState({signInVisible: true})
   };
 
-  handleCancel = () => {
+  handleSignInCancel = () => {
     this.setState({signInVisible: false})
+  };
+
+  onReviewClick = () => {
+    this.setState({reviewVisible: true})
+  };
+
+  handleReviewCancel = () => {
+    this.setState({reviewVisible: false})
   };
 
   getCurrentGroup = () => {
@@ -153,6 +165,10 @@ export class GroupPage extends React.Component {
 
   componentDidMount() {
     this.getCurrentGroup();
+
+    if(this.props.match.params.review === 'review') {
+      setTimeout(this.onReviewClick, 1000);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -425,7 +441,8 @@ export class GroupPage extends React.Component {
             </Row>
           </Col>
         </Col>
-        <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
+        <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleSignInCancel}/>
+        <ReviewModal courseTitle={this.state.groupData.groupInfo.title} visible={this.state.reviewVisible} handleCancel={this.handleReviewCancel}/>
       </div>
     );
   }

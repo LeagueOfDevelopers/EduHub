@@ -112,7 +112,7 @@
   }
 
   .md-center-container > .group-btn, .lg-center-container-item > .group-btn {
-    width: 100%
+    width: 100% !important;
   }
 
   .md-cards-holder-center {
@@ -129,6 +129,10 @@
 
   .plan-file-btn {
     text-align: center;
+  }
+
+  .lg-margin-right-0 {
+    margin-right: 0 !important;
   }
 }
 

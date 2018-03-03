@@ -427,10 +427,11 @@ function getCurrentPlan(filename) {
   return fetch(`${config.API_BASE_URL}/file/${filename}`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json-patch+json',
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
   })
+    .then(res => res.json())
+    .then(res => res)
     .catch(error => error)
 }
 
