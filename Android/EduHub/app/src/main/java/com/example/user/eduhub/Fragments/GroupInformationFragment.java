@@ -148,8 +148,8 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         });
         suggestion_course.setOnClickListener(click->{
             if(!fakesButton.getCheckButton()){
-            Intent intent=new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
+            Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("text/plain");
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             getActivity().startActivityForResult(intent,1);
 
@@ -192,8 +192,8 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
             }
         });
         refactorCourse.setOnClickListener(click->{
-            Intent intent=new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
+            Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("text/plain");
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 getActivity().startActivityForResult(intent,1);
 
