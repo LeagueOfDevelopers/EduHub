@@ -41,6 +41,23 @@ public class GroupInfo implements Serializable {
     @SerializedName("currentAmount")
     @Expose
     private Integer currentAmount;
+    @SerializedName("isPrivate")
+    @Expose
+    private Boolean isPrivate;
+    @SerializedName("courseStatus")
+    @Expose
+    private Integer courseStatus;
+    @SerializedName("curriculum")
+    @Expose
+    private String curriculum;
+
+    public String getCurriculum() {
+        return curriculum;
+    }
+
+    public void setCurriculum(String curriculum) {
+        this.curriculum = curriculum;
+    }
 
     public Integer getCurrentAmount() {
         return currentAmount;
@@ -112,6 +129,22 @@ public class GroupInfo implements Serializable {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public Boolean getPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(Boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
+    public Integer getCourseStatus() {
+        return courseStatus;
+    }
+
+    public void setCourseStatus(Integer courseStatus) {
+        this.courseStatus = courseStatus;
     }
 }
 

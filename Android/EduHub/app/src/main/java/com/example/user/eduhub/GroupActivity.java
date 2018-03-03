@@ -2,6 +2,7 @@ package com.example.user.eduhub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,15 +16,20 @@ import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Fragments.MainGroupFragment;
 import com.example.user.eduhub.Fragments.UnsignedMainGroupFragment;
 import com.example.user.eduhub.Interfaces.IFragmentsActivities;
+import com.example.user.eduhub.Interfaces.View.ICourseMethodsView;
+import com.example.user.eduhub.Interfaces.View.IFileRepositoryView;
 import com.example.user.eduhub.Interfaces.View.IGroupView;
+import com.example.user.eduhub.Models.AddFileResponseModel;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.Group.Member;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
+import com.example.user.eduhub.Presenters.CourseMethodsPresenter;
+import com.example.user.eduhub.Presenters.FileRepository;
 import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 
 public class GroupActivity extends AppCompatActivity
-        implements  IFragmentsActivities,IGroupView {
+        implements  IFragmentsActivities,IGroupView,IFileRepositoryView,ICourseMethodsView {
     Group group;
     FragmentTransaction transaction;
     MainGroupFragment mainGroupFragment;
@@ -34,6 +40,8 @@ public class GroupActivity extends AppCompatActivity
     FakeGroupInformationPresenter fakeGroupInformationPresenter=new FakeGroupInformationPresenter(this);
     final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE";
     SharedPreferences sPref;
+    CourseMethodsPresenter addCourseMethodsPresenter=new CourseMethodsPresenter(this);
+    FileRepository fileRepository=new FileRepository(this,this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,9 +129,13 @@ public class GroupActivity extends AppCompatActivity
         if(flag){
         mainGroupFragment=new MainGroupFragment();
         mainGroupFragment.setGroup(group);
-
         transaction=getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.group_fragments_conteiner,mainGroupFragment);
+        Log.d("TRANSACTION",transaction.isEmpty()+"");
+        if(transaction.isEmpty()){
+        transaction.replace(R.id.group_fragments_conteiner,mainGroupFragment);}
+        else{
+
+        }
         transaction.commit();}else{
             UnsignedMainGroupFragment unsignedMainGroupFragment=new UnsignedMainGroupFragment();
             unsignedMainGroupFragment.setGroup(group);
@@ -144,5 +156,34 @@ public class GroupActivity extends AppCompatActivity
             Intent intent1=new Intent(this,Main2Activity.class);
             startActivity(intent1);
         }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK)
+            if(requestCode==1){
+               Uri uri=data.getData();
+                Log.d("URI",uri.toString());
+                fileRepository.loadFileToServer(user.getToken(),uri);
+
+            }
+    }
+    @Override
+    public void getResponse(AddFileResponseModel addFileResponseModel) {
+
+
+        addCourseMethodsPresenter.addPlan(user.getToken(),group.getGroupInfo().getId(),addFileResponseModel.getFileName());
+
+    }
+
+    @Override
+    public void getResponseAfterAddCourse() {
+        Log.d("ResponseAfterAddCourse","2");
+        onResume();
+    }
+
+    @Override
+    public void getResponseAfterYourResponse() {
+
     }
 }

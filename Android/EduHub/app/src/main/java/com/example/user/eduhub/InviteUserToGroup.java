@@ -97,7 +97,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
         // заголовок
         spinner.setPrompt("Type of education");
         // выделяем элемент
-        spinner.setSelection(0);
+
         // устанавливаем обработчик нажатия
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -105,6 +105,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
                                        int position, long id) {
                 // показываем позиция нажатого элемента
                 role=roles[position];
+                Log.d("ROLRLRL",role);
 
             }
             @Override
@@ -128,6 +129,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
 
     @Override
     public void getResult(List<UserSearchProfile> userProfile) {
+        Log.d("ROLOLO",role);
         InviteUsersAdapter inviteUsersAdapter=new InviteUsersAdapter(userProfile,this,groupId,role,user.getToken());
         recyclerView.setAdapter(inviteUsersAdapter);
     }

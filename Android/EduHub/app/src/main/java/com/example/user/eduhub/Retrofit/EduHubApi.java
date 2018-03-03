@@ -1,5 +1,6 @@
 package com.example.user.eduhub.Retrofit;
 
+import com.example.user.eduhub.Models.AddFileResponseModel;
 import com.example.user.eduhub.Models.ChangeInvitationStatusModel;
 import com.example.user.eduhub.Models.CreateGroupModel;
 import com.example.user.eduhub.Models.CreateGroupResponse;
@@ -18,18 +19,25 @@ import com.example.user.eduhub.Models.Registration.RegistrationResponseModel;
 import com.example.user.eduhub.Models.UserProfile.RefactorUserRequestModel;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 import com.example.user.eduhub.Models.UserProfile.UserSearchProfileResponse;
+import com.example.user.eduhub.Models.UsersResponseModel;
 
+
+import java.io.File;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by user on 16.12.2017.
@@ -100,6 +108,15 @@ public interface EduHubApi {
     Completable changeGroupPrivacy(@Header("Authorization") String token,@Path("groupId") String groupId,@Body RefactorGroupRequestModel model);
     @GET("/api/account/refresh")
     Single<User> refreshToken(@Header("Authorization") String token);
-
+    @POST("/api/group/{groupId}/course/curriculum")
+    Completable addPlanForStudy(@Header("Authorization") String token, @Path("groupId") String groupId);
+    @PUT("/api/group/{groupId}/course/curriculum")
+    Completable positiveResponse(@Header("Authorization") String token,@Path("groupId") String groupId);
+    @DELETE("/api/group/{groupId}/course/curriculum")
+    Completable negativeResponse(@Header("Authorization") String token, @Path("groupId") String groupId, UsersResponseModel model);
+    @POST("/api/file")
+    Observable<AddFileResponseModel> loadFiletoServer(@Header("Authorization") String token, @Query("file") File file);
+    @GET("/api/file/{filename}")
+    Single<File> loafFileFromServer(@Header("Authorization") String token,@Path("filename") String fileName);
 
 }

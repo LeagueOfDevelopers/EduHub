@@ -80,7 +80,7 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
             public void onClick(View view) {
 
                 boolean isTeacher;
-                if(name.getText().length()>=6){
+                if(name.getText().length()>0){
                     if(email.getText().length()>=6){
                         if(password.getText().length()>=6){
                 if(checkBox.isChecked()){
@@ -97,7 +97,7 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
                     }else{
                         MakeToast("Email слишком короткий");
                     }
-                }else{MakeToast("Минимальная длина имен 6");}
+                }else{MakeToast("Заполните поле имени");}
 
             }
         });

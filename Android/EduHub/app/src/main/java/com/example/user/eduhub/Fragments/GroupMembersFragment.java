@@ -75,6 +75,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void getInformationAboutGroup(Group group) {
+
         ArrayList<Member> members=(ArrayList<Member>) group.getMembers();
         GroupMembersAdapter adapter=new GroupMembersAdapter(members);
         recyclerView.setHasFixedSize(true);
@@ -82,6 +83,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapter);
         swipeConteiner.setRefreshing(false);
+        Log.d("sfsd","sdfsdf");
     }
 
     public void setGroup(Group group) {

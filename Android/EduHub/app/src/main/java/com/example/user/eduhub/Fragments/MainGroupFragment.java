@@ -79,7 +79,7 @@ public class MainGroupFragment extends Fragment {
 
         pager.setAdapter(adapter);
 
-        tabLayout.setupWithViewPager(pager);
+
 
 
         inviteButton.setOnClickListener(click->{
@@ -92,6 +92,13 @@ public class MainGroupFragment extends Fragment {
 
         return v;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tabLayout.setupWithViewPager(pager);
+    }
+
     public void setGroup(Group group){
         this.group=group;
     }

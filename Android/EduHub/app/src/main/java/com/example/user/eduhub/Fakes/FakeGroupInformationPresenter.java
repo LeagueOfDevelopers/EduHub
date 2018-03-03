@@ -48,7 +48,7 @@ public class FakeGroupInformationPresenter  implements IGroupInfirmationPresente
         group.setMembers(members);
 
 
-
+        group.getGroupInfo().setCourseStatus(0);
         groupInformationView.getInformationAboutGroup(group);
     }
 }

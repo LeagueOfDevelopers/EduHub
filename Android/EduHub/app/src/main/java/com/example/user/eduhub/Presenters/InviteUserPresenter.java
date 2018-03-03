@@ -36,7 +36,7 @@ public class InviteUserPresenter implements IInviteUserPresenter {
         EduHubApi eduHubApi = RetrofitBuilder.getApi();
         InviteUserModel inviteUserModel = new InviteUserModel();
         inviteUserModel.setInvitedId(userId);
-
+        Log.d("ROLELE",role);
         if(role.toString().equals("Ученик")){
 
             eduHubApi.invitedUser("Bearer "+token, groupId, inviteUserModel)

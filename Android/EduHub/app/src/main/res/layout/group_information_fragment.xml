@@ -10,15 +10,23 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/exit">
+        android:layout_above="@+id/exit"
+        android:background="@color/metalic">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/information_about_group"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp">
 
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="15dp"
                 android:background="@color/grey">
 
 
@@ -51,8 +59,8 @@
 
                 <ImageView
                     android:id="@+id/refactor_group_settings"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="12dp"
@@ -75,7 +83,233 @@
                     android:paddingRight="8dp" />
 
             </RelativeLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/course"
+                android:layout_below="@+id/information_about_group"
+                android:layout_marginTop="15dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:id="@+id/Header_course">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey">
+                            <TextView
+                                android:id="@+id/title_header"
+                                android:layout_width="wrap_content"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="12dp"
+                                android:gravity="center_vertical"
+                                android:text="Учебный план"
+                                android:textColor="@color/black"
+                                android:textSize="12dp"
+                                android:textStyle="bold"/>
+                            <ImageView
+                                android:id="@+id/refactor_course"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="17dp"
+                                android:src="@drawable/ic_mode_edit_black_18dp" />
 
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:id="@+id/link_card">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey">
+                            <TextView
+                                android:id="@+id/title_link_card"
+                                android:layout_width="70dp"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="12dp"
+                                android:gravity="center_vertical"
+                                android:text="Ссылка"
+                                android:textColor="@color/black"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:id="@+id/link"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="82dp"
+                                android:layout_marginRight="12dp"
+                                android:gravity="center_vertical"
+                                android:text="Мужской"
+                                android:textColor="@color/black"
+                                android:textSize="12dp" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:id="@+id/course_status_card">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey">
+                            <TextView
+                                android:id="@+id/title_course_status_card"
+                                android:layout_width="70dp"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="12dp"
+                                android:gravity="center_vertical"
+                                android:text="Статус"
+                                android:textColor="@color/black"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:id="@+id/status"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="82dp"
+                                android:layout_marginRight="12dp"
+                                android:gravity="center_vertical"
+                                android:text="Идет голосование"
+                                android:textColor="@color/black"
+                                android:textSize="12dp" />
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:id="@+id/result_card">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey">
+                            <TextView
+                                android:id="@+id/title_result_card"
+                                android:layout_width="70dp"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="12dp"
+                                android:gravity="center_vertical"
+                                android:text="Одобрено"
+                                android:textColor="@color/black"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:id="@+id/result"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="82dp"
+                                android:layout_marginRight="12dp"
+                                android:gravity="center_vertical"
+                                android:text="Мужской"
+                                android:textColor="@color/black"
+                                android:textSize="12dp" />
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:id="@+id/vote_card">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey">
+
+                            <Button
+                                android:id="@+id/possitive_button_about_course"
+                                android:layout_width="170dp"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/veryGrey"
+                                android:text="Принять"
+                                style="@style/MyCustomTabLayout"/>
+
+                            <Button
+                                android:id="@+id/negative_button_about_course"
+                                android:layout_width="170dp"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/veryGrey"
+                                android:text="Отклонить"
+                                style="@style/MyCustomTabLayout"/>
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:id="@+id/suggestion_course_card">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey">
+
+                            <Button
+                                android:id="@+id/suggest_course"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/veryGrey"
+                                android:text="Предложить учебный план"
+                                style="@style/MyCustomTabLayout"/>
+
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:id="@+id/reason_negative_response_card">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey">
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/reason_negative_response"
+                                android:paddingLeft="5dp"
+                                android:background="#FFFFFF" />
+
+                            <Button
+                                android:id="@+id/reason_negative_response_button"
+                                android:layout_below="@+id/reason_negative_response"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/veryGrey"
+                                android:text="Отправить"
+                                style="@style/MyCustomTabLayout"/>
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+
+
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
 
     </ScrollView>
 

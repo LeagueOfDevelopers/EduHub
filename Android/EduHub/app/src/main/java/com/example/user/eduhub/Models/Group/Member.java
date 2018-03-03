@@ -29,6 +29,17 @@ public class Member implements Serializable{
     @SerializedName("acceptedCourse")
     @Expose
     private Boolean acceptedCourse;
+    @SerializedName("curriculumStatus")
+    @Expose
+    private Integer curriculumStatus;
+
+    public Integer getCurriculumStatus() {
+        return curriculumStatus;
+    }
+
+    public void setCurriculumStatus(Integer curriculumStatus) {
+        this.curriculumStatus = curriculumStatus;
+    }
 
     public String getUserId() {
         return userId;
