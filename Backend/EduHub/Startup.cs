@@ -86,6 +86,8 @@ namespace EduHub
             services.AddSingleton<IAuthUserFacade>(authUserFacade);
             services.AddSingleton(Env);
 
+            userFacade.CheckGeneralAdminExistence(Configuration.GetValue<string>("AdminEmail"), emailSender);
+
             services.AddSwaggerGen(current =>
             {
                 current.SwaggerDoc("v1", new Info

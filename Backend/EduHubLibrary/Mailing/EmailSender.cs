@@ -1,4 +1,5 @@
 ﻿using EduHubLibrary.Settings;
+using MailKit.Net.Smtp;
 using MimeKit;
 
 namespace EduHubLibrary.Mailing
@@ -25,6 +26,7 @@ namespace EduHubLibrary.Mailing
             {
                 Text = text
             };
+            
             /*
             using (var client = new SmtpClient())
             {

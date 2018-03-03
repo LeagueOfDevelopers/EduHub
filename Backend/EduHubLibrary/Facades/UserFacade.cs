@@ -6,6 +6,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Facades.Views;
 using EnsureThat;
+using EduHubLibrary.Mailing;
 
 namespace EduHubLibrary.Facades
 {
@@ -136,6 +137,14 @@ namespace EduHubLibrary.Facades
                     t.IsActive
                 )));
             return result;
+        }
+
+        public void CheckGeneralAdminExistence(string email, EmailSender emailSender)
+        {
+            if (!_userRepository.GetAll().Any(user => user.UserProfile.Email == email))
+            {
+                emailSender.SendMessage("user", email, "some text + invite-code", "some theme");
+            }
         }
     }
 }

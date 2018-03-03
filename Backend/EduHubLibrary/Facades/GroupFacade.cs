@@ -91,17 +91,17 @@ namespace EduHubLibrary.Facades
                 groupInfo.IsPrivate, groupInfo.IsActive,
                 currentGroup.Status);
 
-            var membersInfo = new List<GroupMemberInfo>();
+            var membersInfo = new List<GroupMemberInfoView>();
             members.ForEach(m =>
             {
                 var currentMember = _userRepository.GetUserById(m.UserId);
-                membersInfo.Add(new GroupMemberInfo(m.UserId, currentMember.UserProfile.Name,
+                membersInfo.Add(new GroupMemberInfoView(m.UserId, currentMember.UserProfile.Name,
                     currentMember.UserProfile.AvatarLink, m.MemberRole, m.Paid, m.CurriculumStatus));
             });
             if (currentGroup.Teacher != null)
             {
                 var teacher = _userRepository.GetUserById(currentGroup.Teacher.Id);
-                membersInfo.Add(new GroupMemberInfo(currentGroup.Teacher.Id,
+                membersInfo.Add(new GroupMemberInfoView(currentGroup.Teacher.Id,
                     teacher.UserProfile.Name, teacher.UserProfile.AvatarLink,
                     MemberRole.Teacher, false, MemberCurriculumStatus.Unknown));
             }

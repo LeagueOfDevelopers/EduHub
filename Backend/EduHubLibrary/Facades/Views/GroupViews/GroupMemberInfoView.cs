@@ -4,9 +4,9 @@ using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Facades.Views.GroupViews
 {
-    public class GroupMemberInfo
+    public class GroupMemberInfoView
     {
-        public GroupMemberInfo(Guid userId, string username, string avatarLink,
+        public GroupMemberInfoView(Guid userId, string username, string avatarLink,
             MemberRole memberRole, bool paid, MemberCurriculumStatus curriculumStatus)
         {
             UserId = userId;

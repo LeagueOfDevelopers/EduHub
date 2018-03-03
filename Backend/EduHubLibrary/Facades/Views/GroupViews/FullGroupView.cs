@@ -4,7 +4,7 @@ namespace EduHubLibrary.Facades.Views.GroupViews
 {
     public class FullGroupView
     {
-        public FullGroupView(GroupInfoView groupInfoView, IEnumerable<GroupMemberInfo> groupMemberInfo,
+        public FullGroupView(GroupInfoView groupInfoView, IEnumerable<GroupMemberInfoView> groupMemberInfo,
             IEnumerable<MessageView> messageView)
         {
             GroupInfoView = groupInfoView;
@@ -13,7 +13,7 @@ namespace EduHubLibrary.Facades.Views.GroupViews
         }
 
         public GroupInfoView GroupInfoView { get; }
-        public IEnumerable<GroupMemberInfo> GroupMemberInfo { get; }
+        public IEnumerable<GroupMemberInfoView> GroupMemberInfo { get; }
         public IEnumerable<MessageView> MessageView { get; }
     }
 }
