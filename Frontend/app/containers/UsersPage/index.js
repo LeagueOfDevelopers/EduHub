@@ -46,9 +46,10 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
   }
 
   showFilterForm = () => {
-    document.getElementById('xs-filter').style.display === 'none' ?
-      document.getElementById('xs-filter').style.display = 'block'
-      : document.getElementById('xs-filter').style.display = 'none'
+    document.getElementById('xs-filter').style.display === 'block' ?
+      document.getElementById('xs-filter').style.display = 'none'
+      : document.getElementById('xs-filter').style.display = 'block'
+    console.log(document.getElementById('xs-filter').style.cssText)
   };
 
   render() {
@@ -66,7 +67,7 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
         <FilterForm id='lg-filter'/>
         <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 11, offset: 2}} xl={{span: 12, offset: 2}} xxl={{span: 13, offset: 2}} className='users-content'>
           <Row style={{marginBottom: 28}}><h3 style={{marginBottom: 0}}>Пользователи</h3></Row>
-          {localStorage.getItem('without_server') === 'false' ?
+          {localStorage.getItem('without_server') !== 'true' ?
             (<div>
                 {this.props.users && this.props.users.length !== 0 ?
                   this.props.users.map(item =>
