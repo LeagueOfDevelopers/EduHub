@@ -139,11 +139,12 @@ namespace EduHubLibrary.Facades
             return result;
         }
 
-        public void CheckGeneralAdminExistence(string email, EmailSender emailSender)
+        public void CheckGeneralAdminExistence(string email, string adminName, EmailSender emailSender)
         {
             if (!_userRepository.GetAll().Any(user => user.UserProfile.Email == email))
             {
-                emailSender.SendMessage("user", email, "some text + invite-code", "some theme");
+                var text = string.Format(EmailTemplates.AdminInvitationEmail, "<link>");
+                emailSender.SendMessage(adminName, email, text, EmailTemplates.AdminInvitationEmailTheme);
             }
         }
     }
