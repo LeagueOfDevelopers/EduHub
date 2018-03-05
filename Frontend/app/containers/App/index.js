@@ -25,6 +25,7 @@ import NotificationPage from '../../containers/NotificationPage/Loadable';
 import GroupsPage from '../../containers/GroupsPage';
 import RegistrationSuccessPage from '../../containers/RegistrationSuccessPage';
 import RegistrationAcceptedPage from '../../containers/RegistrationAcceptedPage';
+import UsersPage from '../../containers/UsersPage';
 
 export default class App extends React.Component{
   render() {
@@ -45,6 +46,7 @@ export default class App extends React.Component{
             <Route path='/profile/:id/notifications' component={NotificationPage}/>
             <Route path='/registration_success' component={RegistrationSuccessPage}/>
             <Route path='/registration_accepted/:key' component={RegistrationAcceptedPage}/>
+            <Route path='/users' render={() => <UsersPage name={this.props}/> }/>
             <Route path='' component={NotFoundPage} />
           </Switch>
         </ScrollFix>

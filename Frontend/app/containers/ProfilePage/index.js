@@ -262,7 +262,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 </Row>
               }
               hoverable
-              className='profile-card font-size-20 without-border-bottom'
+              className='profile-card header-font-size-20 without-border-bottom'
             >
               <Row style={{marginBottom: 20}}>
                 <div>Почтовый адрес</div>

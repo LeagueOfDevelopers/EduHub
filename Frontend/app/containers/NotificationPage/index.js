@@ -97,47 +97,45 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
 
   render() {
     return (
-      <div>
-        <Row className='notify-tabs'>
-          <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 12, offset: 6}}>
-            <Tabs defaultActiveKey="1" style={{margin: '30px 0'}}>
-              <TabPane tab="Уведомления" key="1" style={{margin: '30px 0'}}>
-                {localStorage.getItem('withoutServer') === 'true' ?
-                  (<div>
+      <Row className='notify-tabs'>
+        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 12, offset: 6}}>
+          <Tabs defaultActiveKey="1" style={{margin: '30px 0'}}>
+            <TabPane tab="Уведомления" key="1" style={{margin: '30px 0'}}>
+              {localStorage.getItem('withoutServer') === 'true' ?
+                (<div>
                     {notifies.reverse().map(item =>
                       <NotifyCard key={item.id} {...item}/>
                     )}
                   </div>
-                  )
-                  :
-                  <div>
-                    {this.props.notifies.reverse().map(item =>
-                      <NotifyCard key={item.id} {...item}/>
+                )
+                :
+                <div>
+                  {this.props.notifies.reverse().map(item =>
+                    <NotifyCard key={item.id} {...item}/>
+                  )}
+                </div>
+              }
+            </TabPane>
+            <TabPane tab="Приглашения" key="2" style={{margin: '30px 0'}}>
+              {localStorage.getItem('withoutServer') === 'true' ?
+                (<div>
+                    {invites.reverse().map(item =>
+                      <InviteCard key={item.id} {...item}/>
                     )}
                   </div>
-                }
-              </TabPane>
-              <TabPane tab="Приглашения" key="2" style={{margin: '30px 0'}}>
-                {localStorage.getItem('withoutServer') === 'true' ?
-                  (<div>
-                      {invites.reverse().map(item =>
-                        <InviteCard key={item.id} {...item}/>
-                      )}
-                    </div>
-                  )
-                  :
-                  (<div>
-                      {this.props.invites.reverse().map(item =>
-                        <InviteCard key={item.id} {...item}/>
-                      )}
-                    </div>
-                  )
-                }
-              </TabPane>
-            </Tabs>
-          </Col>
-        </Row>
-      </div>
+                )
+                :
+                (<div>
+                    {this.props.invites.reverse().map(item =>
+                      <InviteCard key={item.id} {...item}/>
+                    )}
+                  </div>
+                )
+              }
+            </TabPane>
+          </Tabs>
+        </Col>
+      </Row>
     );
   }
 }
