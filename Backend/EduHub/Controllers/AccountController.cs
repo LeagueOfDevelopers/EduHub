@@ -39,7 +39,7 @@ namespace EduHub.Controllers
         public IActionResult Registrate([FromBody] RegistrationRequest request)
         {
             var newId = _authUserFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
-                request.IsTeacher, UserType.UnConfirmed);
+                request.IsTeacher);
             var response = new RegistrationResponse(newId);
             return Ok(response);
         }

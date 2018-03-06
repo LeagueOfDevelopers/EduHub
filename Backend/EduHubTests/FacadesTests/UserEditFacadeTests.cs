@@ -30,10 +30,9 @@ namespace EduHubTests
             var authUserFacade = new AuthUserFacade(keysRepository, userRepository, emailSender);
 
             _userEditFacade = new UserEditFacade(userRepository, fileRepository);
-            _userFacade = new UserFacade(userRepository, groupRepository);
+            _userFacade = new UserFacade(userRepository, groupRepository, keysRepository);
 
-            _testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
-                UserType.User);
+            _testUserId = authUserFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
         }
 
         [TestMethod]

@@ -69,7 +69,7 @@ namespace EduHub
             var publisher = eventBus.GetEventPublisher();
 
             var emailSender = new EmailSender(emailSettings);
-            var userFacade = new UserFacade(userRepository, groupRepository);
+            var userFacade = new UserFacade(userRepository, groupRepository, keysRepository);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings, publisher);
             var userEditFacade = new UserEditFacade(userRepository, fileRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings, publisher);

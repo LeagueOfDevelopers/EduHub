@@ -11,6 +11,7 @@ namespace EduHubLibrary.Domain
         void Delete(User user);
         IEnumerable<User> GetAll();
         User GetUserById(Guid userId);
+        User GetUserByEmail(string email);
         User GetUserByCredentials(Credentials credentials);
     }
 }

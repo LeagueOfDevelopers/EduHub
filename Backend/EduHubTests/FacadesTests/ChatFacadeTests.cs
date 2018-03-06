@@ -34,7 +34,7 @@ namespace EduHubTests
             var userFacade = new AuthUserFacade(keyRepository, userRepository,
                 sender);
 
-            _creatorId = userFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, UserType.User);
+            _creatorId = userFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
             _testGroupId = groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"c#"}, "Interesting",
                 3, 100, false, GroupType.Lecture);
         }

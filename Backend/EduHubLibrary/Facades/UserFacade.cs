@@ -13,13 +13,14 @@ namespace EduHubLibrary.Facades
     public class UserFacade : IUserFacade
     {
         private readonly IGroupRepository _groupRepository;
-
         private readonly IUserRepository _userRepository;
+        private readonly IKeysRepository _keysRepository;
 
-        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository)
+        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository, IKeysRepository keysRepository)
         {
             _userRepository = userRepository;
             _groupRepository = groupRepository;
+            _keysRepository = keysRepository;
         }
 
         public User GetUser(Guid id)
@@ -143,7 +144,9 @@ namespace EduHubLibrary.Facades
         {
             if (!_userRepository.GetAll().Any(user => user.UserProfile.Email == email))
             {
-                var text = string.Format(EmailTemplates.AdminInvitationEmail, "<link>");
+                var key = new Key(email, KeyAppointment.BecomeAdmin);
+                _keysRepository.AddKey(key);
+                var text = string.Format(EmailTemplates.AdminInvitationEmail, key.Value);
                 emailSender.SendMessage(adminName, email, text, EmailTemplates.AdminInvitationEmailTheme);
             }
         }

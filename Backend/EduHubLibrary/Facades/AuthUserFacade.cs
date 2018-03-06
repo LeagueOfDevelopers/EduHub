@@ -21,15 +21,12 @@ namespace EduHubLibrary.Facades
             _sender = sender;
         }
 
-        public Guid RegUser(string username, Credentials credentials, bool isTeacher, UserType userType)
+        public Guid RegUser(string username, Credentials credentials, bool isTeacher)
         {
-            Ensure.String.IsNotNullOrWhiteSpace(username);
-            Ensure.Any.IsNotNull(credentials);
-            Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
-                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
+            CheckUserExistence(username, credentials);
 
-            var user = new User(username, credentials, isTeacher, userType);
-            var key = new Key(user.Id);
+            var user = new User(username, credentials, isTeacher, UserType.UnConfirmed);
+            var key = new Key(user.Credentials.Email, KeyAppointment.ConfirmEmail);
             var text = string.Format(EmailTemplates.ConfirmEmail,
                 username, _sender.ConfirmAdress, key.Value);
             var theme = EmailTemplates.ConfirmEmailTheme;
@@ -40,15 +37,45 @@ namespace EduHubLibrary.Facades
             return user.Id;
         }
 
+        public Guid RegUser(string username, Credentials credentials, bool isTeacher, Guid regKey)
+        {
+            CheckUserExistence(username, credentials);
+
+            Ensure.Guid.IsNotEmpty(regKey);
+            var key = _keysRepository.GetKey(regKey);
+            CheckKey(key, KeyAppointment.BecomeAdmin, KeyAppointment.BecomeModerator);
+
+            var userType = key.Appointment.Equals(KeyAppointment.BecomeAdmin) ? UserType.Admin : UserType.Moderator;
+            var user = new User(username, credentials, isTeacher, userType);
+            _userRepository.Add(user);
+
+            return user.Id;
+        }
+
         public void ConfirmUser(Guid key)
         {
             Ensure.Guid.IsNotEmpty(key);
             var currentKey = _keysRepository.GetKey(key);
-            Ensure.Bool.IsFalse(currentKey.Used, nameof(currentKey.Used),
-                opt => opt.WithException(new KeyAlreadyUsedException()));
+            CheckKey(currentKey, KeyAppointment.ConfirmEmail);
 
             currentKey.UseKey();
-            _userRepository.GetUserById(currentKey.UserId).Type = UserType.User;
+            _userRepository.GetUserByEmail(currentKey.UserEmail).Type = UserType.User;
+        }
+
+        private void CheckUserExistence(string username, Credentials credentials)
+        {
+            Ensure.String.IsNotNullOrWhiteSpace(username);
+            Ensure.Any.IsNotNull(credentials);
+            Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
+                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
+        }
+
+        private void CheckKey(Key key, params KeyAppointment[] possipleAppointments)
+        {
+            Ensure.Bool.IsTrue(possipleAppointments.Contains(key.Appointment), nameof(key.Appointment),
+                opt => opt.WithException(new WrongKeyAppointmentException(key.Appointment)));
+            Ensure.Bool.IsFalse(key.Used, nameof(key.Used),
+                opt => opt.WithException(new KeyAlreadyUsedException()));
         }
     }
 }

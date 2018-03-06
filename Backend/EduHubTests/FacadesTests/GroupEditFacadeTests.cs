@@ -37,7 +37,7 @@ namespace EduHubTests
                 emailSender);
             _groupEditFacade = new GroupEditFacade(inMemoryGroupRepository, groupSettings, publisher.Object);
             _groupCreatorId =
-                _authUserFacade.RegUser("Alena", new Credentials("email", "password"), true, UserType.User);
+                _authUserFacade.RegUser("Alena", new Credentials("email", "password"), true);
         }
 
         [TestMethod]

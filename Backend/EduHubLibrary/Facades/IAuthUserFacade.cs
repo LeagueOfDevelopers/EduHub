@@ -5,7 +5,8 @@ namespace EduHubLibrary.Facades
 {
     public interface IAuthUserFacade
     {
-        Guid RegUser(string username, Credentials credentials, bool isTeacher, UserType userType);
+        Guid RegUser(string username, Credentials credentials, bool isTeacher);
+        Guid RegUser(string username, Credentials credentials, bool isTeacher, Guid regKey);
         void ConfirmUser(Guid key);
     }
 }

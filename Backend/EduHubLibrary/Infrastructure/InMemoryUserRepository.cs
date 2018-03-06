@@ -56,5 +56,10 @@ namespace EduHubLibrary.Infrastructure
                               throw new UserNotFoundException(user.Id);
             currentUser = user;
         }
+
+        public User GetUserByEmail(string email)
+        {
+            return _listOfUsers.FirstOrDefault(current => current.Credentials.Email == email);
+        }
     }
 }
