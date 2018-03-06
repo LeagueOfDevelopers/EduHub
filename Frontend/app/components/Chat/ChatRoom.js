@@ -17,12 +17,10 @@ class ChatRoom extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.scrollToBottom();
-  }
-
-  componentDidUpdate() {
-    this.scrollToBottom()
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.chat && this.props.chat && (prevProps.chat.length !== this.props.chat.length) || !prevProps.chat && this.props.chat) {
+      this.scrollToBottom()
+    }
   }
 
   scrollToBottom() {
