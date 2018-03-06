@@ -49,7 +49,13 @@ import {
   DECLINE_PLAN_SUCCESS,
   GET_CURRENT_PLAN_FAILED,
   GET_CURRENT_PLAN_START,
-  GET_CURRENT_PLAN_SUCCESS
+  GET_CURRENT_PLAN_SUCCESS,
+  GET_CURRENT_CHAT_FAILED,
+  GET_CURRENT_CHAT_START,
+  GET_CURRENT_CHAT_SUCCESS,
+  SEND_MESSAGE_FAILED,
+  SEND_MESSAGE_START,
+  SEND_MESSAGE_SUCCESS
 } from './constants';
 
 
@@ -365,6 +371,49 @@ export function getCurrentPlanSuccess(file) {
 export function getCurrentPlanFailed(error) {
   return {
     type: GET_CURRENT_PLAN_FAILED,
+    error
+  };
+}
+
+export function getCurrentChat(groupId) {
+  return {
+    type: GET_CURRENT_CHAT_START,
+    groupId
+  };
+}
+
+export function getCurrentChatSuccess(chat) {
+  return {
+    type: GET_CURRENT_CHAT_SUCCESS,
+    chat
+  };
+}
+
+export function getCurrentChatFailed(error) {
+  return {
+    type: GET_CURRENT_CHAT_FAILED,
+    error
+  };
+}
+
+export function sendMessage(groupId, text) {
+  return {
+    type: SEND_MESSAGE_START,
+    groupId,
+    text
+  };
+}
+
+export function sendMessageSuccess(messageId) {
+  return {
+    type: SEND_MESSAGE_SUCCESS,
+    messageId
+  };
+}
+
+export function sendMessageFailed(error) {
+  return {
+    type: SEND_MESSAGE_FAILED,
     error
   };
 }

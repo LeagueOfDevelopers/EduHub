@@ -50,7 +50,13 @@ import {
   DECLINE_PLAN_START,
   GET_CURRENT_PLAN_FAILED,
   GET_CURRENT_PLAN_SUCCESS,
-  GET_CURRENT_PLAN_START
+  GET_CURRENT_PLAN_START,
+  GET_CURRENT_CHAT_FAILED,
+  GET_CURRENT_CHAT_START,
+  GET_CURRENT_CHAT_SUCCESS,
+  SEND_MESSAGE_FAILED,
+  SEND_MESSAGE_START,
+  SEND_MESSAGE_SUCCESS
 } from './constants';
 import {message} from "antd";
 
@@ -58,6 +64,7 @@ const initialState = fromJS({
   username: '',
   groupId: '',
   users: [],
+  chat: null,
   currentPlan: null,
   needUpdate: false,
   pending: false,
@@ -257,6 +264,30 @@ function groupPageReducer(state = initialState, action) {
       return state
         .set('pending', false)
         .set('error', true);
+    case GET_CURRENT_CHAT_START:
+      return state
+        .set('pending', true);
+    case GET_CURRENT_CHAT_SUCCESS:
+      return state
+        .set('pending', false)
+        .set('chat', action.chat);
+    case GET_CURRENT_CHAT_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
+    case SEND_MESSAGE_START:
+      return state
+        .set('pending', true)
+        .set('needUpdate', true);
+    case SEND_MESSAGE_SUCCESS:
+      return state
+        .set('pending', false)
+        .set('needUpdate', false);
+    case SEND_MESSAGE_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true)
+        .set('needUpdate', false);
     default:
       return state;
   }

@@ -49,7 +49,6 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
     document.getElementById('xs-filter').style.display === 'block' ?
       document.getElementById('xs-filter').style.display = 'none'
       : document.getElementById('xs-filter').style.display = 'block'
-    console.log(document.getElementById('xs-filter').style.cssText)
   };
 
   render() {

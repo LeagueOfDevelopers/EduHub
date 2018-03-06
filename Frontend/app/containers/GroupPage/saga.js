@@ -29,7 +29,11 @@ import {
   declinePlanFailed,
   declinePlanSuccess,
   getCurrentPlanFailed,
-  getCurrentPlanSuccess
+  getCurrentPlanSuccess,
+  getCurrentChatSuccess,
+  getCurrentChatFailed,
+  sendMessageSuccess,
+  sendMessageFailed
 } from "./actions";
 import {
   ENTER_GROUP_START,
@@ -46,7 +50,9 @@ import {
   ADD_PLAN_START,
   ACCEPT_PLAN_START,
   DECLINE_PLAN_START,
-  GET_CURRENT_PLAN_START
+  GET_CURRENT_PLAN_START,
+  GET_CURRENT_CHAT_START,
+  SEND_MESSAGE_START
 } from "./constants";
 import config from '../../config';
 
@@ -435,6 +441,54 @@ function getCurrentPlan(filename) {
     .catch(error => error)
 }
 
+function* getCurrentChatSaga(action) {
+  try {
+    const chat = yield call(getCurrentChat, action.groupId);
+    yield put(getCurrentChatSuccess(chat));
+  }
+  catch(e) {
+    yield put(getCurrentChatFailed(e))
+  }
+}
+
+function getCurrentChat(groupId) {
+  return fetch(`${config.API_BASE_URL}/group/${groupId}/chat`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+    .then(res => res.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
+function* sendMessageSaga(action) {
+  try {
+    const messageId = yield call(sendMessage, action.groupId, action.text);
+    yield put(sendMessageSuccess(messageId));
+  }
+  catch(e) {
+    yield put(sendMessageFailed(e))
+  }
+}
+
+function sendMessage(groupId, text) {
+  return fetch(`${config.API_BASE_URL}/group/${groupId}/chat`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      text: text
+    })
+  })
+    .then(res => res.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(ENTER_GROUP_START, enterGroupSaga);
   yield takeEvery(LEAVE_GROUP_START, leaveGroupSaga);
@@ -451,4 +505,6 @@ export default function* () {
   yield takeEvery(ACCEPT_PLAN_START, acceptPlanSaga);
   yield takeEvery(DECLINE_PLAN_START, declinePlanSaga);
   yield takeEvery(GET_CURRENT_PLAN_START, getCurrentPlanSaga);
+  yield takeEvery(GET_CURRENT_CHAT_START, getCurrentChatSaga);
+  yield takeEvery(SEND_MESSAGE_START, sendMessageSaga);
 }

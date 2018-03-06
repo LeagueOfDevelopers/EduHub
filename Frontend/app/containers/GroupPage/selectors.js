@@ -20,8 +20,14 @@ const makeSelectPlan = () => createSelector(
   (groupPageState) => groupPageState.get('currentPlan')
 );
 
+const makeSelectChat = () => createSelector(
+  selectGroupPage,
+  (groupPageState) => groupPageState.get('chat')
+);
+
 export {
   makeSelectUsers,
   makeSelectNeedUpdate,
-  makeSelectPlan
+  makeSelectPlan,
+  makeSelectChat
 };

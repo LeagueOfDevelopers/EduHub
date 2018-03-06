@@ -23,9 +23,10 @@ import {
   editGroupPrice,
   editPrivacy,
   editGroupType,
-  getCurrentPlan
+  getCurrentPlan,
+  getCurrentChat
 } from "./actions";
-import { makeSelectNeedUpdate, makeSelectPlan } from "./selectors";
+import { makeSelectNeedUpdate, makeSelectPlan, makeSelectChat } from "./selectors";
 import {Link} from "react-router-dom";
 import config from "../../config";
 import {getGroupType, parseJwt, getMemberRole} from "../../globalJS";
@@ -172,7 +173,7 @@ export class GroupPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.needUpdate !== this.props.needUpdate) {
+    if(!prevProps.needUpdate && this.props.needUpdate) {
       this.getCurrentGroup();
     }
   }
@@ -201,7 +202,18 @@ export class GroupPage extends React.Component {
     });
     this.state.groupData.groupInfo.curriculum ?
       setTimeout(() => this.props.getCurrentPlan(this.state.groupData.groupInfo.curriculum), 0)
-      : null
+      : null;
+    this.props.getCurrentChat(this.state.id);
+
+    let loop = 0;
+    setInterval(() => {
+      loop++;
+      if(loop === 5) {
+        this.props.getCurrentChat(this.state.id);
+        loop = 0;
+      }
+    }, 1000);
+
   }
 
   onChangeTitleHandle = (e) => {
@@ -437,7 +449,9 @@ export class GroupPage extends React.Component {
               </Row>
             </Row>
             <Row style={{width: '100%'}}>
-              <Chat isInGroup={this.state.isInGroup}/>
+              {
+                <Chat chat={this.props.currentChat} groupId={this.state.id} isInGroup={this.state.isInGroup}/>
+              }
             </Row>
           </Col>
         </Col>
@@ -473,7 +487,8 @@ GroupPage.defaultProps = {
 
 const mapStateToProps = createStructuredSelector({
   needUpdate: makeSelectNeedUpdate(),
-  currentPlan: makeSelectPlan()
+  currentPlan: makeSelectPlan(),
+  currentChat: makeSelectChat()
 });
 
 function mapDispatchToProps(dispatch) {
@@ -487,7 +502,8 @@ function mapDispatchToProps(dispatch) {
     editGroupPrice: (id, price) => dispatch(editGroupPrice(id, price)),
     editPrivacy: (id, isPrivate) => dispatch(editPrivacy(id, isPrivate)),
     editGroupType: (id, type) => dispatch(editGroupType(id, type)),
-    getCurrentPlan: (filename) => dispatch(getCurrentPlan(filename))
+    getCurrentPlan: (filename) => dispatch(getCurrentPlan(filename)),
+    getCurrentChat: (groupId) => dispatch(getCurrentChat(groupId))
   };
 }
 

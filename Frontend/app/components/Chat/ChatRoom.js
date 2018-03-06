@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { sendMessage } from "../../containers/GroupPage/actions";
 import {Input} from 'antd';
 import Message from './Message';
 
-export default class ChatRoom extends React.Component {
+class ChatRoom extends React.Component {
   constructor(props) {
     super(props);
 
@@ -37,15 +40,18 @@ export default class ChatRoom extends React.Component {
     }
 
     (ReactDom.findDOMNode(this.msgInput).value !== '' && this.props.isInGroup) ?
-      this.setState({
-        messages: this.state.messages.concat([
-          {
-            username: localStorage.getItem('name'),
-            content: ReactDom.findDOMNode(this.msgInput).value,
-            time: new Date().getHours() + ':' + (new Date().getMinutes()<10 ? '0' : '') + new Date().getMinutes()
-          }
-        ])
-      })
+      localStorage.getItem('withoutServer') === 'true' ?
+        this.setState({
+          messages: this.state.messages.concat([
+            {
+              id: Math.random(),
+              username: localStorage.getItem('name'),
+              content: ReactDom.findDOMNode(this.msgInput).value,
+              time: new Date().getHours() + ':' + (new Date().getMinutes()<10 ? '0' : '') + new Date().getMinutes()
+            }
+          ])
+        })
+        : this.props.sendMessage(this.props.groupId, ReactDom.findDOMNode(this.msgInput).value)
       : null;
 
     ReactDom.findDOMNode(this.msgInput).value = '';
@@ -56,10 +62,16 @@ export default class ChatRoom extends React.Component {
       <div className='chatroom'>
         <div className='header'>Чат</div>
         <ul className='chat' ref={chat => this.chat = chat}>
-          {
+          {localStorage.getItem('withoutServer') === 'true' ?
             this.state.messages.map(msg =>
-              <Message message={msg} user={localStorage.getItem('name')}/>
+              <Message key={msg.id} message={msg} user={localStorage.getItem('name')}/>
             )
+            :
+            this.props.chat ?
+              this.props.chat.map(msg =>
+                <Message key={msg.id} message={msg}/>
+            )
+              : null
           }
         </ul>
         <form className='input' onSubmit={event => this.submitMessage(event)}>
@@ -81,6 +93,18 @@ ChatRoom.propTypes = {
   username: PropTypes.string,
   content: PropTypes.string,
   time: PropTypes.string,
-  messages: PropTypes.array
+  messages: PropTypes.array,
+  senderId: PropTypes.string
 };
 
+const mapStateToProps = createStructuredSelector({
+
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    sendMessage: (groupId, text) => dispatch(sendMessage(groupId, text))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatRoom)
