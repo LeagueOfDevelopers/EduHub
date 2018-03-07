@@ -8,13 +8,13 @@ using EnsureThat;
 
 namespace EduHubLibrary.Facades
 {
-    public class AuthUserFacade : IAuthUserFacade
+    public class AccountFacade : IAccountFacade
     {
         private readonly IKeysRepository _keysRepository;
         private readonly EmailSender _sender;
         private readonly IUserRepository _userRepository;
 
-        public AuthUserFacade(IKeysRepository keysRepository, IUserRepository userRepository, EmailSender sender)
+        public AccountFacade(IKeysRepository keysRepository, IUserRepository userRepository, EmailSender sender)
         {
             _keysRepository = keysRepository;
             _userRepository = userRepository;
@@ -60,6 +60,42 @@ namespace EduHubLibrary.Facades
 
             currentKey.UseKey();
             _userRepository.GetUserByEmail(currentKey.UserEmail).Type = UserType.User;
+        }
+        
+        public void CheckAdminExistence(string email, string adminName)
+        {
+            if (!_userRepository.GetAll().Any(user => user.UserProfile.Email == email))
+            {
+                var key = new Key(email, KeyAppointment.BecomeAdmin);
+                _keysRepository.AddKey(key);
+                var text = string.Format(EmailTemplates.AdminInvitationEmail, key.Value);
+                _sender.SendMessage(adminName, email, text, EmailTemplates.AdminInvitationEmailTheme);
+            }
+        }
+
+        public void ChangePassword(Guid userId, string newPassword)
+        {
+            Ensure.String.IsNotNullOrWhiteSpace(newPassword);
+            _userRepository.GetUserById(userId).ChangePassword(newPassword);
+        }
+
+        public void ChangePassword(string newPassword, Guid key)
+        {
+            Ensure.String.IsNotNullOrWhiteSpace(newPassword);
+            var currentKey = _keysRepository.GetKey(key);
+            CheckKey(currentKey, KeyAppointment.ChangePassword);
+
+            _userRepository.GetUserByEmail(currentKey.UserEmail).ChangePassword(newPassword);
+            currentKey.UseKey();
+        }
+
+        public void SendQueryToChangePassword(string email)
+        {
+            var username = _userRepository.GetUserByEmail(email).UserProfile.Name;
+            var key = new Key(email, KeyAppointment.ChangePassword);
+            _keysRepository.AddKey(key);
+            var text = string.Format(EmailTemplates.RestorePasswordEmail, username, key.Value);
+            _sender.SendMessage(username, email, text, EmailTemplates.RestorePasswordEmailTheme);
         }
 
         private void CheckUserExistence(string username, Credentials credentials)

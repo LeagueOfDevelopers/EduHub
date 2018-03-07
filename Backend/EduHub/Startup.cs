@@ -75,7 +75,7 @@ namespace EduHub
             var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings, publisher);
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository);
-            var authUserFacade = new AuthUserFacade(keysRepository, userRepository, emailSender);
+            var userAccountFacade = new AccountFacade(keysRepository, userRepository, emailSender);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IFileFacade>(fileFacade);
@@ -83,11 +83,11 @@ namespace EduHub
             services.AddSingleton<IGroupEditFacade>(groupEditFacade);
             services.AddSingleton<IUserEditFacade>(userEditFacade);
             services.AddSingleton<ITagFacade>(tagFacade);
-            services.AddSingleton<IAuthUserFacade>(authUserFacade);
+            services.AddSingleton<IAccountFacade>(userAccountFacade);
             services.AddSingleton(Env);
 
-            userFacade.CheckAdminExistence(Configuration.GetValue<string>("AdminEmail"),
-                Configuration.GetValue<string>("AdminName"), emailSender);
+            userAccountFacade.CheckAdminExistence(Configuration.GetValue<string>("AdminEmail"),
+                Configuration.GetValue<string>("AdminName"));
 
             services.AddSwaggerGen(current =>
             {

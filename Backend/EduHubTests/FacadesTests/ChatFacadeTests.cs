@@ -31,10 +31,10 @@ namespace EduHubTests
             var emailSettings = new EmailSettings("", "", "", "", "", 3);
             var sender = new EmailSender(emailSettings);
             var groupFacade = new GroupFacade(_groupRepository, userRepository, groupSettings, publisher.Object);
-            var userFacade = new AuthUserFacade(keyRepository, userRepository,
+            var accountFacade = new AccountFacade(keyRepository, userRepository,
                 sender);
 
-            _creatorId = userFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
+            _creatorId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
             _testGroupId = groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"c#"}, "Interesting",
                 3, 100, false, GroupType.Lecture);
         }

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdminInvitationEmail" xml:space="preserve">
-    <value>Вы приглашены на роль главного администратора сайта EduHub. Для принятия пришлашения перейдите по ссылке {0}</value>
+    <value>Вы приглашены на роль главного администратора сайта EduHub. Для принятия пришлашения используйте код {0}</value>
   </data>
   <data name="AdminInvitationEmailTheme" xml:space="preserve">
     <value>Приглашение на роль администратора</value>
@@ -130,5 +130,11 @@
   </data>
   <data name="ConfirmEmailTheme" xml:space="preserve">
     <value>Регистрация на EduHub</value>
+  </data>
+  <data name="RestorePasswordEmail" xml:space="preserve">
+    <value>{0}, для восстановления пароля на сайте EduHub используйте код {1}</value>
+  </data>
+  <data name="RestorePasswordEmailTheme" xml:space="preserve">
+    <value>Восстановление пароля</value>
   </data>
 </root>

@@ -15,7 +15,7 @@ namespace EduHubTests
     [TestClass]
     public class GroupEditFacadeTests
     {
-        private IAuthUserFacade _authUserFacade;
+        private IAccountFacade _accountFacade;
         private Guid _groupCreatorId;
         private IGroupEditFacade _groupEditFacade;
         private IGroupFacade _groupFacade;
@@ -33,11 +33,11 @@ namespace EduHubTests
 
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository,
                 new GroupSettings(3, 100, 0, 1000), publisher.Object);
-            _authUserFacade = new AuthUserFacade(inMemoryKeyRepository, inMemoryUserRepository,
+            _accountFacade = new AccountFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender);
             _groupEditFacade = new GroupEditFacade(inMemoryGroupRepository, groupSettings, publisher.Object);
             _groupCreatorId =
-                _authUserFacade.RegUser("Alena", new Credentials("email", "password"), true);
+                _accountFacade.RegUser("Alena", new Credentials("email", "password"), true);
         }
 
         [TestMethod]

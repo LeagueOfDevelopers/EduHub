@@ -14,7 +14,7 @@ using System.Text;
 namespace EduHubTests.FacadesTests
 {
     [TestClass]
-    public class AuthUserFacadeTests
+    public class AccountFacadeTests
     {
         private EmailSender _emailSender;
         private IGroupRepository _groupRepository;
@@ -36,7 +36,7 @@ namespace EduHubTests.FacadesTests
         public void RegistrateNewUser_UserWasRegistrated()
         {
             //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository,
+            var accountFacade = new AccountFacade(_keysRepository,
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
             var expectedName = "yaroslav";
@@ -46,7 +46,7 @@ namespace EduHubTests.FacadesTests
             var expectedStatus = false;
 
             //Act
-            var userId = authUserFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass),
+            var userId = accountFacade.RegUser(expectedName, Credentials.FromRawData(expectedEmail, expectedPass),
                 expectedStatus);
             var currentUser = userFacade.GetUser(userId);
 
@@ -60,13 +60,13 @@ namespace EduHubTests.FacadesTests
         public void RegistrateAdminUsingRightKey_AdminWasRegistrated()
         {
             //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository, _userRepository, _emailSender);
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
             var key = new Key("email", KeyAppointment.BecomeAdmin);
             _keysRepository.AddKey(key);
 
             //Act
-            var userId = authUserFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, key.Value);
+            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, key.Value);
             var currentUser = userFacade.GetUser(userId);
 
             //Assert
@@ -78,13 +78,13 @@ namespace EduHubTests.FacadesTests
         public void RegistrateAdminUsingWrongTypeKey_GetException()
         {
             //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository, _userRepository, _emailSender);
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
             var key = new Key("email", KeyAppointment.ChangePassword);
             _keysRepository.AddKey(key);
 
             //Act
-            var userId = authUserFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, key.Value);
+            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, key.Value);
         }
 
         [TestMethod]
@@ -92,27 +92,27 @@ namespace EduHubTests.FacadesTests
         public void RegistrateAdminUsingAlreadyUsedKey_GetException()
         {
             //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository, _userRepository, _emailSender);
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
             var key = new Key("email", KeyAppointment.BecomeAdmin);
             _keysRepository.AddKey(key);
 
             //Act
             key.UseKey();
-            var userId = authUserFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, key.Value);
+            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, key.Value);
         }
 
         [TestMethod]
         public void RegistrateModeratorUsingRightKey_ModeratorWasRegistrated()
         {
             //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository, _userRepository, _emailSender);
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
             var key = new Key("email", KeyAppointment.BecomeModerator);
             _keysRepository.AddKey(key);
 
             //Act
-            var userId = authUserFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, key.Value);
+            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true, key.Value);
             var currentUser = userFacade.GetUser(userId);
 
             //Assert
@@ -123,18 +123,56 @@ namespace EduHubTests.FacadesTests
         public void ConfirmUserUsingRightKey_GetConfirmedUser()
         {
             //Arrange
-            var authUserFacade = new AuthUserFacade(_keysRepository, _userRepository, _emailSender);
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
             var key = new Key("email", KeyAppointment.ConfirmEmail);
             _keysRepository.AddKey(key);
-            var userId = authUserFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
+            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
 
             //Act
-            authUserFacade.ConfirmUser(key.Value);
+            accountFacade.ConfirmUser(key.Value);
             var currentUser = userFacade.GetUser(userId);
 
             //Assert
             Assert.AreEqual(UserType.User, currentUser.Type);
+            Assert.AreEqual(true, key.Used);
+        }
+
+        [TestMethod]
+        public void ChangePassword_GetChangedPassword()
+        {
+            //Arrange
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
+            var expectedPasswordHash = Credentials.FromRawData("someEmail", "newPassword").PasswordHash;
+            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
+
+            //Act
+            accountFacade.ChangePassword(userId, "newPassword");
+            var currentUser = userFacade.GetUser(userId);
+
+            //Assert
+            Assert.AreEqual(expectedPasswordHash, currentUser.Credentials.PasswordHash);
+        }
+
+        [TestMethod]
+        public void ChangePasswordWithKey_GetChangedPassword()
+        {
+            //Arrange
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
+            var expectedPasswordHash = Credentials.FromRawData("someEmail", "newPassword").PasswordHash;
+            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
+
+            var key = new Key("email", KeyAppointment.ChangePassword);
+            _keysRepository.AddKey(key);
+
+            //Act
+            accountFacade.ChangePassword("newPassword", key.Value);
+            var currentUser = userFacade.GetUser(userId);
+
+            //Assert
+            Assert.AreEqual(expectedPasswordHash, currentUser.Credentials.PasswordHash);
             Assert.AreEqual(true, key.Used);
         }
     }

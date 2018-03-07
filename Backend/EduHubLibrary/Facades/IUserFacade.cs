@@ -20,7 +20,5 @@ namespace EduHubLibrary.Facades
         IEnumerable<UserInviteInfo> FindUsersForInvite(string name, Guid groupId);
         IEnumerable<string> GetNotifies(Guid userId);
         void AddNotify(Guid userId, string notify);
-        void ChangePassword(Guid userId, string newPassword);
-        void CheckAdminExistence(string email, string adminName, EmailSender emailSender);
     }
 }

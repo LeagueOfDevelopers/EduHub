@@ -61,7 +61,7 @@ namespace EduHubLibrary.Mailing {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Вы приглашены на роль главного администратора сайта EduHub. Для принятия пришлашения перейдите по ссылке {0}.
+        ///   Ищет локализованную строку, похожую на Вы приглашены на роль главного администратора сайта EduHub. Для принятия пришлашения используйте код {0}.
         /// </summary>
         internal static string AdminInvitationEmail {
             get {
@@ -95,6 +95,24 @@ namespace EduHubLibrary.Mailing {
         internal static string ConfirmEmailTheme {
             get {
                 return ResourceManager.GetString("ConfirmEmailTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}, для восстановления пароля на сайте EduHub используйте код {1}.
+        /// </summary>
+        internal static string RestorePasswordEmail {
+            get {
+                return ResourceManager.GetString("RestorePasswordEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Восстановление пароля.
+        /// </summary>
+        internal static string RestorePasswordEmailTheme {
+            get {
+                return ResourceManager.GetString("RestorePasswordEmailTheme", resourceCulture);
             }
         }
     }

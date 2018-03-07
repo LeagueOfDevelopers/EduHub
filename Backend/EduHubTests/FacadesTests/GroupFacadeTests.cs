@@ -17,7 +17,7 @@ namespace EduHubTests
     [TestClass]
     public class GroupFacadeTests
     {
-        private IAuthUserFacade _authUserFacade;
+        private IAccountFacade _accountFacade;
         private User _groupCreator;
         private IGroupFacade _groupFacade;
         private IUserFacade _userFacade;
@@ -36,9 +36,9 @@ namespace EduHubTests
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository,
                 new GroupSettings(3, 100, 0, 1000), publisher.Object);
             _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, inMemoryKeyRepository);
-            _authUserFacade = new AuthUserFacade(inMemoryKeyRepository, inMemoryUserRepository,
+            _accountFacade = new AccountFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender);
-            var creatorId = _authUserFacade.RegUser("Alena", new Credentials("email", "password"), true);
+            var creatorId = _accountFacade.RegUser("Alena", new Credentials("email", "password"), true);
             _groupCreator = _userFacade.GetUser(creatorId);
         }
 
@@ -72,7 +72,7 @@ namespace EduHubTests
         public void CreateGroupByGroupFacadeWithValidValues_GroupWasCreated()
         {
             //Arrange
-            var creatorId = _authUserFacade.RegUser("Alena", Credentials.FromRawData("Email", "Password"), false);
+            var creatorId = _accountFacade.RegUser("Alena", Credentials.FromRawData("Email", "Password"), false);
             var title = "some group";
             var description = "some description";
             var tags = new List<string> {"c#"};
@@ -104,7 +104,7 @@ namespace EduHubTests
         public void TryToCreateGroupWithInvalidSettings_GetException()
         {
             //Arrange
-            var creatorId = _authUserFacade.RegUser("Alena", Credentials.FromRawData("Email", "Password"), false);
+            var creatorId = _accountFacade.RegUser("Alena", Credentials.FromRawData("Email", "Password"), false);
 
             //Act
             _groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"},
@@ -129,7 +129,7 @@ namespace EduHubTests
             //Arrange
             var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
-            var teacherId = _authUserFacade.RegUser("Teacher", Credentials.FromRawData("email2", "password"), true);
+            var teacherId = _accountFacade.RegUser("Teacher", Credentials.FromRawData("email2", "password"), true);
             _groupFacade.ApproveTeacher(teacherId, createdGroupId);
             var expected = 1;
             //Act
