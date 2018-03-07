@@ -38,8 +38,14 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult Registrate([FromBody] RegistrationRequest request)
         {
-            var newId = _authUserFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
+            Guid newId;
+
+            if (!request.InviteCode.Equals(Guid.Empty))
+                newId = _authUserFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
+                request.IsTeacher, request.InviteCode);
+            else newId = _authUserFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
                 request.IsTeacher);
+            
             var response = new RegistrationResponse(newId);
             return Ok(response);
         }
@@ -56,10 +62,16 @@ namespace EduHub.Controllers
             var creditials = Credentials.FromRawData(loginRequest.Email, loginRequest.Password);
             var client = _userFacade.FindByCredentials(creditials);
 
+            string roleClaim;
+            if (client.Type.Equals(UserType.Admin)) roleClaim = Claims.Roles.Admin;
+            else if (client.Type.Equals(UserType.Moderator)) roleClaim = Claims.Roles.Moderator;
+            else if (client.Type.Equals(UserType.User)) roleClaim = Claims.Roles.User;
+            else roleClaim = Claims.Roles.UnConfirmed;
+
             if (client != null)
             {
                 var response = new LoginResponse(client.UserProfile.Name, client.Credentials.Email,
-                    client.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(Claims.Roles.User, client.Id),
+                    client.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(roleClaim, client.Id),
                     client.UserProfile.IsTeacher);
                 return Ok(response);
             }

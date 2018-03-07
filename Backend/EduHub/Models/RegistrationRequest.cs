@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace EduHub.Models
 {
@@ -18,6 +19,6 @@ namespace EduHub.Models
 
         [Required] public bool IsTeacher { get; set; }
 
-        public string InviteCode { get; set; }
+        public Guid InviteCode { get; set; }
     }
 }

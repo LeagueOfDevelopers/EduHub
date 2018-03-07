@@ -201,11 +201,11 @@ namespace EduHub
 
                     options.AddPolicy("GeneralAdminOnly",
                         new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                            .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.GeneralAdmin).Build());
+                            .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Admin).Build());
 
                     options.AddPolicy("AdminsOnly",
                         new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                            .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Admin, Claims.Roles.GeneralAdmin)
+                            .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Moderator, Claims.Roles.Admin)
                             .Build());
                 });
         }

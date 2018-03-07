@@ -39,12 +39,12 @@ namespace EduHubLibrary.Domain
             TeacherProfile.Skills = skills;
         }
 
-        public void BecomeAdmin()
+        public void BecomeModerator()
         {
-            Type = UserType.Admin;
+            Type = UserType.Moderator;
         }
 
-        public void StopToBeAdmin()
+        public void StopToBeModerator()
         {
             Type = UserType.User;
         }

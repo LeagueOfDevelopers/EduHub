@@ -75,26 +75,26 @@ namespace EduHubTests
         }
 
         [TestMethod]
-        public void ChangeUserTypeToAdmin_UserBecameAdmin()
+        public void ChangeUserTypeToModerator_UserBecameModerator()
         {
             //Arrange
             var testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.User);
 
             //Act
-            testUser.BecomeAdmin();
+            testUser.BecomeModerator();
 
             //Assert
-            Assert.AreEqual(UserType.Admin, testUser.Type);
+            Assert.AreEqual(UserType.Moderator, testUser.Type);
         }
 
         [TestMethod]
-        public void ChangeUserTypeToUser_AdminBecameUser()
+        public void ChangeUserTypeToUser_ModeratorBecameUser()
         {
             //Arrange
             var testUser = new User("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, UserType.Admin);
 
             //Act
-            testUser.StopToBeAdmin();
+            testUser.StopToBeModerator();
 
             //Assert
             Assert.AreEqual(UserType.User, testUser.Type);
