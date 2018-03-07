@@ -140,7 +140,7 @@ namespace EduHubLibrary.Facades
             return result;
         }
 
-        public void CheckGeneralAdminExistence(string email, string adminName, EmailSender emailSender)
+        public void CheckAdminExistence(string email, string adminName, EmailSender emailSender)
         {
             if (!_userRepository.GetAll().Any(user => user.UserProfile.Email == email))
             {
@@ -149,6 +149,12 @@ namespace EduHubLibrary.Facades
                 var text = string.Format(EmailTemplates.AdminInvitationEmail, key.Value);
                 emailSender.SendMessage(adminName, email, text, EmailTemplates.AdminInvitationEmailTheme);
             }
+        }
+
+        public void ChangePassword(Guid userId, string newPassword)
+        {
+            Ensure.String.IsNotNullOrWhiteSpace(newPassword);
+            _userRepository.GetUserById(userId).ChangePassword(newPassword);
         }
     }
 }

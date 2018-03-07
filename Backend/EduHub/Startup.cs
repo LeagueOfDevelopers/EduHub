@@ -86,7 +86,7 @@ namespace EduHub
             services.AddSingleton<IAuthUserFacade>(authUserFacade);
             services.AddSingleton(Env);
 
-            userFacade.CheckGeneralAdminExistence(Configuration.GetValue<string>("AdminEmail"),
+            userFacade.CheckAdminExistence(Configuration.GetValue<string>("AdminEmail"),
                 Configuration.GetValue<string>("AdminName"), emailSender);
 
             services.AddSwaggerGen(current =>
@@ -199,14 +199,13 @@ namespace EduHub
                         new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                             .RequireAuthenticatedUser().Build();
 
-                    options.AddPolicy("GeneralAdminOnly",
+                    options.AddPolicy("AdminOnly",
                         new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                             .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Admin).Build());
 
-                    options.AddPolicy("AdminsOnly",
+                    options.AddPolicy("ModeratorsOnly",
                         new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                            .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Moderator, Claims.Roles.Admin)
-                            .Build());
+                            .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Moderator).Build());
                 });
         }
     }

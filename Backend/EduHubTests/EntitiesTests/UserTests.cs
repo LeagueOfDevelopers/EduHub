@@ -243,5 +243,19 @@ namespace EduHubTests
             //Act
             testUser.AddNotify(" ");
         }
+
+        [TestMethod]
+        public void ChangeUserPassword_GetChangedPassword()
+        {
+            //Arrange
+            var testUser = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
+            var expected = Credentials.FromRawData("email", "NewPassword").PasswordHash;
+
+            //Act
+            testUser.ChangePassword("NewPassword");
+
+            //Assert
+            Assert.AreEqual(expected, testUser.Credentials.PasswordHash);
+        }
     }
 }

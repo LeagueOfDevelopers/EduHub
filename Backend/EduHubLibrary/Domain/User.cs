@@ -25,7 +25,7 @@ namespace EduHubLibrary.Domain
             Notifies = new List<string>();
         }
 
-        public Credentials Credentials { get; }
+        public Credentials Credentials { get; private set; }
         public UserType Type { get; set; }
         public TeacherProfile TeacherProfile { get; }
         public UserProfile UserProfile { get; }
@@ -96,6 +96,12 @@ namespace EduHubLibrary.Domain
         {
             Ensure.String.IsNotNullOrWhiteSpace(notify);
             Notifies.Add(notify);
+        }
+
+        internal void ChangePassword(string newPassword)
+        {
+            var newCredentials = Credentials.FromRawData(Credentials.Email, newPassword);
+            Credentials = newCredentials;
         }
     }
 }
