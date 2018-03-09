@@ -6,7 +6,8 @@ namespace EduHub.Models
 {
     public class ChangeStatusOfInvitationRequest
     {
-        [Required] public Guid InvitationId { get; set; }
+        [Required]
+        public int InvitationId { get; set; }
 
         /// <summary>New invitation status</summary>
         [Required]

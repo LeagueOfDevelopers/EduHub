@@ -83,7 +83,7 @@ namespace EduHub.Controllers
         [Route("{groupId}/title")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupTitle([FromBody] EditGroupTitleRequest request, [FromRoute] Guid groupId)
+        public IActionResult EditGroupTitle([FromBody] EditGroupTitleRequest request, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupEditFacade.ChangeGroupTitle(groupId, userId, request.GroupTitle);
@@ -99,7 +99,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult EditGroupDescription([FromBody] EditGroupDescriptionRequest request,
-            [FromRoute] Guid groupId)
+            [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupEditFacade.ChangeGroupDescription(groupId, userId, request.GroupDescription);
@@ -114,7 +114,7 @@ namespace EduHub.Controllers
         [Route("{groupId}/tags")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupTags([FromBody] EditGroupTagsRequest request, [FromRoute] Guid groupId)
+        public IActionResult EditGroupTags([FromBody] EditGroupTagsRequest request, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupEditFacade.ChangeGroupTags(groupId, userId, request.GroupTags);
@@ -129,7 +129,7 @@ namespace EduHub.Controllers
         [Route("{groupId}/size")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupSize([FromBody] EditGroupSizeRequest request, [FromRoute] Guid groupId)
+        public IActionResult EditGroupSize([FromBody] EditGroupSizeRequest request, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupEditFacade.ChangeGroupSize(groupId, userId, request.GroupSize);
@@ -144,7 +144,7 @@ namespace EduHub.Controllers
         [Route("{groupId}/price")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupPrice([FromBody] EditGroupPriceRequest request, [FromRoute] Guid groupId)
+        public IActionResult EditGroupPrice([FromBody] EditGroupPriceRequest request, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupEditFacade.ChangeGroupPrice(groupId, userId, request.GroupPrice);
@@ -159,7 +159,7 @@ namespace EduHub.Controllers
         [Route("{groupId}/type")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupType([FromBody] EditGroupTypeRequest request, [FromRoute] Guid groupId)
+        public IActionResult EditGroupType([FromBody] EditGroupTypeRequest request, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupEditFacade.ChangeGroupType(groupId, userId, request.GroupType);
@@ -174,7 +174,7 @@ namespace EduHub.Controllers
         [Route("{groupId}/privacy")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult EditGroupPrivacy([FromBody] EditGroupPrivacyRequest request, [FromRoute] Guid groupId)
+        public IActionResult EditGroupPrivacy([FromBody] EditGroupPrivacyRequest request, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupEditFacade.ChangeGroupPrivacy(groupId, userId, request.IsPrivate);
@@ -214,7 +214,7 @@ namespace EduHub.Controllers
         [Route("{groupId}")]
         [SwaggerResponse(200, Type = typeof(GroupResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult GetGroup([FromRoute] Guid groupId)
+        public IActionResult GetGroup([FromRoute] int groupId)
         {
             var group = _groupFacade.GetGroup(groupId);
             var groupInfoView = group.GroupInfoView;

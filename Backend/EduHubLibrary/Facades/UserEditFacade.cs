@@ -20,28 +20,28 @@ namespace EduHubLibrary.Facades
             _fileRepository = fileRepository;
         }
 
-        public void EditName(Guid userId, string newName)
+        public void EditName(int userId, string newName)
         {
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.Name = Ensure.Any.IsNotNull(newName);
             _userRepository.Update(currentUser);
         }
 
-        public void EditAboutUser(Guid userId, string newAboutUser)
+        public void EditAboutUser(int userId, string newAboutUser)
         {
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.AboutUser = Ensure.Any.IsNotNull(newAboutUser);
             _userRepository.Update(currentUser);
         }
 
-        public void EditGender(Guid userId, Gender gender)
+        public void EditGender(int userId, Gender gender)
         {
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.Gender = gender;
             _userRepository.Update(currentUser);
         }
 
-        public void EditAvatarLink(Guid userId, string newAvatarLink)
+        public void EditAvatarLink(int userId, string newAvatarLink)
         {
             Ensure.Any.IsNotNull(newAvatarLink);
             var currentUser = _userRepository.GetUserById(userId);
@@ -60,7 +60,7 @@ namespace EduHubLibrary.Facades
             _userRepository.Update(currentUser);
         }
 
-        public void EditContacts(Guid userId, List<string> newContactData)
+        public void EditContacts(int userId, List<string> newContactData)
         {
             var currentUser = _userRepository.GetUserById(userId);
 
@@ -73,7 +73,7 @@ namespace EduHubLibrary.Facades
             _userRepository.Update(currentUser);
         }
 
-        public void EditBirthYear(Guid userId, int newYear)
+        public void EditBirthYear(int userId, int newYear)
         {
             var currentUser = _userRepository.GetUserById(userId);
 
@@ -85,14 +85,14 @@ namespace EduHubLibrary.Facades
             _userRepository.Update(currentUser);
         }
 
-        public void BecomeTeacher(Guid userId)
+        public void BecomeTeacher(int userId)
         {
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.IsTeacher = true;
             _userRepository.Update(currentUser);
         }
 
-        public void StopToBeTeacher(Guid userId)
+        public void StopToBeTeacher(int userId)
         {
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.IsTeacher = false;

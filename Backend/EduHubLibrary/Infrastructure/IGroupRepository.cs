@@ -9,7 +9,7 @@ namespace EduHubLibrary.Domain
         void Delete(Group group);
         void Update(Group group);
         IEnumerable<Group> GetAll();
-        Group GetGroupById(Guid id);
-        IEnumerable<Group> GetGroupsByMemberId(Guid memberId);
+        Group GetGroupById(int id);
+        IEnumerable<Group> GetGroupsByMemberId(int memberId);
     }
 }

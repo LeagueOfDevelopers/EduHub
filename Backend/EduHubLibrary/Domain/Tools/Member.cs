@@ -4,7 +4,7 @@ namespace EduHubLibrary.Domain.Tools
 {
     public class Member
     {
-        internal Member(Guid userId, MemberRole memberRole)
+        internal Member(int userId, MemberRole memberRole)
         {
             UserId = userId;
             MemberRole = memberRole;
@@ -12,7 +12,7 @@ namespace EduHubLibrary.Domain.Tools
             CurriculumStatus = MemberCurriculumStatus.InProgress;
         }
 
-        public Guid UserId { get; }
+        public int UserId { get; }
         public MemberRole MemberRole { get; internal set; }
         public bool Paid { get; internal set; }
         public MemberCurriculumStatus CurriculumStatus { get; internal set; }

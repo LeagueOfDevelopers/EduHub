@@ -12,6 +12,10 @@ namespace EduHubLibrary.Domain.Tools
             Contacts = new List<string>();
         }
 
+        internal UserProfile()
+        {
+        }
+
         public string Name { get; internal set; }
         public string Email { get; internal set; }
         public string AboutUser { get; internal set; }

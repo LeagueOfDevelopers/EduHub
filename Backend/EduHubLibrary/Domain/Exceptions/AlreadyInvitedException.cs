@@ -9,7 +9,7 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public AlreadyInvitedException(Guid userId, Guid groupId)
+        public AlreadyInvitedException(int userId, int groupId)
             : base($"user with id {userId} is already invited to group with id {groupId}")
         {
         }

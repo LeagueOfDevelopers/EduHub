@@ -9,7 +9,7 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public ReviewAlreadyAddedException(Guid userId, Guid teacherId)
+        public ReviewAlreadyAddedException(int userId, int teacherId)
             : base($"user with id {userId} is has already added review to teacher {teacherId}")
         {
         }

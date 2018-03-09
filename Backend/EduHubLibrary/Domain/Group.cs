@@ -23,12 +23,12 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(moneyPerUser);
 
             var isActive = true;
-            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size,
+            GroupInfo = new GroupInfo(title, description, tags, groupType, isPrivate, isActive, size,
                 moneyPerUser);
             Messages = new List<Message>();
         }
 
-        public Group(Guid creatorId, string title, List<string> tags,
+        public Group(int creatorId, string title, List<string> tags,
             string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
         {
             Ensure.Any.IsNotNull(tags);
@@ -39,7 +39,7 @@ namespace EduHubLibrary.Domain
             Ensure.Any.IsNotNull(moneyPerUser);
 
             var isActive = true;
-            GroupInfo = new GroupInfo(Guid.NewGuid(), title, description, tags, groupType, isPrivate, isActive, size,
+            GroupInfo = new GroupInfo(title, description, tags, groupType, isPrivate, isActive, size,
                 moneyPerUser);
             Members = new List<Member>();
             Invitations = new List<Invitation>();
@@ -55,7 +55,7 @@ namespace EduHubLibrary.Domain
         public List<Member> Members { get; }
         public List<Invitation> Invitations { get; }
 
-        internal void AddMember(Guid newMemberId)
+        internal void AddMember(int newMemberId)
         {
             Ensure.Bool.IsTrue(GroupInfo.IsActive, nameof(AddMember),
                 opt => opt.WithException(new GroupIsNotActiveException(GroupInfo.Id)));
@@ -70,10 +70,10 @@ namespace EduHubLibrary.Domain
             Members.Add(newMember);
         }
 
-        internal void DeleteMember(Guid requestedPerson, Guid deletingPerson)
+        internal void DeleteMember(int requestedPerson, int deletingPerson)
         {
-            var deletingMember = GetMember(Ensure.Guid.IsNotEmpty(deletingPerson));
-            var requestedMember = GetMember(Ensure.Guid.IsNotEmpty(requestedPerson));
+            var deletingMember = GetMember(deletingPerson);
+            var requestedMember = GetMember(requestedPerson);
             Ensure.Bool.IsTrue(Status == CourseStatus.Searching || Status == CourseStatus.InProgress,
                 nameof(CourseStatus), opt => opt.WithException(new InvalidOperationException()));
             Ensure.Bool.IsTrue(IsMember(requestedPerson), nameof(IsMember),
@@ -92,9 +92,8 @@ namespace EduHubLibrary.Domain
             Members.Remove(deletingMember);
         }
 
-        internal void DeleteTeacher(Guid requestedPerson)
+        internal void DeleteTeacher(int requestedPerson)
         {
-            Ensure.Guid.IsNotEmpty(requestedPerson);
             Ensure.Bool.IsTrue(Status == CourseStatus.Searching || Status == CourseStatus.InProgress,
                 nameof(CourseStatus), opt => opt.WithException(new InvalidOperationException()));
 
@@ -117,17 +116,17 @@ namespace EduHubLibrary.Domain
             }
         }
 
-        internal bool IsMember(Guid userId)
+        internal bool IsMember(int userId)
         {
             return Members.FirstOrDefault(current => current.UserId == userId) != null;
         }
 
-        internal bool IsTeacher(Guid userId)
+        internal bool IsTeacher(int userId)
         {
             return Teacher.Id == userId;
         }
 
-        internal Member GetMember(Guid userId)
+        internal Member GetMember(int userId)
         {
             return Ensure.Any.IsNotNull(Members.Find(current => current.UserId == userId), nameof(GetMember),
                 opt => opt.WithException(new MemberNotFoundException(userId)));
@@ -146,9 +145,8 @@ namespace EduHubLibrary.Domain
             Teacher = Ensure.Any.IsNotNull(teacher);
         }
 
-        internal void OfferCurriculum(Guid userId, string curriculum)
+        internal void OfferCurriculum(int userId, string curriculum)
         {
-            Ensure.Guid.IsNotEmpty(userId);
             Ensure.Bool.IsTrue(IsTeacher(userId), nameof(OfferCurriculum),
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
             Ensure.Bool.IsTrue(Status == CourseStatus.Searching || Status == CourseStatus.InProgress,
@@ -160,9 +158,8 @@ namespace EduHubLibrary.Domain
             ClearMemberCourseData();
         }
 
-        internal void AcceptCurriculum(Guid userId)
+        internal void AcceptCurriculum(int userId)
         {
-            Ensure.Guid.IsNotEmpty(userId);
             Ensure.Bool.IsTrue(IsMember(userId), nameof(IsMember),
                 opt => opt.WithException(new MemberNotFoundException(userId)));
             Ensure.Bool.IsTrue(Status == CourseStatus.InProgress, nameof(AcceptCurriculum),
@@ -175,9 +172,8 @@ namespace EduHubLibrary.Domain
                 Status = CourseStatus.Started;
         }
 
-        internal void DeclineCurriculum(Guid userId)
+        internal void DeclineCurriculum(int userId)
         {
-            Ensure.Guid.IsNotEmpty(userId);
             Ensure.Bool.IsTrue(IsMember(userId), nameof(IsMember),
                 opt => opt.WithException(new MemberNotFoundException(userId)));
             Ensure.Bool.IsTrue(Status == CourseStatus.InProgress, nameof(AcceptCurriculum),
@@ -189,9 +185,8 @@ namespace EduHubLibrary.Domain
             Status = CourseStatus.Searching;
         }
 
-        internal void FinishCurriculum(Guid userId)
+        internal void FinishCurriculum(int userId)
         {
-            Ensure.Guid.IsNotEmpty(userId);
             Ensure.Bool.IsTrue(userId == Teacher.Id, nameof(userId),
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
             Ensure.Bool.IsTrue(Status == CourseStatus.Started, nameof(CourseStatus),

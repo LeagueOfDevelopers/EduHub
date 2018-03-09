@@ -38,7 +38,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult Registrate([FromBody] RegistrationRequest request)
         {
-            Guid newId;
+            int newId;
 
             if (!request.InviteCode.Equals(Guid.Empty))
                 newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),

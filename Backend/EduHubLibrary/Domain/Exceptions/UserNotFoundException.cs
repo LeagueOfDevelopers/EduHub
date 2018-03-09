@@ -5,7 +5,7 @@ namespace EduHubLibrary.Domain.Exceptions
 {
     public class UserNotFoundException : Exception
     {
-        public UserNotFoundException(Guid userId)
+        public UserNotFoundException(int userId)
             : base($"User with id {userId} not found")
         {
         }

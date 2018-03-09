@@ -6,7 +6,7 @@ namespace EduHub.Models.Tools
 {
     public class MinGroupInfo
     {
-        public MinGroupInfo(Guid id, string title, int memberAmount, int size, double cost, GroupType groupType,
+        public MinGroupInfo(int id, string title, int memberAmount, int size, double cost, GroupType groupType,
             IEnumerable<string> tags)
         {
             Id = id;
@@ -21,7 +21,7 @@ namespace EduHub.Models.Tools
         /// <summary>
         ///     group id
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
         public int MemberAmount { get; set; }

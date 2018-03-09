@@ -12,8 +12,12 @@ namespace EduHubLibrary.Common
             PasswordHash = passwordHash;
         }
 
-        public string Email { get; }
-        public string PasswordHash { get; }
+        internal Credentials()
+        {
+        }
+
+        public string Email { get; private set; }
+        public string PasswordHash { get; private set; }
 
         public static Credentials FromRawData(string email, string rawPassword)
         {

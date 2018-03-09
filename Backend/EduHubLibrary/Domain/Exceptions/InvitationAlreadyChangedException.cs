@@ -9,7 +9,7 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public InvitationAlreadyChangedException(Guid invitationId)
+        public InvitationAlreadyChangedException(int invitationId)
             : base($"Invitation with id {invitationId} already changed")
         {
         }

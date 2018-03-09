@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Facades
 {
     public interface IUserEditFacade
     {
-        void EditName(Guid userId, string newName);
-        void EditAboutUser(Guid userId, string newAboutUser);
-        void EditGender(Guid userId, Gender gender);
-        void EditAvatarLink(Guid userId, string newAvatarLink);
-        void EditContacts(Guid userId, List<string> newContactData);
-        void EditBirthYear(Guid userId, int newYear);
-        void BecomeTeacher(Guid userId);
-        void StopToBeTeacher(Guid userId);
+        void EditName(int userId, string newName);
+        void EditAboutUser(int userId, string newAboutUser);
+        void EditGender(int userId, Gender gender);
+        void EditAvatarLink(int userId, string newAvatarLink);
+        void EditContacts(int userId, List<string> newContactData);
+        void EditBirthYear(int userId, int newYear);
+        void BecomeTeacher(int userId);
+        void StopToBeTeacher(int userId);
     }
 }

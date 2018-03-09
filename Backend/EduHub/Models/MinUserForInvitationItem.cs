@@ -4,7 +4,7 @@ namespace EduHub.Models
 {
     public class MinUserForInvitationItem
     {
-        public MinUserForInvitationItem(bool invited, string username, bool isTeacher, Guid id, string email,
+        public MinUserForInvitationItem(bool invited, string username, bool isTeacher, int id, string email,
             string avatarLink)
         {
             Invited = invited;
@@ -18,7 +18,7 @@ namespace EduHub.Models
         public bool Invited { get; }
         public string Username { get; }
         public bool IsTeacher { get; }
-        public Guid Id { get; }
+        public int Id { get; }
         public string Email { get; }
         public string AvatarLink { get; }
     }

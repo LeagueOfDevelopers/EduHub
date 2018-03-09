@@ -5,10 +5,9 @@ namespace EduHubLibrary.Domain
 {
     public class GroupInfo
     {
-        public GroupInfo(Guid id, string title, string description, IEnumerable<string> tags, GroupType groupType,
+        public GroupInfo(string title, string description, IEnumerable<string> tags, GroupType groupType,
             bool isPrivate, bool isActive, int size, double price)
         {
-            Id = id;
             Title = title;
             Description = description;
             Tags = tags;
@@ -19,7 +18,7 @@ namespace EduHubLibrary.Domain
             Price = price;
         }
 
-        public Guid Id { get; }
+        public int Id { get; internal set; }
         public string Title { get; internal set; }
         public string Description { get; internal set; }
         public string Curriculum { get; internal set; }

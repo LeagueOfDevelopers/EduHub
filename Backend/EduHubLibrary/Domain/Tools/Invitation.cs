@@ -1,25 +1,26 @@
 ﻿using System;
+using EduHubLibrary.Interators;
 using EnsureThat;
 
 namespace EduHubLibrary.Domain
 {
     public class Invitation
     {
-        public Invitation(Guid fromUser, Guid toUser, Guid groupId, MemberRole suggestedRole, InvitationStatus status)
+        public Invitation(int fromUser, int toUser, int groupId, MemberRole suggestedRole, InvitationStatus status)
         {
-            Id = Guid.NewGuid();
+            Id = IntIterator.GetNextId();
             SuggestedRole = suggestedRole;
             Status = Ensure.Any.IsNotNull(status);
-            GroupId = Ensure.Guid.IsNotEmpty(groupId);
-            FromUser = Ensure.Guid.IsNotEmpty(fromUser);
-            ToUser = Ensure.Guid.IsNotEmpty(toUser);
+            GroupId = groupId;
+            FromUser = fromUser;
+            ToUser = toUser;
         }
 
         public InvitationStatus Status { get; set; }
-        public Guid GroupId { get; }
-        public Guid FromUser { get; }
-        public Guid ToUser { get; }
+        public int GroupId { get; }
+        public int FromUser { get; }
+        public int ToUser { get; }
         public MemberRole SuggestedRole { get; }
-        public Guid Id { get; }
+        public int Id { get; internal set; }
     }
 }

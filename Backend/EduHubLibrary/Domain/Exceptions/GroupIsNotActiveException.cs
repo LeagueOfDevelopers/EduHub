@@ -5,7 +5,7 @@ namespace EduHubLibrary.Domain.Exceptions
 {
     public class GroupIsNotActiveException : Exception
     {
-        public GroupIsNotActiveException(Guid groupId) : base($"Grouup with id {groupId} is not active")
+        public GroupIsNotActiveException(int groupId) : base($"Grouup with id {groupId} is not active")
         {
         }
 

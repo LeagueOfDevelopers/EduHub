@@ -5,7 +5,7 @@ namespace EduHubLibrary.Domain.Exceptions
 {
     public class NotEnoughPermissionsException : Exception
     {
-        public NotEnoughPermissionsException(Guid userId)
+        public NotEnoughPermissionsException(int userId)
             : base($"User with id {userId} hasn't enough permissions to this action")
         {
         }

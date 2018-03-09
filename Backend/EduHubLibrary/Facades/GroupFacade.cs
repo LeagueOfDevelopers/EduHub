@@ -29,7 +29,7 @@ namespace EduHubLibrary.Facades
         }
 
 
-        public Guid CreateGroup(Guid userId, string title, List<string> tags, string description, int size,
+        public int CreateGroup(int userId, string title, List<string> tags, string description, int size,
             double totalValue, bool isPrivate,
             GroupType groupType)
         {
@@ -46,31 +46,24 @@ namespace EduHubLibrary.Facades
             return group.GroupInfo.Id;
         }
 
-        public void AddMember(Guid groupId, Guid newMemberId)
+        public void AddMember(int groupId, int newMemberId)
         {
-            Ensure.Guid.IsNotEmpty(groupId);
-            Ensure.Guid.IsNotEmpty(newMemberId);
             CheckUserExistence(newMemberId);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.AddMember(newMemberId);
         }
 
-        public void DeleteTeacher(Guid groupId, Guid requestedPerson)
+        public void DeleteTeacher(int groupId, int requestedPerson)
         {
-            Ensure.Guid.IsNotEmpty(groupId);
-            Ensure.Guid.IsNotEmpty(requestedPerson);
             CheckUserExistence(requestedPerson);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.DeleteTeacher(requestedPerson);
         }
 
-        public void DeleteMember(Guid groupId, Guid requestedPerson, Guid deletingPerson)
+        public void DeleteMember(int groupId, int requestedPerson, int deletingPerson)
         {
-            Ensure.Guid.IsNotEmpty(requestedPerson);
-            Ensure.Guid.IsNotEmpty(deletingPerson);
-            Ensure.Guid.IsNotEmpty(groupId);
             CheckUserExistence(requestedPerson);
             CheckUserExistence(deletingPerson);
 
@@ -78,7 +71,7 @@ namespace EduHubLibrary.Facades
             currentGroup.DeleteMember(requestedPerson, deletingPerson);
         }
 
-        public FullGroupView GetGroup(Guid id)
+        public FullGroupView GetGroup(int id)
         {
             var currentGroup = _groupRepository.GetGroupById(id);
             var members = currentGroup.Members;
@@ -133,7 +126,7 @@ namespace EduHubLibrary.Facades
             return result;
         }
 
-        public IEnumerable<Member> GetGroupMembers(Guid id)
+        public IEnumerable<Member> GetGroupMembers(int id)
         {
             return _groupRepository.GetGroupById(id).Members;
         }
@@ -143,35 +136,28 @@ namespace EduHubLibrary.Facades
             return _groupRepository.GetAll();
         }
 
-        public void AddInvitation(Guid groupId, Invitation invitation)
+        public void AddInvitation(int groupId, Invitation invitation)
         {
             _groupRepository.GetGroupById(groupId).AddInvitation(invitation);
         }
 
-        public void ApproveTeacher(Guid teacherId, Guid groupId)
+        public void ApproveTeacher(int teacherId, int groupId)
         {
-            Ensure.Guid.IsNotEmpty(teacherId);
-            Ensure.Guid.IsNotEmpty(groupId);
-
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var teacher = _userRepository.GetUserById(teacherId);
             currentGroup.ApproveTeacher(teacher);
         }
 
-        public void AcceptCurriculum(Guid userId, Guid groupId)
+        public void AcceptCurriculum(int userId, int groupId)
         {
-            Ensure.Guid.IsNotEmpty(userId);
-            Ensure.Guid.IsNotEmpty(groupId);
             CheckUserExistence(userId);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.AcceptCurriculum(userId);
         }
 
-        public void DeclineCurriculum(Guid userId, Guid groupId, string reason)
+        public void DeclineCurriculum(int userId, int groupId, string reason)
         {
-            Ensure.Guid.IsNotEmpty(userId);
-            Ensure.Guid.IsNotEmpty(groupId);
             CheckUserExistence(userId);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
@@ -183,36 +169,29 @@ namespace EduHubLibrary.Facades
             }
         }
 
-        public void OfferCurriculum(Guid userId, Guid groupId, string description)
+        public void OfferCurriculum(int userId, int groupId, string description)
         {
-            Ensure.Guid.IsNotEmpty(userId);
-            Ensure.Guid.IsNotEmpty(groupId);
             CheckUserExistence(userId);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.OfferCurriculum(userId, description);
         }
 
-        public IEnumerable<Invitation> GetAllInvitations(Guid groupId)
+        public IEnumerable<Invitation> GetAllInvitations(int groupId)
         {
             return _groupRepository.GetGroupById(groupId).Invitations;
         }
 
-        public void FinishCurriculum(Guid groupId, Guid userId)
+        public void FinishCurriculum(int groupId, int userId)
         {
-            Ensure.Guid.IsNotEmpty(groupId);
-            Ensure.Guid.IsNotEmpty(userId);
-
             CheckUserExistence(userId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.FinishCurriculum(userId);
         }
 
-        public void AddReview(Guid groupId, Guid userId, string title,
+        public void AddReview(int groupId, int userId, string title,
             string text)
         {
-            Ensure.Guid.IsNotEmpty(groupId);
-            Ensure.Guid.IsNotEmpty(userId);
             Ensure.String.IsNotNullOrWhiteSpace(title);
             Ensure.String.IsNotNullOrWhiteSpace(text);
             CheckUserExistence(userId);
@@ -231,7 +210,7 @@ namespace EduHubLibrary.Facades
             teacher.TeacherProfile.AddReview(userId, title, text, groupId);
         }
 
-        private void CheckUserExistence(Guid userId)
+        private void CheckUserExistence(int userId)
         {
             _userRepository.GetUserById(userId);
         }

@@ -32,7 +32,7 @@ namespace EduHub.Controllers
         [Route("invitation")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult Invite([FromRoute] Guid groupId, [FromBody] InviteRequest request)
+        public IActionResult Invite([FromRoute] int groupId, [FromBody] InviteRequest request)
         {
             var userId = Request.GetUserId();
             _userFacade.Invite(userId, request.InvitedId, groupId, MemberRole.Member);
@@ -46,7 +46,7 @@ namespace EduHub.Controllers
         [HttpPost]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult AddMember([FromRoute] Guid groupId)
+        public IActionResult AddMember([FromRoute] int groupId)
         {
             var requestedId = Request.GetUserId();
             _groupFacade.AddMember(groupId, requestedId);
@@ -61,7 +61,7 @@ namespace EduHub.Controllers
         [Route("{memberId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult DeleteMember([FromRoute] Guid groupId, [FromRoute] Guid memberId)
+        public IActionResult DeleteMember([FromRoute] int groupId, [FromRoute] int memberId)
         {
             var requestedId = Request.GetUserId();
             _groupFacade.DeleteMember(groupId, requestedId, memberId);

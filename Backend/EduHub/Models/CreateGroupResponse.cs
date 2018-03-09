@@ -4,11 +4,11 @@ namespace EduHub.Models
 {
     public class CreateGroupResponse
     {
-        public CreateGroupResponse(Guid id)
-        {
+        public CreateGroupResponse(int id)
+        { 
             Id = id;
         }
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace EduHubLibrary.Facades
             _publisher = publisher;
         }
 
-        public void ChangeGroupTitle(Guid groupId, Guid changerId, string newTitle)
+        public void ChangeGroupTitle(int groupId, int changerId, string newTitle)
         {
             CheckMemberPermissions(changerId, groupId);
             Ensure.String.IsNotNullOrWhiteSpace(newTitle);
@@ -32,7 +32,7 @@ namespace EduHubLibrary.Facades
             _groupRepository.Update(currentGroup);
         }
 
-        public void ChangeGroupDescription(Guid groupId, Guid changerId, string newDescription)
+        public void ChangeGroupDescription(int groupId, int changerId, string newDescription)
         {
             CheckMemberPermissions(changerId, groupId);
             Ensure.String.IsNotNullOrWhiteSpace(newDescription);
@@ -42,7 +42,7 @@ namespace EduHubLibrary.Facades
             _groupRepository.Update(currentGroup);
         }
 
-        public void ChangeGroupTags(Guid groupId, Guid changerId, List<string> newTags)
+        public void ChangeGroupTags(int groupId, int changerId, List<string> newTags)
         {
             CheckMemberPermissions(changerId, groupId);
 
@@ -53,7 +53,7 @@ namespace EduHubLibrary.Facades
             newTags.ForEach(tag => _publisher.PublishEvent(new UsingTagEvent(tag)));
         }
 
-        public void ChangeGroupSize(Guid groupId, Guid changerId, int newSize)
+        public void ChangeGroupSize(int groupId, int changerId, int newSize)
         {
             CheckMemberPermissions(changerId, groupId);
             Ensure.Any.IsNotNull(newSize);
@@ -65,7 +65,7 @@ namespace EduHubLibrary.Facades
             _groupRepository.Update(currentGroup);
         }
 
-        public void ChangeGroupPrice(Guid groupId, Guid changerId, double newPrice)
+        public void ChangeGroupPrice(int groupId, int changerId, double newPrice)
         {
             CheckMemberPermissions(changerId, groupId);
             Ensure.Any.IsNotNull(newPrice);
@@ -77,7 +77,7 @@ namespace EduHubLibrary.Facades
             _groupRepository.Update(currentGroup);
         }
 
-        public void ChangeGroupPrivacy(Guid groupId, Guid changerId, bool privacy)
+        public void ChangeGroupPrivacy(int groupId, int changerId, bool privacy)
         {
             CheckMemberPermissions(changerId, groupId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
@@ -85,7 +85,7 @@ namespace EduHubLibrary.Facades
             _groupRepository.Update(currentGroup);
         }
 
-        public void ChangeGroupType(Guid groupId, Guid changerId, GroupType newType)
+        public void ChangeGroupType(int groupId, int changerId, GroupType newType)
         {
             CheckMemberPermissions(changerId, groupId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
@@ -93,7 +93,7 @@ namespace EduHubLibrary.Facades
             _groupRepository.Update(currentGroup);
         }
 
-        private void CheckMemberPermissions(Guid memberId, Guid groupId)
+        private void CheckMemberPermissions(int memberId, int groupId)
         {
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var member = currentGroup.GetMember(memberId);

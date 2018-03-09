@@ -21,7 +21,7 @@ namespace EduHubLibrary.Facades
             _sender = sender;
         }
 
-        public Guid RegUser(string username, Credentials credentials, bool isTeacher)
+        public int RegUser(string username, Credentials credentials, bool isTeacher)
         {
             CheckUserExistence(username, credentials);
 
@@ -37,7 +37,7 @@ namespace EduHubLibrary.Facades
             return user.Id;
         }
 
-        public Guid RegUser(string username, Credentials credentials, bool isTeacher, Guid regKey)
+        public int RegUser(string username, Credentials credentials, bool isTeacher, Guid regKey)
         {
             CheckUserExistence(username, credentials);
 
@@ -64,7 +64,7 @@ namespace EduHubLibrary.Facades
         
         public void CheckAdminExistence(string email, string adminName)
         {
-            if (!_userRepository.GetAll().Any(user => user.UserProfile.Email == email))
+            if (_userRepository.GetAll().All(user => user.UserProfile.Email != email))
             {
                 var key = new Key(email, KeyAppointment.BecomeAdmin);
                 _keysRepository.AddKey(key);
@@ -73,7 +73,7 @@ namespace EduHubLibrary.Facades
             }
         }
 
-        public void ChangePassword(Guid userId, string newPassword)
+        public void ChangePassword(int userId, string newPassword)
         {
             Ensure.String.IsNotNullOrWhiteSpace(newPassword);
             _userRepository.GetUserById(userId).ChangePassword(newPassword);

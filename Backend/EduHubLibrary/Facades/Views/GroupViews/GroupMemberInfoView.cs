@@ -6,7 +6,7 @@ namespace EduHubLibrary.Facades.Views.GroupViews
 {
     public class GroupMemberInfoView
     {
-        public GroupMemberInfoView(Guid userId, string username, string avatarLink,
+        public GroupMemberInfoView(int userId, string username, string avatarLink,
             MemberRole memberRole, bool paid, MemberCurriculumStatus curriculumStatus)
         {
             UserId = userId;
@@ -17,7 +17,7 @@ namespace EduHubLibrary.Facades.Views.GroupViews
             CurriculumStatus = curriculumStatus;
         }
 
-        public Guid UserId { get; }
+        public int UserId { get; }
         public string Username { get; }
         public string AvatarLink { get; }
         public MemberRole MemberRole { get; }

@@ -5,14 +5,14 @@ namespace EduHubLibrary.Domain.Events
 {
     public class NewMemberEvent : EventInfoBase
     {
-        public NewMemberEvent(Guid groupId, Guid newMemberId)
+        public NewMemberEvent(int groupId, int newMemberId)
         {
             GroupId = groupId;
             NewMemberId = newMemberId;
         }
 
-        public Guid GroupId { get; }
-        public Guid NewMemberId { get; }
+        public int GroupId { get; }
+        public int NewMemberId { get; }
 
         public override EventType GetEventType()
         {

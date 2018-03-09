@@ -9,7 +9,7 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public GroupIsFullException(Guid idOfGroup) : base($"group with id {idOfGroup} is full")
+        public GroupIsFullException(int idOfGroup) : base($"group with id {idOfGroup} is full")
         {
         }
 

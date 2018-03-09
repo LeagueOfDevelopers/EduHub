@@ -8,26 +8,26 @@ namespace EduHubLibrary.Facades
 {
     public interface IGroupFacade
     {
-        Guid CreateGroup(Guid userId, string title, List<string> tags, string description,
+        int CreateGroup(int userId, string title, List<string> tags, string description,
             int size, double totalValue, bool isPrivate, GroupType groupType);
 
-        void ApproveTeacher(Guid teacherId, Guid groupId);
-        void AcceptCurriculum(Guid userId, Guid groupId);
-        void DeclineCurriculum(Guid userId, Guid groupId, string reason);
-        void OfferCurriculum(Guid userId, Guid groupId, string description);
+        void ApproveTeacher(int teacherId, int groupId);
+        void AcceptCurriculum(int userId, int groupId);
+        void DeclineCurriculum(int userId, int groupId, string reason);
+        void OfferCurriculum(int userId, int groupId, string description);
         IEnumerable<Group> GetGroups();
-        FullGroupView GetGroup(Guid id);
+        FullGroupView GetGroup(int id);
         IEnumerable<Group> FindByTags(IEnumerable<string> tags);
-        IEnumerable<Member> GetGroupMembers(Guid groupId);
-        void DeleteMember(Guid groupId, Guid requestedPerson, Guid requestingPerson);
-        void AddMember(Guid groupId, Guid requestedPerson);
-        void DeleteTeacher(Guid groupId, Guid requestedPerson);
-        void AddInvitation(Guid groupId, Invitation invitation);
-        void FinishCurriculum(Guid groupId, Guid userId);
+        IEnumerable<Member> GetGroupMembers(int groupId);
+        void DeleteMember(int groupId, int requestedPerson, int requestingPerson);
+        void AddMember(int groupId, int requestedPerson);
+        void DeleteTeacher(int groupId, int requestedPerson);
+        void AddInvitation(int groupId, Invitation invitation);
+        void FinishCurriculum(int groupId, int userId);
 
-        void AddReview(Guid groupId, Guid userId, string title,
+        void AddReview(int groupId, int userId, string title,
             string text);
 
-        IEnumerable<Invitation> GetAllInvitations(Guid groupId);
+        IEnumerable<Invitation> GetAllInvitations(int groupId);
     }
 }

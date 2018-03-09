@@ -30,7 +30,7 @@ namespace EduHub.Controllers
         [HttpDelete]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult DeleteTeacher([FromRoute] Guid groupId, [FromRoute] Guid memberId)
+        public IActionResult DeleteTeacher([FromRoute] int groupId, [FromRoute] Guid memberId)
         {
             var requestedId = Request.GetUserId();
             _groupFacade.DeleteTeacher(groupId, requestedId);
@@ -45,7 +45,7 @@ namespace EduHub.Controllers
         [Route("invitation")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult Invite([FromRoute] Guid groupId, [FromBody] InviteRequest request)
+        public IActionResult Invite([FromRoute] int groupId, [FromBody] InviteRequest request)
         {
             var userId = Request.GetUserId();
             _userFacade.Invite(userId, request.InvitedId, groupId, MemberRole.Teacher);

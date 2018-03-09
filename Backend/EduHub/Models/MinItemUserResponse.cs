@@ -5,7 +5,7 @@ namespace EduHub.Models
 {
     public class MinItemUserResponse
     {
-        public MinItemUserResponse(Guid id, string name, string email, bool isTeacher, bool isActive, string avatarLink)
+        public MinItemUserResponse(int id, string name, string email, bool isTeacher, bool isActive, string avatarLink)
         {
             Id = id;
             Name = name;
@@ -15,7 +15,7 @@ namespace EduHub.Models
             AvatarLink = avatarLink;
         }
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string AvatarLink { get; set; }

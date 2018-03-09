@@ -12,17 +12,24 @@ namespace EduHubLibrary.Domain
 {
     public class User
     {
-        public User(string name, Credentials credentials, bool isTeacher, UserType type)
+        public User(string name, Credentials credentials, bool isTeacher, UserType type, int id = 0)
         {
+            Id = id;
             Ensure.String.IsNotNullOrWhiteSpace(name);
             Credentials = Ensure.Any.IsNotNull(credentials);
             Type = type;
             TeacherProfile = new TeacherProfile();
             UserProfile = new UserProfile(name, Credentials.Email, isTeacher);
             IsActive = true;
-            Id = Guid.NewGuid();
             Invitations = new List<Invitation>();
             Notifies = new List<string>();
+        }
+
+        private User()
+        {
+            TeacherProfile = new TeacherProfile();
+            UserProfile = new UserProfile();
+            Credentials = new Credentials();
         }
 
         public Credentials Credentials { get; private set; }
@@ -30,7 +37,7 @@ namespace EduHubLibrary.Domain
         public TeacherProfile TeacherProfile { get; }
         public UserProfile UserProfile { get; }
         public bool IsActive { get; private set; }
-        public Guid Id { get; }
+        public int Id { get; internal set; }
         public List<Invitation> Invitations { get; }
         public List<string> Notifies { get; }
 
@@ -66,9 +73,8 @@ namespace EduHubLibrary.Domain
             else throw new ArgumentException("User's ids are not equal");
         }
 
-        internal void AcceptInvitation(Guid invitationId)
+        internal void AcceptInvitation(int invitationId)
         {
-            Ensure.Guid.IsNotEmpty(invitationId);
             var currentInvitation =
                 Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
             if (currentInvitation.Status != InvitationStatus.InProgress)
@@ -76,9 +82,8 @@ namespace EduHubLibrary.Domain
             currentInvitation.Status = InvitationStatus.Accepted;
         }
 
-        internal void DeclineInvitation(Guid invitationId)
+        internal void DeclineInvitation(int invitationId)
         {
-            Ensure.Guid.IsNotEmpty(invitationId);
             var currentInvitation =
                 Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
             if (currentInvitation.Status != InvitationStatus.InProgress)
@@ -86,9 +91,8 @@ namespace EduHubLibrary.Domain
             currentInvitation.Status = InvitationStatus.Declined;
         }
 
-        internal Invitation GetInvitation(Guid invitationId)
+        internal Invitation GetInvitation(int invitationId)
         {
-            Ensure.Guid.IsNotEmpty(invitationId);
             return Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
         }
 

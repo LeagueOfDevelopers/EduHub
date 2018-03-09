@@ -23,7 +23,7 @@ namespace EduHubLibrary.Domain
             _group.CommitChatSession(_messages);
         }
 
-        internal Guid SendMessage(Guid senderId, string text)
+        internal int SendMessage(int senderId, string text)
         {
             var message = new Message(senderId, text);
             _messages.Add(message);

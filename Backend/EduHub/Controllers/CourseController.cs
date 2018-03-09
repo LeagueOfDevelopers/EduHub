@@ -29,7 +29,7 @@ namespace EduHub.Controllers
         [Route("curriculum")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult SuggestCurriculum([FromBody] OfferCurriculum curriculum, [FromRoute] Guid groupId)
+        public IActionResult SuggestCurriculum([FromBody] OfferCurriculum curriculum, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupFacade.OfferCurriculum(userId, groupId, curriculum.Description);
@@ -43,7 +43,7 @@ namespace EduHub.Controllers
         [Route("curriculum")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult ApproveCurriculum([FromRoute] Guid groupId)
+        public IActionResult ApproveCurriculum([FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupFacade.AcceptCurriculum(userId, groupId);
@@ -57,7 +57,7 @@ namespace EduHub.Controllers
         [Route("curriculum")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult RejectCurriculum([FromRoute] Guid groupId,
+        public IActionResult RejectCurriculum([FromRoute] int groupId,
             [FromBody] DeclineCurriculumRequest request)
         {
             var userId = Request.GetUserId();
@@ -71,7 +71,7 @@ namespace EduHub.Controllers
         [HttpDelete]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult CloseCourse([FromRoute] Guid groupId)
+        public IActionResult CloseCourse([FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupFacade.FinishCurriculum(groupId, userId);
@@ -85,7 +85,7 @@ namespace EduHub.Controllers
         [Route("review")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult LeaveReview([FromBody] ReviewRequest review, [FromRoute] Guid groupId)
+        public IActionResult LeaveReview([FromBody] ReviewRequest review, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             _groupFacade.AddReview(groupId, userId, review.Title, review.Text);

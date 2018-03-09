@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
+using AutoMapper;
+using EduHub.Converters;
 using EduHub.Filters;
 using EduHub.Security;
+using EduHubLibrary.Data;
+using EduHubLibrary.Data.UserDtos;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
@@ -41,22 +46,45 @@ namespace EduHub
         public void ConfigureServices(IServiceCollection services)
         {
             StartLoggly();
-            var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
-                Configuration.GetValue<int>("MaxGroupSize"),
-                Configuration.GetValue<double>("MinGroupValue"),
-                Configuration.GetValue<double>("MaxGroupValue"));
-            var userRepository = new InMemoryUserRepository();
-            var fileRepository = new InMemoryFileRepository();
-            var groupRepository = new InMemoryGroupRepository();
-            var keysRepository = new InMemoryKeysRepository();
-            var tagRepository = new InMemoryTagRepository();
+
+            IFileRepository fileRepository;
+            IGroupRepository groupRepository;
+            IKeysRepository keysRepository;
+            ITagRepository tagRepository;
+            IUserRepository userRepository;
+
+            if (bool.Parse(Configuration.GetValue<string>("UseDB")))
+            {
+                var dbContext = new EduhubContext(Configuration.GetValue<string>("MysqlConnectionString"));
+                var mapper = ConfigMapper();
+                fileRepository = new InMemoryFileRepository();
+                groupRepository = new InMemoryGroupRepository();
+                keysRepository = new InMemoryKeysRepository();
+                tagRepository = new InMemoryTagRepository();
+                userRepository = new InMysqlUserRepository(dbContext, mapper);
+            }
+            else
+            {
+                fileRepository = new InMemoryFileRepository();
+                groupRepository = new InMemoryGroupRepository();
+                keysRepository = new InMemoryKeysRepository();
+                tagRepository = new InMemoryTagRepository();
+                userRepository = new InMemoryUserRepository();
+            }
+
             var emailSettings = new EmailSettings(Configuration.GetValue<string>("EmailLogin"),
                 Configuration.GetValue<string>("Email"),
                 Configuration.GetValue<string>("EmailPassword"),
                 Configuration.GetValue<string>("SmtpAddress"),
                 Configuration.GetValue<string>("ConfirmAddress"),
                 int.Parse(Configuration.GetValue<string>("SmtpPort")));
+
             var tagFacade = new TagFacade(tagRepository);
+
+            var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
+                Configuration.GetValue<int>("MaxGroupSize"),
+                Configuration.GetValue<double>("MinGroupValue"),
+                Configuration.GetValue<double>("MaxGroupValue"));
 
             var eventBusSettings = new EventBusSettings(Configuration.GetValue<string>("RabbitMqServerHostName"),
                 Configuration.GetValue<string>("RabbitMqServerVirtualHost"),
@@ -141,6 +169,47 @@ namespace EduHub
             app.UseCors("AllowAnyOrigin");
 
             app.UseMvc();
+        }
+
+        private IMapper ConfigMapper()
+        {
+            var configMapper = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<User, UserDto>()
+                    .ConvertUsing<UserToUserDtoConverter>();
+
+                cfg.CreateMap<UserDto, User>()
+                    .ForPath(dest => dest.Credentials.Email,
+                        opts => opts.MapFrom(src => src.Email))
+                    .ForPath(dest => dest.Credentials.PasswordHash,
+                        opts => opts.MapFrom(src => src.PasswordHash))
+                    .ForPath(dest => dest.UserProfile.Name,
+                        opts => opts.MapFrom(src => src.Name))
+                    .ForPath(dest => dest.UserProfile.AboutUser,
+                        opts => opts.MapFrom(src => src.AboutUser))
+                    .ForPath(dest => dest.UserProfile.BirthYear,
+                        opts => opts.MapFrom(src => src.BirthYear))
+                    .ForPath(dest => dest.UserProfile.Gender,
+                        opts => opts.MapFrom(src => src.Gender))
+                    .ForPath(dest => dest.UserProfile.IsTeacher,
+                        opts => opts.MapFrom(src => src.IsTeacher))
+                    .ForPath(dest => dest.UserProfile.AvatarLink,
+                        opts => opts.MapFrom(src => src.AvatarLink))
+                    .ForPath(dest => dest.TeacherProfile.Reviews,
+                        opts => opts.MapFrom(src => src.Reviews))
+                    .ForPath(dest => dest.TeacherProfile.Skills,
+                        opts => opts.MapFrom(src => src.Skills))
+                    .ForPath(dest => dest.UserProfile.Contacts,
+                        opts => opts.MapFrom(src => src.Contacts))
+                    .ForMember(dest => dest.Invitations,
+                        opts => opts.MapFrom(src => src.Invitations))
+                    .ForMember(dest => dest.Notifies,
+                        opts => opts.MapFrom(src => src.Notifies))
+                    .ForMember(dest => dest.Id,
+                        opts => opts.MapFrom(src => src.Id));
+            });
+            var mapper = configMapper.CreateMapper();
+            return mapper;
         }
 
         private void StartLoggly()

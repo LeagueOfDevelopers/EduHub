@@ -271,7 +271,7 @@ namespace EduHub.Controllers
         [Route("groups/{userId}")]
         [SwaggerResponse(200, Type = typeof(MinGroupResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult GetGroups([FromRoute] Guid userId)
+        public IActionResult GetGroups([FromRoute] int userId)
         {
             var groups = _userFacade.GetAllGroupsOfUser(userId);
             var items = new List<MinItemGroupResponse>();
@@ -293,7 +293,7 @@ namespace EduHub.Controllers
         [Route("{userId}")]
         [SwaggerResponse(200, Type = typeof(ProfileResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult GetProfile([FromRoute] Guid userId)
+        public IActionResult GetProfile([FromRoute] int userId)
         {
             var user = _userFacade.GetUser(userId);
             ProfileResponse response;

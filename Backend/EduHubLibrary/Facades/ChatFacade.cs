@@ -15,7 +15,7 @@ namespace EduHubLibrary.Facades
             _groupRepository = groupRepository;
         }
 
-        public Guid SendMessage(Guid senderId, Guid groupId, string text)
+        public int SendMessage(int senderId, int groupId, string text)
         {
             Ensure.String.IsNotNullOrWhiteSpace(text);
 
@@ -25,7 +25,7 @@ namespace EduHubLibrary.Facades
             }
         }
 
-        public Message GetMessage(Guid messageId, Guid groupId)
+        public Message GetMessage(int messageId, int groupId)
         {
             return _groupRepository.GetGroupById(groupId).Messages.ToList().Find(m => m.Id.Equals(messageId));
         }

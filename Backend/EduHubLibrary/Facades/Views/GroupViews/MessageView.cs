@@ -4,7 +4,7 @@ namespace EduHubLibrary.Facades.Views.GroupViews
 {
     public class MessageView
     {
-        public MessageView(Guid id, Guid senderId, DateTimeOffset sentOn, string text)
+        public MessageView(int id, int senderId, DateTimeOffset sentOn, string text)
         {
             Id = id;
             SenderId = senderId;
@@ -12,8 +12,8 @@ namespace EduHubLibrary.Facades.Views.GroupViews
             Text = text;
         }
 
-        public Guid Id { get; }
-        public Guid SenderId { get; }
+        public int Id { get; }
+        public int SenderId { get; }
         public DateTimeOffset SentOn { get; }
         public string Text { get; }
     }

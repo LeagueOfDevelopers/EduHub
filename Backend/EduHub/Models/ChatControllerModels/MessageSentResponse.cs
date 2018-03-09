@@ -4,11 +4,11 @@ namespace EduHub.Models
 {
     public class MessageSentResponse
     {
-        public MessageSentResponse(Guid messageId)
+        public MessageSentResponse(int messageId)
         {
             MessageId = messageId;
         }
 
-        public Guid MessageId { get; }
+        public int MessageId { get; }
     }
 }

@@ -11,10 +11,10 @@ namespace EduHubLibrary.Domain.Tools
             Skills = new List<string>();
         }
 
-        public List<Review> Reviews { get; }
+        public List<Review> Reviews { get; set; }
         public List<string> Skills { get; set; }
 
-        public void AddReview(Guid fromUser, string title, string text, Guid fromGroup)
+        public void AddReview(int fromUser, string title, string text, int fromGroup)
         {
             var newReview = new Review(fromUser, title, text, fromGroup);
             Reviews.Add(newReview);

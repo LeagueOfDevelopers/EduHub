@@ -9,7 +9,7 @@ namespace EduHubLibrary.Domain.Exceptions
         {
         }
 
-        public UserIsNotTeacher(Guid userId) : base($"User with id {userId} is not teacher")
+        public UserIsNotTeacher(int userId) : base($"User with id {userId} is not teacher")
         {
         }
 

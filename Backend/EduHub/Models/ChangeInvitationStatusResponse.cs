@@ -4,11 +4,11 @@ namespace EduHub.Models
 {
     public class ChangeInvitationStatusResponse
     {
-        public ChangeInvitationStatusResponse(Guid groupId)
+        public ChangeInvitationStatusResponse(int groupId)
         {
             GroupId = groupId;
         }
 
-        public Guid GroupId { get; }
+        public int GroupId { get; }
     }
 }

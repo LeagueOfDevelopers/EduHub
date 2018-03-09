@@ -15,7 +15,7 @@ namespace EduHub.Security
             _securitySettings = securitySettings;
         }
 
-        public string IssueJwt(string role, Guid id)
+        public string IssueJwt(string role, int id)
         {
             var claims = new[]
             {

@@ -31,7 +31,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, Type = typeof(MessageSentResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult SendMessage([FromBody] SendMessageRequest messageRequest, [FromRoute] Guid groupId)
+        public IActionResult SendMessage([FromBody] SendMessageRequest messageRequest, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
             var response = new MessageSentResponse(_chatFacade.SendMessage(userId, groupId, messageRequest.Text));
@@ -45,7 +45,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, Type = typeof(MessageInfoResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [Route("{messageId}")]
-        public IActionResult GetMessage([FromRoute] Guid groupId, [FromRoute] Guid messageId)
+        public IActionResult GetMessage([FromRoute] int groupId, [FromRoute] int messageId)
         {
             var message = _chatFacade.GetMessage(messageId, groupId);
             var response = new MessageInfoResponse(message.Id, message.SenderId, message.SentOn, message.Text);
@@ -60,7 +60,7 @@ namespace EduHub.Controllers
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(MessageInfoResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult GetAllMessages([FromRoute] Guid groupId)
+        public IActionResult GetAllMessages([FromRoute] int groupId)
         {
             var response = new List<MessageInfoResponse>();
             var messagesView = _groupFacade.GetGroup(groupId);

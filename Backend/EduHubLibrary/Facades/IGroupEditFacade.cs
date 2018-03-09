@@ -6,12 +6,12 @@ namespace EduHubLibrary.Facades
 {
     public interface IGroupEditFacade
     {
-        void ChangeGroupTitle(Guid groupId, Guid changerId, string newTitle);
-        void ChangeGroupDescription(Guid groupId, Guid changerId, string newDescription);
-        void ChangeGroupTags(Guid groupId, Guid changerId, List<string> newTags);
-        void ChangeGroupSize(Guid groupId, Guid changerId, int newSize);
-        void ChangeGroupPrice(Guid groupId, Guid changerId, double newPrice);
-        void ChangeGroupPrivacy(Guid groupId, Guid changerId, bool privacy);
-        void ChangeGroupType(Guid groupId, Guid changerId, GroupType newType);
+        void ChangeGroupTitle(int groupId, int changerId, string newTitle);
+        void ChangeGroupDescription(int groupId, int changerId, string newDescription);
+        void ChangeGroupTags(int groupId, int changerId, List<string> newTags);
+        void ChangeGroupSize(int groupId, int changerId, int newSize);
+        void ChangeGroupPrice(int groupId, int changerId, double newPrice);
+        void ChangeGroupPrivacy(int groupId, int changerId, bool privacy);
+        void ChangeGroupType(int groupId, int changerId, GroupType newType);
     }
 }

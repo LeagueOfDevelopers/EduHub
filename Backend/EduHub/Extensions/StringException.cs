@@ -15,12 +15,12 @@ namespace EduHub.Extensions
             return userId;
         }
 
-        public static Guid GetUserId(this HttpRequest request)
+        public static int GetUserId(this HttpRequest request)
         {
             var auth = request.Headers["Authorization"].ToString();
             var handler = new JwtSecurityTokenHandler();
             var userId =
-                Guid.Parse(handler.ReadJwtToken(auth.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+                Int32.Parse(handler.ReadJwtToken(auth.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
             return userId;
         }
     }

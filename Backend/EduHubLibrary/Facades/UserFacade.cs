@@ -23,7 +23,7 @@ namespace EduHubLibrary.Facades
             _keysRepository = keysRepository;
         }
 
-        public User GetUser(Guid id)
+        public User GetUser(int id)
         {
             return _userRepository.GetUserById(id);
         }
@@ -38,10 +38,8 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetUserByCredentials(credentials);
         }
 
-        public void ChangeInvitationStatus(Guid userId, Guid invitationId, InvitationStatus status)
+        public void ChangeInvitationStatus(int userId, int invitationId, InvitationStatus status)
         {
-            Ensure.Guid.IsNotEmpty(userId);
-            Ensure.Guid.IsNotEmpty(invitationId);
             var currentUser = _userRepository.GetUserById(userId);
             if (status.Equals(InvitationStatus.Accepted))
             {
@@ -59,11 +57,8 @@ namespace EduHubLibrary.Facades
             }
         }
 
-        public void Invite(Guid inviterId, Guid invitedId, Guid groupId, MemberRole suggestedRole)
+        public void Invite(int inviterId, int invitedId, int groupId, MemberRole suggestedRole)
         {
-            Ensure.Guid.IsNotEmpty(inviterId);
-            Ensure.Guid.IsNotEmpty(invitedId);
-            Ensure.Guid.IsNotEmpty(groupId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var invitedUser = _userRepository.GetUserById(invitedId);
 
@@ -85,14 +80,13 @@ namespace EduHubLibrary.Facades
             invitedUser.AddInvitation(newInvintation);
         }
 
-        public IEnumerable<Invitation> GetAllInvitationsForUser(Guid userId)
+        public IEnumerable<Invitation> GetAllInvitationsForUser(int userId)
         {
-            Ensure.Guid.IsNotEmpty(userId);
             var currentUser = _userRepository.GetUserById(userId);
             return currentUser.Invitations;
         }
 
-        public IEnumerable<Group> GetAllGroupsOfUser(Guid userId)
+        public IEnumerable<Group> GetAllGroupsOfUser(int userId)
         {
             var groupsOfUser = new List<Group>();
 
@@ -110,17 +104,17 @@ namespace EduHubLibrary.Facades
             return result.OrderBy(u => u.UserProfile.Name.Length);
         }
 
-        public IEnumerable<string> GetNotifies(Guid userId)
+        public IEnumerable<string> GetNotifies(int userId)
         {
             return _userRepository.GetUserById(userId).Notifies;
         }
 
-        public void AddNotify(Guid userId, string notify)
+        public void AddNotify(int userId, string notify)
         {
             _userRepository.GetUserById(userId).AddNotify(notify);
         }
 
-        public IEnumerable<UserInviteInfo> FindUsersForInvite(string name, Guid groupId)
+        public IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId)
         {
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var targets = _userRepository.GetAll().ToList()

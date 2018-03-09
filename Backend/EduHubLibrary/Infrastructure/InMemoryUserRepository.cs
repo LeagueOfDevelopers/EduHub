@@ -4,6 +4,7 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Interators;
 using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
@@ -21,6 +22,7 @@ namespace EduHubLibrary.Infrastructure
         {
             if (user == null)
                 throw new ArgumentNullException();
+            user.Id = IntIterator.GetNextId();
             _listOfUsers.Add(user);
         }
 
@@ -36,9 +38,8 @@ namespace EduHubLibrary.Infrastructure
             return _listOfUsers;
         }
 
-        public User GetUserById(Guid userId)
+        public User GetUserById(int userId)
         {
-            Ensure.Guid.IsNotEmpty(userId);
             return Ensure.Any.IsNotNull(_listOfUsers.Find(current => current.Id == userId), nameof(GetUserById),
                 opt => opt.WithException(new UserNotFoundException(userId)));
         }

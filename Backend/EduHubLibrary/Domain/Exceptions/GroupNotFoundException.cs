@@ -5,7 +5,7 @@ namespace EduHubLibrary.Domain.Exceptions
 {
     public class GroupNotFoundException : Exception
     {
-        public GroupNotFoundException(Guid groupId)
+        public GroupNotFoundException(int groupId)
             : base($"Group with id {groupId} not found")
         {
         }

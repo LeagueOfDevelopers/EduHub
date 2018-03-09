@@ -6,7 +6,7 @@ namespace EduHub.Models.Tools
 {
     public class MemberInfo
     {
-        public MemberInfo(Guid userId, string name, string avatarLink, MemberRole role, bool paid,
+        public MemberInfo(int userId, string name, string avatarLink, MemberRole role, bool paid,
             MemberCurriculumStatus curriculumStatus)
         {
             UserId = userId;
@@ -17,7 +17,7 @@ namespace EduHub.Models.Tools
             CurriculumStatus = curriculumStatus;
         }
 
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public string AvatarLink { get; set; }
         public MemberRole Role { get; set; }

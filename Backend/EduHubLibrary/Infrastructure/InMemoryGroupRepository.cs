@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Interators;
 using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
@@ -18,6 +19,7 @@ namespace EduHubLibrary.Infrastructure
         public void Add(Group group)
         {
             Ensure.Any.IsNotNull(group);
+            group.GroupInfo.Id = IntIterator.GetNextId();
             _listOfGroups.Add(group);
         }
 
@@ -32,16 +34,14 @@ namespace EduHubLibrary.Infrastructure
             return _listOfGroups;
         }
 
-        public Group GetGroupById(Guid id)
+        public Group GetGroupById(int id)
         {
-            Ensure.Guid.IsNotEmpty(id);
             return Ensure.Any.IsNotNull(_listOfGroups.Find(current => current.GroupInfo.Id == id), nameof(GetGroupById),
                 opt => opt.WithException(new GroupNotFoundException(id)));
         }
 
-        public IEnumerable<Group> GetGroupsByMemberId(Guid memberId)
+        public IEnumerable<Group> GetGroupsByMemberId(int memberId)
         {
-            Ensure.Guid.IsNotEmpty(memberId);
             return _listOfGroups.FindAll(current => current.IsMember(memberId));
         }
 
