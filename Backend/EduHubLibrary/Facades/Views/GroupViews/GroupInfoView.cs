@@ -10,7 +10,7 @@ namespace EduHubLibrary.Facades.Views.GroupViews
         public GroupInfoView(int groupId, string title, int size,
             int memberAmount, double price, GroupType groupType, IEnumerable<string> tags,
             string description, string curriculum, bool isPrivate, bool isActive,
-            CourseStatus courseStatus)
+            CourseStatus courseStatus, int votersAmount)
         {
             GroupId = groupId;
             Title = title;
@@ -24,6 +24,7 @@ namespace EduHubLibrary.Facades.Views.GroupViews
             IsPrivate = isPrivate;
             IsActive = isActive;
             CourseStatus = courseStatus;
+            VotersAmount = votersAmount;
         }
 
         public int GroupId { get; }
@@ -38,5 +39,6 @@ namespace EduHubLibrary.Facades.Views.GroupViews
         public bool IsPrivate { get; }
         public bool IsActive { get; }
         public CourseStatus CourseStatus { get; }
+        public int VotersAmount { get; }
     }
 }

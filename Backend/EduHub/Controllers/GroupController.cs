@@ -222,7 +222,7 @@ namespace EduHub.Controllers
             var fullGroupInfo = new FullGroupInfo(groupInfoView.Title, groupInfoView.Size,
                 groupInfoView.MemberAmount, groupInfoView.Price, groupInfoView.GroupType,
                 groupInfoView.Tags, groupInfoView.Description, groupInfoView.CourseStatus, groupInfoView.IsPrivate,
-                groupInfoView.Curriculum);
+                groupInfoView.Curriculum, groupInfoView.VotersAmount);
             var membersInfo = new List<MemberInfo>();
             groupMembersInfo.ToList().ForEach(m =>
                 membersInfo.Add(new MemberInfo(m.UserId, m.Username, m.AvatarLink, m.MemberRole,

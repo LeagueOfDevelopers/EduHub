@@ -26,6 +26,7 @@ namespace EduHubLibrary.Mailing
             {
                 Text = text
             };
+            
             /*
             using (var client = new SmtpClient())
             {

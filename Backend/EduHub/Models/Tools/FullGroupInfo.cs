@@ -8,7 +8,7 @@ namespace EduHub.Models.Tools
     {
         public FullGroupInfo(string title, int size, int memberAmount, double cost, GroupType groupType,
             IEnumerable<string> tags, string description, CourseStatus courseStatus,
-            bool isPrivate, string curriculum)
+            bool isPrivate, string curriculum, int votersAmount)
         {
             Title = title;
             Size = size;
@@ -20,6 +20,7 @@ namespace EduHub.Models.Tools
             CourseStatus = courseStatus;
             IsPrivate = isPrivate;
             Curriculum = curriculum;
+            VotersAmount = votersAmount;
         }
 
         public string Title { get; }
@@ -32,5 +33,6 @@ namespace EduHub.Models.Tools
         public bool IsPrivate { get; }
         public CourseStatus CourseStatus { get; }
         public string Curriculum { get; }
+        public int VotersAmount { get; }
     }
 }

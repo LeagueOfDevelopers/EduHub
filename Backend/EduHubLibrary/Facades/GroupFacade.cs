@@ -76,13 +76,14 @@ namespace EduHubLibrary.Facades
             var currentGroup = _groupRepository.GetGroupById(id);
             var members = currentGroup.Members;
             var memberAmount = currentGroup.Members.Count;
+            var votersAmount = currentGroup.Members.FindAll(m => m.CurriculumStatus == MemberCurriculumStatus.Accepted).Count;
             var groupInfo = currentGroup.GroupInfo;
             var groupInfoView = new GroupInfoView(groupInfo.Id,
                 groupInfo.Title, groupInfo.Size,
                 memberAmount, groupInfo.Price, groupInfo.GroupType,
                 groupInfo.Tags, groupInfo.Description, groupInfo.Curriculum,
                 groupInfo.IsPrivate, groupInfo.IsActive,
-                currentGroup.Status);
+                currentGroup.Status, votersAmount);
 
             var membersInfo = new List<GroupMemberInfoView>();
             members.ForEach(m =>
