@@ -42,6 +42,7 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
         Review review=new Review();
         review.setFromUser("Ярослав");
         review.setText("Так себе препод,но человек хороший");
+        review.setDate("1231231");
         ArrayList<Review> reviews=new ArrayList<>();
         for (int i=0;i<10;i++){
             reviews.add(review);

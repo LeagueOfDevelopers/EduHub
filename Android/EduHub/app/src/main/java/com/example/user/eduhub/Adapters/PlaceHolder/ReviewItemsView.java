@@ -1,6 +1,7 @@
 package com.example.user.eduhub.Adapters.PlaceHolder;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.user.eduhub.Models.UserProfile.Review;
@@ -10,6 +11,8 @@ import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
 import com.mindorks.placeholderview.annotations.expand.ChildPosition;
 import com.mindorks.placeholderview.annotations.expand.ParentPosition;
+
+import java.util.Date;
 
 /**
  * Created by User on 31.01.2018.
@@ -45,10 +48,55 @@ public class ReviewItemsView {
 
     @Resolve
     private void onResolved() {
-        reviewTitle.setText("Заголовок");
+        reviewTitle.setText(review.getTitle());
         reviewText.setText(review.getText());
         author.setText(review.getFromUser());
-        date.setText("2 декабря 2018");
+        Long dateInt=Long.valueOf(review.getDate());
+        Long days;
+        Long mes;
+        if(new Date().getTime()-dateInt==0){
+            date.setText("<часа назад");
+        }else{
+            if(new Date().getTime()-dateInt<24){
+                date.setText(new Date().getTime()-dateInt+"ч. назад");
+            }
+            if(new Date().getTime()-dateInt>24){
+                days=(new Date().getTime()-dateInt)/24;
+                if(days==1){
+                    date.setText(days+" день назад");
+                }else{
+                    if(days<5) {
+                        date.setText(days + " дня назад");
+                    }else{
+                        if(days>31){
+                            mes=days/31;
+                            if(mes==1){
+                                date.setText("месяяц назад");
+                            }else {
+                                if(mes<5){
+                                    date.setText(mes+" месяца назад");
+                                }else{
+                                    if(mes<12){
+                                        date.setText(mes+" месяцев назад");
+                                    }else{
+                                        date.setText("больше года назад");
+                                    }
+                                }
+
+                            }
+                        }else{
+                            date.setText(days + " дней назад");
+                        }
+                    }
+
+
+
+                }
+
+
+            }
+        }
+
 
     }
 }

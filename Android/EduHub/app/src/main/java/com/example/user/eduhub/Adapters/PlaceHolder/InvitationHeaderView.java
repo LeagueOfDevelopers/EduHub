@@ -78,7 +78,7 @@ public class InvitationHeaderView implements IChangeStatusOfInvitationView {
         String role="неизвестно";
         switch (heading.getSuggestedRole()){
             case "1":{role="ученика";break;}
-            case "2":{role="учителя";break;}
+            case "3":{role="учителя";break;}
         }
         textOfInvitation.setText(heading.getFromUserName()+" пригласил вас в группу в роли "+role+"! Ниже представлена информация о группе.");
         toggleView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less_black_24dp));

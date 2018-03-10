@@ -46,7 +46,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         holder.name.setText(groups.get(position).getGroupInfo().getTitle());
         holder.users.setText(groups.get(position).getGroupInfo().getMemberAmount()+"/"+groups.get(position).getGroupInfo().getSize());
         holder.cost.setText("$"+groups.get(position).getGroupInfo().getCost());
-        holder.tags.setLayoutManager(new FlowLayoutManager());
+        FlowLayoutManager flowLayoutManager=new FlowLayoutManager();
+        holder.tags.setLayoutManager(flowLayoutManager);
         TagsAdapter adapter=new TagsAdapter((ArrayList<String>) groups.get(position).getGroupInfo().getTags());
         holder.tags.setAdapter(adapter);
         switch (String.valueOf(groups.get(position).getGroupInfo().getGroupType())){

@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +14,8 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,31 +36,50 @@ import com.example.user.eduhub.Fragments.RefactorUserProfile;
 import com.example.user.eduhub.Interfaces.IRefreshList;
 import com.example.user.eduhub.Interfaces.Presenters.IChangeUsersDataPresenter;
 import com.example.user.eduhub.Interfaces.View.IChangeUsersDataView;
+import com.example.user.eduhub.Interfaces.View.IFileRepositoryView;
+import com.example.user.eduhub.Models.AddFileResponseModel;
+import com.example.user.eduhub.Models.DecodeFile;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 import com.example.user.eduhub.Presenters.ChangeUserDataPresenter;
+import com.example.user.eduhub.Presenters.FileRepository;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import mabbas007.tagsedittext.TagsEditText;
+import okhttp3.ResponseBody;
 
-public class RefactorProfile extends AppCompatActivity implements IRefreshList,IChangeUsersDataView {
+public class RefactorProfile extends AppCompatActivity implements IRefreshList,IChangeUsersDataView,IFileRepositoryView {
 UserProfileResponse userProfile;
     ArrayList<String> contacts=new ArrayList<>();
     ArrayList<String> sexes=new ArrayList<>();
     String str;
     String[] skils;
     User user;
+    Uri uri;
     Boolean flag=false;
+    ImageView avatar;
     Contacts_adapter adapter1;
     IRefreshList refreshList;
     RecyclerView recyclerView;
     Activity activity=this;
     Context context=this;
+    String avatarLink;
+    ImageView addContact;
+    EditText editUserName;
+    EditText editContact;
+    EditText editUserEmail;
+    EditText editBirthYear;
+    EditText editAboutMe;
+    TagsEditText editSkils;
     SharedPreferences sharedPreferences;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     ChangeUserDataPresenter changeUsersDataPresenter=new ChangeUserDataPresenter(this);
+    FileRepository fileRepository=new FileRepository(this,this);
+    DecodeFile decodeFile=new DecodeFile(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,20 +96,25 @@ UserProfileResponse userProfile;
         refreshList=this;
         TextView userName=findViewById(R.id.name_user_profile);
         TextView userEmail=findViewById(R.id.email_user_profile);
-        ImageView addContact=findViewById(R.id.add_contacts);
-        EditText editContact=findViewById(R.id.edit_contact);
-        EditText editUserName=findViewById(R.id.name_user_profile2);
-        EditText editUserEmail=findViewById(R.id.email_user_profile2);
-        EditText editBirthYear=findViewById(R.id.Edit_birth_year);
-        EditText editAboutMe=findViewById(R.id.EditAboutMe);
+        avatar=findViewById(R.id.avatar);
+        if(sharedPreferences.contains("AVATARLINK")){
+            fileRepository.loadFileFromServer(user.getToken(),user.getAvatarLink());
+        }
+         addContact=findViewById(R.id.add_contacts);
+         editContact=findViewById(R.id.edit_contact);
+         editUserName=findViewById(R.id.name_user_profile2);
+         editUserEmail=findViewById(R.id.email_user_profile2);
+         editBirthYear=findViewById(R.id.Edit_birth_year);
+         editAboutMe=findViewById(R.id.EditAboutMe);
         Button saveButton=findViewById(R.id.save_button);
         recyclerView=findViewById(R.id.contacts);
-        TagsEditText editSkils=findViewById(R.id.edit_skils);
+         editSkils=findViewById(R.id.edit_skils);
         Switch isTeacher=findViewById(R.id.isTeacher);
         isTeacher.setChecked(userProfile.getUserProfile().getIsTeacher());
         Spinner sex=findViewById(R.id.sex);
         sexes.add("Мужской");
         sexes.add("Женский");
+
         SpinnerAdapterForSex adapter=new SpinnerAdapterForSex(this,R.layout.spenner_item,sexes);
         sex.setAdapter(adapter);
         // заголовок
@@ -128,6 +157,13 @@ UserProfileResponse userProfile;
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+        avatar.setOnClickListener(click->{
+            Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(intent,1);
+            }
+        });
         CardView cv=findViewById(R.id.addContactCard);
         addContact.setOnClickListener(click->{
             cv.setVisibility(View.GONE);
@@ -164,7 +200,9 @@ UserProfileResponse userProfile;
             onBackPressed();
         });
         saveButton.setOnClickListener(click->{
-            changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),"string",str,userProfile.getUserProfile().getIsTeacher(),skils);
+            //fileRepository.loadFileToServer(user.getToken(),uri);
+            changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils);
+
         });
     }
 
@@ -192,5 +230,34 @@ UserProfileResponse userProfile;
     @Override
     public void getResponse() {
         onBackPressed();
+    }
+
+    @Override
+    public void getResponse(AddFileResponseModel addFileResponseModel) {
+        avatarLink=addFileResponseModel.getFileName();
+        Log.d("FilePathForGetImage",addFileResponseModel.getFileName());
+        Picasso.get().load(addFileResponseModel.getFileName()).into(avatar);
+        changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils);
+
+
+    }
+
+    @Override
+    public void getFile(ResponseBody file) {
+        Log.d("FIleTest",file.toString());
+
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK)
+            if(requestCode==1){
+                uri=data.getData();
+                Picasso.get().load(uri).into(avatar);
+                Log.d("Path",uri.toString());
+
+
+            }
     }
 }

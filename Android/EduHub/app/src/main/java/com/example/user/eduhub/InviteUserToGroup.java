@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.example.user.eduhub.Adapters.EmptyAdapterForSearch;
 import com.example.user.eduhub.Adapters.InviteUsersAdapter;
 import com.example.user.eduhub.Adapters.SpinnerAdapter;
 import com.example.user.eduhub.Adapters.SpinnerAdapterForMemberRole;
@@ -27,6 +28,7 @@ import com.example.user.eduhub.Fakes.FakeSearchUsers;
 import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.View.IInviteUserView;
 import com.example.user.eduhub.Interfaces.View.ISearchResponse;
+import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Models.UserProfile.UserSearchProfile;
@@ -41,6 +43,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     User user;
     String groupId;
+    Group group;
     RecyclerView recyclerView;
     SearchUserPresenter searchUserPresenter=new SearchUserPresenter(this);
     FakesButton fakesButton=new FakesButton();
@@ -54,7 +57,8 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
         SharedPreferences sPref=getSharedPreferences("User",MODE_PRIVATE);
         Toolbar toolbar=findViewById(R.id.toolbar);
         Intent intent=getIntent();
-        groupId=intent.getStringExtra("groupId");
+        group=(Group) intent.getSerializableExtra("group");
+        groupId=group.getGroupInfo().getId();
         user= savedDataRepository.loadSavedData(sPref);
         toolbar.setTitle("Приглашение пользователя");
         EditText edit=findViewById(R.id.invite);
@@ -129,9 +133,14 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
 
     @Override
     public void getResult(List<UserSearchProfile> userProfile) {
+
         Log.d("ROLOLO",role);
+        if(userProfile.size()!=0){
         InviteUsersAdapter inviteUsersAdapter=new InviteUsersAdapter(userProfile,this,groupId,role,user.getToken());
-        recyclerView.setAdapter(inviteUsersAdapter);
+        recyclerView.setAdapter(inviteUsersAdapter);}else{
+            EmptyAdapterForSearch emptyAdapterForSearch=new EmptyAdapterForSearch();
+            recyclerView.setAdapter(emptyAdapterForSearch);
+        }
     }
 
     @Override

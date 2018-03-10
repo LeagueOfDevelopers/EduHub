@@ -66,6 +66,10 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
         Observable changeUsersGender=eduHubApi.changesUsersGender("Bearer "+token,refactorUserRequestModel)
                 .toObservable()
                 .subscribeOn(Schedulers.io());
+        Observable changeUsersAvatarLink=eduHubApi.changesUserAvatar("Bearer "+token,refactorUserRequestModel)
+                .toObservable()
+                .subscribeOn(Schedulers.io());
+
         if(isTeacher){
          changeUsersRole=eduHubApi.becomeTeacher("Bearer "+token)
         .subscribeOn(Schedulers.io())

@@ -54,6 +54,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class GroupInformationFragment extends Fragment implements IGroupView,IExitFromGroupView,ICourseMethodsView {
     private Group group;
     private Boolean flag=false;
+    ImageView refactorButton;
     Uri uri;
 
 
@@ -89,20 +90,21 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     ImageView refactorCourse;
     TextView link;
     TextView status;
+    TextView result;
     EditText reason_negative_response;
+    CardView course;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.group_information_fragment, null);
         sharedPreferences=getActivity().getSharedPreferences("User",MODE_PRIVATE);
-        user=savedDataRepository.loadSavedData(sharedPreferences);
-        if(flag){
-            Button exitFromGroup=v.findViewById(R.id.exit);
+        if(sharedPreferences.contains("ID")){
+        user=savedDataRepository.loadSavedData(sharedPreferences);}
 
-            exitFromGroup.setVisibility(View.GONE);
-        }
         Log.d("sdfsf","sgsfgsfg");
         resultCard=v.findViewById(R.id.result_card);
         voteCard=v.findViewById(R.id.vote_card);
+        course=v.findViewById(R.id.course);
+        result=v.findViewById(R.id.result);
         suggestion_course_card=v.findViewById(R.id.suggestion_course_card);
         reason_negative_response_card=v.findViewById(R.id.reason_negative_response_card);
         positive_response=v.findViewById(R.id.possitive_button_about_course);
@@ -124,14 +126,19 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
             fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
         }
         Button exit=v.findViewById(R.id.exit);
-        ImageView refactorButton=v.findViewById(R.id.refactor_group_settings);
-
+        refactorButton=v.findViewById(R.id.refactor_group_settings);
+        if(flag){
+            Button exitFromGroup=v.findViewById(R.id.exit);
+            exitFromGroup.setVisibility(View.GONE);
+            refactorButton.setVisibility(View.GONE);
+            course.setVisibility(View.GONE);
+        }
         exit.setOnClickListener(click->{
             if(!fakesButton.getCheckButton()){
                 for (Member member :group.getMembers()
                      ) {
                     if(member.getUserId().equals(user.getUserId())){
-                        if(member.getRole()==2){
+                        if(member.getRole()==3){
                             isTeacher=true;
                         }
 
@@ -149,7 +156,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         suggestion_course.setOnClickListener(click->{
             if(!fakesButton.getCheckButton()){
             Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("text/plain");
+            intent.setType("text/*");
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             getActivity().startActivityForResult(intent,1);
 
@@ -193,7 +200,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         });
         refactorCourse.setOnClickListener(click->{
             Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("text/plain");
+            intent.setType("text/*");
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 getActivity().startActivityForResult(intent,1);
 
@@ -230,65 +237,78 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         TagsAdapter adapter=new TagsAdapter((ArrayList<String>) group.getGroupInfo().getTags());
         recyclerView.setAdapter(adapter);
         discription.setText(group.getGroupInfo().getDescription());
-        switch (group.getGroupInfo().getCourseStatus()){
 
-            case 0:{status.setText("Не предложено");
-            refactorCourse.setVisibility(View.GONE);
-                for (Member member:group.getMembers()) {
-                if (user.getUserId().equals(member.getUserId())) {
-                    if (member.getRole() == 3) {
-                        resultCard.setVisibility(View.GONE);
-                        voteCard.setVisibility(View.GONE);
-                        reason_negative_response_card.setVisibility(View.GONE);
-                        suggestion_course_card.setVisibility(View.VISIBLE);
-                    } else {
+            if (user != null) {
+                switch (group.getGroupInfo().getCourseStatus()) {
+
+                    case 0: {
+                        status.setText("Не предложено");
+                        link.setText(group.getGroupInfo().getCurriculum());
+                        refactorCourse.setVisibility(View.GONE);
+                        for (Member member : group.getMembers()) {
+
+                            if (user.getUserId().equals(member.getUserId())) {
+                                if (member.getRole() == 3) {
+                                    resultCard.setVisibility(View.GONE);
+                                    voteCard.setVisibility(View.GONE);
+                                    reason_negative_response_card.setVisibility(View.GONE);
+                                    suggestion_course_card.setVisibility(View.VISIBLE);
+                                } else {
+                                    resultCard.setVisibility(View.GONE);
+                                    voteCard.setVisibility(View.GONE);
+                                    reason_negative_response_card.setVisibility(View.GONE);
+                                    suggestion_course_card.setVisibility(View.GONE);
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+                    case 1: {
+                        result.setText("0/0");
+                        refactorCourse.setVisibility(View.VISIBLE);
+                        link.setText(group.getGroupInfo().getCurriculum());
+                        status.setText("Идет голосование");
+                        for (Member member : group.getMembers()) {
+                            if (user.getUserId().equals(member.getUserId())) {
+                                if (member.getRole() == 3) {
+
+                                    resultCard.setVisibility(View.VISIBLE);
+                                    voteCard.setVisibility(View.GONE);
+                                    reason_negative_response_card.setVisibility(View.GONE);
+                                    suggestion_course_card.setVisibility(View.GONE);
+                                } else {
+                                    if (member.getCurriculumStatus() == 2 || member.getCurriculumStatus() == 3) {
+                                        resultCard.setVisibility(View.VISIBLE);
+                                        voteCard.setVisibility(View.GONE);
+                                        reason_negative_response_card.setVisibility(View.GONE);
+                                        suggestion_course_card.setVisibility(View.GONE);
+                                    } else {
+                                        resultCard.setVisibility(View.VISIBLE);
+                                        voteCard.setVisibility(View.VISIBLE);
+                                        reason_negative_response_card.setVisibility(View.GONE);
+                                        suggestion_course_card.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+
+                        }
+                        break;
+                    }
+                    case 3: {
+                        refactorCourse.setVisibility(View.GONE);
+                        link.setText(group.getGroupInfo().getCurriculum());
+                        status.setText("Идет голосование");
                         resultCard.setVisibility(View.GONE);
                         voteCard.setVisibility(View.GONE);
                         reason_negative_response_card.setVisibility(View.GONE);
                         suggestion_course_card.setVisibility(View.GONE);
+                        break;
                     }
                 }
+            } else {
+
             }
-
-                break;}
-                case 1:{
-                    refactorCourse.setVisibility(View.VISIBLE);
-                    link.setText(group.getGroupInfo().getCurriculum());
-                    status.setText("Идет голосование");
-                    for (Member member:group.getMembers()) {
-                    if(user.getUserId().equals(member.getUserId())){
-                        if(member.getRole()==3){
-
-                            resultCard.setVisibility(View.VISIBLE);
-                            voteCard.setVisibility(View.GONE);
-                            reason_negative_response_card.setVisibility(View.GONE);
-                            suggestion_course_card.setVisibility(View.GONE);
-                        }else{
-                            if(member.getCurriculumStatus()==2||member.getCurriculumStatus()==3){
-                                resultCard.setVisibility(View.VISIBLE);
-                                voteCard.setVisibility(View.GONE);
-                                reason_negative_response_card.setVisibility(View.GONE);
-                                suggestion_course_card.setVisibility(View.GONE);
-                            }else{
-                            resultCard.setVisibility(View.VISIBLE);
-                            voteCard.setVisibility(View.VISIBLE);
-                            reason_negative_response_card.setVisibility(View.GONE);
-                            suggestion_course_card.setVisibility(View.GONE);}
-                        }
-                    }
-
-                }
-                    break;
-                }
-            case 3:{refactorCourse.setVisibility(View.GONE);
-                link.setText(group.getGroupInfo().getCurriculum());
-                status.setText("Идет голосование");
-                resultCard.setVisibility(View.GONE);
-                voteCard.setVisibility(View.GONE);
-                reason_negative_response_card.setVisibility(View.GONE);
-                suggestion_course_card.setVisibility(View.GONE);
-                break;}
-        }
 
 
 

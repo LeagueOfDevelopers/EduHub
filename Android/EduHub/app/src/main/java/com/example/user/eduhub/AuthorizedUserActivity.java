@@ -1,6 +1,9 @@
 package com.example.user.eduhub;
 
 import android.content.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -11,12 +14,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
@@ -25,23 +30,31 @@ import com.example.user.eduhub.Fragments.MainFragment;
 import com.example.user.eduhub.Fragments.NotificationFragment;
 import com.example.user.eduhub.Fragments.ProfileFragment;
 import com.example.user.eduhub.Fragments.UsersGroupsFragment;
+import com.example.user.eduhub.Interfaces.View.IFileRepositoryView;
 import com.example.user.eduhub.Interfaces.View.IRefreshTokenView;
+import com.example.user.eduhub.Models.AddFileResponseModel;
+import com.example.user.eduhub.Models.DecodeFile;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
+import com.example.user.eduhub.Presenters.FileRepository;
 import com.example.user.eduhub.Presenters.GroupsPresenter;
 import com.example.user.eduhub.Presenters.RefreshTokenPresenter;
 import com.example.user.eduhub.Retrofit.EduHubApi;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.Date;
 
 import io.reactivex.disposables.Disposable;
+import okhttp3.ResponseBody;
 
 public class AuthorizedUserActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,IRefreshTokenView{
+        implements NavigationView.OnNavigationItemSelectedListener,IRefreshTokenView,IFileRepositoryView {
 
     FragmentTransaction fragmentTransaction;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     User user;
+    ImageView imageView;
     FakesButton fakesButton=new FakesButton();
     EduHubApi eduHubApi;
     Disposable disposable;
@@ -52,6 +65,8 @@ public class AuthorizedUserActivity extends AppCompatActivity
     CheckBox checkFakes;
     final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE",EXP="EXP";
     RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
+    FileRepository fileRepository=new FileRepository(this,this );
+    DecodeFile decodeFile=new DecodeFile(this);
 
 
 
@@ -64,6 +79,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+        imageView=findViewById(R.id.imageViewAvatar);
         sPref=getSharedPreferences("User",MODE_PRIVATE);
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
            Integer exp=savedDataRepository.loadExp(sPref);
@@ -238,6 +254,12 @@ public class AuthorizedUserActivity extends AppCompatActivity
         ViewTreeObserver vto = navigationView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener
                 (new ViewTreeObserver.OnGlobalLayoutListener() { @Override public void onGlobalLayout() {
+
+                    if(sPref.contains(AVATARLINK)){
+
+                        fileRepository.loadFileFromServer(user.getToken(),user.getAvatarLink());
+
+                    }
                     TextView textView=findViewById(R.id.name_user);
                     textView.setText(user.getName());
                     TextView textView1=findViewById(R.id.email_user);
@@ -252,5 +274,17 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
 
                 } });
+    }
+
+    @Override
+    public void getResponse(AddFileResponseModel addFileResponseModel) {
+
+    }
+
+    @Override
+    public void getFile(ResponseBody file) {
+        Log.d("FIleTest",file.toString());
+        Picasso.get().load(decodeFile.writeResponseBodyToDisk(file)).into(imageView);
+
     }
 }

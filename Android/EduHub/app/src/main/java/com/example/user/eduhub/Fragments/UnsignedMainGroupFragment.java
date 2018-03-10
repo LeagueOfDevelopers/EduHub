@@ -80,10 +80,13 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         groupInformationFragment = new GroupInformationFragment();
         groupInformationFragment.setGroup(group);
         groupInformationFragment.setFlag(true);
+
+
         chat = new ChatFragment();
         chat.setFlag(true);
         groupMembersFragment = new GroupMembersFragment();
         groupMembersFragment.setGroup(group);
+
 
         adapter = new ViewPagerAdapter(getFragmentManager());
         adapter.addFragment(groupMembersFragment, "Участники");

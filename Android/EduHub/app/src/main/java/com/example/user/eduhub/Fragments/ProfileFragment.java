@@ -4,12 +4,16 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,23 +32,32 @@ import com.example.user.eduhub.Adapters.TagsAdapter;
 import com.example.user.eduhub.Dialog.CreateDialog;
 import com.example.user.eduhub.Fakes.FakeUserProfilePresenter;
 import com.example.user.eduhub.Fakes.FakesButton;
+import com.example.user.eduhub.Interfaces.View.IFileRepositoryView;
 import com.example.user.eduhub.Interfaces.View.IRefreshTokenView;
 import com.example.user.eduhub.Interfaces.View.IUserProfileView;
 import com.example.user.eduhub.Main2Activity;
+import com.example.user.eduhub.Models.AddFileResponseModel;
+import com.example.user.eduhub.Models.DecodeFile;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.SavedDataRepository;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Models.UserProfile.Review;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
+import com.example.user.eduhub.Presenters.FileRepository;
 import com.example.user.eduhub.Presenters.RefreshTokenPresenter;
 import com.example.user.eduhub.Presenters.UserProfilePresenter;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.RefactorProfile;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.mindorks.placeholderview.ExpandablePlaceHolderView;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+
+import okhttp3.ResponseBody;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -52,13 +65,14 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by User on 30.01.2018.
  */
 
-public class ProfileFragment extends Fragment implements IUserProfileView,IRefreshTokenView{
+public class ProfileFragment extends Fragment implements IUserProfileView,IRefreshTokenView,IFileRepositoryView {
     FragmentTransaction fragmentTransaction;
     UserProfilePresenter userProfilePresenter=new UserProfilePresenter(this);
     FakesButton fakesButton=new FakesButton();
     SharedPreferences sharedPreferences;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     FakeUserProfilePresenter fakeUserProfilePresenter=new FakeUserProfilePresenter(this);
+    FileRepository fileRepository=new FileRepository(this,getActivity());
     View v;
     TextView userName;
     TextView userEmail;
@@ -68,6 +82,8 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     TextView birthYear;
     TextView aboutMe;
     ImageView refactor;
+    ImageView avatar;
+    TextView status;
     RecyclerView contacts;
     Button exit;
     ExpandablePlaceHolderView expandablePlaceHolderView;
@@ -76,14 +92,17 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     DialogInterface.OnClickListener myClickListener;
     RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
     User user;
+    DecodeFile decodeFile=new DecodeFile(getActivity());
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
          v = inflater.inflate(R.layout.teacher_profile, null);
+         avatar=v.findViewById(R.id.avatar);
          userName=v.findViewById(R.id.name_user_profile);
          userEmail=v.findViewById(R.id.email_user_profile);
          userName2=v.findViewById(R.id.name_user_profile2);
          userEmail2=v.findViewById(R.id.email_user_profile2);
+         status=v.findViewById(R.id.status);
          sex=v.findViewById(R.id.sex);
          birthYear=v.findViewById(R.id.birth_year);
          aboutMe=v.findViewById(R.id.aboutMe);
@@ -104,6 +123,12 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
         expandablePlaceHolderView2=v.findViewById(R.id.expandableView2);
 
     return v;}
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -154,7 +179,14 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
         userEmail2.setText(userProfile.getUserProfile().getEmail());
         userName.setText(userProfile.getUserProfile().getName());
         userName2.setText(userProfile.getUserProfile().getName());
-
+        if(userProfile.getUserProfile().getIsTeacher()){
+            status.setText("Преподаватель");
+        }else{
+            status.setText("Ученик");
+        }
+        if(userProfile.getUserProfile().getAvatarLink()!=null){
+            fileRepository.loadFileFromServer(user.getToken(),userProfile.getUserProfile().getAvatarLink());
+        }
         if(!userProfile.getUserProfile().getGender().equals("0")){
             v.findViewById(R.id.card_of_sex).setVisibility(View.VISIBLE);
             if (userProfile.getUserProfile().getGender().equals("1")){
@@ -271,5 +303,21 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
         editor.clear();
         editor.commit();
         getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void getResponse(AddFileResponseModel addFileResponseModel) {
+
+    }
+
+    @Override
+    public void getFile(ResponseBody file) {
+        Log.d("FIleTest",file.toString());
+
+        Picasso.get().load(decodeFile.writeResponseBodyToDisk(file)).into(avatar);
+
+
+
+
     }
 }

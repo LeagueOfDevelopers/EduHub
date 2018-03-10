@@ -24,6 +24,7 @@ public class CourseMethodsPresenter implements ICourseMethodsPresenter {
 
     @Override
     public void addPlan(String token, String groupId,String path) {
+        Log.d("FilePath2",path);
         eduHubApi.addPlanForStudy("Bearer "+token,groupId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

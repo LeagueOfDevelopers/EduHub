@@ -2,10 +2,13 @@ package com.example.user.eduhub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,6 +31,10 @@ import com.example.user.eduhub.Presenters.CourseMethodsPresenter;
 import com.example.user.eduhub.Presenters.FileRepository;
 import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 
+import java.io.File;
+
+import okhttp3.ResponseBody;
+
 public class GroupActivity extends AppCompatActivity
         implements  IFragmentsActivities,IGroupView,IFileRepositoryView,ICourseMethodsView {
     Group group;
@@ -42,13 +49,14 @@ public class GroupActivity extends AppCompatActivity
     SharedPreferences sPref;
     CourseMethodsPresenter addCourseMethodsPresenter=new CourseMethodsPresenter(this);
     FileRepository fileRepository=new FileRepository(this,this);
+    ImageButton back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         Intent intent=getIntent();
         group=(Group) intent.getSerializableExtra("group") ;
-        ImageButton back=findViewById(R.id.back);
+         back=findViewById(R.id.back);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -163,16 +171,20 @@ public class GroupActivity extends AppCompatActivity
         if(resultCode==RESULT_OK)
             if(requestCode==1){
                Uri uri=data.getData();
-                Log.d("URI",uri.toString());
                 fileRepository.loadFileToServer(user.getToken(),uri);
 
             }
     }
+
     @Override
     public void getResponse(AddFileResponseModel addFileResponseModel) {
-
-
+        Log.d("Test","Test");
         addCourseMethodsPresenter.addPlan(user.getToken(),group.getGroupInfo().getId(),addFileResponseModel.getFileName());
+
+    }
+
+    @Override
+    public void getFile(ResponseBody file) {
 
     }
 
