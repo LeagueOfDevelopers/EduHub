@@ -61,11 +61,11 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
 
   render() {
     return (
-      <Col id={this.props.id} xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 7, offset: 2}} xl={{span: 6, offset: 2}} xxl={{span: 5, offset: 2}}>
+      <Col id={this.props.id} xs={{span: 24}} lg={{span: 7, offset: 2}} xl={{span: 6, offset: 2}} xxl={{span: 5, offset: 2}}>
         <Card
           hoverable
           className='without-border-bottom'
-          style={{cursor: 'default'}}
+          style={{cursor: 'default', zIndex: 100}}
         >
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Имя</div>

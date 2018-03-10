@@ -61,8 +61,8 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
           >
             <span style={{color: '#000'}}>Сортировка</span>
           </Card>
+          <FilterForm id='xs-filter' style={{width: '100%'}}/>
         </Col>
-        <FilterForm id='xs-filter'/>
         <FilterForm id='lg-filter'/>
         <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 11, offset: 2}} xl={{span: 12, offset: 2}} xxl={{span: 13, offset: 2}} className='users-content'>
           <Row style={{marginBottom: 28}}><h3 style={{marginBottom: 0}}>Пользователи</h3></Row>

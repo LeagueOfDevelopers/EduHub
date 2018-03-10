@@ -121,6 +121,11 @@
   display: none;
 }
 
+#xs-filter .ant-card-body {
+  width: 100%;
+  padding: 24px;
+}
+
 #lg-filter {
   display: block;
 }
