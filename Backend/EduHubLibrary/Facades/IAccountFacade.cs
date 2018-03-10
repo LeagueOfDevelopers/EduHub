@@ -11,6 +11,6 @@ namespace EduHubLibrary.Facades
         void ChangePassword(int userId, string newPassword);
         void ChangePassword(string newPassword, Guid key);
         void SendQueryToChangePassword(string email);
-        void CheckAdminExistence(string email, string adminName);
+        void CheckAdminExistence(string email);
     }
 }

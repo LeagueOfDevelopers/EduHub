@@ -103,6 +103,20 @@ namespace EduHubTests.FacadesTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InappropriateEmailException))]
+        public void RegAdminWithEmailThatDoesntEqualExpectedEmail_GetException()
+        {
+            //Arrange
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
+            var key = new Key("expectedEmail", KeyAppointment.BecomeAdmin);
+            _keysRepository.AddKey(key);
+
+            //Act
+            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("anotherEmail", "password"), true, key.Value);
+        }
+
+        [TestMethod]
         public void RegistrateModeratorUsingRightKey_ModeratorWasRegistrated()
         {
             //Arrange

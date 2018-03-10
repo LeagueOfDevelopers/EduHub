@@ -15,7 +15,7 @@ namespace EduHubLibrary.Mailing
 
         public string ConfirmAdress => _settings.ConfirmAdress;
 
-        public void SendMessage(string username, string email, string text, string theme)
+        public void SendMessage(string email, string text, string theme, string username = "")
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("EduHub", _settings.Email));
@@ -26,7 +26,6 @@ namespace EduHubLibrary.Mailing
             {
                 Text = text
             };
-            
             /*
             using (var client = new SmtpClient())
             {

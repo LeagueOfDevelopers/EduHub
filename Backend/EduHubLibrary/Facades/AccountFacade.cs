@@ -27,11 +27,10 @@ namespace EduHubLibrary.Facades
 
             var user = new User(username, credentials, isTeacher, UserType.UnConfirmed);
             var key = new Key(user.Credentials.Email, KeyAppointment.ConfirmEmail);
-            var text = string.Format(EmailTemplates.ConfirmEmail,
-                username, _sender.ConfirmAdress, key.Value);
+            var text = string.Format(EmailTemplates.ConfirmEmail, username, _sender.ConfirmAdress, key.Value);
             var theme = EmailTemplates.ConfirmEmailTheme;
 
-            _sender.SendMessage(username, credentials.Email, text, theme);
+            _sender.SendMessage(credentials.Email, text, theme, username);
             _keysRepository.AddKey(key);
             _userRepository.Add(user);
             return user.Id;
@@ -43,6 +42,8 @@ namespace EduHubLibrary.Facades
 
             Ensure.Guid.IsNotEmpty(regKey);
             var key = _keysRepository.GetKey(regKey);
+            Ensure.Bool.IsTrue(key.UserEmail == credentials.Email, nameof(key.UserEmail),
+                opt => opt.WithException(new InappropriateEmailException(key.UserEmail, credentials.Email)));
             CheckKey(key, KeyAppointment.BecomeAdmin, KeyAppointment.BecomeModerator);
 
             var userType = key.Appointment.Equals(KeyAppointment.BecomeAdmin) ? UserType.Admin : UserType.Moderator;
@@ -62,14 +63,14 @@ namespace EduHubLibrary.Facades
             _userRepository.GetUserByEmail(currentKey.UserEmail).Type = UserType.User;
         }
         
-        public void CheckAdminExistence(string email, string adminName)
+        public void CheckAdminExistence(string email)
         {
             if (_userRepository.GetAll().All(user => user.UserProfile.Email != email))
             {
                 var key = new Key(email, KeyAppointment.BecomeAdmin);
                 _keysRepository.AddKey(key);
                 var text = string.Format(EmailTemplates.AdminInvitationEmail, key.Value);
-                _sender.SendMessage(adminName, email, text, EmailTemplates.AdminInvitationEmailTheme);
+                _sender.SendMessage(email, text, EmailTemplates.AdminInvitationEmailTheme);
             }
         }
 
@@ -94,8 +95,9 @@ namespace EduHubLibrary.Facades
             var username = _userRepository.GetUserByEmail(email).UserProfile.Name;
             var key = new Key(email, KeyAppointment.ChangePassword);
             _keysRepository.AddKey(key);
+
             var text = string.Format(EmailTemplates.RestorePasswordEmail, username, key.Value);
-            _sender.SendMessage(username, email, text, EmailTemplates.RestorePasswordEmailTheme);
+            _sender.SendMessage(email, text, EmailTemplates.RestorePasswordEmailTheme, username);
         }
 
         private void CheckUserExistence(string username, Credentials credentials)

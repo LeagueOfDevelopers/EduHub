@@ -39,7 +39,7 @@ namespace EduHub.Controllers
         public IActionResult Registrate([FromBody] RegistrationRequest request)
         {
             int newId;
-
+            
             if (!request.InviteCode.Equals(Guid.Empty))
                 newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
                 request.IsTeacher, request.InviteCode);
@@ -62,14 +62,14 @@ namespace EduHub.Controllers
             var creditials = Credentials.FromRawData(loginRequest.Email, loginRequest.Password);
             var client = _userFacade.FindByCredentials(creditials);
 
-            string roleClaim;
-            if (client.Type.Equals(UserType.Admin)) roleClaim = Claims.Roles.Admin;
-            else if (client.Type.Equals(UserType.Moderator)) roleClaim = Claims.Roles.Moderator;
-            else if (client.Type.Equals(UserType.User)) roleClaim = Claims.Roles.User;
-            else roleClaim = Claims.Roles.UnConfirmed;
-
             if (client != null)
             {
+                string roleClaim;
+                if (client.Type.Equals(UserType.Admin)) roleClaim = Claims.Roles.Admin;
+                else if (client.Type.Equals(UserType.Moderator)) roleClaim = Claims.Roles.Moderator;
+                else if (client.Type.Equals(UserType.User)) roleClaim = Claims.Roles.User;
+                else roleClaim = Claims.Roles.UnConfirmed;
+
                 var response = new LoginResponse(client.UserProfile.Name, client.Credentials.Email,
                     client.UserProfile.AvatarLink, _jwtIssuer.IssueJwt(roleClaim, client.Id),
                     client.UserProfile.IsTeacher);
@@ -103,9 +103,11 @@ namespace EduHub.Controllers
             return Unauthorized();
         }
 
+        /// <summary>
+        ///     Confirm user with key
+        /// </summary>
         [HttpPost]
         [Route("confirm/{key}")]
-        [SwaggerResponse(200, typeof(LoginResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult Confirm([FromRoute] Guid key)
         {
@@ -114,28 +116,37 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     Send message to email with code to restore password
+        ///     Send message to email with code to set password
         /// </summary>
         [HttpPost]
         [Route("password/restore")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult RestorePassword([FromBody] string email)
         {
             _userAccountFacade.SendQueryToChangePassword(email);
             return Ok();
         }
-        
+
+        /// <summary>
+        ///     Set new password with token
+        /// </summary>
         [Authorize]
         [HttpPut]
         [Route("password")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult ChangePassword([FromBody] string newPassword)
         {
             var userId = Request.GetUserId();
             _userAccountFacade.ChangePassword(userId, newPassword);
             return Ok();
         }
-        
+
+        /// <summary>
+        ///     Set new password with key
+        /// </summary>
         [HttpPut]
         [Route("password/{key}")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult ChangePassword([FromRoute] Guid key, [FromBody] string newPassword)
         {
             _userAccountFacade.ChangePassword(newPassword, key);

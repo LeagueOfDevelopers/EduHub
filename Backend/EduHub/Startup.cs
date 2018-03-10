@@ -114,8 +114,7 @@ namespace EduHub
             services.AddSingleton<IAccountFacade>(userAccountFacade);
             services.AddSingleton(Env);
 
-            //userAccountFacade.CheckAdminExistence(Configuration.GetValue<string>("AdminEmail"),
-              //  Configuration.GetValue<string>("AdminName"));
+            //userAccountFacade.CheckAdminExistence(Configuration.GetValue<string>("AdminEmail"));
 
             services.AddSwaggerGen(current =>
             {
