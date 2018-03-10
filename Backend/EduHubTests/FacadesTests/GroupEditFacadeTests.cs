@@ -16,7 +16,7 @@ namespace EduHubTests
     public class GroupEditFacadeTests
     {
         private IAccountFacade _accountFacade;
-        private Guid _groupCreatorId;
+        private int _groupCreatorId;
         private IGroupEditFacade _groupEditFacade;
         private IGroupFacade _groupFacade;
    

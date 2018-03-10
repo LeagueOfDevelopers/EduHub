@@ -11,6 +11,7 @@ using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Interators;
 
 namespace EduHubTests
 {
@@ -92,7 +93,7 @@ namespace EduHubTests
         public void TryToCreateGroupByNotExistingUser_GetException()
         {
             //Arrange
-            var invalidUserId = Guid.NewGuid();
+            var invalidUserId = IntIterator.GetNextId();
 
             //Act
             _groupFacade.CreateGroup(invalidUserId, "Some group", new List<string> {"c#"},
@@ -120,7 +121,7 @@ namespace EduHubTests
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
 
             //Act
-            _groupFacade.AddMember(createdGroupId, Guid.NewGuid());
+            _groupFacade.AddMember(createdGroupId, IntIterator.GetNextId());
         }
 
         [TestMethod]

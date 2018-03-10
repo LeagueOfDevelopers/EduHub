@@ -6,6 +6,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EduHubLibrary.Interators;
 
 namespace EduHubTests
 {
@@ -16,7 +17,7 @@ namespace EduHubTests
         public void CreateGroupWithSomeData_GroupWasCreated()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
             var title = "some group";
             var description = "some description";
             var tags = new List<string> {"c#"};
@@ -35,8 +36,8 @@ namespace EduHubTests
         public void AddUserToGroup_UserWasAddedToGroup()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
-            var invitedUserId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
+            var invitedUserId = IntIterator.GetNextId();
             var someGroup = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
 
@@ -54,12 +55,12 @@ namespace EduHubTests
         public void TryToAddUserToFullGroup_GetException()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
             var someGroup = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
-            someGroup.AddMember(Guid.NewGuid());
+            someGroup.AddMember(IntIterator.GetNextId());
         }
 
         [TestMethod]
@@ -67,8 +68,8 @@ namespace EduHubTests
         public void TryToAddAlreadyAddedUser_GetException()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
-            var invitedUserId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
+            var invitedUserId = IntIterator.GetNextId();
             var someGroup = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
             someGroup.AddMember(invitedUserId);
@@ -82,8 +83,8 @@ namespace EduHubTests
         public void TryToAddUserToInactiveGroup_GetException()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
-            var invitedUserId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
+            var invitedUserId = IntIterator.GetNextId();
             var someGroup = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
             someGroup.DeleteMember(creatorId, creatorId);
@@ -96,8 +97,8 @@ namespace EduHubTests
         public void DeleteUserFromGroupByAdmin_UserWasDeleted()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
-            var invitedUserId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
+            var invitedUserId = IntIterator.GetNextId();
             var someGroup = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
 
@@ -116,12 +117,12 @@ namespace EduHubTests
         public void TryToDeleteNotExistingMember_GetException()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
             var someGroup = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
 
             //Act
-            someGroup.DeleteMember(creatorId, Guid.NewGuid());
+            someGroup.DeleteMember(creatorId, IntIterator.GetNextId());
         }
 
         [ExpectedException(typeof(NotEnoughPermissionsException))]
@@ -129,8 +130,8 @@ namespace EduHubTests
         public void TryToDeleteWithNotEnoughtRights_GetException()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
-            var invitedUserId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
+            var invitedUserId = IntIterator.GetNextId();
             var someGroup = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
 
@@ -143,8 +144,8 @@ namespace EduHubTests
         public void DeleteYourselfFromGroup_ToBeDeleted()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
-            var invitedUserId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
+            var invitedUserId = IntIterator.GetNextId();
             var someGroup = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
 
@@ -162,8 +163,8 @@ namespace EduHubTests
         public void CreatorLeftTheGroup_MemberBecameCreator()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
-            var invitedUserId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
+            var invitedUserId = IntIterator.GetNextId();
             var someGroup = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
 
@@ -186,7 +187,7 @@ namespace EduHubTests
         {
             //Arrange
             var teacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> {"c#"},
+            var group = new Group(IntIterator.GetNextId(), "SomeGroup", new List<string> {"c#"},
                 "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
@@ -200,9 +201,9 @@ namespace EduHubTests
         public void AddInvitation_GetRightListOfInvitations()
         {
             //Arrange
-            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> {"c#"},
+            var group = new Group(IntIterator.GetNextId(), "SomeGroup", new List<string> {"c#"},
                 "The best", 1, 0, false, GroupType.Seminar);
-            var invitation = new Invitation(Guid.NewGuid(), Guid.NewGuid(), group.GroupInfo.Id,
+            var invitation = new Invitation(IntIterator.GetNextId(), IntIterator.GetNextId(), group.GroupInfo.Id,
                 MemberRole.Member, InvitationStatus.InProgress);
 
             //Act
@@ -217,7 +218,7 @@ namespace EduHubTests
         public void CheckIfGroupContainsExistingTags_GetTrue()
         {
             //Arrange
-            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> {"c#", "c++", "js"},
+            var group = new Group(IntIterator.GetNextId(), "SomeGroup", new List<string> {"c#", "c++", "js"},
                 "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
@@ -232,7 +233,7 @@ namespace EduHubTests
         public void CheckIfGroupContainsNotExistingTags_GetFalse()
         {
             //Arrange
-            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> {"c#", "c++", "js"},
+            var group = new Group(IntIterator.GetNextId(), "SomeGroup", new List<string> {"c#", "c++", "js"},
                 "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
@@ -250,7 +251,7 @@ namespace EduHubTests
             //Arrange
             var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
             var newTeacher = new User("Bogdan", new Credentials("email", "password"), true, UserType.User);
-            var group = new Group(Guid.NewGuid(), "SomeGroup", new List<string> {"c#"},
+            var group = new Group(IntIterator.GetNextId(), "SomeGroup", new List<string> {"c#"},
                 "The best", 1, 0, false, GroupType.Seminar);
 
             //Act
@@ -263,8 +264,8 @@ namespace EduHubTests
         {
             //Arrange
             var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            var creatorId = Guid.NewGuid();
-            var invitedUserId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
+            var invitedUserId = IntIterator.GetNextId();
             var group = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 2, 0, false, GroupType.Seminar);
             var expectedCurriculum = "Awesome course";
@@ -283,9 +284,9 @@ namespace EduHubTests
         {
             //Arrange
             var approvedTeacher = new User("Sergey", new Credentials("email", "password"), true, UserType.User);
-            var creatorId = Guid.NewGuid();
-            var user1Id = Guid.NewGuid();
-            var user2Id = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
+            var user1Id = IntIterator.GetNextId();
+            var user2Id = IntIterator.GetNextId();
             var group = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
             var expectedCurriculum = "Awesome course";
@@ -307,7 +308,7 @@ namespace EduHubTests
         public void CommitChatSession_GetUpdatedChatHistory()
         {
             //Arrange
-            var creatorId = Guid.NewGuid();
+            var creatorId = IntIterator.GetNextId();
             var group = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
 

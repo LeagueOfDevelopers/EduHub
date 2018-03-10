@@ -16,9 +16,9 @@ namespace EduHubTests
     [TestClass]
     public class ChatFacadeTests
     {
-        private Guid _creatorId;
+        private int _creatorId;
         private IGroupRepository _groupRepository;
-        private Guid _testGroupId;
+        private int _testGroupId;
 
         [TestInitialize]
         public void Initialize()

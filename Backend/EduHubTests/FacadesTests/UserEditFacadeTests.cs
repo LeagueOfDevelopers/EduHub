@@ -14,7 +14,7 @@ namespace EduHubTests
     [TestClass]
     public class UserEditFacadeTests
     {
-        private Guid _testUserId;
+        private int _testUserId;
         private IUserEditFacade _userEditFacade;
         private IUserFacade _userFacade;
 

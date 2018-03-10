@@ -5,6 +5,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EduHubLibrary.Interators;
 
 namespace EduHubTests
 {
@@ -121,7 +122,7 @@ namespace EduHubTests
             var teacher = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
 
             //Act
-            var guid = Guid.NewGuid();
+            var guid = IntIterator.GetNextId();
             var review = new Review(guid, "The best", "The beast teacher of the year", guid);
             teacher.TeacherProfile.AddReview(guid, "The best", "The beast teacher of the year", guid);
 
@@ -134,7 +135,7 @@ namespace EduHubTests
         {
             //Arrange
             var testUser = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            var invitation = new Invitation(Guid.NewGuid(), testUser.Id, Guid.NewGuid(),
+            var invitation = new Invitation(IntIterator.GetNextId(), testUser.Id, IntIterator.GetNextId(),
                 MemberRole.Member, InvitationStatus.InProgress);
 
             //Act
@@ -151,7 +152,7 @@ namespace EduHubTests
         {
             //Arrange
             var testUser = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            var invitation = new Invitation(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(),
+            var invitation = new Invitation(IntIterator.GetNextId(), IntIterator.GetNextId(), IntIterator.GetNextId(),
                 MemberRole.Member, InvitationStatus.InProgress);
 
             //Act
@@ -163,7 +164,7 @@ namespace EduHubTests
         {
             //Arrange
             var testUser = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            var invitation = new Invitation(Guid.NewGuid(), testUser.Id, Guid.NewGuid(),
+            var invitation = new Invitation(IntIterator.GetNextId(), testUser.Id, IntIterator.GetNextId(),
                 MemberRole.Member, InvitationStatus.InProgress);
             testUser.AddInvitation(invitation);
 
@@ -180,7 +181,7 @@ namespace EduHubTests
         {
             //Arrange
             var testUser = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            var invitation = new Invitation(Guid.NewGuid(), testUser.Id, Guid.NewGuid(),
+            var invitation = new Invitation(IntIterator.GetNextId(), testUser.Id, IntIterator.GetNextId(),
                 MemberRole.Member, InvitationStatus.InProgress);
             testUser.AddInvitation(invitation);
             testUser.AcceptInvitation(invitation.Id);
@@ -194,7 +195,7 @@ namespace EduHubTests
         {
             //Arrange
             var testUser = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            var invitation = new Invitation(Guid.NewGuid(), testUser.Id, Guid.NewGuid(),
+            var invitation = new Invitation(IntIterator.GetNextId(), testUser.Id, IntIterator.GetNextId(),
                 MemberRole.Member, InvitationStatus.InProgress);
             testUser.AddInvitation(invitation);
 
@@ -211,7 +212,7 @@ namespace EduHubTests
         {
             //Arrange
             var testUser = new User("Petr", new Credentials("SomeEmail", "SomePassword"), true, UserType.User);
-            var invitation = new Invitation(Guid.NewGuid(), testUser.Id, Guid.NewGuid(),
+            var invitation = new Invitation(IntIterator.GetNextId(), testUser.Id, IntIterator.GetNextId(),
                 MemberRole.Member, InvitationStatus.InProgress);
             testUser.AddInvitation(invitation);
             testUser.DeclineInvitation(invitation.Id);
