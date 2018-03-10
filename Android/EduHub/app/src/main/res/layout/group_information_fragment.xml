@@ -209,7 +209,7 @@
                                 android:layout_marginLeft="82dp"
                                 android:layout_marginRight="12dp"
                                 android:gravity="center_vertical"
-                                android:text="Мужской"
+                                android:text="0/0"
                                 android:textColor="@color/black"
                                 android:textSize="12dp" />
                         </RelativeLayout>

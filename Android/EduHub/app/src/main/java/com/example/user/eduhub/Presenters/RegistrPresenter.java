@@ -6,6 +6,7 @@ import com.example.user.eduhub.Fragments.LoginFragment;
 import com.example.user.eduhub.Interfaces.Presenters.IRegistrPresenter;
 import com.example.user.eduhub.Interfaces.View.IRegistrView;
 import com.example.user.eduhub.Models.Registration.RegistrationModel;
+import com.example.user.eduhub.Models.Registration.RegistrationModel2;
 import com.example.user.eduhub.Retrofit.EduHubApi;
 import com.example.user.eduhub.Retrofit.RetrofitBuilder;
 
@@ -28,31 +29,57 @@ public class RegistrPresenter implements IRegistrPresenter {
     @Override
     public void RegistrationUser(String name, String email, String password, Boolean isTeacher,  String inviteCode) {
         if(!email.equals("")&&!password.equals("")&&!name.equals("")){
+            if(inviteCode.equals("")){
+                RegistrationModel2 registrationModel=new RegistrationModel2();
+                registrationModel.setEmail(email);
+                registrationModel.setName(name);
+                registrationModel.setPassword(password);
+                registrationModel.setIsTeacher(isTeacher);
+                EduHubApi eduHubApi= RetrofitBuilder.getApi();
+                disposable=eduHubApi.userRegistrationWithoutInviteCode(registrationModel)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                next -> {
+                                },
+                                error -> {
+                                    registrView.getError(error);
+                                    Log.e("Throwavle",error.toString());
+                                },
+                                ()->{
+                                    LoginFragment fragment=new LoginFragment();
+                                    registrView.getResponse(fragment);}
 
+
+
+                        );
+
+            }else{
             RegistrationModel registrationModel=new RegistrationModel();
             registrationModel.setEmail(email);
             registrationModel.setName(name);
             registrationModel.setPassword(password);
             registrationModel.setIsTeacher(isTeacher);
             registrationModel.setInviteCode(inviteCode);
-            EduHubApi eduHubApi= RetrofitBuilder.getApi();
-            disposable=eduHubApi.userRegistration(registrationModel)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            next -> {
-                            },
-                            error -> {
-                                registrView.getError(error);
-                                Log.e("Throwavle",error.toString());
-                            },
-                            ()->{
-                                LoginFragment fragment=new LoginFragment();
-                                registrView.getResponse(fragment);}
+                EduHubApi eduHubApi= RetrofitBuilder.getApi();
+                disposable=eduHubApi.userRegistration(registrationModel)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                next -> {
+                                },
+                                error -> {
+                                    registrView.getError(error);
+                                    Log.e("Throwavle",error.toString());
+                                },
+                                ()->{
+                                    LoginFragment fragment=new LoginFragment();
+                                    registrView.getResponse(fragment);}
 
 
 
-                    );
+                        );}
+
 
         }else{
 

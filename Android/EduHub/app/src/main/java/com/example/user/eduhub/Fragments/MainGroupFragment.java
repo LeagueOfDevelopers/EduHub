@@ -71,6 +71,7 @@ public class MainGroupFragment extends Fragment {
 
         groupMembersFragment=new GroupMembersFragment();
         groupMembersFragment.setGroup(group);
+        groupMembersFragment.setUser(user);
 
         adapter=new ViewPagerAdapter(getFragmentManager());
         adapter.addFragment(groupMembersFragment,"Участники");
@@ -84,7 +85,7 @@ public class MainGroupFragment extends Fragment {
 
         inviteButton.setOnClickListener(click->{
             Intent intent=new Intent(getActivity(),InviteUserToGroup.class);
-            intent.putExtra("groupId",group.getGroupInfo().getId());
+            intent.putExtra("group",group);
             getActivity().startActivity(intent);
 
         });

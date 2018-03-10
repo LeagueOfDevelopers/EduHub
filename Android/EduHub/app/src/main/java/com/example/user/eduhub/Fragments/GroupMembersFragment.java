@@ -15,6 +15,7 @@ import com.example.user.eduhub.Fakes.FakesButton;
 import com.example.user.eduhub.Interfaces.View.IGroupView;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.Group.Member;
+import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 import com.example.user.eduhub.R;
 
@@ -28,6 +29,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
     private Group group;
     RecyclerView recyclerView;
    SwipeRefreshLayout swipeConteiner;
+   User user;
    FakesButton fakesButton=new FakesButton();
    GroupInformationPresenter groupInformationPresenter=new GroupInformationPresenter(this);
    FakeGroupInformationPresenter fakeGroupInformationPresenter=new FakeGroupInformationPresenter(this);
@@ -77,7 +79,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
     public void getInformationAboutGroup(Group group) {
 
         ArrayList<Member> members=(ArrayList<Member>) group.getMembers();
-        GroupMembersAdapter adapter=new GroupMembersAdapter(members);
+        GroupMembersAdapter adapter=new GroupMembersAdapter(members,user,getActivity());
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
         recyclerView.setLayoutManager(llm);
@@ -88,5 +90,9 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

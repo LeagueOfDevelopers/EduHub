@@ -25,9 +25,9 @@ public class AddFileResponseModel {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("fileName")
+    @SerializedName("filename")
     @Expose
-    private String fileName;
+    private String filename;
 
     public String getContentType() {
         return contentType;
@@ -70,10 +70,10 @@ public class AddFileResponseModel {
     }
 
     public String getFileName() {
-        return fileName;
+        return filename;
     }
 
     public void setFileName(String fileName) {
-        this.fileName = fileName;
+        this.filename = fileName;
     }
 }

@@ -12,6 +12,7 @@ import com.example.user.eduhub.Models.GroupChangeInviteStatusResponse;
 import com.example.user.eduhub.Models.InvitationResponse;
 import com.example.user.eduhub.Models.InviteUserModel;
 import com.example.user.eduhub.Models.LoginModel;
+import com.example.user.eduhub.Models.Registration.RegistrationModel2;
 import com.example.user.eduhub.Models.SearchModel;
 import com.example.user.eduhub.Models.User;
 import com.example.user.eduhub.Models.Registration.RegistrationModel;
@@ -20,6 +21,7 @@ import com.example.user.eduhub.Models.UserProfile.RefactorUserRequestModel;
 import com.example.user.eduhub.Models.UserProfile.UserProfileResponse;
 import com.example.user.eduhub.Models.UserProfile.UserSearchProfileResponse;
 import com.example.user.eduhub.Models.UsersResponseModel;
+import com.example.user.eduhub.Models.getFileFromServer;
 
 
 import java.io.File;
@@ -29,10 +31,12 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
@@ -46,6 +50,8 @@ import retrofit2.http.Query;
 public interface EduHubApi {
     @POST("/api/account/registration")
     Observable<RegistrationResponseModel> userRegistration(@Body RegistrationModel registrationModel);
+    @POST("/api/account/registration")
+    Observable<RegistrationResponseModel> userRegistrationWithoutInviteCode(@Body RegistrationModel2 registrationModel);
     @POST("/api/account/login")
     Single<User> userLogin(@Body LoginModel loginModel);
     @GET("/api/group")
@@ -114,9 +120,12 @@ public interface EduHubApi {
     Completable positiveResponse(@Header("Authorization") String token,@Path("groupId") String groupId);
     @DELETE("/api/group/{groupId}/course/curriculum")
     Completable negativeResponse(@Header("Authorization") String token, @Path("groupId") String groupId, UsersResponseModel model);
+    @Multipart
     @POST("/api/file")
-    Observable<AddFileResponseModel> loadFiletoServer(@Header("Authorization") String token, @Query("file") File file);
+    Observable<AddFileResponseModel> loadFiletoServer(@Header("Authorization") String token,
+                                                      @Part("file") RequestBody description,
+                                                      @Part MultipartBody.Part file);
     @GET("/api/file/{filename}")
-    Single<File> loafFileFromServer(@Header("Authorization") String token,@Path("filename") String fileName);
+    Observable<ResponseBody> loafFileFromServer(@Header("Authorization") String token, @Path("filename") String fileName);
 
 }

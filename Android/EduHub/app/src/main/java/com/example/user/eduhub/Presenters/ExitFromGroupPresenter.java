@@ -1,5 +1,7 @@
 package com.example.user.eduhub.Presenters;
 
+import android.util.Log;
+
 import com.example.user.eduhub.Interfaces.Presenters.IExitFromGroupPresenter;
 import com.example.user.eduhub.Interfaces.View.IExitFromGroupView;
 import com.example.user.eduhub.Retrofit.EduHubApi;
@@ -27,6 +29,8 @@ public class ExitFromGroupPresenter implements IExitFromGroupPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(()->{
             exitFromGroupView.getResponse();
+                },throwable->{
+                    Log.e("ExitExeption",throwable.toString());
                 });
     }
 
@@ -37,6 +41,8 @@ public class ExitFromGroupPresenter implements IExitFromGroupPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(()->{
                     exitFromGroupView.getResponse();
+                },throwable->{
+                    Log.e("ExitExeption",throwable.toString());
                 });
     }
 }

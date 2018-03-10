@@ -26,6 +26,9 @@ public class FakeGroupInformationPresenter  implements IGroupInfirmationPresente
         Member member=new Member();
         member.setPaid(true);
         member.setRole(2);
+        member.setAvatarLink("");
+        member.setUserId("123");
+
         Member member_=new Member();
 
         member.setName("Александр");
