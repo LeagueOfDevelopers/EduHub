@@ -100,6 +100,14 @@ namespace EduHubLibrary.Facades
             _sender.SendMessage(email, text, EmailTemplates.RestorePasswordEmailTheme, username);
         }
 
+        public void SendTokenToModerator(string email)
+        {
+            var key = new Key(email, KeyAppointment.BecomeModerator);
+            _keysRepository.AddKey(key);
+            var text = string.Format(EmailTemplates.ModeratorInvitationEmail, key.Value);
+            _sender.SendMessage(email, text, EmailTemplates.ModeratorInvitationEmailTheme);
+        }
+
         private void CheckUserExistence(string username, Credentials credentials)
         {
             Ensure.String.IsNotNullOrWhiteSpace(username);

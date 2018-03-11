@@ -99,6 +99,24 @@ namespace EduHubLibrary.Mailing {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Вы приглашены на роль модератора сайта EduHub. Для принятия пришлашения используйте код {0}.
+        /// </summary>
+        internal static string ModeratorInvitationEmail {
+            get {
+                return ResourceManager.GetString("ModeratorInvitationEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Приглашение на роль модератора.
+        /// </summary>
+        internal static string ModeratorInvitationEmailTheme {
+            get {
+                return ResourceManager.GetString("ModeratorInvitationEmailTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на {0}, для восстановления пароля на сайте EduHub используйте код {1}.
         /// </summary>
         internal static string RestorePasswordEmail {

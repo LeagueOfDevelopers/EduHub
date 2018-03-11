@@ -131,6 +131,12 @@
   <data name="ConfirmEmailTheme" xml:space="preserve">
     <value>Регистрация на EduHub</value>
   </data>
+  <data name="ModeratorInvitationEmail" xml:space="preserve">
+    <value>Вы приглашены на роль модератора сайта EduHub. Для принятия пришлашения используйте код {0}</value>
+  </data>
+  <data name="ModeratorInvitationEmailTheme" xml:space="preserve">
+    <value>Приглашение на роль модератора</value>
+  </data>
   <data name="RestorePasswordEmail" xml:space="preserve">
     <value>{0}, для восстановления пароля на сайте EduHub используйте код {1}</value>
   </data>
