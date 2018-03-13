@@ -23,7 +23,10 @@ namespace EduHubLibrary.Facades
 
         public int RegUser(string username, Credentials credentials, bool isTeacher)
         {
-            CheckUserExistence(username, credentials);
+            Ensure.String.IsNotNullOrWhiteSpace(username);
+            Ensure.Any.IsNotNull(credentials);
+            Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
+                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
 
             var user = new User(username, credentials, isTeacher, UserType.UnConfirmed);
             var key = new Key(user.Credentials.Email, KeyAppointment.ConfirmEmail);
@@ -38,7 +41,10 @@ namespace EduHubLibrary.Facades
 
         public int RegUser(string username, Credentials credentials, bool isTeacher, Guid regKey)
         {
-            CheckUserExistence(username, credentials);
+            Ensure.String.IsNotNullOrWhiteSpace(username);
+            Ensure.Any.IsNotNull(credentials);
+            Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
+                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
 
             Ensure.Guid.IsNotEmpty(regKey);
             var key = _keysRepository.GetKey(regKey);
@@ -65,6 +71,8 @@ namespace EduHubLibrary.Facades
         
         public void CheckAdminExistence(string email)
         {
+            Ensure.String.IsNotNullOrWhiteSpace(email);
+
             if (_userRepository.GetAll().All(user => user.UserProfile.Email != email))
             {
                 var key = new Key(email, KeyAppointment.BecomeAdmin);
@@ -83,6 +91,7 @@ namespace EduHubLibrary.Facades
         public void ChangePassword(string newPassword, Guid key)
         {
             Ensure.String.IsNotNullOrWhiteSpace(newPassword);
+            Ensure.Guid.IsNotEmpty(key);
             var currentKey = _keysRepository.GetKey(key);
             CheckKey(currentKey, KeyAppointment.ChangePassword);
 
@@ -102,18 +111,13 @@ namespace EduHubLibrary.Facades
 
         public void SendTokenToModerator(string email)
         {
+            Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(email)),
+                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(email)));
+
             var key = new Key(email, KeyAppointment.BecomeModerator);
             _keysRepository.AddKey(key);
             var text = string.Format(EmailTemplates.ModeratorInvitationEmail, key.Value);
             _sender.SendMessage(email, text, EmailTemplates.ModeratorInvitationEmailTheme);
-        }
-
-        private void CheckUserExistence(string username, Credentials credentials)
-        {
-            Ensure.String.IsNotNullOrWhiteSpace(username);
-            Ensure.Any.IsNotNull(credentials);
-            Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
-                nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
         }
 
         private void CheckKey(Key key, params KeyAppointment[] possipleAppointments)

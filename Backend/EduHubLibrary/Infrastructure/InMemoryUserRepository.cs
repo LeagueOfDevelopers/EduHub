@@ -60,6 +60,7 @@ namespace EduHubLibrary.Infrastructure
 
         public User GetUserByEmail(string email)
         {
+            Ensure.String.IsNotNullOrWhiteSpace(email);
             return _listOfUsers.FirstOrDefault(current => current.Credentials.Email == email);
         }
     }
