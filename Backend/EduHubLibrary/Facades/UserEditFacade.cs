@@ -4,20 +4,22 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
+using EduHubLibrary.Infrastructure;
 
 namespace EduHubLibrary.Facades
 {
     public class UserEditFacade : IUserEditFacade
     {
         private readonly IFileRepository _fileRepository;
-
+        private readonly ISanctionRepository _sanctionRepository;
         private readonly IUserRepository _userRepository;
 
         public UserEditFacade(IUserRepository userRepository,
-            IFileRepository fileRepository)
+            IFileRepository fileRepository, ISanctionRepository sanctionRepository)
         {
             _userRepository = userRepository;
             _fileRepository = fileRepository;
+            _sanctionRepository = sanctionRepository;
         }
 
         public void EditName(int userId, string newName)

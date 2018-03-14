@@ -27,9 +27,10 @@ namespace EduHubTests
             var groupRepository = new InMemoryGroupRepository();
             var userRepository = new InMemoryUserRepository();
             var fileRepository = new InMemoryFileRepository();
+            var sanctionRepository = new InMemorySanctionRepository();
             var accountFacade = new AccountFacade(keysRepository, userRepository, emailSender);
 
-            _userEditFacade = new UserEditFacade(userRepository, fileRepository);
+            _userEditFacade = new UserEditFacade(userRepository, fileRepository, sanctionRepository);
             _userFacade = new UserFacade(userRepository, groupRepository, keysRepository);
 
             _testUserId = accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);

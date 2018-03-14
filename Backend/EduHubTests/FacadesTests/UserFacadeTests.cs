@@ -20,6 +20,7 @@ namespace EduHubTests
         private EmailSender _emailSender;
         private IGroupRepository _groupRepository;
         private IKeysRepository _keysRepository;
+        private ISanctionRepository _sanctionRepository;
         private IUserRepository _userRepository;
 
         [TestInitialize]
@@ -28,6 +29,7 @@ namespace EduHubTests
             _userRepository = new InMemoryUserRepository();
             _keysRepository = new InMemoryKeysRepository();
             _groupRepository = new InMemoryGroupRepository();
+            _sanctionRepository = new InMemorySanctionRepository();
 
             var emailSettings = new EmailSettings("", "", "", "", "", 4);
             _emailSender = new EmailSender(emailSettings);
@@ -41,7 +43,7 @@ namespace EduHubTests
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
             var publisher = new Mock<IEventPublisher>();
-            var groupFacade = new GroupFacade(_groupRepository, _userRepository,
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(2, 10, 0, 100), publisher.Object);
 
             var testUserId =
@@ -126,7 +128,7 @@ namespace EduHubTests
         {
             //Arrange
             var publisher = new Mock<IEventPublisher>();
-            var groupFacade = new GroupFacade(_groupRepository, _userRepository,
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(1, 100, 0, 1000), publisher.Object);
             var accountFacade = new AccountFacade(_keysRepository,
                 _userRepository, _emailSender);
@@ -154,7 +156,7 @@ namespace EduHubTests
         {
             //Arrange
             var publisher = new Mock<IEventPublisher>();
-            var groupFacade = new GroupFacade(_groupRepository, _userRepository,
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(1, 100, 0, 1000), publisher.Object);
             var accountFacade = new AccountFacade(_keysRepository,
                 _userRepository, _emailSender);
@@ -181,7 +183,7 @@ namespace EduHubTests
         {
             //Arrange
             var publisher = new Mock<IEventPublisher>();
-            var groupFacade = new GroupFacade(_groupRepository, _userRepository,
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(1, 100, 0, 1000), publisher.Object);
             var accountFacade = new AccountFacade(_keysRepository,
                 _userRepository, _emailSender);

@@ -52,6 +52,7 @@ namespace EduHub
             IKeysRepository keysRepository;
             ITagRepository tagRepository;
             IUserRepository userRepository;
+            ISanctionRepository sanctionRepository;
 
             if (bool.Parse(Configuration.GetValue<string>("UseDB")))
             {
@@ -61,6 +62,7 @@ namespace EduHub
                 groupRepository = new InMemoryGroupRepository();
                 keysRepository = new InMemoryKeysRepository();
                 tagRepository = new InMemoryTagRepository();
+                sanctionRepository = new InMemorySanctionRepository();
                 userRepository = new InMysqlUserRepository(dbContext, mapper);
             }
             else
@@ -69,6 +71,7 @@ namespace EduHub
                 groupRepository = new InMemoryGroupRepository();
                 keysRepository = new InMemoryKeysRepository();
                 tagRepository = new InMemoryTagRepository();
+                sanctionRepository = new InMemorySanctionRepository();
                 userRepository = new InMemoryUserRepository();
             }
 
@@ -99,8 +102,8 @@ namespace EduHub
             var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository, keysRepository);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings, publisher);
-            var userEditFacade = new UserEditFacade(userRepository, fileRepository);
-            var groupFacade = new GroupFacade(groupRepository, userRepository, groupSettings, publisher);
+            var userEditFacade = new UserEditFacade(userRepository, fileRepository, sanctionRepository);
+            var groupFacade = new GroupFacade(groupRepository, userRepository, sanctionRepository, groupSettings, publisher);
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository);
             var userAccountFacade = new AccountFacade(keysRepository, userRepository, emailSender);

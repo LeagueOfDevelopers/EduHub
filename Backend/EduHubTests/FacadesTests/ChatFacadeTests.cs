@@ -25,12 +25,14 @@ namespace EduHubTests
         {
             var keyRepository = new InMemoryKeysRepository();
             var userRepository = new InMemoryUserRepository();
+            var sanctionRepository = new InMemorySanctionRepository();
             _groupRepository = new InMemoryGroupRepository();
             var publisher = new Mock<IEventPublisher>();
             var groupSettings = new GroupSettings(3, 100, 100, 1000);
             var emailSettings = new EmailSettings("", "", "", "", "", 3);
             var sender = new EmailSender(emailSettings);
-            var groupFacade = new GroupFacade(_groupRepository, userRepository, groupSettings, publisher.Object);
+            var groupFacade = new GroupFacade(_groupRepository, userRepository, sanctionRepository, groupSettings, 
+                publisher.Object);
             var accountFacade = new AccountFacade(keyRepository, userRepository,
                 sender);
 

@@ -152,12 +152,11 @@ namespace EduHub.Controllers
             _userAccountFacade.ChangePassword(newPassword, key);
             return Ok();
         }
-
-
-        //TODO: for admin only
+        
         /// <summary>
         ///     Send token for registration to new moderator
         /// </summary>
+        [Authorize(Policy ="AdminOnly")]
         [HttpPost]
         [Route("moderator")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]

@@ -9,6 +9,7 @@ using EduHubLibrary.Settings;
 using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Events;
+using EduHubLibrary.Infrastructure;
 
 namespace EduHubLibrary.Facades
 {
@@ -17,13 +18,15 @@ namespace EduHubLibrary.Facades
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
         private readonly IUserRepository _userRepository;
+        private readonly ISanctionRepository _sanctionRepository;
         private readonly IEventPublisher _publisher;
 
-        public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
-            GroupSettings groupSettings, IEventPublisher publisher)
+        public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository, 
+            ISanctionRepository sanctionRepository, GroupSettings groupSettings, IEventPublisher publisher)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
+            _sanctionRepository = sanctionRepository;
             _groupSettings = groupSettings;
             _publisher = publisher;
         }
