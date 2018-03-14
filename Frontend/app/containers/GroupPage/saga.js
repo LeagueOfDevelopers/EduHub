@@ -33,7 +33,9 @@ import {
   getCurrentChatSuccess,
   getCurrentChatFailed,
   sendMessageSuccess,
-  sendMessageFailed
+  sendMessageFailed,
+  addTeacherReviewFailed,
+  addTeacherReviewSuccess
 } from "./actions";
 import {
   ENTER_GROUP_START,
@@ -52,7 +54,8 @@ import {
   DECLINE_PLAN_START,
   GET_CURRENT_PLAN_START,
   GET_CURRENT_CHAT_START,
-  SEND_MESSAGE_START
+  SEND_MESSAGE_START,
+  ADD_TEACHER_REVIEW_START
 } from "./constants";
 import config from '../../config';
 
@@ -489,6 +492,32 @@ function sendMessage(groupId, text) {
     .catch(error => error)
 }
 
+function* addTeacherReviewSaga(action) {
+  try {
+    yield call(addTeacherReview, action.groupId, action.title, action.text);
+    yield put(addTeacherReviewSuccess());
+  }
+  catch(e) {
+    yield put(addTeacherReviewFailed(e))
+  }
+}
+
+function addTeacherReview(groupId, title, text) {
+  return fetch(`${config.API_BASE_URL}/group/${groupId}/course/review`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      title: title,
+      text: text
+    })
+  })
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(ENTER_GROUP_START, enterGroupSaga);
   yield takeEvery(LEAVE_GROUP_START, leaveGroupSaga);
@@ -507,4 +536,5 @@ export default function* () {
   yield takeEvery(GET_CURRENT_PLAN_START, getCurrentPlanSaga);
   yield takeEvery(GET_CURRENT_CHAT_START, getCurrentChatSaga);
   yield takeEvery(SEND_MESSAGE_START, sendMessageSaga);
+  yield takeEvery(ADD_TEACHER_REVIEW_START, addTeacherReviewSaga);
 }

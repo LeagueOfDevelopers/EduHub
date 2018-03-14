@@ -55,7 +55,10 @@ import {
   GET_CURRENT_CHAT_SUCCESS,
   SEND_MESSAGE_FAILED,
   SEND_MESSAGE_START,
-  SEND_MESSAGE_SUCCESS
+  SEND_MESSAGE_SUCCESS,
+  ADD_TEACHER_REVIEW_FAILED,
+  ADD_TEACHER_REVIEW_START,
+  ADD_TEACHER_REVIEW_SUCCESS
 } from './constants';
 
 
@@ -414,6 +417,28 @@ export function sendMessageSuccess(messageId) {
 export function sendMessageFailed(error) {
   return {
     type: SEND_MESSAGE_FAILED,
+    error
+  };
+}
+
+export function addTeacherReview(groupId, title, text) {
+  return {
+    type: ADD_TEACHER_REVIEW_START,
+    groupId,
+    title,
+    text
+  };
+}
+
+export function addTeacherReviewSuccess() {
+  return {
+    type: ADD_TEACHER_REVIEW_SUCCESS
+  };
+}
+
+export function addTeacherReviewFailed(error) {
+  return {
+    type: ADD_TEACHER_REVIEW_FAILED,
     error
   };
 }

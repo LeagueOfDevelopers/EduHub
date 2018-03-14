@@ -56,7 +56,10 @@ import {
   GET_CURRENT_CHAT_SUCCESS,
   SEND_MESSAGE_FAILED,
   SEND_MESSAGE_START,
-  SEND_MESSAGE_SUCCESS
+  SEND_MESSAGE_SUCCESS,
+  ADD_TEACHER_REVIEW_FAILED,
+  ADD_TEACHER_REVIEW_SUCCESS,
+  ADD_TEACHER_REVIEW_START
 } from './constants';
 import {message} from "antd";
 
@@ -288,6 +291,17 @@ function groupPageReducer(state = initialState, action) {
         .set('pending', false)
         .set('error', true)
         .set('needUpdate', false);
+    case ADD_TEACHER_REVIEW_START:
+      return state
+        .set('pending', true);
+    case ADD_TEACHER_REVIEW_SUCCESS:
+      message.success('Отзыв сохранен!');
+      return state
+        .set('pending', false);
+    case ADD_TEACHER_REVIEW_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
     default:
       return state;
   }

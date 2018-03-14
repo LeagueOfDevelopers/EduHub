@@ -95,6 +95,7 @@ export class GroupPage extends React.Component {
           size: 0,
           groupType: '',
           memberAmount: 0,
+          courseStatus: 0,
           curriculum: null
         },
         members: []
@@ -167,7 +168,7 @@ export class GroupPage extends React.Component {
   componentDidMount() {
     this.getCurrentGroup();
 
-    if(this.props.match.params.review === 'review') {
+    if(this.props.match.params.review === 'review' || this.state.groupData.groupInfo.courseStatus === 3) {
       setTimeout(this.onReviewClick, 1000);
     }
   }
@@ -456,7 +457,7 @@ export class GroupPage extends React.Component {
           </Col>
         </Col>
         <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleSignInCancel}/>
-        <ReviewModal courseTitle={this.state.groupData.groupInfo.title} visible={this.state.reviewVisible} handleCancel={this.handleReviewCancel}/>
+        <ReviewModal courseTitle={this.state.groupData.groupInfo.title} groupId={this.state.id} visible={this.state.reviewVisible} handleCancel={this.handleReviewCancel}/>
       </div>
     );
   }

@@ -22,13 +22,21 @@ function registrate(username, email, password, isTeacher, inviteCode) {
       'Accept': 'application/json',
       'Content-Type': 'application/json-patch+json'
     },
-    body: JSON.stringify({
-      name: username,
-      email: email,
-      password: password,
-      isTeacher: isTeacher,
-      inviteCode: inviteCode ? inviteCode :'string'
+    body: inviteCode ?
+      JSON.stringify({
+        name: username,
+        email: email,
+        password: password,
+        isTeacher: isTeacher,
+        inviteCode: inviteCode
     })
+      :
+      JSON.stringify({
+        name: username,
+        email: email,
+        password: password,
+        isTeacher: isTeacher
+      })
   })
     .then(res => res.json())
     .catch(error => error)
