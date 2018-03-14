@@ -4,6 +4,8 @@ using System.Text;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Interators;
 using System.Linq;
+using EnsureThat;
+using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubLibrary.Infrastructure
 {
@@ -24,7 +26,8 @@ namespace EduHubLibrary.Infrastructure
 
         public Sanction Get(int id)
         {
-            return _listOfSanctions.First(s => s.Id == id);
+            return Ensure.Any.IsNotNull(_listOfSanctions.Find(s => s.Id == id), nameof(Get),
+                opt => opt.WithException(new SanctionNotFoundException(id)));
         }
 
         public IEnumerable<Sanction> GetAll()
@@ -47,7 +50,7 @@ namespace EduHubLibrary.Infrastructure
             if (sanction == null)
                 throw new ArgumentNullException();
             var currentSanction = _listOfSanctions.Find(current => current.Id == sanction.Id) ??
-                             throw new Exception("TODO");
+                             throw new SanctionNotFoundException(sanction.Id);
             currentSanction = sanction;
         }
 

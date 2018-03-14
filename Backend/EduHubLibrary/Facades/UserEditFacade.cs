@@ -5,6 +5,7 @@ using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
 using EduHubLibrary.Infrastructure;
+using System.Linq;
 
 namespace EduHubLibrary.Facades
 {
@@ -24,6 +25,10 @@ namespace EduHubLibrary.Facades
 
         public void EditName(int userId, string newName)
         {
+            Ensure.Bool.IsFalse(_sanctionRepository.GetAllOfUser(userId).ToList()
+                .Exists(s => s.Type.Equals(SanctionType.NotAllowToEditProfile)), nameof(EditName),
+                opt => opt.WithException(new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToEditProfile)));
+
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.Name = Ensure.Any.IsNotNull(newName);
             _userRepository.Update(currentUser);

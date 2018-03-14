@@ -5,20 +5,27 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Infrastructure;
 using EnsureThat;
 using EduHubLibrary.Common;
+using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubLibrary.Facades
 {
     public class SanctionFacade : ISanctionFacade
     {
-        public SanctionFacade(ISanctionRepository sanctionRepository)
+        public SanctionFacade(ISanctionRepository sanctionRepository, IUserRepository userRepository)
         {
             _sanctionRepository = sanctionRepository;
+            _userRepository = userRepository;
         }
 
         public void AddSanction(string brokenRule, int userId, int moderatorId, SanctionType type)
         {
             Ensure.String.IsNotNullOrWhiteSpace(brokenRule);
             Ensure.Any.IsNotNull(type);
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AddSanction),
+                opt => opt.WithException(new UserNotFoundException(userId)));
+            Ensure.Bool.IsTrue(_userRepository.GetUserById(moderatorId).Type.Equals(UserType.Moderator) ||
+                _userRepository.GetUserById(moderatorId).Type.Equals(UserType.Admin), nameof(AddSanction), 
+                opt => opt.WithException(new NotEnoughPermissionsException(moderatorId)));
 
             var sanction = new Sanction(brokenRule, userId, moderatorId, type);
             _sanctionRepository.Add(sanction);
@@ -38,11 +45,18 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<Sanction> GetAllOfModerator(int moderatorId)
         {
+            Ensure.Bool.IsTrue(_userRepository.GetUserById(moderatorId).Type.Equals(UserType.Moderator) ||
+                _userRepository.GetUserById(moderatorId).Type.Equals(UserType.Admin), nameof(GetAllOfModerator),
+                opt => opt.WithException(new NotEnoughPermissionsException(moderatorId)));
+
             return _sanctionRepository.GetAllOfModerator(moderatorId);
         }
 
         public IEnumerable<Sanction> GetAllOfUser(int userId)
         {
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(GetAllOfUser),
+                opt => opt.WithException(new UserNotFoundException(userId)));
+
             return _sanctionRepository.GetAllOfUser(userId);
         }
 
