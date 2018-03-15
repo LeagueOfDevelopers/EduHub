@@ -12,6 +12,8 @@ import com.mindorks.placeholderview.annotations.View;
 import com.mindorks.placeholderview.annotations.expand.ChildPosition;
 import com.mindorks.placeholderview.annotations.expand.ParentPosition;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -51,7 +53,13 @@ public class ReviewItemsView {
         reviewTitle.setText(review.getTitle());
         reviewText.setText(review.getText());
         author.setText(review.getFromUser());
-        Long dateInt=Long.valueOf(review.getDate());
+        Log.d("FromUser",review.getFromUser());
+        Log.d("Date",review.getDate());
+
+        date.setText(review.getDate());
+      /*  Long dateInt=new Date(review.getDate().toString()).getTime();
+
+        Log.d("Date",dateInt.toString());
         Long days;
         Long mes;
         if(new Date().getTime()-dateInt==0){
@@ -95,7 +103,7 @@ public class ReviewItemsView {
 
 
             }
-        }
+        }*/
 
 
     }

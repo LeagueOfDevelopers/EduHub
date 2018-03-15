@@ -279,14 +279,15 @@
                             android:background="@color/grey">
 
                             <EditText
+                                android:id="@+id/reason_negative_response"
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
-                                android:layout_marginRight="12dp"
                                 android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
                                 android:layout_marginTop="10dp"
-                                android:id="@+id/reason_negative_response"
-                                android:paddingLeft="5dp"
-                                android:background="#FFFFFF" />
+                                android:background="#FFFFFF"
+                                android:hint="Причина несогласия"
+                                android:paddingLeft="5dp" />
 
                             <Button
                                 android:id="@+id/reason_negative_response_button"
@@ -298,6 +299,64 @@
                                 android:layout_marginTop="10dp"
                                 android:background="@color/veryGrey"
                                 android:text="Отправить"
+                                style="@style/MyCustomTabLayout"/>
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:id="@+id/add_review_card">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey">
+
+
+                            <EditText
+                                android:id="@+id/add_review"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#FFFFFF"
+                                android:hint="Отзыв"
+                                android:paddingLeft="5dp" />
+
+                            <Button
+                                android:id="@+id/add_review_btn"
+                                android:layout_below="@+id/add_review"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/veryGrey"
+                                android:text="Отправить"
+                                style="@style/MyCustomTabLayout"/>
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/close_course_card">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/grey">
+
+
+                            <Button
+                                android:id="@+id/close_course"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="@color/veryGrey"
+                                android:text="Закончить курс"
                                 style="@style/MyCustomTabLayout"/>
                         </RelativeLayout>
                     </android.support.v7.widget.CardView>

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.user.eduhub.Interfaces.Presenters.ICourseMethodsPresenter;
 import com.example.user.eduhub.Interfaces.View.ICourseMethodsView;
+import com.example.user.eduhub.Models.AddPlanModel;
 import com.example.user.eduhub.Models.UsersResponseModel;
 import com.example.user.eduhub.Retrofit.EduHubApi;
 import com.example.user.eduhub.Retrofit.RetrofitBuilder;
@@ -25,7 +26,9 @@ public class CourseMethodsPresenter implements ICourseMethodsPresenter {
     @Override
     public void addPlan(String token, String groupId,String path) {
         Log.d("FilePath2",path);
-        eduHubApi.addPlanForStudy("Bearer "+token,groupId)
+        AddPlanModel addPlanModel=new AddPlanModel();
+        addPlanModel.setDescription(path);
+        eduHubApi.addPlanForStudy("Bearer "+token,groupId,addPlanModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(()->{

@@ -29,7 +29,7 @@ public class DecodeFile {
         try {
             Log.d("tEST",Environment.getExternalStorageDirectory() + File.separator + "1.png");
             // todo change the file location/name according to your needs
-            File avatar = new File(Environment.getExternalStorageDirectory() + File.separator +"1.jpeg");
+            File avatar = new File(Environment.getExternalStorageDirectory() + File.separator +"1.txt");
 
             InputStream inputStream = null;
             OutputStream outputStream = null;

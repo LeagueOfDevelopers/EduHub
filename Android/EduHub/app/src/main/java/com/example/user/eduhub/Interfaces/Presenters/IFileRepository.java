@@ -9,6 +9,7 @@ import java.net.URI;
  */
 
 public interface IFileRepository {
-    void loadFileToServer(String token, Uri uri);
+    void loadImageToServer(String token, Uri uri);
     void loadFileFromServer(String token,String fileName);
+    void loadFiletoServer(String token, Uri uri);
 }

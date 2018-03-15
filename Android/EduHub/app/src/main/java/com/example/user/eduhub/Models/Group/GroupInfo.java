@@ -50,6 +50,17 @@ public class GroupInfo implements Serializable {
     @SerializedName("curriculum")
     @Expose
     private String curriculum;
+    @SerializedName("votersAmount")
+    @Expose
+    private Integer votersAmount;
+
+    public Integer getVotersAmount() {
+        return votersAmount;
+    }
+
+    public void setVotersAmount(Integer votersAmount) {
+        this.votersAmount = votersAmount;
+    }
 
     public String getCurriculum() {
         return curriculum;

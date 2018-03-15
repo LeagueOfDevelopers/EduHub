@@ -115,14 +115,33 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
 
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Мой профиль");
-        sharedPreferences =getActivity().getSharedPreferences("User",MODE_PRIVATE);
-        user=savedDataRepository.loadSavedData(sharedPreferences);
+
         Log.d("TOKEN",user.getToken());
         Log.d("CHECK BUTTON",fakesButton.getCheckButton().toString());
         expandablePlaceHolderView=v.findViewById(R.id.expandableView);
         expandablePlaceHolderView2=v.findViewById(R.id.expandableView2);
+        if(!fakesButton.getCheckButton()){
+            Log.d("TOKEN",user.getToken());
+            userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());}
+        else{
+            fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
+        }
 
     return v;}
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sharedPreferences =getActivity().getSharedPreferences("User",MODE_PRIVATE);
+        user=savedDataRepository.loadSavedData(sharedPreferences);
+        if(!fakesButton.getCheckButton()){
+            Log.d("TOKEN",user.getToken());
+            userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());}
+        else{
+            fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
+        }
+
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -133,12 +152,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     public void onResume() {
         super.onResume();
 
-        if(!fakesButton.getCheckButton()){
-            Log.d("TOKEN",user.getToken());
-            userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());}
-        else{
-            fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
-        }
+
     }
 
     @Override
@@ -314,8 +328,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     public void getFile(ResponseBody file) {
         Log.d("FIleTest",file.toString());
 
-        Picasso.get().load(decodeFile.writeResponseBodyToDisk(file)).into(avatar);
-
+        Picasso.get().load(decodeFile.writeResponseBodyToDisk(file)).resize(5,5).into(avatar);
 
 
 

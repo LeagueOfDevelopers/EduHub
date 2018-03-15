@@ -80,13 +80,14 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         groupInformationFragment = new GroupInformationFragment();
         groupInformationFragment.setGroup(group);
         groupInformationFragment.setFlag(true);
+        user=savedDataRepository.loadSavedData(sPref);
 
 
         chat = new ChatFragment();
         chat.setFlag(true);
         groupMembersFragment = new GroupMembersFragment();
         groupMembersFragment.setGroup(group);
-
+        groupMembersFragment.setUser(user);
 
         adapter = new ViewPagerAdapter(getFragmentManager());
         adapter.addFragment(groupMembersFragment, "Участники");
@@ -99,7 +100,7 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         signInToGroup.setOnClickListener(click->{
             if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
 
-               user=savedDataRepository.loadSavedData(sPref);
+
                 if(!fakessButton.getCheckButton()){
                     Log.d("CheckButton",fakessButton.getCheckButton().toString());
                signInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId());}

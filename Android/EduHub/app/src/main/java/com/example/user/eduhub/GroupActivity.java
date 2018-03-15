@@ -61,18 +61,6 @@ public class GroupActivity extends AppCompatActivity
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         sPref=getSharedPreferences("User",MODE_PRIVATE);
-
-
-
-        back.setOnClickListener(click->{
-            onBackPressed();
-        });
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
             user= savedDataRepository.loadSavedData(sPref);
             if(!fakesButton.getCheckButton()){
@@ -88,6 +76,18 @@ public class GroupActivity extends AppCompatActivity
             transaction.add(R.id.group_fragments_conteiner,unsignedMainGroupFragment);
             transaction.commit();
         }
+
+
+        back.setOnClickListener(click->{
+            onBackPressed();
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -170,15 +170,17 @@ public class GroupActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK)
             if(requestCode==1){
+
                Uri uri=data.getData();
-                fileRepository.loadFileToServer(user.getToken(),uri);
+               Log.d("URI",uri.toString());
+                fileRepository.loadFiletoServer(user.getToken(),uri);
 
             }
     }
 
     @Override
     public void getResponse(AddFileResponseModel addFileResponseModel) {
-        Log.d("Test","Test");
+        Log.d("Test",addFileResponseModel.getFileName());
         addCourseMethodsPresenter.addPlan(user.getToken(),group.getGroupInfo().getId(),addFileResponseModel.getFileName());
 
     }

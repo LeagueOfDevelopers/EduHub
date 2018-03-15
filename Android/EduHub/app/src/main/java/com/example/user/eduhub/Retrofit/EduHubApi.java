@@ -1,6 +1,8 @@
 package com.example.user.eduhub.Retrofit;
 
 import com.example.user.eduhub.Models.AddFileResponseModel;
+import com.example.user.eduhub.Models.AddPlanModel;
+import com.example.user.eduhub.Models.AddReviewModel;
 import com.example.user.eduhub.Models.ChangeInvitationStatusModel;
 import com.example.user.eduhub.Models.CreateGroupModel;
 import com.example.user.eduhub.Models.CreateGroupResponse;
@@ -115,7 +117,7 @@ public interface EduHubApi {
     @GET("/api/account/refresh")
     Single<User> refreshToken(@Header("Authorization") String token);
     @POST("/api/group/{groupId}/course/curriculum")
-    Completable addPlanForStudy(@Header("Authorization") String token, @Path("groupId") String groupId);
+    Completable addPlanForStudy(@Header("Authorization") String token, @Path("groupId") String groupId,@Body AddPlanModel addPlanModel);
     @PUT("/api/group/{groupId}/course/curriculum")
     Completable positiveResponse(@Header("Authorization") String token,@Path("groupId") String groupId);
     @DELETE("/api/group/{groupId}/course/curriculum")
@@ -127,5 +129,8 @@ public interface EduHubApi {
                                                       @Part MultipartBody.Part file);
     @GET("/api/file/{filename}")
     Observable<ResponseBody> loafFileFromServer(@Header("Authorization") String token, @Path("filename") String fileName);
-
+    @POST("/api/group/{groupId}/course/review")
+    Completable addReview(@Header("Authorization") String token, @Path("groupId") String groupId,@Body AddReviewModel addReviewModel);
+    @DELETE(" /api/group/{groupId}/course")
+    Completable closeCourse(@Header("Authorization") String token, @Path("groupId") String groupId);
 }

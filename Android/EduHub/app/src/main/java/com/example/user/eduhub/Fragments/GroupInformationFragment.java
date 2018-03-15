@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -29,6 +30,7 @@ import com.example.user.eduhub.Interfaces.View.IExitFromGroupView;
 import com.example.user.eduhub.Interfaces.View.IFileRepositoryView;
 import com.example.user.eduhub.Interfaces.View.IGroupView;
 import com.example.user.eduhub.Models.AddFileResponseModel;
+import com.example.user.eduhub.Models.AddReviewModel;
 import com.example.user.eduhub.Models.Group.Group;
 import com.example.user.eduhub.Models.Group.Member;
 import com.example.user.eduhub.Models.SavedDataRepository;
@@ -39,9 +41,14 @@ import com.example.user.eduhub.Presenters.FileRepository;
 import com.example.user.eduhub.Presenters.GroupInformationPresenter;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Refactor_group;
+import com.example.user.eduhub.Retrofit.EduHubApi;
+import com.example.user.eduhub.Retrofit.RetrofitBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -82,16 +89,21 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     CardView voteCard;
     CardView suggestion_course_card;
     CardView reason_negative_response_card;
+    CardView add_review_card;
+    CardView closeCourseCard;
     SharedPreferences sharedPreferences;
     Button positive_response;
     Button negative_response;
     Button suggestion_course;
+    Button addReviewBtn;
     Button reason_negative_response_btn;
+    Button closeCourse;
     ImageView refactorCourse;
     TextView link;
     TextView status;
     TextView result;
     EditText reason_negative_response;
+    EditText addReview;
     CardView course;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -109,6 +121,11 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         reason_negative_response_card=v.findViewById(R.id.reason_negative_response_card);
         positive_response=v.findViewById(R.id.possitive_button_about_course);
         negative_response=v.findViewById(R.id.negative_button_about_course);
+        addReview=v.findViewById(R.id.add_review);
+        add_review_card=v.findViewById(R.id.add_review_card);
+        closeCourseCard=v.findViewById(R.id.close_course_card);
+        addReviewBtn=v.findViewById(R.id.add_review_btn);
+        closeCourse=v.findViewById(R.id.close_course);
         suggestion_course=v.findViewById(R.id.suggest_course);
         refactorCourse=v.findViewById(R.id.refactor_course);
         reason_negative_response_btn=v.findViewById(R.id.reason_negative_response_button);
@@ -119,12 +136,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         cost=v.findViewById(R.id.cost);
         recyclerView=v.findViewById(R.id.tags);
         discription=v.findViewById(R.id.discription);
-        if(!fakesButton.getCheckButton()){
-            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
-        else {
 
-            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
-        }
         Button exit=v.findViewById(R.id.exit);
         refactorButton=v.findViewById(R.id.refactor_group_settings);
         if(flag){
@@ -156,7 +168,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         suggestion_course.setOnClickListener(click->{
             if(!fakesButton.getCheckButton()){
             Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("text/*");
+            intent.setType("application/*");
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             getActivity().startActivityForResult(intent,1);
 
@@ -200,16 +212,49 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         });
         refactorCourse.setOnClickListener(click->{
             Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("text/*");
+            intent.setType("application/*");
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 getActivity().startActivityForResult(intent,1);
 
             }
         });
+        addReviewBtn.setOnClickListener(click->{
+            if(!addReview.getText().toString().equals("")){
+                AddReviewModel addReviewModel=new AddReviewModel();
+                addReviewModel.setText(addReview.getText().toString());
+                addReviewModel.setTitle("Отзыв от "+user.getName());
+                EduHubApi eduHubApi= RetrofitBuilder.getApi();
+                eduHubApi.addReview("Bearer "+user.getToken(),group.getGroupInfo().getId(),addReviewModel)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(()->{
+                    add_review_card.setVisibility(View.GONE);
+                        },throwable -> {Log.e("AddReview",throwable.toString());});
+            }
+        });
+        closeCourse.setOnClickListener(click->{
+            EduHubApi eduHubApi=RetrofitBuilder.getApi();
+            eduHubApi.closeCourse("Bearer "+user.getToken(),group.getGroupInfo().getId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(()->{
+                RefreshData();
+                            },
+                            throwable -> {Log.e("CloseCourse",throwable.toString());});
+        });
         return v;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(!fakesButton.getCheckButton()){
+            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
+        else {
 
+            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+        }
+    }
 
     @Override
     public void showLoading() {
@@ -242,9 +287,11 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                 switch (group.getGroupInfo().getCourseStatus()) {
 
                     case 0: {
+                        closeCourseCard.setVisibility(View.GONE);
                         status.setText("Не предложено");
                         link.setText(group.getGroupInfo().getCurriculum());
                         refactorCourse.setVisibility(View.GONE);
+                        add_review_card.setVisibility(View.GONE);
                         for (Member member : group.getMembers()) {
 
                             if (user.getUserId().equals(member.getUserId())) {
@@ -264,9 +311,12 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
 
                         break;
                     }
+
                     case 1: {
-                        result.setText("0/0");
+                        closeCourseCard.setVisibility(View.GONE);
+                        result.setText(group.getGroupInfo().getVotersAmount().toString()+"/"+group.getGroupInfo().getMemberAmount());
                         refactorCourse.setVisibility(View.VISIBLE);
+                        add_review_card.setVisibility(View.GONE);
                         link.setText(group.getGroupInfo().getCurriculum());
                         status.setText("Идет голосование");
                         for (Member member : group.getMembers()) {
@@ -295,14 +345,61 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                         }
                         break;
                     }
+                    case 2:{closeCourseCard.setVisibility(View.GONE);
+                        result.setText(group.getGroupInfo().getVotersAmount().toString()+"/"+group.getGroupInfo().getMemberAmount());
+                        refactorCourse.setVisibility(View.VISIBLE);
+                        add_review_card.setVisibility(View.GONE);
+                        link.setText(group.getGroupInfo().getCurriculum());
+                        status.setText("Курс начат");
+                        for (Member member : group.getMembers()) {
+                            if (user.getUserId().equals(member.getUserId())) {
+                                if (member.getRole() == 3) {
+
+                                    resultCard.setVisibility(View.GONE);
+                                    voteCard.setVisibility(View.GONE);
+                                    closeCourseCard.setVisibility(View.VISIBLE);
+                                    reason_negative_response_card.setVisibility(View.GONE);
+                                    suggestion_course_card.setVisibility(View.GONE);
+                                } else {
+                                    if (member.getCurriculumStatus() == 2 || member.getCurriculumStatus() == 3) {
+                                        resultCard.setVisibility(View.GONE);
+                                        voteCard.setVisibility(View.GONE);
+                                        reason_negative_response_card.setVisibility(View.GONE);
+                                        suggestion_course_card.setVisibility(View.GONE);
+                                        closeCourseCard.setVisibility(View.GONE);
+                                    } else {
+                                        resultCard.setVisibility(View.GONE);
+                                        voteCard.setVisibility(View.GONE);
+                                        reason_negative_response_card.setVisibility(View.GONE);
+                                        suggestion_course_card.setVisibility(View.GONE);
+                                        closeCourseCard.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+
+                        }
+                        break;}
                     case 3: {
+                        closeCourseCard.setVisibility(View.GONE);
                         refactorCourse.setVisibility(View.GONE);
                         link.setText(group.getGroupInfo().getCurriculum());
-                        status.setText("Идет голосование");
+                        status.setText("Закончен");
                         resultCard.setVisibility(View.GONE);
                         voteCard.setVisibility(View.GONE);
                         reason_negative_response_card.setVisibility(View.GONE);
                         suggestion_course_card.setVisibility(View.GONE);
+
+                        for (Member member : group.getMembers()) {
+                            if (user.getUserId().equals(member.getUserId())) {
+                                if (member.getRole() == 3) {
+
+                                    add_review_card.setVisibility(View.GONE);
+                                } else {
+                                    add_review_card.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+
                         break;
                     }
                 }
@@ -341,6 +438,15 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         reason_negative_response_card.setVisibility(View.GONE);
         suggestion_course_card.setVisibility(View.GONE);
         Log.d("ZAEBALSA","12");
+        RefreshData();
+    }
+    private void RefreshData(){
+        if(!fakesButton.getCheckButton()){
+            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
+        else {
+
+            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+        }
     }
 
 
