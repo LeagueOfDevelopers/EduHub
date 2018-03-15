@@ -7,7 +7,7 @@ namespace EduHubLibrary.Facades
 {
     public interface ISanctionFacade
     {
-        void AddSanction(string brokenRule, int userId, int moderatorId, SanctionType type);
+        int AddSanction(string brokenRule, int userId, int moderatorId, SanctionType type);
         void CancelSanction(int sanctionId);
         IEnumerable<Sanction> GetAll();
         IEnumerable<Sanction> GetAllOfUser(int userId);

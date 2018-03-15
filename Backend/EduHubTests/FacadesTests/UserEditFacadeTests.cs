@@ -8,6 +8,7 @@ using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EduHubLibrary.Domain;
 
 namespace EduHubTests
 {
@@ -15,6 +16,9 @@ namespace EduHubTests
     public class UserEditFacadeTests
     {
         private int _testUserId;
+        private int _adminId;
+        private IUserRepository _userRepository;
+        private ISanctionRepository _sanctionRepository;
         private IUserEditFacade _userEditFacade;
         private IUserFacade _userFacade;
 
@@ -25,14 +29,17 @@ namespace EduHubTests
             var emailSender = new EmailSender(emailSettings);
             var keysRepository = new InMemoryKeysRepository();
             var groupRepository = new InMemoryGroupRepository();
-            var userRepository = new InMemoryUserRepository();
+            _userRepository = new InMemoryUserRepository();
             var fileRepository = new InMemoryFileRepository();
-            var sanctionRepository = new InMemorySanctionRepository();
-            var accountFacade = new AccountFacade(keysRepository, userRepository, emailSender);
+            _sanctionRepository = new InMemorySanctionRepository();
+            var adminKey = new Key("adminEmail", KeyAppointment.BecomeModerator);
+            keysRepository.AddKey(adminKey);
+            var accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender);
+            
+            _userEditFacade = new UserEditFacade(_userRepository, fileRepository, _sanctionRepository);
+            _userFacade = new UserFacade(_userRepository, groupRepository, keysRepository);
 
-            _userEditFacade = new UserEditFacade(userRepository, fileRepository, sanctionRepository);
-            _userFacade = new UserFacade(userRepository, groupRepository, keysRepository);
-
+            _adminId = accountFacade.RegUser("admin", Credentials.FromRawData("adminEmail", "password"), false, adminKey.Value);
             _testUserId = accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
         }
 
@@ -194,6 +201,90 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(false, testUser.UserProfile.IsTeacher);
             Assert.AreEqual(false, _userFacade.GetUser(_testUserId).UserProfile.IsTeacher);
+        }
+        
+        [TestMethod]
+        [ExpectedException(typeof(ActionIsNotAllowWithSanctionsException))]
+        public void TryToEditNameWithSanctions_GetException()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+
+            //Act
+            _userEditFacade.EditName(_testUserId, "new");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ActionIsNotAllowWithSanctionsException))]
+        public void TryToEditAboutUserWithSanctions_GetException()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+
+            //Act
+            _userEditFacade.EditAboutUser(_testUserId, "new");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ActionIsNotAllowWithSanctionsException))]
+        public void TryToEditGenderWithSanctions_GetException()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+
+            //Act
+            _userEditFacade.EditGender(_testUserId, Gender.Woman);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ActionIsNotAllowWithSanctionsException))]
+        public void TryToEditAvatarLinkWithSanctions_GetException()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+
+            //Act
+            _userEditFacade.EditAvatarLink(_testUserId, "new");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ActionIsNotAllowWithSanctionsException))]
+        public void TryToEditBirthYearWithSanctions_GetException()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+
+            //Act
+            _userEditFacade.EditBirthYear(_testUserId, 1990);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ActionIsNotAllowWithSanctionsException))]
+        public void TryToEditContactsWithSanctions_GetException()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+
+            //Act
+            _userEditFacade.EditContacts(_testUserId, new List<string> { "new" });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ActionIsNotAllowWithSanctionsException))]
+        public void TryToBecomeTeacherWithSanctions_GetException()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToTeach);
+
+            //Act
+            _userEditFacade.BecomeTeacher(_testUserId);
         }
     }
 }

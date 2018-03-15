@@ -22,6 +22,7 @@ namespace EduHubTests
         private User _groupCreator;
         private IGroupFacade _groupFacade;
         private IUserFacade _userFacade;
+        private ISanctionFacade _sanctionFacade;
         
         [TestInitialize]
         public void Initialize()
@@ -35,12 +36,16 @@ namespace EduHubTests
             var emailSender = new EmailSender(emailSettings);
             var publisher = new Mock<IEventPublisher>();
 
+            var adminKey = new Key("email", KeyAppointment.BecomeAdmin);
+            inMemoryKeyRepository.AddKey(adminKey);
+
+            _sanctionFacade = new SanctionFacade(inMemorySanctionRepository, inMemoryUserRepository);
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, inMemorySanctionRepository,
                 new GroupSettings(3, 100, 0, 1000), publisher.Object);
             _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, inMemoryKeyRepository);
             _accountFacade = new AccountFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender);
-            var creatorId = _accountFacade.RegUser("Alena", new Credentials("email", "password"), true);
+            var creatorId = _accountFacade.RegUser("Alena", new Credentials("email", "password"), true, adminKey.Value);
             _groupCreator = _userFacade.GetUser(creatorId);
         }
 
@@ -139,6 +144,39 @@ namespace EduHubTests
 
             //Assert
             Assert.AreEqual(expected, _groupFacade.GetGroup(createdGroupId).GroupMemberInfo.Count());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ActionIsNotAllowWithSanctionsException))]
+        public void TryToJoinTheGroupWithSanctions_GetException()
+        {
+            //Arrange
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 20, false, GroupType.Lecture);
+            var testUserId = _accountFacade.RegUser("Alena", Credentials.FromRawData("some email", "password"), false);
+            _sanctionFacade.AddSanction("some rule", testUserId, _groupCreator.Id, SanctionType.NotAllowToJoinGroup);
+
+            //Act
+            _groupFacade.AddMember(createdGroupId, testUserId);
+        }
+
+        [TestMethod]
+        public void AddNewMemberWithSanctionWithInvitation_MemberWasAdded()
+        {
+            //Arrange
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+                "You're welcome!", 3, 20, false, GroupType.Lecture);
+            var testUserId = _accountFacade.RegUser("Alena", Credentials.FromRawData("some email", "password"), false);
+            _sanctionFacade.AddSanction("some rule", testUserId, _groupCreator.Id, SanctionType.NotAllowToJoinGroup);
+
+            _userFacade.Invite(_groupCreator.Id, testUserId, createdGroupId, MemberRole.Member);
+            var invitationId = _userFacade.GetAllInvitationsForUser(testUserId).ToList()[0].Id;
+
+            //Act
+            _userFacade.ChangeInvitationStatus(testUserId, invitationId, InvitationStatus.Declined);
+
+            //Assert
+            Assert.AreEqual(1, _groupFacade.GetGroup(createdGroupId).GroupMemberInfo.Count());
         }
     }
 }

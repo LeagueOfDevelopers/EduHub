@@ -51,7 +51,8 @@ namespace EduHubLibrary.Facades
 
         public void AddMember(int groupId, int newMemberId)
         {
-            CheckUserExistence(newMemberId);
+            CheckSanctions(newMemberId, groupId);
+            var currentUser = _userRepository.GetUserById(newMemberId);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.AddMember(newMemberId);
@@ -217,6 +218,18 @@ namespace EduHubLibrary.Facades
         private void CheckUserExistence(int userId)
         {
             _userRepository.GetUserById(userId);
+        }
+
+        private void CheckSanctions(int userId, int groupId)
+        {
+            var doesSanctionExist = _sanctionRepository.GetAllOfUser(userId).ToList().
+                Exists(s => s.Type.Equals(SanctionType.NotAllowToJoinGroup));
+
+            var hasUserInvitation = _userRepository.GetUserById(userId).Invitations.ToList().
+                Exists(i => i.GroupId == groupId);
+
+            Ensure.Bool.IsFalse(doesSanctionExist && !hasUserInvitation, nameof(CheckSanctions),
+                opt => opt.WithException(new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToJoinGroup)));
         }
     }
 }

@@ -25,9 +25,7 @@ namespace EduHubLibrary.Facades
 
         public void EditName(int userId, string newName)
         {
-            Ensure.Bool.IsFalse(_sanctionRepository.GetAllOfUser(userId).ToList()
-                .Exists(s => s.Type.Equals(SanctionType.NotAllowToEditProfile)), nameof(EditName),
-                opt => opt.WithException(new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToEditProfile)));
+            CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
 
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.Name = Ensure.Any.IsNotNull(newName);
@@ -36,6 +34,8 @@ namespace EduHubLibrary.Facades
 
         public void EditAboutUser(int userId, string newAboutUser)
         {
+            CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
+
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.AboutUser = Ensure.Any.IsNotNull(newAboutUser);
             _userRepository.Update(currentUser);
@@ -43,6 +43,8 @@ namespace EduHubLibrary.Facades
 
         public void EditGender(int userId, Gender gender)
         {
+            CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
+
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.Gender = gender;
             _userRepository.Update(currentUser);
@@ -50,6 +52,8 @@ namespace EduHubLibrary.Facades
 
         public void EditAvatarLink(int userId, string newAvatarLink)
         {
+            CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
+
             Ensure.Any.IsNotNull(newAvatarLink);
             var currentUser = _userRepository.GetUserById(userId);
             if (newAvatarLink.Length == 0)
@@ -69,8 +73,9 @@ namespace EduHubLibrary.Facades
 
         public void EditContacts(int userId, List<string> newContactData)
         {
-            var currentUser = _userRepository.GetUserById(userId);
+            CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
 
+            var currentUser = _userRepository.GetUserById(userId);
             Ensure.Any.IsNotNull(newContactData);
 
             if (newContactData.TrueForAll(d => !string.IsNullOrWhiteSpace(d)))
@@ -82,6 +87,8 @@ namespace EduHubLibrary.Facades
 
         public void EditBirthYear(int userId, int newYear)
         {
+            CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
+
             var currentUser = _userRepository.GetUserById(userId);
 
             //hardcoded value
@@ -94,6 +101,8 @@ namespace EduHubLibrary.Facades
 
         public void BecomeTeacher(int userId)
         {
+            CheckSanctions(userId, SanctionType.NotAllowToTeach);
+
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.IsTeacher = true;
             _userRepository.Update(currentUser);
@@ -104,6 +113,13 @@ namespace EduHubLibrary.Facades
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.IsTeacher = false;
             _userRepository.Update(currentUser);
+        }
+
+        private void CheckSanctions(int userId, SanctionType sanctionType)
+        {
+            Ensure.Bool.IsFalse(_sanctionRepository.GetAllOfUser(userId).ToList()
+                .Exists(s => s.Type.Equals(sanctionType)), nameof(CheckSanctions),
+                opt => opt.WithException(new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToEditProfile)));
         }
     }
 }

@@ -17,6 +17,7 @@ namespace EduHubLibrary.Mailing
 
         public void SendMessage(string email, string text, string theme, string username = "")
         {
+            /*
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("EduHub", _settings.Email));
             message.To.Add(new MailboxAddress(username, email));
@@ -27,7 +28,6 @@ namespace EduHubLibrary.Mailing
                 Text = text
             };
             
-            /*
             using (var client = new SmtpClient())
             {
                 client.ServerCertificateValidationCallback = (s, c, h, e) => true;

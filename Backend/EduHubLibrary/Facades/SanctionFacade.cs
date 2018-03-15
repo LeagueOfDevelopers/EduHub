@@ -17,7 +17,7 @@ namespace EduHubLibrary.Facades
             _userRepository = userRepository;
         }
 
-        public void AddSanction(string brokenRule, int userId, int moderatorId, SanctionType type)
+        public int AddSanction(string brokenRule, int userId, int moderatorId, SanctionType type)
         {
             Ensure.String.IsNotNullOrWhiteSpace(brokenRule);
             Ensure.Any.IsNotNull(type);
@@ -29,6 +29,7 @@ namespace EduHubLibrary.Facades
 
             var sanction = new Sanction(brokenRule, userId, moderatorId, type);
             _sanctionRepository.Add(sanction);
+            return sanction.Id;
         }
 
         public void CancelSanction(int sanctionId)
