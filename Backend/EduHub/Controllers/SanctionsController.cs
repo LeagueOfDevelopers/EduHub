@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EduHub.Extensions;
+using EduHub.Models.Tools;
+using EduHubLibrary.Facades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -9,6 +12,11 @@ namespace EduHub.Controllers
     [Route("api/sanctions")]
     public class SanctionController : Controller
     {
+        public SanctionController(ISanctionFacade sanctionFacade)
+        {
+            _sanctionFacade = sanctionFacade;
+        }
+
         /// <summary>
         ///     Applies sanctions for user
         /// </summary>
@@ -17,9 +25,23 @@ namespace EduHub.Controllers
         [Route("{userId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult ApplySanction([FromRoute] int userId)
+        public IActionResult ApplySanction([FromBody] SanctionModel request)
         {
-            return Ok();
+            var moderatorId = Request.GetUserId();
+            int sanctionId;
+
+            if (request.ExpirationDate != null)
+            {
+                sanctionId = _sanctionFacade.AddSanction(request.BrokenRule, request.UserId, moderatorId,
+                    request.SanctionType, request.ExpirationDate);
+            }
+            else
+            {
+                sanctionId = _sanctionFacade.AddSanction(request.BrokenRule, request.UserId, moderatorId,
+                    request.SanctionType);
+            }
+
+            return Ok(sanctionId);
         }
 
         /// <summary>
@@ -34,5 +56,7 @@ namespace EduHub.Controllers
         {
             return Ok();
         }
+
+        private readonly ISanctionFacade _sanctionFacade;
     }
 }
