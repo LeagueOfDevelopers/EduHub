@@ -118,7 +118,7 @@ namespace EduHubLibrary.Facades
         private void CheckSanctions(int userId, SanctionType sanctionType)
         {
             Ensure.Bool.IsFalse(_sanctionRepository.GetAllOfUser(userId).ToList()
-                .Exists(s => s.Type.Equals(sanctionType)), nameof(CheckSanctions),
+                .Exists(s => s.Type.Equals(sanctionType) && s.IsActive), nameof(CheckSanctions),
                 opt => opt.WithException(new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToEditProfile)));
         }
     }

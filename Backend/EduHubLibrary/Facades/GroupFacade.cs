@@ -222,13 +222,13 @@ namespace EduHubLibrary.Facades
 
         private void CheckSanctions(int userId, int groupId)
         {
-            var doesSanctionExist = _sanctionRepository.GetAllOfUser(userId).ToList().
-                Exists(s => s.Type.Equals(SanctionType.NotAllowToJoinGroup));
+            var doesSanctionAllowAction = _sanctionRepository.GetAllOfUser(userId).ToList()
+                .Exists(s => s.IsActive && s.Type.Equals(SanctionType.NotAllowToJoinGroup));
 
             var hasUserInvitation = _userRepository.GetUserById(userId).Invitations.ToList().
                 Exists(i => i.GroupId == groupId);
 
-            Ensure.Bool.IsFalse(doesSanctionExist && !hasUserInvitation, nameof(CheckSanctions),
+            Ensure.Bool.IsFalse(doesSanctionAllowAction && !hasUserInvitation, nameof(CheckSanctions),
                 opt => opt.WithException(new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToJoinGroup)));
         }
     }

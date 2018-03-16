@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace EduHubTests.FacadesTests
 {
@@ -55,6 +56,18 @@ namespace EduHubTests.FacadesTests
 
             //Assert
             Assert.AreEqual(1, sanctionFacade.GetAll().ToList().Count);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void TryToAddSanctionWithInvalidExpirationDate_GetException()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+
+            //Act
+            sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, 
+                SanctionType.NotAllowToEditProfile, DateTimeOffset.Now);
         }
 
         [TestMethod]
@@ -156,6 +169,21 @@ namespace EduHubTests.FacadesTests
             Assert.AreEqual(SanctionType.NotAllowToJoinGroup, actual[0].Type);
             Assert.AreEqual(SanctionType.NotAllowToEditProfile, actual[1].Type);
             Assert.AreEqual(SanctionType.NotAllowToTeach, actual[2].Type);
+        }
+
+        [TestMethod]
+        public void CheckActivityOfExpiredSanction_GetInactiveSanction()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionId = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, 
+                SanctionType.NotAllowToEditProfile, DateTimeOffset.Now.AddMilliseconds(1));
+
+            //Act
+            Thread.Sleep(2);
+
+            //Assert
+            Assert.AreEqual(false, sanctionFacade.GetAll().ToList()[0].IsActive);
         }
     }
 }

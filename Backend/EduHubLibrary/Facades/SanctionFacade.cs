@@ -31,6 +31,24 @@ namespace EduHubLibrary.Facades
             _sanctionRepository.Add(sanction);
             return sanction.Id;
         }
+        
+        public int AddSanction(string brokenRule, int userId, int moderatorId, SanctionType type, DateTimeOffset expirationDate)
+        {
+            Ensure.String.IsNotNullOrWhiteSpace(brokenRule);
+            Ensure.Any.IsNotNull(type);
+            Ensure.Any.IsNotNull(expirationDate);
+            Ensure.Bool.IsTrue(expirationDate > DateTimeOffset.Now, nameof(AddSanction),
+                opt => opt.WithException(new ArgumentException()));
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(AddSanction),
+                opt => opt.WithException(new UserNotFoundException(userId)));
+            Ensure.Bool.IsTrue(_userRepository.GetUserById(moderatorId).Type.Equals(UserType.Moderator) ||
+                _userRepository.GetUserById(moderatorId).Type.Equals(UserType.Admin), nameof(AddSanction),
+                opt => opt.WithException(new NotEnoughPermissionsException(moderatorId)));
+
+            var sanction = new Sanction(brokenRule, userId, moderatorId, type, expirationDate);
+            _sanctionRepository.Add(sanction);
+            return sanction.Id;
+        }
 
         public void CancelSanction(int sanctionId)
         {
@@ -60,7 +78,7 @@ namespace EduHubLibrary.Facades
 
             return _sanctionRepository.GetAllOfUser(userId);
         }
-
+        
         private readonly ISanctionRepository _sanctionRepository;
         private readonly IUserRepository _userRepository;
     }

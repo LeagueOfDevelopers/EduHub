@@ -32,16 +32,19 @@ namespace EduHubLibrary.Infrastructure
 
         public IEnumerable<Sanction> GetAll()
         {
+            Update();
             return _listOfSanctions;
         }
 
         public IEnumerable<Sanction> GetAllOfModerator(int moderatorId)
         {
+            Update();
             return _listOfSanctions.FindAll(s => s.ModeratorId == moderatorId);
         }
 
         public IEnumerable<Sanction> GetAllOfUser(int userId)
         {
+            Update();
             return _listOfSanctions.FindAll(s => s.UserId == userId);
         }
 
@@ -52,6 +55,12 @@ namespace EduHubLibrary.Infrastructure
             var currentSanction = _listOfSanctions.Find(current => current.Id == sanction.Id) ??
                              throw new SanctionNotFoundException(sanction.Id);
             currentSanction = sanction;
+        }
+
+        private void Update()
+        {
+            _listOfSanctions.FindAll(s => s.IsTemporary == true && s.ExpirationDate < DateTimeOffset.Now)
+                .ForEach(s => s.Cancel());
         }
 
         private readonly List<Sanction> _listOfSanctions;
