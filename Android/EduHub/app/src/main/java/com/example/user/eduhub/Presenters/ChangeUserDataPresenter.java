@@ -27,12 +27,15 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
     IChangeUsersDataView changeUsersDataView;
     Observable<String> changeUsersRole;
 
+
     public ChangeUserDataPresenter(IChangeUsersDataView changeUsersDataView) {
         this.changeUsersDataView = changeUsersDataView;
     }
 
     @Override
     public void changeUsersData(String token,String name, String aboutUser, ArrayList<String> contacts, Integer birthYear, String avatarLink, String sex,Boolean isTeacher,String[] skills) {
+        Observable changeAboutUser=Observable.empty();
+        Observable changeUsersAvatarLink=Observable.empty();
         RefactorUserRequestModel refactorUserRequestModel=new RefactorUserRequestModel();
         refactorUserRequestModel.setUserName(name);
         refactorUserRequestModel.setAboutUser(aboutUser);
@@ -54,9 +57,10 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
         Observable changeUserName =eduHubApi.changesUserName("Bearer "+token,refactorUserRequestModel)
                 .toObservable()
                 .subscribeOn(Schedulers.io());
-        Observable changeAboutUser=eduHubApi.changesAboutUser("Bearer "+token,refactorUserRequestModel)
+        if(aboutUser.equals("")){}else{
+         changeAboutUser=eduHubApi.changesAboutUser("Bearer "+token,refactorUserRequestModel)
                 .toObservable()
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io());}
         Observable changeUserConatcts=eduHubApi.changesUsersContacts("Bearer "+token,refactorUserRequestModel)
                 .toObservable()
                 .subscribeOn(Schedulers.io());
@@ -66,9 +70,12 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
         Observable changeUsersGender=eduHubApi.changesUsersGender("Bearer "+token,refactorUserRequestModel)
                 .toObservable()
                 .subscribeOn(Schedulers.io());
-        Observable changeUsersAvatarLink=eduHubApi.changesUserAvatar("Bearer "+token,refactorUserRequestModel)
+        if(!avatarLink.equals("")){
+         changeUsersAvatarLink=eduHubApi.changesUserAvatar("Bearer "+token,refactorUserRequestModel)
                 .toObservable()
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io());}else{
+
+        }
 
         if(isTeacher){
          changeUsersRole=eduHubApi.becomeTeacher("Bearer "+token)
@@ -80,7 +87,7 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
         }
         Observable.merge(changeAboutUser,changeUserBirthYear,changeUserConatcts,changeUserName)
 
-                .mergeWith(Observable.merge(changeUsersRole,changeUsersGender))
+                .mergeWith(Observable.merge(changeUsersRole,changeUsersGender,changeUsersAvatarLink))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next->{},
                         throwable -> {

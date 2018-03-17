@@ -43,6 +43,7 @@ import com.example.user.eduhub.Retrofit.EduHubApi;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import io.reactivex.disposables.Disposable;
@@ -55,6 +56,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     User user;
     ImageView imageView;
+    Bitmap bitmap;
     FakesButton fakesButton=new FakesButton();
     EduHubApi eduHubApi;
     Disposable disposable;
@@ -79,7 +81,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        imageView=findViewById(R.id.imageViewAvatar);
+
         sPref=getSharedPreferences("User",MODE_PRIVATE);
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
            Integer exp=savedDataRepository.loadExp(sPref);
@@ -87,6 +89,11 @@ public class AuthorizedUserActivity extends AppCompatActivity
             bool=savedDataRepository.loadCheckButtonResult(sPref);
             fakesButton.setCheckButton(bool);
             refreshTokenPresenter.refreshToken(savedDataRepository.loadSavedData(sPref).getToken());
+            if(sPref.contains(AVATARLINK)){
+                Log.d("AvatarLink",user.getAvatarLink());
+                fileRepository.loadFileFromServer(user.getToken(),user.getAvatarLink());
+
+            }
         }
              else{
             Intent intent=getIntent();
@@ -255,10 +262,9 @@ public class AuthorizedUserActivity extends AppCompatActivity
         vto.addOnGlobalLayoutListener
                 (new ViewTreeObserver.OnGlobalLayoutListener() { @Override public void onGlobalLayout() {
 
-                    if(sPref.contains(AVATARLINK)){
-
-                        fileRepository.loadFileFromServer(user.getToken(),user.getAvatarLink());
-
+                    if(bitmap!=null){
+                        imageView=findViewById(R.id.imageViewAvatar);
+                        imageView.setImageBitmap(bitmap);
                     }
                     TextView textView=findViewById(R.id.name_user);
                     textView.setText(user.getName());
@@ -283,8 +289,19 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
     @Override
     public void getFile(ResponseBody file) {
-        Log.d("FIleTest",file.toString());
-        Picasso.get().load(decodeFile.writeResponseBodyToDisk(file)).into(imageView);
+
+        byte[] rawBitmap;
+        try {
+
+            rawBitmap=file.bytes();
+            Log.d("Проверяемчтозахрень тут",rawBitmap[5]+"");
+            bitmap = BitmapFactory.decodeByteArray(rawBitmap,0,rawBitmap.length);
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

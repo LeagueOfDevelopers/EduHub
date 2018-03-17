@@ -69,7 +69,8 @@
                     android:layout_height="60dp"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@+id/cost" />
+                    android:layout_toRightOf="@+id/cost"
+                    />
 
             </RelativeLayout>
         </FrameLayout>

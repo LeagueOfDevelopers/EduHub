@@ -47,6 +47,7 @@ import com.example.user.eduhub.Presenters.FileRepository;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import mabbas007.tagsedittext.TagsEditText;
@@ -59,9 +60,10 @@ UserProfileResponse userProfile;
     String str;
     String[] skils;
     User user;
-    Uri uri;
+    Uri uri=null;
     Boolean flag=false;
     ImageView avatar;
+    TextView status;
     Contacts_adapter adapter1;
     IRefreshList refreshList;
     RecyclerView recyclerView;
@@ -94,10 +96,12 @@ UserProfileResponse userProfile;
 
 
         refreshList=this;
+        status=findViewById(R.id.status);
         TextView userName=findViewById(R.id.name_user_profile);
         TextView userEmail=findViewById(R.id.email_user_profile);
         avatar=findViewById(R.id.avatar);
         if(sharedPreferences.contains("AVATARLINK")){
+
             fileRepository.loadFileFromServer(user.getToken(),user.getAvatarLink());
         }
          addContact=findViewById(R.id.add_contacts);
@@ -136,7 +140,12 @@ UserProfileResponse userProfile;
             editAboutMe.setText(userProfile.getUserProfile().getAboutUser());}
         if(!userProfile.getUserProfile().getBirthYear().toString().equals("0")){
             editBirthYear.setText(userProfile.getUserProfile().getBirthYear()+"");}
-            else{editBirthYear.setText(userProfile.getUserProfile().getBirthYear()+"");}
+            else{editBirthYear.setText("");}
+        if(userProfile.getUserProfile().getIsTeacher()){
+            status.setText("Преподаватель");
+        }else{
+            status.setText("Ученик");
+        }
         if(userProfile.getUserProfile().getContacts()!=null){
             contacts.addAll(userProfile.getUserProfile().getContacts());}
         recyclerView.setHasFixedSize(true);
@@ -158,7 +167,7 @@ UserProfileResponse userProfile;
             }
         });
         avatar.setOnClickListener(click->{
-            Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+            Intent intent=new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(intent,1);
@@ -199,9 +208,16 @@ UserProfileResponse userProfile;
         back.setOnClickListener(click->{
             onBackPressed();
         });
-        saveButton.setOnClickListener(click->{
-            //fileRepository.loadFileToServer(user.getToken(),uri);
+        saveButton.setOnClickListener(click->{if(uri!=null){
+            fileRepository.loadImageToServer(user.getToken(),uri);}else {
+            avatarLink = "";
+            if(editBirthYear.getText().toString().equals("")){
+                editBirthYear.setText("0");
+            }
             changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils);
+
+        }
+
 
         });
     }
@@ -237,7 +253,13 @@ UserProfileResponse userProfile;
         avatarLink=addFileResponseModel.getFileName();
         Log.d("FilePathForGetImage",addFileResponseModel.getFileName());
         Picasso.get().load(addFileResponseModel.getFileName()).into(avatar);
+        if(editBirthYear.getText().toString().equals("")){
+            editBirthYear.setText("0");
+        }
         changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils);
+        android.content.SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("AVATARLINK",avatarLink);
+        editor.commit();
 
 
     }
@@ -245,7 +267,16 @@ UserProfileResponse userProfile;
     @Override
     public void getFile(ResponseBody file) {
         Log.d("FIleTest",file.toString());
+        byte[] rawBitmap;
+        try {rawBitmap=file.bytes();
+            Log.d("Проверяемчтозахрень тут",rawBitmap[5]+"");
+            Bitmap bitmap = BitmapFactory.decodeByteArray(rawBitmap,0,rawBitmap.length);
 
+
+            avatar.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
     @Override

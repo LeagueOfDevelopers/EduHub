@@ -1,11 +1,13 @@
 package com.example.user.eduhub.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -52,11 +54,13 @@ import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -74,6 +78,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     FakeUserProfilePresenter fakeUserProfilePresenter=new FakeUserProfilePresenter(this);
     FileRepository fileRepository=new FileRepository(this,getActivity());
     View v;
+    Boolean flag=false;
     TextView userName;
     TextView userEmail;
     TextView userName2;
@@ -140,6 +145,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
         else{
             fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
         }
+        flag=true;
 
     }
 
@@ -151,7 +157,9 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     @Override
     public void onResume() {
         super.onResume();
-
+        if(!flag){
+            onRefresh();
+        }
 
     }
 
@@ -182,6 +190,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     @Override
     public void onPause() {
         super.onPause();
+        flag=false;
         expandablePlaceHolderView.removeAllViews();
         expandablePlaceHolderView2.removeAllViews();
     }
@@ -324,13 +333,34 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
 
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void getFile(ResponseBody file) {
-        Log.d("FIleTest",file.toString());
-
-        Picasso.get().load(decodeFile.writeResponseBodyToDisk(file)).resize(5,5).into(avatar);
 
 
+
+
+        byte[] rawBitmap;
+        try {rawBitmap=file.bytes();
+             Log.d("Проверяемчтозахрень тут",rawBitmap[5]+"");
+             Bitmap bitmap = BitmapFactory.decodeByteArray(rawBitmap,0,rawBitmap.length);
+
+
+            avatar.setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    void onRefresh(){
+
+            sharedPreferences =getActivity().getSharedPreferences("User",MODE_PRIVATE);
+            user=savedDataRepository.loadSavedData(sharedPreferences);
+            if(!fakesButton.getCheckButton()){
+                Log.d("TOKEN",user.getToken());
+                userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());}
+            else{
+                fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
+            }
 
     }
 }

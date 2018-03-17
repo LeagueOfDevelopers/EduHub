@@ -71,7 +71,7 @@ public class FileRepository implements IFileRepository {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next->{addFileResponseModel=next;},
                         throwable -> {
-                            Log.e("FILEREP",throwable.toString());
+                            Log.e("FILEREP1",throwable.toString());
                             Log.d("Message",throwable.getLocalizedMessage());},
                         ()->{fileRepositoryView.getResponse(addFileResponseModel);});
 
@@ -86,7 +86,7 @@ public class FileRepository implements IFileRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next->{
-                    Log.d("getFile2",next.string());
+
                     result=next;
                 },
                         throwable -> {Log.e("GetFile",throwable.toString());},
@@ -112,7 +112,7 @@ public class FileRepository implements IFileRepository {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next->{addFileResponseModel=next;},
                         throwable -> {
-                            Log.e("FILEREP",throwable.toString());
+                            Log.e("FILEREP2",throwable.toString());
                             Log.d("Message",throwable.getLocalizedMessage());},
                         ()->{fileRepositoryView.getResponse(addFileResponseModel);});
     }

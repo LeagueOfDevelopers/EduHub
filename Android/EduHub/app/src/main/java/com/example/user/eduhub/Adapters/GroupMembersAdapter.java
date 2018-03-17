@@ -62,10 +62,12 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
     @Override
     public void onBindViewHolder(GroupMembersViewHolder holder, int i) {
-
+        Log.d("User",user.getUserId());
         for (Member member:members) {
-            if(member.getUserId()==user.getUserId()){
+            Log.d("memberId",member.getUserId());
+            if(member.getUserId().equals(user.getUserId())){
                 role=member.getRole();
+                Log.d("Role",role+"");
             }
 
         }

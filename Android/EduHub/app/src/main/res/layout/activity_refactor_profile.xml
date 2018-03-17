@@ -7,7 +7,8 @@
     tools:context="com.example.user.eduhub.RefactorProfile">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/veryGrey">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -90,6 +91,7 @@
                             android:textSize="11dp" />
 
                         <TextView
+                            android:id="@+id/status"
                             android:layout_width="72dp"
                             android:layout_height="14dp"
                             android:layout_alignParentRight="true"
