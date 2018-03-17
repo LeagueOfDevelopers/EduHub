@@ -56,6 +56,7 @@ namespace EduHubLibrary.Facades
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.AddMember(newMemberId);
+            _groupRepository.Update(currentGroup);
         }
 
         public void DeleteTeacher(int groupId, int requestedPerson)
@@ -64,6 +65,7 @@ namespace EduHubLibrary.Facades
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.DeleteTeacher(requestedPerson);
+            _groupRepository.Update(currentGroup);
         }
 
         public void DeleteMember(int groupId, int requestedPerson, int deletingPerson)
@@ -73,6 +75,7 @@ namespace EduHubLibrary.Facades
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.DeleteMember(requestedPerson, deletingPerson);
+            _groupRepository.Update(currentGroup);
         }
 
         public FullGroupView GetGroup(int id)
@@ -143,7 +146,9 @@ namespace EduHubLibrary.Facades
 
         public void AddInvitation(int groupId, Invitation invitation)
         {
-            _groupRepository.GetGroupById(groupId).AddInvitation(invitation);
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            currentGroup.AddInvitation(invitation);
+            _groupRepository.Update(currentGroup);
         }
 
         public void ApproveTeacher(int teacherId, int groupId)
@@ -151,6 +156,7 @@ namespace EduHubLibrary.Facades
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var teacher = _userRepository.GetUserById(teacherId);
             currentGroup.ApproveTeacher(teacher);
+            _groupRepository.Update(currentGroup);
         }
 
         public void AcceptCurriculum(int userId, int groupId)
@@ -159,6 +165,7 @@ namespace EduHubLibrary.Facades
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.AcceptCurriculum(userId);
+            _groupRepository.Update(currentGroup);
         }
 
         public void DeclineCurriculum(int userId, int groupId, string reason)
@@ -172,6 +179,7 @@ namespace EduHubLibrary.Facades
             {
                 cs.SendMessage(userId, reason);
             }
+            _groupRepository.Update(currentGroup);
         }
 
         public void OfferCurriculum(int userId, int groupId, string description)
@@ -180,6 +188,7 @@ namespace EduHubLibrary.Facades
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.OfferCurriculum(userId, description);
+            _groupRepository.Update(currentGroup);
         }
 
         public IEnumerable<Invitation> GetAllInvitations(int groupId)
@@ -192,6 +201,7 @@ namespace EduHubLibrary.Facades
             CheckUserExistence(userId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.FinishCurriculum(userId);
+            _groupRepository.Update(currentGroup);
         }
 
         public void AddReview(int groupId, int userId, string title,

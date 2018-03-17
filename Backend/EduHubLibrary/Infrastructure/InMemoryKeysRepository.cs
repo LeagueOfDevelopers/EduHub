@@ -26,12 +26,16 @@ namespace EduHubLibrary.Infrastructure
             keyList.Add(key);
         }
 
-        public Key GetKey(Guid keyId)
+        public Key GetKey(int keyId)
         {
-            Ensure.Guid.IsNotEmpty(keyId);
             var key = keyList.FirstOrDefault(k => k.Value == keyId);
             Ensure.Any.IsNotNull(key);
             return key;
+        }
+
+        public void UpdateKey(Key key)
+        {
+            
         }
     }
 }

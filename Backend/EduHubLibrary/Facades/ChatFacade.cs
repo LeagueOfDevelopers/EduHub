@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
@@ -18,11 +17,14 @@ namespace EduHubLibrary.Facades
         public int SendMessage(int senderId, int groupId, string text)
         {
             Ensure.String.IsNotNullOrWhiteSpace(text);
-
-            using (var chat = new ChatSession(_groupRepository.GetGroupById(groupId)))
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            using (var chat = new ChatSession(currentGroup))
             {
-                return chat.SendMessage(senderId, text);
+                chat.SendMessage(senderId, text);
             }
+            _groupRepository.Update(currentGroup);
+            currentGroup = _groupRepository.GetGroupById(groupId);
+            return currentGroup.Messages.ToList().LastOrDefault(m => m.Text == text).Id;
         }
 
         public Message GetMessage(int messageId, int groupId)

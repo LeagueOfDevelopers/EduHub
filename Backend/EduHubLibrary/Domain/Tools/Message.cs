@@ -7,10 +7,18 @@ namespace EduHubLibrary.Domain.Tools
     {
         public Message(int senderId, string text)
         {
-            Id = IntIterator.GetNextId();
+            //Id = IntIterator.GetNextId();
             SenderId = senderId;
             Text = text;
             SentOn = DateTimeOffset.Now;
+        }
+
+        internal Message(int id, int senderId, DateTimeOffset sentOn, string text)
+        {
+            Id = id;
+            SenderId = senderId;
+            SentOn = sentOn;
+            Text = text;
         }
 
         public int Id { get; internal set; }

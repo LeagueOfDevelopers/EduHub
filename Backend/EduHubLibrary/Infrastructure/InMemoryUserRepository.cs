@@ -55,6 +55,11 @@ namespace EduHubLibrary.Infrastructure
                 throw new ArgumentNullException();
             var currentUser = _listOfUsers.Find(current => current.Id == user.Id) ??
                               throw new UserNotFoundException(user.Id);
+            currentUser.Invitations.ForEach(inv =>
+            {
+                if (inv.Id == 0)
+                    inv.Id = IntIterator.GetNextId();
+            });
             currentUser = user;
         }
 

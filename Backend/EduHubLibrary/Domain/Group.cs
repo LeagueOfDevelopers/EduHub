@@ -12,22 +12,6 @@ namespace EduHubLibrary.Domain
 {
     public class Group
     {
-        public Group(Guid creatorId, List<Member> toWrite, string title, List<string> tags,
-            string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
-        {
-            Ensure.Any.IsNotNull(tags);
-            Ensure.String.IsNotNullOrWhiteSpace(title);
-            Ensure.String.IsNotNullOrWhiteSpace(description);
-            Ensure.Any.IsNotNull(size);
-            Ensure.Any.IsNotNull(groupType);
-            Ensure.Any.IsNotNull(moneyPerUser);
-
-            var isActive = true;
-            GroupInfo = new GroupInfo(title, description, tags, groupType, isPrivate, isActive, size,
-                moneyPerUser);
-            Messages = new List<Message>();
-        }
-
         public Group(int creatorId, string title, List<string> tags,
             string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
         {
@@ -48,12 +32,23 @@ namespace EduHubLibrary.Domain
             Messages = new List<Message>();
         }
 
-        public IEnumerable<Message> Messages { get; private set; }
-        public GroupInfo GroupInfo { get; set; }
-        public User Teacher { get; private set; }
-        public CourseStatus Status { get; set; }
-        public List<Member> Members { get; }
-        public List<Invitation> Invitations { get; }
+        internal Group(IEnumerable<Message> messages, 
+            GroupInfo groupInfo, User teacher, CourseStatus status, List<Member> members, List<Invitation> invitations)
+        {
+            Messages = messages;
+            GroupInfo = groupInfo;
+            Teacher = teacher;
+            Status = status;
+            Members = members;
+            Invitations = invitations;
+        }
+
+        public IEnumerable<Message> Messages { get; internal set; }
+        public GroupInfo GroupInfo { get; internal set; }
+        public User Teacher { get; internal set; }
+        public CourseStatus Status { get; internal set; }
+        public List<Member> Members { get; internal set; }
+        public List<Invitation> Invitations { get; internal set; }
 
         internal void AddMember(int newMemberId)
         {

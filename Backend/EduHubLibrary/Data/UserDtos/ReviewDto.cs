@@ -5,11 +5,11 @@ namespace EduHubLibrary.Data.UserDtos
     public class ReviewDto
     {
         public int Id { get; set; }
-        public int FromUser { get; }
-        public int FromGroup { get; }
-        public string Title { get; }
-        public string Text { get; }
-        public DateTimeOffset Date { get; }
+        public int FromUser { get; set; }
+        public int FromGroup { get; set; }
+        public string Title { get; set; }
+        public string Text { get; set; }
+        public DateTimeOffset Date { get; set; }
 
         public ReviewDto(int id, int fromUser, int fromGroup, string title, string text, DateTimeOffset date)
         {
@@ -19,6 +19,10 @@ namespace EduHubLibrary.Data.UserDtos
             Title = title;
             Text = text;
             Date = date;
+        }
+
+        public ReviewDto()
+        {
         }
     }
 }

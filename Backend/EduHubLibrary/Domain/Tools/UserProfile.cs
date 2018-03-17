@@ -12,8 +12,17 @@ namespace EduHubLibrary.Domain.Tools
             Contacts = new List<string>();
         }
 
-        internal UserProfile()
+        public UserProfile(string name, string email, string aboutUser,
+            int birthYear, Gender gender, bool isTeacher, string avatarLink, List<string> contacts)
         {
+            Name = name;
+            Email = email;
+            AboutUser = aboutUser;
+            BirthYear = birthYear;
+            Gender = gender;
+            IsTeacher = isTeacher;
+            AvatarLink = avatarLink;
+            Contacts = contacts;
         }
 
         public string Name { get; internal set; }

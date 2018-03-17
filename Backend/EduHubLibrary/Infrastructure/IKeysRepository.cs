@@ -1,10 +1,9 @@
-﻿using System;
-
-namespace EduHubLibrary.Domain
+﻿namespace EduHubLibrary.Domain
 {
     public interface IKeysRepository
     {
         void AddKey(Key key);
-        Key GetKey(Guid keyId);
+        Key GetKey(int keyId);
+        void UpdateKey(Key key);
     }
 }

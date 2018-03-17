@@ -22,5 +22,9 @@ namespace EduHubLibrary.Data.UserDtos
             ToUser = toUser;
             SuggestedRole = suggestedRole;
         }
+
+        public InvitationDto()
+        {
+        }
     }
 }

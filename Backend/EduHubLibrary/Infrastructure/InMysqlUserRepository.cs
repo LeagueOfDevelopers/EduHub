@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using EduHubLibrary.Common;
 using EduHubLibrary.Data;
 using EduHubLibrary.Data.UserDtos;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduHubLibrary.Infrastructure
@@ -12,77 +12,125 @@ namespace EduHubLibrary.Infrastructure
     public class InMysqlUserRepository : IUserRepository
     {
 
-        private readonly EduhubContext _context;
-        private readonly IMapper _mapper;
+        private readonly string _connectionString;
 
 
-        public InMysqlUserRepository(EduhubContext context, IMapper mapper)
+        public InMysqlUserRepository(string connectionString)
         {
-            _context = context;
-            _mapper = mapper;
+            _connectionString = connectionString;
         }
 
         public void Add(User user)
         {
-            var userDto = _mapper.Map<User, UserDto>(user);
-            _context.Users.Add(userDto);
-            _context.SaveChanges();
-            user.Id = userDto.Id;
-            _context.Entry(userDto).State = EntityState.Detached;
+            using(var _context = new EduhubContext(_connectionString)) { 
+                var userDto = new UserDto();
+                userDto.ParseFromUser(user);
+                _context.Users.Add(userDto);
+                _context.SaveChanges();
+                user.Id = userDto.Id;
+                _context.DetachAllEntities();
+            }
         }
 
         public void Update(User user)
         {
-            //var userDto = _context.Users.FirstOrDefault(u => u.Id == user.Id);
-            var userDto = _mapper.Map<User, UserDto>(user);
-            _context.Update(userDto);
-            _context.SaveChanges();
-            _context.Entry(userDto).State = EntityState.Detached;
-
+            using (var _context = new EduhubContext(_connectionString))
+            {
+                _context.DetachAllEntities();
+                var userDto = _context.Users
+                    .Include(u => u.Contacts)
+                    .Include(u => u.Invitations)
+                    .Include(u => u.Reviews)
+                    .Include("UserTags.Tag")
+                    .Include(u => u.Notifies)
+                    .FirstOrDefault(u => u.Id == user.Id);
+                userDto.ParseFromUser(user);
+                _context.SaveChanges();
+            }
         }
 
         public void Delete(User user)
         {
-            var userDto = _mapper.Map<User, UserDto>(user);
-            _context.Users.Remove(userDto);
-            _context.SaveChanges();
-            _context.Entry(userDto).State = EntityState.Detached;
+            using (var _context = new EduhubContext(_connectionString))
+            {
+                _context.DetachAllEntities();
+                var userDto = new UserDto();
+                userDto.ParseFromUser(user);
+                _context.Users.Remove(userDto);
+                _context.SaveChanges();
+            }
         }
 
         public IEnumerable<User> GetAll()
         {
-            var allUsers = new List<User>();
-            var dtoList = _context.Users.ToList();
-            dtoList.ForEach(d => allUsers.Add(_mapper.Map<UserDto, User>(d)));
-            return allUsers;
+            using (var _context = new EduhubContext(_connectionString))
+            {
+                _context.DetachAllEntities();
+                var allUsers = new List<User>();
+                var dtoList = _context.Users
+                    .Include(u => u.Contacts)
+                    .Include(u => u.Invitations)
+                    .Include(u => u.Reviews)
+                    .Include("UserTags.Tag")
+                    .Include(u => u.Notifies)
+                    .ToList();
+                dtoList.ForEach(d => allUsers.Add(UserExtensions.ParseFromUserDto(d)));
+                return allUsers;
+            }
         }
 
         public User GetUserById(int userId)
         {
-            var userDto = _context.Users.Find(userId);
-            var user = _mapper.Map<UserDto, User>(userDto);
-            _context.SaveChanges();
-            _context.Entry(userDto).State = EntityState.Detached;
-            return user;
+            using (var _context = new EduhubContext(_connectionString))
+            {
+                _context.DetachAllEntities();
+                var userDto = _context.Users
+                    .Include(u => u.Contacts)
+                    .Include(u => u.Invitations)
+                    .Include(u => u.Reviews)
+                    .Include("UserTags.Tag")
+                    .Include(u => u.Notifies)
+                    .FirstOrDefault(u => u.Id == userId);
+                var user = UserExtensions.ParseFromUserDto(userDto);
+                return user;
+            }
         }
 
         public User GetUserByEmail(string email)
         {
-            var userDto = _context.Users.FirstOrDefault(u => u.Email == email);
-            var user = _mapper.Map<UserDto, User>(userDto);
-            _context.SaveChanges();
-            _context.Entry(userDto).State = EntityState.Detached;
-            return user;
+            using (var _context = new EduhubContext(_connectionString))
+            {
+                _context.DetachAllEntities();
+                var userDto = _context.Users
+                    .Include(u => u.Contacts)
+                    .Include(u => u.Invitations)
+                    .Include(u => u.Reviews)
+                    .Include("UserTags.Tag")
+                    .Include(u => u.Notifies)
+                    .FirstOrDefault(u => u.Email == email);
+                var user = UserExtensions.ParseFromUserDto(userDto);
+                _context.SaveChanges();
+                return user;
+            }
         }
 
         public User GetUserByCredentials(Credentials credentials)
         {
-            var userDto = _context.Users.FirstOrDefault(u => u.Email == credentials.Email 
-                                                             && u.PasswordHash == credentials.PasswordHash);
-            var user = _mapper.Map<UserDto, User>(userDto);
-            _context.SaveChanges();
-            _context.Entry(userDto).State = EntityState.Detached;
-            return user;
+            using (var _context = new EduhubContext(_connectionString))
+            {
+                _context.DetachAllEntities();
+                var userDto = _context.Users
+                    .Include(u => u.Contacts)
+                    .Include(u => u.Invitations)
+                    .Include("UserTags.Tag")
+                    .Include(u => u.Reviews)
+                    .Include(u => u.Notifies)
+                    .FirstOrDefault(u => u.Email == credentials.Email
+                                         && u.PasswordHash == credentials.PasswordHash);
+                var user = UserExtensions.ParseFromUserDto(userDto);
+                _context.SaveChanges();
+                return user;
+            }
         }
     }
 }

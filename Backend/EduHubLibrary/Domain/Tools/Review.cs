@@ -5,8 +5,9 @@ namespace EduHubLibrary.Domain.Tools
 {
     public class Review
     {
-        public Review(int fromUser, string title, string text, int fromGroup)
+        public Review(int fromUser, string title, string text, int fromGroup, int id = 0)
         {
+            Id = id;
             FromUser = fromUser;
             Title = Ensure.String.IsNotNullOrWhiteSpace(title);
             Text = Ensure.String.IsNotNullOrWhiteSpace(text);
@@ -14,6 +15,7 @@ namespace EduHubLibrary.Domain.Tools
             FromGroup = fromGroup;
         }
 
+        public int Id { get; internal set; }
         public int FromUser { get; }
         public int FromGroup { get; }
         public string Title { get; }

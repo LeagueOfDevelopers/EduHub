@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EnsureThat;
 
 namespace EduHubLibrary.Domain.Tools
 {
@@ -9,6 +10,13 @@ namespace EduHubLibrary.Domain.Tools
         {
             Reviews = new List<Review>();
             Skills = new List<string>();
+        }
+
+        //constr for db
+        internal TeacherProfile(List<Review> reviewList, List<string> skillsList)
+        {
+            Reviews = Ensure.Any.IsNotNull(reviewList);
+            Skills = Ensure.Any.IsNotNull(skillsList);
         }
 
         public List<Review> Reviews { get; set; }

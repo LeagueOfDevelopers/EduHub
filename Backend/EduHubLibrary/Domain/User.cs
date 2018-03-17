@@ -25,11 +25,34 @@ namespace EduHubLibrary.Domain
             Notifies = new List<string>();
         }
 
-        private User()
+        /*private User()
         {
             TeacherProfile = new TeacherProfile();
             UserProfile = new UserProfile();
             Credentials = new Credentials();
+        }*/
+
+        //constr for db
+        internal User(string name, Credentials credentials, UserType type, 
+            List<Invitation> invitationList, TeacherProfile teacherProfile, UserProfile userProfile, bool isActive,
+            List<string> notifiesList, int id = 0)
+        {
+            Id = id;
+            Ensure.String.IsNotNullOrWhiteSpace(name);
+            Credentials = Ensure.Any.IsNotNull(credentials);
+            Type = type;
+            TeacherProfile = Ensure.Any.IsNotNull(teacherProfile);
+            UserProfile = Ensure.Any.IsNotNull(userProfile);
+            IsActive = isActive;
+            Invitations = Ensure.Any.IsNotNull(invitationList);
+            Notifies = Ensure.Any.IsNotNull(notifiesList);
+        }
+
+        //constr for db
+        internal User(string name, string email, int id)
+        {
+            Id = id;
+            UserProfile = new UserProfile(name, email, true);
         }
 
         public Credentials Credentials { get; private set; }

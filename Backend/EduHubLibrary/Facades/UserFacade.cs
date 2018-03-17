@@ -49,12 +49,14 @@ namespace EduHubLibrary.Facades
                 {
                     var currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
                     currentGroup.AddMember(currentInvitation.ToUser);
+                    _groupRepository.Update(currentGroup);
                 }
             }
             else if (status.Equals(InvitationStatus.Declined))
             {
                 currentUser.DeclineInvitation(invitationId);
             }
+            _userRepository.Update(currentUser);
         }
 
         public void Invite(int inviterId, int invitedId, int groupId, MemberRole suggestedRole)
@@ -78,6 +80,8 @@ namespace EduHubLibrary.Facades
                 new Invitation(inviterId, invitedId, groupId, suggestedRole, InvitationStatus.InProgress);
 
             invitedUser.AddInvitation(newInvintation);
+            _userRepository.Update(invitedUser);
+            _groupRepository.Update(currentGroup);
         }
 
         public IEnumerable<Invitation> GetAllInvitationsForUser(int userId)
@@ -111,7 +115,9 @@ namespace EduHubLibrary.Facades
 
         public void AddNotify(int userId, string notify)
         {
-            _userRepository.GetUserById(userId).AddNotify(notify);
+            var user = _userRepository.GetUserById(userId);
+            user.AddNotify(notify);
+            _userRepository.Update(user);
         }
 
         public IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId)

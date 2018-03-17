@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Interators;
@@ -50,6 +51,13 @@ namespace EduHubLibrary.Infrastructure
             Ensure.Any.IsNotNull(group);
             var currentGroup = _listOfGroups.Find(current => current.GroupInfo.Id == group.GroupInfo.Id) ??
                                throw new GroupNotFoundException(group.GroupInfo.Id);
+            currentGroup.Messages.ToList().ForEach(msg =>
+            {
+                if (msg.Id == 0)
+                {
+                    msg.Id = IntIterator.GetNextId();
+                }
+            });
             currentGroup = group;
         }
     }

@@ -40,7 +40,7 @@ namespace EduHub.Controllers
         {
             int newId;
             
-            if (!request.InviteCode.Equals(Guid.Empty))
+            if (!request.InviteCode.Equals(0))
                 newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
                 request.IsTeacher, request.InviteCode);
             else newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
@@ -109,7 +109,7 @@ namespace EduHub.Controllers
         [HttpPost]
         [Route("confirm/{key}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult Confirm([FromRoute] Guid key)
+        public IActionResult Confirm([FromRoute] int key)
         {
             _userAccountFacade.ConfirmUser(key);
             return Ok();
@@ -147,7 +147,7 @@ namespace EduHub.Controllers
         [HttpPut]
         [Route("password/{key}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult ChangePassword([FromRoute] Guid key, [FromBody] string newPassword)
+        public IActionResult ChangePassword([FromRoute] int key, [FromBody] string newPassword)
         {
             _userAccountFacade.ChangePassword(newPassword, key);
             return Ok();

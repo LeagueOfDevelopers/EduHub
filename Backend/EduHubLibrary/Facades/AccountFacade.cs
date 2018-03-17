@@ -39,14 +39,13 @@ namespace EduHubLibrary.Facades
             return user.Id;
         }
 
-        public int RegUser(string username, Credentials credentials, bool isTeacher, Guid regKey)
+        public int RegUser(string username, Credentials credentials, bool isTeacher, int regKey)
         {
             Ensure.String.IsNotNullOrWhiteSpace(username);
             Ensure.Any.IsNotNull(credentials);
             Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
                 nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
 
-            Ensure.Guid.IsNotEmpty(regKey);
             var key = _keysRepository.GetKey(regKey);
             Ensure.Bool.IsTrue(key.UserEmail == credentials.Email, nameof(key.UserEmail),
                 opt => opt.WithException(new InappropriateEmailException(key.UserEmail, credentials.Email)));
@@ -59,16 +58,16 @@ namespace EduHubLibrary.Facades
             return user.Id;
         }
 
-        public void ConfirmUser(Guid key)
+        public void ConfirmUser(int key)
         {
-            Ensure.Guid.IsNotEmpty(key);
             var currentKey = _keysRepository.GetKey(key);
             CheckKey(currentKey, KeyAppointment.ConfirmEmail);
 
             currentKey.UseKey();
             _userRepository.GetUserByEmail(currentKey.UserEmail).Type = UserType.User;
+            _keysRepository.UpdateKey(currentKey);
         }
-        
+
         public void CheckAdminExistence(string email)
         {
             Ensure.String.IsNotNullOrWhiteSpace(email);
@@ -85,18 +84,22 @@ namespace EduHubLibrary.Facades
         public void ChangePassword(int userId, string newPassword)
         {
             Ensure.String.IsNotNullOrWhiteSpace(newPassword);
-            _userRepository.GetUserById(userId).ChangePassword(newPassword);
+            var currentUser = _userRepository.GetUserById(userId);
+            currentUser.ChangePassword(newPassword);
+            _userRepository.Update(currentUser);
         }
 
-        public void ChangePassword(string newPassword, Guid key)
+        public void ChangePassword(string newPassword, int key)
         {
             Ensure.String.IsNotNullOrWhiteSpace(newPassword);
-            Ensure.Guid.IsNotEmpty(key);
             var currentKey = _keysRepository.GetKey(key);
             CheckKey(currentKey, KeyAppointment.ChangePassword);
 
-            _userRepository.GetUserByEmail(currentKey.UserEmail).ChangePassword(newPassword);
+            var currentUser = _userRepository.GetUserByEmail(currentKey.UserEmail);
+            currentUser.ChangePassword(newPassword);
+            _userRepository.Update(currentUser);
             currentKey.UseKey();
+            _keysRepository.UpdateKey(currentKey);
         }
 
         public void SendQueryToChangePassword(string email)

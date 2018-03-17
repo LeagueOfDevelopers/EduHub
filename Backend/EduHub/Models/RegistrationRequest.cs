@@ -19,6 +19,6 @@ namespace EduHub.Models
 
         [Required] public bool IsTeacher { get; set; }
 
-        public Guid InviteCode { get; set; }
+        public int InviteCode { get; set; }
     }
 }

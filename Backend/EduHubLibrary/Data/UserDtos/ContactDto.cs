@@ -1,14 +1,20 @@
-﻿namespace EduHubLibrary.Data.UserDtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EduHubLibrary.Data.UserDtos
 {
     public class ContactDto
     {
-        public int Id { get; set; }
+        [Key]
+        [StringLength(250)]
         public string Contact { get; set; }
 
-        public ContactDto(int id, string contact)
+        public ContactDto(string contact)
         {
-            Id = id;
             Contact = contact;
+        }
+
+        public ContactDto()
+        {
         }
     }
 }

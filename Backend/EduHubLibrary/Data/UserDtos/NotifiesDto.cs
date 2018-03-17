@@ -1,18 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EduHubLibrary.Data.UserDtos
 {
     public class NotifiesDto
     {
-        public int Id { get; set; }
+        [Key]
+        [StringLength(250)]
         public string Notifie { get; set; }
 
-        public NotifiesDto(int id, string notifie)
+        public NotifiesDto(string notifie)
         {
-            Id = id;
             Notifie = notifie;
+        }
+
+        public NotifiesDto()
+        {
         }
     }
 }
