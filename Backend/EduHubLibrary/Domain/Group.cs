@@ -118,7 +118,7 @@ namespace EduHubLibrary.Domain
 
         internal bool IsTeacher(int userId)
         {
-            return Teacher.Id == userId;
+            return Teacher?.Id == userId;
         }
 
         internal Member GetMember(int userId)

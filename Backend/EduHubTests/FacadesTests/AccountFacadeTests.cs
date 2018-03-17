@@ -179,7 +179,7 @@ namespace EduHubTests.FacadesTests
             var expectedPasswordHash = Credentials.FromRawData("someEmail", "newPassword").PasswordHash;
             var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
 
-            var key = new Key("email", KeyAppointment.ChangePassword, IntIterator.GetNextId());
+            var key = new Key("email", KeyAppointment.ChangePassword);
             _keysRepository.AddKey(key);
 
             //Act

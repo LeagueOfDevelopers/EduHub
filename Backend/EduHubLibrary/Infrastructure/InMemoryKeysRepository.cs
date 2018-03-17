@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Interators;
 using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
@@ -24,6 +25,7 @@ namespace EduHubLibrary.Infrastructure
         {
             Ensure.Any.IsNotNull(key);
             keyList.Add(key);
+            key.Value = IntIterator.GetNextId();
         }
 
         public Key GetKey(int keyId)

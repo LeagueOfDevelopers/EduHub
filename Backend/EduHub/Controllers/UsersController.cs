@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EduHub.Models;
+using EduHub.Models.UsersControllerModels;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult SearchUser([FromBody] SearchOfUserRequest user)
         {
-            var foundUsers = _userFacade.FindByName(user.Name);
+            var foundUsers = _userFacade.FindUser(user.Name, user.WantToTeach, user.Skills, (int)user.TeacherExperience, (int)user.UserExperience);
             var items = new List<MinItemUserResponse>();
             foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name,
                 u.UserProfile.Email,

@@ -80,7 +80,7 @@ namespace EduHubTests
             accountFacade.RegUser("Galya", new Credentials("email2", "password"), true);
 
             //Act
-            var actual = userFacade.FindByName("Grisha");
+            var actual = userFacade.FindUser("Grisha");
 
             //Assert
             Assert.AreEqual(0, actual.Count());
@@ -101,7 +101,7 @@ namespace EduHubTests
             var expected = new List<User> {userFacade.GetUser(userId2), userFacade.GetUser(userId1)};
 
             //Act
-            var actual = userFacade.FindByName("Alen").ToList();
+            var actual = userFacade.FindUser("Alen").ToList();
 
             //Assert
             Assert.AreEqual(expected[0], actual[0]);
