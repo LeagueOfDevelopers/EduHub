@@ -3,6 +3,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
+using EduHubLibrary.Interators;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -178,7 +179,7 @@ namespace EduHubTests.FacadesTests
             var expectedPasswordHash = Credentials.FromRawData("someEmail", "newPassword").PasswordHash;
             var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
 
-            var key = new Key("email", KeyAppointment.ChangePassword);
+            var key = new Key("email", KeyAppointment.ChangePassword, IntIterator.GetNextId());
             _keysRepository.AddKey(key);
 
             //Act
