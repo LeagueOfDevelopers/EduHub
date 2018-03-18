@@ -84,8 +84,6 @@ namespace EduHub.Controllers
             _userFacade.ChangeInvitationStatus(userId, changer.InvitationId, changer.Status);
             var invitation = _userFacade.GetAllInvitationsForUser(userId).First(i => i.Id.Equals(changer.InvitationId));
 
-            if (invitation.SuggestedRole == MemberRole.Teacher && changer.Status == InvitationStatus.Accepted)
-                _groupFacade.ApproveTeacher(userId, invitation.GroupId);
             var response = new ChangeInvitationStatusResponse(invitation.GroupId);
             return Ok(response);
         }
