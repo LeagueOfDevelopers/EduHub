@@ -46,10 +46,15 @@ namespace EduHubLibrary.Facades
             {
                 currentUser.AcceptInvitation(invitationId);
                 var currentInvitation = currentUser.GetInvitation(invitationId);
+                var currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
                 if (currentInvitation.SuggestedRole == MemberRole.Member)
                 {
-                    var currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
                     currentGroup.AddMember(currentInvitation.ToUser);
+                    _groupRepository.Update(currentGroup);
+                }
+                else if (currentInvitation.SuggestedRole == MemberRole.Teacher)
+                {
+                    currentGroup.ApproveTeacher(currentUser);
                     _groupRepository.Update(currentGroup);
                 }
             }

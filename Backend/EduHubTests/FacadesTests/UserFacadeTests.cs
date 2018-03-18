@@ -110,6 +110,88 @@ namespace EduHubTests
         }
 
         [TestMethod]
+        public void AcceptUserInvitation_GetAddedUserToGroup()
+        {
+            //Arrange
+            var publisher = new Mock<IEventPublisher>();
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
+                new GroupSettings(1, 100, 0, 1000), publisher.Object);
+            var accountFacade = new AccountFacade(_keysRepository,_userRepository, _emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
+
+            var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
+            var invitedId = accountFacade.RegUser("Teacher", new Credentials("email2", "password"), true);
+
+            var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group",
+                new List<string> { "c#" }, "Very interesting", 3, 100, false, GroupType.Lecture);
+
+            userFacade.Invite(creatorId, invitedId, createdGroupId, MemberRole.Member);
+            var invitation = userFacade.GetAllInvitationsForUser(invitedId).ToList()[0];
+
+            //Act
+            userFacade.ChangeInvitationStatus(invitedId, invitation.Id, InvitationStatus.Accepted);
+
+            //Assert
+            var createdGroup = _groupRepository.GetGroupById(createdGroupId);
+            Assert.AreEqual(2, createdGroup.Members.Count);
+            Assert.AreEqual(InvitationStatus.Accepted, invitation.Status);
+        }
+
+        [TestMethod]
+        public void AcceptTeacherInvitation_GetApprovedTeacherInGroup()
+        {
+            //Arrange
+            var publisher = new Mock<IEventPublisher>();
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
+                new GroupSettings(1, 100, 0, 1000), publisher.Object);
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
+
+            var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
+            var teacherId = accountFacade.RegUser("Teacher", new Credentials("email2", "password"), true);
+
+            var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group",
+                new List<string> { "c#" }, "Very interesting", 1, 100, false, GroupType.Lecture);
+
+            userFacade.Invite(creatorId, teacherId, createdGroupId, MemberRole.Teacher);
+            var invitation = userFacade.GetAllInvitationsForUser(teacherId).ToList()[0];
+
+            //Act
+            userFacade.ChangeInvitationStatus(teacherId, invitation.Id, InvitationStatus.Accepted);
+
+            //Assert
+            var createdGroup = _groupRepository.GetGroupById(createdGroupId);
+            Assert.IsNotNull(createdGroup.Teacher);
+            Assert.AreEqual(InvitationStatus.Accepted, invitation.Status);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(TeacherIsAlreadyFoundException))]
+        public void TryToAcceptTeacherInvitationWithAlreadyFoundTeacher_GetException()
+        {
+            //Arrange
+            var publisher = new Mock<IEventPublisher>();
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
+                new GroupSettings(1, 100, 0, 1000), publisher.Object);
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
+
+            var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
+            var teacherId = accountFacade.RegUser("Teacher", new Credentials("email2", "password"), true);
+            var newTeacherId = accountFacade.RegUser("Teacher", new Credentials("email3", "password"), true);
+
+            var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group",
+                new List<string> { "c#" }, "Very interesting", 1, 100, false, GroupType.Lecture);
+
+            userFacade.Invite(creatorId, newTeacherId, createdGroupId, MemberRole.Teacher);
+            var invitation = userFacade.GetAllInvitationsForUser(newTeacherId).ToList()[0];
+
+            //Act
+            groupFacade.ApproveTeacher(teacherId, createdGroupId);
+            userFacade.ChangeInvitationStatus(newTeacherId, invitation.Id, InvitationStatus.Accepted);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(UserAlreadyExistsException))]
         public void TryToRegUserWithExistingEmail_GetException()
         {
@@ -162,14 +244,11 @@ namespace EduHubTests
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
 
-            var creatorId =
-                accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
-            var teacherId =
-                accountFacade.RegUser("Teacher", new Credentials("email2", "password"), true);
+            var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
+            var teacherId = accountFacade.RegUser("Teacher", new Credentials("email2", "password"), true);
             var anotherTeacherId = accountFacade.RegUser("Another teacher", new Credentials("email3", "password"), true);
 
-            var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group",
-                new List<string> {"c#"}, "Very interesting", 1, 100, false, GroupType.Lecture);
+            var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"}, "Very interesting", 1, 100, false, GroupType.Lecture);
             var createdGroup = groupFacade.GetGroup(createdGroupId);
             groupFacade.ApproveTeacher(userFacade.GetUser(teacherId).Id, createdGroupId);
 
@@ -189,12 +268,10 @@ namespace EduHubTests
                 _userRepository, _emailSender);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository);
 
-            var creatorId =
-                accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
+            var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
             var pseudoTeacherId = accountFacade.RegUser("Pseudo teacher", new Credentials("email2", "password"), false);
 
-            var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"},
-                "Very interesting", 1, 100, false, GroupType.Lecture);
+            var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"}, "Very interesting", 1, 100, false, GroupType.Lecture);
 
             //Act
             userFacade.Invite(creatorId, pseudoTeacherId, createdGroupId, MemberRole.Teacher);
