@@ -23,10 +23,7 @@ namespace EduHub.Extensions
             };
 
             var extension = Path.GetExtension(file.FileName);
-            if (!allowedExtensions.Any(c => c.Equals(extension))) return false;
-            if (file.Length < 256) return false;
-
-            return true;
+            return allowedExtensions.Any(c => c.Equals(extension));
         }
     }
 }

@@ -12,7 +12,6 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace EduHub.Controllers
 {
-    [Authorize]
     [Produces("application/json")]
     [Route("api/file")]
     public class FileController : Controller
@@ -27,6 +26,7 @@ namespace EduHub.Controllers
             _fileFacade = fileFacade;
         }
 
+        [Authorize]
         [HttpPost]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
