@@ -41,9 +41,19 @@ namespace EduHubLibrary.Infrastructure
                     .Include(u => u.Contacts)
                     .Include(u => u.Invitations)
                     .Include(u => u.Reviews)
-                    .Include("UserTags.Tag")
+                    .Include(u => u.Tags)
                     .Include(u => u.Notifies)
                     .FirstOrDefault(u => u.Id == user.Id);
+
+                _context.RemoveRange(userDto.Tags);
+                userDto.Tags.RemoveAll(t => true);
+                _context.RemoveRange(userDto.Contacts);
+                userDto.Contacts.RemoveAll(t => true);
+                _context.RemoveRange(userDto.Reviews);
+                userDto.Reviews.RemoveAll(t => true);
+                _context.RemoveRange(userDto.Notifies);
+                userDto.Notifies.RemoveAll(t => true);
+
                 userDto.ParseFromUser(user);
                 _context.SaveChanges();
             }
@@ -70,8 +80,8 @@ namespace EduHubLibrary.Infrastructure
                 var dtoList = _context.Users
                     .Include(u => u.Contacts)
                     .Include(u => u.Invitations)
+                    .Include(u => u.Tags)
                     .Include(u => u.Reviews)
-                    .Include("UserTags.Tag")
                     .Include(u => u.Notifies)
                     .ToList();
                 dtoList.ForEach(d => allUsers.Add(UserExtensions.ParseFromUserDto(d)));
@@ -87,8 +97,8 @@ namespace EduHubLibrary.Infrastructure
                 var userDto = _context.Users
                     .Include(u => u.Contacts)
                     .Include(u => u.Invitations)
+                    .Include(u => u.Tags)
                     .Include(u => u.Reviews)
-                    .Include("UserTags.Tag")
                     .Include(u => u.Notifies)
                     .FirstOrDefault(u => u.Id == userId);
                 var user = UserExtensions.ParseFromUserDto(userDto);
@@ -104,8 +114,8 @@ namespace EduHubLibrary.Infrastructure
                 var userDto = _context.Users
                     .Include(u => u.Contacts)
                     .Include(u => u.Invitations)
+                    .Include(u => u.Tags)
                     .Include(u => u.Reviews)
-                    .Include("UserTags.Tag")
                     .Include(u => u.Notifies)
                     .FirstOrDefault(u => u.Email == email);
                 var user = UserExtensions.ParseFromUserDto(userDto);
@@ -122,7 +132,7 @@ namespace EduHubLibrary.Infrastructure
                 var userDto = _context.Users
                     .Include(u => u.Contacts)
                     .Include(u => u.Invitations)
-                    .Include("UserTags.Tag")
+                    .Include(u => u.Tags)
                     .Include(u => u.Reviews)
                     .Include(u => u.Notifies)
                     .FirstOrDefault(u => u.Email == credentials.Email

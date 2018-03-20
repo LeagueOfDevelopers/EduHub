@@ -31,40 +31,21 @@ namespace EduHubLibrary.Extensions
                 result.TeacherName = sourse.Teacher.UserProfile.Name;
             }
 
-            /*sourse.GroupInfo.Tags.ToList().ForEach(tag =>
-            {
-                if (result.Tags.All(tagDto => tagDto.Name != tag))
-                {
-                    result.GroupTags.Add(new GroupTag(tag, new TagDto(tag), result.Id, result));
-                }
-            });*/
+            sourse.GroupInfo.Tags.ToList().ForEach(tag => result.Tags.Add(new TagGroup(0, tag)));
 
             sourse.Members?.ForEach(member =>
-            {
-                if (result.Members.All(memberDto => memberDto.UserId != member.UserId))
-                {
                     result.Members.Add(new MemberDto(0, member.UserId, member.MemberRole,
-                        member.Paid, member.CurriculumStatus));
-                }
-
-                result.Members.First(memberDto => memberDto.UserId == member.UserId).CurriculumStatus =
-                    member.CurriculumStatus;
-            });
+                        member.Paid, member.CurriculumStatus)));
 
             sourse.Messages?.ToList().ForEach(message =>
-            {
-                if (result.Messages.All(messageDto => messageDto.Id != message.Id))
-                {
-                    result.Messages.Add(new MessageDto(message.Id, message.SenderId, message.SentOn, message.Text));
-                }
-            });
+                    result.Messages.Add(new MessageDto(message.Id, message.SenderId, message.SentOn, message.Text)));
 
-            sourse.Invitations?.ToList().ForEach(invitation =>
+            sourse.Invitations?.ForEach(i =>
             {
-                if (result.Invitations.All(invitationDto => invitationDto.Id != invitation.Id))
-                {
-                    result.Invitations.Add(new InvitationDto(invitation.Id, invitation.Status, invitation.GroupId, invitation.FromUser, invitation.ToUser, invitation.SuggestedRole));
-                }
+                if (result.Invitations.All(iDto => i.Id != iDto.Id))
+                    result.Invitations.Add(new InvitationDto(i.Id,
+                        i.Status, i.GroupId, i.FromUser, i.ToUser, i.SuggestedRole));
+                result.Invitations.FirstOrDefault(iDto => iDto.Id == i.Id).Status = i.Status;
             });
         }
     }

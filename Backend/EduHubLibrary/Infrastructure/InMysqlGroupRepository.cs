@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Data;
-using EduHubLibrary.Data.Connections;
 using EduHubLibrary.Data.GroupDtos;
-using EduHubLibrary.Data.TagDtos;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -27,13 +24,7 @@ namespace EduHubLibrary.Infrastructure
                 _context.DetachAllEntities();
                 var groupDto = new GroupDto();
                 groupDto.ParseFromGroup(group);
-                var tagDtos = _context.Tags.Where(tagDto =>
-                    group.GroupInfo.Tags.Any(tag => tag == tagDto.Name));
-                var newGroupTags = new List<GroupTag>();
-                tagDtos.ToList().ForEach(tag => newGroupTags.Add(new GroupTag(tag.Name,
-                    tag, groupDto.Id, groupDto)));
                 _context.Groups.Add(groupDto);
-                _context.GroupTag.AddRange(newGroupTags);
                 _context.SaveChanges();
                 group.GroupInfo.Id = groupDto.Id;
             }
@@ -59,18 +50,18 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Members)
                     .Include(g => g.Messages)
                     .Include(g => g.Invitations)
-                    .Include("GroupTags.Tag")
+                    .Include(g => g.Tags)
                     .FirstOrDefault(g => g.Id == group.GroupInfo.Id);
+
+                _context.RemoveRange(currentGroupDto.Tags);
+                currentGroupDto.Tags.RemoveAll(t => true);
+                _context.RemoveRange(currentGroupDto.Members);
+                currentGroupDto.Members.RemoveAll(t => true);
+                _context.RemoveRange(currentGroupDto.Messages);
+                currentGroupDto.Messages.RemoveAll(t => true);
+
                 currentGroupDto.ParseFromGroup(group);
-                var groupTags = _context.GroupTag.Where(groupTag =>
-                    group.GroupInfo.Tags.Any(tag => tag == groupTag.TagId) && groupTag.GroupId == group.GroupInfo.Id);
-                _context.GroupTag.RemoveRange(groupTags);
-                var tagDtos = _context.Tags.Where(tagDto =>
-                    group.GroupInfo.Tags.Any(tag => tag == tagDto.Name));
-                var newGroupTags = new List<GroupTag>();
-                tagDtos.ToList().ForEach(tag => newGroupTags.Add(new GroupTag(tag.Name, 
-                    tag, currentGroupDto.Id, currentGroupDto)));
-                _context.GroupTag.AddRange(newGroupTags);
+
                 _context.SaveChanges();
             }
         }
@@ -84,7 +75,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Invitations)
                     .Include(g => g.Members)
                     .Include(g => g.Messages)
-                    .Include("GroupTags.Tag")
+                    .Include(g => g.Tags)
                     .ToList();
                 var allGroups = new List<Group>();
                 groups.ForEach(g => allGroups.Add(GroupExtensions.ParseFromGroupDto(g)));
@@ -101,7 +92,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Invitations)
                     .Include(g => g.Messages)
                     .Include(g => g.Members)
-                    .Include("GroupTags.Tag")
+                    .Include(g => g.Tags)
                     .FirstOrDefault(g => g.Id == id);
                 var result = GroupExtensions.ParseFromGroupDto(currentGroupDto);
                 return result;
@@ -117,7 +108,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Invitations)
                     .Include(g => g.Members)
                     .Include(g => g.Messages)
-                    .Include("GroupTags.Tag")
+                    .Include(g => g.Tags)
                     .Where(g => g.Members.Any(m => m.Id == memberId))
                     .ToList();
                 var result = new List<Group>();

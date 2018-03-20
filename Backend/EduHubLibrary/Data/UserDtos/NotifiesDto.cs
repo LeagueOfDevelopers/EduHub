@@ -1,16 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace EduHubLibrary.Data.UserDtos
+﻿namespace EduHubLibrary.Data.UserDtos
 {
     public class NotifiesDto
     {
-        [Key]
-        [StringLength(250)]
+        public int Id { get; set; }
         public string Notifie { get; set; }
 
-        public NotifiesDto(string notifie)
+        public NotifiesDto(int id, string notifie)
         {
+            Id = id;
             Notifie = notifie;
         }
 

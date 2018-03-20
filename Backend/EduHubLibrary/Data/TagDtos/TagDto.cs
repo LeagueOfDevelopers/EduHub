@@ -21,8 +21,8 @@ namespace EduHubLibrary.Data.TagDtos
         public string Name { get; set; }
         public int Popularity { get; set; }
 
-        public ICollection<UserTag> UserTags { get; } = new List<UserTag>();
-        public ICollection<GroupTag> GroupTags { get; } = new List<GroupTag>();
+        //public ICollection<UserTag> UserTags { get; } = new List<UserTag>();
+        //public ICollection<GroupTag> GroupTags { get; } = new List<GroupTag>();
 
     }
 }

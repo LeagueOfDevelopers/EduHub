@@ -27,11 +27,12 @@ namespace EduHubLibrary.Data.UserDtos
         public List<ContactDto> Contacts { get; set; }
         public List<InvitationDto> Invitations { get; set; }
         public List<NotifiesDto> Notifies { get; set; }
+        public List<TagUser> Tags { get; set; }
 
-        public ICollection<UserTag> UserTags { get; } = new List<UserTag>();
+        /*public ICollection<UserTag> UserTags { get; } = new List<UserTag>();
 
         [NotMapped]
-        public IEnumerable<TagDto> Tags => UserTags.Select(e => e.Tag);
+        public IEnumerable<TagDto> Tags => UserTags.Select(e => e.Tag);*/
 
         public UserDto()
         {

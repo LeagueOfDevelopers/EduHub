@@ -52,6 +52,12 @@ namespace EduHub.Filters
                 case ReviewAlreadyAddedException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case WrongKeyAppointmentException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
+                case KeyAlreadyUsedException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {

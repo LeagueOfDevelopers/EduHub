@@ -42,10 +42,8 @@ namespace EduHubLibrary.Facades
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(totalValue))));
             CheckUserExistence(userId);
             var group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
-            _groupRepository.Add(group);
-
             tags.ForEach(tag => _publisher.PublishEvent(new UsingTagEvent(tag)));
-
+            _groupRepository.Add(group);
             return group.GroupInfo.Id;
         }
 
@@ -223,6 +221,7 @@ namespace EduHubLibrary.Facades
                 nameof(teacher), opt => opt.WithException(new ReviewAlreadyAddedException(userId, teacher.Id)));
 
             teacher.TeacherProfile.AddReview(userId, title, text, groupId);
+            _userRepository.Update(teacher);
         }
 
         private void CheckUserExistence(int userId)

@@ -1,6 +1,5 @@
-﻿using System.Linq;
-using EduHubLibrary.Data.Connections;
-using EduHubLibrary.Data.TagDtos;
+﻿using System.Collections.Generic;
+using System.Linq;
 using EduHubLibrary.Data.UserDtos;
 using EduHubLibrary.Domain;
 
@@ -23,61 +22,24 @@ namespace EduHubLibrary.Extensions
             result.IsTeacher = source.UserProfile.IsTeacher;
             result.AvatarLink = source.UserProfile.AvatarLink;
 
-            source.TeacherProfile?.Skills?.ForEach(s =>
-            {
-                if (result.UserTags.All(userTag => userTag.TagId != s))
-                {
-                    result.UserTags.Add(new UserTag(s, new TagDto(s), source.Id, result));
-                }
-            });
+            source.TeacherProfile?.Skills?.ForEach(s => new TagUser(0, s));
 
-            source.TeacherProfile?.Reviews?.ForEach(review =>
-            {
-                if (result.Reviews.All(reviewDto => reviewDto.Id != review.Id))
-                {
-                    result.Reviews.Add(new ReviewDto(review.Id, review.FromUser, review.FromGroup,
-                        review.Title, review.Text, review.Date));
-                }
-            });
+            source.TeacherProfile?.Reviews?.ForEach(review => 
+                result.Reviews.Add(new ReviewDto(review.Id, review.FromUser, review.FromGroup,
+                review.Title, review.Text, review.Date)));
 
-            result.Contacts?.ToList().ForEach(contactDto =>
-            {
-                if (source.UserProfile.Contacts.All(contact => contact != contactDto.Contact))
-                {
-                    result.Contacts.Remove(contactDto);
-                }
-            });
-
-            source.UserProfile?.Contacts?.ForEach(contact =>
-            {
-                if (result.Contacts.All(contactDto => contactDto.Contact != contact))
-                {
-                    result.Contacts.Add(new ContactDto(contact));
-                }
-            });
-
-            
+            source.UserProfile?.Contacts?.ForEach(contact => 
+                result.Contacts.Add(new ContactDto(0, contact)));
 
             source.Invitations?.ForEach(i =>
             {
-                if (result.Invitations.Any(iDto => iDto.Id == i.Id))
-                {
-                    var current = result.Invitations.First(iDto => iDto.Id == i.Id);
-                    current.Status = i.Status;
-                }
-                else
-                {
+                if(result.Invitations.All(iDto => i.Id != iDto.Id))
                     result.Invitations.Add(new InvitationDto(i.Id,
-                        i.Status, i.GroupId, i.FromUser, i.ToUser, i.SuggestedRole));
-                }
+                    i.Status, i.GroupId, i.FromUser, i.ToUser, i.SuggestedRole));
+                result.Invitations.FirstOrDefault(iDto => iDto.Id == i.Id).Status = i.Status;
             });
 
-            /*if (source.Notifies != null)
-            {
-                var notifiesDto = new List<NotifiesDto>();
-                source.Notifies.ForEach(n => notifiesDto.Add(new NotifiesDto(n)));
-                result.Notifies = notifiesDto;
-            }*/
+            source.Notifies?.ToList().ForEach(n => result.Notifies.Add(new NotifiesDto(0, n)));
         }
     }
 }
