@@ -16,6 +16,7 @@ namespace EduHubLibrary.Facades
         IEnumerable<Invitation> GetAllInvitationsForUser(int userId);
         IEnumerable<Group> GetAllGroupsOfUser(int userId);
         IEnumerable<User> FindUser(string name, bool isTeacher, List<string> requiredTags, int minTeacherGroups, int minUserGroups);
+        IEnumerable<User> FindByName(string name);
         IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId);
         IEnumerable<string> GetNotifies(int userId);
         void AddNotify(int userId, string notify);

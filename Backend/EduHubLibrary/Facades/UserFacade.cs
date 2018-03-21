@@ -4,6 +4,7 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades.Views;
 using EnsureThat;
 using EduHubLibrary.Mailing;
@@ -122,15 +123,21 @@ namespace EduHubLibrary.Facades
 
             if (requiredTags != null && requiredTags.Any())
             { 
-                allUsers = allUsers.FindAll(u => u.TeacherProfile.Skills.Union(requiredTags).Any());
-                allUsers = allUsers.OrderByDescending(u => u.TeacherProfile.Skills.Union(requiredTags).Count()).ToList();
+                allUsers = allUsers.FindAll(u => u.TeacherProfile.Skills.Intersect(requiredTags).Any());
+                allUsers = allUsers.OrderByDescending(u => u.TeacherProfile.Skills.Intersect(requiredTags).Count()).ToList();
             }
 
-            allUsers = allUsers.FindAll(u => allGroups.Count(g => g.IsTeacher(u.Id)) >= minTeacherGroups);
-            allUsers = allUsers.FindAll(u => allGroups.Count(g => g.IsMember(u.Id)) >= minUserGroups);
+            allUsers = allUsers.FindAll(u => allGroups.Count(g => g.IsTeacher(u.Id) && g.Status == CourseStatus.Finished) >= minTeacherGroups);
+            allUsers = allUsers.FindAll(u => allGroups.Count(g => g.IsMember(u.Id) && g.Status == CourseStatus.Finished) >= minUserGroups);
 
-            //var result = _userRepository.GetAll().ToList().FindAll(u => u.UserProfile.Name.Contains(name));
             return allUsers;
+        }
+
+        public IEnumerable<User> FindByName(string name)
+        {
+            var result = _userRepository.GetAll().ToList().FindAll(u => u.UserProfile.Name.Contains(name));
+
+            return result.OrderBy(u => u.UserProfile.Name.Length);
         }
 
         public IEnumerable<string> GetNotifies(int userId)

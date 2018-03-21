@@ -21,17 +21,36 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     Searches user somehow (for now)
+        ///     Searches user with filters
         /// </summary>
         [HttpGet]
         [Route("search")]
         [SwaggerResponse(200, typeof(MinUserResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult SearchUser([FromQuery] List<string> tags, [FromQuery] string name,
+        public IActionResult SearchUser([FromQuery] List<string> tags,
             [FromQuery] bool wantToTeach, [FromQuery] TeacherExperience teacherExperience,
-            [FromQuery] UserExperience userExperience)
+            [FromQuery] UserExperience userExperience, [FromQuery] string name = "")
         {
             var foundUsers = _userFacade.FindUser(name, wantToTeach, tags, (int)teacherExperience, (int)userExperience);
+            var items = new List<MinItemUserResponse>();
+            foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name,
+                u.UserProfile.Email,
+                u.UserProfile.IsTeacher, u.IsActive, u.UserProfile.AvatarLink)));
+            var response = new MinUserResponse(items);
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        ///     Searches user by name
+        /// </summary>
+        [HttpGet]
+        [Route("search/{name}")]
+        [SwaggerResponse(200, typeof(MinUserResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        public IActionResult SearchUserByName([FromRoute] string name)
+        {
+            var foundUsers = _userFacade.FindByName(name);
             var items = new List<MinItemUserResponse>();
             foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name,
                 u.UserProfile.Email,
