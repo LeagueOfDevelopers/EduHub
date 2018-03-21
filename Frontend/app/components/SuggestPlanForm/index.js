@@ -8,7 +8,7 @@ import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { addPlan, acceptPlan, declinePlan } from "../../containers/GroupPage/actions";
-import {Col, Row, Button, Upload, Icon, message} from 'antd';
+import {Col, Row, Button, Upload, Icon, message, Avatar} from 'antd';
 import config from "../../config";
 
 
@@ -45,42 +45,51 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
-      accept: 'text/plain, .pdf',
+      accept: ".xlsx,.xls,image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf",
       onChange: this.handleChange
     };
 
     return (
       this.props.isTeacher ?
         (
-          <Row className='lg-center-container-item' type='flex' justify='flex-start'>
-            {
-              this.props.currentPlan ?
-                <Col span={24} className='word-break' style={{marginBottom: 10}}>
-                  {this.props.currentPlan.data}
-                </Col>
-                : null
-            }
-            <Col xs={{span: 24}} lg={{span: 10}} xl={{span: 8}} xxl={{span: 6}} className='group-btn plan-file-btn'>
-              <Upload {...props} fileList={this.state.fileList}>
-                <Button type='primary' className='group-btn' style={{marginBottom: 10}}>
-                  <Icon type="upload" /> Выбрать файл
+          <Row>
+            <Row>
+              {
+                this.props.currentPlan ?
+                  <Col span={24} className='word-break' style={{marginBottom: 10}}>
+                    <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} style={{color: '#0e0e0e'}} download>
+                      <div style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -3px', padding: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer'}}>
+                        <img src={require('../../images/download.svg')} style={{width: 24, height: 24, marginRight: 10}}/>
+                        План обучения
+                      </div>
+                    </a>
+                  </Col>
+                  : null
+              }
+            </Row>
+            <Row type='flex' justify='space-around'>
+              <Col className='group-btn plan-file-btn'>
+                <Upload {...props} fileList={this.state.fileList}>
+                  <Button type='primary' className='group-btn'>
+                    <Icon type="upload" /> Выбрать файл
+                  </Button>
+                </Upload>
+              </Col>
+              <Col className='lg-center-container-item'>
+                <Button
+                  className='group-btn'
+                  type="primary"
+                  onClick={() => {
+                    this.props.addPlan(this.props.groupId, this.state.fileList[0].response.filename);
+                    this.setState({fileList: []});
+                  }}
+                  disabled={this.state.fileList.length === 0}
+                  style={{marginBottom: 10}}
+                >
+                  Предложить учебный план
                 </Button>
-              </Upload>
-            </Col>
-            <Col xs={{span: 24}} lg={{span: 14}} xl={{span: 16}} xxl={{span: 18}} className='lg-center-container-item'>
-              <Button
-                className='group-btn'
-                type="primary"
-                onClick={() => {
-                  this.props.addPlan(this.props.groupId, this.state.fileList[0].response.filename);
-                  this.setState({fileList: []});
-                }}
-                disabled={this.state.fileList.length === 0}
-                style={{marginBottom: 10}}
-              >
-                Предложить учебный план
-              </Button>
-            </Col>
+              </Col>
+            </Row>
           </Row>
         )
         : !this.props.isTeacher && this.props.curriculum ?
@@ -88,15 +97,20 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
             {
               this.props.currentPlan ?
                 <Row className='word-break' style={{marginBottom: 10}}>
-                  {this.props.currentPlan.data}
+                  <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} style={{color: '#0e0e0e'}} download>
+                    <div style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -3px', padding: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer'}}>
+                      <img src={require('../../images/download.svg')} style={{width: 24, height: 24, marginRight: 10}}/>
+                      План обучения
+                    </div>
+                  </a>
                 </Row>
                 : null
             }
             {
               this.props.members.find(item =>
-                item.userId === this.props.currentUserData.UserId).curriculumStatus  === 0 ||
+                item.userId == this.props.currentUserData.UserId).curriculumStatus  === 0 ||
               this.props.members.find(item =>
-              item.userId === this.props.currentUserData.UserId).curriculumStatus  === 1 ?
+              item.userId == this.props.currentUserData.UserId).curriculumStatus  === 1 ?
                 (
                   <Row type='flex' justify='space-around'>
                     <Col>

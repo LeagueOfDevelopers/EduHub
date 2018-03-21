@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectUserGroups} from './selectors';
+import {makeSelectUserGroups, makeSelectNeedUpdate} from './selectors';
 import {
   getCurrentUserGroups,
   editUsername,
@@ -113,15 +113,14 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       genderInput: '',
       birthYearInput: '',
       aboutInput: '',
-      contactsInputs: [],
-      needUpdate: false
+      contactsInputs: []
     };
 
     this.onSetResult = this.onSetResult.bind(this);
     this.getCurrentUser = this.getCurrentUser.bind(this);
     this.onChangeNameHandle = this.onChangeNameHandle.bind(this);
     this.onChangeGenderHandle = this.onChangeGenderHandle.bind(this);
-    this.onChangebirthYearHandle = this.onChangebirthYearHandle.bind(this);
+    this.onChangeBirthYearHandle = this.onChangeBirthYearHandle.bind(this);
     this.onChangeAboutHandle = this.onChangeAboutHandle.bind(this);
     this.changeProfileData = this.changeProfileData.bind(this);
     this.addContact = this.addContact.bind(this);
@@ -140,7 +139,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.needUpdate !== this.state.needUpdate) {
+    if(prevProps.needUpdate && !this.props.needUpdate) {
       this.getCurrentUser(this.state.id);
       this.setState({needUpdate: false});
     }
@@ -177,7 +176,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.setState({genderInput: e})
   };
 
-  onChangebirthYearHandle = (e) => {
+  onChangeBirthYearHandle = (e) => {
     this.setState({birthYearInput: e})
   };
 
@@ -230,7 +229,6 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       setTimeout(() => this.props.editContacts(this.state.contactsInputs), 0);
     }
     this.setState({isEditing: false});
-    this.setState({needUpdate: true})
   };
 
   render() {
@@ -253,7 +251,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                       : this.state.userProfile.name}
                   </span>
                   </Col>
-                  {localStorage.getItem('token') && !this.state.isEditing && parseJwt(localStorage.getItem('token')).UserId === this.state.id ?
+                  {localStorage.getItem('token') && !this.state.isEditing && parseJwt(localStorage.getItem('token')).UserId == this.state.id ?
                     <Col span={3} style={{textAlign: 'right'}}>
                       <img src={require('../../images/edit.svg')} onClick={() => this.setState({isEditing: true})} style={{width: 20, cursor: 'pointer'}}/>
                     </Col>
@@ -287,7 +285,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 <p style={{fontSize: 16, color: '#000'}}>
                   {
                     this.state.isEditing ?
-                      <InputNumber onChange={this.onChangebirthYearHandle} style={{width: 150}} value={this.state.birthYearInput}/>
+                      <InputNumber onChange={this.onChangeBirthYearHandle} style={{width: 150}} value={this.state.birthYearInput}/>
                       : this.state.userProfile.birthYear ?
                       this.state.userProfile.birthYear : 'Не указано'
                   }
@@ -392,7 +390,6 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 type='primary'
                 onClick={() => {
                   this.props.makeTeacher();
-                  this.setState({needUpdate: true})
                 }}
                 style={{width: '100%', marginTop: 12, minWidth: 280}}
               >
@@ -402,7 +399,6 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               <Button
                 onClick={() => {
                   this.props.makeNotTeacher();
-                  this.setState({needUpdate: true})
                 }}
                 style={{width: '100%', marginTop: 12, minWidth: 280}}
               >
@@ -454,7 +450,8 @@ ProfilePage.defaultProps = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  myGroups: makeSelectUserGroups()
+  myGroups: makeSelectUserGroups(),
+  needUpdate: makeSelectNeedUpdate()
 });
 
 function mapDispatchToProps(dispatch) {

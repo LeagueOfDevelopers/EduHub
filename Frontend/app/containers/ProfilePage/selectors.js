@@ -19,6 +19,12 @@ const makeSelectUserGroups = () => createSelector(
   (profileState) => profileState.get('groups')
 );
 
+const makeSelectNeedUpdate = () => createSelector(
+  selectProfilePageDomain,
+  (profileState) => profileState.get('needUpdate')
+);
+
 export {
   makeSelectUserGroups,
+  makeSelectNeedUpdate
 };

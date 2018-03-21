@@ -23,10 +23,9 @@ import {
   editGroupPrice,
   editPrivacy,
   editGroupType,
-  getCurrentPlan,
   getCurrentChat
 } from "./actions";
-import { makeSelectNeedUpdate, makeSelectPlan, makeSelectChat } from "./selectors";
+import { makeSelectNeedUpdate, makeSelectChat } from "./selectors";
 import {Link} from "react-router-dom";
 import config from "../../config";
 import {getGroupType, parseJwt, getMemberRole} from "../../globalJS";
@@ -174,7 +173,7 @@ export class GroupPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(!prevProps.needUpdate && this.props.needUpdate) {
+    if(prevProps.needUpdate && !this.props.needUpdate) {
       this.getCurrentGroup();
     }
   }
@@ -193,13 +192,13 @@ export class GroupPage extends React.Component {
       groupTypeInput: getGroupType(result.groupInfo.groupType),
       privateInput: result.groupInfo.isPrivate,
       isInGroup: this.state.userData ?
-        Boolean(result.members.find(item => item.userId === this.state.userData.UserId)) : false
+        Boolean(result.members.find(item => item.userId == this.state.userData.UserId)) : false
       });
     this.setState({
       isCreator: this.state.isInGroup ? Boolean(result.members.find(item =>
-          item.userId === this.state.userData.UserId).role === 2) : false,
+          item.userId == this.state.userData.UserId).role === 2) : false,
       isTeacher: this.state.isInGroup ? Boolean(result.members.find(item =>
-        item.userId === this.state.userData.UserId).role === 3) : false
+        item.userId == this.state.userData.UserId).role === 3) : false
     });
     this.state.groupData.groupInfo.curriculum ?
       setTimeout(() => this.props.getCurrentPlan(this.state.groupData.groupInfo.curriculum), 0)
@@ -404,7 +403,7 @@ export class GroupPage extends React.Component {
                   curriculum={this.state.groupData.groupInfo.curriculum}
                   isTeacher={this.state.isTeacher}
                   currentUserData={this.state.userData}
-                  currentPlan={this.props.currentPlan}
+                  currentPlan={this.state.groupData.groupInfo.curriculum}
                 />
               </Col>
               <Col xs={{span: 24}} lg={{span: 7}} style={{textAlign: 'right'}}>
@@ -488,7 +487,6 @@ GroupPage.defaultProps = {
 
 const mapStateToProps = createStructuredSelector({
   needUpdate: makeSelectNeedUpdate(),
-  currentPlan: makeSelectPlan(),
   currentChat: makeSelectChat()
 });
 
@@ -503,7 +501,6 @@ function mapDispatchToProps(dispatch) {
     editGroupPrice: (id, price) => dispatch(editGroupPrice(id, price)),
     editPrivacy: (id, isPrivate) => dispatch(editPrivacy(id, isPrivate)),
     editGroupType: (id, type) => dispatch(editGroupType(id, type)),
-    getCurrentPlan: (filename) => dispatch(getCurrentPlan(filename)),
     getCurrentChat: (groupId) => dispatch(getCurrentChat(groupId))
   };
 }

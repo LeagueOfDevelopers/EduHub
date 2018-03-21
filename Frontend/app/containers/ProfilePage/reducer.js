@@ -34,6 +34,7 @@ import {
 
 const initialState = fromJS({
   groups: [],
+  needUpdate: false,
   pending: false,
   error: false
 });
@@ -53,75 +54,96 @@ function profilePageReducer(state = initialState, action) {
         .set('error', true);
     case EDIT_NAME:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_NAME_SUCCESS:
       location.reload('/');
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_NAME_FAILED:
       return state
         .set('pending', false)
-        .set('error', true);
+        .set('error', true)
+        .set('needUpdate', false);
     case EDIT_ABOUT_USER_INFO:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_ABOUT_USER_INFO_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_ABOUT_USER_INFO_FAILED:
       return state
         .set('pending', false)
-        .set('error', true);
+        .set('error', true)
+        .set('needUpdate', false);
     case EDIT_BIRTH_YEAR:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_BIRTH_YEAR_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_BIRTH_YEAR_FAILED:
       return state
         .set('pending', false)
-        .set('error', true);
+        .set('error', true)
+        .set('needUpdate', false);
     case EDIT_GENDER:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_GENDER_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_GENDER_FAILED:
       return state
         .set('pending', false)
-        .set('error', true);
+        .set('error', true)
+        .set('needUpdate', false);
     case EDIT_CONTACTS:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case EDIT_CONTACTS_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case EDIT_CONTACTS_FAILED:
       return state
         .set('pending', false)
-        .set('error', true);
+        .set('error', true)
+        .set('needUpdate', false);
     case MAKE_TEACHER:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case MAKE_TEACHER_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case MAKE_TEACHER_FAILED:
       return state
         .set('pending', false)
-        .set('error', true);
+        .set('error', true)
+        .set('needUpdate', false);
     case MAKE_NOT_TEACHER:
       return state
-        .set('pending', true);
+        .set('pending', true)
+        .set('needUpdate', true);
     case MAKE_NOT_TEACHER_SUCCESS:
       return state
-        .set('pending', false);
+        .set('pending', false)
+        .set('needUpdate', false);
     case MAKE_NOT_TEACHER_FAILED:
       return state
         .set('pending', false)
-        .set('error', true);
+        .set('error', true)
+        .set('needUpdate', false);
     default:
       return state;
   }
