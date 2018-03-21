@@ -23,18 +23,21 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Searches user somehow (for now)
         /// </summary>
-        [HttpPost]
+        [HttpGet]
         [Route("search")]
         [SwaggerResponse(200, typeof(MinUserResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult SearchUser([FromBody] SearchOfUserRequest user)
+        public IActionResult SearchUser([FromQuery] List<string> tags, [FromQuery] string name,
+            [FromQuery] bool wantToTeach, [FromQuery] TeacherExperience teacherExperience,
+            [FromQuery] UserExperience userExperience)
         {
-            var foundUsers = _userFacade.FindUser(user.Name, user.WantToTeach, user.Skills, (int)user.TeacherExperience, (int)user.UserExperience);
+            var foundUsers = _userFacade.FindUser(name, wantToTeach, tags, (int)teacherExperience, (int)userExperience);
             var items = new List<MinItemUserResponse>();
             foundUsers.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name,
                 u.UserProfile.Email,
                 u.UserProfile.IsTeacher, u.IsActive, u.UserProfile.AvatarLink)));
             var response = new MinUserResponse(items);
+
             return Ok(response);
         }
 

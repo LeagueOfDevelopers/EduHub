@@ -30,6 +30,12 @@ namespace EduHubLibrary.Extensions
                 result.TeacherEmail = sourse.Teacher.UserProfile.Email;
                 result.TeacherName = sourse.Teacher.UserProfile.Name;
             }
+            else
+            {
+                result.TeacherId = 0;
+                result.TeacherEmail = null;
+                result.TeacherName = null;
+            }
 
             sourse.GroupInfo.Tags.ToList().ForEach(tag => result.Tags.Add(new TagGroup(0, tag)));
 
@@ -38,7 +44,10 @@ namespace EduHubLibrary.Extensions
                         member.Paid, member.CurriculumStatus)));
 
             sourse.Messages?.ToList().ForEach(message =>
-                    result.Messages.Add(new MessageDto(message.Id, message.SenderId, message.SentOn, message.Text)));
+                {
+                    if(result.Messages.All(messageDto => messageDto.Id != message.Id))
+                    result.Messages.Add(new MessageDto(message.Id, message.SenderId, message.SentOn, message.Text));
+                });
 
             sourse.Invitations?.ForEach(i =>
             {

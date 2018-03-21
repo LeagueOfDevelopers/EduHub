@@ -57,8 +57,6 @@ namespace EduHubLibrary.Infrastructure
                 currentGroupDto.Tags.RemoveAll(t => true);
                 _context.RemoveRange(currentGroupDto.Members);
                 currentGroupDto.Members.RemoveAll(t => true);
-                _context.RemoveRange(currentGroupDto.Messages);
-                currentGroupDto.Messages.RemoveAll(t => true);
 
                 currentGroupDto.ParseFromGroup(group);
 
