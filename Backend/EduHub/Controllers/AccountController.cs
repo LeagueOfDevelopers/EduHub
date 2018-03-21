@@ -41,9 +41,9 @@ namespace EduHub.Controllers
             int newId;
             
             if (!request.InviteCode.Equals(0))
-                newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
+                newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email.ToLower(), request.Password),
                 request.IsTeacher, request.InviteCode);
-            else newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email, request.Password),
+            else newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email.ToLower(), request.Password),
                 request.IsTeacher);
             
             var response = new RegistrationResponse(newId);
@@ -59,7 +59,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
-            var creditials = Credentials.FromRawData(loginRequest.Email, loginRequest.Password);
+            var creditials = Credentials.FromRawData(loginRequest.Email.ToLower(), loginRequest.Password);
             var client = _userFacade.FindByCredentials(creditials);
 
             if (client != null)
