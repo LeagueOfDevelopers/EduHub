@@ -53,6 +53,8 @@ namespace EduHubLibrary.Facades
             var currentUser = _userRepository.GetUserById(newMemberId);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
+            Ensure.Bool.IsTrue(currentGroup.Teacher?.Id != newMemberId, nameof(currentUser),
+                opt => opt.WithException(new AlreadyTeacherException(newMemberId)));
             currentGroup.AddMember(newMemberId);
             _groupRepository.Update(currentGroup);
         }
@@ -153,6 +155,10 @@ namespace EduHubLibrary.Facades
         {
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var teacher = _userRepository.GetUserById(teacherId);
+            Ensure.Bool.IsTrue(teacher.UserProfile.IsTeacher, nameof(teacher),
+                opt => opt.WithException(new UserIsNotTeacher(teacherId)));
+            Ensure.Bool.IsFalse(currentGroup.IsMember(teacherId), nameof(teacher),
+                opt => opt.WithException(new AlreadyMemberException()));
             currentGroup.ApproveTeacher(teacher);
             _groupRepository.Update(currentGroup);
         }

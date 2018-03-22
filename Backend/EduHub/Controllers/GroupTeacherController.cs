@@ -1,5 +1,4 @@
-﻿using System;
-using EduHub.Extensions;
+﻿using EduHub.Extensions;
 using EduHub.Models;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
@@ -30,10 +29,24 @@ namespace EduHub.Controllers
         [HttpDelete]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult DeleteTeacher([FromRoute] int groupId, [FromRoute] Guid memberId)
+        public IActionResult DeleteTeacher([FromRoute] int groupId)
         {
             var requestedId = Request.GetUserId();
             _groupFacade.DeleteTeacher(groupId, requestedId);
+            return Ok();
+        }
+
+        /// <summary>
+        ///     join group as teacher
+        /// </summary>
+        [Authorize]
+        [HttpPost]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        public IActionResult AddTeacher([FromRoute] int groupId)
+        {
+            var requestedId = Request.GetUserId();
+            _groupFacade.ApproveTeacher(requestedId, groupId);
             return Ok();
         }
 

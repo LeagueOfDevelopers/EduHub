@@ -50,11 +50,17 @@ namespace EduHubLibrary.Facades
                 var currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
                 if (currentInvitation.SuggestedRole == MemberRole.Member)
                 {
+                    Ensure.Bool.IsTrue(currentGroup.Teacher?.Id != userId, nameof(currentUser),
+                        opt => opt.WithException(new AlreadyTeacherException(userId)));
                     currentGroup.AddMember(currentInvitation.ToUser);
                     _groupRepository.Update(currentGroup);
                 }
                 else if (currentInvitation.SuggestedRole == MemberRole.Teacher)
                 {
+                    Ensure.Bool.IsTrue(currentUser.UserProfile.IsTeacher, nameof(currentUser),
+                        opt => opt.WithException(new UserIsNotTeacher(userId)));
+                    Ensure.Bool.IsFalse(currentGroup.IsMember(userId), nameof(userId),
+                        opt => opt.WithException(new AlreadyMemberException()));
                     currentGroup.ApproveTeacher(currentUser);
                     _groupRepository.Update(currentGroup);
                 }
