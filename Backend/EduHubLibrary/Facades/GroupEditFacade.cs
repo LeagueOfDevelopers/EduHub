@@ -88,6 +88,7 @@ namespace EduHubLibrary.Facades
         public void ChangeGroupType(int groupId, int changerId, GroupType newType)
         {
             CheckMemberPermissions(changerId, groupId);
+            Ensure.Any.IsNotDefault(newType, nameof(newType), opt => opt.WithException(new ArgumentException()));
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.GroupInfo.GroupType = newType;
             _groupRepository.Update(currentGroup);

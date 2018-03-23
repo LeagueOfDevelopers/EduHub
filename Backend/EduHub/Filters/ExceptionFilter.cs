@@ -58,6 +58,9 @@ namespace EduHub.Filters
                 case KeyAlreadyUsedException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case ArgumentException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {

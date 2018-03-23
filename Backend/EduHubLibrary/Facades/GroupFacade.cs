@@ -40,6 +40,7 @@ namespace EduHubLibrary.Facades
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(size))));
             Ensure.Bool.IsTrue(totalValue <= _groupSettings.MaxGroupValue && totalValue >= _groupSettings.MinGroupValue,
                 nameof(CreateGroup), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(totalValue))));
+            Ensure.Any.IsNotDefault(groupType, nameof(groupType), opt => opt.WithException(new ArgumentException()));
             CheckUserExistence(userId);
             var group = new Group(userId, title, tags, description, size, totalValue, isPrivate, groupType);
             tags.ForEach(tag => _publisher.PublishEvent(new UsingTagEvent(tag)));
