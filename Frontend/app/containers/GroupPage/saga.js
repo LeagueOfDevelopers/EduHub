@@ -61,7 +61,7 @@ import config from '../../config';
 
 function* enterGroupSaga(action) {
   try {
-    yield call(enterGroup, action.groupId);
+    yield call(enterGroup, action.groupId, action.role);
     yield put(enterGroupSuccess());
   }
   catch(e) {
@@ -118,15 +118,27 @@ function inviteMember(groupId, invitedId, role) {
   }
 }
 
-function enterGroup(groupId) {
-  return fetch(`${config.API_BASE_URL}/group/${groupId}/member`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json-patch+json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    }
-  })
-    .catch(error => error);
+function enterGroup(groupId, role) {
+  if(role === 'Member') {
+    return fetch(`${config.API_BASE_URL}/group/${groupId}/member`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .catch(error => error);
+  }
+  else if(role === 'Teacher') {
+    return fetch(`${config.API_BASE_URL}/group/${groupId}/teacher`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .catch(error => error);
+  }
 }
 
 function leaveGroup(groupId, memberId, role) {

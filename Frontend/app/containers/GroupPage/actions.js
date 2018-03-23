@@ -63,10 +63,11 @@ import {
 
 
 
-export function enterGroup(groupId) {
+export function enterGroup(groupId, role) {
   return {
     type: ENTER_GROUP_START,
-    groupId
+    groupId,
+    role
   };
 }
 

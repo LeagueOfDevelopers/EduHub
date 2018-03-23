@@ -23,7 +23,8 @@ import {
   editGroupPrice,
   editPrivacy,
   editGroupType,
-  getCurrentChat
+  getCurrentChat,
+  getCurrentPlan
 } from "./actions";
 import { makeSelectNeedUpdate, makeSelectChat } from "./selectors";
 import {Link} from "react-router-dom";
@@ -36,6 +37,7 @@ import InviteMemberSelect from '../../components/InviteMemberSelect/Loadable';
 import SigningInForm from "../../containers/SigningInForm/index";
 import SuggestPlanForm from '../../components/SuggestPlanForm';
 import ReviewModal from '../../components/ReviewModal';
+import EnterGroupBtn from '../../components/EnterGroupBtn';
 
 const groupData = {
     groupInfo: {
@@ -200,9 +202,6 @@ export class GroupPage extends React.Component {
       isTeacher: this.state.isInGroup ? Boolean(result.members.find(item =>
         item.userId == this.state.userData.UserId).role === 3) : false
     });
-    this.state.groupData.groupInfo.curriculum ?
-      setTimeout(() => this.props.getCurrentPlan(this.state.groupData.groupInfo.curriculum), 0)
-      : null;
     this.props.getCurrentChat(this.state.id);
 
     let loop = 0;
@@ -213,7 +212,6 @@ export class GroupPage extends React.Component {
         loop = 0;
       }
     }, 1000);
-
   }
 
   onChangeTitleHandle = (e) => {
@@ -407,33 +405,15 @@ export class GroupPage extends React.Component {
                 />
               </Col>
               <Col xs={{span: 24}} lg={{span: 7}} style={{textAlign: 'right'}}>
-                {this.state.groupData.groupInfo.memberAmount < this.state.groupData.groupInfo.size ?
-                  this.state.isInGroup ?
-                    (<Row className='lg-center-container-item'>
-                        <Button className='group-btn' onClick={() => {
-                          this.props.leaveGroup(this.state.id, this.state.userData.UserId, this.state.isTeacher ? 'Teacher' : 'Member')
-                        }}
-                        >
-                          Покинуть группу
-                        </Button>
-                      </Row>
-                    )
-                    : (<Row className='lg-center-container-item'>
-                        <Button type='primary' className='group-btn' onClick={() => {
-                          if(this.state.userData) {
-                            this.props.enterGroup(this.state.id);
-                          }
-                          else {
-                            this.onSignInClick()
-                          }
-                        }}
-                        >
-                          Вступить в группу
-                        </Button>
-                      </Row>
-                    )
-                  : null
-                }
+                <EnterGroupBtn
+                  memberAmount={this.state.groupData.groupInfo.memberAmount}
+                  size={this.state.groupData.groupInfo.size}
+                  isInGroup={this.state.isInGroup}
+                  isTeacher={this.state.isTeacher}
+                  userData={this.state.userData}
+                  groupId={this.state.id}
+                  onSignInClick={this.onSignInClick}
+                />
               </Col>
             </Row>
             <Row>
@@ -492,7 +472,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    enterGroup: (groupId) => dispatch(enterGroup(groupId)),
+    enterGroup: (groupId, role) => dispatch(enterGroup(groupId, role)),
     leaveGroup: (groupId, memberId, role) => dispatch(leaveGroup(groupId, memberId, role)),
     editGroupTitle: (id, title) => dispatch(editGroupTitle(id, title)),
     editGroupDescription: (id, description) => dispatch(editGroupDescription(id, description)),
@@ -501,7 +481,8 @@ function mapDispatchToProps(dispatch) {
     editGroupPrice: (id, price) => dispatch(editGroupPrice(id, price)),
     editPrivacy: (id, isPrivate) => dispatch(editPrivacy(id, isPrivate)),
     editGroupType: (id, type) => dispatch(editGroupType(id, type)),
-    getCurrentChat: (groupId) => dispatch(getCurrentChat(groupId))
+    getCurrentChat: (groupId) => dispatch(getCurrentChat(groupId)),
+    getCurrentPlan: (plan) => dispatch(getCurrentPlan(plan))
   };
 }
 

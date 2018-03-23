@@ -21,10 +21,12 @@ export function getMemberRole(enumRole) {
 export function getGroupType(enumType) {
   switch (enumType) {
     case 0:
-      return 'Лекция';
+      return 'Стандартная';
     case 1:
-      return 'Семинар';
+      return 'Лекция';
     case 2:
+      return 'Семинар';
+    case 3:
       return 'Мастер-класс';
   }
 }

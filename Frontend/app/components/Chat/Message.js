@@ -16,7 +16,7 @@ export default class Message extends React.Component {
           }
           <p style={{margin: '6px 0'}}>{this.props.message.text}</p>
           <div style={{textAlign: 'right', fontSize: 14, opacity: 0.5}}>
-            {new Date(this.props.message.sentOn).getHours() + ':' + new Date(this.props.message.sentOn).getMinutes()}
+            {new Date(this.props.message.sentOn).getHours() + ':' + (new Date(this.props.message.sentOn).getMinutes() < 10 ? '0' + new Date(this.props.message.sentOn).getMinutes() : new Date(this.props.message.sentOn).getMinutes())}
           </div>
         </li>
         :
