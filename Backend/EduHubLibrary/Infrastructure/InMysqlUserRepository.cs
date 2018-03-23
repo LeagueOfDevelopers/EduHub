@@ -28,7 +28,6 @@ namespace EduHubLibrary.Infrastructure
                 _context.Users.Add(userDto);
                 _context.SaveChanges();
                 user.Id = userDto.Id;
-                _context.DetachAllEntities();
             }
         }
 
@@ -36,7 +35,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var userDto = _context.Users
                     .Include(u => u.Contacts)
                     .Include(u => u.Invitations)
@@ -63,7 +61,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var userDto = new UserDto();
                 userDto.ParseFromUser(user);
                 _context.Users.Remove(userDto);
@@ -75,7 +72,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var allUsers = new List<User>();
                 var dtoList = _context.Users
                     .Include(u => u.Contacts)
@@ -93,7 +89,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var userDto = _context.Users
                     .Include(u => u.Contacts)
                     .Include(u => u.Invitations)
@@ -110,7 +105,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var userDto = _context.Users
                     .Include(u => u.Contacts)
                     .Include(u => u.Invitations)
@@ -128,7 +122,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var userDto = _context.Users
                     .Include(u => u.Contacts)
                     .Include(u => u.Invitations)

@@ -45,7 +45,7 @@ namespace EduHubLibrary.Data
             modelBuilder.Entity<GroupDto>().ToTable("Group");
         }
 
-        public void DetachAllEntities()
+        /*public void DetachAllEntities()
         {
             var changedEntriesCopy = this.ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added ||
@@ -56,6 +56,6 @@ namespace EduHubLibrary.Data
             {
                 this.Entry(entity.Entity).State = EntityState.Detached;
             }
-        }
+        }*/
     }
 }

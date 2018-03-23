@@ -23,7 +23,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var groupDto = new GroupDto();
                 groupDto.ParseFromGroup(group);
                 _context.Groups.Add(groupDto);
@@ -36,7 +35,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var currentGroupDto = _context.Groups.FirstOrDefault(g => g.Id == group.GroupInfo.Id);
                 Ensure.Any.IsNotNull(currentGroupDto, nameof(currentGroupDto),
                     opt => opt.WithException(new GroupNotFoundException()));
@@ -49,7 +47,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var currentGroupDto = _context.Groups
                     .Include(g => g.Members)
                     .Include(g => g.Messages)
@@ -75,7 +72,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var groups = _context.Groups.AsNoTracking()
                     .Include(g => g.Invitations)
                     .Include(g => g.Members)
@@ -93,7 +89,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var currentGroupDto = _context.Groups
                     .Include(g => g.Invitations)
                     .Include(g => g.Messages)
@@ -111,7 +106,6 @@ namespace EduHubLibrary.Infrastructure
         {
             using (var _context = new EduhubContext(_connectionString))
             {
-                _context.DetachAllEntities();
                 var foundValues = _context.Groups
                     .Include(g => g.Invitations)
                     .Include(g => g.Members)
