@@ -260,5 +260,19 @@ namespace EduHub.Controllers
             var response = new GroupResponse(fullGroupInfo, membersInfo);
             return Ok(response);
         }
+
+        /// <summary>
+        ///     unform group (for admins only)
+        /// </summary>
+        [Authorize(Policy = "AdminOnly")]
+        [HttpDelete]
+        [Route("{groupId}")]
+        [SwaggerResponse(200, Type = typeof(GroupResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        public IActionResult UnformGroup([FromRoute] int groupId)
+        {
+            _groupFacade.DeleteGroup(groupId);
+            return Ok();
+        }
     }
 }

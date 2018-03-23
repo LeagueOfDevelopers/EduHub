@@ -2,6 +2,7 @@
 using System.Text;
 using EduHub.Filters;
 using EduHub.Security;
+using EduHubLibrary.Data;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
@@ -23,6 +24,7 @@ using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Consumers;
+using Microsoft.EntityFrameworkCore;
 
 namespace EduHub
 {
@@ -52,6 +54,12 @@ namespace EduHub
             if (bool.Parse(Configuration.GetValue<string>("UseDB")))
             {
                 var dbContext = Configuration.GetValue<string>("MysqlConnectionString");
+                if (bool.Parse(Configuration.GetValue<string>("DeleteDB"))) { 
+                    using (var context = new EduhubContext(dbContext))
+                    {
+                        context.Database.EnsureDeleted();
+                    }
+                }
                 fileRepository = new InMysqlFileRepository(dbContext);
                 groupRepository = new InMysqlGroupRepository(dbContext);
                 keysRepository = new InMysqlKeyRepository(dbContext);

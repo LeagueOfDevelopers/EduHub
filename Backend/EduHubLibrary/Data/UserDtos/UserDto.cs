@@ -1,10 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using EduHubLibrary.Common;
-using EduHubLibrary.Data.Connections;
-using EduHubLibrary.Data.GroupDtos;
-using EduHubLibrary.Data.TagDtos;
 using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Data.UserDtos
@@ -28,11 +23,6 @@ namespace EduHubLibrary.Data.UserDtos
         public List<InvitationDto> Invitations { get; set; }
         public List<NotifiesDto> Notifies { get; set; }
         public List<TagUser> Tags { get; set; }
-
-        /*public ICollection<UserTag> UserTags { get; } = new List<UserTag>();
-
-        [NotMapped]
-        public IEnumerable<TagDto> Tags => UserTags.Select(e => e.Tag);*/
 
         public UserDto()
         {

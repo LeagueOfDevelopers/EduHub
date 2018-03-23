@@ -48,6 +48,12 @@ namespace EduHubLibrary.Facades
             return group.GroupInfo.Id;
         }
 
+        public void DeleteGroup(int groupId)
+        {
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            _groupRepository.Delete(currentGroup);
+        }
+
         public void AddMember(int groupId, int newMemberId)
         {
             CheckSanctions(newMemberId, groupId);

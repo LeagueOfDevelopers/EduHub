@@ -25,7 +25,6 @@ namespace EduHubLibrary.Extensions
                 teacher = new User(source.TeacherName, source.TeacherEmail, source.TeacherId);
             }
 
-
             var messages = new List<Message>();
             source.Messages.ForEach(message => messages.Add(new Message(message.Id, message.SenderId,
                 message.SentOn, message.Text)));

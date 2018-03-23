@@ -10,6 +10,7 @@ namespace EduHubLibrary.Facades
     {
         int CreateGroup(int userId, string title, List<string> tags, string description,
             int size, double totalValue, bool isPrivate, GroupType groupType);
+        void DeleteGroup(int groupId);
 
         void ApproveTeacher(int teacherId, int groupId);
         void AcceptCurriculum(int userId, int groupId);

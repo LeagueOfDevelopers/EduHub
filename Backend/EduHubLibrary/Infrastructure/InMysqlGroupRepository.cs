@@ -3,7 +3,9 @@ using System.Linq;
 using EduHubLibrary.Data;
 using EduHubLibrary.Data.GroupDtos;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Extensions;
+using EnsureThat;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduHubLibrary.Infrastructure
@@ -36,7 +38,9 @@ namespace EduHubLibrary.Infrastructure
             {
                 _context.DetachAllEntities();
                 var currentGroupDto = _context.Groups.FirstOrDefault(g => g.Id == group.GroupInfo.Id);
-                _context.Groups.Remove(currentGroupDto);
+                Ensure.Any.IsNotNull(currentGroupDto, nameof(currentGroupDto),
+                    opt => opt.WithException(new GroupNotFoundException()));
+                currentGroupDto.IsDeleted = true;
                 _context.SaveChanges();
             }
         }
@@ -51,7 +55,10 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Messages)
                     .Include(g => g.Invitations)
                     .Include(g => g.Tags)
-                    .FirstOrDefault(g => g.Id == group.GroupInfo.Id);
+                    .FirstOrDefault(g => g.Id == group.GroupInfo.Id && !g.IsDeleted);
+
+                Ensure.Any.IsNotNull(currentGroupDto, nameof(currentGroupDto),
+                    opt => opt.WithException(new GroupNotFoundException()));
 
                 _context.RemoveRange(currentGroupDto.Tags);
                 currentGroupDto.Tags.RemoveAll(t => true);
@@ -74,6 +81,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Members)
                     .Include(g => g.Messages)
                     .Include(g => g.Tags)
+                    .Where(g => !g.IsDeleted)
                     .ToList();
                 var allGroups = new List<Group>();
                 groups.ForEach(g => allGroups.Add(GroupExtensions.ParseFromGroupDto(g)));
@@ -91,7 +99,9 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Messages)
                     .Include(g => g.Members)
                     .Include(g => g.Tags)
-                    .FirstOrDefault(g => g.Id == id);
+                    .FirstOrDefault(g => g.Id == id && !g.IsDeleted);
+                Ensure.Any.IsNotNull(currentGroupDto, nameof(currentGroupDto),
+                    opt => opt.WithException(new GroupNotFoundException()));
                 var result = GroupExtensions.ParseFromGroupDto(currentGroupDto);
                 return result;
             }
@@ -107,7 +117,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Members)
                     .Include(g => g.Messages)
                     .Include(g => g.Tags)
-                    .Where(g => g.Members.Any(m => m.Id == memberId))
+                    .Where(g => g.Members.Any(m => m.Id == memberId) && !g.IsDeleted)
                     .ToList();
                 var result = new List<Group>();
                 foundValues.ForEach(groupDto => result.Add(GroupExtensions.ParseFromGroupDto(groupDto)));

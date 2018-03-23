@@ -16,6 +16,7 @@ namespace EduHubLibrary.Data.GroupDtos
         public string Description { get; set; }
         public string Curriculum { get; set; }
         public bool IsPrivate { get; set; }
+        public bool IsDeleted { get; set; } = false;
         public bool IsActive { get; set; }
         public int Size { get; set; }
         public double Price { get; set; }
@@ -30,10 +31,5 @@ namespace EduHubLibrary.Data.GroupDtos
         public List<MemberDto> Members { get; set; } = new List<MemberDto>();
         public List<InvitationDto> Invitations { get; set; } = new List<InvitationDto>();
         public List<TagGroup> Tags { get; set; } = new List<TagGroup>();
-
-        /*public ICollection<GroupTag> GroupTags { get; } = new List<GroupTag>();
-
-        [NotMapped]
-        public IEnumerable<TagDto> Tags => GroupTags.Select(e => e.Tag);*/
     }
 }

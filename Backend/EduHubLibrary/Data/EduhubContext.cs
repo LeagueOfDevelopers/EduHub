@@ -16,7 +16,6 @@ namespace EduHubLibrary.Data
         public DbSet<UserFileDto> Files { get; set; }
         public DbSet<KeyDto> Keys { get; set; }
         public DbSet<GroupDto> Groups { get; set; }
-        //public DbSet<GroupTag> GroupTag { get; set; }
         public DbSet<TagGroup> TagGroup { get; set; }
 
         private readonly string _сonnectionString;
@@ -25,11 +24,12 @@ namespace EduHubLibrary.Data
         {
             _сonnectionString = connectionString;
             Database.EnsureCreated();
+            Database.Migrate();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL(_сonnectionString);
+            optionsBuilder.UseMySql(_сonnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,25 +43,6 @@ namespace EduHubLibrary.Data
             modelBuilder.Entity<UserFileDto>().ToTable("File");
             modelBuilder.Entity<KeyDto>().ToTable("Key");
             modelBuilder.Entity<GroupDto>().ToTable("Group");
-
-            /*modelBuilder.Entity<UserTag>()
-                .HasKey(t => new { t.TagId, t.UserId });
-            modelBuilder.Entity<GroupTag>()
-                .HasKey(t => new { t.TagId, t.GroupId });*/
-
-            /*modelBuilder.Entity<UserTag>()
-                .HasOne(pt => pt.User)
-                .WithMany("UserTags");
-            modelBuilder.Entity<UserTag>()
-                .HasOne(pt => pt.Tag)
-                .WithMany("UserTags");
-
-           /* modelBuilder.Entity<GroupTag>()
-                .HasOne(pt => pt.Group) 
-                .WithMany("GroupTags");
-            modelBuilder.Entity<GroupTag>()
-                .HasOne(pt => pt.Tag)
-                .WithMany("GroupTags");*/
         }
 
         public void DetachAllEntities()
