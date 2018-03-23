@@ -2,8 +2,9 @@
 {
     public enum GroupType
     {
-        Lecture = 0,
-        Seminar = 1,
-        MasterClass = 2
+        Default = 0,
+        Lecture = 1,
+        Seminar = 2,
+        MasterClass = 3
     }
 }

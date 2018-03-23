@@ -18,6 +18,8 @@ namespace EduHubLibrary.Facades
         IEnumerable<Group> GetGroups();
         FullGroupView GetGroup(int id);
         IEnumerable<Group> FindByTags(IEnumerable<string> tags);
+        IEnumerable<Group> FindGroup(string title, List<string> tags, GroupType type, double minPrice,
+            double maxPrice, bool formed);
         IEnumerable<Member> GetGroupMembers(int groupId);
         void DeleteMember(int groupId, int requestedPerson, int requestingPerson);
         void AddMember(int groupId, int requestedPerson);

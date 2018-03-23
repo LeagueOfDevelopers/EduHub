@@ -134,6 +134,38 @@ namespace EduHubLibrary.Facades
             return result;
         }
 
+        public IEnumerable<Group> FindGroup(string title, List<string> tags = null,
+            GroupType type = GroupType.Default, double minPrice = 0, double maxPrice = 0, bool formed = false)
+        {
+            var allGroups = _groupRepository.GetAll().ToList();
+            allGroups = allGroups.Where(g => g.GroupInfo.Title.StartsWith(title))
+                .OrderBy(g => g.GroupInfo.Title.Length).ToList();
+
+            if (tags != null && tags.Any())
+            {
+                allGroups = allGroups.FindAll(g => g.GroupInfo.Tags.Intersect(tags).Any())
+                    .OrderByDescending(g => g.GroupInfo.Tags.Intersect(tags).Count()).ToList();
+            }
+
+            if (type != GroupType.Default)
+            {
+                allGroups = allGroups.FindAll(g => g.GroupInfo.GroupType == type);
+            }
+
+            if (Math.Abs(minPrice) > 0 || Math.Abs(maxPrice) > 0)
+            {
+                allGroups = allGroups.FindAll(g => minPrice <=
+                                                   g.GroupInfo.Price && g.GroupInfo.Price <= maxPrice);
+            }
+
+            if (formed)
+            {
+                allGroups = allGroups.FindAll(g => g.GroupInfo.Size == g.Members.Count);
+            }
+
+            return allGroups;
+        }
+
         public IEnumerable<Member> GetGroupMembers(int id)
         {
             return _groupRepository.GetGroupById(id).Members;
