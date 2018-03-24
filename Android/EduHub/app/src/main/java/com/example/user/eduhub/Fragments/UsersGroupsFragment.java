@@ -127,7 +127,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
     }
     @Override
     public void getResponse(User user) {
-        savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),sharedPreferences);
+        savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sharedPreferences);
         groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId());
     }
 

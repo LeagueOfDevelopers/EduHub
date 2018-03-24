@@ -100,12 +100,19 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         signInToGroup.setOnClickListener(click->{
             if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
 
-
+                if(!user.getTeacher()){
                 if(!fakessButton.getCheckButton()){
                     Log.d("CheckButton",fakessButton.getCheckButton().toString());
                signInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId());}
                else{
                     fakeSignInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId());
+                }}else{
+                    if(!fakessButton.getCheckButton()){
+                        Log.d("CheckButton",fakessButton.getCheckButton().toString());
+                        signInUserToGroupPresenter.signInTeacherToGroup(user.getToken(),group.getGroupInfo().getId());}
+                    else{
+                        fakeSignInUserToGroupPresenter.signInTeacherToGroup(user.getToken(),group.getGroupInfo().getId());
+                    }
                 }
 
             }else{

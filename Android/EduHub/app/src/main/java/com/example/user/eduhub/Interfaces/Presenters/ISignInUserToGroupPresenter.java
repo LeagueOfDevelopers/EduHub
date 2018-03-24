@@ -6,4 +6,5 @@ package com.example.user.eduhub.Interfaces.Presenters;
 
 public interface ISignInUserToGroupPresenter {
     void signInUserToGroup(String token,String groupId);
+    void signInTeacherToGroup(String token,String groupId);
 }

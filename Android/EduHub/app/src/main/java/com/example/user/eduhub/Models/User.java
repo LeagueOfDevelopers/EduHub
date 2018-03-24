@@ -22,6 +22,17 @@ public class User implements Serializable{
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("isTeacher")
+    @Expose
+    private Boolean isTeacher;
+
+    public Boolean getTeacher() {
+        return isTeacher;
+    }
+
+    public void setTeacher(Boolean teacher) {
+        isTeacher = teacher;
+    }
 
     public String getUserId() {
         return userId;

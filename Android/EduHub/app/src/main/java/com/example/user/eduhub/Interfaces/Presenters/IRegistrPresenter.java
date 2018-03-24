@@ -5,6 +5,6 @@ package com.example.user.eduhub.Interfaces.Presenters;
  */
 
 public interface IRegistrPresenter  {
-    void RegistrationUser (String name,String email,String password,Boolean isTeacher,String inviteCode);
+    void RegistrationUser (String name,String email,String password,Boolean isTeacher);
 
 }

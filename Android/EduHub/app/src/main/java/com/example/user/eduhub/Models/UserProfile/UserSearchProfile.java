@@ -8,47 +8,39 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class UserSearchProfile {
-    @SerializedName("id")
+    @SerializedName("invited")
     @Expose
-    private String id;
-    @SerializedName("name")
+    private Boolean invited;
+    @SerializedName("username")
     @Expose
-    private String name;
-    @SerializedName("email")
-    @Expose
-    private String email;
+    private String username;
     @SerializedName("isTeacher")
     @Expose
     private Boolean isTeacher;
-    @SerializedName("teacherProfile")
+    @SerializedName("id")
     @Expose
-    private TeacherProfile teacherProfile;
-    @SerializedName("isActive")
+    private String id;
+    @SerializedName("email")
     @Expose
-    private Boolean isActive;
+    private String email;
+    @SerializedName("avatarLink")
+    @Expose
+    private Object avatarLink;
 
-    public String getId() {
-        return id;
+    public Boolean getInvited() {
+        return invited;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setInvited(Boolean invited) {
+        this.invited = invited;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Boolean getIsTeacher() {
@@ -59,20 +51,28 @@ public class UserSearchProfile {
         this.isTeacher = isTeacher;
     }
 
-    public TeacherProfile getTeacherProfile() {
-        return teacherProfile;
+    public String getId() {
+        return id;
     }
 
-    public void setTeacherProfile(TeacherProfile teacherProfile) {
-        this.teacherProfile = teacherProfile;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public String getEmail() {
+        return email;
     }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Object getAvatarLink() {
+        return avatarLink;
+    }
+
+    public void setAvatarLink(Object avatarLink) {
+        this.avatarLink = avatarLink;
     }
 
 }

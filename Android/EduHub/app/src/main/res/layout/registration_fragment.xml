@@ -9,7 +9,7 @@
 
         <EditText
             android:id="@+id/registr_email"
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -20,7 +20,7 @@
 
         <EditText
             android:id="@+id/registr_password"
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/registr_email"
             android:layout_alignStart="@+id/registr_email"
@@ -28,6 +28,14 @@
             android:ems="10"
             android:hint="Пароль"
             android:inputType="textPassword" />
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignRight="@+id/registr_password"
+            android:layout_below="@+id/registr_email"
+            android:layout_marginTop="5dp"
+            />
 
         <Button
             android:id="@+id/registr_btn"
@@ -39,7 +47,7 @@
 
         <EditText
             android:id="@+id/registr_login"
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/registr_email"
             android:layout_alignParentTop="true"
@@ -51,23 +59,14 @@
 
         <CheckBox
             android:id="@+id/teacher_or_not"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_alignLeft="@+id/inviteCode"
-            android:layout_alignStart="@+id/inviteCode"
-            android:layout_marginLeft="4dp"
-            android:layout_below="@+id/inviteCode"
-            android:layoutDirection="rtl"
-            android:text="Преподаватель:" />
-        <EditText
-            android:id="@+id/inviteCode"
-            android:layout_width="wrap_content"
+            android:layout_width="212dp"
             android:layout_height="45dp"
             android:layout_alignLeft="@+id/registr_password"
+            android:layout_alignStart="@+id/registr_password"
+            android:layout_marginLeft="4dp"
             android:layout_below="@+id/registr_password"
-            android:layout_alignRight="@+id/registr_password"
-            android:hint="Код приглашения"
+            android:layoutDirection="rtl"
+            android:text="Преподаватель:" />
 
-            />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

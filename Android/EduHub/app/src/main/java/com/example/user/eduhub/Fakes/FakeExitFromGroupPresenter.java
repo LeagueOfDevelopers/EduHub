@@ -20,7 +20,7 @@ public class FakeExitFromGroupPresenter implements IExitFromGroupPresenter{
     }
 
     @Override
-    public void exitFromGroupForTeacher(String token, String groupId, String memberId) {
+    public void exitFromGroupForTeacher(String token, String groupId) {
         exitFromGroupView.getResponse();
     }
 }

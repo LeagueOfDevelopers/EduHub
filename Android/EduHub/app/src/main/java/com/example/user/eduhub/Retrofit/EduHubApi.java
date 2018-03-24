@@ -95,8 +95,8 @@ public interface EduHubApi {
     Completable changesUsersGender(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @DELETE("/api/group/{groupId}/member/{memberId}")
     Completable exitFromGroup(@Header("Authorization") String token,@Path("groupId") String groupId,@Path("memberId") String userId);
-    @DELETE("/api/group/{groupId}/member/teacher/{memberId}")
-    Completable exitFromGroupForTeacher(@Header("Authorization") String token,@Path("groupId") String groupId,@Path("memberId") String userId);
+    @DELETE(" /api/group/{groupId}/teacher")
+    Completable exitFromGroupForTeacher(@Header("Authorization") String token,@Path("groupId") String groupId);
     @DELETE("/api/user/profile/teaching")
     Completable becomeSimpleUser(@Header("Authorization") String token);
     @POST("/api/user/profile/teaching")
@@ -134,4 +134,6 @@ public interface EduHubApi {
     Completable addReview(@Header("Authorization") String token, @Path("groupId") String groupId,@Body AddReviewModel addReviewModel);
     @DELETE(" /api/group/{groupId}/course")
     Completable closeCourse(@Header("Authorization") String token, @Path("groupId") String groupId);
+    @POST ("/api/group/{groupId}/teacher")
+    Completable signInTeacherToGroup(@Header("Authorization") String token, @Path("groupId") String groupId);
 }

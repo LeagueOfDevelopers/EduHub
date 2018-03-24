@@ -41,8 +41,8 @@ public class ChangeGroupSettingsPresenter implements IChangeGroupSettingsPresent
             if(typeOfEducation.equals("Семинар")){
                 refactorGroupRequestModel.setGroupType("Seminar");
             }
-            if(typeOfEducation.equals("MasterClass")){
-                refactorGroupRequestModel.setGroupType(typeOfEducation);
+            if(typeOfEducation.equals("Мастер класс")){
+                refactorGroupRequestModel.setGroupType("MasterClass");
             }
         }
         refactorGroupRequestModel.setPrivate(isPrivate);

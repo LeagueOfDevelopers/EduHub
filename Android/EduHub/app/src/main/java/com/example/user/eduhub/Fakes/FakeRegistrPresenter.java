@@ -16,7 +16,7 @@ public class FakeRegistrPresenter implements IRegistrPresenter {
     }
 
     @Override
-    public void RegistrationUser(String name, String email, String password, Boolean isTeacher, String inviteCode) {
+    public void RegistrationUser(String name, String email, String password, Boolean isTeacher) {
         LoginFragment fragment=new LoginFragment();
         registrView.getResponse(fragment);
     }

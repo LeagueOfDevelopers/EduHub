@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -48,6 +50,7 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
     EditText name;
     EditText password;
     EditText email;
+    CheckBox checkBox2;
     FakesButton fakesButton=new FakesButton();
     FakeRegistrPresenter fakeRegistrPresenter=new FakeRegistrPresenter(this);
     FakeLoginPresenter fakeLoginPresenter=new FakeLoginPresenter(this);
@@ -67,13 +70,24 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
         View v = inflater.inflate(R.layout.registration_fragment, null);
         email=v.findViewById(R.id.registr_email);
         password=v.findViewById(R.id.registr_password);
+        int closePassword=password.getInputType();
         name=v.findViewById(R.id.registr_login);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Регистрация");
         final CheckBox checkBox=v.findViewById(R.id.teacher_or_not);
-        EditText inviteCode=v.findViewById(R.id.inviteCode);
-        Button submit=v.findViewById(R.id.registr_btn);
 
+        Button submit=v.findViewById(R.id.registr_btn);
+        checkBox2=v.findViewById(R.id.checkbox);
+        checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                } else {
+                    password.setInputType(closePassword);
+                }
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,9 +103,9 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
                     isTeacher=false;
                 }
                 if(!fakesButton.getCheckButton()){
-                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,inviteCode.getText().toString());}
+                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher);}
                 else{
-                    fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher,inviteCode.getText().toString());
+                    fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher);
                 }
                         }else{MakeToast("Пароль слишком короткий");}
                     }else{

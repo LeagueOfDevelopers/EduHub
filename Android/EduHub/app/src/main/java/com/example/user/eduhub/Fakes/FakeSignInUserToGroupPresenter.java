@@ -18,4 +18,9 @@ public class FakeSignInUserToGroupPresenter implements ISignInUserToGroupPresent
     public void signInUserToGroup(String token, String groupId) {
         signInUserToGroupView.getResponse();
     }
+
+    @Override
+    public void signInTeacherToGroup(String token, String groupId) {
+        signInUserToGroupView.getResponse();
+    }
 }

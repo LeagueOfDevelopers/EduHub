@@ -18,7 +18,7 @@ public class FakeCreateGroupPresenter implements ICreateGroupPresenter {
     }
 
     @Override
-    public void createGroup(String title, String description, ArrayList<String> tags, int size, Double cost, TypeOfEducation groupType, Boolean isPrivate, String token) {
+    public void createGroup(String title, String description, ArrayList<String> tags, int size, Double cost, String groupType, Boolean isPrivate, String token) {
         createGroupView.getResponse();
     }
 }

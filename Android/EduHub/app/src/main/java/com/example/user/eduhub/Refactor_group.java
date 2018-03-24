@@ -81,8 +81,10 @@ public class Refactor_group extends AppCompatActivity implements IChangeGroupSet
             }
         });
         spinner=findViewById(R.id.type_of_education);
-        adapter=new SpinnerAdapter(this,R.layout.spenner_item, TypeOfEducation.values());
+        String[] types={"Лекция","Мастер класс","Семинар"};
+        adapter=new SpinnerAdapter(this,R.layout.spenner_item, types);
         spinner.setAdapter(adapter);
+
         // заголовок
         spinner.setPrompt("Type of education");
 
@@ -92,7 +94,7 @@ public class Refactor_group extends AppCompatActivity implements IChangeGroupSet
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 // показываем позиция нажатого элемента
-                type=TypeOfEducation.values()[position].toString();
+                type=types[position];
 
             }
             @Override

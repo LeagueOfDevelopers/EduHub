@@ -18,11 +18,11 @@ import java.util.ArrayList;
  * Created by user on 21.12.2017.
  */
 
-public class SpinnerAdapter extends ArrayAdapter<TypeOfEducation> {
+public class SpinnerAdapter extends ArrayAdapter<String> {
     private LayoutInflater mInflater;
     private int mLayout;
-    private TypeOfEducation[] typesOfEducations;
-    public SpinnerAdapter( Context context, int resource, TypeOfEducation[] typesOfEducations) {
+    private String[] typesOfEducations;
+    public SpinnerAdapter( Context context, int resource, String[] typesOfEducations) {
         super(context, resource,typesOfEducations);
         this.typesOfEducations=typesOfEducations;
         this.mLayout = resource;

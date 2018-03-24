@@ -12,6 +12,7 @@ public class SavedDataRepository {
     public User loadSavedData(SharedPreferences sPref){
         User user=new User();
         user.setRole(sPref.getString("ROLE",null));
+        user.setTeacher(sPref.getBoolean("ROLE2",false));
         user.setUserId(sPref.getString("ID",null));
         user.setToken(sPref.getString("TOKEN",null));
         user.setAvatarLink(sPref.getString("AVATARLINK",null));
@@ -27,12 +28,13 @@ public class SavedDataRepository {
         Boolean bool=sPref.getBoolean("CheckButton",false);
         return bool;
     }
-    public void SaveUser(String token,String name,String avatarLink,String email,SharedPreferences sPref){
+    public void SaveUser(String token,String name,String avatarLink,String email,Boolean role,SharedPreferences sPref){
         android.content.SharedPreferences.Editor editor=sPref.edit();
         JWT jwt = new JWT(token);
         editor.putString("ROLE",jwt.getClaim("Role").asString());
         editor.putString("ID",jwt.getClaim("UserId").asString());
         editor.putInt("EXP",jwt.getClaim("exp").asInt());
+        editor.putBoolean("ROLE2",role);
         editor.putString("TOKEN",token);
         editor.putString("NAME",name);
         editor.putString("EMAIL",email);

@@ -6,5 +6,5 @@ package com.example.user.eduhub.Interfaces.Presenters;
 
 public interface IExitFromGroupPresenter {
     void exitFromGroupForUser(String token,String groupId,String memberId);
-    void exitFromGroupForTeacher(String token,String groupId,String memberId);
+    void exitFromGroupForTeacher(String token,String groupId);
 }

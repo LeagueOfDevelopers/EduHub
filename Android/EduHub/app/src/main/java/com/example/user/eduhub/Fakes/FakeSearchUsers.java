@@ -26,9 +26,9 @@ public class FakeSearchUsers implements ISearchUserPresenter {
         UserSearchProfile userSearchProfile=new UserSearchProfile();
         userSearchProfile.setEmail("fake@fake.fake");
         userSearchProfile.setId("93d08fd5-c101-42d4-8811-8e48f2434304");
-        userSearchProfile.setIsActive(true);
+        userSearchProfile.setInvited(false);
         userSearchProfile.setIsTeacher(true);
-        userSearchProfile.setName("Шурик");
+        userSearchProfile.setUsername("Шурик");
         TeacherProfile teacherProfile=new TeacherProfile();
         teacherProfile.setSkills(new ArrayList<String>());
         Review review=new Review();
@@ -40,7 +40,7 @@ public class FakeSearchUsers implements ISearchUserPresenter {
             reviews.add(review);
         }
         teacherProfile.setReviews(reviews);
-        userSearchProfile.setTeacherProfile(teacherProfile);
+
         ArrayList<UserSearchProfile> userSearchProfiles=new ArrayList<>();
         for (int i=0;i<10;i++){
             userSearchProfiles.add(userSearchProfile);

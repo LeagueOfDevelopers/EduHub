@@ -51,9 +51,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
         TagsAdapter adapter=new TagsAdapter((ArrayList<String>) groups.get(position).getGroupInfo().getTags());
         holder.tags.setAdapter(adapter);
         switch (String.valueOf(groups.get(position).getGroupInfo().getGroupType())){
-            case "0":{holder.typeOfEducation.setText(TypeOfEducation.Лекция.toString());break;}
-            case "1":{holder.typeOfEducation.setText(TypeOfEducation.Семинар.toString());break;}
-            case "2":{holder.typeOfEducation.setText(TypeOfEducation.МастерКласс.toString());break;}
+            case "1":{holder.typeOfEducation.setText(TypeOfEducation.Лекция.toString());break;}
+            case "2":{holder.typeOfEducation.setText(TypeOfEducation.Семинар.toString());break;}
+            case "3":{holder.typeOfEducation.setText(TypeOfEducation.МастерКласс.toString());break;}
         }
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override

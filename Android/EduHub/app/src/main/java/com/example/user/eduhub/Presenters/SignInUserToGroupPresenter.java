@@ -33,4 +33,15 @@ public class SignInUserToGroupPresenter implements ISignInUserToGroupPresenter {
                             Log.e("ERRORSIGNINUSERTOGROUP",error+"");});
 
     }
+
+    @Override
+    public void signInTeacherToGroup(String token, String groupId) {
+        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        eduHubApi.signInTeacherToGroup("Bearer "+token,groupId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(()->{signInUserToGroupView.getResponse();},
+                        error->{
+                            Log.e("ERRORSIGNINUSERTOGROUP",error+"");});
+    }
 }

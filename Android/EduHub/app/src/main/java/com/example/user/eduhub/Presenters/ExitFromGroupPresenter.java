@@ -35,8 +35,8 @@ public class ExitFromGroupPresenter implements IExitFromGroupPresenter {
     }
 
     @Override
-    public void exitFromGroupForTeacher(String token, String groupId, String memberId) {
-        eduHubApi.exitFromGroupForTeacher("Bearer "+token,groupId,memberId)
+    public void exitFromGroupForTeacher(String token, String groupId) {
+        eduHubApi.exitFromGroupForTeacher("Bearer "+token,groupId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(()->{

@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,11 +98,15 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     DialogInterface.OnClickListener myClickListener;
     RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
     User user;
+    RelativeLayout relativeLayout;
     DecodeFile decodeFile=new DecodeFile(getActivity());
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
          v = inflater.inflate(R.layout.teacher_profile, null);
+        relativeLayout=v.findViewById(R.id.window);
+
          avatar=v.findViewById(R.id.avatar);
          userName=v.findViewById(R.id.name_user_profile);
          userEmail=v.findViewById(R.id.email_user_profile);
@@ -125,12 +130,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
         Log.d("CHECK BUTTON",fakesButton.getCheckButton().toString());
         expandablePlaceHolderView=v.findViewById(R.id.expandableView);
         expandablePlaceHolderView2=v.findViewById(R.id.expandableView2);
-        if(!fakesButton.getCheckButton()){
-            Log.d("TOKEN",user.getToken());
-            userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());}
-        else{
-            fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
-        }
+
 
     return v;}
 
@@ -197,6 +197,9 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
 
     @Override
     public void getUserProfile(UserProfileResponse userProfile) {
+        expandablePlaceHolderView.setVisibility(View.GONE);
+        expandablePlaceHolderView2.setVisibility(View.GONE);
+        relativeLayout.setVisibility(View.VISIBLE);
         Log.d("Role",userProfile.getUserProfile().getIsTeacher().toString());
         userEmail.setText(userProfile.getUserProfile().getEmail());
         userEmail2.setText(userProfile.getUserProfile().getEmail());
@@ -260,16 +263,17 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
 
         if(userProfile.getUserProfile().getIsTeacher()){
             expandablePlaceHolderView.setVisibility(View.VISIBLE);
-            expandablePlaceHolderView2.setVisibility(View.VISIBLE);
+
             Log.d("ROLE2",userProfile.getUserProfile().getIsTeacher().toString());
         expandablePlaceHolderView.addView(new ReviewsHeaderView(getContext(),userProfile.getTeacherProfile().getReviews().size()+" отзывов"));
         for(Review review:userProfile.getTeacherProfile().getReviews()){
             expandablePlaceHolderView.addView(new ReviewItemsView(getContext(),review));
         }
         if(userProfile.getTeacherProfile().getJobExp()!=null){
-            expandablePlaceHolderView.addView(new JobExpHeaderVIew(getContext(),userProfile.getTeacherProfile().getJobExp().size()+" групп"));
+            expandablePlaceHolderView2.setVisibility(View.VISIBLE);
+            expandablePlaceHolderView2.addView(new JobExpHeaderVIew(getContext(),userProfile.getTeacherProfile().getJobExp().size()+" групп"));
             for(Group group:userProfile.getTeacherProfile().getJobExp()){
-                expandablePlaceHolderView.addView(new JobExpItemView(getContext(),group));
+                expandablePlaceHolderView2.addView(new JobExpItemView(getContext(),group));
             }
         }}else{
             expandablePlaceHolderView.setVisibility(View.GONE);
@@ -315,7 +319,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
 
     @Override
     public void getResponse(User user) {
-        savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),sharedPreferences);
+        savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sharedPreferences);
         userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
     }
 

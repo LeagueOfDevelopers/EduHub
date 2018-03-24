@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.user.eduhub.Adapters.EmptyAdapterForSearch;
 import com.example.user.eduhub.Adapters.InviteUsersAdapter;
@@ -24,8 +25,10 @@ import com.example.user.eduhub.Adapters.SpinnerAdapter;
 import com.example.user.eduhub.Adapters.SpinnerAdapterForMemberRole;
 import com.example.user.eduhub.Classes.MemberRole;
 import com.example.user.eduhub.Classes.TypeOfEducation;
+import com.example.user.eduhub.Fakes.FakeInviteUserPresenter;
 import com.example.user.eduhub.Fakes.FakeSearchUsers;
 import com.example.user.eduhub.Fakes.FakesButton;
+import com.example.user.eduhub.Interfaces.IInviteCallback;
 import com.example.user.eduhub.Interfaces.View.IInviteUserView;
 import com.example.user.eduhub.Interfaces.View.ISearchResponse;
 import com.example.user.eduhub.Models.Group.Group;
@@ -38,7 +41,7 @@ import com.example.user.eduhub.Presenters.SearchUserPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InviteUserToGroup extends AppCompatActivity implements ISearchResponse {
+public class InviteUserToGroup extends AppCompatActivity implements ISearchResponse,IInviteCallback,IInviteUserView {
 
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     User user;
@@ -47,6 +50,8 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
     RecyclerView recyclerView;
     SearchUserPresenter searchUserPresenter=new SearchUserPresenter(this);
     FakesButton fakesButton=new FakesButton();
+    InviteUserPresenter inviteUserPresenter=new InviteUserPresenter(this);
+    FakeInviteUserPresenter fakeInviteUserPresenter=new FakeInviteUserPresenter(this);
     FakeSearchUsers fakeSearchUsers=new FakeSearchUsers(this);
     String role;
     Boolean flag;
@@ -62,6 +67,8 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
         user= savedDataRepository.loadSavedData(sPref);
         toolbar.setTitle("Приглашение пользователя");
         EditText edit=findViewById(R.id.invite);
+        TextView textView=findViewById(R.id.group_name);
+        textView.setText(group.getGroupInfo().getTitle());
         ImageButton backButton=findViewById(R.id.back);
         ImageView searchUser=findViewById(R.id.search_item);
         recyclerView=findViewById(R.id.recycler_view_invitation);
@@ -136,7 +143,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
 
         Log.d("ROLOLO",role);
         if(userProfile.size()!=0){
-        InviteUsersAdapter inviteUsersAdapter=new InviteUsersAdapter(userProfile,this,groupId,role,user.getToken());
+        InviteUsersAdapter inviteUsersAdapter=new InviteUsersAdapter(userProfile,this,this);
         recyclerView.setAdapter(inviteUsersAdapter);}else{
             EmptyAdapterForSearch emptyAdapterForSearch=new EmptyAdapterForSearch();
             recyclerView.setAdapter(emptyAdapterForSearch);
@@ -149,4 +156,19 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
     }
 
 
+    @Override
+    public void InviteCallBack(String invitedId) {
+        if(!fakesButton.getCheckButton()){
+            inviteUserPresenter.inviteUser(invitedId,role,groupId,user.getToken());}
+        else {
+            fakeInviteUserPresenter
+                    .inviteUser(invitedId, role,groupId,user.getToken());
+        }
+    }
+
+    @Override
+    public void getResponse() {
+        Intent intent2=new Intent(this,AuthorizedUserActivity.class);
+        startActivity(intent2);
+    }
 }

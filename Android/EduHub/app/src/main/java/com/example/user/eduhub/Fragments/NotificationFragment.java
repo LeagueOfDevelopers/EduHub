@@ -64,6 +64,7 @@ public class NotificationFragment extends Fragment implements IInvitationsView,I
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                i=0;
                 expandablePlaceHolderView.removeAllViews();
                 if(!fakesButton.getCheckButton()){
                     invitationsPresenter.loadInvitations(user.getToken());}else{

@@ -102,7 +102,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
             JWT jwt = new JWT(user.getToken());
             user.setUserId(jwt.getClaim("UserId").asString());
 
-            savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),sPref);
+            savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sPref);
             drawer();
 
         }
@@ -233,7 +233,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
         user.setUserId(jwt.getClaim("UserId").asString());
         Log.d("USERID",user.getUserId());
         savedDataRepository=new SavedDataRepository();
-        savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),sPref);
+        savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sPref);
         drawer();
     }
 

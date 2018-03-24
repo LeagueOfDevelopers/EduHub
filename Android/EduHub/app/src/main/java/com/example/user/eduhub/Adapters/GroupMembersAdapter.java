@@ -1,6 +1,9 @@
 package com.example.user.eduhub.Adapters;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.user.eduhub.AnotherProfileActivity;
+import com.example.user.eduhub.AuthorizedUserActivity;
 import com.example.user.eduhub.Classes.MemberRole;
 import com.example.user.eduhub.Interfaces.IUpdateList;
 import com.example.user.eduhub.Interfaces.View.IFileRepositoryView;
@@ -26,6 +31,7 @@ import com.example.user.eduhub.Retrofit.RetrofitBuilder;
 import com.mindorks.placeholderview.annotations.LongClick;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -44,12 +50,16 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
     ImageView userImage2;
     Activity activity;
     IUpdateList updateList;
+    Bitmap bitmap;
+
 
     public GroupMembersAdapter (ArrayList<Member> members, User user, Activity activity, Group group,IUpdateList updateList){
         this.members=members;
         this.user=user;
         this.group=group;
         this.updateList=updateList;
+        this.activity=activity;
+
     }
     FileRepository fileRepository=new FileRepository(this,activity);
     @Override
@@ -97,6 +107,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
                         startTime = System.currentTimeMillis();
+
                         break;
                     case MotionEvent.ACTION_MOVE: // движение
                         break;
@@ -106,9 +117,13 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
                         long totalSecunds = totalTime / 1000;
                         if( totalSecunds >= 2 )
                         {
-                            if(user.getUserId()!=members.get(i).getUserId()&&role==2) {
+                            if(!user.getUserId().equals(members.get(i).getUserId())&&role==2) {
                                 holder.kick.setVisibility(View.VISIBLE);
                             }
+                        }else{
+                            Intent intent=new Intent(activity, AnotherProfileActivity.class);
+                            intent.putExtra("id",members.get(i).getUserId());
+                            activity.startActivity(intent);
                         }
                         break;
                 }
@@ -117,14 +132,24 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         });
        holder.kick.setOnClickListener(click->{
            Log.d("GroupIdInMemberAdapter",user.getToken());
-
            EduHubApi eduHubApi= RetrofitBuilder.getApi();
+           if(members.get(i).getRole()==3){
+               eduHubApi.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId())
+                       .subscribeOn(Schedulers.io())
+                       .observeOn(AndroidSchedulers.mainThread())
+                       .subscribe(()->{
+                           updateList.updateList();}
+                       );
+           }else{
+
+
+
            eduHubApi.exitFromGroup("Bearer "+user.getToken(),group.getGroupInfo().getId(),members.get(i).getUserId())
                    .subscribeOn(Schedulers.io())
                    .observeOn(AndroidSchedulers.mainThread())
                    .subscribe(()->{
                            updateList.updateList();}
-                   );
+                   );}
        });
     }
 
@@ -156,11 +181,22 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
 
     @Override
     public void getFile(ResponseBody file) {
+        byte[] rawBitmap;
+        try {
 
+            rawBitmap=file.bytes();
+            Log.d("Проверяемчтозахрень тут",rawBitmap[5]+"");
+            bitmap = BitmapFactory.decodeByteArray(rawBitmap,0,rawBitmap.length);
+            userImage2.setImageBitmap(bitmap);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static class GroupMembersViewHolder extends RecyclerView.ViewHolder{
-        ImageView userImage;
+       public  ImageView userImage;
         ImageView paid;
         ImageView kick;
         TextView userName;

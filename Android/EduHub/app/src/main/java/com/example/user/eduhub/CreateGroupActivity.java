@@ -36,7 +36,7 @@ import mabbas007.tagsedittext.TagsEditText;
 
 public class CreateGroupActivity extends AppCompatActivity implements ICreateGroupView {
     ArrayList<String> tags=new ArrayList<>();
-    TypeOfEducation type;
+    String type;
     Spinner spinner;
     SpinnerAdapter adapter;
     Boolean privacy;
@@ -78,7 +78,8 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
             }
         });
         spinner=findViewById(R.id.type_of_education);
-        adapter=new SpinnerAdapter(this,R.layout.spenner_item, TypeOfEducation.values());
+        String[] types={"Лекция"," Мастер класс","Cеминар"};
+        adapter=new SpinnerAdapter(this,R.layout.spenner_item, types);
         spinner.setAdapter(adapter);
         // заголовок
         spinner.setPrompt("Type of education");
@@ -90,7 +91,7 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 // показываем позиция нажатого элемента
-                type=TypeOfEducation.values()[position];
+                type=types[position];
 
             }
             @Override

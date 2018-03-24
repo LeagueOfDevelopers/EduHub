@@ -157,12 +157,12 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                     }
                 }
                 if(isTeacher){
-                    exitFromGroupPresenter.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId(),user.getUserId());
+                    exitFromGroupPresenter.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId());
                 }
                 else {
                 exitFromGroupPresenter.exitFromGroupForUser(user.getToken(),group.getGroupInfo().getId(),user.getUserId());}
             }else{
-                fakeExitFromGroupPresenter.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId(),user.getUserId());
+                fakeExitFromGroupPresenter.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId());
             }
         });
         suggestion_course.setOnClickListener(click->{

@@ -15,6 +15,7 @@ import com.example.user.eduhub.AuthorizedUserActivity;
 import com.example.user.eduhub.Classes.MemberRole;
 import com.example.user.eduhub.Fakes.FakeInviteUserPresenter;
 import com.example.user.eduhub.Fakes.FakesButton;
+import com.example.user.eduhub.Interfaces.IInviteCallback;
 import com.example.user.eduhub.Interfaces.View.IInviteUserView;
 import com.example.user.eduhub.Models.UserProfile.UserSearchProfile;
 import com.example.user.eduhub.Presenters.InviteUserPresenter;
@@ -26,21 +27,22 @@ import java.util.List;
  * Created by User on 06.02.2018.
  */
 
-public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUsersAdapter.InviteUsersViewHolder> implements IInviteUserView {
+public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUsersAdapter.InviteUsersViewHolder>  {
     private List<UserSearchProfile> userSearchProfiles;
     private Activity activity;
     private String myId;
     private String groupId;
     private String role;
-    private InviteUserPresenter inviteUserPresenter=new InviteUserPresenter(this);
+    IInviteCallback inviteCallback;
+
     FakesButton fakesButton=new FakesButton();
-    FakeInviteUserPresenter fakeInviteUserPresenter=new FakeInviteUserPresenter(this);
-    public InviteUsersAdapter(List<UserSearchProfile> userSearchProfiles, Activity activity,String groupId,String role,String myId){
+
+    public InviteUsersAdapter(List<UserSearchProfile> userSearchProfiles, Activity activity,IInviteCallback iInviteCallback){
         this.userSearchProfiles=userSearchProfiles;
         this.activity=activity;
-        this.groupId=groupId;
-        this.role=role;
-        this.myId=myId;
+        this.inviteCallback=iInviteCallback;
+
+
     }
     @Override
     public InviteUsersAdapter.InviteUsersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,15 +53,13 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUsersAdapter.
 
     @Override
     public void onBindViewHolder(InviteUsersAdapter.InviteUsersViewHolder holder, final int position) {
-        holder.name.setText(userSearchProfiles.get(position).getName());
+        if(userSearchProfiles.get(position).getInvited()!=null && userSearchProfiles.get(position).getInvited()){
+            holder.cv.setVisibility(View.GONE);
+        }
+        holder.name.setText(userSearchProfiles.get(position).getUsername());
         holder.cv.setOnClickListener(click->{
             Log.d("sdvsd","sdfsdgsdf");
-            if(!fakesButton.getCheckButton()){
-            inviteUserPresenter.inviteUser(userSearchProfiles.get(position).getId(),role,groupId,myId);}
-            else {
-            fakeInviteUserPresenter
-                    .inviteUser(userSearchProfiles.get(position).getId(), role,groupId,myId);
-            }
+            inviteCallback.InviteCallBack(userSearchProfiles.get(position).getId());
         });
 
     }
@@ -73,27 +73,7 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUsersAdapter.
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    @Override
-    public void showLoading() {
 
-    }
-
-    @Override
-    public void stopLoading() {
-
-    }
-
-    @Override
-    public void getError(Throwable error) {
-
-    }
-
-    @Override
-    public void getResponse() {
-        Intent intent2=new Intent(activity,AuthorizedUserActivity.class);
-        activity.startActivity(intent2);
-
-    }
 
     public static class InviteUsersViewHolder extends RecyclerView.ViewHolder {
         CardView cv;

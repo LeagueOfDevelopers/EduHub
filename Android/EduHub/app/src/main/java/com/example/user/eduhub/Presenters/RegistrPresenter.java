@@ -27,9 +27,9 @@ public class RegistrPresenter implements IRegistrPresenter {
     }
 
     @Override
-    public void RegistrationUser(String name, String email, String password, Boolean isTeacher,  String inviteCode) {
+    public void RegistrationUser(String name, String email, String password, Boolean isTeacher) {
         if(!email.equals("")&&!password.equals("")&&!name.equals("")){
-            if(inviteCode.equals("")){
+
                 RegistrationModel2 registrationModel=new RegistrationModel2();
                 registrationModel.setEmail(email);
                 registrationModel.setName(name);
@@ -55,33 +55,6 @@ public class RegistrPresenter implements IRegistrPresenter {
                         );
 
             }else{
-            RegistrationModel registrationModel=new RegistrationModel();
-            registrationModel.setEmail(email);
-            registrationModel.setName(name);
-            registrationModel.setPassword(password);
-            registrationModel.setIsTeacher(isTeacher);
-            registrationModel.setInviteCode(inviteCode);
-                EduHubApi eduHubApi= RetrofitBuilder.getApi();
-                disposable=eduHubApi.userRegistration(registrationModel)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                next -> {
-                                },
-                                error -> {
-                                    registrView.getError(error);
-                                    Log.e("Throwavle",error.toString());
-                                },
-                                ()->{
-                                    LoginFragment fragment=new LoginFragment();
-                                    registrView.getResponse(fragment);}
-
-
-
-                        );}
-
-
-        }else{
 
 
         }

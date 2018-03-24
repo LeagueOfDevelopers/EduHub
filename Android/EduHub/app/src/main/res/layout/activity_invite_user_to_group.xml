@@ -50,16 +50,18 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="12dp"
                     android:src="@mipmap/ic_launcher_round"/>
+
                 <TextView
+                    android:id="@+id/group_name"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginLeft="68dp"
-                    android:layout_marginTop="15dp"
                     android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center_vertical"
                     android:text="Имя группы тут"
                     android:textColor="@color/black"
-                    android:textSize="13dp"
-                    android:gravity="center_vertical"/>
+                    android:textSize="13dp" />
                 <FrameLayout
                     android:layout_width="12dp"
                     android:layout_height="30dp"

@@ -91,6 +91,7 @@ public class FileRepository implements IFileRepository {
                 },
                         throwable -> {Log.e("GetFile",throwable.toString());},
                         ()->{
+                    
 
                     fileRepositoryView.getFile(result);
                         });
