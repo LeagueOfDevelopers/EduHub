@@ -69,7 +69,10 @@ class ChatRoom extends React.Component {
               this.props.chat.map(msg =>
                 <Message key={msg.id} message={msg}/>
             )
-              : null
+              :
+              [].map((msg, index) =>
+                <Message key={index}/>
+              )
           }
         </ul>
         <form className='input' onSubmit={event => this.submitMessage(event)}>

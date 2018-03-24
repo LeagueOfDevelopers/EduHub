@@ -60,16 +60,7 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
       <Col span={20} offset={2} style={{marginTop: 40}}>
         <Row type='flex' justify='space-between' align='middle'>
           <Col xs={{span: 24}} sm={{span: 12}} style={{fontSize: 24}}>{this.state.title}</Col>
-          <Col xs={{span: 24}} sm={{span: 12}} className='xs-text-align-left text-align-right' style={{fontSize: 14}}>
-            <Dropdown overlay={this.sortMenu} trigger={['click']} placement='bottomRight'>
-              <span style={{cursor: 'pointer'}}>
-                {this.state.sortTitle} {this.state.arrow === 'down' ?
-                (<Icon type="down"/>)
-                :
-                (<Icon type="up" style={{fontSize: 10}}/>)}
-              </span>
-            </Dropdown>
-          </Col>
+
         </Row>
         <Row className='cards-holder cards-holder-center font-size-20' style={{marginTop: 60, marginBottom: 160}}>
           {this.props.match.params.groupsTitle === 'unassembledGroups' ?

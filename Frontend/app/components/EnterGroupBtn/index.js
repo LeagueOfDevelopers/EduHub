@@ -55,12 +55,18 @@ class EnterGroupBtn extends React.Component { // eslint-disable-line react/prefe
                       onClick={() => {
                         this.setState({roleVisible: false});
                         this.props.enterGroup(this.props.groupId, 'Member');
+                        if (!this.props.userData) {
+                          this.props.onSignInClick()
+                        }
                       }}
                       style={{display: 'block', width: '100%', marginBottom: 1}}>Участник</Button>
                     <Button
                       onClick={() => {
                         this.setState({roleVisible: false});
                         this.props.enterGroup(this.props.groupId, 'Teacher');
+                        if (!this.props.userData) {
+                          this.props.onSignInClick()
+                        }
                       }}
                       style={{display: 'block', width: '100%'}}>Учитель</Button>
                   </Menu.Item>
@@ -69,14 +75,11 @@ class EnterGroupBtn extends React.Component { // eslint-disable-line react/prefe
               onVisibleChange={this.handleVisibleChange}
               visible={this.state.roleVisible}
               trigger={['click']}
+              placement="bottomRight"
+              style={{width: 146}}
             >
               <Row className='lg-center-container-item'>
-                <Button type='primary' className='group-btn' onClick={() => {
-                  if (!this.props.userData) {
-                    this.onSignInClick()
-                  }
-                }}
-                >
+                <Button type='primary' className='group-btn'>
                   Вступить в группу
                 </Button>
               </Row>

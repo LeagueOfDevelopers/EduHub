@@ -6,15 +6,21 @@
 
 import { fromJS } from 'immutable';
 import {
-  DEFAULT_ACTION,
+  GET_FILTERED_USERS_START,
+  GET_FILTERED_USERS_SUCCESS,
+  GET_FILTERED_USERS_FAILED
 } from './constants';
 
-const initialState = fromJS({});
+const initialState = fromJS({
+  users: [],
+  filters: {}
+});
 
 function usersPageReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
+    case GET_FILTERED_USERS_START:
+      return state
+        .set();
     default:
       return state;
   }

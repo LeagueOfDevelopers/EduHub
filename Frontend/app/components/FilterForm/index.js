@@ -14,7 +14,7 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
 
     this.state = {
       username: '',
-      role: 'any',
+      isTeacher: false,
       skills: [],
       teacherExperience: 'any',
       studentExperience: 'any',
@@ -36,7 +36,7 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
   };
 
   onHandleRoleChange = (e) => {
-    this.setState({role: e.target.value})
+    this.setState({isTeacher: e.target.checked})
   };
 
   onHandleSkillsChange = (e) => {
@@ -73,11 +73,7 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
           </Row>
           <Divider/>
           <Row>
-            <Radio.Group value={this.state.role} onChange={this.onHandleRoleChange}>
-              <Radio value='student' style={{display: 'block', lineHeight: '30px'}}>Ученик</Radio>
-              <Radio value='teacher' style={{display: 'block', lineHeight: '30px'}}>Преподаватель</Radio>
-              <Radio value='any' style={{display: 'block', lineHeight: '30px'}}>Не важно</Radio>
-            </Radio.Group>
+            <Checkbox checked={this.state.isTeacher} onChange={this.onHandleRoleChange}>Преподаватель</Checkbox>
           </Row>
           <Divider/>
           <Row>
@@ -93,21 +89,21 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Опыт преподавания</div>
             <Radio.Group value={this.state.teacherExperience} onChange={this.onHandleTeacherExperienceChange}>
-              <Radio value='more_1' style={{display: 'block', lineHeight: '30px'}}>Минимум одно занятие</Radio>
-              <Radio value='more_5' style={{display: 'block', lineHeight: '30px'}}>Больше пяти занятий</Radio>
-              <Radio value='more_10' style={{display: 'block', lineHeight: '30px'}}>Больше десяти занятий</Radio>
-              <Radio value='any' style={{display: 'block', lineHeight: '30px'}}>Не важно</Radio>
+              <Radio value='OneClass' style={{display: 'block', lineHeight: '30px'}}>Минимум одно занятие</Radio>
+              <Radio value='FiveClasses' style={{display: 'block', lineHeight: '30px'}}>Больше пяти занятий</Radio>
+              <Radio value='TenClasses' style={{display: 'block', lineHeight: '30px'}}>Больше десяти занятий</Radio>
+              <Radio value='Default' style={{display: 'block', lineHeight: '30px'}}>Не важно</Radio>
             </Radio.Group>
           </Row>
           <Divider/>
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Завершено курсов</div>
             <Radio.Group value={this.state.studentExperience} onChange={this.onHandleStudentExperienceChange}>
-              <Radio value='none' style={{display: 'block', lineHeight: '30px'}}>Не проходил</Radio>
-              <Radio value='more_1' style={{display: 'block', lineHeight: '30px'}}>Минимум один курс</Radio>
-              <Radio value='more_5' style={{display: 'block', lineHeight: '30px'}}>Больше пяти курсов</Radio>
-              <Radio value='more_15' style={{display: 'block', lineHeight: '30px'}}>Больше пятнадцати курсов</Radio>
-              <Radio value='any' style={{display: 'block', lineHeight: '30px'}}>Не важно</Radio>
+              {/*<Radio value='none' style={{display: 'block', lineHeight: '30px'}}>Не проходил</Radio>*/}
+              <Radio value='OneClass' style={{display: 'block', lineHeight: '30px'}}>Минимум один курс</Radio>
+              <Radio value='FiveClasses' style={{display: 'block', lineHeight: '30px'}}>Больше пяти курсов</Radio>
+              <Radio value='FifteenClasses' style={{display: 'block', lineHeight: '30px'}}>Больше пятнадцати курсов</Radio>
+              <Radio value='Default' style={{display: 'block', lineHeight: '30px'}}>Не важно</Radio>
             </Radio.Group>
           </Row>
           <Divider/>
