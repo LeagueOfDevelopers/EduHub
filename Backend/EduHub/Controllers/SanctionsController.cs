@@ -45,15 +45,16 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     Anulls sanctions for user
+        ///     Anulls sanction
         /// </summary>
         [Authorize]
         [HttpDelete]
-        [Route("{userId}")]
+        [Route("{sanctionId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult AnullSanction([FromRoute] int userId)
+        public IActionResult AnullSanction([FromRoute] int sanctionId)
         {
+            _sanctionFacade.CancelSanction(sanctionId);
             return Ok();
         }
 
