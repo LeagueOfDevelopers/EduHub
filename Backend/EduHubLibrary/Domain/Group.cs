@@ -163,7 +163,7 @@ namespace EduHubLibrary.Domain
             var currentMember = GetMember(userId);
             currentMember.CurriculumStatus = MemberCurriculumStatus.Accepted;
             if (Members.All(m =>
-                m.CurriculumStatus == MemberCurriculumStatus.Accepted))
+                m.CurriculumStatus == MemberCurriculumStatus.Accepted) && Members.Count == GroupInfo.Size)
                 Status = CourseStatus.Started;
         }
 
