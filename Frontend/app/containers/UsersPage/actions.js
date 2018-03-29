@@ -10,21 +10,21 @@ import {
   GET_FILTERED_USERS_FAILED
 } from './constants';
 
-export function getFiltered(filters) {
+export function getFilteredUsers(filters) {
   return {
     type: GET_FILTERED_USERS_START,
     filters
   };
 }
 
-export function getFilteredSuccess(users) {
+export function getFilteredUsersSuccess(users) {
   return {
     type: GET_FILTERED_USERS_SUCCESS,
     users
   };
 }
 
-export function getFilteredFailed(error) {
+export function getFilteredUsersFailed(error) {
   return {
     type: GET_FILTERED_USERS_FAILED,
     error

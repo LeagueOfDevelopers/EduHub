@@ -46,7 +46,7 @@ export default class App extends React.Component{
             <Route path='/profile/:id/notifications' component={NotificationPage}/>
             <Route path='/registration_success' component={RegistrationSuccessPage}/>
             <Route path='/registration_accepted/:key' component={RegistrationAcceptedPage}/>
-            <Route path='/users' render={() => <UsersPage name={this.props}/> }/>
+            <Route path='/users' component={UsersPage}/>
             <Route path='' component={NotFoundPage} />
           </Switch>
         </ScrollFix>

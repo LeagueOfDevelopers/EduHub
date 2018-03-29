@@ -9,10 +9,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectUsersPage from './selectors';
+import { makeSelectUsers } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import {Row, Col, Card} from 'antd';
@@ -42,7 +41,7 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
   }
 
   componentDidMount() {
-    // console.log(this.props.name)
+
   }
 
   showFilterForm = () => {
@@ -68,7 +67,7 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
           <Row style={{marginBottom: 28}}><h3 style={{marginBottom: 0}}>Пользователи</h3></Row>
           {localStorage.getItem('without_server') !== 'true' ?
             (<div>
-                {this.props.users && this.props.users.length !== 0 ?
+                {this.props.users && this.props.users.length && this.props.users.length !== 0 ?
                   this.props.users.map(item =>
                     <UserCard key={item.id} {...item}/>
                   )
@@ -92,16 +91,16 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
 }
 
 UsersPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+
 };
 
 const mapStateToProps = createStructuredSelector({
-  userspage: makeSelectUsersPage(),
+  users: makeSelectUsers(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+
   };
 }
 

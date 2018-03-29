@@ -6,9 +6,14 @@
 
 import React from 'react';
 import {Card, Row, Col, Button, message, Avatar} from 'antd';
+import {Link} from "react-router-dom";
 
 
 class UserCard extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props)
+  }
+
   render() {
     return (
       <Card
@@ -26,11 +31,11 @@ class UserCard extends React.Component { // eslint-disable-line react/prefer-sta
             </Avatar>
             <div style={{display: 'inline', fontSize: 16}}>
               <div style={{color: '#000'}}>{this.props.name}</div>
-              <div className='word-break'>{this.props.mail}</div>
+              <div className='word-break'>{this.props.email}</div>
             </div>
           </Col>
           <Col className='md-center-container user-card-profile-btn' xs={{span: 24}} md={{span: 8}} lg={{span: 24}} xl={{span: 8}} style={{textAlign: 'right'}}>
-            <Button>Перейти к профилю</Button>
+            <Link to={`/profile/${this.props.id}`}><Button>Перейти к профилю</Button></Link>
           </Col>
         </Row>
       </Card>

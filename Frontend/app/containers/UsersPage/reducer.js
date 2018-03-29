@@ -13,14 +13,25 @@ import {
 
 const initialState = fromJS({
   users: [],
-  filters: {}
+  filters: {},
+  pending: false,
+  error: false
 });
 
 function usersPageReducer(state = initialState, action) {
   switch (action.type) {
     case GET_FILTERED_USERS_START:
       return state
-        .set();
+        .set('filters', action.filters)
+        .set('pending', true);
+    case GET_FILTERED_USERS_SUCCESS:
+      return state
+        .set('users', action.users)
+        .set('pending', false);
+    case GET_FILTERED_USERS_FAILED:
+      return state
+        .set('error', action.error)
+        .set('pending', false);
     default:
       return state;
   }

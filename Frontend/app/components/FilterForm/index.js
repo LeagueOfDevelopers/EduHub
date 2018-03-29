@@ -5,6 +5,11 @@
 */
 
 import React from 'react';
+
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
+import { getFilteredUsers } from "../../containers/UsersPage/actions";
 import {Row, Col, Card, Input, Select, Radio, Checkbox, Divider} from 'antd';
 
 
@@ -13,13 +18,13 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
     super(props);
 
     this.state = {
-      username: '',
-      isTeacher: false,
-      skills: [],
-      teacherExperience: 'any',
-      studentExperience: 'any',
-      teacherRateStart: 'none',
-      teacherRateEnd: 'none'
+      name: '',
+      wantToTeach: false,
+      tags: [],
+      teacherExperience: 'Default',
+      userExperience: 'Default',
+      // teacherRateStart: 'none',
+      // teacherRateEnd: 'none'
     };
 
     this.onHandleNameChange = this.onHandleNameChange.bind(this);
@@ -32,23 +37,28 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
   }
 
   onHandleNameChange = (e) => {
-    this.setState({username: e.target.value})
+    this.setState({name: e.target.value});
+    this.props.getFilteredUsers(this.state);
   };
 
   onHandleRoleChange = (e) => {
-    this.setState({isTeacher: e.target.checked})
+    this.setState({wantToTeach: e.target.checked});
+    this.props.getFilteredUsers(this.state);
   };
 
   onHandleSkillsChange = (e) => {
-    this.setState({skills: e})
+    this.setState({tags: e});
+    this.props.getFilteredUsers(this.state);
   };
 
   onHandleTeacherExperienceChange = (e) => {
-    this.setState({teacherExperience: e.target.value})
+    this.setState({teacherExperience: e.target.value});
+    this.props.getFilteredUsers(this.state);
   };
 
   onHandleStudentExperienceChange = (e) => {
-    this.setState({studentExperience: e.target.value})
+    this.setState({userExperience: e.target.value});
+    this.props.getFilteredUsers(this.state);
   };
 
   onHandleTeacherRateStartChange = (e) => {
@@ -69,16 +79,16 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
         >
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Имя</div>
-            <Input value={this.state.username} onChange={this.onHandleNameChange}/>
+            <Input value={this.state.name} onChange={this.onHandleNameChange}/>
           </Row>
           <Divider/>
           <Row>
-            <Checkbox checked={this.state.isTeacher} onChange={this.onHandleRoleChange}>Преподаватель</Checkbox>
+            <Checkbox checked={this.state.wantToTeach} onChange={this.onHandleRoleChange}>Преподаватель</Checkbox>
           </Row>
           <Divider/>
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Навыки</div>
-            <Select mode="tags" value={this.state.skills} onChange={this.onHandleSkillsChange} defaultActiveFirstOption={false} style={{width: '100%'}}>
+            <Select mode="tags" value={this.state.tags} onChange={this.onHandleSkillsChange} defaultActiveFirstOption={false} style={{width: '100%'}}>
               <Select.Option value="html">html</Select.Option>
               <Select.Option value="css">css</Select.Option>
               <Select.Option value="js">js</Select.Option>
@@ -98,7 +108,7 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
           <Divider/>
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Завершено курсов</div>
-            <Radio.Group value={this.state.studentExperience} onChange={this.onHandleStudentExperienceChange}>
+            <Radio.Group value={this.state.userExperience} onChange={this.onHandleStudentExperienceChange}>
               {/*<Radio value='none' style={{display: 'block', lineHeight: '30px'}}>Не проходил</Radio>*/}
               <Radio value='OneClass' style={{display: 'block', lineHeight: '30px'}}>Минимум один курс</Radio>
               <Radio value='FiveClasses' style={{display: 'block', lineHeight: '30px'}}>Больше пяти курсов</Radio>
@@ -106,27 +116,27 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
               <Radio value='Default' style={{display: 'block', lineHeight: '30px'}}>Не важно</Radio>
             </Radio.Group>
           </Row>
-          <Divider/>
-          <Row>
-            <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Рейтинг преподавателя</div>
-            <Select value={this.state.teacherRateStart} onChange={this.onHandleTeacherRateStartChange} style={{ width: 80 }}>
-              <Option value="none">От</Option>
-              <Option value="1">От 1</Option>
-              <Option value="2">От 2</Option>
-              <Option value="3">От 3</Option>
-              <Option value="4">От 4</Option>
-              <Option value="5">От 5</Option>
-            </Select>
-            <span style={{margin: '0 8px', fontSize: 14}}>–</span>
-            <Select value={this.state.teacherRateEnd} onChange={this.onHandleTeacherRateEndChange} style={{ width: 80 }}>
-              <Option value="none">До</Option>
-              <Option value="1">До 1</Option>
-              <Option value="2">До 2</Option>
-              <Option value="3">До 3</Option>
-              <Option value="4">До 4</Option>
-              <Option value="5">До 5</Option>
-            </Select>
-          </Row>
+          {/*<Divider/>*/}
+          {/*<Row>*/}
+            {/*<div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Рейтинг преподавателя</div>*/}
+            {/*<Select value={this.state.teacherRateStart} onChange={this.onHandleTeacherRateStartChange} style={{ width: 80 }}>*/}
+              {/*<Option value="none">От</Option>*/}
+              {/*<Option value="1">От 1</Option>*/}
+              {/*<Option value="2">От 2</Option>*/}
+              {/*<Option value="3">От 3</Option>*/}
+              {/*<Option value="4">От 4</Option>*/}
+              {/*<Option value="5">От 5</Option>*/}
+            {/*</Select>*/}
+            {/*<span style={{margin: '0 8px', fontSize: 14}}>–</span>*/}
+            {/*<Select value={this.state.teacherRateEnd} onChange={this.onHandleTeacherRateEndChange} style={{ width: 80 }}>*/}
+              {/*<Option value="none">До</Option>*/}
+              {/*<Option value="1">До 1</Option>*/}
+              {/*<Option value="2">До 2</Option>*/}
+              {/*<Option value="3">До 3</Option>*/}
+              {/*<Option value="4">До 4</Option>*/}
+              {/*<Option value="5">До 5</Option>*/}
+            {/*</Select>*/}
+          {/*</Row>*/}
         </Card>
       </Col>
     );
@@ -137,4 +147,14 @@ FilterForm.propTypes = {
 
 };
 
-export default FilterForm;
+const mapStateToProps = createStructuredSelector({
+
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getFilteredUsers: (filters) => dispatch(getFilteredUsers(filters))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterForm);

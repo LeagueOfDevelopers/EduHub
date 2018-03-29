@@ -210,10 +210,6 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
 
   changeProfileData = () => {
     this.setState({contactsInputs: this.state.contactsInputs.filter(item => item !== '')});
-    if(this.state.nameInput !== this.state.userProfile.name) {
-      this.props.editUsername(this.state.nameInput);
-      localStorage.setItem('name', `${this.state.nameInput}`);
-    }
     if(this.state.aboutInput !== this.state.userProfile.aboutUser) {
       this.props.editAboutUser(this.state.aboutInput);
     }
@@ -227,6 +223,10 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
         item !== this.state.userProfile.contacts[i]
       ).length !== 0) {
       setTimeout(() => this.props.editContacts(this.state.contactsInputs), 0);
+    }
+    if(this.state.nameInput !== this.state.userProfile.name) {
+      this.props.editUsername(this.state.nameInput);
+      localStorage.setItem('name', `${this.state.nameInput}`);
     }
     this.setState({isEditing: false});
   };

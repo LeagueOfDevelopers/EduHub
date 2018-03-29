@@ -133,7 +133,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                     Пользователи
                   </Col>
                   <Col span={12} style={{textAlign: 'right'}}>
-                    <Link to='#'>Показать больше</Link>
+                    <Link to='/users'>Показать больше</Link>
                   </Col>
                 </div>) : (<div>Пользователи</div>)
             }>

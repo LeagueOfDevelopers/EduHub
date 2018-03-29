@@ -14,12 +14,12 @@ const selectUsersPageDomain = (state) => state.get('usersPage');
  * Default selector used by UsersPage
  */
 
-const makeSelectUsersPage = () => createSelector(
+const makeSelectUsers = () => createSelector(
   selectUsersPageDomain,
-  (substate) => substate.toJS()
+  (usersState) => usersState.get('users')
 );
 
-export default makeSelectUsersPage;
+
 export {
-  selectUsersPageDomain,
+  makeSelectUsers,
 };
