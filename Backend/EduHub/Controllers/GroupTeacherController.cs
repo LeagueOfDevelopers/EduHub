@@ -37,7 +37,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     join group as teacher
+        ///     Join group as teacher
         /// </summary>
         [Authorize]
         [HttpPost]
