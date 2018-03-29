@@ -262,7 +262,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     unform group (for admins only)
+        ///     Unform group (for admins only)
         /// </summary>
         [Authorize(Policy = "AdminOnly")]
         [HttpDelete]
