@@ -9,6 +9,8 @@
     <string name="title_activity_authorized_user">AuthorizedUserActivity</string>
     <string name="title_activity_group">GroupActivity</string>
 
+    <string name="WouldYouLikeRegistr"><u>Еще нет аккаунта?</u></string>
+
     <string name="exit">Выход</string>
     <string name="signInToGroup">Вступить в группу?</string>
     <string name="areShureSignInToGroup">Вы уверены,что хотите принять приглашение?</string>

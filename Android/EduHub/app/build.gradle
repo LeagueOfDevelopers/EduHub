@@ -46,6 +46,7 @@ android {
 }
 
 dependencies {
+    compile 'com.github.zcweng:switch-button:0.0.3@aar'
     compile 'com.squareup.picasso:picasso:2.71828'
     compile 'com.xiaofeng.android:flowlayoutmanager:1.2.3.2'
     compile 'com.github.mabbas007:TagsEditText:1.0.5'

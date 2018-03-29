@@ -33,6 +33,8 @@ import com.example.user.eduhub.Presenters.RegistrPresenter;
 import com.example.user.eduhub.R;
 import com.example.user.eduhub.Retrofit.EduHubApi;
 import com.example.user.eduhub.Retrofit.RetrofitBuilder;
+import com.suke.widget.SwitchButton;
+
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -54,6 +56,7 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
     FakesButton fakesButton=new FakesButton();
     FakeRegistrPresenter fakeRegistrPresenter=new FakeRegistrPresenter(this);
     FakeLoginPresenter fakeLoginPresenter=new FakeLoginPresenter(this);
+    SwitchButton isTeacher;
 
 
     public void onAttach(Activity activity) {
@@ -71,41 +74,26 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
         email=v.findViewById(R.id.registr_email);
         password=v.findViewById(R.id.registr_password);
         int closePassword=password.getInputType();
+        isTeacher=v.findViewById(R.id.teacher_or_not);
         name=v.findViewById(R.id.registr_login);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Регистрация");
-        final CheckBox checkBox=v.findViewById(R.id.teacher_or_not);
+
 
         Button submit=v.findViewById(R.id.registr_btn);
-        checkBox2=v.findViewById(R.id.checkbox);
-        checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                } else {
-                    password.setInputType(closePassword);
-                }
-            }
-        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                boolean isTeacher;
+                boolean isTeacherFlag;
                 if(name.getText().length()>0){
                     if(email.getText().length()>=6){
                         if(password.getText().length()>=6){
-                if(checkBox.isChecked()){
-                    isTeacher=true;
-                } else{
-                    isTeacher=false;
-                }
+               isTeacherFlag=isTeacher.isChecked();
                 if(!fakesButton.getCheckButton()){
-                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher);}
+                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag);}
                 else{
-                    fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacher);
+                    fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag);
                 }
                         }else{MakeToast("Пароль слишком короткий");}
                     }else{

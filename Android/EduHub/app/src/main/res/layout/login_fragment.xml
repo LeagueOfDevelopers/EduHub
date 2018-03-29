@@ -5,48 +5,76 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/metalic">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="270dp"
+            android:layout_height="45dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="85dp"
+            android:text="Добро Пожаловать!"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/edit_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_width="270dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="41dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/edit_text_style"
             android:ems="10"
             android:hint="Email"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:paddingLeft="7dp"
+
+            android:paddingRight="7dp"
+            android:textAlignment="center" />
 
         <EditText
             android:id="@+id/edit_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
+            android:layout_width="270dp"
+            android:layout_height="45dp"
+            android:layout_alignLeft="@+id/edit_email"
+            android:layout_alignStart="@+id/edit_email"
             android:layout_below="@+id/edit_email"
-            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_text_style"
             android:ems="10"
             android:hint="Пароль"
-            android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/sign_up"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:text="Зарегистрироваться" />
+            android:inputType="textPassword"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
+            android:textAlignment="center" />
 
         <Button
             android:id="@+id/sign_in"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/sign_up"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_width="270dp"
+            android:layout_height="45dp"
+            android:layout_alignLeft="@+id/edit_password"
+            android:layout_alignStart="@+id/edit_password"
+            android:layout_below="@+id/edit_password"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ellipse_background"
+            style="@style/MyCustomTabLayout"
             android:text="Войти" />
+        <TextView
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/sign_up"
+            android:layout_below="@+id/sign_in"
+            android:text="@string/WouldYouLikeRegistr"
+            android:layout_marginTop="20dp"
+            android:textSize="18dp"
+
+            android:layout_alignLeft="@+id/edit_password"
+            android:layout_alignStart="@+id/edit_password"
+            android:textColor="#FFFFFF"
+            android:textAlignment="center"/>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

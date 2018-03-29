@@ -35,6 +35,10 @@ public class RegistrPresenter implements IRegistrPresenter {
                 registrationModel.setName(name);
                 registrationModel.setPassword(password);
                 registrationModel.setIsTeacher(isTeacher);
+                Log.d("email",email);
+            Log.d("name",name);
+            Log.d("password",password);
+            Log.d("isTeacher",isTeacher.toString());
                 EduHubApi eduHubApi= RetrofitBuilder.getApi();
                 disposable=eduHubApi.userRegistrationWithoutInviteCode(registrationModel)
                         .subscribeOn(Schedulers.io())

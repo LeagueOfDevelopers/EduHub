@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.eduhub.AuthorizedUserActivity;
@@ -62,7 +63,7 @@ public class LoginFragment extends Fragment implements ILoginView {
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Вход");
         Button signIn = v.findViewById(R.id.sign_in);
-        Button signUp = v.findViewById(R.id.sign_up);
+        TextView signUp = v.findViewById(R.id.sign_up);
         signUp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 RegistrationFragment registrationFragment = new RegistrationFragment();
