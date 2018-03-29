@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using EduHub.Models.GroupControllerModels;
 
 namespace EduHub.Controllers
 {
