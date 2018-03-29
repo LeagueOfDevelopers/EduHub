@@ -234,6 +234,7 @@ namespace EduHubTests
             Assert.AreEqual(1, testUser.Notifies.Count);
         }
 
+        /*
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void AddInvalidNotifyToUser_GetException()
@@ -244,6 +245,7 @@ namespace EduHubTests
             //Act
             testUser.AddNotify(" ");
         }
+        */
 
         [TestMethod]
         public void ChangeUserPassword_GetChangedPassword()

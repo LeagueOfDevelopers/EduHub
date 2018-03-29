@@ -6,6 +6,7 @@ using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades.Views;
 using EnsureThat;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubLibrary.Facades
 {
@@ -150,13 +151,6 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetUserById(userId).Notifies;
         }
 
-        public void AddNotify(int userId, string notify)
-        {
-            var user = _userRepository.GetUserById(userId);
-            user.AddNotify(notify);
-            _userRepository.Update(user);
-        }
-
         public IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId)
         {
             var currentGroup = _groupRepository.GetGroupById(groupId);
@@ -175,6 +169,11 @@ namespace EduHubLibrary.Facades
                     t.IsActive
                 )));
             return result;
+        }
+
+        public void Report(int senderId, int suspectedId, string brokenRule)
+        {
+            //TODO: use RabbitMQ
         }
     }
 }

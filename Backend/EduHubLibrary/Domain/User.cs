@@ -5,6 +5,7 @@ using EduHubLibrary.Common;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
+using EduHubLibrary.Domain.NotificationService;
 
 [assembly: InternalsVisibleTo("EventBusTests")]
 
@@ -121,7 +122,7 @@ namespace EduHubLibrary.Domain
 
         internal void AddNotify(string notify)
         {
-            Ensure.String.IsNotNullOrWhiteSpace(notify);
+            Ensure.Any.IsNotNull(notify);
             Notifies.Add(notify);
         }
 

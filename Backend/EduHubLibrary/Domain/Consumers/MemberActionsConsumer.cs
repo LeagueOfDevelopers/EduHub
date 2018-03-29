@@ -6,19 +6,19 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Consumers
 {
-    public class GroupEventsConsumer : IEventConsumer<NewCreatorEvent>, IEventConsumer<GroupIsFormedEvent>
+    public class MemberActionsConsumer : IEventConsumer<NewMemberEvent>, IEventConsumer<MemberLeftEvent>
     {
-        public GroupEventsConsumer(INotificationsDistributor distributor)
+        public MemberActionsConsumer(INotificationsDistributor distributor)
         {
             _distributor = distributor;
         }
 
-        public void Consume(NewCreatorEvent @event)
+        public void Consume(NewMemberEvent @event)
         {
             _distributor.NotifyGroup(@event.GroupId, @event);
         }
 
-        public void Consume(GroupIsFormedEvent @event)
+        public void Consume(MemberLeftEvent @event)
         {
             _distributor.NotifyGroup(@event.GroupId, @event);
         }

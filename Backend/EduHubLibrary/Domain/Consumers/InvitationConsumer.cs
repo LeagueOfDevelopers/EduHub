@@ -1,21 +1,34 @@
 ﻿using EduHubLibrary.Domain.Events;
 using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Facades;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace EduHubLibrary.Domain.Consumers
 {
-    public class InvitationConsumer : IEventConsumer<InvitationEvent>
+    public class InvitationConsumer : IEventConsumer<InvitationAcceptedEvent>, IEventConsumer<InvitationDeclinedEvent>,
+        IEventConsumer<InvitationReceivedEvent>
     {
-        private readonly IGroupFacade _groupFacade;
-
-        public InvitationConsumer(IGroupFacade groupFacade)
+        public InvitationConsumer(INotificationsDistributor distributor)
         {
-            _groupFacade = groupFacade;
+            _distributor = distributor;
         }
 
-        public void Consume(InvitationEvent @event)
+        public void Consume(InvitationAcceptedEvent @event)
         {
-            _groupFacade.AddInvitation(@event.Invitation.GroupId, @event.Invitation);
+            _distributor.NotifyPerson(@event.SenderId, @event);
         }
+
+        public void Consume(InvitationDeclinedEvent @event)
+        {
+            _distributor.NotifyPerson(@event.SenderId, @event);
+        }
+
+        public void Consume(InvitationReceivedEvent @event)
+        {
+            _distributor.NotifyPerson(@event.InvitedId, @event);
+        }
+
+        private readonly INotificationsDistributor _distributor;
     }
 }

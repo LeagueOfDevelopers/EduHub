@@ -4,6 +4,7 @@ using EduHubLibrary.Common;
 using EduHubLibrary.Data.UserDtos;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubLibrary.Extensions
 {

@@ -2,6 +2,7 @@
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades.Views;
+using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubLibrary.Facades
 {
@@ -21,6 +22,6 @@ namespace EduHubLibrary.Facades
         IEnumerable<User> FindByName(string name);
         IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId);
         IEnumerable<string> GetNotifies(int userId);
-        void AddNotify(int userId, string notify);
+        void Report(int senderId, int suspectedId, string brokenRule);
     }
 }
