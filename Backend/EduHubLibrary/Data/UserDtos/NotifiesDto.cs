@@ -2,9 +2,6 @@
 {
     public class NotifiesDto
     {
-        public int Id { get; set; }
-        public string Notifie { get; set; }
-
         public NotifiesDto(int id, string notifie)
         {
             Id = id;
@@ -14,5 +11,8 @@
         public NotifiesDto()
         {
         }
+
+        public int Id { get; set; }
+        public string Notifie { get; set; }
     }
 }

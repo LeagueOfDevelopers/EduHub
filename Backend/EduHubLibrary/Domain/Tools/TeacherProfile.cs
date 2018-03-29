@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EnsureThat;
 
 namespace EduHubLibrary.Domain.Tools

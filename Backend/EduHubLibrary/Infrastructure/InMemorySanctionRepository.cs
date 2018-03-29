@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Interators;
-using System.Linq;
-using EnsureThat;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Interators;
+using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
 {
     public class InMemorySanctionRepository : ISanctionRepository
     {
+        private readonly List<Sanction> _listOfSanctions;
+
         public InMemorySanctionRepository()
         {
             _listOfSanctions = new List<Sanction>();
@@ -53,16 +53,14 @@ namespace EduHubLibrary.Infrastructure
             if (sanction == null)
                 throw new ArgumentNullException();
             var currentSanction = _listOfSanctions.Find(current => current.Id == sanction.Id) ??
-                             throw new SanctionNotFoundException(sanction.Id);
+                                  throw new SanctionNotFoundException(sanction.Id);
             currentSanction = sanction;
         }
 
         private void Update()
         {
-            _listOfSanctions.FindAll(s => s.IsTemporary == true && s.ExpirationDate < DateTimeOffset.Now)
+            _listOfSanctions.FindAll(s => s.IsTemporary && s.ExpirationDate < DateTimeOffset.Now)
                 .ForEach(s => s.Cancel());
         }
-
-        private readonly List<Sanction> _listOfSanctions;
     }
 }

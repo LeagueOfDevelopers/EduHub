@@ -19,7 +19,7 @@ namespace EduHubLibrary.Infrastructure
             _connectionString = connectionString;
         }
 
-        public void Add(Group @group)
+        public void Add(Group group)
         {
             using (var _context = new EduhubContext(_connectionString))
             {
@@ -31,7 +31,7 @@ namespace EduHubLibrary.Infrastructure
             }
         }
 
-        public void Delete(Group @group)
+        public void Delete(Group group)
         {
             using (var _context = new EduhubContext(_connectionString))
             {
@@ -43,7 +43,7 @@ namespace EduHubLibrary.Infrastructure
             }
         }
 
-        public void Update(Group @group)
+        public void Update(Group group)
         {
             using (var _context = new EduhubContext(_connectionString))
             {

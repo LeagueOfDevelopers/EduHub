@@ -9,6 +9,6 @@ namespace EduHubLibrary.Extensions
         {
             var result = new Key(keyDto.UserEmail, keyDto.Appointment, keyDto.Used, keyDto.Value);
             return result;
-        } 
+        }
     }
 }

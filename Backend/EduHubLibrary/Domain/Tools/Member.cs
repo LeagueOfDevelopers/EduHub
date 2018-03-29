@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EduHubLibrary.Domain.Tools
+﻿namespace EduHubLibrary.Domain.Tools
 {
     public class Member
     {
@@ -12,7 +10,7 @@ namespace EduHubLibrary.Domain.Tools
             CurriculumStatus = MemberCurriculumStatus.InProgress;
         }
 
-        internal Member(int userId, MemberRole memberRole, 
+        internal Member(int userId, MemberRole memberRole,
             bool paid, MemberCurriculumStatus curriculumStatus)
         {
             UserId = userId;

@@ -1,17 +1,9 @@
-﻿using System;
-using EduHubLibrary.Domain;
+﻿using EduHubLibrary.Domain;
 
 namespace EduHubLibrary.Data.UserDtos
 {
     public class InvitationDto
     {
-        public int Id { get; set; }
-        public InvitationStatus Status { get; set; }
-        public int GroupId { get; set; }
-        public int FromUser { get; set; }
-        public int ToUser { get; set; }
-        public MemberRole SuggestedRole { get; set; }
-
         public InvitationDto(int id, InvitationStatus status,
             int groupId, int fromUser, int toUser, MemberRole suggestedRole)
         {
@@ -26,5 +18,12 @@ namespace EduHubLibrary.Data.UserDtos
         public InvitationDto()
         {
         }
+
+        public int Id { get; set; }
+        public InvitationStatus Status { get; set; }
+        public int GroupId { get; set; }
+        public int FromUser { get; set; }
+        public int ToUser { get; set; }
+        public MemberRole SuggestedRole { get; set; }
     }
 }

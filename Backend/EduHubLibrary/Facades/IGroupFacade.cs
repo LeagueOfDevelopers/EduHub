@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades.Views.GroupViews;
@@ -10,6 +9,7 @@ namespace EduHubLibrary.Facades
     {
         int CreateGroup(int userId, string title, List<string> tags, string description,
             int size, double totalValue, bool isPrivate, GroupType groupType);
+
         void DeleteGroup(int groupId);
 
         void ApproveTeacher(int teacherId, int groupId);
@@ -19,8 +19,10 @@ namespace EduHubLibrary.Facades
         IEnumerable<Group> GetGroups();
         FullGroupView GetGroup(int id);
         IEnumerable<Group> FindByTags(IEnumerable<string> tags);
+
         IEnumerable<Group> FindGroup(string title, List<string> tags, GroupType type, double minPrice,
             double maxPrice, bool formed);
+
         IEnumerable<Member> GetGroupMembers(int groupId);
         void DeleteMember(int groupId, int requestedPerson, int requestingPerson);
         void AddMember(int groupId, int requestedPerson);

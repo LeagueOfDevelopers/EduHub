@@ -54,18 +54,21 @@ namespace EduHub
             if (bool.Parse(Configuration.GetValue<string>("UseDB")))
             {
                 var dbContext = Configuration.GetValue<string>("MysqlConnectionString");
-                if (bool.Parse(Configuration.GetValue<string>("DeleteDB"))) { 
-                    using (var context = new EduhubContext(dbContext))
+                using (var context = new EduhubContext(dbContext))
+                {
+                    if (bool.Parse(Configuration.GetValue<string>("DeleteDB")))
                     {
                         context.Database.EnsureDeleted();
                     }
+                    context.Database.EnsureCreated();
+                    context.Database.Migrate();
                 }
                 fileRepository = new InMysqlFileRepository(dbContext);
                 groupRepository = new InMysqlGroupRepository(dbContext);
                 keysRepository = new InMysqlKeyRepository(dbContext);
                 tagRepository = new InMysqlTagRepository(dbContext);
                 userRepository = new InMysqlUserRepository(dbContext);
-                sanctionRepository = new InMemorySanctionRepository();
+                sanctionRepository = new InMysqlSanctionRepository(dbContext);
             }
             else
             {

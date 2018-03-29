@@ -33,7 +33,7 @@ namespace EduHubLibrary.Domain
         }*/
 
         //constr for db
-        internal User(string name, Credentials credentials, UserType type, 
+        internal User(string name, Credentials credentials, UserType type,
             List<Invitation> invitationList, TeacherProfile teacherProfile, UserProfile userProfile, bool isActive,
             List<string> notifiesList, int id = 0)
         {

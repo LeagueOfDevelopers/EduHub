@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
@@ -7,18 +6,17 @@ using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades.Views;
 using EnsureThat;
-using EduHubLibrary.Mailing;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace EduHubLibrary.Facades
 {
     public class UserFacade : IUserFacade
     {
         private readonly IGroupRepository _groupRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IKeysRepository _keysRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository, IKeysRepository keysRepository)
+        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository,
+            IKeysRepository keysRepository)
         {
             _userRepository = userRepository;
             _groupRepository = groupRepository;
@@ -69,6 +67,7 @@ namespace EduHubLibrary.Facades
             {
                 currentUser.DeclineInvitation(invitationId);
             }
+
             _userRepository.Update(currentUser);
         }
 
@@ -122,19 +121,19 @@ namespace EduHubLibrary.Facades
             allUsers = allUsers.Where(u => u.UserProfile.Name.StartsWith(name))
                 .OrderBy(u => u.UserProfile.Name.Length).ToList();
 
-            if (isTeacher)
-            {
-                allUsers = allUsers.FindAll(u => u.UserProfile.IsTeacher);
-            }
+            if (isTeacher) allUsers = allUsers.FindAll(u => u.UserProfile.IsTeacher);
 
             if (requiredTags != null && requiredTags.Any())
-            { 
+            {
                 allUsers = allUsers.FindAll(u => u.TeacherProfile.Skills.Intersect(requiredTags).Any());
-                allUsers = allUsers.OrderByDescending(u => u.TeacherProfile.Skills.Intersect(requiredTags).Count()).ToList();
+                allUsers = allUsers.OrderByDescending(u => u.TeacherProfile.Skills.Intersect(requiredTags).Count())
+                    .ToList();
             }
 
-            allUsers = allUsers.FindAll(u => allGroups.Count(g => g.IsTeacher(u.Id) && g.Status == CourseStatus.Finished) >= minTeacherGroups);
-            allUsers = allUsers.FindAll(u => allGroups.Count(g => g.IsMember(u.Id) && g.Status == CourseStatus.Finished) >= minUserGroups);
+            allUsers = allUsers.FindAll(u =>
+                allGroups.Count(g => g.IsTeacher(u.Id) && g.Status == CourseStatus.Finished) >= minTeacherGroups);
+            allUsers = allUsers.FindAll(u =>
+                allGroups.Count(g => g.IsMember(u.Id) && g.Status == CourseStatus.Finished) >= minUserGroups);
 
             return allUsers;
         }
@@ -177,6 +176,5 @@ namespace EduHubLibrary.Facades
                 )));
             return result;
         }
-
     }
 }

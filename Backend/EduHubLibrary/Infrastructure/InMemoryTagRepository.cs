@@ -1,13 +1,14 @@
-﻿using EduHubLibrary.Domain.Tools;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Infrastructure
 {
     public class InMemoryTagRepository : ITagRepository
     {
+        private readonly List<Tag> _listOfTags;
+
         public InMemoryTagRepository()
         {
             _listOfTags = new List<Tag>();
@@ -47,7 +48,5 @@ namespace EduHubLibrary.Infrastructure
             var currentTag = _listOfTags.Find(current => current.Name == tag.Name);
             currentTag = tag;
         }
-
-        private readonly List<Tag> _listOfTags;
     }
 }

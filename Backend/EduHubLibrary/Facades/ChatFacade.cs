@@ -22,6 +22,7 @@ namespace EduHubLibrary.Facades
             {
                 chat.SendMessage(senderId, text);
             }
+
             _groupRepository.Update(currentGroup);
             currentGroup = _groupRepository.GetGroupById(groupId);
             return currentGroup.Messages.ToList().LastOrDefault(m => m.Text == text).Id;

@@ -2,9 +2,6 @@
 {
     public class TagUser
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
         public TagUser(int id, string tag)
         {
             Id = id;
@@ -14,5 +11,8 @@
         internal TagUser()
         {
         }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

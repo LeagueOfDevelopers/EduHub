@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Domain
 {
@@ -16,7 +14,8 @@ namespace EduHubLibrary.Domain
             IsTemporary = false;
         }
 
-        public Sanction(string brokenRule, int userId, int moderatorId, SanctionType type, DateTimeOffset expirationDate)
+        public Sanction(string brokenRule, int userId, int moderatorId, SanctionType type,
+            DateTimeOffset expirationDate)
         {
             BrokenRule = brokenRule;
             UserId = userId;
@@ -25,6 +24,19 @@ namespace EduHubLibrary.Domain
             IsActive = true;
             IsTemporary = true;
             ExpirationDate = expirationDate;
+        }
+
+        internal Sanction(int id, string brokenRule, int userId,
+            int moderatorId, bool isTemporary, DateTimeOffset expirationDate, SanctionType type, bool isActive)
+        {
+            Id = id;
+            BrokenRule = brokenRule;
+            UserId = userId;
+            ModeratorId = moderatorId;
+            IsTemporary = isTemporary;
+            ExpirationDate = expirationDate;
+            Type = type;
+            IsActive = isActive;
         }
 
         public int Id { get; internal set; }

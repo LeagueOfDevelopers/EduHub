@@ -1,16 +1,10 @@
-﻿using EduHubLibrary.Domain;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using EduHubLibrary.Domain;
 
 namespace EduHubLibrary.Data.KeyDtos
 {
     public class KeyDto
     {
-        [Key]
-        public int Value { get; set; }
-        public bool Used { get; set; }
-        public string UserEmail { get; set; }
-        public KeyAppointment Appointment { get; set; }
-
         public KeyDto(bool used, int value, string userEmail, KeyAppointment appointment)
         {
             Used = used;
@@ -22,5 +16,11 @@ namespace EduHubLibrary.Data.KeyDtos
         public KeyDto()
         {
         }
+
+        [Key] public int Value { get; set; }
+
+        public bool Used { get; set; }
+        public string UserEmail { get; set; }
+        public KeyAppointment Appointment { get; set; }
     }
 }

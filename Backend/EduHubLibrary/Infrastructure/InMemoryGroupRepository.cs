@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
@@ -53,10 +52,7 @@ namespace EduHubLibrary.Infrastructure
                                throw new GroupNotFoundException(group.GroupInfo.Id);
             currentGroup.Messages.ToList().ForEach(msg =>
             {
-                if (msg.Id == 0)
-                {
-                    msg.Id = IntIterator.GetNextId();
-                }
+                if (msg.Id == 0) msg.Id = IntIterator.GetNextId();
             });
             currentGroup = group;
         }

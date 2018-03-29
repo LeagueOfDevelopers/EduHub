@@ -11,7 +11,7 @@ namespace EduHubLibrary.Data.GroupDtos
         {
         }
 
-        public int Id { get;  set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Curriculum { get; set; }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EduHubLibrary.Domain
+﻿namespace EduHubLibrary.Domain
 {
     public class Key
     {
@@ -12,7 +10,7 @@ namespace EduHubLibrary.Domain
             Appointment = keyAppointment;
         }
 
-        internal Key(string userEmail, KeyAppointment keyAppointment, bool used,int value = 0)
+        internal Key(string userEmail, KeyAppointment keyAppointment, bool used, int value = 0)
         {
             Value = value;
             Used = false;

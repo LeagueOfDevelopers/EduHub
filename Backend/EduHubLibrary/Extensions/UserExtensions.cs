@@ -22,7 +22,7 @@ namespace EduHubLibrary.Extensions
 
             source.Notifies?.ForEach(n => notifiesList.Add(n.Notifie));
 
-            source.Reviews?.ForEach(r => 
+            source.Reviews?.ForEach(r =>
                 reviewList.Add(new Review(r.FromUser, r.Title, r.Text, r.FromGroup, r.Id)));
 
             source.Tags?.ToList().ForEach(t => skillList.Add(t.Name));

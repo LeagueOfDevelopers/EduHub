@@ -11,7 +11,6 @@ namespace EduHubLibrary.Infrastructure
 {
     public class InMysqlUserRepository : IUserRepository
     {
-
         private readonly string _connectionString;
 
 
@@ -22,7 +21,8 @@ namespace EduHubLibrary.Infrastructure
 
         public void Add(User user)
         {
-            using(var _context = new EduhubContext(_connectionString)) { 
+            using (var _context = new EduhubContext(_connectionString))
+            {
                 var userDto = new UserDto();
                 userDto.ParseFromUser(user);
                 _context.Users.Add(userDto);

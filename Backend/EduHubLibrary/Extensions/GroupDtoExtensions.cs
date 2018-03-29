@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using EduHubLibrary.Data.Connections;
+﻿using System.Linq;
 using EduHubLibrary.Data.GroupDtos;
-using EduHubLibrary.Data.TagDtos;
 using EduHubLibrary.Data.UserDtos;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Extensions
 {
@@ -24,8 +20,8 @@ namespace EduHubLibrary.Extensions
             result.Status = sourse.Status;
             result.GroupType = sourse.GroupInfo.GroupType;
 
-            if(sourse.Teacher != null)
-            { 
+            if (sourse.Teacher != null)
+            {
                 result.TeacherId = sourse.Teacher.Id;
                 result.TeacherEmail = sourse.Teacher.UserProfile.Email;
                 result.TeacherName = sourse.Teacher.UserProfile.Name;
@@ -40,14 +36,14 @@ namespace EduHubLibrary.Extensions
             sourse.GroupInfo.Tags.ToList().ForEach(tag => result.Tags.Add(new TagGroup(0, tag)));
 
             sourse.Members?.ForEach(member =>
-                    result.Members.Add(new MemberDto(0, member.UserId, member.MemberRole,
-                        member.Paid, member.CurriculumStatus)));
+                result.Members.Add(new MemberDto(0, member.UserId, member.MemberRole,
+                    member.Paid, member.CurriculumStatus)));
 
             sourse.Messages?.ToList().ForEach(message =>
-                {
-                    if(result.Messages.All(messageDto => messageDto.Id != message.Id))
+            {
+                if (result.Messages.All(messageDto => messageDto.Id != message.Id))
                     result.Messages.Add(new MessageDto(message.Id, message.SenderId, message.SentOn, message.Text));
-                });
+            });
 
             sourse.Invitations?.ForEach(i =>
             {

@@ -32,7 +32,7 @@ namespace EduHubLibrary.Domain
             Messages = new List<Message>();
         }
 
-        internal Group(IEnumerable<Message> messages, 
+        internal Group(IEnumerable<Message> messages,
             GroupInfo groupInfo, User teacher, CourseStatus status, List<Member> members, List<Invitation> invitations)
         {
             Messages = messages;

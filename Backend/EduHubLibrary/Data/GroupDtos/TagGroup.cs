@@ -2,9 +2,6 @@
 {
     public class TagGroup
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
         public TagGroup(int id, string tag)
         {
             Id = id;
@@ -14,5 +11,8 @@
         internal TagGroup()
         {
         }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;

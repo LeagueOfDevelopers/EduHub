@@ -5,12 +5,6 @@ namespace EduHubLibrary.Data.Connections
 {
     public class UserTag
     {
-        public string TagId { get; set; }
-        public TagDto Tag { get; set; }
-
-        public int UserId { get; set; }
-        public UserDto User { get; set; }
-
         public UserTag(string tagId, TagDto tag, int userId, UserDto user)
         {
             TagId = tagId;
@@ -22,5 +16,11 @@ namespace EduHubLibrary.Data.Connections
         internal UserTag()
         {
         }
+
+        public string TagId { get; set; }
+        public TagDto Tag { get; set; }
+
+        public int UserId { get; set; }
+        public UserDto User { get; set; }
     }
 }

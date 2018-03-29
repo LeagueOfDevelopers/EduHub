@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Events;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades.Views.GroupViews;
+using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
 using EnsureThat;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.Events;
-using EduHubLibrary.Infrastructure;
 
 namespace EduHubLibrary.Facades
 {
@@ -17,11 +17,11 @@ namespace EduHubLibrary.Facades
     {
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
-        private readonly IUserRepository _userRepository;
-        private readonly ISanctionRepository _sanctionRepository;
         private readonly IEventPublisher _publisher;
+        private readonly ISanctionRepository _sanctionRepository;
+        private readonly IUserRepository _userRepository;
 
-        public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository, 
+        public GroupFacade(IGroupRepository groupRepository, IUserRepository userRepository,
             ISanctionRepository sanctionRepository, GroupSettings groupSettings, IEventPublisher publisher)
         {
             _groupRepository = groupRepository;
@@ -90,7 +90,8 @@ namespace EduHubLibrary.Facades
             var currentGroup = _groupRepository.GetGroupById(id);
             var members = currentGroup.Members;
             var memberAmount = currentGroup.Members.Count;
-            var votersAmount = currentGroup.Members.FindAll(m => m.CurriculumStatus == MemberCurriculumStatus.Accepted).Count;
+            var votersAmount = currentGroup.Members.FindAll(m => m.CurriculumStatus == MemberCurriculumStatus.Accepted)
+                .Count;
             var groupInfo = currentGroup.GroupInfo;
             var groupInfoView = new GroupInfoView(groupInfo.Id,
                 groupInfo.Title, groupInfo.Size,
@@ -149,26 +150,16 @@ namespace EduHubLibrary.Facades
                 .OrderBy(g => g.GroupInfo.Title.Length).ToList();
 
             if (tags != null && tags.Any())
-            {
                 allGroups = allGroups.FindAll(g => g.GroupInfo.Tags.Intersect(tags).Any())
                     .OrderByDescending(g => g.GroupInfo.Tags.Intersect(tags).Count()).ToList();
-            }
 
-            if (type != GroupType.Default)
-            {
-                allGroups = allGroups.FindAll(g => g.GroupInfo.GroupType == type);
-            }
+            if (type != GroupType.Default) allGroups = allGroups.FindAll(g => g.GroupInfo.GroupType == type);
 
             if (Math.Abs(minPrice) > 0 || Math.Abs(maxPrice) > 0)
-            {
                 allGroups = allGroups.FindAll(g => minPrice <=
                                                    g.GroupInfo.Price && g.GroupInfo.Price <= maxPrice);
-            }
 
-            if (formed)
-            {
-                allGroups = allGroups.FindAll(g => g.GroupInfo.Size == g.Members.Count);
-            }
+            if (formed) allGroups = allGroups.FindAll(g => g.GroupInfo.Size == g.Members.Count);
 
             return allGroups;
         }
@@ -222,6 +213,7 @@ namespace EduHubLibrary.Facades
             {
                 cs.SendMessage(userId, reason);
             }
+
             _groupRepository.Update(currentGroup);
         }
 
@@ -279,8 +271,8 @@ namespace EduHubLibrary.Facades
             var doesSanctionAllowAction = _sanctionRepository.GetAllOfUser(userId).ToList()
                 .Exists(s => s.IsActive && s.Type.Equals(SanctionType.NotAllowToJoinGroup));
 
-            var hasUserInvitation = _userRepository.GetUserById(userId).Invitations.ToList().
-                Exists(i => i.GroupId == groupId);
+            var hasUserInvitation = _userRepository.GetUserById(userId).Invitations.ToList()
+                .Exists(i => i.GroupId == groupId);
 
             Ensure.Bool.IsFalse(doesSanctionAllowAction && !hasUserInvitation, nameof(CheckSanctions),
                 opt => opt.WithException(new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToJoinGroup)));

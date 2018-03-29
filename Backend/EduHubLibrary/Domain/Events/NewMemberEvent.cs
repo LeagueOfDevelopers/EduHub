@@ -1,5 +1,4 @@
-﻿using System;
-using EduHubLibrary.Domain.NotificationService;
+﻿using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubLibrary.Domain.Events
 {

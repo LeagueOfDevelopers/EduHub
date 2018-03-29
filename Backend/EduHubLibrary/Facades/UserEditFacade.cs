@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
-using EnsureThat;
 using EduHubLibrary.Infrastructure;
-using System.Linq;
+using EnsureThat;
 
 namespace EduHubLibrary.Facades
 {
@@ -118,8 +118,9 @@ namespace EduHubLibrary.Facades
         private void CheckSanctions(int userId, SanctionType sanctionType)
         {
             Ensure.Bool.IsFalse(_sanctionRepository.GetAllOfUser(userId).ToList()
-                .Exists(s => s.Type.Equals(sanctionType) && s.IsActive), nameof(CheckSanctions),
-                opt => opt.WithException(new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToEditProfile)));
+                    .Exists(s => s.Type.Equals(sanctionType) && s.IsActive), nameof(CheckSanctions),
+                opt => opt.WithException(
+                    new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToEditProfile)));
         }
     }
 }

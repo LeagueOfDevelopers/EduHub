@@ -1,5 +1,4 @@
-﻿using System;
-using EduHubLibrary.Domain;
+﻿using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Facades.Views.GroupViews

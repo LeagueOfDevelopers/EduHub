@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EduHubLibrary.Facades.Views
+﻿namespace EduHubLibrary.Facades.Views
 {
     public class UserInviteInfo
     {

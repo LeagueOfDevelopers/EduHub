@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Infrastructure;
 
 namespace EduHubLibrary.Domain
 {
     public class TagFacade : ITagFacade
     {
+        private readonly ITagRepository _tagRepository;
+
         public TagFacade(ITagRepository tagRepository)
         {
             _tagRepository = tagRepository;
@@ -16,7 +16,7 @@ namespace EduHubLibrary.Domain
         {
             return _tagRepository.Find(tag);
         }
-        
+
         public void UseTag(string tag)
         {
             if (_tagRepository.DoesExist(tag))
@@ -25,9 +25,10 @@ namespace EduHubLibrary.Domain
                 currentTag.AddPopularity();
                 _tagRepository.Update(currentTag);
             }
-            else _tagRepository.Add(tag);
+            else
+            {
+                _tagRepository.Add(tag);
+            }
         }
-
-        private readonly ITagRepository _tagRepository;
     }
 }

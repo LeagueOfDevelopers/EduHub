@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Events;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Settings;
 using EnsureThat;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.Events;
 
 namespace EduHubLibrary.Facades
 {
@@ -13,7 +13,7 @@ namespace EduHubLibrary.Facades
     {
         private readonly IGroupRepository _groupRepository;
         private readonly GroupSettings _groupSettings;
-        private readonly IEventPublisher _publisher; 
+        private readonly IEventPublisher _publisher;
 
         public GroupEditFacade(IGroupRepository groupRepository, GroupSettings groupSettings, IEventPublisher publisher)
         {
