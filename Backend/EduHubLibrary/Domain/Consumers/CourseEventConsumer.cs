@@ -6,7 +6,8 @@ using System.Text;
 
 namespace EduHubLibrary.Domain.Consumers
 {
-    public class CourseEventConsumer : IEventConsumer<TeacherFoundEvent>, IEventConsumer<CourseFinishedEvent>, IEventConsumer<ReviewReceivedEvent>
+    public class CourseEventConsumer : IEventConsumer<TeacherFoundEvent>, IEventConsumer<CourseFinishedEvent>, 
+        IEventConsumer<ReviewReceivedEvent>
     { 
         public CourseEventConsumer(INotificationsDistributor distributor)
         {

@@ -24,6 +24,7 @@ namespace EduHubLibrary.Domain
             IsActive = true;
             Invitations = new List<Invitation>();
             Notifies = new List<string>();
+            Notifications = new List<Event>();
         }
 
         /*private User()
@@ -64,6 +65,7 @@ namespace EduHubLibrary.Domain
         public int Id { get; internal set; }
         public List<Invitation> Invitations { get; }
         public List<string> Notifies { get; }
+        public List<Event> Notifications { get; }
 
         public void ConfigureTeacherProfile(List<string> skills)
         {
@@ -120,10 +122,10 @@ namespace EduHubLibrary.Domain
             return Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
         }
 
-        internal void AddNotify(string notify)
+        internal void AddNotify(Event notify)
         {
             Ensure.Any.IsNotNull(notify);
-            Notifies.Add(notify);
+            Notifications.Add(notify);
         }
 
         internal void ChangePassword(string newPassword)

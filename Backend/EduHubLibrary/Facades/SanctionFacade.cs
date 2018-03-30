@@ -5,6 +5,8 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Infrastructure;
 using EnsureThat;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.Events;
 
 namespace EduHubLibrary.Facades
 {
@@ -12,11 +14,13 @@ namespace EduHubLibrary.Facades
     {
         private readonly ISanctionRepository _sanctionRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IEventPublisher _publisher;
 
-        public SanctionFacade(ISanctionRepository sanctionRepository, IUserRepository userRepository)
+        public SanctionFacade(ISanctionRepository sanctionRepository, IUserRepository userRepository, IEventPublisher publisher)
         {
             _sanctionRepository = sanctionRepository;
             _userRepository = userRepository;
+            _publisher = publisher;
         }
 
         public int AddSanction(string brokenRule, int userId, int moderatorId, SanctionType type)
@@ -52,6 +56,9 @@ namespace EduHubLibrary.Facades
 
             var sanction = new Sanction(brokenRule, userId, moderatorId, type, expirationDate);
             _sanctionRepository.Add(sanction);
+
+            _publisher.PublishEvent(new SanctionsAppliedEvent(brokenRule, type, userId));
+
             return sanction.Id;
         }
 

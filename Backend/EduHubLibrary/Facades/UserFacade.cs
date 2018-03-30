@@ -7,6 +7,7 @@ using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades.Views;
 using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.Events;
 
 namespace EduHubLibrary.Facades
 {
@@ -15,13 +16,15 @@ namespace EduHubLibrary.Facades
         private readonly IGroupRepository _groupRepository;
         private readonly IKeysRepository _keysRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IEventPublisher _publisher;
 
         public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository,
-            IKeysRepository keysRepository)
+            IKeysRepository keysRepository, IEventPublisher publisher)
         {
             _userRepository = userRepository;
             _groupRepository = groupRepository;
             _keysRepository = keysRepository;
+            _publisher = publisher;
         }
 
         public User GetUser(int id)
@@ -42,17 +45,23 @@ namespace EduHubLibrary.Facades
         public void ChangeInvitationStatus(int userId, int invitationId, InvitationStatus status)
         {
             var currentUser = _userRepository.GetUserById(userId);
+            var currentInvitation = currentUser.GetInvitation(invitationId);
+            var currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
+
             if (status.Equals(InvitationStatus.Accepted))
             {
                 currentUser.AcceptInvitation(invitationId);
-                var currentInvitation = currentUser.GetInvitation(invitationId);
-                var currentGroup = _groupRepository.GetGroupById(currentInvitation.GroupId);
                 if (currentInvitation.SuggestedRole == MemberRole.Member)
                 {
                     Ensure.Bool.IsTrue(currentGroup.Teacher?.Id != userId, nameof(currentUser),
                         opt => opt.WithException(new AlreadyTeacherException(userId)));
                     currentGroup.AddMember(currentInvitation.ToUser);
                     _groupRepository.Update(currentGroup);
+                    
+                    _publisher.PublishEvent(new NewMemberEvent(currentGroup.GroupInfo.Id, currentGroup.GroupInfo.Title,
+                        currentUser.UserProfile.Name));
+                    if (currentGroup.Members.Count == currentGroup.GroupInfo.Size)
+                        _publisher.PublishEvent(new GroupIsFormedEvent(currentGroup.GroupInfo.Title, currentGroup.GroupInfo.Id));
                 }
                 else if (currentInvitation.SuggestedRole == MemberRole.Teacher)
                 {
@@ -62,11 +71,19 @@ namespace EduHubLibrary.Facades
                         opt => opt.WithException(new AlreadyMemberException()));
                     currentGroup.ApproveTeacher(currentUser);
                     _groupRepository.Update(currentGroup);
+
+                    _publisher.PublishEvent(new TeacherFoundEvent(currentUser.UserProfile.Name, 
+                        currentGroup.GroupInfo.Title, currentGroup.GroupInfo.Id));
                 }
+
+                _publisher.PublishEvent(new InvitationAcceptedEvent(currentGroup.GroupInfo.Title, currentUser.UserProfile.Name, 
+                    currentInvitation.FromUser));
             }
             else if (status.Equals(InvitationStatus.Declined))
             {
                 currentUser.DeclineInvitation(invitationId);
+                _publisher.PublishEvent(new InvitationDeclinedEvent(currentGroup.GroupInfo.Title, currentUser.UserProfile.Name, 
+                    currentInvitation.FromUser));
             }
 
             _userRepository.Update(currentUser);
@@ -76,6 +93,7 @@ namespace EduHubLibrary.Facades
         {
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var invitedUser = _userRepository.GetUserById(invitedId);
+            var inviterUser = _userRepository.GetUserById(inviterId);
 
             Ensure.Bool.IsTrue(currentGroup.IsMember(inviterId), nameof(Invite),
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
@@ -95,6 +113,9 @@ namespace EduHubLibrary.Facades
             invitedUser.AddInvitation(newInvintation);
             _userRepository.Update(invitedUser);
             _groupRepository.Update(currentGroup);
+
+            _publisher.PublishEvent(new InvitationReceivedEvent(currentGroup.GroupInfo.Title, inviterUser.UserProfile.Name, 
+                invitedId, suggestedRole));
         }
 
         public IEnumerable<Invitation> GetAllInvitationsForUser(int userId)
@@ -146,9 +167,9 @@ namespace EduHubLibrary.Facades
             return result.OrderBy(u => u.UserProfile.Name.Length);
         }
 
-        public IEnumerable<string> GetNotifies(int userId)
+        public IEnumerable<Event> GetNotifies(int userId)
         {
-            return _userRepository.GetUserById(userId).Notifies;
+            return _userRepository.GetUserById(userId).Notifications;
         }
 
         public IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId)
@@ -173,7 +194,9 @@ namespace EduHubLibrary.Facades
 
         public void Report(int senderId, int suspectedId, string brokenRule)
         {
-            //TODO: use RabbitMQ
+            var sender = _userRepository.GetUserById(senderId);
+            var suspected = _userRepository.GetUserById(suspectedId);
+            _publisher.PublishEvent(new ReportMessageEvent(sender.UserProfile.Name, suspected.UserProfile.Name, brokenRule));
         }
     }
 }

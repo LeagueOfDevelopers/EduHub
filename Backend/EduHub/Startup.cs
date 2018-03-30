@@ -25,6 +25,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Consumers;
 using Microsoft.EntityFrameworkCore;
+using EduHubLibrary.Domain.Events;
 
 namespace EduHub
 {
@@ -88,6 +89,7 @@ namespace EduHub
                 int.Parse(Configuration.GetValue<string>("SmtpPort")));
 
             var tagFacade = new TagFacade(tagRepository);
+            var notificationsDistributor = new NotificationsDistributor(groupRepository, userRepository);
 
             var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
                 Configuration.GetValue<int>("MaxGroupSize"),
@@ -102,15 +104,32 @@ namespace EduHub
             eventBus.StartListening();
 
             eventBus.RegisterConsumer(new TagPopularityConsumer(tagFacade));
+            eventBus.RegisterConsumer<ReportMessageEvent>(new AdminsEventConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<SanctionsAppliedEvent>(new AdminsEventConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<TeacherFoundEvent>(new CourseEventConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<CourseFinishedEvent>(new CourseEventConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<ReviewReceivedEvent>(new CourseEventConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<CurriculumAcceptedEvent>(new CurriculumEventConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<CurriculumDeclinedEvent>(new CurriculumEventConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<CurriculumSuggestedEvent>(new CurriculumEventConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<NewCreatorEvent>(new GroupEventsConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<GroupIsFormedEvent>(new GroupEventsConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<InvitationAcceptedEvent>(new InvitationConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<InvitationDeclinedEvent>(new InvitationConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<InvitationReceivedEvent>(new InvitationConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<NewMemberEvent>(new MemberActionsConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<MemberLeftEvent>(new MemberActionsConsumer(notificationsDistributor));
+
             var publisher = eventBus.GetEventPublisher();
 
             var emailSender = new EmailSender(emailSettings);
-            var userFacade = new UserFacade(userRepository, groupRepository, keysRepository);
+            var userFacade = new UserFacade(userRepository, groupRepository, keysRepository, publisher);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings, publisher);
             var userEditFacade = new UserEditFacade(userRepository, fileRepository, sanctionRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, sanctionRepository, groupSettings, publisher);
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository);
+            var sanctionsFacade = new SanctionFacade(sanctionRepository, userRepository, publisher);
             var userAccountFacade = new AccountFacade(keysRepository, userRepository, emailSender);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
@@ -119,6 +138,7 @@ namespace EduHub
             services.AddSingleton<IGroupEditFacade>(groupEditFacade);
             services.AddSingleton<IUserEditFacade>(userEditFacade);
             services.AddSingleton<ITagFacade>(tagFacade);
+            services.AddSingleton<ISanctionFacade>(sanctionsFacade);
             services.AddSingleton<IAccountFacade>(userAccountFacade);
             services.AddSingleton(Env);
 

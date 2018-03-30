@@ -21,7 +21,7 @@ namespace EduHubLibrary.Facades
 
         IEnumerable<User> FindByName(string name);
         IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId);
-        IEnumerable<string> GetNotifies(int userId);
+        IEnumerable<Event> GetNotifies(int userId);
         void Report(int senderId, int suspectedId, string brokenRule);
     }
 }

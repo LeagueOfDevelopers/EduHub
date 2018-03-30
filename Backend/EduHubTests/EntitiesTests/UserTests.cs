@@ -221,6 +221,7 @@ namespace EduHubTests
             testUser.DeclineInvitation(invitation.Id);
         }
 
+        /*
         [TestMethod]
         public void AddNotifyToUser_GetUpdatedNotifyList()
         {
@@ -233,8 +234,7 @@ namespace EduHubTests
             //Assert
             Assert.AreEqual(1, testUser.Notifies.Count);
         }
-
-        /*
+        
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void AddInvalidNotifyToUser_GetException()

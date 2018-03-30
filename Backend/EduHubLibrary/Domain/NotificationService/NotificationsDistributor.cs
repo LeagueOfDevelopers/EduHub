@@ -19,18 +19,18 @@ namespace EduHubLibrary.Domain.NotificationService
         public void NotifyAdmins(IEventInfo eventInfo)
         {
             _userRepository.GetAll().Where(u => u.Type.Equals(UserType.Admin)).ToList()
-                .ForEach(u => u.AddNotify(""));
+                .ForEach(u => u.AddNotify(new Event(eventInfo)));
         }
 
         public void NotifyGroup(int groupId, IEventInfo eventInfo)
         {
             _groupRepository.GetGroupById(groupId).Members.ToList().ForEach
-                (m => _userRepository.GetUserById(m.UserId).AddNotify(""));
+                (m => _userRepository.GetUserById(m.UserId).AddNotify(new Event(eventInfo)));
         }
 
         public void NotifyPerson(int userId, IEventInfo eventInfo)
         {
-            _userRepository.GetUserById(userId).AddNotify("");
+            _userRepository.GetUserById(userId).AddNotify(new Event(eventInfo));
         }
 
         public void NotifyTeacher(int groupId, IEventInfo eventInfo)
@@ -38,7 +38,7 @@ namespace EduHubLibrary.Domain.NotificationService
             var teacherId = _groupRepository.GetGroupById(groupId).Members.Find
                 (m => m.MemberRole.Equals(MemberRole.Teacher)).UserId;
 
-            _userRepository.GetUserById(teacherId).AddNotify("");
+            _userRepository.GetUserById(teacherId).AddNotify(new Event(eventInfo));
         }
 
         private readonly IGroupRepository _groupRepository;

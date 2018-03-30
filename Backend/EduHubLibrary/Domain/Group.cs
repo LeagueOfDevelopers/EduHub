@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.Events;
 
 [assembly: InternalsVisibleTo("EduHubTests")]
 
@@ -12,8 +14,8 @@ namespace EduHubLibrary.Domain
 {
     public class Group
     {
-        public Group(int creatorId, string title, List<string> tags,
-            string description, int size, double moneyPerUser, bool isPrivate, GroupType groupType)
+        public Group(int creatorId, string title, List<string> tags, string description, int size, double moneyPerUser, 
+            bool isPrivate, GroupType groupType)
         {
             Ensure.Any.IsNotNull(tags);
             Ensure.String.IsNotNullOrWhiteSpace(title);
@@ -32,8 +34,8 @@ namespace EduHubLibrary.Domain
             Messages = new List<Message>();
         }
 
-        internal Group(IEnumerable<Message> messages,
-            GroupInfo groupInfo, User teacher, CourseStatus status, List<Member> members, List<Invitation> invitations)
+        internal Group(IEnumerable<Message> messages, GroupInfo groupInfo, User teacher, CourseStatus status, 
+            List<Member> members, List<Invitation> invitations)
         {
             Messages = messages;
             GroupInfo = groupInfo;

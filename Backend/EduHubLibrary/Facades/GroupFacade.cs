@@ -64,6 +64,10 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new AlreadyTeacherException(newMemberId)));
             currentGroup.AddMember(newMemberId);
             _groupRepository.Update(currentGroup);
+
+            _publisher.PublishEvent(new NewMemberEvent(groupId, currentGroup.GroupInfo.Title, currentUser.UserProfile.Name));
+            if (currentGroup.Members.Count == currentGroup.GroupInfo.Size)
+                _publisher.PublishEvent(new GroupIsFormedEvent(currentGroup.GroupInfo.Title, groupId));
         }
 
         public void DeleteTeacher(int groupId, int requestedPerson)
@@ -81,8 +85,20 @@ namespace EduHubLibrary.Facades
             CheckUserExistence(deletingPerson);
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
+            var memberRole = currentGroup.GetMember(deletingPerson).MemberRole;
+            
             currentGroup.DeleteMember(requestedPerson, deletingPerson);
+            var deletingUser = _userRepository.GetUserById(deletingPerson);
             _groupRepository.Update(currentGroup);
+
+            _publisher.PublishEvent(new MemberLeftEvent(groupId, currentGroup.GroupInfo.Title, deletingUser.UserProfile.Name));
+            if (memberRole.Equals(MemberRole.Creator))
+            {
+                var newCreatorId = currentGroup.Members.Find(m => m.MemberRole.Equals(MemberRole.Creator)).UserId;
+                var newCreator = _userRepository.GetUserById(newCreatorId);
+                _publisher.PublishEvent(new NewCreatorEvent(groupId, currentGroup.GroupInfo.Title,
+                    deletingUser.UserProfile.Name, newCreator.UserProfile.Name));
+            }
         }
 
         public FullGroupView GetGroup(int id)
@@ -191,6 +207,8 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new AlreadyMemberException()));
             currentGroup.ApproveTeacher(teacher);
             _groupRepository.Update(currentGroup);
+
+            _publisher.PublishEvent(new TeacherFoundEvent(teacher.UserProfile.Name, currentGroup.GroupInfo.Title, groupId));
         }
 
         public void AcceptCurriculum(int userId, int groupId)
@@ -200,12 +218,13 @@ namespace EduHubLibrary.Facades
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.AcceptCurriculum(userId);
             _groupRepository.Update(currentGroup);
+
+            _publisher.PublishEvent(new CurriculumAcceptedEvent(currentGroup.GroupInfo.Title, groupId));
         }
 
         public void DeclineCurriculum(int userId, int groupId, string reason)
         {
-            CheckUserExistence(userId);
-
+            var currentUser = _userRepository.GetUserById(userId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.DeclineCurriculum(userId);
 
@@ -215,6 +234,9 @@ namespace EduHubLibrary.Facades
             }
 
             _groupRepository.Update(currentGroup);
+
+            _publisher.PublishEvent(new CurriculumDeclinedEvent(currentGroup.GroupInfo.Title, groupId,
+                currentUser.UserProfile.Name));
         }
 
         public void OfferCurriculum(int userId, int groupId, string description)
@@ -224,6 +246,8 @@ namespace EduHubLibrary.Facades
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.OfferCurriculum(userId, description);
             _groupRepository.Update(currentGroup);
+
+            _publisher.PublishEvent(new CurriculumSuggestedEvent(description, currentGroup.GroupInfo.Title, groupId));
         }
 
         public IEnumerable<Invitation> GetAllInvitations(int groupId)
@@ -235,17 +259,21 @@ namespace EduHubLibrary.Facades
         {
             CheckUserExistence(userId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
+            var teacherId = currentGroup.Members.Find(m => m.MemberRole.Equals(MemberRole.Teacher)).UserId;
+            var teacher = _userRepository.GetUserById(teacherId);
             currentGroup.FinishCurriculum(userId);
             _groupRepository.Update(currentGroup);
+
+            _publisher.PublishEvent(new CourseFinishedEvent(currentGroup.GroupInfo.Title, groupId, teacher.UserProfile.Name));
         }
 
-        public void AddReview(int groupId, int userId, string title,
-            string text)
+        public void AddReview(int groupId, int userId, string title, string text)
         {
             Ensure.String.IsNotNullOrWhiteSpace(title);
             Ensure.String.IsNotNullOrWhiteSpace(text);
             CheckUserExistence(userId);
 
+            var currentUser = _userRepository.GetUserById(userId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var teacher = _userRepository.GetUserById(currentGroup.Teacher.Id);
 
@@ -259,6 +287,9 @@ namespace EduHubLibrary.Facades
 
             teacher.TeacherProfile.AddReview(userId, title, text, groupId);
             _userRepository.Update(teacher);
+
+            _publisher.PublishEvent(new ReviewReceivedEvent(currentGroup.GroupInfo.Title, groupId,
+                currentUser.UserProfile.Name, title));
         }
 
         private void CheckUserExistence(int userId)

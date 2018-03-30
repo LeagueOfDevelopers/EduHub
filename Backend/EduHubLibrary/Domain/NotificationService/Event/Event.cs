@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
@@ -8,11 +9,11 @@ namespace EduHubLibrary.Domain.NotificationService
         {
             Id = Guid.NewGuid();
             OccurredOn = DateTimeOffset.Now;
-            EventInfo = eventInfo;
+            EventInfo = JsonConvert.SerializeObject(eventInfo);
         }
 
         public Guid Id { get; }
         public DateTimeOffset OccurredOn { get; }
-        public IEventInfo EventInfo { get; }
+        public string EventInfo { get; }
     }
 }

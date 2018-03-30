@@ -7,7 +7,7 @@ namespace EduHubLibrary.Domain.Events
 {
     public class SanctionsAppliedEvent : EventInfoBase
     {
-        public SanctionsAppliedEvent(string brokenRule, string sanctionType, int userId)
+        public SanctionsAppliedEvent(string brokenRule, SanctionType sanctionType, int userId)
         {
             BrokenRule = brokenRule;
             SanctionType = sanctionType;
@@ -15,7 +15,7 @@ namespace EduHubLibrary.Domain.Events
         }
 
         public string BrokenRule { get; }
-        public string SanctionType { get; }
+        public SanctionType SanctionType { get; }
         public int UserId { get; }
     }
 }

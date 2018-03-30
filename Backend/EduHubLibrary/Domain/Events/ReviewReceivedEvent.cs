@@ -7,17 +7,17 @@ namespace EduHubLibrary.Domain.Events
 {
     public class ReviewReceivedEvent : EventInfoBase
     {
-        public ReviewReceivedEvent(string groupTitle, int groupId, string reviewerName, int reviewId)
+        public ReviewReceivedEvent(string groupTitle, int groupId, string reviewerName, string reviewType)
         {
             GroupTitle = groupTitle;
             GroupId = groupId;
             ReviewerName = reviewerName;
-            ReviewId = reviewId;
+            ReviewType = reviewType;
         }
 
         public string GroupTitle { get; }
         public int GroupId { get; }
         public string ReviewerName { get; }
-        public int ReviewId { get; }
+        public string ReviewType { get; }
     }
 }
