@@ -39,10 +39,10 @@ namespace EduHubTests
             var adminKey = new Key("email", KeyAppointment.BecomeAdmin);
             inMemoryKeyRepository.AddKey(adminKey);
 
-            _sanctionFacade = new SanctionFacade(inMemorySanctionRepository, inMemoryUserRepository);
+            _sanctionFacade = new SanctionFacade(inMemorySanctionRepository, inMemoryUserRepository, publisher.Object);
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, inMemorySanctionRepository,
                 new GroupSettings(3, 100, 0, 1000), publisher.Object);
-            _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, inMemoryKeyRepository);
+            _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, inMemoryKeyRepository, publisher.Object);
             _accountFacade = new AccountFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender);
             var creatorId = _accountFacade.RegUser("Alena", new Credentials("email", "password"), true, adminKey.Value);

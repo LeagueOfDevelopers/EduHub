@@ -1,6 +1,7 @@
 ﻿using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Interators;
@@ -25,6 +26,7 @@ namespace EduHubTests.FacadesTests
         private IAccountFacade _accountFacade;
         private IUserRepository _userRepository;
         private ISanctionRepository _sanctionRepository;
+        private Mock<IEventPublisher> _publisher;
 
         [TestInitialize]
         public void Initialize()
@@ -37,10 +39,11 @@ namespace EduHubTests.FacadesTests
             var adminKey = new Key("ivanov@mail.ru", KeyAppointment.BecomeAdmin);
             keysRepository.AddKey(adminKey);
 
+            _publisher = new Mock<IEventPublisher>();
             _userRepository = new InMemoryUserRepository();
             _sanctionRepository = new InMemorySanctionRepository();
             _accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender);
-            _userFacade = new UserFacade(_userRepository, groupRepository, keysRepository);
+            _userFacade = new UserFacade(_userRepository, groupRepository, keysRepository, _publisher.Object);
             _adminId = _accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, adminKey.Value);
             _testUserId = _accountFacade.RegUser("Sasha", Credentials.FromRawData("smt@smt.ru", "2"), false);
         }
@@ -49,7 +52,7 @@ namespace EduHubTests.FacadesTests
         public void AddSanction_GetAddedSanction()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
             //Act
             sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
@@ -63,7 +66,7 @@ namespace EduHubTests.FacadesTests
         public void TryToAddSanctionWithInvalidExpirationDate_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
             //Act
             sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, 
@@ -75,7 +78,7 @@ namespace EduHubTests.FacadesTests
         public void TryToAddSanctionToNotExistingUser_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
             //Act
             sanctionFacade.AddSanction("some rule", IntIterator.GetNextId(), _adminId, SanctionType.NotAllowToEditProfile);
@@ -86,7 +89,7 @@ namespace EduHubTests.FacadesTests
         public void TryToAddSanctionByNotModerator_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             var pseudoModerator = _accountFacade.RegUser("not admin", Credentials.FromRawData("pseudo@email.ru", "password"), false);
             
             //Act
@@ -97,7 +100,7 @@ namespace EduHubTests.FacadesTests
         public void CancelSanction_GetCanceledSanction()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             var sanctionId = sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
@@ -112,7 +115,7 @@ namespace EduHubTests.FacadesTests
         public void CancelNotExistingSanction_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
             //Act
             sanctionFacade.CancelSanction(IntIterator.GetNextId());
@@ -122,7 +125,7 @@ namespace EduHubTests.FacadesTests
         public void GetAllSanctionsOfModerator_GetRightList()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
             var user1 = _accountFacade.RegUser("not admin", Credentials.FromRawData("user1@email.ru", "password"), false);
             var user2 = _accountFacade.RegUser("not admin", Credentials.FromRawData("user2@email.ru", "password"), false);
@@ -146,7 +149,7 @@ namespace EduHubTests.FacadesTests
         public void TryToGetAllSanctionsOfNotModerator_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
             //Act
             var actual = sanctionFacade.GetAllOfModerator(_testUserId).ToList();
@@ -156,7 +159,7 @@ namespace EduHubTests.FacadesTests
         public void GetAllSanctionsOfUser_GetRightList()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToJoinGroup);
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
@@ -175,7 +178,7 @@ namespace EduHubTests.FacadesTests
         public void CheckActivityOfExpiredSanction_GetInactiveSanction()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             var sanctionId = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, 
                 SanctionType.NotAllowToEditProfile, DateTimeOffset.Now.AddMilliseconds(1));
 

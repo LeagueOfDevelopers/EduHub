@@ -9,6 +9,8 @@ using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.NotificationService;
+using Moq;
 
 namespace EduHubTests
 {
@@ -21,6 +23,7 @@ namespace EduHubTests
         private ISanctionRepository _sanctionRepository;
         private IUserEditFacade _userEditFacade;
         private IUserFacade _userFacade;
+        private Mock<IEventPublisher> _publisher;
 
         [TestInitialize]
         public void Initialize()
@@ -35,9 +38,10 @@ namespace EduHubTests
             var adminKey = new Key("adminEmail", KeyAppointment.BecomeModerator);
             keysRepository.AddKey(adminKey);
             var accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender);
-            
+
+            _publisher = new Mock<IEventPublisher>();
             _userEditFacade = new UserEditFacade(_userRepository, fileRepository, _sanctionRepository);
-            _userFacade = new UserFacade(_userRepository, groupRepository, keysRepository);
+            _userFacade = new UserFacade(_userRepository, groupRepository, keysRepository, _publisher.Object);
 
             _adminId = accountFacade.RegUser("admin", Credentials.FromRawData("adminEmail", "password"), false, adminKey.Value);
             _testUserId = accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
@@ -208,7 +212,7 @@ namespace EduHubTests
         public void TryToEditNameWithSanctions_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
@@ -220,7 +224,7 @@ namespace EduHubTests
         public void TryToEditAboutUserWithSanctions_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
@@ -232,7 +236,7 @@ namespace EduHubTests
         public void TryToEditGenderWithSanctions_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
@@ -244,7 +248,7 @@ namespace EduHubTests
         public void TryToEditAvatarLinkWithSanctions_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
@@ -256,7 +260,7 @@ namespace EduHubTests
         public void TryToEditBirthYearWithSanctions_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
@@ -268,7 +272,7 @@ namespace EduHubTests
         public void TryToEditContactsWithSanctions_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
@@ -280,7 +284,7 @@ namespace EduHubTests
         public void TryToBecomeTeacherWithSanctions_GetException()
         {
             //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository);
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToTeach);
 
             //Act
