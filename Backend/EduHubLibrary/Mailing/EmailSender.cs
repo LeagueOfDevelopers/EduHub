@@ -1,4 +1,6 @@
 ﻿using EduHubLibrary.Settings;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace EduHubLibrary.Mailing
 {

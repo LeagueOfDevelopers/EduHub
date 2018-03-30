@@ -241,6 +241,10 @@ namespace EduHub
                     options.AddPolicy("ModeratorsOnly",
                         new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                             .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Moderator).Build());
+
+                    options.AddPolicy("AdminAndModeratorsOnly",
+                        new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                        .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Admin, Claims.Roles.Moderator).Build());
                 });
         }
     }

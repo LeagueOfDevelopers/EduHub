@@ -33,13 +33,6 @@ namespace EduHubLibrary.Domain.NotificationService
             _userRepository.GetUserById(userId).AddNotify("");
         }
 
-        public void NotifyMembers(int groupId, IEventInfo eventInfo)
-        {
-            _groupRepository.GetGroupById(groupId).Members.Where(m => m.MemberRole.Equals(MemberRole.Member) || 
-                m.MemberRole.Equals(MemberRole.Creator)).ToList().ForEach(m => _userRepository.GetUserById(m.UserId)
-                .AddNotify(""));
-        }
-
         public void NotifyTeacher(int groupId, IEventInfo eventInfo)
         {
             var teacherId = _groupRepository.GetGroupById(groupId).Members.Find
