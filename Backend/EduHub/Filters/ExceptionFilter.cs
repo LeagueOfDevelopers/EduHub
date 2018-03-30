@@ -61,6 +61,9 @@ namespace EduHub.Filters
                 case ArgumentException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case UserIsNotTeacher exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {
