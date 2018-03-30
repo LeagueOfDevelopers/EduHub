@@ -16,16 +16,17 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectGroups } from "./selectors";
+import { makeSelectGroups } from "../GroupsPage/selectors";
 import reducer from '../GroupsPage/reducer';
 import saga from '../GroupsPage/saga';
-import { getGroups } from "../GroupsPage/actions";
+import { getFilteredGroups } from "../GroupsPage/actions";
 import {Link} from "react-router-dom";
 import { parseJwt } from "../../globalJS";
 import {Card, Col, Row, Button, message} from 'antd';
 import UnassembledGroupCard from 'components/UnassembledGroupCard';
 import AssembledGroupCard from 'components/AssembledGroupCard';
 import SigningInForm from 'containers/SigningInForm';
+import config from "../../config";
 
 const unassembledGroups = [
   {
@@ -62,7 +63,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     this.handleCancel = this.handleCancel.bind(this);
 
     this.state = {
-      signInVisible: false
+      signInVisible: false,
+      unassembledGroups: [],
+      assembledGroups: []
     }
   }
 
@@ -77,10 +80,24 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   componentDidMount() {
     if(localStorage.getItem('without_server') !== 'true') {
-      this.props.getUnassembledGroups();
-      this.props.getAssembledGroups();
+      this.getUnassembledGroups();
+      this.getAssembledGroups();
     }
   }
+
+  getUnassembledGroups = () => {
+    return fetch(`${config.API_BASE_URL}/group/search?type=Default&formed=false&minPrice=0&maxPrice=10000`)
+      .then(response => response.json())
+      .then(res => this.setState({unassembledGroups: res}))
+      .catch(error => error)
+  };
+
+  getAssembledGroups = () => {
+    return fetch(`${config.API_BASE_URL}/group/search?type=Default&formed=true&minPrice=0&maxPrice=10000`)
+      .then(response => response.json())
+      .then(res => this.setState({assembledGroups: res}))
+      .catch(error => error)
+  };
 
   handleCancel = () => {
     this.setState({signInVisible: false})
@@ -110,7 +127,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   :
                   (
                     <div className='cards-holder cards-holder-center'>
-                      {this.props.unassembledGroups.map((item, i) =>
+                      {this.state.unassembledGroups.map((item, i) =>
                         i < 8 ?
                           <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                             <UnassembledGroupCard {...item}/>
@@ -157,7 +174,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   :
                   (
                     <div className='cards-holder cards-holder-center'>
-                      {this.props.assembledGroups.map((item, i) =>
+                      {this.state.assembledGroups.map((item, i) =>
                         i < 8 ?
                           <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                             <AssembledGroupCard {...item}/>
@@ -206,24 +223,15 @@ HomePage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  unassembledGroups: makeSelectGroups('unassembledGroups'),
-  assembledGroups: makeSelectGroups('assembledGroups')
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUnassembledGroups: () => dispatch(getGroups('unassembledGroups')),
-    getAssembledGroups: () => dispatch(getGroups('assembledGroups'))
   };
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-const withReducer = injectReducer({ key: 'homePage', reducer });
-const withSaga = injectSaga({ key: 'homePage', saga });
-
 export default compose(
-  withReducer,
-  withSaga,
-  withConnect,
+  withConnect
 )(HomePage);

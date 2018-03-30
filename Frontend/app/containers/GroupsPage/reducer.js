@@ -6,29 +6,27 @@
 
 import { fromJS } from 'immutable';
 import {
-  GET_GROUPS_START,
-  GET_GROUPS_SUCCESS,
-  GET_GROUPS_ERROR
+  GET_FILTERED_GROUPS_START,
+  GET_FILTERED_GROUPS_SUCCESS,
+  GET_FILTERED_GROUPS_ERROR
 } from './constants';
 
 const initialState = fromJS({
-  unassembledGroups: [],
-  assembledGroups: [],
+  groups: [],
   pending: false,
   error: false
 });
 
 function groupsPageReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_GROUPS_START:
+    case GET_FILTERED_GROUPS_START:
       return state
-        .set('pending', true)
-        .set('error', false);
-    case GET_GROUPS_SUCCESS:
+        .set('pending', true);
+    case GET_FILTERED_GROUPS_SUCCESS:
       return state
         .set('pending', false)
-        .set(action.payload.groupsType, action.payload.groups);
-    case GET_GROUPS_ERROR:
+        .set('groups', action.groups);
+    case GET_FILTERED_GROUPS_ERROR:
       return state
         .set('pending', false)
         .set('error', action.payload);

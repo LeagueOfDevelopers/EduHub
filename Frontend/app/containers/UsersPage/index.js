@@ -16,7 +16,7 @@ import reducer from './reducer';
 import saga from './saga';
 import {Row, Col, Card} from 'antd';
 import UserCard from '../../components/UserCard';
-import FilterForm from '../../components/FilterForm';
+import FilterForm from '../../components/UsersFilterForm';
 
 const users = [
   {
@@ -60,6 +60,8 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
           >
             <span style={{color: '#000'}}>Сортировка</span>
           </Card>
+        </Col>
+        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}}>
           <FilterForm id='xs-filter' style={{width: '100%'}}/>
         </Col>
         <FilterForm id='lg-filter'/>

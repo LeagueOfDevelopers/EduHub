@@ -14,93 +14,82 @@ import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
 import {Link} from "react-router-dom";
-import { getGroups } from "./actions";
 import { makeSelectGroups } from "./selectors";
-import {Row, Col, Menu, Dropdown, Icon} from 'antd';
+import {Row, Col, Menu, Dropdown, Icon, Card} from 'antd';
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
-import AssembledGroupCard from "../../components/AssembledGroupCard/index";
+import FilterForm from '../../components/GroupsFilterForm';
 
 export class GroupsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
     this.state = {
-      title: 'Группы',
-      sortTitle: 'Сортировка',
-      arrow: 'down'
-    }
+      formed: this.props.match.params.groupsTitle === 'assembledGroups'
+    };
+
+    this.showFilterForm = this.showFilterForm.bind(this);
   }
-
-
-  sortMenu = (
-    <Menu>
-      <Menu.Item key="0">
-        <div onClick={() => this.setState({sortTitle: 'По возрастанию цены', arrow: 'up'})}>По возрастанию цены</div>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <div onClick={() => this.setState({sortTitle: 'По убыванию цены', arrow: 'down'})}>По убыванию цены</div>
-      </Menu.Item>
-    </Menu>
-  );
 
   componentDidMount() {
-    if(localStorage.getItem('without_server') !== 'true') {
-      this.props.getGroups(this.props.match.params.groupsTitle);
-      if(this.props.match.params.groupsTitle === 'unassembledGroups') {
-        this.setState({title: 'Идет набор'});
-      }
-      else if(this.props.match.params.groupsTitle === 'assembledGroups') {
-          this.setState({title: 'Набранные группы'});
-      }
-    }
+    // setTimeout(() => console.log(this.props.groups), 1000)
   }
+
+  showFilterForm = () => {
+    document.getElementById('xs-filter').style.display === 'block' ?
+      document.getElementById('xs-filter').style.display = 'none'
+      : document.getElementById('xs-filter').style.display = 'block'
+  };
 
   render() {
     return (
-      <Col span={20} offset={2} style={{marginTop: 40}}>
-        <Row type='flex' justify='space-between' align='middle'>
-          <Col xs={{span: 24}} sm={{span: 12}} style={{fontSize: 24}}>{this.state.title}</Col>
-
-        </Row>
-        <Row className='cards-holder cards-holder-center font-size-20' style={{marginTop: 60, marginBottom: 160}}>
-          {this.props.match.params.groupsTitle === 'unassembledGroups' ?
-            this.props.unassembledGroups.map((item) =>
-              <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                <UnassembledGroupCard {...item}/>
-              </Link>
-            )
-            :
-            this.props.match.params.groupsTitle === 'assembledGroups' ?
-              this.props.assembledGroups.map((item) =>
+      <Row style={{marginTop: 40}}>
+        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} onClick={this.showFilterForm} className='filter-btn' style={{height: 50}}>
+          <Card
+            hoverable
+            style={{cursor: 'pointer', width: '100%', height: '100%'}}
+          >
+            <span style={{color: '#000'}}>Сортировка</span>
+          </Card>
+        </Col>
+        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}}>
+          <FilterForm id='xs-filter' formed={this.state.formed} style={{width: '100%'}}/>
+        </Col>
+        <FilterForm id='lg-filter' formed={this.state.formed}/>
+        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 12, offset: 1}} xl={{span: 13, offset: 1}} xxl={{span: 14, offset: 1}} className='groups-content'>
+          <Row type='flex' justify='space-between' align='middle'>
+            <h3 style={{marginBottom: 0}}>Группы</h3>
+          </Row>
+          <Row className='cards-holder font-size-20' style={{marginTop: 28, marginBottom: 160}}>
+            {this.props.groups && this.props.groups.length && this.props.groups.length !== 0 ?
+              this.props.groups.map((item) =>
                 <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
-                  <AssembledGroupCard {...item}/>
+                  <UnassembledGroupCard {...item}/>
                 </Link>
-              ) : null
-          }
-        </Row>
-      </Col>
+              )
+              : <div>Нет результатов</div>
+            }
+          </Row>
+        </Col>
+      </Row>
     );
   }
 }
 
 GroupsPage.defaultProps = {
-  title: 'Группы',
-  unassembledGroups: [],
-  assembledGroups: []
+  groups: []
 };
 
 GroupsPage.propTypes = {
-  dispatch: PropTypes.func,
+
 };
 
 const mapStateToProps = createStructuredSelector({
-  unassembledGroups: makeSelectGroups('unassembledGroups'),
-  assembledGroups: makeSelectGroups('assembledGroups')
+  groups: makeSelectGroups()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getGroups: (typeOfGroups) => dispatch(getGroups(typeOfGroups)),
+
   };
 }
 

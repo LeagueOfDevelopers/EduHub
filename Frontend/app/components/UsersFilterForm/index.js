@@ -13,7 +13,7 @@ import { getFilteredUsers } from "../../containers/UsersPage/actions";
 import {Row, Col, Card, Input, Select, Radio, Checkbox, Divider} from 'antd';
 
 
-class FilterForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class UsersFilterForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
@@ -36,29 +36,33 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
     this.onHandleTeacherRateEndChange = this.onHandleTeacherRateEndChange.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getFilteredUsers(this.state);
+  }
+
   onHandleNameChange = (e) => {
     this.setState({name: e.target.value});
-    this.props.getFilteredUsers(this.state);
+    setTimeout(() => this.props.getFilteredUsers(this.state), 0);
   };
 
   onHandleRoleChange = (e) => {
     this.setState({wantToTeach: e.target.checked});
-    this.props.getFilteredUsers(this.state);
+    setTimeout(() => this.props.getFilteredUsers(this.state), 0);
   };
 
   onHandleSkillsChange = (e) => {
     this.setState({tags: e});
-    this.props.getFilteredUsers(this.state);
+    setTimeout(() => this.props.getFilteredUsers(this.state), 0);
   };
 
   onHandleTeacherExperienceChange = (e) => {
     this.setState({teacherExperience: e.target.value});
-    this.props.getFilteredUsers(this.state);
+    setTimeout(() => this.props.getFilteredUsers(this.state), 0);
   };
 
   onHandleStudentExperienceChange = (e) => {
     this.setState({userExperience: e.target.value});
-    this.props.getFilteredUsers(this.state);
+    setTimeout(() => this.props.getFilteredUsers(this.state), 0);
   };
 
   onHandleTeacherRateStartChange = (e) => {
@@ -143,7 +147,7 @@ class FilterForm extends React.Component { // eslint-disable-line react/prefer-s
   }
 }
 
-FilterForm.propTypes = {
+UsersFilterForm.propTypes = {
 
 };
 
@@ -157,4 +161,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersFilterForm);

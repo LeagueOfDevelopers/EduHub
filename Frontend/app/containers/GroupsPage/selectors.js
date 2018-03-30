@@ -9,9 +9,9 @@ const selectGroupsPageDomain = (state) => state.get('groupsPage');
  * Other specific selectors
  */
 
-const makeSelectGroups = (groupsType) => createSelector(
+const makeSelectGroups = () => createSelector(
   selectGroupsPageDomain,
-  (homeState) => homeState.get(groupsType)
+  (groupsState) => groupsState.get('groups')
 );
 /**
  * Default selector used by GroupsPage

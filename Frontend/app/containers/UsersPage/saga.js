@@ -14,7 +14,7 @@ function* getFilteredUsersSaga(action) {
 }
 
 function getFilteredUsers(filters) {
-  return fetch(`${config.API_BASE_URL}/users/search?wantToTeach=false&teacherExperience=Default&userExperience=Default`, {
+  return fetch(`${config.API_BASE_URL}/users/search?wantToTeach=${filters.wantToTeach}&teacherExperience=${filters.teacherExperience}&userExperience=${filters.userExperience}${filters.name !== '' ? `&name=${filters.name}` : ''}${filters.tags.length !== 0 ? filters.tags.map(item => `&tags=${item}`).join('') : ''}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json-patch+json',

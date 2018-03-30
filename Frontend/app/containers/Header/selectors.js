@@ -10,7 +10,13 @@ const makeSelectUsers = () => createSelector(
   (headerState) => headerState.get('users')
 );
 
+const makeSelectGroups = () => createSelector(
+  selectHeaderDomain,
+  (headerState) => headerState.get('groups')
+);
+
 export {
   selectHeaderDomain,
-  makeSelectUsers
+  makeSelectUsers,
+  makeSelectGroups
 };

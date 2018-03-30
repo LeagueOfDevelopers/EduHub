@@ -113,7 +113,9 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       genderInput: '',
       birthYearInput: '',
       aboutInput: '',
-      contactsInputs: []
+      contactsInputs: [],
+      userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
+      isCurrentUser: false
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -164,7 +166,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       genderInput: getGender(result.userProfile.gender),
       birthYearInput: result.userProfile.birthYear,
       aboutInput: result.userProfile.aboutUser,
-      contactsInputs: result.userProfile.contacts ? result.userProfile.contacts : []
+      contactsInputs: result.userProfile.contacts ? result.userProfile.contacts : [],
+      isCurrentUser: Boolean(this.props.match.params.id == this.state.userData.UserId)
     });
   };
 
@@ -251,7 +254,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                       : this.state.userProfile.name}
                   </span>
                   </Col>
-                  {localStorage.getItem('token') && !this.state.isEditing && parseJwt(localStorage.getItem('token')).UserId == this.state.id ?
+                  {!this.state.isEditing && this.state.isCurrentUser ?
                     <Col span={3} style={{textAlign: 'right'}}>
                       <img src={require('../../images/edit.svg')} onClick={() => this.setState({isEditing: true})} style={{width: 20, cursor: 'pointer'}}/>
                     </Col>
@@ -303,7 +306,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                             <Link to="#" key={item}>{item}</Link>
                           )
                           :
-                          !this.state.isEditing ? (
+                          !this.state.isEditing && this.state.isCurrentUser ? (
                               <div>
                                 <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
                                 <span onClick={() => this.setState({isEditing: true})} style={{color: '#52c41a', marginTop: 4, cursor: 'pointer'}}>
@@ -382,28 +385,34 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 : null
               }
             </Card>
-            <Link to='/create_group'>
-              <Button type='primary' size='large' style={{width: '100%', marginTop: 20, minWidth: 280}}>Создать группу</Button>
-            </Link>
-            {!this.state.teacherProfile ?
-              <Button
-                type='primary'
-                onClick={() => {
-                  this.props.makeTeacher();
-                }}
-                style={{width: '100%', marginTop: 12, minWidth: 280}}
-              >
-                Стать преподавателем
-              </Button>
-              :
-              <Button
-                onClick={() => {
-                  this.props.makeNotTeacher();
-                }}
-                style={{width: '100%', marginTop: 12, minWidth: 280}}
-              >
-                Стать учеником
-              </Button>
+            {
+              this.state.isCurrentUser ?
+                <Link to='/create_group'>
+                  <Button type='primary' size='large' style={{width: '100%', marginTop: 20, minWidth: 280}}>Создать группу</Button>
+                </Link>
+                : null
+            }
+            {this.state.isCurrentUser ?
+              !this.state.teacherProfile ?
+                <Button
+                  type='primary'
+                  onClick={() => {
+                    this.props.makeTeacher();
+                  }}
+                  style={{width: '100%', marginTop: 12, minWidth: 280}}
+                >
+                  Стать преподавателем
+                </Button>
+                :
+                <Button
+                  onClick={() => {
+                    this.props.makeNotTeacher();
+                  }}
+                  style={{width: '100%', marginTop: 12, minWidth: 280}}
+                >
+                  Стать учеником
+                </Button>
+              : null
             }
           </Col>
           <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>

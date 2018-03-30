@@ -26,6 +26,7 @@ import GroupsPage from '../../containers/GroupsPage';
 import RegistrationSuccessPage from '../../containers/RegistrationSuccessPage';
 import RegistrationAcceptedPage from '../../containers/RegistrationAcceptedPage';
 import UsersPage from '../../containers/UsersPage';
+import AdminPage from '../../containers/AdminPage';
 
 export default class App extends React.Component{
   render() {
@@ -47,6 +48,7 @@ export default class App extends React.Component{
             <Route path='/registration_success' component={RegistrationSuccessPage}/>
             <Route path='/registration_accepted/:key' component={RegistrationAcceptedPage}/>
             <Route path='/users' component={UsersPage}/>
+            <Route path='/admin' component={AdminPage}/>
             <Route path='' component={NotFoundPage} />
           </Switch>
         </ScrollFix>

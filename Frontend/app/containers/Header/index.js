@@ -10,8 +10,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectUsers} from './selectors';
-import {getUsers} from "./actions";
+import {makeSelectUsers, makeSelectGroups} from './selectors';
+import {getUsers, getGroups} from "./actions";
 import reducer from './reducer';
 import saga from './saga';
 import styled from 'styled-components';
@@ -98,7 +98,9 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
 
   handleSelectChange = (value) => {
     this.setState({searchValue: value});
-    setTimeout(() => this.props.getUsers(this.state.searchValue), 0);
+    // setTimeout(() => this.props.getUsers(this.state.searchValue), 0);
+    // setTimeout(() => this.props.getGroups(this.state.searchValue), 0);
+    // console.log(this.props.groups)
   };
 
   render() {
@@ -150,21 +152,23 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
               )}
             </OptGroup>
             <OptGroup key='2' label={
-              this.props.groups.length > selectItemsCount ?
+              this.props.groups && this.props.groups.length && this.props.groups.length > selectItemsCount ?
                 (<div>
                   <Col span={12}>
                     Группы
                   </Col>
                   <Col span={12} style={{textAlign: 'right'}}>
-                    <Link to='#'>Показать больше</Link>
+                    <Link to='/groups'>Показать больше</Link>
                   </Col>
                 </div>) : (<div>Группы</div>)
             }>
               {this.props.groups.map((item, i) =>
-                i < selectItemsCount ? <Option key={item.title}>
-                  <div>{item.title}</div>
-                  <div>{item.tags.map(tag => <Link to="" style={{marginRight: 6}}>{tag}</Link>)}</div>
-                </Option> : null
+                i < selectItemsCount ?
+                  <Option key={item.title}>
+                    <div>{item.title}</div>
+                    <div>{item.tags.map(tag => <Link to="" style={{marginRight: 6}}>{tag}</Link>)}</div>
+                  </Option>
+                  : null
               )}
             </OptGroup>
           </Select>
@@ -234,12 +238,14 @@ Header.defaultProps = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  users: makeSelectUsers()
+  users: makeSelectUsers(),
+  groups: makeSelectGroups()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUsers: (name) => dispatch(getUsers(name))
+    getUsers: (name) => dispatch(getUsers(name)),
+    getGroups: (title) => dispatch(getGroups(title))
   };
 }
 

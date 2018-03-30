@@ -5,28 +5,28 @@
  */
 
 import {
-  GET_GROUPS_START,
-  GET_GROUPS_SUCCESS,
-  GET_GROUPS_ERROR
+  GET_FILTERED_GROUPS_ERROR,
+  GET_FILTERED_GROUPS_START,
+  GET_FILTERED_GROUPS_SUCCESS
 } from './constants';
 
-export const getGroups = (groupsType) => (
+export const getFilteredGroups = (filters) => (
   {
-    type: GET_GROUPS_START,
-    groupsType
+    type: GET_FILTERED_GROUPS_START,
+    filters
   }
 )
 
-export const getGroupsSuccess = (data) => (
+export const getFilteredGroupsSuccess = (groups) => (
   {
-    type: GET_GROUPS_SUCCESS,
-    payload: data
+    type: GET_FILTERED_GROUPS_SUCCESS,
+    groups
   }
 )
 
-export const getGroupsError = (error) => (
+export const getFilteredGroupsError = (error) => (
   {
-    type: GET_GROUPS_ERROR,
+    type: GET_FILTERED_GROUPS_ERROR,
     payload: error
   }
 )
