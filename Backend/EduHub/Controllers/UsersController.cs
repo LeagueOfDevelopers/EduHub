@@ -6,6 +6,7 @@ using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using EduHub.Extensions;
 
 namespace EduHub.Controllers
 {
@@ -85,11 +86,13 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpPost]
-        [Route("{userId}/report")]
+        [Route("{suspectedId}/report")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult Report([FromRoute] int userId)
+        public IActionResult Report([FromBody] ReportRequest request, [FromRoute] int suspectedId)
         {
+            var userId = Request.GetUserId();
+            _userFacade.Report(userId, suspectedId, request.BrokenRule);
             return Ok();
         }
     }

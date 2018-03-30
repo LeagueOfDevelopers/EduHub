@@ -20,7 +20,7 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Applies sanctions for user
         /// </summary>
-        [Authorize]
+        [Authorize(Policy = "AdminAndModeratorsOnly")]
         [HttpPost]
         [Route("{userId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
@@ -47,7 +47,7 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Anulls sanction
         /// </summary>
-        [Authorize]
+        [Authorize(Policy = "AdminAndModeratorsOnly")]
         [HttpDelete]
         [Route("{sanctionId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]

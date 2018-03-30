@@ -38,7 +38,8 @@ namespace EduHubLibrary.Mailing
 
                 client.Send(message);
                 client.Disconnect(true);
-            }*/
+            }
+            */
         }
     }
 }
