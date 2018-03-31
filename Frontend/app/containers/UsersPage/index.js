@@ -17,6 +17,7 @@ import saga from './saga';
 import {Row, Col, Card} from 'antd';
 import UserCard from '../../components/UserCard';
 import FilterForm from '../../components/UsersFilterForm';
+import {getQueryVariable} from "../../globalJS";
 
 const users = [
   {
@@ -36,6 +37,10 @@ const users = [
 export class UsersPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
+
+    this.state = {
+      name: getQueryVariable('name')
+    };
 
     this.showFilterForm = this.showFilterForm.bind(this);
   }
@@ -62,9 +67,9 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
           </Card>
         </Col>
         <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}}>
-          <FilterForm id='xs-filter' style={{width: '100%'}}/>
+          <FilterForm id='xs-filter' name={this.state.name} style={{width: '100%'}}/>
         </Col>
-        <FilterForm id='lg-filter'/>
+        <FilterForm name={this.state.name} id='lg-filter'/>
         <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 11, offset: 2}} xl={{span: 12, offset: 2}} xxl={{span: 13, offset: 2}} className='users-content'>
           <Row style={{marginBottom: 28}}><h3 style={{marginBottom: 0}}>Пользователи</h3></Row>
           {localStorage.getItem('without_server') !== 'true' ?

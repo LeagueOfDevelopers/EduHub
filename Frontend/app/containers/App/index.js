@@ -43,7 +43,7 @@ export default class App extends React.Component{
             <Route exact path='/profile/:id' component={ProfilePage}/>
             <Route exact path='/group/:id' component={GroupPage}/>
             <Route path='/group/:id/:review' component={GroupPage}/>
-            <Route path='/groups/:groupsTitle' component={GroupsPage}/>
+            <Route path='/groups' component={GroupsPage}/>
             <Route path='/profile/:id/notifications' component={NotificationPage}/>
             <Route path='/registration_success' component={RegistrationSuccessPage}/>
             <Route path='/registration_accepted/:key' component={RegistrationAcceptedPage}/>

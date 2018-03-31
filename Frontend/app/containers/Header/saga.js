@@ -15,12 +15,7 @@ function* getUsersSaga(action) {
 }
 
 function getUsers(name) {
-  return fetch(`${config.API_BASE_URL}/users/search/${name}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json-patch+json'
-    }
-  })
+  return fetch(`${config.API_BASE_URL}/users/search/${name}`)
     .then(res => res.json())
     .then(res => res)
     .catch(error => error)

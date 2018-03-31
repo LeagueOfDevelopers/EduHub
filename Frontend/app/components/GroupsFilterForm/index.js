@@ -18,7 +18,7 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
     super(props);
 
     this.state = {
-      title: '',
+      title: this.props.title,
       type: 'Default',
       formed: this.props.formed,
       tags: [],

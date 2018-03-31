@@ -25,7 +25,7 @@ const Logo = styled.div`
   font-size: 36px;
 `;
 
-const selectItemsCount = 4;
+const selectItemsCount = 3;
 
 class Header extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -98,9 +98,8 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
 
   handleSelectChange = (value) => {
     this.setState({searchValue: value});
-    // setTimeout(() => this.props.getUsers(this.state.searchValue), 0);
-    // setTimeout(() => this.props.getGroups(this.state.searchValue), 0);
-    // console.log(this.props.groups)
+    this.props.getUsers(value);
+    this.props.getGroups(value);
   };
 
   render() {
@@ -124,52 +123,63 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             defaultActiveFirstOption={false}
             showArrow={false}
             onChange={this.handleSelectChange}
-            onSelect={() => {
-              setTimeout(() => this.setState({searchValue: ''}), 0)
-            }}
           >
-            <OptGroup key='1' label={
-                this.props.users.length > selectItemsCount ?
-                (<div>
-                  <Col span={12}>
-                    Пользователи
-                  </Col>
-                  <Col span={12} style={{textAlign: 'right'}}>
-                    <Link to='/users'>Показать больше</Link>
-                  </Col>
-                </div>) : (<div>Пользователи</div>)
-            }>
-              {this.props.users.map((item, i) =>
-                i < selectItemsCount ?
-                  <Option className='search-option-item' key={item.name}>
-                    <Link
-                      className='search-user-link'
-                      to={`/profile/${item.id}`}
-                    >
-                      <div>{item.name}</div>
-                    </Link>
-                  </Option> : null
-              )}
+            <OptGroup key={1} label={(
+              <Col>
+                <Col span={12}>Пользователи</Col>
+                <Col span={12} style={{textAlign: 'right'}}><Link to={`/users${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Показать больше</Link></Col>
+              </Col>
+            )}>
+              {
+                this.props.users.map((item, index) =>
+                  index < selectItemsCount ?
+                    <Option className='search-option-item' key={item.name}>
+                      <Link
+                        className='search-user-link'
+                        to={`/profile/${item.id}`}
+                        style={{display: 'flex', alignItems: 'center'}}
+                      >
+                        <Avatar
+                          src={localStorage.getItem('avatarLink')}
+                          size='large'
+                          style={{
+                            backgroundColor: "#f0f0f0",
+                            color: "rgba(0,0,0,0.65)",
+                            marginRight: 10
+
+                          }}
+                        />
+                        <Col>
+                          <div>{item.name}</div>
+                          <div style={{fontSize: 12, opacity: 0.6}}>{item.email}</div>
+                        </Col>
+                      </Link>
+                    </Option>
+                    : ''
+                )
+              }
             </OptGroup>
-            <OptGroup key='2' label={
-              this.props.groups && this.props.groups.length && this.props.groups.length > selectItemsCount ?
-                (<div>
-                  <Col span={12}>
-                    Группы
-                  </Col>
-                  <Col span={12} style={{textAlign: 'right'}}>
-                    <Link to='/groups'>Показать больше</Link>
-                  </Col>
-                </div>) : (<div>Группы</div>)
-            }>
-              {this.props.groups.map((item, i) =>
-                i < selectItemsCount ?
-                  <Option key={item.title}>
-                    <div>{item.title}</div>
-                    <div>{item.tags.map(tag => <Link to="" style={{marginRight: 6}}>{tag}</Link>)}</div>
-                  </Option>
-                  : null
-              )}
+            <OptGroup key={2} label={(
+              <Col>
+                <Col span={12}>Группы</Col>
+                <Col span={12} style={{textAlign: 'right'}}><Link to={`/groups${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Показать больше</Link></Col>
+              </Col>
+            )}>
+              {
+                this.props.groups.map((item, index) =>
+                  index < selectItemsCount ?
+                    <Option className='search-option-item' key={item.groupInfo.title}>
+                      <Link
+                        className='search-user-link'
+                        to={`/group/${item.groupInfo.id}`}
+                      >
+                        <div>{item.groupInfo.title}</div>
+                        <div>{item.groupInfo.tags.map(tag => <Link to="" key={tag} style={{marginRight: 6}}>{tag}</Link>)}</div>
+                      </Link>
+                    </Option>
+                    : ''
+                )
+              }
             </OptGroup>
           </Select>
           <Icon type="search" className='search'
@@ -180,7 +190,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             <Dropdown overlay={this.acc_menu} trigger={['click']}>
               <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
                 <Avatar
-                  src={localStorage.getItem('avatarLink')}
+                  src={(localStorage.getItem('avatarLink'))}
                   size='large'
                   style={{
                     backgroundColor: "#fff",

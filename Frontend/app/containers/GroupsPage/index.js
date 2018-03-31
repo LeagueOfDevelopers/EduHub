@@ -13,6 +13,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
+import { getQueryVariable } from "../../globalJS";
 import {Link} from "react-router-dom";
 import { makeSelectGroups } from "./selectors";
 import {Row, Col, Menu, Dropdown, Icon, Card} from 'antd';
@@ -24,14 +25,15 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
     super(props);
 
     this.state = {
-      formed: this.props.match.params.groupsTitle === 'assembledGroups'
+      formed: getQueryVariable('formed') === 'true',
+      title: getQueryVariable('name')
     };
 
     this.showFilterForm = this.showFilterForm.bind(this);
   }
 
   componentDidMount() {
-    // setTimeout(() => console.log(this.props.groups), 1000)
+
   }
 
   showFilterForm = () => {
@@ -52,9 +54,9 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
           </Card>
         </Col>
         <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}}>
-          <FilterForm id='xs-filter' formed={this.state.formed} style={{width: '100%'}}/>
+          <FilterForm id='xs-filter' title={this.state.title} formed={this.state.formed} style={{width: '100%'}}/>
         </Col>
-        <FilterForm id='lg-filter' formed={this.state.formed}/>
+        <FilterForm id='lg-filter' title={this.state.title} formed={this.state.formed}/>
         <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 12, offset: 1}} xl={{span: 13, offset: 1}} xxl={{span: 14, offset: 1}} className='groups-content'>
           <Row type='flex' justify='space-between' align='middle'>
             <h3 style={{marginBottom: 0}}>Группы</h3>

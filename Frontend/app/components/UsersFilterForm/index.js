@@ -18,7 +18,7 @@ class UsersFilterForm extends React.Component { // eslint-disable-line react/pre
     super(props);
 
     this.state = {
-      name: '',
+      name: this.props.name,
       wantToTeach: false,
       tags: [],
       teacherExperience: 'Default',

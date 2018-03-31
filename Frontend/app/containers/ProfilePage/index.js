@@ -143,7 +143,6 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.needUpdate && !this.props.needUpdate) {
       this.getCurrentUser(this.state.id);
-      this.setState({needUpdate: false});
     }
   }
 

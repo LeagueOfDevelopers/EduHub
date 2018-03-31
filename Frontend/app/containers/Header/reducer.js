@@ -39,7 +39,7 @@ function headerReducer(state = initialState, action) {
     case GET_GROUPS_START:
       return state
         .set('pending', true)
-        .set('name', action.name);
+        .set('name', action.title);
     case GET_GROUPS_SUCCESS:
       return state
         .set('pending', false)
