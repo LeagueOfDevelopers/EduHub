@@ -13,5 +13,7 @@ namespace EduHubLibrary.Facades
         void EditBirthYear(int userId, int newYear);
         void BecomeTeacher(int userId);
         void StopToBeTeacher(int userId);
+        void EditProfile(int userId, string newName, string newAboutUser, Gender newGender, string newAvatarLink,
+            List<string> newContactData, int newYear);
     }
 }

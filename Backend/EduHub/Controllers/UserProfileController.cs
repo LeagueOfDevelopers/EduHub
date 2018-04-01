@@ -10,6 +10,7 @@ using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using EduHub.Models.UserProfileControllerModels;
 
 namespace EduHub.Controllers
 {
@@ -97,6 +98,21 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult RestoreProfile([FromRoute] int userId)
         {
+            return Ok();
+        }
+
+        /// <summary>
+        ///     Edites user's profile
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        public IActionResult EditProfile([FromBody] EditProfileRequest request)
+        {
+            var userId = Request.GetUserId();
+            _userEditFacade.EditProfile(userId, request.Name, request.AboutUser, request.Gender, request.AvatarLink,
+                request.Contacts, request.BirthYear);
             return Ok();
         }
 

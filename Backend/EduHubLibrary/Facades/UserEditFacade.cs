@@ -59,14 +59,14 @@ namespace EduHubLibrary.Facades
             if (newAvatarLink.Length == 0)
             {
                 currentUser.UserProfile.AvatarLink = newAvatarLink;
+                _userRepository.Update(currentUser);
                 return;
             }
 
             Ensure.Bool.IsTrue(_fileRepository.DoesFileExists(newAvatarLink),
                 nameof(EditAboutUser),
                 opt => opt.WithException(new FileDoesNotExistException()));
-
-
+            
             currentUser.UserProfile.AvatarLink = newAvatarLink;
             _userRepository.Update(currentUser);
         }
@@ -121,6 +121,39 @@ namespace EduHubLibrary.Facades
                     .Exists(s => s.Type.Equals(sanctionType) && s.IsActive), nameof(CheckSanctions),
                 opt => opt.WithException(
                     new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToEditProfile)));
+        }
+
+        public void EditProfile(int userId, string newName, string newAboutUser, Gender newGender, string newAvatarLink, 
+            List<string> newContactData, int newYear)
+        {
+            CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
+
+            var currentUser = _userRepository.GetUserById(userId);
+            currentUser.UserProfile.Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
+            currentUser.UserProfile.AboutUser = Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
+            currentUser.UserProfile.Gender = newGender;
+
+            if (newAvatarLink.Length == 0)
+            {
+                currentUser.UserProfile.AvatarLink = newAvatarLink;
+            }
+            else
+            {
+                Ensure.Bool.IsTrue(_fileRepository.DoesFileExists(newAvatarLink), nameof(EditAboutUser),
+                    opt => opt.WithException(new FileDoesNotExistException()));
+                currentUser.UserProfile.AvatarLink = newAvatarLink;
+            }
+
+            Ensure.Any.IsNotNull(newContactData);
+            if (newContactData.TrueForAll(d => !string.IsNullOrWhiteSpace(d)))
+                currentUser.UserProfile.Contacts = newContactData;
+            else throw new ArgumentException();
+
+            if (newYear > 1900 && newYear < DateTimeOffset.Now.Year || newYear == 0)
+                currentUser.UserProfile.BirthYear = newYear;
+            else throw new IndexOutOfRangeException();
+
+            _userRepository.Update(currentUser);
         }
     }
 }

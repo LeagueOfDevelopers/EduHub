@@ -97,7 +97,7 @@ namespace EduHubTests
 
         [TestMethod]
         [ExpectedException(typeof(FileDoesNotExistException))]
-        public void EditAvatarLinkOfUser_GetUserWithEditedAvatarLink()
+        public void EditAvatarLinkOfUserWithNotExistingLink_GetException()
         {
             //Arrange
             var testUser = _userFacade.GetUser(_testUserId);
@@ -105,11 +105,6 @@ namespace EduHubTests
 
             //Act
             _userEditFacade.EditAvatarLink(_testUserId, newAvatarLink);
-            var actualAvatarLink = testUser.UserProfile.AvatarLink;
-
-            //Assert
-            Assert.AreEqual(newAvatarLink, actualAvatarLink);
-            Assert.AreEqual(newAvatarLink, _userFacade.GetUser(_testUserId).UserProfile.AvatarLink);
         }
 
         [TestMethod]
@@ -289,6 +284,48 @@ namespace EduHubTests
 
             //Act
             _userEditFacade.BecomeTeacher(_testUserId);
+        }
+
+        [TestMethod]
+        public void EditProfileWithValidValues_GetEditedProfile()
+        {
+            //Arrange
+            var testUser = _userFacade.GetUser(_testUserId);
+            var newName = "NewName";
+            var newAbout = "NewAbout";
+            var newGender = Gender.Woman;
+            var newAvatarLink = "";
+            var newContactData = new List<string> { "new1", "new2" };
+            var newBirthYear = 1998;
+
+            //Act
+            _userEditFacade.EditProfile(_testUserId, newName, newAbout, newGender, newAvatarLink, newContactData, newBirthYear);
+
+            //Assert
+            Assert.AreEqual(newName, testUser.UserProfile.Name);
+            Assert.AreEqual(newAbout, testUser.UserProfile.AboutUser);
+            Assert.AreEqual(newGender, testUser.UserProfile.Gender);
+            Assert.AreEqual(newContactData.Count, testUser.UserProfile.Contacts.Count);
+            Assert.AreEqual(newBirthYear, testUser.UserProfile.BirthYear);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void EditProfileWithInvalidContactData_GetException()
+        {
+            //Arrange
+            var newContactData = new List<string> { "new", " " };
+
+            //Act
+            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", newContactData, 1998);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(IndexOutOfRangeException))]
+        public void EditProfileWithInvalidBirthYear_GetException()
+        {
+            //Act
+            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", new List<string> { "new" }, 1899);
         }
     }
 }
