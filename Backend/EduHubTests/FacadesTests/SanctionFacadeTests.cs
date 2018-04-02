@@ -188,5 +188,29 @@ namespace EduHubTests.FacadesTests
             //Assert
             Assert.AreEqual(false, sanctionFacade.GetAll().ToList()[0].IsActive);
         }
+
+        [TestMethod]
+        public void GetAllActiveSanctionsOfUser_GetRightResult()
+        {
+            //Arrange
+            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
+
+            var sanctionId1 =  sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile,
+                DateTimeOffset.Now.AddMilliseconds(1));
+            var sanctionId2 = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile,
+                DateTimeOffset.Now.AddMilliseconds(1));
+            var sanctionId3 = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile,
+                DateTimeOffset.Now.AddMilliseconds(1));
+
+            sanctionFacade.CancelSanction(sanctionId3);
+
+            //Act
+            var result = sanctionFacade.GetAllActiveOfUser(_testUserId).ToList();
+
+            //Assert
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(sanctionId1, result[0].Id);
+            Assert.AreEqual(sanctionId2, result[1].Id);
+        }
     }
 }

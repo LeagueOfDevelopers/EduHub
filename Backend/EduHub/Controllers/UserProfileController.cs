@@ -21,12 +21,15 @@ namespace EduHub.Controllers
         private readonly IGroupFacade _groupFacade;
         private readonly IUserEditFacade _userEditFacade;
         private readonly IUserFacade _userFacade;
+        private readonly ISanctionFacade _sanctionFacade;
 
-        public UserProfileController(IUserFacade userFacade, IGroupFacade groupFacade, IUserEditFacade userEditFacade)
+        public UserProfileController(IUserFacade userFacade, IGroupFacade groupFacade, IUserEditFacade userEditFacade,
+            ISanctionFacade sanctionFacade)
         {
             _userFacade = userFacade;
             _userEditFacade = userEditFacade;
             _groupFacade = groupFacade;
+            _sanctionFacade = sanctionFacade;
         }
 
         /// <summary>
@@ -310,10 +313,12 @@ namespace EduHub.Controllers
         public IActionResult GetProfile([FromRoute] int userId)
         {
             var user = _userFacade.GetUser(userId);
+            var sanctions = _sanctionFacade.GetAllActiveOfUser(userId).ToList();
+        
             ProfileResponse response;
             var userProfile = new UserProfileModel(user.UserProfile.Name, user.UserProfile.Email,
                 user.UserProfile.AboutUser, user.UserProfile.BirthYear, user.UserProfile.Gender,
-                user.UserProfile.IsTeacher, user.UserProfile.AvatarLink, user.UserProfile.Contacts);
+                user.UserProfile.IsTeacher, user.UserProfile.AvatarLink, user.UserProfile.Contacts, sanctions);
             if (user.UserProfile.IsTeacher)
             {
                 var reviews = new List<ReviewModel>();

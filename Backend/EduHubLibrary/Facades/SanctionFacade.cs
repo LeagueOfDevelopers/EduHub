@@ -7,6 +7,7 @@ using EduHubLibrary.Infrastructure;
 using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Events;
+using System.Linq;
 
 namespace EduHubLibrary.Facades
 {
@@ -72,6 +73,14 @@ namespace EduHubLibrary.Facades
         public IEnumerable<Sanction> GetAll()
         {
             return _sanctionRepository.GetAll();
+        }
+
+        public IEnumerable<Sanction> GetAllActiveOfUser(int userId)
+        {
+            Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(GetAllOfUser),
+                opt => opt.WithException(new UserNotFoundException(userId)));
+
+            return _sanctionRepository.GetAllOfUser(userId).Where(s => s.IsActive);
         }
 
         public IEnumerable<Sanction> GetAllOfModerator(int moderatorId)
