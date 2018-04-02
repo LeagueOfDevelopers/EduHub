@@ -195,12 +195,9 @@ namespace EduHubTests.FacadesTests
             //Arrange
             var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
-            var sanctionId1 =  sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile,
-                DateTimeOffset.Now.AddMilliseconds(1));
-            var sanctionId2 = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile,
-                DateTimeOffset.Now.AddMilliseconds(1));
-            var sanctionId3 = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile,
-                DateTimeOffset.Now.AddMilliseconds(1));
+            var sanctionId1 =  sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+            var sanctionId2 = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+            var sanctionId3 = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             sanctionFacade.CancelSanction(sanctionId3);
 
