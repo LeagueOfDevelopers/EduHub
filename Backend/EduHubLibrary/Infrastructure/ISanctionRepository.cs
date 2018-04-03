@@ -9,7 +9,7 @@ namespace EduHubLibrary.Infrastructure
         Sanction Get(int id);
         IEnumerable<Sanction> GetAll();
         IEnumerable<Sanction> GetAllOfUser(int userId);
-        IEnumerable<Sanction> GetAllOfModerator(int moderatorId);
+        IEnumerable<Sanction> GetAllActive();
         void Update(Sanction sanction);
     }
 }

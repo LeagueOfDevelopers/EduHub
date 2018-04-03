@@ -122,7 +122,7 @@ namespace EduHubTests.FacadesTests
         }
 
         [TestMethod]
-        public void GetAllSanctionsOfModerator_GetRightList()
+        public void GetAllActiveSanctions_GetRightList()
         {
             //Arrange
             var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
@@ -133,47 +133,17 @@ namespace EduHubTests.FacadesTests
 
             sanctionFacade.AddSanction("some rule", user1, _adminId, SanctionType.NotAllowToJoinGroup);
             sanctionFacade.AddSanction("some rule", user2, _adminId, SanctionType.NotAllowToEditProfile);
-            sanctionFacade.AddSanction("some rule", user3, _adminId, SanctionType.NotAllowToTeach);
+            var canceledSanctionId = sanctionFacade.AddSanction("some rule", user3, _adminId, SanctionType.NotAllowToTeach);
+            sanctionFacade.CancelSanction(canceledSanctionId);
 
             //Act
-            var actual = sanctionFacade.GetAllOfModerator(_adminId).ToList();
+            var actual = sanctionFacade.GetAllActive().ToList();
 
             //Assert
             Assert.AreEqual(user1, actual[0].UserId);
             Assert.AreEqual(user2, actual[1].UserId);
-            Assert.AreEqual(user3, actual[2].UserId);
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(NotEnoughPermissionsException))]
-        public void TryToGetAllSanctionsOfNotModerator_GetException()
-        {
-            //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
-
-            //Act
-            var actual = sanctionFacade.GetAllOfModerator(_testUserId).ToList();
-        }
-
-        [TestMethod]
-        public void GetAllSanctionsOfUser_GetRightList()
-        {
-            //Arrange
-            var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
-
-            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToJoinGroup);
-            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
-            sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToTeach);
-
-            //Act
-            var actual = sanctionFacade.GetAllOfModerator(_adminId).ToList();
-
-            //Assert
-            Assert.AreEqual(SanctionType.NotAllowToJoinGroup, actual[0].Type);
-            Assert.AreEqual(SanctionType.NotAllowToEditProfile, actual[1].Type);
-            Assert.AreEqual(SanctionType.NotAllowToTeach, actual[2].Type);
-        }
-
+        
         [TestMethod]
         public void CheckActivityOfExpiredSanction_GetInactiveSanction()
         {

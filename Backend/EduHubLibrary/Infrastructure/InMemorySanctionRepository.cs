@@ -36,10 +36,10 @@ namespace EduHubLibrary.Infrastructure
             return _listOfSanctions;
         }
 
-        public IEnumerable<Sanction> GetAllOfModerator(int moderatorId)
+        public IEnumerable<Sanction> GetAllActive()
         {
             Update();
-            return _listOfSanctions.FindAll(s => s.ModeratorId == moderatorId);
+            return _listOfSanctions.FindAll(s => s.IsActive);
         }
 
         public IEnumerable<Sanction> GetAllOfUser(int userId)

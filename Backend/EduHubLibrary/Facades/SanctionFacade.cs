@@ -52,8 +52,7 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new UserNotFoundException(userId)));
             Ensure.Bool.IsTrue(_userRepository.GetUserById(moderatorId).Type.Equals(UserType.Moderator) ||
                                _userRepository.GetUserById(moderatorId).Type.Equals(UserType.Admin),
-                nameof(AddSanction),
-                opt => opt.WithException(new NotEnoughPermissionsException(moderatorId)));
+                nameof(AddSanction), opt => opt.WithException(new NotEnoughPermissionsException(moderatorId)));
 
             var sanction = new Sanction(brokenRule, userId, moderatorId, type, expirationDate);
             _sanctionRepository.Add(sanction);
@@ -83,14 +82,9 @@ namespace EduHubLibrary.Facades
             return _sanctionRepository.GetAllOfUser(userId).Where(s => s.IsActive);
         }
 
-        public IEnumerable<Sanction> GetAllOfModerator(int moderatorId)
+        public IEnumerable<Sanction> GetAllActive()
         {
-            Ensure.Bool.IsTrue(_userRepository.GetUserById(moderatorId).Type.Equals(UserType.Moderator) ||
-                               _userRepository.GetUserById(moderatorId).Type.Equals(UserType.Admin),
-                nameof(GetAllOfModerator),
-                opt => opt.WithException(new NotEnoughPermissionsException(moderatorId)));
-
-            return _sanctionRepository.GetAllOfModerator(moderatorId);
+            return _sanctionRepository.GetAllActive();
         }
 
         public IEnumerable<Sanction> GetAllOfUser(int userId)

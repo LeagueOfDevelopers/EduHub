@@ -15,6 +15,6 @@ namespace EduHubLibrary.Facades
         IEnumerable<Sanction> GetAll();
         IEnumerable<Sanction> GetAllOfUser(int userId);
         IEnumerable<Sanction> GetAllActiveOfUser(int userId);
-        IEnumerable<Sanction> GetAllOfModerator(int moderatorId);
+        IEnumerable<Sanction> GetAllActive();
     }
 }

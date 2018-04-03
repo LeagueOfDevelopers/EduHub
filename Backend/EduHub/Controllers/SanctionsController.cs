@@ -45,6 +45,33 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
+        ///     Get sanctions' history
+        /// </summary>
+        [Authorize(Policy = "AdminAndModeratorsOnly")]
+        [HttpGet]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        public IActionResult GetAll()
+        {
+            var response = _sanctionFacade.GetAll();
+            return Ok(response);
+        }
+
+        /// <summary>
+        ///     Get all moderators' sanctions
+        /// </summary>
+        [Authorize(Policy = "AdminAndModeratorsOnly")]
+        [HttpGet]
+        [Route("active")]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        public IActionResult GetAllActive()
+        {
+            var response = _sanctionFacade.GetAllActive();
+            return Ok(response);
+        }
+
+        /// <summary>
         ///     Anulls sanction
         /// </summary>
         [Authorize(Policy = "AdminAndModeratorsOnly")]

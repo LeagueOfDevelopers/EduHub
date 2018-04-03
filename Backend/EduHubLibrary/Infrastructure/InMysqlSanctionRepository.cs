@@ -65,11 +65,11 @@ namespace EduHubLibrary.Infrastructure
             }
         }
 
-        public IEnumerable<Sanction> GetAllOfModerator(int moderatorId)
+        public IEnumerable<Sanction> GetAllActive()
         {
             using (var context = new EduhubContext(_connectionString))
             {
-                var sanctionDto = context.Sanctions.Where(s => s.ModeratorId == moderatorId).ToList();
+                var sanctionDto = context.Sanctions.Where(s => s.IsActive).ToList();
                 var result = new List<Sanction>();
                 sanctionDto.ForEach(dto => result.Add(SanctionExtensions.ParseFromSanctionDto(dto)));
                 return result;
