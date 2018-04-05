@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.user.eduhub.MainActivity">
+    tools:context="com.example.user.eduhub.ru.example.user.eduhub.MainActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
