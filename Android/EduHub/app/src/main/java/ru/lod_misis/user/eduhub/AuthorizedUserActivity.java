@@ -16,19 +16,22 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
 import com.example.user.eduhub.R;
 
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
+import ru.lod_misis.user.eduhub.Fragments.CommonFragmentForNotifications;
 import ru.lod_misis.user.eduhub.Fragments.FindGroupsFragment;
 import ru.lod_misis.user.eduhub.Fragments.MainFragment;
-import ru.lod_misis.user.eduhub.Fragments.NotificationFragment;
+import ru.lod_misis.user.eduhub.Fragments.InvitationFragment;
 import ru.lod_misis.user.eduhub.Fragments.ProfileFragment;
 import ru.lod_misis.user.eduhub.Fragments.UsersGroupsFragment;
 import ru.lod_misis.user.eduhub.Interfaces.View.IFileRepositoryView;
@@ -90,6 +93,8 @@ public class AuthorizedUserActivity extends AppCompatActivity
             user=savedDataRepository.loadSavedData(sPref);
             bool=savedDataRepository.loadCheckButtonResult(sPref);
             fakesButton.setCheckButton(bool);
+            ProgressBar progressBar=findViewById(R.id.progressBar);
+            progressBar.setVisibility(View.VISIBLE);
             refreshTokenPresenter.refreshToken(savedDataRepository.loadSavedData(sPref).getToken());
             if(sPref.contains(AVATARLINK)){
                 Log.d("AvatarLink",user.getAvatarLink());
@@ -209,9 +214,9 @@ public class AuthorizedUserActivity extends AppCompatActivity
         } else if (id == R.id.settings) {
 
         } else if (id == R.id.notification) {
-            NotificationFragment notificationFragment=new NotificationFragment();
+             CommonFragmentForNotifications commonFragmentForNotifications=new CommonFragmentForNotifications();
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_fragments_conteiner,notificationFragment);
+            fragmentTransaction.replace(R.id.main_fragments_conteiner,commonFragmentForNotifications);
 
             fragmentTransaction.commit();
 
@@ -333,5 +338,19 @@ public class AuthorizedUserActivity extends AppCompatActivity
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragments_conteiner,findGroupsFragment);
         fragmentTransaction.commit();}
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.main_fragments_conteiner)).commit();
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
     }
 }

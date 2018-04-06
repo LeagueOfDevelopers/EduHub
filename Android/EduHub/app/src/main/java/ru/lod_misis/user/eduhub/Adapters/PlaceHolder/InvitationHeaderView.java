@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +15,7 @@ import ru.lod_misis.user.eduhub.Fakes.FakesButton;
 import ru.lod_misis.user.eduhub.GroupActivity;
 import ru.lod_misis.user.eduhub.Interfaces.View.IChangeStatusOfInvitationView;
 import ru.lod_misis.user.eduhub.Models.Group.Group;
-import ru.lod_misis.user.eduhub.Models.Invitation;
+import ru.lod_misis.user.eduhub.Models.Notivications.Invitation;
 import ru.lod_misis.user.eduhub.Models.User;
 import ru.lod_misis.user.eduhub.Presenters.СhangeStatusOfInvitationPresenter;
 import com.example.user.eduhub.R;
@@ -63,7 +64,7 @@ public class InvitationHeaderView implements IChangeStatusOfInvitationView {
     FakeChangeStatusOfInvitation fakeChangeStatusOfInvitation=new FakeChangeStatusOfInvitation(this);
     Dialog dialog;
 
-    public InvitationHeaderView(Context context, Invitation heading, Activity activity, User user,Group group) {
+    public InvitationHeaderView(Context context, Invitation heading, Activity activity, User user, Group group) {
         this.context = context;
         this.heading=heading;
         this.user=user;
@@ -167,8 +168,9 @@ public class InvitationHeaderView implements IChangeStatusOfInvitationView {
 
     @Override
     public void Possitive() {
+        Log.d("groupId",group.getGroupInfo().getId());
         Intent intent = new Intent(activity, GroupActivity.class);
-        intent.putExtra("group",(Serializable)group);
+        intent.putExtra("groupId",(Serializable)group);
         activity.startActivity(intent);
     }
 

@@ -26,7 +26,7 @@ public class EmptyInvitationsView {
     private int mParentPosition;
     @Resolve
     private void onResolved() {
-        emptyMessage.setText("Здесь будут уведомления");
+        emptyMessage.setText("Здесь будут приглашения");
     }
     @Expand
     private void onExpand(){

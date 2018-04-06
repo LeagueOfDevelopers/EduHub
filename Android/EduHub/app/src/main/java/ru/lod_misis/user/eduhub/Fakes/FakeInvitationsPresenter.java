@@ -1,8 +1,8 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
-import ru.lod_misis.user.eduhub.Interfaces.Presenters.IInvitationsPresenter;
-import ru.lod_misis.user.eduhub.Interfaces.View.IInvitationsView;
-import ru.lod_misis.user.eduhub.Models.Invitation;
+import ru.lod_misis.user.eduhub.Interfaces.Presenters.INotificationsPresenter;
+import ru.lod_misis.user.eduhub.Interfaces.View.INotificationsView;
+import ru.lod_misis.user.eduhub.Models.Notivications.Invitation;
 
 import java.util.ArrayList;
 
@@ -10,12 +10,12 @@ import java.util.ArrayList;
  * Created by User on 02.02.2018.
  */
 
-public class FakeInvitationsPresenter implements IInvitationsPresenter {
-    IInvitationsView invitationsView;
+public class FakeInvitationsPresenter implements INotificationsPresenter {
+    INotificationsView invitationsView;
     Invitation invitation=new Invitation();
     ArrayList<Invitation> invitations=new ArrayList<>();
 
-    public FakeInvitationsPresenter(IInvitationsView invitationsView) {
+    public FakeInvitationsPresenter(INotificationsView invitationsView) {
         this.invitationsView = invitationsView;
     }
 
@@ -34,6 +34,11 @@ public class FakeInvitationsPresenter implements IInvitationsPresenter {
         }
         invitationsView.getInvitations(invitations);
         invitationsView.stopLoading();
+
+    }
+
+    @Override
+    public void getAllNotifications(String token) {
 
     }
 }

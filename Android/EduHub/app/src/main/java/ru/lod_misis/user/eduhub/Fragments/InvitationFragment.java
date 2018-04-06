@@ -17,13 +17,14 @@ import ru.lod_misis.user.eduhub.Fakes.FakeGroupInformationPresenter;
 import ru.lod_misis.user.eduhub.Fakes.FakeInvitationsPresenter;
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
 import ru.lod_misis.user.eduhub.Interfaces.View.IGroupView;
-import ru.lod_misis.user.eduhub.Interfaces.View.IInvitationsView;
+import ru.lod_misis.user.eduhub.Interfaces.View.INotificationsView;
 import ru.lod_misis.user.eduhub.Models.Group.Group;
-import ru.lod_misis.user.eduhub.Models.Invitation;
+import ru.lod_misis.user.eduhub.Models.Notivications.Invitation;
+import ru.lod_misis.user.eduhub.Models.Notivications.Notification;
 import ru.lod_misis.user.eduhub.Models.SavedDataRepository;
 import ru.lod_misis.user.eduhub.Models.User;
 import ru.lod_misis.user.eduhub.Presenters.GroupInformationPresenter;
-import ru.lod_misis.user.eduhub.Presenters.InvitationsPresenter;
+import ru.lod_misis.user.eduhub.Presenters.NotificationsPresenter;
 import com.example.user.eduhub.R;
 import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 
@@ -35,9 +36,9 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by User on 01.02.2018.
  */
 
-public class NotificationFragment extends Fragment implements IInvitationsView,IGroupView {
+public class InvitationFragment extends Fragment implements INotificationsView,IGroupView{
     ExpandablePlaceHolderView expandablePlaceHolderView;
-    InvitationsPresenter invitationsPresenter=new InvitationsPresenter(this);
+    NotificationsPresenter invitationsPresenter=new NotificationsPresenter(this);
     User user;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     FakeInvitationsPresenter fakeInvitationsPresenter=new FakeInvitationsPresenter(this);
@@ -111,18 +112,24 @@ public class NotificationFragment extends Fragment implements IInvitationsView,I
     }
 
     @Override
+    public void getAllNotifications(ArrayList<Notification> invitations) {
+
+    }
+    @Override
     public void getInformationAboutGroup(Group group) {
 
         groups.add(group);
         groups.get(i).getGroupInfo().setId(invitations.get(i).getGroupId());
         Log.d("groups",groups.size()+"");
 
-            expandablePlaceHolderView.addView(new InvitationHeaderView(getContext(),invitations.get(i),getActivity(),user,groups.get(i)));
-            expandablePlaceHolderView.addView(new InvetationItemView(getContext(),groups.get(i),getActivity()));
+        expandablePlaceHolderView.addView(new InvitationHeaderView(getContext(),invitations.get(i),getActivity(),user,groups.get(i)));
+        expandablePlaceHolderView.addView(new InvetationItemView(getContext(),groups.get(i),getActivity()));
         i++;
 
 
     }
+
+
 }
 
 

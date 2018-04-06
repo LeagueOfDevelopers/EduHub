@@ -1,4 +1,4 @@
-package ru.lod_misis.user.eduhub.Models;
+package ru.lod_misis.user.eduhub.Models.Notivications;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -26,15 +26,52 @@ public class Invitation {
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("fromUserName")
+    @SerializedName("FromUserName")
     @Expose
     private String fromUserName;
-    @SerializedName("toUserName")
+    @SerializedName("ToUserName")
     @Expose
     private String toUserName;
-    @SerializedName("toGroupTitle")
+    @SerializedName("ToGroupTitle")
     @Expose
-    private String toGroupTotle;
+    private String toGroupTitle;
+    private String title;
+    private int type;
+    private String text;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getToGroupTitle() {
+        return toGroupTitle;
+    }
+
+    public void setToGroupTitle(String toGroupTitle) {
+        this.toGroupTitle = toGroupTitle;
+    }
+
+
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getStatus() {
         return status;

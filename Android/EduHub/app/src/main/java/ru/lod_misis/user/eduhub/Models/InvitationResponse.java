@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import ru.lod_misis.user.eduhub.Models.Notivications.Invitation;
+
 /**
  * Created by User on 01.02.2018.
  */

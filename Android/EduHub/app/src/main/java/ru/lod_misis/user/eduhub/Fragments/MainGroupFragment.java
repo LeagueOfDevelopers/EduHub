@@ -43,6 +43,7 @@ public class MainGroupFragment extends Fragment {
     User user;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     Toolbar toolbar;
+
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {

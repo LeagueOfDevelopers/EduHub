@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -78,15 +79,19 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
     RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
     User user;
     RelativeLayout relativeLayout;
+    FrameLayout load;
     Activity v=this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_another_profile);
+        Intent intent=getIntent();
+        String id=intent.getStringExtra("id");
         sharedPreferences =getSharedPreferences("User",MODE_PRIVATE);
         user=savedDataRepository.loadSavedData(sharedPreferences);
         ImageButton backButton=findViewById(R.id.back);
-        relativeLayout=v.findViewById(R.id.window);
+        relativeLayout=findViewById(R.id.window);
+
         avatar=v.findViewById(R.id.avatar);
         userName=v.findViewById(R.id.name_user_profile);
         userEmail=v.findViewById(R.id.email_user_profile);
@@ -94,6 +99,7 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
         userEmail2=v.findViewById(R.id.email_user_profile2);
         status=v.findViewById(R.id.status);
         sex=v.findViewById(R.id.sex);
+
         birthYear=v.findViewById(R.id.birth_year);
         aboutMe=v.findViewById(R.id.aboutMe);
         refactor=v.findViewById(R.id.refactor);
@@ -104,14 +110,13 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
         exit=v.findViewById(R.id.exit);
 
         Toolbar toolbar=findViewById(R.id.toolbar);
-        toolbar.setTitle("Мой профиль");
+
 
         Log.d("TOKEN",user.getToken());
         Log.d("CHECK BUTTON",fakesButton.getCheckButton().toString());
         expandablePlaceHolderView=v.findViewById(R.id.expandableView);
         expandablePlaceHolderView2=v.findViewById(R.id.expandableView2);
-        Intent intent=getIntent();
-        String id=intent.getStringExtra("id");
+
         if(!fakesButton.getCheckButton()){
             Log.d("TOKEN",user.getToken());
             userProfilePresenter.loadUserProfile(user.getToken(),id);}
@@ -170,8 +175,11 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
     @Override
     public void getUserProfile(UserProfileResponse userProfile) {
         {
+            Log.d("window",relativeLayout.toString());
+
             relativeLayout.setVisibility(View.VISIBLE);
-            Log.d("Role",userProfile.getUserProfile().getIsTeacher().toString());
+            Log.d("IsVisible",(relativeLayout.getVisibility())+"");
+            Log.d("Role12",userProfile.getUserProfile().getIsTeacher().toString());
             userEmail.setText(userProfile.getUserProfile().getEmail());
             userEmail2.setText(userProfile.getUserProfile().getEmail());
             userName.setText(userProfile.getUserProfile().getName());

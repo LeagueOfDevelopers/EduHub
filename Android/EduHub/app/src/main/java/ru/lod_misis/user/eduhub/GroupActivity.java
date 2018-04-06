@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.example.user.eduhub.R;
 
@@ -35,6 +37,7 @@ import okhttp3.ResponseBody;
 public class GroupActivity extends AppCompatActivity
         implements  IFragmentsActivities,IGroupView,IFileRepositoryView,ICourseMethodsView {
     Group group;
+    String groupId;
     FragmentTransaction transaction;
     MainGroupFragment mainGroupFragment;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
@@ -47,15 +50,19 @@ public class GroupActivity extends AppCompatActivity
     CourseMethodsPresenter addCourseMethodsPresenter=new CourseMethodsPresenter(this);
     FileRepository fileRepository=new FileRepository(this,this);
     ImageButton back;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         Intent intent=getIntent();
         group=(Group) intent.getSerializableExtra("group") ;
+
          back=findViewById(R.id.back);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
+        ProgressBar progressBar=findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         setSupportActionBar(toolbar);
         sPref=getSharedPreferences("User",MODE_PRIVATE);
 

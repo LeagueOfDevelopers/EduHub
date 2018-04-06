@@ -18,6 +18,7 @@ import ru.lod_misis.user.eduhub.Models.GroupChangeInviteStatusResponse;
 import ru.lod_misis.user.eduhub.Models.InvitationResponse;
 import ru.lod_misis.user.eduhub.Models.InviteUserModel;
 import ru.lod_misis.user.eduhub.Models.LoginModel;
+import ru.lod_misis.user.eduhub.Models.Notivications.Notifications;
 import ru.lod_misis.user.eduhub.Models.Registration.RegistrationModel2;
 import ru.lod_misis.user.eduhub.Models.SearchModel;
 import ru.lod_misis.user.eduhub.Models.User;
@@ -141,4 +142,6 @@ public interface EduHubApi {
                                        @Query("type") String type,@Query("formed") Boolean formed);
     @GET("/api/group/search")
     Observable<List<Group>> findGroupsWithOutFilters(@Query("title") String title);
+    @GET("api/user/profile/notifications")
+    Observable<List<Notifications>> loadAllNotifications(@Header("Authorization") String token);
 }
