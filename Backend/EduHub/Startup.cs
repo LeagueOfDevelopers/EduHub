@@ -51,6 +51,7 @@ namespace EduHub
             ITagRepository tagRepository;
             IUserRepository userRepository;
             ISanctionRepository sanctionRepository;
+            IEventRepository eventRepository;
 
             if (bool.Parse(Configuration.GetValue<string>("UseDB")))
             {
@@ -70,6 +71,7 @@ namespace EduHub
                 tagRepository = new InMysqlTagRepository(dbContext);
                 userRepository = new InMysqlUserRepository(dbContext);
                 sanctionRepository = new InMysqlSanctionRepository(dbContext);
+                eventRepository = new InMemoryEventRepository();
             }
             else
             {
@@ -79,6 +81,7 @@ namespace EduHub
                 tagRepository = new InMemoryTagRepository();
                 sanctionRepository = new InMemorySanctionRepository();
                 userRepository = new InMemoryUserRepository();
+                eventRepository = new InMemoryEventRepository();
             }
 
             var emailSettings = new EmailSettings(Configuration.GetValue<string>("EmailLogin"),
@@ -104,22 +107,29 @@ namespace EduHub
             var eventBus = new EventBus(eventBusSettings);
             eventBus.StartListening();
 
+            var adminsEventConsumer = new AdminsEventConsumer(notificationsDistributor, eventRepository);
+            var courseEventConsumer = new CourseEventConsumer(notificationsDistributor);
+            var curriculumEventConsumer = new CurriculumEventConsumer(notificationsDistributor);
+            var groupEventsConsumer = new GroupEventsConsumer(notificationsDistributor);
+            var invitationConsumer = new InvitationConsumer(notificationsDistributor);
+            var memberActionsConsumer = new MemberActionsConsumer(notificationsDistributor);
+
             eventBus.RegisterConsumer(new TagPopularityConsumer(tagFacade));
-            eventBus.RegisterConsumer<ReportMessageEvent>(new AdminsEventConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<SanctionsAppliedEvent>(new AdminsEventConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<TeacherFoundEvent>(new CourseEventConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<CourseFinishedEvent>(new CourseEventConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<ReviewReceivedEvent>(new CourseEventConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<CurriculumAcceptedEvent>(new CurriculumEventConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<CurriculumDeclinedEvent>(new CurriculumEventConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<CurriculumSuggestedEvent>(new CurriculumEventConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<NewCreatorEvent>(new GroupEventsConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<GroupIsFormedEvent>(new GroupEventsConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<InvitationAcceptedEvent>(new InvitationConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<InvitationDeclinedEvent>(new InvitationConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<InvitationReceivedEvent>(new InvitationConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<NewMemberEvent>(new MemberActionsConsumer(notificationsDistributor));
-            eventBus.RegisterConsumer<MemberLeftEvent>(new MemberActionsConsumer(notificationsDistributor));
+            eventBus.RegisterConsumer<ReportMessageEvent>(adminsEventConsumer);
+            eventBus.RegisterConsumer<SanctionsAppliedEvent>(adminsEventConsumer);
+            eventBus.RegisterConsumer<TeacherFoundEvent>(courseEventConsumer);
+            eventBus.RegisterConsumer<CourseFinishedEvent>(courseEventConsumer);
+            eventBus.RegisterConsumer<ReviewReceivedEvent>(courseEventConsumer);
+            eventBus.RegisterConsumer<CurriculumAcceptedEvent>(curriculumEventConsumer);
+            eventBus.RegisterConsumer<CurriculumDeclinedEvent>(curriculumEventConsumer);
+            eventBus.RegisterConsumer<CurriculumSuggestedEvent>(curriculumEventConsumer);
+            eventBus.RegisterConsumer<NewCreatorEvent>(groupEventsConsumer);
+            eventBus.RegisterConsumer<GroupIsFormedEvent>(groupEventsConsumer);
+            eventBus.RegisterConsumer<InvitationAcceptedEvent>(invitationConsumer);
+            eventBus.RegisterConsumer<InvitationDeclinedEvent>(invitationConsumer);
+            eventBus.RegisterConsumer<InvitationReceivedEvent>(invitationConsumer);
+            eventBus.RegisterConsumer<NewMemberEvent>(memberActionsConsumer);
+            eventBus.RegisterConsumer<MemberLeftEvent>(memberActionsConsumer);
 
             var publisher = eventBus.GetEventPublisher();
 
@@ -131,6 +141,7 @@ namespace EduHub
             var chatFacade = new ChatFacade(groupRepository);
             var sanctionsFacade = new SanctionFacade(sanctionRepository, userRepository, publisher);
             var userAccountFacade = new AccountFacade(keysRepository, userRepository, emailSender);
+            var reportFacade = new ReportFacade(userRepository, eventRepository, publisher);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);
             services.AddSingleton<IFileFacade>(fileFacade);
@@ -140,6 +151,7 @@ namespace EduHub
             services.AddSingleton<ITagFacade>(tagFacade);
             services.AddSingleton<ISanctionFacade>(sanctionsFacade);
             services.AddSingleton<IAccountFacade>(userAccountFacade);
+            services.AddSingleton<IReportFacade>(reportFacade);
             services.AddSingleton(Env);
 
             //userAccountFacade.CheckAdminExistence(Configuration.GetValue<string>("AdminEmail"));

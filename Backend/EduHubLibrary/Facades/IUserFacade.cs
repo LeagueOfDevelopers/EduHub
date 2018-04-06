@@ -15,13 +15,12 @@ namespace EduHubLibrary.Facades
         void Invite(int inviterId, int invitedId, int groupId, MemberRole suggestedRole);
         IEnumerable<Invitation> GetAllInvitationsForUser(int userId);
         IEnumerable<Group> GetAllGroupsOfUser(int userId);
-
+        IEnumerable<User> GetAllModerators(int callerId);
         IEnumerable<User> FindUser(string name, bool isTeacher, List<string> requiredTags, int minTeacherGroups,
             int minUserGroups);
 
         IEnumerable<User> FindByName(string name);
         IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId);
         IEnumerable<Event> GetNotifies(int userId);
-        void Report(int senderId, int suspectedId, string brokenRule);
     }
 }

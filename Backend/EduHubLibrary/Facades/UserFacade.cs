@@ -192,11 +192,10 @@ namespace EduHubLibrary.Facades
             return result;
         }
 
-        public void Report(int senderId, int suspectedId, string brokenRule)
+        public IEnumerable<User> GetAllModerators(int callerId)
         {
-            var sender = _userRepository.GetUserById(senderId);
-            var suspected = _userRepository.GetUserById(suspectedId);
-            _publisher.PublishEvent(new ReportMessageEvent(sender.UserProfile.Name, suspected.UserProfile.Name, brokenRule));
+            return _userRepository.GetAll().Where(u =>
+            (u.Type.Equals(UserType.Moderator) || u.Type.Equals(UserType.Admin)) && u.Id != callerId);
         }
     }
 }

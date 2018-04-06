@@ -7,6 +7,8 @@ using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace EduHub.Controllers
 {
@@ -152,18 +154,39 @@ namespace EduHub.Controllers
             _userAccountFacade.ChangePassword(newPassword, key);
             return Ok();
         }
-        
+
         /// <summary>
         ///     Send token for registration to new moderator
         /// </summary>
         [Authorize(Policy ="AdminOnly")]
         [HttpPost]
-        [Route("moderator")]
+        [Route("moderators")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult SendTokenToModerator([FromBody] string email)
         {
             _userAccountFacade.SendTokenToModerator(email);
             return Ok();
+        }
+
+        /// <summary>
+        ///     Get current moderators and admin
+        /// </summary>
+        [HttpGet]
+        [Authorize(Policy = "AdminAndModeratorsOnly")]
+        [Route("moderators")]
+        [SwaggerResponse(200, Type = typeof(MinUserResponse))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        public IActionResult GetAllModerators()
+        {
+            var userId = Request.GetUserId();
+            var moderators = _userFacade.GetAllModerators(userId);
+
+            var items = new List<MinItemUserResponse>();
+            moderators.ToList().ForEach(u => items.Add(new MinItemUserResponse(u.Id, u.UserProfile.Name,
+                u.UserProfile.Email, u.UserProfile.IsTeacher, u.IsActive, u.UserProfile.AvatarLink)));
+            var response = new MinUserResponse(items);
+
+            return Ok(response);
         }
     }
 }

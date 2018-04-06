@@ -8,14 +8,17 @@ namespace EduHubLibrary.Domain.Consumers
 {
     public class AdminsEventConsumer : IEventConsumer<ReportMessageEvent>, IEventConsumer<SanctionsAppliedEvent>
     {
-        public AdminsEventConsumer(INotificationsDistributor distributor)
+        public AdminsEventConsumer(INotificationsDistributor distributor, IEventRepository eventRepository)
         {
             _distributor = distributor;
+            _eventRepository = eventRepository;
         }
 
         public void Consume(ReportMessageEvent @event)
         {
             _distributor.NotifyAdmins(@event);
+
+            _eventRepository.AddEvent(new Event(@event));
         }
 
         public void Consume(SanctionsAppliedEvent @event)
@@ -25,5 +28,6 @@ namespace EduHubLibrary.Domain.Consumers
         }
 
         private readonly INotificationsDistributor _distributor;
+        private readonly IEventRepository _eventRepository;
     }
 }

@@ -15,10 +15,12 @@ namespace EduHub.Controllers
     public class UsersController : Controller
     {
         private readonly IUserFacade _userFacade;
+        private readonly IReportFacade _reportFacade;
 
-        public UsersController(IUserFacade userFacade)
+        public UsersController(IUserFacade userFacade, IReportFacade reportFacade)
         {
             _userFacade = userFacade;
+            _reportFacade = reportFacade;
         }
 
         /// <summary>
@@ -82,7 +84,7 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     Reports user somehow (for now)
+        ///     Reports user (for now)
         /// </summary>
         [Authorize]
         [HttpPost]
@@ -92,7 +94,7 @@ namespace EduHub.Controllers
         public IActionResult Report([FromBody] ReportRequest request, [FromRoute] int suspectedId)
         {
             var userId = Request.GetUserId();
-            _userFacade.Report(userId, suspectedId, request.BrokenRule);
+            _reportFacade.Report(userId, suspectedId, request.BrokenRule);
             return Ok();
         }
     }

@@ -1,5 +1,6 @@
 ﻿using EduHub.Extensions;
 using EduHub.Models.Tools;
+using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,7 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize(Policy = "AdminAndModeratorsOnly")]
         [HttpGet]
+        [SwaggerResponse(200, Type = typeof(Sanction))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult GetAll()
@@ -63,6 +65,7 @@ namespace EduHub.Controllers
         [Authorize(Policy = "AdminAndModeratorsOnly")]
         [HttpGet]
         [Route("active")]
+        [SwaggerResponse(200, Type = typeof(Sanction))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult GetAllActive()

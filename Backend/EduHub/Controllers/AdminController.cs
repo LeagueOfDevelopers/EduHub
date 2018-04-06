@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Facades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -9,6 +11,13 @@ namespace EduHub.Controllers
     [Route("api/administrate")]
     public class AdminController : Controller
     {
+        private readonly IReportFacade _reportFacade;
+
+        public AdminController(IReportFacade reportFacade)
+        {
+            _reportFacade = reportFacade;
+        }
+
         /// <summary>
         ///     Generates invitation for admin account
         /// </summary>
@@ -43,6 +52,17 @@ namespace EduHub.Controllers
         public IActionResult DeleteAdmin([FromRoute] int userId)
         {
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("reports")]
+        [SwaggerResponse(200, Type = typeof(Event))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        public IActionResult GetAllReports()
+        {
+            var response = _reportFacade.GetAll();
+            return Ok(response);
         }
     }
 }
