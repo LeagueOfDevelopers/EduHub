@@ -19,5 +19,10 @@ namespace EduHubLibrary.Domain.Events
         public string GroupTitle { get; }
         public string ExCreatorUsername { get; }
         public string NewCreatorUsername { get; }
+
+        public override EventType GetEventType()
+        {
+            return EventType.NewCreator;
+        }
     }
 }

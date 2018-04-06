@@ -17,5 +17,10 @@ namespace EduHubLibrary.Domain.Events
         public string SenderName { get; }
         public string SuspectedName { get; }
         public string BrokenRule { get; }
+
+        public override EventType GetEventType()
+        {
+            return EventType.ReportMessage;
+        }
     }
 }

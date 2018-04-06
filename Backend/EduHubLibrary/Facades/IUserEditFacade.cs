@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.NotificationService.UserSettings;
 
 namespace EduHubLibrary.Facades
 {
@@ -15,5 +17,6 @@ namespace EduHubLibrary.Facades
         void StopToBeTeacher(int userId);
         void EditProfile(int userId, string newName, string newAboutUser, Gender newGender, string newAvatarLink,
             List<string> newContactData, int newYear);
+        void ConfigureNotificationsSettings(int userId, EventType configuringNotification, NotificationValue newValue);
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.NotificationService.UserSettings;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Infrastructure;
 using EnsureThat;
@@ -153,6 +155,13 @@ namespace EduHubLibrary.Facades
                 currentUser.UserProfile.BirthYear = newYear;
             else throw new IndexOutOfRangeException();
 
+            _userRepository.Update(currentUser);
+        }
+
+        public void ConfigureNotificationsSettings(int userId, EventType configuringNotification, NotificationValue newValue)
+        {
+            var currentUser = _userRepository.GetUserById(userId);
+            currentUser.NotificationsSettings.ConfigureSettings(configuringNotification, newValue);
             _userRepository.Update(currentUser);
         }
     }

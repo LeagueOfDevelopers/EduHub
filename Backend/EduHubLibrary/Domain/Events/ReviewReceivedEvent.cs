@@ -19,5 +19,10 @@ namespace EduHubLibrary.Domain.Events
         public int GroupId { get; }
         public string ReviewerName { get; }
         public string ReviewType { get; }
+
+        public override EventType GetEventType()
+        {
+            return EventType.ReviewReceived;
+        }
     }
 }

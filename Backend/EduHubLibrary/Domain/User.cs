@@ -6,6 +6,8 @@ using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.NotificationService.UserSettings;
+using EduHubLibrary.Domain.Events;
 
 [assembly: InternalsVisibleTo("EventBusTests")]
 
@@ -25,6 +27,7 @@ namespace EduHubLibrary.Domain
             Invitations = new List<Invitation>();
             Notifies = new List<string>();
             Notifications = new List<Event>();
+            NotificationsSettings = new NotificationsSettings();
         }
 
         /*private User()
@@ -66,6 +69,7 @@ namespace EduHubLibrary.Domain
         public List<Invitation> Invitations { get; }
         public List<string> Notifies { get; }
         public List<Event> Notifications { get; }
+        public NotificationsSettings NotificationsSettings { get; }
 
         public void ConfigureTeacherProfile(List<string> skills)
         {
@@ -132,6 +136,11 @@ namespace EduHubLibrary.Domain
         {
             var newCredentials = Credentials.FromRawData(Credentials.Email, newPassword);
             Credentials = newCredentials;
+        }
+
+        internal void ConfigureNotificationsSettings(EventType configuringEvent, NotificationValue newValue)
+        {
+                NotificationsSettings.ConfigureSettings(configuringEvent, newValue);
         }
     }
 }

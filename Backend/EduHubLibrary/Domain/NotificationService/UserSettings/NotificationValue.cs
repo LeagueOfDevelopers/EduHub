@@ -9,6 +9,7 @@ namespace EduHubLibrary.Domain.NotificationService.UserSettings
         Default = 0,
         DontSend = 1,
         ToMail = 2,
-        OnSite = 3
+        OnSite = 3,
+        Everywhere = 4
     }
 }

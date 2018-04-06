@@ -17,5 +17,10 @@ namespace EduHubLibrary.Domain.Events
         public string BrokenRule { get; }
         public SanctionType SanctionType { get; }
         public int UserId { get; }
+
+        public override EventType GetEventType()
+        {
+            return EventType.SanctionsApplied;
+        }
     }
 }

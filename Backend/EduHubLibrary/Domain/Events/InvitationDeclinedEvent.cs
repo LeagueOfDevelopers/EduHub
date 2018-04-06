@@ -17,5 +17,10 @@ namespace EduHubLibrary.Domain.Events
         public string GroupTitle { get; }
         public string InvitedName { get; }
         public int SenderId { get; }
+
+        public override EventType GetEventType()
+        {
+            return EventType.InvitationDeclined;
+        }
     }
 }

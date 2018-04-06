@@ -10,10 +10,12 @@ namespace EduHubLibrary.Domain.NotificationService
             Id = Guid.NewGuid();
             OccurredOn = DateTimeOffset.Now;
             EventInfo = JsonConvert.SerializeObject(eventInfo);
+            EventType = eventInfo.GetEventType();
         }
 
         public Guid Id { get; }
         public DateTimeOffset OccurredOn { get; }
         public string EventInfo { get; }
+        public EventType EventType { get; }
     }
 }

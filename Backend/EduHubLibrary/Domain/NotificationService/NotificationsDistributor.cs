@@ -5,15 +5,17 @@ using System.Text;
 using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Facades;
+using EduHubLibrary.Mailing;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
     public class NotificationsDistributor : INotificationsDistributor
     {
-        public NotificationsDistributor(IGroupRepository groupRepository, IUserRepository userRepository)
+        public NotificationsDistributor(IGroupRepository groupRepository, IUserRepository userRepository, EmailSender sender)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
+            _sender = sender;
         }
 
         public void NotifyAdmins(IEventInfo eventInfo)
@@ -43,5 +45,6 @@ namespace EduHubLibrary.Domain.NotificationService
 
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
+        private readonly EmailSender _sender;
     }
 }

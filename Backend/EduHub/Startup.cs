@@ -89,7 +89,8 @@ namespace EduHub
                 int.Parse(Configuration.GetValue<string>("SmtpPort")));
 
             var tagFacade = new TagFacade(tagRepository);
-            var notificationsDistributor = new NotificationsDistributor(groupRepository, userRepository);
+            var emailSender = new EmailSender(emailSettings);
+            var notificationsDistributor = new NotificationsDistributor(groupRepository, userRepository, emailSender);
 
             var groupSettings = new GroupSettings(Configuration.GetValue<int>("MinGroupSize"),
                 Configuration.GetValue<int>("MaxGroupSize"),
@@ -122,7 +123,6 @@ namespace EduHub
 
             var publisher = eventBus.GetEventPublisher();
 
-            var emailSender = new EmailSender(emailSettings);
             var userFacade = new UserFacade(userRepository, groupRepository, keysRepository, publisher);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings, publisher);
             var userEditFacade = new UserEditFacade(userRepository, fileRepository, sanctionRepository);

@@ -10,5 +10,10 @@ namespace EduHubLibrary.Domain.Events
         }
 
         public string Tag { get; }
+
+        public override EventType GetEventType()
+        {
+            return EventType.UsingTag;
+        }
     }
 }

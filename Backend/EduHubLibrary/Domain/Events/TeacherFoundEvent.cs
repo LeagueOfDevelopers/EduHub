@@ -17,5 +17,10 @@ namespace EduHubLibrary.Domain.Events
         public string TeacherName { get; }
         public string GroupTitle { get; }
         public int GroupId { get; }
+
+        public override EventType GetEventType()
+        {
+            return EventType.TeacherFound;
+        }
     }
 }
