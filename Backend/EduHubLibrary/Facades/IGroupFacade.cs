@@ -16,7 +16,7 @@ namespace EduHubLibrary.Facades
         void AcceptCurriculum(int userId, int groupId);
         void DeclineCurriculum(int userId, int groupId, string reason);
         void OfferCurriculum(int userId, int groupId, string description);
-        IEnumerable<Group> GetGroups();
+        IEnumerable<MinGroupView> GetGroups();
         FullGroupView GetGroup(int id);
         IEnumerable<Group> FindByTags(IEnumerable<string> tags);
 

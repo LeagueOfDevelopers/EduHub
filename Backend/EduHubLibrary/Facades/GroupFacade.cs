@@ -185,9 +185,14 @@ namespace EduHubLibrary.Facades
             return _groupRepository.GetGroupById(id).Members;
         }
 
-        public IEnumerable<Group> GetGroups()
+        public IEnumerable<MinGroupView> GetGroups()
         {
-            return _groupRepository.GetAll();
+            var allGroups = _groupRepository.GetAll();
+            allGroups = allGroups.Where(g => g.Status != CourseStatus.Finished && !g.GroupInfo.IsPrivate).ToList();
+            var result = new List<MinGroupView>();
+            allGroups.ToList().ForEach(g => result.Add(new MinGroupView(g.GroupInfo.Id, g.GroupInfo.Title, g.Members.Count, g.GroupInfo.Size,
+                g.GroupInfo.Price, g.GroupInfo.GroupType, g.GroupInfo.Tags)));
+            return result;
         }
 
         public void AddInvitation(int groupId, Invitation invitation)

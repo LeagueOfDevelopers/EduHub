@@ -226,10 +226,9 @@ namespace EduHub.Controllers
             var fullGroupList = new List<MinItemGroupResponse>();
             groups.ToList().ForEach(g =>
             {
-                var memberAmount = _groupFacade.GetGroupMembers(g.GroupInfo.Id).ToList().Count;
-                var groupInfo = new MinGroupInfo(g.GroupInfo.Id, g.GroupInfo.Title, memberAmount, g.GroupInfo.Size,
-                    g.GroupInfo.Price, g.GroupInfo.GroupType, g.GroupInfo.Tags);
-                if (memberAmount == g.GroupInfo.Size)
+                var groupInfo = new MinGroupInfo(g.Id, g.Title, g.MemberAmount, g.Size,
+                    g.Cost, g.GroupType, g.Tags);
+                if (g.MemberAmount == g.Size)
                     fullGroupList.Add(new MinItemGroupResponse(groupInfo));
                 else
                     fillingGroupList.Add(new MinItemGroupResponse(groupInfo));
