@@ -25,5 +25,18 @@ namespace EduHub.Extensions
             var extension = Path.GetExtension(file.FileName);
             return allowedExtensions.Any(c => c.Equals(extension));
         }
+
+        public static bool IsImg(this string fileName)
+        {
+            var allowedExtensions = new List<string>
+            {
+                ".jpg",
+                ".jpeg",
+                ".png"
+            };
+
+            var extension = Path.GetExtension(fileName);
+            return allowedExtensions.Any(c => c.Equals(extension));
+        }
     }
 }
