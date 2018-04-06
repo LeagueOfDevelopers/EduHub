@@ -39,7 +39,8 @@ namespace EduHub.Controllers
 
             if (!file.IsSupportedFile()) throw new NotSupportedException();
 
-            var fileName = userId + "_" + Guid.NewGuid() + "_" + file.FileName;
+            var extension = Path.GetExtension(file.FileName);
+            var fileName = userId + "_" + Guid.NewGuid() + extension;
             var uploadPath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
             var filePath = Path.Combine(uploadPath, fileName);
@@ -56,6 +57,26 @@ namespace EduHub.Controllers
         }
 
         [HttpGet]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(200, Type = typeof(File))]
+        [Route("img/{filename}")]
+        public IActionResult GetImg([FromRoute] string filename)
+        {
+            var file = _fileFacade.GetFile(filename);
+
+            if (!file.Filename.IsImg())
+            {
+                return Unauthorized();
+            }
+
+            var downloadPath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+            var filePath = Path.Combine(downloadPath, file.Filename);
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(fileBytes, file.ContentType);
+        }
+
+        [HttpGet]
+        [Authorize]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(200, Type = typeof(File))]
         [Route("{filename}")]
