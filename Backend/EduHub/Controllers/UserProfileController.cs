@@ -247,7 +247,7 @@ namespace EduHub.Controllers
         [Route("notifies")]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult TurnOnNotify([FromRoute] int userId)
+        public IActionResult TurnOnNotifications([FromRoute] int userId)
         {
             return Ok();
         }
@@ -260,7 +260,7 @@ namespace EduHub.Controllers
         [Route("notifies")]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult TurnOffNotify([FromRoute] int userId)
+        public IActionResult TurnOffNotifications([FromRoute] int userId)
         {
             return Ok();
         }
@@ -270,11 +270,11 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpGet]
-        [Route("notifies")]
+        [Route("notifications")]
         [SwaggerResponse(200, Type = typeof(AllPossibleNotifies))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult GetNotifies()
+        public IActionResult GetNotifications()
         {
             var userId = Request.GetUserId();
             var notifies = _userFacade.GetNotifies(userId).ToList();

@@ -21,18 +21,18 @@ namespace EduHubLibrary.Domain.NotificationService
         public void NotifyAdmins(IEventInfo eventInfo)
         {
             _userRepository.GetAll().Where(u => u.Type.Equals(UserType.Admin)).ToList()
-                .ForEach(u => u.AddNotify(new Event(eventInfo)));
+                .ForEach(u => NotifySubscriber(u.Id, eventInfo));
         }
 
         public void NotifyGroup(int groupId, IEventInfo eventInfo)
         {
             _groupRepository.GetGroupById(groupId).Members.ToList().ForEach
-                (m => _userRepository.GetUserById(m.UserId).AddNotify(new Event(eventInfo)));
+                (m => NotifySubscriber(m.UserId, eventInfo));
         }
 
         public void NotifyPerson(int userId, IEventInfo eventInfo)
         {
-            _userRepository.GetUserById(userId).AddNotify(new Event(eventInfo));
+            NotifySubscriber(userId, eventInfo);
         }
 
         public void NotifyTeacher(int groupId, IEventInfo eventInfo)
@@ -40,7 +40,28 @@ namespace EduHubLibrary.Domain.NotificationService
             var teacherId = _groupRepository.GetGroupById(groupId).Members.Find
                 (m => m.MemberRole.Equals(MemberRole.Teacher)).UserId;
 
-            _userRepository.GetUserById(teacherId).AddNotify(new Event(eventInfo));
+            NotifySubscriber(teacherId, eventInfo);
+        }
+
+        private void NotifySubscriber(int userId, IEventInfo eventInfo)
+        {
+            var user = _userRepository.GetUserById(userId);
+            var settings = user.NotificationsSettings.Settings;
+
+            var doesSubscribedOnSite = settings[eventInfo.GetEventType()].Equals(NotificationValue.OnSite) ||
+                settings[eventInfo.GetEventType()].Equals(NotificationValue.Everywhere);
+            var doesSubscribedOnMail = settings[eventInfo.GetEventType()].Equals(NotificationValue.ToMail) ||
+                settings[eventInfo.GetEventType()].Equals(NotificationValue.Everywhere);
+
+            if (doesSubscribedOnSite)
+            {
+                user.AddNotification(new Event(eventInfo));
+            }
+
+            if (doesSubscribedOnMail)
+            {
+                //emails' sending will be here
+            }
         }
 
         private readonly IGroupRepository _groupRepository;

@@ -126,10 +126,10 @@ namespace EduHubLibrary.Domain
             return Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
         }
 
-        internal void AddNotify(Event notify)
+        internal void AddNotification(Event notification)
         {
-            Ensure.Any.IsNotNull(notify);
-            Notifications.Add(notify);
+            Ensure.Any.IsNotNull(notification);
+            Notifications.Add(notification);
         }
 
         internal void ChangePassword(string newPassword)
