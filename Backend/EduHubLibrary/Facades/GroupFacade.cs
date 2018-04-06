@@ -115,6 +115,7 @@ namespace EduHubLibrary.Facades
                 groupInfo.Tags, groupInfo.Description, groupInfo.Curriculum,
                 groupInfo.IsPrivate, groupInfo.IsActive,
                 currentGroup.Status, votersAmount);
+            var reviewView = new List<ReviewView>();
 
             var membersInfo = new List<GroupMemberInfoView>();
             members.ForEach(m =>
@@ -129,6 +130,9 @@ namespace EduHubLibrary.Facades
                 membersInfo.Add(new GroupMemberInfoView(currentGroup.Teacher.Id,
                     teacher.UserProfile.Name, teacher.UserProfile.AvatarLink,
                     MemberRole.Teacher, false, MemberCurriculumStatus.Unknown));
+                teacher.TeacherProfile?.Reviews.Where(r => r.FromGroup == id).ToList()
+                    .ForEach(r => reviewView.Add(new ReviewView(r.FromUser, r.FromGroup,
+                    r.Title, r.Text, r.Date)));
             }
 
             var messagesList = new List<MessageView>();
@@ -136,7 +140,7 @@ namespace EduHubLibrary.Facades
             currentGroup.Messages.ToList().ForEach(m => messagesList.Add(new MessageView(m.Id, m.SenderId,
                 m.SentOn, m.Text)));
 
-            var responseView = new FullGroupView(groupInfoView, membersInfo, messagesList);
+            var responseView = new FullGroupView(groupInfoView, membersInfo, messagesList, reviewView);
             return responseView;
         }
 
@@ -264,7 +268,7 @@ namespace EduHubLibrary.Facades
         {
             CheckUserExistence(userId);
             var currentGroup = _groupRepository.GetGroupById(groupId);
-            var teacherId = currentGroup.Members.Find(m => m.MemberRole.Equals(MemberRole.Teacher)).UserId;
+            var teacherId = currentGroup.Teacher.Id;
             var teacher = _userRepository.GetUserById(teacherId);
             currentGroup.FinishCurriculum(userId);
             _groupRepository.Update(currentGroup);

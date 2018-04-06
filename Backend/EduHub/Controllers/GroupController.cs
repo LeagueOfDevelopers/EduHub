@@ -257,7 +257,9 @@ namespace EduHub.Controllers
             groupMembersInfo.ToList().ForEach(m =>
                 membersInfo.Add(new MemberInfo(m.UserId, m.Username, m.AvatarLink, m.MemberRole,
                     m.Paid, m.CurriculumStatus)));
-            var response = new GroupResponse(fullGroupInfo, membersInfo);
+            List<ReviewModel> reviews = new List<ReviewModel>();
+            group.ReviewView.ToList().ForEach(v => reviews.Add(new ReviewModel(v.FromUser, v.Title, v.Text, v.Date, v.FromGroup)));
+            var response = new GroupResponse(fullGroupInfo, membersInfo, reviews);
             return Ok(response);
         }
 
