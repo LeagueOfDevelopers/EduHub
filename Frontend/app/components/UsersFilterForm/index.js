@@ -18,13 +18,11 @@ class UsersFilterForm extends React.Component { // eslint-disable-line react/pre
     super(props);
 
     this.state = {
-      name: this.props.name,
+      name: this.props.name ? this.props.name : '',
       wantToTeach: false,
       tags: [],
       teacherExperience: 'Default',
-      userExperience: 'Default',
-      // teacherRateStart: 'none',
-      // teacherRateEnd: 'none'
+      userExperience: 'Default'
     };
 
     this.onHandleNameChange = this.onHandleNameChange.bind(this);

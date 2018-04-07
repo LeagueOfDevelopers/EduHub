@@ -119,15 +119,6 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
               Данного пользователя не существует
             </div>
           }
-          <Row style={{display:'flex', alignItems:'center', width:'100%', marginTop: 20, marginBottom: 25}}>
-            <Col>
-              <span style={{whiteSpace: 'nowrap', fontSize: 15, marginRight: 20 }}>Или войдите через</span>
-            </Col>
-            <Col>
-              <span><Img src={require('images/vk.svg')} alt=""/></span>
-              <span><Img src={require('images/github.svg')} alt=""/></span>
-            </Col>
-          </Row>
           <Row>
             <span style={{whiteSpace: 'nowrap', fontSize: 15, marginRight: '2%' }}>Нет учетной записи?</span>
             <Link to='/registration'>Зарегистрироваться</Link>
