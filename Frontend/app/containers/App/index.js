@@ -48,7 +48,7 @@ export default class App extends React.Component{
             <Route path='/registration_success' component={RegistrationSuccessPage}/>
             <Route path='/registration_accepted/:key' component={RegistrationAcceptedPage}/>
             <Route path='/users' component={UsersPage}/>
-            <Route path='/admin' component={AdminPage}/>
+            <Route path='/admin/:id' component={AdminPage}/>
             <Route path='' component={NotFoundPage} />
           </Switch>
         </ScrollFix>

@@ -28,7 +28,10 @@ import {
   MAKE_NOT_TEACHER_FAILED,
   MAKE_NOT_TEACHER_SUCCESS,
   MAKE_TEACHER_FAILED,
-  MAKE_TEACHER_SUCCESS
+  MAKE_TEACHER_SUCCESS,
+  EDIT_PROFILE_START,
+  EDIT_PROFILE_SUCCESS,
+  EDIT_PROFILE_FAILED
 } from './constants';
 
 export function getCurrentUserGroups(id) {
@@ -49,6 +52,34 @@ export function getCurrentUserGroupsSuccess(groups) {
 export function getCurrentUserGroupsFailed(error) {
   return {
     type: GET_CURRENT_USER_GROUPS_FAILED,
+    error
+  };
+}
+
+export function editProfile(name, aboutUser, gender, contacts, birthYear, avatarLink) {
+  return {
+    type: EDIT_PROFILE_START,
+    name,
+    aboutUser,
+    gender,
+    contacts,
+    birthYear,
+    avatarLink
+  };
+}
+
+export function editProfileSuccess(newName, newAvatarLink) {
+  return {
+    type: EDIT_PROFILE_SUCCESS,
+    newName,
+    newAvatarLink
+  };
+}
+
+
+export function editProfileFailed(error) {
+  return {
+    type: EDIT_PROFILE_FAILED,
     error
   };
 }

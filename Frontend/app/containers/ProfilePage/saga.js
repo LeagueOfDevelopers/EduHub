@@ -7,7 +7,8 @@ import {
   EDIT_GENDER,
   EDIT_CONTACTS,
   MAKE_TEACHER,
-  MAKE_NOT_TEACHER
+  MAKE_NOT_TEACHER,
+  EDIT_PROFILE_START
 } from "./constants";
 import {
   getCurrentUserGroupsSuccess,
@@ -25,7 +26,9 @@ import {
   makeNotTeacherSuccess,
   makeNotTeacherFailed,
   makeTeacherFailed,
-  makeTeacherSuccess
+  makeTeacherSuccess,
+  editProfileSuccess,
+  editProfileFailed
 } from "./actions";
 import config from '../../config';
 
@@ -91,6 +94,38 @@ function makeNotTeacher() {
       'Content-Type': 'application/json-patch+json',
       'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
+  })
+    .then(res => res.json())
+    .catch(error => error)
+}
+
+function* editProfileSaga(action) {
+  try {
+    const {name, avatarLink} = yield action;
+    yield call(console.log, name, avatarLink)
+    yield call(editProfile, name, action.aboutUser, action.gender, action.contacts, action.birthYear, avatarLink);
+    yield put(editProfileSuccess(name, avatarLink))
+  }
+  catch(e) {
+    yield put(editProfileFailed(e))
+  }
+}
+
+function editProfile(name, aboutUser, gender, contacts, birthYear, avatarLink) {
+  return fetch(`${config.API_BASE_URL}/user/profile`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      name: name,
+      aboutUser: aboutUser,
+      gender: gender,
+      contacts: contacts,
+      birthYear: birthYear,
+      avatarLink: avatarLink
+    })
   })
     .then(res => res.json())
     .catch(error => error)
@@ -230,4 +265,5 @@ export default function* () {
   yield takeEvery(EDIT_CONTACTS, editContactsSaga);
   yield takeEvery(MAKE_TEACHER, makeTeacherSaga);
   yield takeEvery(MAKE_NOT_TEACHER, makeNotTeacherSaga);
+  yield takeEvery(EDIT_PROFILE_START, editProfileSaga);
 }

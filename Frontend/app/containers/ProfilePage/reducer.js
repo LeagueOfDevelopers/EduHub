@@ -29,7 +29,10 @@ import {
   MAKE_NOT_TEACHER_FAILED,
   MAKE_NOT_TEACHER_SUCCESS,
   MAKE_TEACHER_FAILED,
-  MAKE_TEACHER_SUCCESS
+  MAKE_TEACHER_SUCCESS,
+  EDIT_PROFILE_FAILED,
+  EDIT_PROFILE_SUCCESS,
+  EDIT_PROFILE_START
 } from './constants';
 
 const initialState = fromJS({
@@ -52,12 +55,30 @@ function profilePageReducer(state = initialState, action) {
       return state
         .set('pending', false)
         .set('error', true);
+    case EDIT_PROFILE_START:
+      return state
+        .set('pending', true)
+        .set('needUpdate', true);
+    case EDIT_PROFILE_SUCCESS:
+      if(localStorage.getItem('name') !== action.newName || localStorage.getItem('avatarLink') !== action.newAvatarLink) {
+        localStorage.setItem('name', action.newName);
+        localStorage.setItem('avatarLink', action.newAvatarLink);
+        // location.reload();
+      }
+      return state
+        .set('pending', false)
+        .set('needUpdate', false);
+    case EDIT_PROFILE_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true)
+        .set('needUpdate', false);
     case EDIT_NAME:
       return state
         .set('pending', true)
         .set('needUpdate', true);
     case EDIT_NAME_SUCCESS:
-      location.reload('/');
+      location.reload();
       return state
         .set('pending', false)
         .set('needUpdate', false);
@@ -123,6 +144,7 @@ function profilePageReducer(state = initialState, action) {
         .set('pending', true)
         .set('needUpdate', true);
     case MAKE_TEACHER_SUCCESS:
+      localStorage.setItem('isTeacher', true);
       return state
         .set('pending', false)
         .set('needUpdate', false);
@@ -136,6 +158,7 @@ function profilePageReducer(state = initialState, action) {
         .set('pending', true)
         .set('needUpdate', true);
     case MAKE_NOT_TEACHER_SUCCESS:
+      localStorage.setItem('isTeacher', false);
       return state
         .set('pending', false)
         .set('needUpdate', false);

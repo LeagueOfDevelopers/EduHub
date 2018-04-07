@@ -20,7 +20,8 @@ import {
   editBirthYear,
   editContacts,
   makeTeacher,
-  makeNotTeacher
+  makeNotTeacher,
+  editProfile
 } from "./actions";
 import reducer from './reducer';
 import saga from './saga';
@@ -28,7 +29,7 @@ import {parseJwt, getGender} from "../../globalJS";
 import config from '../../config';
 import {Link} from "react-router-dom";
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
-import {Card, Col, Row, Avatar, Tabs, Input, InputNumber, Select, Button, Icon} from 'antd';
+import {Card, Col, Row, Avatar, Tabs, Input, InputNumber, Select, Button, Icon, Upload} from 'antd';
 const TabPane = Tabs.TabPane;
 
 const defaultUserData = {
@@ -113,6 +114,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       genderInput: '',
       birthYearInput: '',
       aboutInput: '',
+      imageUrl: null,
+      avatarLoading: false,
       contactsInputs: [],
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
       isCurrentUser: false
@@ -128,12 +131,13 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.addContact = this.addContact.bind(this);
     this.removeContact = this.removeContact.bind(this);
     this.cancelChanges = this.cancelChanges.bind(this);
+    this.handleAvatarLinkChange = this.handleAvatarLinkChange.bind(this);
   }
 
   componentDidMount() {
     if(localStorage.getItem('without_server') !== 'true') {
-      this.props.getCurrentUserGroups(this.state.id);
-      this.getCurrentUser(this.state.id);
+      this.props.getCurrentUserGroups(this.props.match.params.id);
+      this.getCurrentUser(this.props.match.params.id);
     }
     else {
       this.onSetResult(defaultUserData)
@@ -141,8 +145,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevProps.needUpdate && !this.props.needUpdate) {
-      this.getCurrentUser(this.state.id);
+    if(prevProps.needUpdate && !this.props.needUpdate || prevProps.location.pathname !== this.props.location.pathname) {
+      this.componentDidMount()
     }
   }
 
@@ -161,10 +165,11 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.setState({
       userProfile: result.userProfile ? result.userProfile : {},
       teacherProfile: result.teacherProfile,
+      imageUrl: result.userProfile.avatarLink,
       nameInput: result.userProfile.name,
-      genderInput: getGender(result.userProfile.gender),
+      genderInput: result.userProfile.gender === 1 ? 'Man' : result.userProfile.gender === 2 ? 'Woman' : '',
       birthYearInput: result.userProfile.birthYear,
-      aboutInput: result.userProfile.aboutUser,
+      aboutInput: result.userProfile.aboutUser ? result.userProfile.aboutUser : '',
       contactsInputs: result.userProfile.contacts ? result.userProfile.contacts : [],
       isCurrentUser: Boolean(this.props.match.params.id == this.state.userData.UserId)
     });
@@ -206,34 +211,56 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       nameInput: this.state.userProfile.name,
       aboutInput: this.state.userProfile.aboutUser,
       birthYearInput: this.state.userProfile.birthYear,
-      contactsInputs: this.state.userProfile.contacts ? this.state.userProfile.contacts : []
+      contactsInputs: this.state.userProfile.contacts ? this.state.userProfile.contacts : [],
+      genderInput: this.state.userProfile.gender === 1 ? 'Man' : this.state.userProfile.gender === 2 ? 'Woman' : 'Unknown',
+      imageUrl: this.state.userProfile.avatarLink
     })
   };
 
   changeProfileData = () => {
     this.setState({contactsInputs: this.state.contactsInputs.filter(item => item !== '')});
-    if(this.state.aboutInput !== this.state.userProfile.aboutUser) {
-      this.props.editAboutUser(this.state.aboutInput);
-    }
-    if(this.state.birthYearInput !== this.state.userProfile.birthYear) {
-      this.props.editBirthYear(this.state.birthYearInput);
-    }
-    if(this.state.genderInput !== getGender(this.state.userProfile.gender)) {
-      this.props.editGender(this.state.genderInput);
-    }
     if(this.state.contactsInputs.length !== this.state.userProfile.contacts.length || this.state.contactsInputs.filter((item, i) =>
         item !== this.state.userProfile.contacts[i]
-      ).length !== 0) {
-      setTimeout(() => this.props.editContacts(this.state.contactsInputs), 0);
-    }
-    if(this.state.nameInput !== this.state.userProfile.name) {
-      this.props.editUsername(this.state.nameInput);
-      localStorage.setItem('name', `${this.state.nameInput}`);
+      ).length !== 0 || this.state.aboutInput !== this.state.userProfile.aboutUser || this.state.birthYearInput !== this.state.userProfile.birthYear ||
+      this.state.genderInput !== getGender(this.state.userProfile.gender) || this.state.nameInput !== this.state.userProfile.name || `${config.API_BASE_URL}/file/${this.state.imageUrl}` !== this.state.userProfile.avatarLink) {
+      setTimeout(() => this.props.editProfile(this.state.nameInput, this.state.aboutInput, this.state.genderInput, this.state.contactsInputs, this.state.birthYearInput, this.state.imageUrl ? `${config.API_BASE_URL}/file/${this.state.imageUrl}` : ''), 0);
     }
     this.setState({isEditing: false});
   };
 
+  handleAvatarLinkChange = (info) => {
+    if (info.file.status === 'uploading') {
+      this.setState({
+        imageUrl: '',
+        loading: true
+      });
+      return;
+    }
+    if (info.file.status === 'error') {
+      this.setState({ loading: false });
+      return;
+    }
+    if (info.file.status === 'done') {
+      this.setState({
+        imageUrl: info.file.response.filename,
+        loading: false,
+      });
+    }
+  };
+
   render() {
+
+    const props = {
+      name: 'file',
+      action: `${config.API_BASE_URL}/file`,
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      accept: "image/*",
+      onChange: this.handleAvatarLinkChange,
+      showUploadList: false
+    };
+
     return (
       <div>
         <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 40}} className='md-center-container'>
@@ -242,16 +269,27 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               title={
                 <Row type='flex' align='middle'>
                   <Col span={21} style={{display: 'flex', alignItems: 'center'}}>
-                    <Avatar
-                      src={this.state.userProfile.avatarLink}
-                      style={{minHeight: 50, minWidth: 50, marginRight: 20, borderRadius: '50%'}}
-                    >
-                    </Avatar>
+                    {
+                      this.state.isEditing ?
+                        <Upload
+                          {...props}
+                          style={{display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 30, marginRight: 14, width: 50, height: 50, borderRadius: '50%', cursor: 'pointer'}}
+                        >
+                          {this.state.imageUrl ? <img src={`${config.API_BASE_URL}/file/${this.state.imageUrl}`} style={{height: 50, width: 50, borderRadius: '50%'}} alt="" /> : <Icon type={this.state.loading ? 'loading' : 'plus'} />}
+                        </Upload>
+                        :
+                        <Avatar
+                          src={this.state.userProfile.avatarLink ? this.state.userProfile.avatarLink : ''}
+                          style={{minHeight: 50, minWidth: 50, marginRight: 14, borderRadius: '50%'}}
+                        >
+                        </Avatar>
+                    }
                     <span>
-                    {this.state.isEditing ?
-                      <Input style={{width: '86%'}} onChange={this.onChangeNameHandle} value={this.state.nameInput}/>
-                      : this.state.userProfile.name}
-                  </span>
+                      {this.state.isEditing ?
+                        <Input style={{width: '100%'}} onChange={this.onChangeNameHandle} value={this.state.nameInput}/>
+                        : this.state.userProfile.name
+                      }
+                    </span>
                   </Col>
                   {!this.state.isEditing && this.state.isCurrentUser ?
                     <Col span={3} style={{textAlign: 'right'}}>
@@ -441,6 +479,17 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 </TabPane>
               ) : null
               }
+              {this.state.userData && this.props.match.params.id === this.state.userData.UserId ? (
+                <TabPane tab="Панель администратора" key="3" style={{minHeight: 300}}>
+                  <Link to={`/admin/${this.props.match.params.id}`} style={{color: '#747474'}}>
+                    <div style={{textAlign: 'center', fontSize: 26, padding: '100px 0'}}>
+                      <span>Нажмите, чтобы перейти в панель администратора</span>
+                      <Icon type="bar-chart" style={{fontSize: 60, marginTop: 20, display: 'block'}}/>
+                    </div>
+                  </Link>
+                </TabPane>
+              ) : null
+              }
             </Tabs>
           </Col>
         </Col>
@@ -471,7 +520,8 @@ function mapDispatchToProps(dispatch) {
     editContacts: (contacts) => dispatch(editContacts(contacts)),
     editGender: (gender) => dispatch(editGender(gender)),
     makeTeacher: () => dispatch(makeTeacher()),
-    makeNotTeacher: () => dispatch(makeNotTeacher())
+    makeNotTeacher: () => dispatch(makeNotTeacher()),
+    editProfile: (name, aboutUser, gender, contacts, birthYear, avatarLink) => dispatch(editProfile(name, aboutUser, gender, contacts, birthYear, avatarLink))
   };
 }
 

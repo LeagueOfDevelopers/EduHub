@@ -188,16 +188,17 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
                     <Link to='/groups?formed=true'>Показать больше</Link>
                   </Col>
-                  {localStorage.getItem('token') ?
-                    <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
-                      <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
-                      <Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}><Button type="primary">Стать преподавателем</Button></Link>
-                    </Col>
-                    :
+                  {!localStorage.getItem('token') ?
                     <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
                       <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
                       <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Стать преподавателем</Button>
                     </Col>
+                    : localStorage.getItem('isTeacher') !== 'true' ?
+                        <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                          <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
+                          <Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}><Button type="primary">Стать преподавателем</Button></Link>
+                        </Col>
+                      : null
                   }
                 </Row>
                 <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>

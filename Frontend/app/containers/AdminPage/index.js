@@ -9,13 +9,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectAdminPage from './selectors';
+import { getUsers } from "../../containers/Header/actions";
+import { makeSelectUsers } from "../../containers/Header/selectors";
 import reducer from './reducer';
 import saga from './saga';
-import { Row, Col, Button, List, Avatar, Icon, Popconfirm } from 'antd';
+import { Row, Col, Button, List, Avatar, Icon, Popconfirm, Dropdown, Menu, Select, message } from 'antd';
 import {Link} from "react-router-dom";
 import ReportModal from '../../components/ReportModal';
 import SanctionModal from '../../components/SanctionModal';
@@ -26,10 +26,12 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
     super(props);
 
     this.state = {
+      inviteVisible: false,
+      inviteSelectValue: '',
       reportVisible: false,
       sanctionVisible: false,
       makeSanctionVisible: false,
-    }
+    };
 
     this.onReportClick = this.onReportClick.bind(this);
     this.handleReportCancel = this.handleReportCancel.bind(this);
@@ -37,6 +39,8 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
     this.handleSanctionCancel = this.handleSanctionCancel.bind(this);
     this.onMakeSanctionClick = this.onMakeSanctionClick.bind(this);
     this.handleMakeSanctionCancel = this.handleMakeSanctionCancel.bind(this);
+    this.handleInviteVisibleChange = this.handleInviteVisibleChange.bind(this);
+    this.handleInviteSelectChange = this.handleInviteSelectChange.bind(this);
   }
 
   onReportClick = () => {
@@ -56,11 +60,22 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
   };
 
   onMakeSanctionClick = () => {
-    this.setState({makeSanctionVisible: true})
+    this.setState({makeSanctionVisible: true, reportVisible: false})
   };
 
   handleMakeSanctionCancel = () => {
     this.setState({makeSanctionVisible: false})
+  };
+
+  handleInviteVisibleChange = (flag) => {
+    this.setState({
+      inviteVisible: flag
+    });
+  };
+
+  handleInviteSelectChange = (value) => {
+    this.setState({inviteSelectValue: value});
+    this.props.getUsers(value);
   };
 
   render() {
@@ -93,23 +108,57 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
                     title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
                     description={item.inviteCode}
                   />
-                  {true ?
-                    (<Popconfirm
-                      title='Удалить модератора?'
-                      onConfirm={() => console.log('ok')}
-                      okText="Да"
-                      cancelText="Нет"
-                    >
-                      <Icon
-                        style={{fontSize: 18, cursor: 'pointer'}}
-                        type="close"
-                      />
-                    </Popconfirm>)
-                    : null
-                  }
+                  <Popconfirm
+                    title='Удалить модератора?'
+                    onConfirm={() => console.log('ok')}
+                    okText="Да"
+                    cancelText="Нет"
+                  >
+                    <Icon
+                      style={{fontSize: 18, cursor: 'pointer'}}
+                      type="close"
+                    />
+                  </Popconfirm>
                 </List.Item>
               )}
-              footer={(<Button style={{width: '100%', height: '100%', minHeight: 40}}>Пригласить модератора</Button>)}
+              footer={
+                (
+                  <Dropdown
+                    overlay={(
+                      <Menu>
+                        <Menu.Item className='unhover'>
+                          <Select
+                            mode='combobox'
+                            className='unhover'
+                            style={{width: '100%'}}
+                            value={this.state.inviteSelectValue}
+                            onChange={this.handleInviteSelectChange}
+                            placeholder='Введите имя пользователя'
+                            defaultActiveFirstOption={false}
+                            showArrow={false}
+                          >
+                            {this.props.users.map(item =>
+                              <Select.Option key={item.name}>
+                                <div>{item.name}</div>
+                              </Select.Option>)
+                            }
+                          </Select>
+                        </Menu.Item>
+                      </Menu>
+                    )}
+                    onVisibleChange={this.handleInviteVisibleChange}
+                    visible={this.state.inviteVisible}
+                    trigger={['click']}
+                  >
+                    <Button
+                      size='large'
+                      style={{width: '100%'}}
+                    >
+                      Пригласить
+                    </Button>
+                  </Dropdown>
+                )
+              }
             >
             </List>
           </Col>
@@ -222,12 +271,12 @@ AdminPage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-
+  users: makeSelectUsers()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    getUsers: (name) => dispatch(getUsers(name)),
   };
 }
 

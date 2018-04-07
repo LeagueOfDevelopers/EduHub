@@ -140,7 +140,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                         style={{display: 'flex', alignItems: 'center'}}
                       >
                         <Avatar
-                          src={localStorage.getItem('avatarLink')}
+                          src={item.avatarLink}
                           size='large'
                           style={{
                             backgroundColor: "#f0f0f0",

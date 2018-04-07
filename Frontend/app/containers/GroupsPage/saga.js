@@ -18,7 +18,7 @@ function* getGroupsSaga(action) {
 }
 
 function getFilteredGroups(filters) {
-   return fetch(`${config.API_BASE_URL}/group/search?type=${filters.type}&formed=${filters.formed}${filters.title !== '' ? `&title=${filters.title}` : ''}${filters.tags.length !== 0 ? filters.tags.map(item => `&tags=${item}`).join('') : ''}&minPrice=${filters.minPrice}&maxPrice=${filters.maxPrice}`)
+   return fetch(`${config.API_BASE_URL}/group/search?type=${filters.type}&formed=${filters.formed}${filters.title !== '' ? `&title=${filters.title}` : ''}${filters.tags.length !== 0 ? filters.tags.map(item => `&tags=${item}`).join('') : ''}&minPrice=${filters.minPrice ? filters.minPrice : 0}&maxPrice=${filters.maxPrice ? filters.maxPrice : 10000}`)
      .then(response => response.json())
      .then(res => res)
      .catch(error => error)

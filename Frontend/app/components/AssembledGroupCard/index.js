@@ -35,7 +35,7 @@ class AssembledGroupCard extends React.PureComponent { // eslint-disable-line re
             <Col>Тип</Col>
             <Col>{getGroupType(this.props.groupInfo.groupType)}</Col>
           </Row>
-          <Row gutter={6} type='flex' justify='start'>
+          <Row gutter={6} className='group-tags'>
             {this.props.groupInfo.tags.map(item =>
               <Link to="#" key={item}>{item}</Link>
             )}
