@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using EduHub.Models.UserProfileControllerModels;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.NotificationService.UserSettings;
 
 namespace EduHub.Controllers
 {
@@ -240,33 +242,38 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     Turns on user's notifies
+        ///     Configures notifications' settings
         /// </summary>
         [Authorize]
-        [HttpPost]
-        [Route("notifies")]
+        [HttpPut]
+        [Route("notifications/settings")]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult TurnOnNotifications([FromRoute] int userId)
+        public IActionResult ConfigureNotifications([FromBody] ConfigureNotificationsRequest request)
         {
+            var userId = Request.GetUserId();
+            _userEditFacade.ConfigureNotificationsSettings(userId, request.ConfiguringEvent, request.NewValue);
             return Ok();
         }
 
         /// <summary>
-        ///     Turns off user's notifies
+        ///     Returns user's notifications' settings
         /// </summary>
         [Authorize]
-        [HttpDelete]
-        [Route("notifies")]
+        [HttpGet]
+        [Route("notifications/settings")]
+        [SwaggerResponse(200, Type = typeof(IReadOnlyDictionary<EventType, NotificationValue>))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult TurnOffNotifications([FromRoute] int userId)
+        public IActionResult GetNotificationsSettings()
         {
-            return Ok();
+            var userId = Request.GetUserId();
+            var response = _userFacade.GetUser(userId).NotificationsSettings.Settings;
+            return Ok(response);
         }
 
         /// <summary>
-        ///     Returns all notifies for user
+        ///     Returns all notifications for user
         /// </summary>
         [Authorize]
         [HttpGet]

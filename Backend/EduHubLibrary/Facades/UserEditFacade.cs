@@ -160,6 +160,9 @@ namespace EduHubLibrary.Facades
 
         public void ConfigureNotificationsSettings(int userId, EventType configuringNotification, NotificationValue newValue)
         {
+            Ensure.Any.IsNotNull(configuringNotification);
+            Ensure.Any.IsNotNull(newValue);
+
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.NotificationsSettings.ConfigureSettings(configuringNotification, newValue);
             _userRepository.Update(currentUser);
