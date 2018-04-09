@@ -197,5 +197,10 @@ namespace EduHubLibrary.Facades
             return _userRepository.GetAll().Where(u =>
             (u.Type.Equals(UserType.Moderator) || u.Type.Equals(UserType.Admin)) && u.Id != callerId);
         }
+
+        public void DemoteModerator(int moderatorId)
+        {
+            _userRepository.GetUserById(moderatorId).StopToBeModerator();
+        }
     }
 }

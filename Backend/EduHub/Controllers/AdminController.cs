@@ -1,4 +1,5 @@
-﻿using EduHubLibrary.Domain.NotificationService;
+﻿using EduHub.Extensions;
+using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,14 +9,16 @@ namespace EduHub.Controllers
 {
     [Authorize]
     [Produces("application/json")]
-    [Route("api/administrate")]
+    [Route("api/administration")]
     public class AdminController : Controller
     {
         private readonly IReportFacade _reportFacade;
+        private readonly IUserFacade _userFacade;
 
-        public AdminController(IReportFacade reportFacade)
+        public AdminController(IReportFacade reportFacade, IUserFacade userFacade)
         {
             _reportFacade = reportFacade;
+            _userFacade = userFacade;
         }
 
         /// <summary>
@@ -43,14 +46,16 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     Makes user regular user (not admin)
+        ///     Demotes moderator to user
         /// </summary>
         [HttpDelete]
         [Route("{userId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult DeleteAdmin([FromRoute] int userId)
+        public IActionResult DemoteModerator([FromRoute] int userId)
         {
+            var pastModerator = Request.GetUserId();
+            _userFacade.DemoteModerator(pastModerator);
             return Ok();
         }
 
