@@ -13,7 +13,8 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
-import {createGroup} from "./actions";
+import {createGroup, getTags} from "./actions";
+import { makeSelectTags } from "./selectors";
 import { Form, Col, Row, Button, Divider, message, Input, Switch, Select, InputNumber } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -64,11 +65,13 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     this.onHandleTitleChange = this.onHandleTitleChange.bind(this);
     this.onHandleSizeChange = this.onHandleSizeChange.bind(this);
     this.onHandleTechsChange = this.onHandleTechsChange.bind(this);
+    this.onHandleSearch = this.onHandleSearch.bind(this);
     this.onHandleDescChange = this.onHandleDescChange.bind(this);
     this.onHandleTypeChange = this.onHandleTypeChange.bind(this);
     this.onHandlePriceChange = this.onHandlePriceChange.bind(this);
     this.onHandlePrivateChange = this.onHandlePrivateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateTagsInput = this.validateTagsInput.bind(this);
   }
 
   createGroup = () => {
@@ -97,7 +100,11 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
   };
 
   onHandleTechsChange = (e) => {
-    this.setState({techs: e})
+    this.setState({techs: e});
+  };
+
+  onHandleSearch = (e) => {
+    // this.props.getTags(e);
   };
 
   onHandleTypeChange = (e) => {
@@ -115,6 +122,18 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
 
   onHandlePrivateChange = (e) => {
     this.setState({isPrivate: e})
+  };
+
+  validateTagsInput = (rule, value, callback) => {
+    if (value.length < 3) {
+      callback('Должно быть не менее 3 тегов!')
+    }
+    else if (value.length > 10) {
+      callback('Должно быть не более 10 тегов!')
+    }
+    else {
+      callback()
+    }
   };
 
   handleSubmit = (e) => {
@@ -139,7 +158,11 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               label="Название группы"
             >
               {getFieldDecorator('title', {
-                rules: [{required: true, message: 'Пожалуйста введите название группы!'}],
+                rules: [
+                  {required: true, message: 'Пожалуйста, введите название группы!'},
+                  {min: 3, message: 'Название должно содержать не менее 3 символов!'},
+                  {max: 70, message: 'Название должно содержать не более 70 символов!'}
+                ],
                 initialValue: this.state.title
               })(
                 <Input onChange={this.onHandleTitleChange} placeholder="Введите название группы"/>)
@@ -150,10 +173,10 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               label="Человек в группе"
             >
               {getFieldDecorator('size', {
-                rules: [{required: true, message: 'Пожалуйста введите количество человек!'}],
+                rules: [{required: true, message: 'Пожалуйста, введите количество человек!'}],
                 initialValue: this.state.size
               })(
-                <InputNumber onChange={this.onHandleSizeChange} min={1} placeholder="1"/>)
+                <InputNumber onChange={this.onHandleSizeChange} min={1} max={200} placeholder="1"/>)
               }
             </FormItem>
             <FormItem
@@ -161,14 +184,16 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               label="Изучаемые технологии"
             >
               {getFieldDecorator('tags', {
-                rules: [{required: true, message: 'Пожалуйста введите изучаемые технологии!'}],
+                rules: [
+                  {required: true, message: 'Пожалуйста, введите изучаемые технологии!'},
+                  {validator: this.validateTagsInput}
+                ],
                 initialValue: this.state.techs
               })(
-                <Select onChange={this.onHandleTechsChange} mode="tags" placeholder="Введите, что хотите изучить">
-                  <Option value="html">html</Option>
-                  <Option value="css">css</Option>
-                  <Option value="js">js</Option>
-                  <Option value="c#">c#</Option>
+                <Select onChange={this.onHandleTechsChange} onSearch={this.onHandleSearch} mode="tags" placeholder="Введите, что хотите изучить" notFoundContent={null}>
+                  {this.props.tags.map((item, index) =>
+                    <Option key={item.tag}>{item.tag}</Option>
+                  )}
                 </Select>)
               }
             </FormItem>
@@ -178,7 +203,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
             >
               {/*<Col span={24}>*/}
                 {getFieldDecorator('type', {
-                  rules: [{required: true, message: 'Пожалуйста выберите формат обучения!'}],
+                  rules: [{required: true, message: 'Пожалуйста, выберите формат обучения!'}],
                   initialValue: this.state.type
                 })(
                   <Select onChange={this.onHandleTypeChange} placeholder="Выберите формат">
@@ -194,7 +219,11 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
               label="Описание группы"
             >
               {getFieldDecorator('desc', {
-                rules: [{required: true, message: 'Пожалуйста введите описание!'}],
+                rules: [
+                  {required: true, message: 'Пожалуйста, введите описание!'},
+                  {min: 20, message: 'Должно быть не менее 20 символов!'},
+                  {max: 3000, message: 'Должно быть не более 3000 символов!'}
+                ],
                 initialValue: this.state.description
               })(
                 <TextArea onChange={this.onHandleDescChange} rows={4}/>)
@@ -206,7 +235,10 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
             >
               {/*<Col span={24}>*/}
                 {getFieldDecorator('price', {
-                  rules: [{required: true, message: 'Пожалуйста введите стоимость занятия!'}],
+                  rules: [
+                    {required: true, message: 'Пожалуйста, введите стоимость занятия в рублях!'},
+                    {pattern: /^[\d]+$/, message: 'Пожалуйста, введите числовое значение в рублях!'}
+                  ],
                   initialValue: this.state.price
                 })(
                   <Input onChange={this.onHandlePriceChange}/>)
@@ -265,12 +297,13 @@ CreateGroupPage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-
+  tags: makeSelectTags()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    createGroup: (title, desc, tags, size, moneyPerUser, groupType, isPrivate) => dispatch(createGroup(title, desc, tags, size, moneyPerUser, groupType, isPrivate))
+    createGroup: (title, desc, tags, size, moneyPerUser, groupType, isPrivate) => dispatch(createGroup(title, desc, tags, size, moneyPerUser, groupType, isPrivate)),
+    getTags: (tag) => dispatch(getTags(tag))
   };
 }
 

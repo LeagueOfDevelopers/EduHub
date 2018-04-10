@@ -137,7 +137,12 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
               label="Имя"
             >
               {getFieldDecorator('name', {
-                rules: [{required: true, message: 'Имя должно быть не меньше 6 символов!', min: 6}],
+                rules: [
+                  {required: true, message: 'Пожалуйста, введите свое имя!'},
+                  {message: 'Имя должно быть не меньше 3 символов!', min: 3},
+                  {message: 'Имя должно быть не больше 70 символов!', max: 70},
+                  {message: 'В имени не должно быть цифр!', pattern: /^[a-zA-Zа-яА-Я\s]+$/}
+                ],
                 initialValue: this.state.username
               })(
                 <Input onChange={this.onHandleUsernameChange} placeholder="Так вас будут видеть на сайте"/>)
@@ -148,7 +153,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
               label="Ваш email"
             >
               {getFieldDecorator('email', {
-                rules: [{required: true, message: 'Email должно быть не меньше 6 символов!', min: 6}],
+                rules: [{required: true, message: 'Пожалуйста, введите свой email!'}],
                 initialValue: this.state.email
               })(
                 <Input onChange={this.onHandleEmailChange} placeholder="Введите ваш email"/>)
@@ -159,7 +164,11 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
               label="Придумайте пароль"
             >
               {getFieldDecorator('password', {
-                rules: [{required: true, message: 'Пароль должен быть не меньше 6 символов!', min: 6}],
+                rules: [
+                  {required: true, message: 'Пожалуйста, введите свой пароль!'},
+                  {message: 'Пароль должен быть не меньше 8 символов!', min: 8},
+                  {message: 'Пароль должен быть не больше 50 символов!', max: 50}
+                ],
                 initialValue: this.state.password
               })(
                 <Input onChange={this.onHandlePasswordChange} type='password' placeholder="Введите пароль"/>)

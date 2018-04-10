@@ -59,7 +59,10 @@ import {
   SEND_MESSAGE_SUCCESS,
   ADD_TEACHER_REVIEW_FAILED,
   ADD_TEACHER_REVIEW_SUCCESS,
-  ADD_TEACHER_REVIEW_START
+  ADD_TEACHER_REVIEW_START,
+  GET_GROUP_TAGS_FAILED,
+  GET_GROUP_TAGS_START,
+  GET_GROUP_TAGS_SUCCESS
 } from './constants';
 import {message} from "antd";
 
@@ -68,6 +71,7 @@ const initialState = fromJS({
   groupId: '',
   users: [],
   chat: null,
+  tags: [],
   currentPlan: null,
   needUpdate: false,
   pending: false,
@@ -299,6 +303,17 @@ function groupPageReducer(state = initialState, action) {
       return state
         .set('pending', false);
     case ADD_TEACHER_REVIEW_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
+    case GET_GROUP_TAGS_START:
+      return state
+        .set('pending', true);
+    case GET_GROUP_TAGS_SUCCESS:
+      return state
+        .set('tags', action.tags)
+        .set('pending', false);
+    case GET_GROUP_TAGS_FAILED:
       return state
         .set('pending', false)
         .set('error', true);

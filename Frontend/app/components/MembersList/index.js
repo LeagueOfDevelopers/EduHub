@@ -12,6 +12,7 @@ import {Link} from "react-router-dom";
 import { createStructuredSelector } from 'reselect';
 import { leaveGroup } from "../../containers/GroupPage/actions";
 import { List, Avatar, Icon, Popconfirm, message, Row, Col } from 'antd';
+import config from "../../config";
 
 class MembersList extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -39,7 +40,7 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
                 <List.Item.Meta
                   avatar={
                     <Avatar
-                      src={item.avatarLink}
+                      src={`${config.API_BASE_URL}/file/${item.avatarLink}`}
                     />}
                   title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
                   description={getMemberRole(item.role)}

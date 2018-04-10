@@ -1,6 +1,6 @@
 import { takeEvery, call, put, select } from 'redux-saga/effects';
-import { createGroupFailed, createGroupSuccess } from "./actions";
-import { CREATE_GROUP_START } from "./constants";
+import { createGroupFailed, createGroupSuccess, getTagsFailed, getTagsSuccess } from "./actions";
+import { CREATE_GROUP_START, GET_TAGS_START } from "./constants";
 import config from '../../config';
 
 function* createGroupPageSaga(action) {
@@ -45,6 +45,33 @@ function createGroup(title, desc, tags, size, moneyPerUser, groupType, isPrivate
     .catch(error => error)
 }
 
+function* getTagsSaga(action) {
+  try {
+    const data = yield call(getTags, action.tag);
+    yield put(getTagsSuccess(data));
+  }
+  catch (e) {
+    yield put(getTagsFailed(e))
+  }
+}
+
+function getTags(tag) {
+  return fetch(`${config.API_BASE_URL}/tags/search`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      tag: tag
+    })
+  })
+    .then(res => res.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
-  yield takeEvery(CREATE_GROUP_START, createGroupPageSaga)
+  yield takeEvery(CREATE_GROUP_START, createGroupPageSaga);
+  yield takeEvery(GET_TAGS_START, getTagsSaga);
 }

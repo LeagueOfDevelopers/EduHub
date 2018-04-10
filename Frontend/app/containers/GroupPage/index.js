@@ -24,13 +24,14 @@ import {
   editPrivacy,
   editGroupType,
   getCurrentChat,
-  getCurrentPlan
+  getCurrentPlan,
+  getTags
 } from "./actions";
-import { makeSelectNeedUpdate, makeSelectChat } from "./selectors";
+import { makeSelectNeedUpdate, makeSelectChat, makeSelectTags } from "./selectors";
 import {Link} from "react-router-dom";
 import config from "../../config";
 import {getGroupType, parseJwt, getMemberRole} from "../../globalJS";
-import {Col, Row, Button, message, Input, Select, InputNumber, Switch} from 'antd';
+import {Col, Row, Button, message, Input, Select, InputNumber, Switch, Form} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
 import InviteMemberSelect from '../../components/InviteMemberSelect/Loadable';
@@ -38,6 +39,8 @@ import SigningInForm from "../../containers/SigningInForm/index";
 import SuggestPlanForm from '../../components/SuggestPlanForm';
 import ReviewModal from '../../components/ReviewModal';
 import EnterGroupBtn from '../../components/EnterGroupBtn';
+
+const FormItem = Form.Item;
 
 const groupData = {
     groupInfo: {
@@ -132,6 +135,8 @@ export class GroupPage extends React.Component {
     this.onHandleGroupTypeChange = this.onHandleGroupTypeChange.bind(this);
     this.onHandlePrivateChange = this.onHandlePrivateChange.bind(this);
     this.cancelChanges = this.cancelChanges.bind(this);
+    this.onHandleSearch = this.onHandleSearch.bind(this);
+    this.validateTagsInput = this.validateTagsInput.bind(this);
   }
 
   onSignInClick = () => {
@@ -208,7 +213,7 @@ export class GroupPage extends React.Component {
     setInterval(() => {
       loop++;
       if(loop === 5) {
-        this.props.getCurrentChat(this.state.id);
+        // this.props.getCurrentChat(this.state.id);
         loop = 0;
       }
     }, 1000);
@@ -242,6 +247,22 @@ export class GroupPage extends React.Component {
     this.setState({privateInput: e})
   };
 
+  onHandleSearch = (e) => {
+    this.props.getTags(e);
+  };
+
+  validateTagsInput = (rule, value, callback) => {
+    if (value.length < 3) {
+      callback('Должно быть не менее 3 тегов!')
+    }
+    else if (value.length > 10) {
+      callback('Должно быть не более 10 тегов!')
+    }
+    else {
+      callback()
+    }
+  };
+
   cancelChanges = () => {
     this.setState({
       isEditing: false,
@@ -253,188 +274,262 @@ export class GroupPage extends React.Component {
     })
   };
 
-  changeGroupData = () => {
-    if(this.state.titleInput !== this.state.groupData.groupInfo.title) {
-      this.props.editGroupTitle(this.state.id, this.state.titleInput);
-    }
-    if(this.state.descInput !== this.state.groupData.groupInfo.description) {
-      this.props.editGroupDescription(this.state.id, this.state.descInput);
-    }
-    if(this.state.sizeInput !== this.state.groupData.groupInfo.size) {
-      this.props.editGroupSize(this.state.id, this.state.sizeInput);
-    }
-    if(this.state.priceInput !== this.state.groupData.groupInfo.cost) {
-      this.props.editGroupPrice(this.state.id, this.state.priceInput);
-    }
-    if(this.state.groupTypeInput !== getGroupType(this.state.groupData.groupInfo.groupType)) {
-      this.props.editGroupType(this.state.id, this.state.groupTypeInput);
-    }
-    if(this.state.privateInput !== this.state.groupData.groupInfo.isPrivate) {
-      this.props.editPrivacy(this.state.id, this.state.privateInput);
-    }
-    if(this.state.tagsInput.length !== this.state.groupData.groupInfo.tags.length || this.state.tagsInput.filter((item, i) =>
-        item !== this.state.groupData.groupInfo.tags[i]
-      ).length !== 0) {
-      this.props.editGroupTags(this.state.id, this.state.tagsInput)
-    }
-    this.setState({isEditing: false});
+  changeGroupData = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        if(this.state.titleInput !== this.state.groupData.groupInfo.title) {
+          this.props.editGroupTitle(this.state.id, this.state.titleInput);
+        }
+        if(this.state.descInput !== this.state.groupData.groupInfo.description) {
+          this.props.editGroupDescription(this.state.id, this.state.descInput);
+        }
+        if(this.state.sizeInput !== this.state.groupData.groupInfo.size) {
+          this.props.editGroupSize(this.state.id, this.state.sizeInput);
+        }
+        if(this.state.priceInput !== this.state.groupData.groupInfo.cost) {
+          this.props.editGroupPrice(this.state.id, this.state.priceInput);
+        }
+        if(this.state.groupTypeInput !== getGroupType(this.state.groupData.groupInfo.groupType)) {
+          this.props.editGroupType(this.state.id, this.state.groupTypeInput);
+        }
+        if(this.state.privateInput !== this.state.groupData.groupInfo.isPrivate) {
+          this.props.editPrivacy(this.state.id, this.state.privateInput);
+        }
+        if(this.state.tagsInput.length !== this.state.groupData.groupInfo.tags.length || this.state.tagsInput.filter((item, i) =>
+            item !== this.state.groupData.groupInfo.tags[i]
+          ).length !== 0) {
+          this.props.editGroupTags(this.state.id, this.state.tagsInput)
+        }
+        this.setState({isEditing: false});
+      }
+    });
   };
 
   render() {
+    const {getFieldDecorator} = this.props.form;
     return (
       <div>
-        <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 160, fontSize: 16}}>
-          <Col className='md-center-container' xs={{span: 24}} md={{span: 10}} lg={{span: 7}}>
-            <Row className='main-group-info'>
-              <Row style={{marginBottom: 26}}>
-                <Col span={24}>
-                  <h3 className='word-break' style={{margin: 0, fontSize: 22}}>
+        <Form className='group-form' onSubmit={this.changeGroupData}>
+          <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 160, fontSize: 16}}>
+            <Col className='md-center-container' xs={{span: 24}} md={{span: 10}} lg={{span: 7}}>
+              <Row className='main-group-info'>
+                <Row style={{marginBottom: 26}}>
+                  <Col span={24}>
+                    <h3 className='word-break' style={{margin: 0, fontSize: 22}}>
+                      {this.state.isEditing ?
+                        <FormItem style={{width: '100%', marginBottom: 0}}>
+                          {getFieldDecorator('title', {
+                            rules: [
+                              {required: true, message: 'Пожалуйста, введите название группы!'},
+                              {min: 3, message: 'Название должно содержать не менее 3 символов!'},
+                              {max: 70, message: 'Название должно содержать не более 70 символов!'}
+                            ],
+                            initialValue: this.state.titleInput
+                          })(
+                            <Input onChange={this.onChangeTitleHandle}/>)
+                          }
+                        </FormItem>
+                        : this.state.groupData.groupInfo.title}
+                    </h3>
+                  </Col>
+                  { Boolean(this.state.groupData.members.find(item =>
+                    item.role == 3)) ?
+                    (<span style={{color: 'rgba(0,0,0,0.6)'}}>Преподаватель найден</span>)
+                    : (<span style={{color: 'rgba(0,0,0,0.6)'}}>Идет поиск преподавателя</span>)
+                  }
+                </Row>
+                <Row gutter={6} type='flex' justify='start' align='middle' style={{marginBottom: 8}}>
+                  {this.state.isEditing ?
+                    <FormItem style={{width: '100%', marginBottom: 0}}>
+                      {getFieldDecorator('tags', {
+                        rules: [
+                          {required: true, message: 'Пожалуйста, введите изучаемые технологии!'},
+                          {validator: this.validateTagsInput}
+                        ],
+                        initialValue: this.state.tagsInput
+                      })(
+                        <Select onChange={this.onChangeTagsHandle} style={{width: '100%'}} onSearch={this.onHandleSearch} mode="tags" placeholder="Введите, что хотите изучить" notFoundContent={null}>
+                          {this.props.tags.length && this.props.tags.length !== 0 ?
+                            this.props.tags.map((item, index) =>
+                            <Option key={item.tag}>{item.tag}</Option>
+                          ) : null}
+                        </Select>)
+                      }
+                    </FormItem>
+                    : this.state.groupData.groupInfo.tags.map((item) =>
+                      <Link key={item} to="#">{item}</Link>
+                    )}
+                </Row>
+                <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
+                  <Col>Формат</Col>
+                  <Col>
                     {this.state.isEditing ?
-                      <Input onChange={this.onChangeTitleHandle} value={this.state.titleInput}/>
-                      : this.state.groupData.groupInfo.title}
-                  </h3>
-                </Col>
-                { Boolean(this.state.groupData.members.find(item =>
-                  item.role == 3)) ?
-                  (<span style={{color: 'rgba(0,0,0,0.6)'}}>Преподаватель найден</span>)
-                  : (<span style={{color: 'rgba(0,0,0,0.6)'}}>Идет поиск преподавателя</span>)
+                      <FormItem style={{width: '100%', marginBottom: 0}}>
+                        {getFieldDecorator('type', {
+                          rules: [{required: true, message: 'Пожалуйста, выберите формат обучения!'}],
+                          initialValue: this.state.groupTypeInput
+                        })(
+                          <Select onChange={this.onHandleGroupTypeChange} defaultActiveFirstOption={false} style={{minWidth: 114}} placeholder="Выберите формат">
+                            <Select.Option value="Lecture">Лекция</Select.Option>
+                            <Select.Option value="MasterClass">Мастер-класс</Select.Option>
+                            <Select.Option value="Seminar">Семинар</Select.Option>
+                          </Select>)
+                        }
+                      </FormItem>
+                      : getGroupType(this.state.groupData.groupInfo.groupType)
+                    }
+                  </Col>
+                </Row>
+                <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
+
+                  <Col span={24}>
+                    {this.state.isEditing ?
+                      <FormItem style={{width: '100%', marginBottom: 0}}>
+                        {getFieldDecorator('price', {
+                          rules: [
+                            {required: true, message: 'Пожалуйста, введите стоимость занятия в рублях!'}
+                          ],
+                          initialValue: this.state.priceInput
+                        })(
+                          <div>
+                            <Col span={10}>Стоимость</Col>
+                            <Col span={14} style={{textAlign: 'right'}}>
+                              <InputNumber min={1} onChange={this.onChangePriceHandle}/>
+                            </Col>
+                          </div>
+                          )
+                        }
+                      </FormItem>
+                      : (
+                        <div>
+                          <Col span={10}>Стоимость</Col>
+                          <Col span={14} style={{textAlign: 'right'}}>{this.state.groupData.groupInfo.cost} руб.</Col>
+                        </div>
+                      )}
+                  </Col>
+                </Row>
+                {this.state.isEditing ?
+                  <Row type='flex' align='middle' style={{marginBottom: 12}}>
+                    <Col span={16}>
+                      Приватная группа
+                    </Col>
+                    <Col span={8} style={{textAlign: 'right'}}>
+                      <Switch value={this.state.privateInput} id='privacy' onChange={this.onHandlePrivateChange}/>
+                    </Col>
+                  </Row>
+                  : this.state.groupData.groupInfo.isPrivate ?
+                    (<Row style={{marginBottom: 12}}>
+                      <Col>Эта группа является приватной</Col>
+                    </Row>)
+                    : (<Row style={{marginBottom: 12}}>
+                      <Col>Эта группа не является приватной</Col>
+                    </Row>)
+                }
+                {this.state.isEditing ?
+                  <Row type='flex' align='middle' style={{marginBottom: 12}}>
+                    <Col span={10}>
+                      Участников
+                    </Col>
+                    <Col span={14} style={{textAlign: 'right'}}>
+                      <FormItem style={{width: '100%', marginBottom: 0}}>
+                        {getFieldDecorator('size', {
+                          rules: [{required: true, message: 'Пожалуйста, введите количество человек!'}],
+                          initialValue: this.state.sizeInput
+                        })(
+                          <InputNumber id='size' min={1} max={200} onChange={this.onChangeSizeHandle} style={{width: 64}}/>)
+                        }
+                      </FormItem>
+                    </Col>
+                  </Row>
+                  : null
                 }
               </Row>
-              <Row gutter={6} type='flex' justify='start' align='middle' style={{marginBottom: 8}}>
-                {this.state.isEditing ?
-                  <Select onChange={this.onChangeTagsHandle} defaultActiveFirstOption={false} value={this.state.tagsInput} mode="tags" style={{width: '100%'}}>
-                    <Select.Option value="html">html</Select.Option>
-                    <Select.Option value="css">css</Select.Option>
-                    <Select.Option value="js">js</Select.Option>
-                    <Select.Option value="c#">c#</Select.Option>
-                  </Select>
-                  : this.state.groupData.groupInfo.tags.map((item) =>
-                  <Link key={item} to="#">{item}</Link>
-                )}
-              </Row>
-              <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
-                <Col>Формат</Col>
-                <Col>
-                  {this.state.isEditing ?
-                    <Select onChange={this.onHandleGroupTypeChange} defaultActiveFirstOption={false} value={this.state.groupTypeInput} style={{minWidth: 114}}>
-                      <Select.Option value='Lecture'>Лекция</Select.Option>
-                      <Select.Option value='MasterClass'>Мастер-класс</Select.Option>
-                      <Select.Option value='Seminar'>Семинар</Select.Option>
-                    </Select>
-                    : getGroupType(this.state.groupData.groupInfo.groupType)
-                  }
-                </Col>
-              </Row>
-              <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
-                <Col>Стоимость</Col>
-                <Col>
-                  {this.state.isEditing ?
-                    <InputNumber min={0} value={this.state.priceInput} onChange={this.onChangePriceHandle}/>
-                    : this.state.groupData.groupInfo.cost} руб.
-                </Col>
-              </Row>
-              {this.state.isEditing ?
-                <Row type='flex' align='middle' style={{marginBottom: 12}}>
-                  <Col span={16}>
-                    <label htmlFor="privacy">Приватная группа</label>
-                  </Col>
-                  <Col span={8} style={{textAlign: 'right'}}>
-                    <Switch value={this.state.privateInput} id='privacy' onChange={this.onHandlePrivateChange}/>
-                  </Col>
-                </Row>
-                : this.state.groupData.groupInfo.isPrivate ?
-                  (<Row style={{marginBottom: 12}}>
-                    <Col>Эта группа является приватной</Col>
-                  </Row>)
-                  : (<Row style={{marginBottom: 12}}>
-                    <Col>Эта группа не является приватной</Col>
-                  </Row>)
-              }
-              {this.state.isEditing ?
-                <Row type='flex' align='middle' style={{marginBottom: 12}}>
-                  <Col span={10}>
-                    <label htmlFor="size">Участников</label>
-                  </Col>
-                  <Col span={14} style={{textAlign: 'right'}}>
-                    <InputNumber min={0} id='size' value={this.state.sizeInput} onChange={this.onChangeSizeHandle} style={{width: 64}}/>
-                  </Col>
-                </Row>
-                : null
-              }
-            </Row>
-            <Row style={{width: '100%', marginBottom: 20}}>
-              <MemberList
-                groupId={this.state.id}
-                members={this.state.groupData.members}
-                memberAmount={this.state.groupData.groupInfo.memberAmount}
-                size={this.state.groupData.groupInfo.size}
-                isCreator={this.state.isCreator}
-              />
-            </Row>
-            {this.state.isCreator ?
-              (<Row style={{width: '100%'}} className='md-center-container'>
-                <InviteMemberSelect groupId={this.state.id}/>
-              </Row>) : null
-            }
-            {this.state.isCreator && !this.state.isEditing ?
-              <Row>
-                <Button type='dashed' className='md-center-container md-offset-16px' onClick={() => this.setState({isEditing: true})} style={{width: 280, marginTop: 12}}>Редактировать</Button>
-              </Row>
-              : this.state.isEditing ?
-                <Row>
-                  <Col span={24} className='md-center-container md-offset-16px'>
-                    <Button type='primary' onClick={this.changeGroupData} style={{width: 280, marginTop: 22}}>Подтвердить</Button>
-                  </Col>
-                  <Col span={24} className='md-center-container md-offset-16px'>
-                    <Button type='danger' onClick={this.cancelChanges} style={{width: 280, marginTop: 10}}>Отмена</Button>
-                  </Col>
-                </Row>
-                : null
-            }
-          </Col>
-          <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
-            <Row style={{textAlign: 'left', marginTop: 8}}>
-              <Col xs={{span: 24}} lg={{span: 17}}>
-                <SuggestPlanForm
-                  members={this.state.groupData.members}
+              <Row style={{width: '100%', marginBottom: 20}}>
+                <MemberList
                   groupId={this.state.id}
-                  curriculum={this.state.groupData.groupInfo.curriculum}
-                  isTeacher={this.state.isTeacher}
-                  currentUserData={this.state.userData}
-                  currentPlan={this.state.groupData.groupInfo.curriculum}
-                />
-              </Col>
-              <Col xs={{span: 24}} lg={{span: 7}} style={{textAlign: 'right'}}>
-                <EnterGroupBtn
+                  members={this.state.groupData.members}
                   memberAmount={this.state.groupData.groupInfo.memberAmount}
                   size={this.state.groupData.groupInfo.size}
-                  isInGroup={this.state.isInGroup}
-                  isTeacher={this.state.isTeacher}
-                  userData={this.state.userData}
-                  groupId={this.state.id}
-                  onSignInClick={this.onSignInClick}
+                  isCreator={this.state.isCreator}
                 />
-              </Col>
-            </Row>
-            <Row>
-              <Row style={{marginTop: 42}}>
-                <Col><h3 style={{fontSize: 18}}>Описание</h3></Col>
               </Row>
-              <Row style={{marginBottom: 40}}>
-                <p className='word-break'>
-                  {this.state.isEditing ?
-                    <Input.TextArea onChange={this.onChangeDescriptionHandle} defaultValue={this.state.descInput} autosize/>
-                    : this.state.groupData.groupInfo.description}
-                </p>
-              </Row>
-            </Row>
-            <Row style={{width: '100%'}}>
-              {
-                <Chat chat={this.props.currentChat} groupId={this.state.id} isInGroup={this.state.isInGroup}/>
+              {this.state.isCreator ?
+                (<Row style={{width: '100%'}} className='md-center-container'>
+                  <InviteMemberSelect groupId={this.state.id}/>
+                </Row>) : null
               }
-            </Row>
+              {this.state.isCreator && !this.state.isEditing ?
+                <Row>
+                  <Button type='dashed' className='md-center-container md-offset-16px' onClick={() => this.setState({isEditing: true})} style={{width: 280, marginTop: 12}}>Редактировать</Button>
+                </Row>
+                : this.state.isEditing ?
+                  <Row>
+                    <Col span={24} className='md-center-container md-offset-16px'>
+                      <Button type='primary' htmlType='submit' style={{width: 280, marginTop: 22}}>Подтвердить</Button>
+                    </Col>
+                    <Col span={24} className='md-center-container md-offset-16px'>
+                      <Button type='danger' onClick={this.cancelChanges} style={{width: 280, marginTop: 10}}>Отмена</Button>
+                    </Col>
+                  </Row>
+                  : null
+              }
+            </Col>
+            <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
+              <Row style={{textAlign: 'left', marginTop: 8}}>
+                <Col xs={{span: 24}} lg={{span: 17}}>
+                  <SuggestPlanForm
+                    members={this.state.groupData.members}
+                    groupId={this.state.id}
+                    curriculum={this.state.groupData.groupInfo.curriculum}
+                    isTeacher={this.state.isTeacher}
+                    currentUserData={this.state.userData}
+                    currentPlan={this.state.groupData.groupInfo.curriculum}
+                  />
+                </Col>
+                <Col xs={{span: 24}} lg={{span: 7}} style={{textAlign: 'right'}}>
+                  <EnterGroupBtn
+                    memberAmount={this.state.groupData.groupInfo.memberAmount}
+                    size={this.state.groupData.groupInfo.size}
+                    isInGroup={this.state.isInGroup}
+                    isTeacher={this.state.isTeacher}
+                    userData={this.state.userData}
+                    groupId={this.state.id}
+                    onSignInClick={this.onSignInClick}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Row style={{marginTop: 42}}>
+                  <Col><h3 style={{fontSize: 18}}>Описание</h3></Col>
+                </Row>
+                <Row style={{marginBottom: 40}}>
+                  <p className='word-break'>
+                    {this.state.isEditing ?
+                      <FormItem style={{width: '100%', marginBottom: 0}}>
+                        {getFieldDecorator('desc', {
+                          rules: [
+                            {required: true, message: 'Пожалуйста, введите описание!'},
+                            {min: 20, message: 'Должно быть не менее 20 символов!'},
+                            {max: 3000, message: 'Должно быть не более 3000 символов!'}
+                          ],
+                          initialValue: this.state.descInput
+                        })(
+                          <Input.TextArea onChange={this.onChangeDescriptionHandle} autosize/>)
+                        }
+                      </FormItem>
+                      : this.state.groupData.groupInfo.description}
+                  </p>
+                </Row>
+              </Row>
+              <Row style={{width: '100%'}}>
+                {
+                  <Chat chat={this.props.currentChat} groupId={this.state.id} isInGroup={this.state.isInGroup}/>
+                }
+              </Row>
+            </Col>
           </Col>
-        </Col>
+        </Form>
         <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleSignInCancel}/>
         <ReviewModal courseTitle={this.state.groupData.groupInfo.title} groupId={this.state.id} visible={this.state.reviewVisible} handleCancel={this.handleReviewCancel}/>
       </div>
@@ -467,7 +562,8 @@ GroupPage.defaultProps = {
 
 const mapStateToProps = createStructuredSelector({
   needUpdate: makeSelectNeedUpdate(),
-  currentChat: makeSelectChat()
+  currentChat: makeSelectChat(),
+  tags: makeSelectTags()
 });
 
 function mapDispatchToProps(dispatch) {
@@ -482,7 +578,8 @@ function mapDispatchToProps(dispatch) {
     editPrivacy: (id, isPrivate) => dispatch(editPrivacy(id, isPrivate)),
     editGroupType: (id, type) => dispatch(editGroupType(id, type)),
     getCurrentChat: (groupId) => dispatch(getCurrentChat(groupId)),
-    getCurrentPlan: (plan) => dispatch(getCurrentPlan(plan))
+    getCurrentPlan: (plan) => dispatch(getCurrentPlan(plan)),
+    getTags: (tag) => dispatch(getTags(tag))
   };
 }
 
@@ -495,4 +592,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(GroupPage);
+)(Form.create()(GroupPage));

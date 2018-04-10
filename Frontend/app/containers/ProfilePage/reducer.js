@@ -63,7 +63,7 @@ function profilePageReducer(state = initialState, action) {
       if(localStorage.getItem('name') !== action.newName || localStorage.getItem('avatarLink') !== action.newAvatarLink) {
         localStorage.setItem('name', action.newName);
         localStorage.setItem('avatarLink', action.newAvatarLink);
-        // location.reload();
+        location.reload();
       }
       return state
         .set('pending', false)

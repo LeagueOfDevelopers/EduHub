@@ -19,6 +19,7 @@ import {parseJwt} from "../../globalJS";
 import {Link} from "react-router-dom";
 import SigningInForm from "../../containers/SigningInForm/index";
 import { Row, Icon, Col, Avatar, Button, Menu, Dropdown, message, Select } from 'antd';
+import config from "../../config";
 const {Option, OptGroup} = Select;
 
 const Logo = styled.div`
@@ -140,13 +141,10 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                         style={{display: 'flex', alignItems: 'center'}}
                       >
                         <Avatar
-                          src={item.avatarLink}
+                          src={`${config.API_BASE_URL}/file/${item.avatarLink}`}
                           size='large'
                           style={{
-                            backgroundColor: "#f0f0f0",
-                            color: "rgba(0,0,0,0.65)",
                             marginRight: 10
-
                           }}
                         />
                         <Col>
@@ -190,7 +188,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             <Dropdown overlay={this.acc_menu} trigger={['click']}>
               <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
                 <Avatar
-                  src={(localStorage.getItem('avatarLink'))}
+                  src={`${config.API_BASE_URL}/file/${localStorage.getItem('avatarLink')}`}
                   size='large'
                   style={{
                     backgroundColor: "#fff",

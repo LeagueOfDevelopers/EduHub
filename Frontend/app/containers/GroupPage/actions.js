@@ -58,7 +58,10 @@ import {
   SEND_MESSAGE_SUCCESS,
   ADD_TEACHER_REVIEW_FAILED,
   ADD_TEACHER_REVIEW_START,
-  ADD_TEACHER_REVIEW_SUCCESS
+  ADD_TEACHER_REVIEW_SUCCESS,
+  GET_GROUP_TAGS_FAILED,
+  GET_GROUP_TAGS_START,
+  GET_GROUP_TAGS_SUCCESS
 } from './constants';
 
 
@@ -444,3 +447,23 @@ export function addTeacherReviewFailed(error) {
   };
 }
 
+export function getTags(tag) {
+  return {
+    type: GET_GROUP_TAGS_START,
+    tag
+  };
+}
+
+export function getTagsSuccess(tags) {
+  return {
+    type: GET_GROUP_TAGS_SUCCESS,
+    tags
+  };
+}
+
+export function getTagsFailed(error) {
+  return {
+    type: GET_GROUP_TAGS_FAILED,
+    error
+  };
+}

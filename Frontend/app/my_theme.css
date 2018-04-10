@@ -318,6 +318,14 @@ a:focus {
   height: 400px;
 }
 
+.member-container .ant-list-item-meta {
+  min-width: 90%;
+}
+
+.profile-form .ant-form-explain, .group-form .ant-form-explain {
+  white-space: normal;
+}
+
 .chatroom p {
   margin: 0;
 }

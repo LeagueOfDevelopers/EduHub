@@ -29,7 +29,8 @@ import {parseJwt, getGender} from "../../globalJS";
 import config from '../../config';
 import {Link} from "react-router-dom";
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
-import {Card, Col, Row, Avatar, Tabs, Input, InputNumber, Select, Button, Icon, Upload} from 'antd';
+import {Card, Col, Row, Avatar, Tabs, Input, InputNumber, Select, Button, Icon, Upload, Form} from 'antd';
+const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 
 const defaultUserData = {
@@ -111,8 +112,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       teacherProfile: null,
       isEditing: false,
       nameInput: '',
-      genderInput: '',
-      birthYearInput: '',
+      genderInput: 'Unknown',
+      birthYearInput: 1900,
       aboutInput: '',
       imageUrl: null,
       avatarLoading: false,
@@ -167,8 +168,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       teacherProfile: result.teacherProfile,
       imageUrl: result.userProfile.avatarLink,
       nameInput: result.userProfile.name,
-      genderInput: result.userProfile.gender === 1 ? 'Man' : result.userProfile.gender === 2 ? 'Woman' : '',
-      birthYearInput: result.userProfile.birthYear,
+      genderInput: result.userProfile.gender === 1 ? 'Man' : result.userProfile.gender === 2 ? 'Woman' : 'Unknown',
+      birthYearInput: result.userProfile.birthYear ? result.userProfile.birthYear : 1900,
       aboutInput: result.userProfile.aboutUser ? result.userProfile.aboutUser : '',
       contactsInputs: result.userProfile.contacts ? result.userProfile.contacts : [],
       isCurrentUser: Boolean(this.props.match.params.id == this.state.userData.UserId)
@@ -217,15 +218,20 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     })
   };
 
-  changeProfileData = () => {
-    this.setState({contactsInputs: this.state.contactsInputs.filter(item => item !== '')});
-    if(this.state.contactsInputs.length !== this.state.userProfile.contacts.length || this.state.contactsInputs.filter((item, i) =>
-        item !== this.state.userProfile.contacts[i]
-      ).length !== 0 || this.state.aboutInput !== this.state.userProfile.aboutUser || this.state.birthYearInput !== this.state.userProfile.birthYear ||
-      this.state.genderInput !== getGender(this.state.userProfile.gender) || this.state.nameInput !== this.state.userProfile.name || `${config.API_BASE_URL}/file/${this.state.imageUrl}` !== this.state.userProfile.avatarLink) {
-      setTimeout(() => this.props.editProfile(this.state.nameInput, this.state.aboutInput, this.state.genderInput, this.state.contactsInputs, this.state.birthYearInput, this.state.imageUrl ? `${config.API_BASE_URL}/file/${this.state.imageUrl}` : ''), 0);
-    }
-    this.setState({isEditing: false});
+  changeProfileData = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, value) => {
+      if(!err) {
+        this.setState({contactsInputs: this.state.contactsInputs.filter(item => item !== '')});
+        if(this.state.contactsInputs.length !== this.state.userProfile.contacts.length || this.state.contactsInputs.filter((item, i) =>
+            item !== this.state.userProfile.contacts[i]
+          ).length !== 0 || this.state.aboutInput !== this.state.userProfile.aboutUser || this.state.birthYearInput !== this.state.userProfile.birthYear ||
+          this.state.genderInput !== getGender(this.state.userProfile.gender) || this.state.nameInput !== this.state.userProfile.name || this.state.imageUrl !== this.state.userProfile.avatarLink) {
+          setTimeout(() => this.props.editProfile(this.state.nameInput, this.state.aboutInput, this.state.genderInput, this.state.contactsInputs, this.state.birthYearInput, this.state.imageUrl ? this.state.imageUrl : ''), 0);
+        }
+        this.setState({isEditing: false});
+      }
+    })
   };
 
   handleAvatarLinkChange = (info) => {
@@ -261,167 +267,219 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       showUploadList: false
     };
 
+    const {getFieldDecorator} = this.props.form;
+
     return (
       <div>
         <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 40}} className='md-center-container'>
           <Col xs={{span: 24}} md={{span: 10}} lg={{span: 6}} className='lg-center-container-item'>
-            <Card
-              title={
-                <Row type='flex' align='middle'>
-                  <Col span={21} style={{display: 'flex', alignItems: 'center'}}>
+            <Form className='profile-form' onSubmit={this.changeProfileData}>
+              <Card
+                title={
+                  <Row type='flex' align='middle'>
+                    <Col span={24} style={{display: 'flex', alignItems: 'center'}}>
+                      <Col span={7}>
+                        {
+                          this.state.isEditing ?
+                            <Upload
+                              {...props}
+                              style={{display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 30, marginRight: 14, width: 50, height: 50, borderRadius: '50%', cursor: 'pointer'}}
+                            >
+                              {this.state.imageUrl ? <img src={`${config.API_BASE_URL}/file/${this.state.imageUrl}`} style={{height: 50, width: 50, borderRadius: '50%'}} alt="" /> : <Icon type={this.state.loading ? 'loading' : 'plus'} />}
+                            </Upload>
+                            :
+                            <Avatar
+                              src={this.state.userProfile.avatarLink ? `${config.API_BASE_URL}/file/${this.state.userProfile.avatarLink}` : ''}
+                              style={{minHeight: 50, minWidth: 50, marginRight: 14, borderRadius: '50%'}}
+                            >
+                            </Avatar>
+                        }
+                      </Col>
+                      <Col span={17}>
+                        {this.state.isEditing ?
+                          <FormItem style={{width: '100%', marginBottom: 0}}>
+                            {getFieldDecorator('name', {
+                              rules: [
+                                {required: true, message: 'Пожалуйста, введите свое имя!'},
+                                {message: 'Имя должно быть не меньше 3 символов!', min: 3},
+                                {message: 'Имя должно быть не больше 70 символов!', max: 70},
+                                {message: 'В имени не должно быть цифр!', pattern: /^[a-zA-Zа-яА-Я\s]+$/}
+                              ],
+                              initialValue: this.state.nameInput
+                            })(
+                              <Input style={{width: '100%'}} onChange={this.onChangeNameHandle} placeholder="Так вас будут видеть на сайте"/>)
+                            }
+                          </FormItem>
+                          : this.state.userProfile.name
+                        }
+                      </Col>
+                    </Col>
+                    {!this.state.isEditing && this.state.isCurrentUser ?
+                      <Col style={{position:'absolute', top: 26, right: 20, textAlign: 'right'}}>
+                        <img src={require('../../images/edit.svg')} onClick={() => this.setState({isEditing: true})} style={{width: 20, cursor: 'pointer'}}/>
+                      </Col>
+                      : null
+                    }
+                  </Row>
+                }
+                hoverable
+                className='profile-card header-font-size-20 without-border-bottom'
+              >
+                <Row style={{marginBottom: 20}}>
+                  <div>Почтовый адрес</div>
+                  <p style={{fontSize: 16, color: '#000'}}>
+                    {this.state.userProfile.email}
+                  </p>
+                </Row>
+                <Row style={{marginBottom: 20}}>
+                  <div>Пол</div>
+                  <p style={{fontSize: 16, color: '#000'}}>
+                    {this.state.isEditing ?
+                      <FormItem style={{width: '100%', marginBottom: 0}}>
+                        {getFieldDecorator('gender', {
+                          rules: [
+                            {required: true, message: 'Пожалуйста, введите свой пол!'}
+                          ],
+                          initialValue: this.state.genderInput
+                        })(
+                          <Select onChange={this.onChangeGenderHandle} style={{minWidth: 100}}>
+                            <Select.Option value='Unknown'>Не скажу</Select.Option>
+                            <Select.Option value='Man'>Мужской</Select.Option>
+                            <Select.Option value='Woman'>Женский</Select.Option>
+                          </Select>)
+                        }
+                      </FormItem>
+                      : getGender(this.state.userProfile.gender)
+                    }
+                  </p>
+                </Row>
+                <Row style={{marginBottom: 20}}>
+                  <div>Год рождения</div>
+                  <p style={{fontSize: 16, color: '#000'}}>
                     {
                       this.state.isEditing ?
-                        <Upload
-                          {...props}
-                          style={{display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 30, marginRight: 14, width: 50, height: 50, borderRadius: '50%', cursor: 'pointer'}}
-                        >
-                          {this.state.imageUrl ? <img src={`${config.API_BASE_URL}/file/${this.state.imageUrl}`} style={{height: 50, width: 50, borderRadius: '50%'}} alt="" /> : <Icon type={this.state.loading ? 'loading' : 'plus'} />}
-                        </Upload>
-                        :
-                        <Avatar
-                          src={this.state.userProfile.avatarLink ? this.state.userProfile.avatarLink : ''}
-                          style={{minHeight: 50, minWidth: 50, marginRight: 14, borderRadius: '50%'}}
-                        >
-                        </Avatar>
+                        <FormItem style={{width: '100%', marginBottom: 0}}>
+                          {getFieldDecorator('birthYear', {
+                            rules: [
+                              {required: true, message: 'Пожалуйста, введите год рождения!'}
+                            ],
+                            initialValue: this.state.birthYearInput
+                          })(
+                            <InputNumber onChange={this.onChangeBirthYearHandle} min={1900} max={new Date().getFullYear()} style={{width: 150}}/>)
+                          }
+                        </FormItem>
+                        : this.state.userProfile.birthYear ?
+                        this.state.userProfile.birthYear : 'Не указано'
                     }
-                    <span>
-                      {this.state.isEditing ?
-                        <Input style={{width: '100%'}} onChange={this.onChangeNameHandle} value={this.state.nameInput}/>
-                        : this.state.userProfile.name
-                      }
-                    </span>
-                  </Col>
-                  {!this.state.isEditing && this.state.isCurrentUser ?
-                    <Col span={3} style={{textAlign: 'right'}}>
-                      <img src={require('../../images/edit.svg')} onClick={() => this.setState({isEditing: true})} style={{width: 20, cursor: 'pointer'}}/>
-                    </Col>
-                    : null
-                  }
+                  </p>
                 </Row>
-              }
-              hoverable
-              className='profile-card header-font-size-20 without-border-bottom'
-            >
-              <Row style={{marginBottom: 20}}>
-                <div>Почтовый адрес</div>
-                <p style={{fontSize: 16, color: '#000'}}>
-                  {this.state.userProfile.email}
-                </p>
-              </Row>
-              <Row style={{marginBottom: 20}}>
-                <div>Пол</div>
-                <p style={{fontSize: 16, color: '#000'}}>
-                  {this.state.isEditing ?
-                    <Select onChange={this.onChangeGenderHandle} value={this.state.genderInput} style={{minWidth: 100}}>
-                      <Select.Option value='Man'>Мужской</Select.Option>
-                      <Select.Option value='Woman'>Женский</Select.Option>
-                    </Select>
-                    : getGender(this.state.userProfile.gender)
-                  }
-                </p>
-              </Row>
-              <Row style={{marginBottom: 20}}>
-                <div>Год рождения</div>
-                <p style={{fontSize: 16, color: '#000'}}>
-                  {
-                    this.state.isEditing ?
-                      <InputNumber onChange={this.onChangeBirthYearHandle} style={{width: 150}} value={this.state.birthYearInput}/>
-                      : this.state.userProfile.birthYear ?
-                      this.state.userProfile.birthYear : 'Не указано'
-                  }
-                </p>
-              </Row>
-              {this.state.teacherProfile ? (
-                <Row>
-                  <Row style={{marginBottom: 20}}>
-                    <div>Основные навыки</div>
-                    <Row gutter={6}>
-                      <p>
-                        {this.state.teacherProfile.skills &&
-                        this.state.teacherProfile.skills.length !== 0 ?
-                          this.state.teacherProfile.skills.map((item) =>
-                            <Link to="#" key={item}>{item}</Link>
-                          )
-                          :
-                          !this.state.isEditing && this.state.isCurrentUser ? (
-                              <div>
-                                <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
-                                <span onClick={() => this.setState({isEditing: true})} style={{color: '#52c41a', marginTop: 4, cursor: 'pointer'}}>
+                {this.state.teacherProfile ? (
+                  <Row>
+                    <Row style={{marginBottom: 20}}>
+                      <div>Основные навыки</div>
+                      <Row gutter={6}>
+                        <p>
+                          {this.state.teacherProfile.skills &&
+                          this.state.teacherProfile.skills.length !== 0 ?
+                            this.state.teacherProfile.skills.map((item) =>
+                              <Link to="#" key={item}>{item}</Link>
+                            )
+                            :
+                            !this.state.isEditing && this.state.isCurrentUser ? (
+                                <div>
+                                  <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
+                                  <span onClick={() => this.setState({isEditing: true})} style={{color: '#52c41a', marginTop: 4, cursor: 'pointer'}}>
                                 Теперь вы можете указать свои навыки!
                               </span>
-                              </div>
-                            )
-                            : null
-                        }
-                      </p>
+                                </div>
+                              )
+                              : null
+                          }
+                        </p>
+                      </Row>
                     </Row>
                   </Row>
+                ) : null
+                }
+                <Row style={{marginBottom: 20}}>
+                  <div>О себе</div>
+                  <p className='word-break' style={{fontSize: 16, color: '#000'}}>
+                    {
+                      this.state.isEditing ?
+                        <FormItem style={{width: '100%', marginBottom: 0}}>
+                          {getFieldDecorator('aboutUser', {
+                            rules: [
+                              {required: true, message: 'Пожалуйста, введите информацию о себе!'},
+                              {min: 20, message: 'Должно быть не менее 20 символов!'},
+                              {max: 3000, message: 'Должно быть не более 3000 символов!'}
+                            ],
+                            initialValue: this.state.aboutInput
+                          })(
+                            <Input.TextArea onChange={this.onChangeAboutHandle} autosize/>)
+                          }
+                        </FormItem>
+                        : this.state.userProfile.aboutUser ?
+                        this.state.userProfile.aboutUser : 'Не указано'
+                    }
+                  </p>
                 </Row>
-              ) : null
-              }
-              <Row style={{marginBottom: 20}}>
-                <div>О себе</div>
-                <p className='word-break' style={{fontSize: 16, color: '#000'}}>
-                  {
-                    this.state.isEditing ?
-                      <Input.TextArea onChange={this.onChangeAboutHandle} defaultValue={this.state.aboutInput} autosize/>
-                      : this.state.userProfile.aboutUser ?
-                      this.state.userProfile.aboutUser : 'Не указано'
-                  }
-                </p>
-              </Row>
-              <Row style={{marginBottom: 20}}>
-                <div>Ссылки</div>
-                <p>
-                  {this.state.userProfile.contacts && this.state.userProfile.contacts.length !== 0 && !this.state.isEditing
-                    ? this.state.userProfile.contacts.map((item, i) =>
-                      <Link to='#' key={i} className='user-link' style={{fontSize: 16, display: 'block'}}>
-                        {item}
-                      </Link>
-                    ) :
-                    this.state.isEditing ?
-                      <div>
-                        {this.state.contactsInputs.map((item, i) =>
-                          <div key={i}>
-                            <Col span={20}>
-                              <Input
-                                placeholder='Ссылка на профиль'
-                                onChange={(e) => this.onHandleChangeContact(e, i)}
-                                value={this.state.contactsInputs[i]}
-                                style={{marginBottom: 8, width: '100%'}}
-                              />
-                            </Col>
-                            <Col span={4} style={{textAlign: 'right'}}>
-                              <Icon
-                                className="dynamic-delete-button"
-                                type="minus-circle-o"
-                                onClick={() => this.removeContact(i)}
-                              />
-                            </Col>
-                          </div>
-                        )}
-                        <Button type="dashed" onClick={this.addContact} style={{ width: '100%', marginTop: 8 }}>
-                          <Icon type="plus" />
-                          Добавить ссылку
-                        </Button>
-                      </div>
-                      :
-                      <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
-                  }
-                </p>
-              </Row>
-              {this.state.isEditing ?
-                <div>
-                  <Col span={24}>
-                    <Button type='primary' onClick={this.changeProfileData} style={{width: '100%'}}>Подтвердить</Button>
-                  </Col>
-                  <Col span={24}>
-                    <Button type='danger' onClick={this.cancelChanges} style={{marginTop: 6, width: '100%'}}>Отмена</Button>
-                  </Col>
-                </div>
-                : null
-              }
-            </Card>
+                <Row style={{marginBottom: 20}}>
+                  <div>Ссылки</div>
+                  <p>
+                    {this.state.userProfile.contacts && this.state.userProfile.contacts.length !== 0 && !this.state.isEditing
+                      ? this.state.userProfile.contacts.map((item, i) =>
+                        <a href={item} target='_blank' key={i} className='user-link' style={{fontSize: 16, display: 'block'}}>
+                          {item}
+                        </a>
+                      ) :
+                      this.state.isEditing ?
+                        <div>
+                          {this.state.contactsInputs.map((item, i) =>
+                            <div key={i}>
+                              <Col span={20}>
+                                <Input
+                                  placeholder='Ссылка на профиль'
+                                  onChange={(e) => this.onHandleChangeContact(e, i)}
+                                  value={this.state.contactsInputs[i]}
+                                  style={{marginBottom: 8, width: '100%'}}
+                                />
+                              </Col>
+                              <Col span={4} style={{textAlign: 'right'}}>
+                                <Icon
+                                  className="dynamic-delete-button"
+                                  type="minus-circle-o"
+                                  onClick={() => this.removeContact(i)}
+                                />
+                              </Col>
+                            </div>
+                          )}
+                          {
+                            this.state.contactsInputs.length < 5 ?
+                              <Button type="dashed" onClick={this.addContact} style={{ width: '100%', marginTop: 8 }}>
+                                <Icon type="plus" />
+                                Добавить ссылку
+                              </Button>
+                              : null
+                          }
+                        </div>
+                        :
+                        <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
+                    }
+                  </p>
+                </Row>
+                {this.state.isEditing ?
+                  <div>
+                    <Col span={24}>
+                      <Button type='primary' htmlType='submit' style={{width: '100%'}}>Подтвердить</Button>
+                    </Col>
+                    <Col span={24}>
+                      <Button type='danger' onClick={this.cancelChanges} style={{marginTop: 6, width: '100%'}}>Отмена</Button>
+                    </Col>
+                  </div>
+                  : null
+                }
+              </Card>
+            </Form>
             {
               this.state.isCurrentUser ?
                 <Link to='/create_group'>
@@ -534,4 +592,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(ProfilePage);
+)(Form.create()(ProfilePage));

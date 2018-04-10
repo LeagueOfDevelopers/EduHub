@@ -25,9 +25,15 @@ const makeSelectChat = () => createSelector(
   (groupPageState) => groupPageState.get('chat')
 );
 
+const makeSelectTags = () => createSelector(
+  selectGroupPage,
+  (groupPageState) => groupPageState.get('tags')
+);
+
 export {
   makeSelectUsers,
   makeSelectNeedUpdate,
   makeSelectPlan,
-  makeSelectChat
+  makeSelectChat,
+  makeSelectTags
 };
