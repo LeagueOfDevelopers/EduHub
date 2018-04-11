@@ -43,7 +43,7 @@ function* getInvitesSaga() {
 }
 
 function getNotifies() {
-  return fetch(`${config.API_BASE_URL}/user/profile/notifies`, {
+  return fetch(`${config.API_BASE_URL}/user/profile/notifications`, {
     headers: {
       'Content-Type': 'application/json-patch+json',
       'Authorization': `Bearer ${localStorage.getItem('token')}`

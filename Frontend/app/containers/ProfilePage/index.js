@@ -285,11 +285,11 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                               {...props}
                               style={{display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 30, marginRight: 14, width: 50, height: 50, borderRadius: '50%', cursor: 'pointer'}}
                             >
-                              {this.state.imageUrl ? <img src={`${config.API_BASE_URL}/file/${this.state.imageUrl}`} style={{height: 50, width: 50, borderRadius: '50%'}} alt="" /> : <Icon type={this.state.loading ? 'loading' : 'plus'} />}
+                              {this.state.imageUrl ? <img src={`${config.API_BASE_URL}/file/img/${this.state.imageUrl}`} style={{height: 50, width: 50, borderRadius: '50%'}} alt="" /> : <Icon type={this.state.loading ? 'loading' : 'plus'} />}
                             </Upload>
                             :
                             <Avatar
-                              src={this.state.userProfile.avatarLink ? `${config.API_BASE_URL}/file/${this.state.userProfile.avatarLink}` : ''}
+                              src={this.state.userProfile.avatarLink ? `${config.API_BASE_URL}/file/img/${this.state.userProfile.avatarLink}` : ''}
                               style={{minHeight: 50, minWidth: 50, marginRight: 14, borderRadius: '50%'}}
                             >
                             </Avatar>

@@ -40,7 +40,7 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
                 <List.Item.Meta
                   avatar={
                     <Avatar
-                      src={`${config.API_BASE_URL}/file/${item.avatarLink}`}
+                      src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
                     />}
                   title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
                   description={getMemberRole(item.role)}

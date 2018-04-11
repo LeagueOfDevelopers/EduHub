@@ -141,7 +141,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                         style={{display: 'flex', alignItems: 'center'}}
                       >
                         <Avatar
-                          src={`${config.API_BASE_URL}/file/${item.avatarLink}`}
+                          src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
                           size='large'
                           style={{
                             marginRight: 10
@@ -188,7 +188,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             <Dropdown overlay={this.acc_menu} trigger={['click']}>
               <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
                 <Avatar
-                  src={`${config.API_BASE_URL}/file/${localStorage.getItem('avatarLink')}`}
+                  src={localStorage.getItem('avatarLink') !== '' && localStorage.getItem('avatarLink') !== 'null' ? `${config.API_BASE_URL}/file/img/${localStorage.getItem('avatarLink')}` : null}
                   size='large'
                   style={{
                     backgroundColor: "#fff",

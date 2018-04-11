@@ -3,7 +3,8 @@ import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { sendMessage } from "../../containers/GroupPage/actions";
+import { sendMessage, getCurrentChat } from "../../containers/GroupPage/actions";
+import { connectSockets } from "../../globalJS";
 import {Input} from 'antd';
 import Message from './Message';
 
@@ -11,9 +12,34 @@ class ChatRoom extends React.Component {
   constructor(props) {
     super(props);
 
+    const uri = `ws://localhost:10485/api/group/{groupId}/chat`;
+    this.socket = new WebSocket(uri);
+
     this.state = {
       messages: [],
       showIsInGroupError: false
+    };
+  }
+
+  componentDidMount() {
+    this.connectSocket(this.socket);
+    this.scrollToBottom();
+  }
+
+  connectSocket(socket) {
+    const _this = this;
+    socket.onopen = function(event) {
+      console.log("opened connection");
+    };
+    socket.onclose = function(event) {
+      console.log("closed connection");
+    };
+    socket.onmessage = function(event) {
+      _this.props.getCurrentChat(_this.props.groupId);
+      console.log('message received ' + JSON.stringify(event.data));
+    };
+    socket.onerror = function(event) {
+      console.log("error");
     };
   }
 
@@ -23,13 +49,16 @@ class ChatRoom extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.socket.close()
+  }
+
   scrollToBottom() {
     ReactDom.findDOMNode(this.chat).scrollTop = ReactDom.findDOMNode(this.chat).scrollHeight;
   }
 
   submitMessage(e) {
     e.preventDefault();
-
     if(!this.props.isInGroup) {
       this.setState({showIsInGroupError: true})
     }
@@ -104,7 +133,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    sendMessage: (groupId, text) => dispatch(sendMessage(groupId, text))
+    sendMessage: (groupId, text) => dispatch(sendMessage(groupId, text)),
+    getCurrentChat: (groupId) => dispatch(getCurrentChat(groupId))
   }
 }
 

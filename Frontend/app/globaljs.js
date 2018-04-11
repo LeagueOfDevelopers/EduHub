@@ -53,3 +53,20 @@ export function getQueryVariable(variable) {
     }
   }
 }
+
+export function connectSockets(groupId) {
+  const uri = `ws://localhost:10485/api/group/{groupId}/chat`;
+  let socket = new WebSocket(uri);
+  socket.onopen = function(event) {
+    console.log("opened connection to " + uri);
+  };
+  socket.onclose = function(event) {
+    console.log("closed connection from " + uri);
+  };
+  socket.onmessage = function(event) {
+    console.log('message received' + JSON.stringify(event.data));
+  };
+  socket.onerror = function(event) {
+    console.log("error: " + JSON.stringify(event));
+  };
+}

@@ -97,7 +97,7 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
             {
               this.props.currentPlan ?
                 <Row className='word-break' style={{marginBottom: 10}}>
-                  <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} style={{color: '#0e0e0e'}} target='_blank' download=''>
+                  <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} style={{color: '#0e0e0e'}} target='_blank' download='plan'>
                     <div style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -3px', padding: 10, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer'}}>
                       <img src={require('../../images/download.svg')} style={{width: 24, height: 24, marginRight: 10}}/>
                       План обучения

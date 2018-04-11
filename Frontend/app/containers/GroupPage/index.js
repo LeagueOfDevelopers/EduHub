@@ -30,7 +30,7 @@ import {
 import { makeSelectNeedUpdate, makeSelectChat, makeSelectTags } from "./selectors";
 import {Link} from "react-router-dom";
 import config from "../../config";
-import {getGroupType, parseJwt, getMemberRole} from "../../globalJS";
+import {getGroupType, parseJwt, getMemberRole, connectSockets} from "../../globalJS";
 import {Col, Row, Button, message, Input, Select, InputNumber, Switch, Form} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
@@ -208,15 +208,6 @@ export class GroupPage extends React.Component {
         item.userId == this.state.userData.UserId).role === 3) : false
     });
     this.props.getCurrentChat(this.state.id);
-
-    let loop = 0;
-    setInterval(() => {
-      loop++;
-      if(loop === 5) {
-        // this.props.getCurrentChat(this.state.id);
-        loop = 0;
-      }
-    }, 1000);
   }
 
   onChangeTitleHandle = (e) => {
@@ -257,6 +248,9 @@ export class GroupPage extends React.Component {
     }
     else if (value.length > 10) {
       callback('Должно быть не более 10 тегов!')
+    }
+    else if (value.filter(item => item.length > 16).length !== 0) {
+      callback('В теге не может быть более 16 символов!')
     }
     else {
       callback()
@@ -389,13 +383,12 @@ export class GroupPage extends React.Component {
                         {getFieldDecorator('price', {
                           rules: [
                             {required: true, message: 'Пожалуйста, введите стоимость занятия в рублях!'}
-                          ],
-                          initialValue: this.state.priceInput
+                          ]
                         })(
                           <div>
                             <Col span={10}>Стоимость</Col>
                             <Col span={14} style={{textAlign: 'right'}}>
-                              <InputNumber min={1} onChange={this.onChangePriceHandle}/>
+                              <InputNumber min={1} value={this.state.priceInput} onChange={this.onChangePriceHandle}/>
                             </Col>
                           </div>
                           )
@@ -540,7 +533,10 @@ export class GroupPage extends React.Component {
 GroupPage.propTypes = {
   title: PropTypes.string,
   isActive: PropTypes.bool,
-  tags: PropTypes.array,
+  tags: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object
+  ]),
   groupType: PropTypes.string,
   cost: PropTypes.number,
   inviteMember: PropTypes.func,

@@ -104,7 +104,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
   };
 
   onHandleSearch = (e) => {
-    // this.props.getTags(e);
+    this.props.getTags(e);
   };
 
   onHandleTypeChange = (e) => {
@@ -130,6 +130,9 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     }
     else if (value.length > 10) {
       callback('Должно быть не более 10 тегов!')
+    }
+    else if (value.filter(item => item.length > 16).length !== 0) {
+      callback('В теге не может быть более 16 символов!')
     }
     else {
       callback()
@@ -191,9 +194,10 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
                 initialValue: this.state.techs
               })(
                 <Select onChange={this.onHandleTechsChange} onSearch={this.onHandleSearch} mode="tags" placeholder="Введите, что хотите изучить" notFoundContent={null}>
-                  {this.props.tags.map((item, index) =>
+                  {this.props.tags.length && this.props.tags.length !== 0 ?
+                    this.props.tags.map((item, index) =>
                     <Option key={item.tag}>{item.tag}</Option>
-                  )}
+                  ) : null}
                 </Select>)
               }
             </FormItem>
