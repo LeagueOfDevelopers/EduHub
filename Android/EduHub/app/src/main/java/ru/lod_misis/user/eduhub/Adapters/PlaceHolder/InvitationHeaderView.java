@@ -170,7 +170,7 @@ public class InvitationHeaderView implements IChangeStatusOfInvitationView {
     public void Possitive() {
         Log.d("groupId",group.getGroupInfo().getId());
         Intent intent = new Intent(activity, GroupActivity.class);
-        intent.putExtra("groupId",(Serializable)group);
+        intent.putExtra("group",(Serializable)group);
         activity.startActivity(intent);
     }
 

@@ -5,7 +5,7 @@ package ru.lod_misis.user.eduhub.Fakes;
  */
 
 public class FakesButton {
-    static Boolean checkButton=true;
+    static Boolean checkButton=false;
 
     public Boolean getCheckButton() {
         return checkButton;

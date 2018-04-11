@@ -117,13 +117,25 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
         createGroup.setOnClickListener(click->{
             if(!nameOfGroup.getText().toString().equals("")&&!cost.getText().toString().equals("")&&!maxParticipants.getText().toString().equals("")&&type!=null&&!tags.getText().toString().equals("")&&!description.getText()
             .toString().equals("")){
-                if(Integer.valueOf(maxParticipants.getText().toString())<=100){
-                    if(!fakesButton.getCheckButton()){
-                        createGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>)tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Double.valueOf( cost.getText().toString()),type,flag,user.getToken());}
-                        else{
-                        fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(),description.getText().toString(),(ArrayList<String>) tags.getTags(),Integer.valueOf(maxParticipants.getText().toString()),Double.valueOf( cost.getText().toString()),type,flag,user.getToken());
+                if(Integer.valueOf(maxParticipants.getText().toString())<=200){
+                    if(nameOfGroup.getText().length()>=3&&nameOfGroup.getText().length()<=70){
+                        if(description.getText().length()>=20&&description.getText().length()<=3000){
+                            if(tags.getTags().size()<=10&&tags.getTags().size()>=3) {
+                                if (!fakesButton.getCheckButton()) {
+                                    createGroupPresenter.createGroup(nameOfGroup.getText().toString(), description.getText().toString(), (ArrayList<String>) tags.getTags(), Integer.valueOf(maxParticipants.getText().toString()), Double.valueOf(cost.getText().toString()), type, flag, user.getToken());
+                                } else {
+                                    fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(), description.getText().toString(), (ArrayList<String>) tags.getTags(), Integer.valueOf(maxParticipants.getText().toString()), Double.valueOf(cost.getText().toString()), type, flag, user.getToken());
+                                }
+                            }else{
+                                MakeToast("Минимальное кол-во тэгов - 3,максимальное - 10");
+                            }
+                        } else{
+                            MakeToast("Минимальная длина описания группы - 20 символов,максимальная - 3000");
+                        }
+                    } else {
+                        MakeToast("Минимальная длина названия группы - 3 символа,максимальная - 70");
                     }
-                } else{MakeToast("Максимальный размер группы 100");}
+                } else{MakeToast("Максимальный размер группы 200");}
             }else {
                     MakeToast("Заполните все поля");
 

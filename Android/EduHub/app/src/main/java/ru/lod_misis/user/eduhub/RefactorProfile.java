@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ru.lod_misis.user.eduhub.Adapters.Contacts_adapter;
 import ru.lod_misis.user.eduhub.Adapters.SpinnerAdapterForSex;
@@ -44,6 +45,12 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mabbas007.tagsedittext.TagsEditText;
 import okhttp3.ResponseBody;
@@ -203,15 +210,32 @@ UserProfileResponse userProfile;
         back.setOnClickListener(click->{
             onBackPressed();
         });
-        saveButton.setOnClickListener(click->{if(uri!=null){
-            fileRepository.loadImageToServer(user.getToken(),uri);}else {
+        saveButton.setOnClickListener(click->{
+            if(userName.getText().length()>=3&&userName.getText().length()<=70) {
+                if(checkName(userName.getText().toString())){
+                    if((editAboutMe.getText().length()<=3000&&editAboutMe.getText().length()<=20)||editAboutMe.getText().toString().equals("")){
+                        if(editBirthYear.getText().toString().equals("")||(Integer.valueOf(editBirthYear.getText().toString())>=1900&&Integer.valueOf(editBirthYear.getText().toString())<= getCurrentYear())){
+                            if(uri!=null){
+                fileRepository.loadImageToServer(user.getToken(),uri);}else {
             avatarLink = "";
             if(editBirthYear.getText().toString().equals("")){
                 editBirthYear.setText("0");
             }
             changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils);
 
-        }
+                            }
+                        }else{
+                            MakeToast("Минимальынй допустимый год рождения - 1900,максимальный - "+getCurrentYear());
+                        }
+                    }else{
+                        MakeToast("Пожалуйста,напишите больше информации о себе");
+                    }
+                }else{
+                    MakeToast("Допустимые символы для имени-[a-z,A-Z,а-я,А-Я]");
+                }
+            }else{
+                MakeToast("Минимальная длина имени - 3 символа,максимальная - 70");
+            }
 
 
         });
@@ -240,6 +264,8 @@ UserProfileResponse userProfile;
 
     @Override
     public void getResponse() {
+        savedDataRepository.SaveUser(user.getToken(),editUserName.getText().toString(),avatarLink,user.getEmail(),
+                userProfile.getUserProfile().getIsTeacher(),sharedPreferences);
         onBackPressed();
     }
 
@@ -285,5 +311,20 @@ UserProfileResponse userProfile;
 
 
             }
+    }
+    private boolean checkName(String name){
+        Pattern p=Pattern.compile("^[a-z,A-Z,А-Я,а-я]+");
+        Matcher m=p.matcher(name);
+        return m.matches();
+    }
+    private void MakeToast(String s) {
+        Toast toast = Toast.makeText(getApplicationContext(),
+                (s), Toast.LENGTH_LONG);
+        toast.show();
+    }
+    private int getCurrentYear(){
+        Calendar calendar=Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        calendar.setTime(new Date());
+        return calendar.get(Calendar.YEAR);
     }
 }

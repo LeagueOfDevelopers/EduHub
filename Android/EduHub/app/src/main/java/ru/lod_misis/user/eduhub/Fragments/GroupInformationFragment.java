@@ -1,9 +1,12 @@
 package ru.lod_misis.user.eduhub.Fragments;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -80,6 +83,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
 
     Button exit;
     User user;
+    Group fullGroup;
     CardView resultCard;
     CardView voteCard;
     CardView suggestion_course_card;
@@ -100,6 +104,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     EditText reason_negative_response;
     EditText addReview;
     CardView course;
+    DownloadManager downloadManager;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.group_information_fragment, null);
@@ -131,7 +136,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         cost=v.findViewById(R.id.cost);
         recyclerView=v.findViewById(R.id.tags);
         discription=v.findViewById(R.id.discription);
-
+        downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
         exit=v.findViewById(R.id.exit);
         refactorButton=v.findViewById(R.id.refactor_group_settings);
         if(!fakesButton.getCheckButton()){}
@@ -237,7 +242,24 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                             },
                             throwable -> {Log.e("CloseCourse",throwable.toString());});
         });
+        link.setOnClickListener(click->{
+            if(!link.getText().toString().equals("")&&fullGroup!=null){
+                Uri uri=Uri.parse("http://85.143.104.47:2411/api/file/"+group.getGroupInfo().getCurriculum());
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+                request.setAllowedOverRoaming(false);
+                request.setTitle(group.getGroupInfo().getCurriculum());
+                request.setDescription(group.getGroupInfo().getCurriculum());
+                request.setVisibleInDownloadsUi(true);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, group.getGroupInfo().getCurriculum());
+
+
+                downloadManager.enqueue(request);
+
+            }
+        });
         return v;
+
     }
 
     @Override
@@ -271,6 +293,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
             refactorButton.setVisibility(View.GONE);
 
         }
+        fullGroup=group;
         Member member=new Member();
         course.setVisibility(View.VISIBLE);
         members.setText(group.getGroupInfo().getMemberAmount()+"/"+group.getGroupInfo().getSize());

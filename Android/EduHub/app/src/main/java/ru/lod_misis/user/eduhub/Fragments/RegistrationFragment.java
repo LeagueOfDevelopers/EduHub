@@ -28,6 +28,9 @@ import ru.lod_misis.user.eduhub.Presenters.RegistrPresenter;
 import com.example.user.eduhub.R;
 import com.suke.widget.SwitchButton;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by user on 06.12.2017.
  */
@@ -74,20 +77,23 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
             @Override
             public void onClick(View view) {
                 boolean isTeacherFlag;
-                if(name.getText().length()>0){
-                    if(email.getText().length()>=6){
-                        if(password.getText().length()>=6){
+                if(name.getText().length()>=3&&name.getText().length()<=70){
+                    if(checkName(name.getText().toString())){
+                    if(email.getText().length()>0){
+                        if(password.getText().length()>=8&&password.getText().length()<=50){
                isTeacherFlag=isTeacher.isChecked();
                 if(!fakesButton.getCheckButton()){
                 registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag);}
                 else{
                     fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag);
                 }
-                        }else{MakeToast("Пароль слишком короткий");}
+                        }else{MakeToast("Минимальная длина пароля - 8 символов,максимальная - 50");}
                     }else{
-                        MakeToast("Email слишком короткий");
+                        MakeToast("Заполните поле Email");
+                    }}else{
+                        MakeToast("Допустимые символы для имени-[a-z,A-Z,а-я,А-Я]");
                     }
-                }else{MakeToast("Заполните поле имени");}
+                }else{MakeToast("Минимальная длина имени - 3 символа,максимальная - 70");}
 
             }
         });
@@ -132,5 +138,10 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
         Intent intent = new Intent(getActivity(), AuthorizedUserActivity.class);
         intent.putExtra("user", user);
         getActivity().startActivity(intent);
+    }
+    private boolean checkName(String name){
+        Pattern p=Pattern.compile("^[a-z,A-Z,А-Я,а-я]+");
+        Matcher m=p.matcher(name);
+        return m.matches();
     }
 }

@@ -136,19 +136,30 @@ public class Refactor_group extends AppCompatActivity implements IChangeGroupSet
 
         save_changes.setOnClickListener(click->{
             if(!nameOfGroup.getText().toString().equals("")&&!cost.getText().toString().equals("")&&!maxParticipants.getText().toString().equals("")&&type!=null&&!tags.getText().toString().equals("")&&!description.getText()
-                    .toString().equals("")){
-                if(Integer.valueOf(maxParticipants.getText().toString())<=100){
+                    .toString().equals("")){if(Integer.valueOf(maxParticipants.getText().toString())<=200){
+                if(nameOfGroup.getText().length()>=3&&nameOfGroup.getText().length()<=70){
+                    if(description.getText().length()>=20&&description.getText().length()<=3000){
+                        if(tags.getTags().size()<=10&&tags.getTags().size()>=3) {
                     if(!fakesButton.getCheckButton()){
                         changeGroupSettingsPresenter.chngeGroupSettings(user.getToken(),group.getGroupInfo().getId(),nameOfGroup.getText().toString(),Integer.valueOf(maxParticipants.getText().toString()),Double.valueOf(cost.getText().toString()),type,(ArrayList<String>)tags.getTags(),description.getText().toString(),privacy.isChecked());
                         }
                     else{
                         onBackPressed();
                     }
-                } else{MakeToast("Максимальный размер группы 100");}
-            }else {
-                MakeToast("Заполните все поля");
-
+                }else{
+                    MakeToast("Минимальное кол-во тэгов - 3,максимальное - 10");
+                }
+            } else{
+                MakeToast("Минимальная длина описания группы - 20 символов,максимальная - 3000");
             }
+        } else {
+            MakeToast("Минимальная длина названия группы - 3 символа,максимальная - 70");
+        }
+    } else{MakeToast("Максимальный размер группы 200");}
+}else {
+        MakeToast("Заполните все поля");
+
+        }
         });
     }
 

@@ -90,7 +90,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         }
         }
         if(members.get(i).getAvatarLink()==null){
-        holder.userImage.setImageResource(R.drawable.ic_launcher_background);}
+        }
         else {
             fileRepository.loadFileFromServer(user.getToken(),members.get(i).getAvatarLink());
             eduHubApi.loafFileFromServer("Bearer "+user.getToken(),members.get(i).getAvatarLink())
