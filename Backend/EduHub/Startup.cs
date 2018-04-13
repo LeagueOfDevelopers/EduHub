@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Text;
 using EduHub.Extensions;
 using EduHub.Filters;
-using EduHub.Middleware;
 using EduHub.Security;
 using EduHubLibrary.Data;
 using EduHubLibrary.Domain;
