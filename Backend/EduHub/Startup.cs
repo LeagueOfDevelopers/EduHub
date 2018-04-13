@@ -46,7 +46,7 @@ namespace EduHub
         {
             StartLoggly();
 
-            services.AddWebSocketManager();
+            //services.AddWebSocketManager();
 
             IFileRepository fileRepository;
             IGroupRepository groupRepository;
