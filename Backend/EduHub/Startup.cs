@@ -67,7 +67,8 @@ namespace EduHub
                     }
                     context.Database.EnsureCreated();
                     var dbName = dbContext.Split("database=")[1].Split(";")[0];
-                    context.Database.ExecuteSqlCommand("ALTER DATABASE " + dbName + " COLLATE utf8_general_ci");
+                    context.Database.ExecuteSqlCommand(
+                        "ALTER DATABASE " + dbName + " CHARACTER SET utf8 COLLATE utf8_general_ci");
                     context.Database.Migrate();
                 }
                 fileRepository = new InMysqlFileRepository(dbContext);
