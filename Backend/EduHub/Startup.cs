@@ -46,7 +46,7 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //StartLoggly();
+            StartLoggly();
 
             services.AddWebSocketManager();
 
@@ -210,9 +210,9 @@ namespace EduHub
         {
             app.UseSwagger();
             app.UseStaticFiles();
-            app.UseWebSockets();
-            app.MapWebSocketManager("/api/group/{groupId}/chat",
-                serviceProvider.GetService<NotificationsMessageHandler>());
+            //app.UseWebSockets();
+            //app.MapWebSocketManager("/api/group/{groupId}/chat",
+            //    serviceProvider.GetService<NotificationsMessageHandler>());
 
             app.UseSwaggerUI(current => { current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API"); });
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
