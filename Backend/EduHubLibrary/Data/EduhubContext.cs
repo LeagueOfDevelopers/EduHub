@@ -5,6 +5,7 @@ using EduHubLibrary.Data.SanctionDtos;
 using EduHubLibrary.Data.TagDtos;
 using EduHubLibrary.Data.UserDtos;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.EntityFrameworkCore.Extensions;
 
 namespace EduHubLibrary.Data
 {
@@ -32,16 +33,76 @@ namespace EduHubLibrary.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ReviewDto>().ToTable("Review");
-            modelBuilder.Entity<ContactDto>().ToTable("Contact");
-            modelBuilder.Entity<InvitationDto>().ToTable("Invitation");
-            modelBuilder.Entity<NotifiesDto>().ToTable("Notifie");
-            modelBuilder.Entity<UserDto>().ToTable("User");
-            modelBuilder.Entity<TagDto>().ToTable("Tag");
-            modelBuilder.Entity<UserFileDto>().ToTable("File");
-            modelBuilder.Entity<KeyDto>().ToTable("Key");
-            modelBuilder.Entity<GroupDto>().ToTable("Group");
-            modelBuilder.Entity<SanctionDto>().ToTable("Sanction");
+            modelBuilder.Entity<ReviewDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Review");
+            });
+            modelBuilder.Entity<ContactDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Contact");
+            });
+            modelBuilder.Entity<InvitationDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Invitation");
+            });
+            modelBuilder.Entity<NotifiesDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Notifie");
+            });
+            modelBuilder.Entity<UserDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("User");
+            });
+            modelBuilder.Entity<TagDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Tag");
+            });
+            modelBuilder.Entity<UserFileDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("File");
+            });
+            modelBuilder.Entity<KeyDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Key");
+            });
+            modelBuilder.Entity<GroupDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Group");
+            });
+            modelBuilder.Entity<SanctionDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Sanction");
+            });
+            modelBuilder.Entity<MemberDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Member");
+            });
+            modelBuilder.Entity<MessageDto>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("Message");
+            });
+            modelBuilder.Entity<TagGroup>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("TagGroup");
+            });
+            modelBuilder.Entity<TagUser>(e =>
+            {
+                e.ForMySQLHasCollation("utf8_general_ci");
+                e.ToTable("TagUser");
+            });
         }
     }
 }
