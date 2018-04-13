@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Text;
+using EduHub.Extensions;
 using EduHub.Filters;
+using EduHub.Middleware;
 using EduHub.Security;
 using EduHubLibrary.Data;
 using EduHubLibrary.Domain;
@@ -43,7 +46,9 @@ namespace EduHub
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            StartLoggly();
+            //StartLoggly();
+
+            services.AddWebSocketManager();
 
             IFileRepository fileRepository;
             IGroupRepository groupRepository;
@@ -63,6 +68,8 @@ namespace EduHub
                         context.Database.EnsureDeleted();
                     }
                     context.Database.EnsureCreated();
+                    var dbName = dbContext.Split("database=")[1].Split(";")[0];
+                    context.Database.ExecuteSqlCommand("ALTER DATABASE " + dbName + " COLLATE utf8_general_ci");
                     context.Database.Migrate();
                 }
                 fileRepository = new InMysqlFileRepository(dbContext);
@@ -198,10 +205,14 @@ namespace EduHub
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
+            IServiceProvider serviceProvider)
         {
             app.UseSwagger();
             app.UseStaticFiles();
+            app.UseWebSockets();
+            app.MapWebSocketManager("/api/group/{groupId}/chat",
+                serviceProvider.GetService<NotificationsMessageHandler>());
 
             app.UseSwaggerUI(current => { current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API"); });
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
