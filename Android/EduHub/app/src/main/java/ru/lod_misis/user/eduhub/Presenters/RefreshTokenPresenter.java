@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IRefreshTokenPresenter;
@@ -22,8 +23,8 @@ public class RefreshTokenPresenter implements IRefreshTokenPresenter {
     }
 
     @Override
-    public void refreshToken(String token) {
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+    public void refreshToken(String token, Context context) {
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.refreshToken("Bearer "+token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

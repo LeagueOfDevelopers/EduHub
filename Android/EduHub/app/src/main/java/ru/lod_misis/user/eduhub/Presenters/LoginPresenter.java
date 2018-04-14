@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.ILoginPresenter;
@@ -28,13 +29,13 @@ public class LoginPresenter implements ILoginPresenter {
     }
 
     @Override
-    public void Login(String email, String password) {
+    public void Login(String email, String password, Context context) {
         Log.d("emailLogin",email);
         if(!email.equals("")&&!password.equals("")){
             loginModel=new LoginModel();
             loginModel.setEmail(email);
             loginModel.setPassword(password);
-            EduHubApi eduHubApi= RetrofitBuilder.getApi();
+            EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
             disposable= eduHubApi.userLogin(loginModel)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

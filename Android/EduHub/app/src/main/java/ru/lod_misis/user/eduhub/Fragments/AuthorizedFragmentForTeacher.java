@@ -55,16 +55,16 @@ public class AuthorizedFragmentForTeacher extends android.support.v4.app.Fragmen
         recyclerView.setLayoutManager(llm);
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadAllGroupsForTeachers();}else{
-            fakeGroupRepository.loadAllGroupsForTeachers();
+            groupsPresenter.loadAllGroupsForTeachers(getContext());}else{
+            fakeGroupRepository.loadAllGroupsForTeachers(getContext());
         }
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupsPresenter.loadAllGroupsForTeachers();}else{
-                    fakeGroupRepository.loadAllGroupsForTeachers();
+                    groupsPresenter.loadAllGroupsForTeachers(getContext());}else{
+                    fakeGroupRepository.loadAllGroupsForTeachers(getContext());
                 }
             }
         });

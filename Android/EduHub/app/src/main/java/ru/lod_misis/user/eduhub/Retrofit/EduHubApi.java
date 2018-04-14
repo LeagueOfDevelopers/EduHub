@@ -142,6 +142,8 @@ public interface EduHubApi {
                                        @Query("type") String type,@Query("formed") Boolean formed);
     @GET("/api/group/search")
     Observable<List<Group>> findGroupsWithOutFilters(@Query("title") String title);
+    @GET("/api/group/search")
+    Observable<List<Group>> findGroupsWithFilters1(@Query("title") String title);
     @GET("api/user/profile/notifications")
     Observable<List<Notifications>> loadAllNotifications(@Header("Authorization") String token);
 }

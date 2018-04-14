@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
     User user;
     String groupId;
     Group group;
+    Context context=this;
     RecyclerView recyclerView;
     SearchUserPresenter searchUserPresenter=new SearchUserPresenter(this);
     FakesButton fakesButton=new FakesButton();
@@ -75,8 +77,8 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
         searchUser.setOnClickListener(click->{
             if(!edit.getText().toString().equals("")){
                 if(!fakesButton.getCheckButton()){
-                searchUserPresenter.searchUserForInvitation(edit.getText().toString(),groupId);}
-                else {fakeSearchUsers.searchUser(edit.getText().toString());}}
+                searchUserPresenter.searchUserForInvitation(edit.getText().toString(),groupId,this);}
+                else {fakeSearchUsers.searchUser(edit.getText().toString(),this);}}
 
         });
         backButton.setOnClickListener(click->{
@@ -89,8 +91,8 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
                                              if((keyCode == KeyEvent.KEYCODE_ENTER)) {
                                                  if(!edit.getText().toString().equals("")){
                                                      if(!fakesButton.getCheckButton()){
-                                                         searchUserPresenter.searchUser(edit.getText().toString());}
-                                                     else {fakeSearchUsers.searchUser(edit.getText().toString());}}
+                                                         searchUserPresenter.searchUser(edit.getText().toString(),context);}
+                                                     else {fakeSearchUsers.searchUser(edit.getText().toString(),context);}}
                                                  return true;
                                              }
                                              return false;
@@ -155,10 +157,10 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
     @Override
     public void InviteCallBack(String invitedId) {
         if(!fakesButton.getCheckButton()){
-            inviteUserPresenter.inviteUser(invitedId,role,groupId,user.getToken());}
+            inviteUserPresenter.inviteUser(invitedId,role,groupId,user.getToken(),this);}
         else {
             fakeInviteUserPresenter
-                    .inviteUser(invitedId, role,groupId,user.getToken());
+                    .inviteUser(invitedId, role,groupId,user.getToken(),this);
         }
     }
 

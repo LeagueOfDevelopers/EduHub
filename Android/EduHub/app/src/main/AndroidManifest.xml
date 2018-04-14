@@ -46,8 +46,12 @@
             android:name="ru.lod_misis.user.eduhub.RefactorProfile"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
-        <activity android:name="ru.lod_misis.user.eduhub.Refactor_group" />
+        <activity android:name="ru.lod_misis.user.eduhub.Refactor_group"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            />
         <activity android:name="ru.lod_misis.user.eduhub.AnotherProfileActivity"
+            android:label="@string/app_name"
             android:screenOrientation="portrait" ></activity>
     </application>
 </manifest>

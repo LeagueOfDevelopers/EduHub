@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IUserProfilePresenter;
@@ -22,9 +23,9 @@ public class UserProfilePresenter implements IUserProfilePresenter {
     }
 
     @Override
-    public void loadUserProfile(String token,String userId) {
+    public void loadUserProfile(String token, String userId, Context context) {
         Log.d("UserProfileId",userId);
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.getUsersProfile("Bearer "+token,userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

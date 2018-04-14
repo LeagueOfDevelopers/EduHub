@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lightGrey"
+        >
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="15dp"
+            android:text="Тип"
+            android:textColor="@color/black"
+            android:textSize="10dp" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/type_of_education"
+            android:layout_width="122dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="30dp"
+            android:background="#FFFFFF"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="12dp"
+            android:layout_below="@+id/type_of_education"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="13dp"
+            android:text="Цена"
+            android:textColor="@color/black"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="25dp"
+            android:layout_height="12dp"
+            android:layout_below="@+id/type_of_education"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="37dp"
+            android:text="От"
+            android:textColor="@color/black"
+            android:textSize="10dp" />
+
+        <EditText
+            android:id="@+id/minCost"
+            android:layout_width="50dp"
+            android:layout_height="26dp"
+            android:layout_below="@+id/type_of_education"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="27dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="32dp"
+            android:background="#FFFFFF"
+            android:inputType="numberDecimal"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp" />
+
+
+        <EditText
+            android:id="@+id/maxCost"
+            android:layout_width="50dp"
+            android:layout_height="26dp"
+            android:layout_below="@+id/type_of_education"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="32dp"
+            android:layout_toRightOf="@+id/minCost"
+            android:background="#FFFFFF"
+            android:inputType="numberDecimal"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp" />
+
+        <TextView
+            android:layout_width="25dp"
+            android:layout_height="12dp"
+            android:layout_toRightOf="@+id/minCost"
+            android:layout_below="@+id/type_of_education"
+            android:layout_marginTop="37dp"
+            android:layout_marginLeft="5dp"
+
+
+            android:text="До"
+            android:textColor="@color/black"
+            android:textSize="10dp" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="12dp"
+            android:layout_below="@+id/minCost"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="15dp"
+            android:text="Теги"
+            android:textColor="@color/black"
+            android:textSize="10dp" />
+
+        <mabbas007.tagsedittext.TagsEditText
+            android:id="@+id/tagsEditText"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:layout_below="@id/minCost"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="30dp"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:paddingBottom="2dp"
+            android:paddingLeft="5dp"
+            android:textSize="12dp"
+            app:allowSpaceInTag="true"
+            app:tagsBackground="@color/veryGrey"
+            app:tagsCloseImageRight="@drawable/tag_close"
+            app:tagsPaddingLeft="5dp"
+            app:tagsTextColor="@color/black"
+            app:tagsTextSize="10dp" />
+
+        <CheckBox
+            android:id="@+id/privacy"
+            android:layout_width="100dp"
+            android:layout_height="28dp"
+            android:layout_below="@+id/tagsEditText"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="10dp"
+            android:button="@drawable/ic_black_circle"
+            android:text="Приватная"
+            android:textDirection="rtl"
+            android:textSize="10dp" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            app:cardBackgroundColor="@color/grey">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="32dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_more_32" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -69,9 +69,9 @@ public class LoginFragment extends Fragment implements ILoginView {
         signIn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(!fakesButton.getCheckButton()){
-                loginPresenter.Login(emailText.getText().toString(),password.getText().toString());}
+                loginPresenter.Login(emailText.getText().toString(),password.getText().toString(),getContext());}
                 else{
-                    fakeLoginPresenter.Login(emailText.getText().toString(),password.getText().toString());
+                    fakeLoginPresenter.Login(emailText.getText().toString(),password.getText().toString(),getContext());
                 }
 
 

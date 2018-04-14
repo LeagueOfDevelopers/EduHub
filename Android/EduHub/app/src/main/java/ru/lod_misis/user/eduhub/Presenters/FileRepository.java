@@ -40,13 +40,14 @@ public class FileRepository implements IFileRepository {
 
     AddFileResponseModel addFileResponseModel;
     private Context context;
-
+    EduHubApi eduHubApi;
     public FileRepository(IFileRepositoryView fileRepositoryView,Context context) {
         this.fileRepositoryView = fileRepositoryView;
         this.context=context;
+         eduHubApi=RetrofitBuilder.getApi(context);
 
     }
-    EduHubApi eduHubApi= RetrofitBuilder.getApi();
+
 
     @Override
     public void loadImageToServer(String token, Uri uri) {
@@ -96,6 +97,7 @@ public class FileRepository implements IFileRepository {
     @Override
     public void loadFiletoServer(String token, Uri uri) {
         AddFileModel addFileModel=new AddFileModel();
+        Log.d("uri",uri.toString());
         File file=new File(getPath(context,uri));
         Log.d("FilePath",file.getPath());
         RequestBody requestFile=RequestBody.create(MediaType.parse("multipart/form-data"),file);

@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.View.IGroupListView;
@@ -21,7 +22,7 @@ public class FakeGroupRepository  implements IGroupRepository {
         this.groupListView=groupListView;
     }
     @Override
-    public void loadAllGroupsForUsers() {
+    public void loadAllGroupsForUsers(Context context) {
         ArrayList<Group> groups=new ArrayList<>();
         GroupInfo groupInfo=new GroupInfo();
         ArrayList<String> tags=new ArrayList<>();
@@ -49,12 +50,12 @@ public class FakeGroupRepository  implements IGroupRepository {
     }
 
     @Override
-    public void loadAllGroupsForTeachers() {
-        loadAllGroupsForUsers();
+    public void loadAllGroupsForTeachers( Context context) {
+        loadAllGroupsForUsers(context);
     }
 
     @Override
-    public void loadUsersGroup(String token,String userId) {
-        loadAllGroupsForUsers();
+    public void loadUsersGroup(String token,String userId, Context context) {
+        loadAllGroupsForUsers(  context);
     }
 }

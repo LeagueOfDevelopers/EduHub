@@ -15,6 +15,7 @@ import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 
 import java.util.ArrayList;
 
+import ru.lod_misis.user.eduhub.Adapters.PlaceHolder.Empty_notifications;
 import ru.lod_misis.user.eduhub.Adapters.PlaceHolder.NotificationHeaderView;
 import ru.lod_misis.user.eduhub.Fakes.FakeInvitationsPresenter;
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
@@ -50,8 +51,8 @@ public class NotificationsFragment extends Fragment implements INotificationsVie
         SharedPreferences sPref=getActivity().getSharedPreferences("User",MODE_PRIVATE);
         user= savedDataRepository.loadSavedData(sPref);
         if(!fakesButton.getCheckButton()){
-            invitationsPresenter.getAllNotifications(user.getToken());}else{
-            fakeInvitationsPresenter.loadInvitations(user.getToken());
+            invitationsPresenter.getAllNotifications(user.getToken(),getContext());}else{
+            fakeInvitationsPresenter.loadInvitations(user.getToken(),getContext());
         }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -60,8 +61,8 @@ public class NotificationsFragment extends Fragment implements INotificationsVie
                 i=0;
                 expandablePlaceHolderView.removeAllViews();
                 if(!fakesButton.getCheckButton()){
-                    invitationsPresenter.getAllNotifications(user.getToken());}else{
-                    fakeInvitationsPresenter.loadInvitations(user.getToken());
+                    invitationsPresenter.getAllNotifications(user.getToken(),getContext());}else{
+                    fakeInvitationsPresenter.loadInvitations(user.getToken(),getContext());
                 }
             }
         });
@@ -90,13 +91,16 @@ public class NotificationsFragment extends Fragment implements INotificationsVie
 
     @Override
     public void getAllNotifications(ArrayList<Notification> notifications) {
-
+        if(notifications.size()!=0){
         swipeRefreshLayout.setRefreshing(false);
         Log.d("Notifications",notifications.size()+"");
         for (Notification notification:notifications) {
             expandablePlaceHolderView.addView(new NotificationHeaderView(notification));
 
 
+        }
+    }else{
+            expandablePlaceHolderView.addView(new Empty_notifications());
         }
     }
 }

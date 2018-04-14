@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Classes.MemberRole;
@@ -30,8 +31,8 @@ public class InviteUserPresenter implements IInviteUserPresenter {
     }
 
     @Override
-    public void inviteUser(String userId, String role,String groupId,String token) {
-        EduHubApi eduHubApi = RetrofitBuilder.getApi();
+    public void inviteUser(String userId, String role, String groupId, String token, Context context) {
+        EduHubApi eduHubApi = RetrofitBuilder.getApi(context);
         InviteUserModel inviteUserModel = new InviteUserModel();
         inviteUserModel.setInvitedId(userId);
         Log.d("ROLELE",role);

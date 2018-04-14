@@ -141,7 +141,7 @@ public class Refactor_group extends AppCompatActivity implements IChangeGroupSet
                     if(description.getText().length()>=20&&description.getText().length()<=3000){
                         if(tags.getTags().size()<=10&&tags.getTags().size()>=3) {
                     if(!fakesButton.getCheckButton()){
-                        changeGroupSettingsPresenter.chngeGroupSettings(user.getToken(),group.getGroupInfo().getId(),nameOfGroup.getText().toString(),Integer.valueOf(maxParticipants.getText().toString()),Double.valueOf(cost.getText().toString()),type,(ArrayList<String>)tags.getTags(),description.getText().toString(),privacy.isChecked());
+                        changeGroupSettingsPresenter.chngeGroupSettings(user.getToken(),group.getGroupInfo().getId(),nameOfGroup.getText().toString(),Integer.valueOf(maxParticipants.getText().toString()),Double.valueOf(cost.getText().toString()),type,(ArrayList<String>)tags.getTags(),description.getText().toString(),privacy.isChecked(),this);
                         }
                     else{
                         onBackPressed();

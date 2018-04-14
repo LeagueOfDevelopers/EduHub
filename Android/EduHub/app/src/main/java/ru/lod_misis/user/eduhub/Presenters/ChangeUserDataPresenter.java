@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IChangeUsersDataPresenter;
@@ -29,7 +30,7 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
     }
 
     @Override
-    public void changeUsersData(String token,String name, String aboutUser, ArrayList<String> contacts, Integer birthYear, String avatarLink, String sex,Boolean isTeacher,String[] skills) {
+    public void changeUsersData(String token,String name, String aboutUser, ArrayList<String> contacts, Integer birthYear, String avatarLink, String sex,Boolean isTeacher,String[] skills,Context context) {
         Observable changeAboutUser=Observable.empty();
         Observable changeUsersAvatarLink=Observable.empty();
         RefactorUserRequestModel refactorUserRequestModel=new RefactorUserRequestModel();
@@ -49,7 +50,7 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
             }
         }
 
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         Observable changeUserName =eduHubApi.changesUserName("Bearer "+token,refactorUserRequestModel)
                 .toObservable()
                 .subscribeOn(Schedulers.io());

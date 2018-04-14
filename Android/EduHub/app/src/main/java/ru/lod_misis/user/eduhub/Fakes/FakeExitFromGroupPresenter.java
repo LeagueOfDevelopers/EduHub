@@ -1,5 +1,7 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
+
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IExitFromGroupPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.IExitFromGroupView;
 
@@ -15,12 +17,12 @@ public class FakeExitFromGroupPresenter implements IExitFromGroupPresenter {
     }
 
     @Override
-    public void exitFromGroupForUser(String token, String groupId, String memberId) {
+    public void exitFromGroupForUser(String token, String groupId, String memberId, Context context) {
         exitFromGroupView.getResponse();
     }
 
     @Override
-    public void exitFromGroupForTeacher(String token, String groupId) {
+    public void exitFromGroupForTeacher(String token, String groupId, Context context) {
         exitFromGroupView.getResponse();
     }
 }

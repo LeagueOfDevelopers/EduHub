@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.ICreateGroupPresenter;
@@ -26,7 +27,7 @@ public class CreateGroupPresenter implements ICreateGroupPresenter {
     }
 
     @Override
-    public void createGroup(String title, String description, ArrayList<String> tags, int size, Double cost, String groupType, Boolean isPrivate,String token) {
+    public void createGroup(String title, String description, ArrayList<String> tags, int size, Double cost, String groupType, Boolean isPrivate, String token, Context context) {
         createGroupModel.setDescription(description);
         Log.d("description",description);
         switch (groupType){
@@ -34,7 +35,7 @@ public class CreateGroupPresenter implements ICreateGroupPresenter {
                 createGroupModel.setGroupType(1);
                 break;
             }
-            case " Мастер класс":{
+            case "Мастер класс":{
                 createGroupModel.setGroupType(3);
                 break;
             }
@@ -44,7 +45,7 @@ public class CreateGroupPresenter implements ICreateGroupPresenter {
             }
 
         }
-
+        Log.d("type",createGroupModel.getGroupType()+"");
         Log.d("NUMBER TYPE OFEDUCATION",groupType);
         createGroupModel.setIsPrivate(isPrivate);
         Log.d("isPrivate",isPrivate.toString());
@@ -56,7 +57,7 @@ public class CreateGroupPresenter implements ICreateGroupPresenter {
         Log.d("TAGS",tags.toString());
         createGroupModel.setTitle(title);
         Log.d("TITLE",title);
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.createGroup("Bearer "+token,createGroupModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

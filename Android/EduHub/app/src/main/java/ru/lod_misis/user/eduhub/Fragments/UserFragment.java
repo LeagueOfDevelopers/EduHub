@@ -50,16 +50,16 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadAllGroupsForUsers();}else{
-            fakeGroupRepository.loadAllGroupsForUsers();
+            groupsPresenter.loadAllGroupsForUsers(getContext());}else{
+            fakeGroupRepository.loadAllGroupsForUsers(getContext());
         }
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupsPresenter.loadAllGroupsForUsers();}else{
-                    fakeGroupRepository.loadAllGroupsForUsers();
+                    groupsPresenter.loadAllGroupsForUsers(getContext() );}else{
+                    fakeGroupRepository.loadAllGroupsForUsers(getContext());
                 }
             }
         });

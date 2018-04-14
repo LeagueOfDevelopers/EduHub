@@ -67,8 +67,8 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
         Log.d("UserId",user.getUserId());
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId());}else{
-            fakeGroupRepository.loadUsersGroup(user.getToken(),user.getUserId());
+            groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId(),getContext());}else{
+            fakeGroupRepository.loadUsersGroup(user.getToken(),user.getUserId(),getContext());
         }
         button.setOnClickListener(click->{
             Intent intent=new Intent(getActivity(), CreateGroupActivity.class);
@@ -79,8 +79,8 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
 
-                    groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId());}else{
-                    fakeGroupRepository.loadUsersGroup(user.getToken(),user.getUserId());
+                    groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId(),getContext());}else{
+                    fakeGroupRepository.loadUsersGroup(user.getToken(),user.getUserId(),getContext());
                 }
             }
         });
@@ -101,7 +101,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
     @Override
     public void getError(Throwable error) {
         switch (((HttpException) error).code()){
-            case 401:{refreshTokenPresenter.refreshToken(user.getToken());}
+            case 401:{refreshTokenPresenter.refreshToken(user.getToken(),getContext());}
 
         }
 
@@ -128,7 +128,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
     @Override
     public void getResponse(User user) {
         savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sharedPreferences);
-        groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId());
+        groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId(),getContext());
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
+
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IGroupInfirmationPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.IGroupView;
 import ru.lod_misis.user.eduhub.Models.Group.Group;
@@ -19,7 +21,7 @@ public class FakeGroupInformationPresenter  implements IGroupInfirmationPresente
 
     private IGroupView groupInformationView;
     @Override
-    public void loadGroupInformation(String groupId) {
+    public void loadGroupInformation(String groupId, Context context) {
         Group group=new Group();
         ArrayList<Member> members=new ArrayList<>();
         Member member=new Member();

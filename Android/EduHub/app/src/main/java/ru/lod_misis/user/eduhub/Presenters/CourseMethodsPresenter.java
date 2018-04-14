@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.ICourseMethodsPresenter;
@@ -18,13 +19,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CourseMethodsPresenter implements ICourseMethodsPresenter {
     private ICourseMethodsView addPlanForStudyView;
-    EduHubApi eduHubApi= RetrofitBuilder.getApi();
+    EduHubApi eduHubApi;
     public CourseMethodsPresenter(ICourseMethodsView addPlanForStudyView) {
         this.addPlanForStudyView = addPlanForStudyView;
     }
 
     @Override
-    public void addPlan(String token, String groupId,String path) {
+    public void addPlan(String token, String groupId, String path, Context context) {
+        eduHubApi= RetrofitBuilder.getApi(context);
         Log.d("FilePath2",path);
         AddPlanModel addPlanModel=new AddPlanModel();
         addPlanModel.setDescription(path);
@@ -39,7 +41,8 @@ public class CourseMethodsPresenter implements ICourseMethodsPresenter {
     }
 
     @Override
-    public void positiveResponse(String token, String groupId) {
+    public void positiveResponse(String token, String groupId,Context context) {
+        eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.positiveResponse("Bearer "+token,groupId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,7 +53,8 @@ public class CourseMethodsPresenter implements ICourseMethodsPresenter {
     }
 
     @Override
-    public void negativeResponse(String token, String groupId, String reason) {
+    public void negativeResponse(String token, String groupId, String reason,Context context) {
+        eduHubApi= RetrofitBuilder.getApi(context);
         UsersResponseModel usersResponseModel=new UsersResponseModel();
         usersResponseModel.setReason(reason);
         eduHubApi.negativeResponse("Bearer "+token,groupId,usersResponseModel)

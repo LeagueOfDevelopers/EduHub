@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IGroupInfirmationPresenter;
@@ -26,9 +27,9 @@ public class GroupInformationPresenter implements IGroupInfirmationPresenter {
     }
 
     @Override
-    public void loadGroupInformation(String groupId) {
+    public void loadGroupInformation(String groupId, Context context) {
         Log.d("GroupIfInPresenter",groupId);
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         disposable= eduHubApi.getInformationAbotGroup(groupId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

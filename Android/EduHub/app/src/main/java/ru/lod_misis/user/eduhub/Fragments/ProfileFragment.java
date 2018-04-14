@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     SharedPreferences sharedPreferences;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     FakeUserProfilePresenter fakeUserProfilePresenter=new FakeUserProfilePresenter(this);
-    FileRepository fileRepository=new FileRepository(this,getActivity());
+    FileRepository fileRepository;
     View v;
     Boolean flag=false;
     TextView userName;
@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
 
          v = inflater.inflate(R.layout.teacher_profile, null);
         relativeLayout=v.findViewById(R.id.window);
-
+        fileRepository=new FileRepository(this,getContext());
          avatar=v.findViewById(R.id.avatar);
          userName=v.findViewById(R.id.name_user_profile);
          userEmail=v.findViewById(R.id.email_user_profile);
@@ -126,7 +126,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
         expandablePlaceHolderView2=v.findViewById(R.id.expandableView2);
         if(!fakesButton.getCheckButton()){}
         else{
-            fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
+            fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId(),getContext());
         }
 
     return v;}
@@ -138,7 +138,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
         user=savedDataRepository.loadSavedData(sharedPreferences);
         if(!fakesButton.getCheckButton()){
             Log.d("TOKEN",user.getToken());
-            userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());}
+            userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId(),getContext());}
 
         flag=true;
 
@@ -173,7 +173,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
 
         if(error instanceof HttpException){
             switch (((HttpException) error).code()){
-                case 401:{refreshTokenPresenter.refreshToken(user.getToken());}
+                case 401:{refreshTokenPresenter.refreshToken(user.getToken(),getContext());}
 
             }
         }
@@ -315,7 +315,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     @Override
     public void getResponse(User user) {
         savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sharedPreferences);
-        userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
+        userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId(),getContext());
     }
 
     @Override
@@ -356,9 +356,9 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
             user=savedDataRepository.loadSavedData(sharedPreferences);
             if(!fakesButton.getCheckButton()){
                 Log.d("TOKEN",user.getToken());
-                userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());}
+                userProfilePresenter.loadUserProfile(user.getToken(),user.getUserId(),getContext());}
             else{
-                fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId());
+                fakeUserProfilePresenter.loadUserProfile(user.getToken(),user.getUserId(),getContext());
             }
 
     }

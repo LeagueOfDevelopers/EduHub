@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import ru.lod_misis.user.eduhub.Adapters.EmptyGroupAdapter;
 import ru.lod_misis.user.eduhub.Adapters.GroupAdapter;
+import ru.lod_misis.user.eduhub.AuthorizedUserActivity;
 import ru.lod_misis.user.eduhub.Fakes.FakeGroupRepository;
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
 import ru.lod_misis.user.eduhub.Interfaces.View.IGroupListView;
@@ -53,16 +55,16 @@ SwipeRefreshLayout swipeContainer;
         recyclerView.setLayoutManager(llm);
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadAllGroupsForUsers();}else{
-            fakeGroupRepository.loadAllGroupsForUsers();
+            groupsPresenter.loadAllGroupsForUsers(getContext());}else{
+            fakeGroupRepository.loadAllGroupsForUsers(getContext());
         }
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupsPresenter.loadAllGroupsForUsers();}else{
-                    fakeGroupRepository.loadAllGroupsForUsers();
+                    groupsPresenter.loadAllGroupsForUsers(getContext());}else{
+                    fakeGroupRepository.loadAllGroupsForUsers(getContext());
                 }
             }
         });
@@ -88,7 +90,8 @@ SwipeRefreshLayout swipeContainer;
     public void getError(Throwable error) {
         if(error instanceof HttpException){
             switch (((HttpException) error).code()){
-                case 401:{}
+                case 401:{Intent intent=new Intent(getActivity(), AuthorizedUserActivity.class);
+                    getActivity().startActivity(intent);}
             }
         }
         if(error instanceof SocketTimeoutException){

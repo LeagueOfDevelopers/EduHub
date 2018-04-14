@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IChangeGroupSettingsPresenter;
@@ -26,7 +27,7 @@ public class ChangeGroupSettingsPresenter implements IChangeGroupSettingsPresent
     }
 
     @Override
-    public void chngeGroupSettings(String token,String groupId, String groupName, Integer size, Double cost, String typeOfEducation, ArrayList<String> tags,String description,Boolean isPrivate) {
+    public void chngeGroupSettings(String token, String groupId, String groupName, Integer size, Double cost, String typeOfEducation, ArrayList<String> tags, String description, Boolean isPrivate, Context context) {
         Log.d("rrr",token);
         RefactorGroupRequestModel refactorGroupRequestModel=new RefactorGroupRequestModel();
         refactorGroupRequestModel.setGroupTitle(groupName);
@@ -45,7 +46,7 @@ public class ChangeGroupSettingsPresenter implements IChangeGroupSettingsPresent
             }
         }
         refactorGroupRequestModel.setPrivate(isPrivate);
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         Observable changeTitle=eduHubApi.changeGroupTitle("Bearer "+token,groupId,refactorGroupRequestModel)
                 .subscribeOn(Schedulers.io())
                 .toObservable();

@@ -44,16 +44,16 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
         if(!fakesButton.getCheckButton()){}
         else {
 
-            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());
         }
         swipeConteiner.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
+                    groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
                 else {
 
-                    fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+                    fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());
                 }
             }
         });
@@ -65,8 +65,8 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(!fakesButton.getCheckButton()){
-            Log.d("GroupIdMembersFrag",group.getGroupInfo().getId());
-            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
+            Log.d("GroupIdMembersFrag",group.getGroupInfo().getId()+"");
+            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
 
     }
 
@@ -92,8 +92,8 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
         Log.d("GroupIdInMemberAdapter",this.group.getGroupInfo().getId());
         ArrayList<Member> members=(ArrayList<Member>) group.getMembers();
         if(user.getUserId()!=null){
-         adapter=new GroupMembersAdapter(members,user,getActivity(),this.group,this);}else{
-            adapter=new GroupMembersAdapter(members,getActivity(),this.group,this);
+         adapter=new GroupMembersAdapter(members,user,getActivity(),this.group,this,getContext());}else{
+            adapter=new GroupMembersAdapter(members,getActivity(),this.group,this,getContext());
         }
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -114,10 +114,10 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
     @Override
     public void updateList() {
         if(!fakesButton.getCheckButton()){
-            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
+            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
         else {
 
-            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());
         }
     }
 }

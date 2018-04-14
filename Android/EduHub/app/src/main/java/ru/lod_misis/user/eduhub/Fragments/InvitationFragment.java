@@ -59,8 +59,8 @@ public class InvitationFragment extends Fragment implements INotificationsView,I
         SharedPreferences sPref=getActivity().getSharedPreferences("User",MODE_PRIVATE);
         user= savedDataRepository.loadSavedData(sPref);
         if(!fakesButton.getCheckButton()){
-            invitationsPresenter.loadInvitations(user.getToken());}else{
-            fakeInvitationsPresenter.loadInvitations(user.getToken());
+            invitationsPresenter.loadInvitations(user.getToken(),getContext());}else{
+            fakeInvitationsPresenter.loadInvitations(user.getToken(),getContext());
         }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -68,8 +68,8 @@ public class InvitationFragment extends Fragment implements INotificationsView,I
                 i=0;
                 expandablePlaceHolderView.removeAllViews();
                 if(!fakesButton.getCheckButton()){
-                    invitationsPresenter.loadInvitations(user.getToken());}else{
-                    fakeInvitationsPresenter.loadInvitations(user.getToken());
+                    invitationsPresenter.loadInvitations(user.getToken(),getContext());}else{
+                    fakeInvitationsPresenter.loadInvitations(user.getToken(),getContext());
                 }
             }
         });
@@ -100,10 +100,10 @@ public class InvitationFragment extends Fragment implements INotificationsView,I
                     ) {
                 if(fakesButton.getCheckButton()){
                     Log.e("Check",fakesButton.getCheckButton().toString());
-                    fakeGroupInformationPresenter.loadGroupInformation(invitation.getGroupId());
+                    fakeGroupInformationPresenter.loadGroupInformation(invitation.getGroupId(),getContext());
                 }else{
                     Log.d("GroupIdInvitation",invitation.getGroupId());
-                    groupInfirmationPresenter.loadGroupInformation(invitation.getGroupId());
+                    groupInfirmationPresenter.loadGroupInformation(invitation.getGroupId(),getContext());
                 }
             }
         }else{

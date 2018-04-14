@@ -48,17 +48,17 @@ public class TeacherFragment extends android.support.v4.app.Fragment implements 
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         if(!fakesButton.getCheckButton()){
 
-            groupsPresenter.loadAllGroupsForTeachers();}else{
-            fakeGroupRepository.loadAllGroupsForTeachers();
+            groupsPresenter.loadAllGroupsForTeachers(getContext());}else{
+            fakeGroupRepository.loadAllGroupsForTeachers(getContext());
         }
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupsPresenter.loadAllGroupsForTeachers();}
+                    groupsPresenter.loadAllGroupsForTeachers(getContext());}
                     else{
-                    fakeGroupRepository.loadAllGroupsForTeachers();
+                    fakeGroupRepository.loadAllGroupsForTeachers(getContext());
                 }
             }
         });

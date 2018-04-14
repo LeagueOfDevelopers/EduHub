@@ -73,7 +73,7 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
             }
         });
         spinner=findViewById(R.id.type_of_education);
-        String[] types={"Лекция"," Мастер класс","Cеминар"};
+        String[] types={"Лекция","Мастер класс","Cеминар"};
         adapter=new SpinnerAdapter(this,R.layout.spenner_item, types);
         spinner.setAdapter(adapter);
         // заголовок
@@ -122,9 +122,9 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
                         if(description.getText().length()>=20&&description.getText().length()<=3000){
                             if(tags.getTags().size()<=10&&tags.getTags().size()>=3) {
                                 if (!fakesButton.getCheckButton()) {
-                                    createGroupPresenter.createGroup(nameOfGroup.getText().toString(), description.getText().toString(), (ArrayList<String>) tags.getTags(), Integer.valueOf(maxParticipants.getText().toString()), Double.valueOf(cost.getText().toString()), type, flag, user.getToken());
+                                    createGroupPresenter.createGroup(nameOfGroup.getText().toString(), description.getText().toString(), (ArrayList<String>) tags.getTags(), Integer.valueOf(maxParticipants.getText().toString()), Double.valueOf(cost.getText().toString()), type, flag, user.getToken(),this);
                                 } else {
-                                    fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(), description.getText().toString(), (ArrayList<String>) tags.getTags(), Integer.valueOf(maxParticipants.getText().toString()), Double.valueOf(cost.getText().toString()), type, flag, user.getToken());
+                                    fakeCreateGroupPresenter.createGroup(nameOfGroup.getText().toString(), description.getText().toString(), (ArrayList<String>) tags.getTags(), Integer.valueOf(maxParticipants.getText().toString()), Double.valueOf(cost.getText().toString()), type, flag, user.getToken(),this);
                                 }
                             }else{
                                 MakeToast("Минимальное кол-во тэгов - 3,максимальное - 10");

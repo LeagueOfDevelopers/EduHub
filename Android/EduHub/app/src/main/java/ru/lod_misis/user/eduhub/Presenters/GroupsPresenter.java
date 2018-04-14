@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.View.IGroupListView;
@@ -34,8 +35,8 @@ public class GroupsPresenter implements IGroupRepository {
     }
 
     @Override
-    public void loadAllGroupsForUsers() {
-        eduHubApi= RetrofitBuilder.getApi();
+    public void loadAllGroupsForUsers(Context context) {
+        eduHubApi= RetrofitBuilder.getApi(context);
         disposable=eduHubApi.getGroups()
                 .subscribeOn(Schedulers.io())//вверх
                 .observeOn(AndroidSchedulers.mainThread())//вниз
@@ -54,8 +55,8 @@ public class GroupsPresenter implements IGroupRepository {
     }
 
     @Override
-    public void loadAllGroupsForTeachers() {
-        eduHubApi= RetrofitBuilder.getApi();
+    public void loadAllGroupsForTeachers(Context context) {
+        eduHubApi= RetrofitBuilder.getApi(context);
         disposable=eduHubApi.getGroups()
                 .subscribeOn(Schedulers.io())//вверх
                 .observeOn(AndroidSchedulers.mainThread())//вниз
@@ -73,9 +74,9 @@ public class GroupsPresenter implements IGroupRepository {
     }
 
     @Override
-    public void loadUsersGroup(String token,String userId) {
+    public void loadUsersGroup(String token,String userId, Context context) {
         Log.d("TOKEN",token);
-        eduHubApi= RetrofitBuilder.getApi();
+        eduHubApi= RetrofitBuilder.getApi(context);
         disposable=eduHubApi.getUsersGroup("Bearer "+token,userId)
                 .subscribeOn(Schedulers.io())//вверх
                 .observeOn(AndroidSchedulers.mainThread())//вниз

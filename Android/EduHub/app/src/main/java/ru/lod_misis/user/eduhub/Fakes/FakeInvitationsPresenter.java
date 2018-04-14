@@ -1,5 +1,7 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
+
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.INotificationsPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.INotificationsView;
 import ru.lod_misis.user.eduhub.Models.Notivications.Invitation;
@@ -20,7 +22,7 @@ public class FakeInvitationsPresenter implements INotificationsPresenter {
     }
 
     @Override
-    public void loadInvitations(String token) {
+    public void loadInvitations(String token, Context context) {
         invitation.setFromUser("01550cbd-8005-4b67-b9aa-691c7a85c499");
         invitation.setGroupId("01550cbd-8005-4b67-b9aa-691c7a85c499");
         invitation.setId("01550cbd-8005-4b67-b9aa-691c7a85c499");
@@ -38,7 +40,7 @@ public class FakeInvitationsPresenter implements INotificationsPresenter {
     }
 
     @Override
-    public void getAllNotifications(String token) {
+    public void getAllNotifications(String token, Context context) {
 
     }
 }

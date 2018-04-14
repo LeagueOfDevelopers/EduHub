@@ -142,7 +142,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         if(!fakesButton.getCheckButton()){}
         else {
 
-            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());
         }
 
         exit.setOnClickListener(click->{
@@ -157,12 +157,12 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                     }
                 }
                 if(isTeacher){
-                    exitFromGroupPresenter.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId());
+                    exitFromGroupPresenter.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId(),getContext());
                 }
                 else {
-                exitFromGroupPresenter.exitFromGroupForUser(user.getToken(),group.getGroupInfo().getId(),user.getUserId());}
+                exitFromGroupPresenter.exitFromGroupForUser(user.getToken(),group.getGroupInfo().getId(),user.getUserId(),getContext());}
             }else{
-                fakeExitFromGroupPresenter.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId());
+                fakeExitFromGroupPresenter.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId(),getContext());
             }
         });
         suggestion_course.setOnClickListener(click->{
@@ -189,7 +189,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         });
         positive_response.setOnClickListener(click->{
             if(!fakesButton.getCheckButton()){
-               addCourseMethodsPresenter.positiveResponse(user.getToken(),group.getGroupInfo().getId());}
+               addCourseMethodsPresenter.positiveResponse(user.getToken(),group.getGroupInfo().getId(),getContext());}
             else {
                 getResponseAfterYourResponse();
             }
@@ -203,7 +203,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         reason_negative_response_btn.setOnClickListener(click->{
             if(!reason_negative_response.getText().toString().equals("")){
             if(!fakesButton.getCheckButton()){
-                addCourseMethodsPresenter.negativeResponse(user.getToken(),group.getGroupInfo().getId(),reason_negative_response.getText().toString());}
+                addCourseMethodsPresenter.negativeResponse(user.getToken(),group.getGroupInfo().getId(),reason_negative_response.getText().toString(),getContext());}
             else {
                 getResponseAfterYourResponse();
             }}else{
@@ -223,7 +223,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                 AddReviewModel addReviewModel=new AddReviewModel();
                 addReviewModel.setText(addReview.getText().toString());
                 addReviewModel.setTitle("Отзыв от "+user.getName());
-                EduHubApi eduHubApi= RetrofitBuilder.getApi();
+                EduHubApi eduHubApi= RetrofitBuilder.getApi(getContext());
                 eduHubApi.addReview("Bearer "+user.getToken(),group.getGroupInfo().getId(),addReviewModel)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -233,7 +233,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
             }
         });
         closeCourse.setOnClickListener(click->{
-            EduHubApi eduHubApi=RetrofitBuilder.getApi();
+            EduHubApi eduHubApi=RetrofitBuilder.getApi(getContext());
             eduHubApi.closeCourse("Bearer "+user.getToken(),group.getGroupInfo().getId())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -266,7 +266,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(!fakesButton.getCheckButton()){
-            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
+            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
 
     }
 
@@ -479,10 +479,10 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     }
     private void RefreshData(){
         if(!fakesButton.getCheckButton()){
-            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
+            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
         else {
 
-            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());
         }
     }
 

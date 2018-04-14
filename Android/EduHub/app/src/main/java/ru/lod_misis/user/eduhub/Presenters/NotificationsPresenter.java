@@ -1,6 +1,7 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -52,8 +53,8 @@ public class NotificationsPresenter implements INotificationsPresenter {
     }
 
     @Override
-    public void loadInvitations(String token) {
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+    public void loadInvitations(String token, Context context) {
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.getInvitations("Bearer "+token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -64,9 +65,9 @@ public class NotificationsPresenter implements INotificationsPresenter {
     }
 
     @Override
-    public void getAllNotifications(String token) {
+    public void getAllNotifications(String token,Context context) {
 notifications2=new ArrayList<>();
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.loadAllNotifications("Bearer "+token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

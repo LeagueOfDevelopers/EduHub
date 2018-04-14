@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IExitFromGroupPresenter;
@@ -16,14 +17,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ExitFromGroupPresenter implements IExitFromGroupPresenter {
     IExitFromGroupView exitFromGroupView;
-    EduHubApi eduHubApi= RetrofitBuilder.getApi();
+    EduHubApi eduHubApi;
 
     public ExitFromGroupPresenter(IExitFromGroupView exitFromGroupView) {
         this.exitFromGroupView = exitFromGroupView;
     }
 
     @Override
-    public void exitFromGroupForUser(String token, String groupId, String memberId) {
+    public void exitFromGroupForUser(String token, String groupId, String memberId, Context context) {
+        eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.exitFromGroup("Bearer "+token,groupId,memberId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -35,7 +37,8 @@ public class ExitFromGroupPresenter implements IExitFromGroupPresenter {
     }
 
     @Override
-    public void exitFromGroupForTeacher(String token, String groupId) {
+    public void exitFromGroupForTeacher(String token, String groupId,Context context) {
+        eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.exitFromGroupForTeacher("Bearer "+token,groupId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.ISearchUserPresenter;
@@ -23,11 +24,11 @@ public class SearchUserPresenter implements ISearchUserPresenter {
     }
 
     @Override
-    public void searchUser(String name) {
+    public void searchUser(String name, Context context) {
         Log.d("NAME",name);
         SearchModel searchModel=new SearchModel();
         searchModel.setName(name);
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.searchUser(searchModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -38,12 +39,12 @@ public class SearchUserPresenter implements ISearchUserPresenter {
     }
 
     @Override
-    public void searchUserForInvitation(String name, String groupId) {
+    public void searchUserForInvitation(String name, String groupId,Context context) {
         Log.d("NAME",name);
         SearchModel searchModel=new SearchModel();
         searchModel.setUsername(name);
         searchModel.setGroupId(groupId);
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.searchUserForInvitation(searchModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

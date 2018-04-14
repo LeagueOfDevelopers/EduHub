@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IChangeStatusOfInvitationPresenter;
@@ -18,16 +19,17 @@ import io.reactivex.schedulers.Schedulers;
 public class СhangeStatusOfInvitationPresenter implements IChangeStatusOfInvitationPresenter {
     IChangeStatusOfInvitationView changeStatusOfInvitationView;
 
+
     public СhangeStatusOfInvitationPresenter(IChangeStatusOfInvitationView changeStatusOfInvitationView) {
         this.changeStatusOfInvitationView = changeStatusOfInvitationView;
     }
 
     @Override
-    public void changeStatus(String newStatus,String token,String inviteId) {
+    public void changeStatus(String newStatus,String token,String inviteId,Context context) {
         ChangeInvitationStatusModel model=new ChangeInvitationStatusModel();
         model.setStatus(newStatus);
         model.setInvitationId(inviteId);
-        EduHubApi eduHubApi= RetrofitBuilder.getApi();
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.changeStatusOfInvitation("Bearer "+token,model)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

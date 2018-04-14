@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Presenters;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Fragments.LoginFragment;
@@ -26,7 +27,7 @@ public class RegistrPresenter implements IRegistrPresenter {
     }
 
     @Override
-    public void RegistrationUser(String name, String email, String password, Boolean isTeacher) {
+    public void RegistrationUser(String name, String email, String password, Boolean isTeacher, Context context) {
         if(!email.equals("")&&!password.equals("")&&!name.equals("")){
 
                 RegistrationModel2 registrationModel=new RegistrationModel2();
@@ -38,7 +39,7 @@ public class RegistrPresenter implements IRegistrPresenter {
             Log.d("name",name);
             Log.d("password",password);
             Log.d("isTeacher",isTeacher.toString());
-                EduHubApi eduHubApi= RetrofitBuilder.getApi();
+                EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
                 disposable=eduHubApi.userRegistrationWithoutInviteCode(registrationModel)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

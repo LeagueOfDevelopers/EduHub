@@ -122,15 +122,15 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
                 if(!user.getTeacher()){
                 if(!fakessButton.getCheckButton()){
                     Log.d("CheckButton",fakessButton.getCheckButton().toString());
-               signInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId());}
+               signInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());}
                else{
-                    fakeSignInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId());
+                    fakeSignInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());
                 }}else{
                     if(!fakessButton.getCheckButton()){
                         Log.d("CheckButton",fakessButton.getCheckButton().toString());
-                        signInUserToGroupPresenter.signInTeacherToGroup(user.getToken(),group.getGroupInfo().getId());}
+                        signInUserToGroupPresenter.signInTeacherToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());}
                     else{
-                        fakeSignInUserToGroupPresenter.signInTeacherToGroup(user.getToken(),group.getGroupInfo().getId());
+                        fakeSignInUserToGroupPresenter.signInTeacherToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());
                     }
                 }
 

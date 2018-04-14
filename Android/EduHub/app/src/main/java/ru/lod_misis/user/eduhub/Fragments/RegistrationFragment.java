@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -64,11 +66,11 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
         View v = inflater.inflate(R.layout.registration_fragment, null);
         email=v.findViewById(R.id.registr_email);
         password=v.findViewById(R.id.registr_password);
-        int closePassword=password.getInputType();
         isTeacher=v.findViewById(R.id.teacher_or_not);
         name=v.findViewById(R.id.registr_login);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Регистрация");
+
 
 
         Button submit=v.findViewById(R.id.registr_btn);
@@ -83,9 +85,9 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
                         if(password.getText().length()>=8&&password.getText().length()<=50){
                isTeacherFlag=isTeacher.isChecked();
                 if(!fakesButton.getCheckButton()){
-                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag);}
+                registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag,getContext());}
                 else{
-                    fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag);
+                    fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag,getContext());
                 }
                         }else{MakeToast("Минимальная длина пароля - 8 символов,максимальная - 50");}
                     }else{
@@ -121,9 +123,9 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
     public void getResponse(Fragment fragment) {
         MakeToast("Регистрация выполнена успешно.");
         if(!fakesButton.getCheckButton()){
-        loginPresenter.Login(email.getText().toString(),password.getText().toString());}
+        loginPresenter.Login(email.getText().toString(),password.getText().toString(),getContext());}
         else{
-            fakeLoginPresenter.Login(email.getText().toString(),password.getText().toString());
+            fakeLoginPresenter.Login(email.getText().toString(),password.getText().toString(),getContext());
         }
 
     }

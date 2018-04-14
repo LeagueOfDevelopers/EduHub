@@ -42,6 +42,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
     @Override
     public void onBindViewHolder(GroupViewHolder holder, final int position) {
+        holder.tags.setNestedScrollingEnabled(false);
         holder.name.setText(groups.get(position).getGroupInfo().getTitle());
         holder.users.setText(groups.get(position).getGroupInfo().getMemberAmount()+"/"+groups.get(position).getGroupInfo().getSize());
         holder.cost.setText("$"+groups.get(position).getGroupInfo().getCost());

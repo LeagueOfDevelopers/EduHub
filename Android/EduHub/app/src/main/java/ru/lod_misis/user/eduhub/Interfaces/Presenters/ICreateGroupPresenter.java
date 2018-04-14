@@ -1,5 +1,7 @@
 package ru.lod_misis.user.eduhub.Interfaces.Presenters;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 /**
@@ -7,5 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface ICreateGroupPresenter {
-    void createGroup(String title, String description, ArrayList<String> tags, int size, Double cost, String groupType,Boolean isPrivate,String token);
+    void createGroup(String title, String description, ArrayList<String> tags, int size, Double cost, String groupType,Boolean isPrivate,String token, Context context);
 }

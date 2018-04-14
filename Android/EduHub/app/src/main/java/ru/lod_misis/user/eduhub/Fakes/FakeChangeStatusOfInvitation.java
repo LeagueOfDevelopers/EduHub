@@ -1,5 +1,7 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
+
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IChangeStatusOfInvitationPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.IChangeStatusOfInvitationView;
 
@@ -15,7 +17,7 @@ public class FakeChangeStatusOfInvitation implements IChangeStatusOfInvitationPr
     }
 
     @Override
-    public void changeStatus(String newStatus, String token, String inviteId) {
+    public void changeStatus(String newStatus, String token, String inviteId, Context context) {
         if(newStatus.equals("Accepted")){
             changeStatusOfInvitationView.Possitive();
         }

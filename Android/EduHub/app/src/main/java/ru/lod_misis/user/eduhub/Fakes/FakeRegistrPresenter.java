@@ -1,5 +1,7 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
+
 import ru.lod_misis.user.eduhub.Fragments.LoginFragment;
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IRegistrPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.IRegistrView;
@@ -16,7 +18,7 @@ public class FakeRegistrPresenter implements IRegistrPresenter {
     }
 
     @Override
-    public void RegistrationUser(String name, String email, String password, Boolean isTeacher) {
+    public void RegistrationUser(String name, String email, String password, Boolean isTeacher, Context context) {
         LoginFragment fragment=new LoginFragment();
         registrView.getResponse(fragment);
     }

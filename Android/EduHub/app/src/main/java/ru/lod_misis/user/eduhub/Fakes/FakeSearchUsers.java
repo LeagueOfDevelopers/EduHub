@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
 import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.ISearchUserPresenter;
@@ -22,7 +23,7 @@ public class FakeSearchUsers implements ISearchUserPresenter {
     }
 
     @Override
-    public void searchUser(String name) {
+    public void searchUser(String name, Context context) {
         UserSearchProfile userSearchProfile=new UserSearchProfile();
         userSearchProfile.setEmail("fake@fake.fake");
         userSearchProfile.setId("93d08fd5-c101-42d4-8811-8e48f2434304");
@@ -50,7 +51,7 @@ public class FakeSearchUsers implements ISearchUserPresenter {
     }
 
     @Override
-    public void searchUserForInvitation(String name, String groupId) {
-        searchUser(name);
+    public void searchUserForInvitation(String name, String groupId, Context context) {
+        searchUser(name,context);
     }
 }

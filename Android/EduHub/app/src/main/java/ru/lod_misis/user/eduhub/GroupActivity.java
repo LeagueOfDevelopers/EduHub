@@ -48,7 +48,7 @@ public class GroupActivity extends AppCompatActivity
     final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE";
     SharedPreferences sPref;
     CourseMethodsPresenter addCourseMethodsPresenter=new CourseMethodsPresenter(this);
-    FileRepository fileRepository=new FileRepository(this,this);
+    FileRepository fileRepository;
     ImageButton back;
     ProgressBar progressBar;
     @Override
@@ -56,6 +56,7 @@ public class GroupActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         Intent intent=getIntent();
+        fileRepository=new FileRepository(this,this);
         group=(Group) intent.getSerializableExtra("group") ;
 
          back=findViewById(R.id.back);
@@ -69,9 +70,9 @@ public class GroupActivity extends AppCompatActivity
             user= savedDataRepository.loadSavedData(sPref);
             if(!fakesButton.getCheckButton()){
                 Log.d("GroupId",group.getGroupInfo().getId());
-                groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());
+                groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),this);
             }else{
-                fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId());}
+                fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),this);}
 
 
 
@@ -121,9 +122,10 @@ public class GroupActivity extends AppCompatActivity
 
     @Override
     public void getInformationAboutGroup(Group group) {
+        group.getGroupInfo().setId(this.group.getGroupInfo().getId());
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
         Log.d("MyId",user.getUserId());
-        group.getGroupInfo().setId(this.group.getGroupInfo().getId());
+
         Boolean flag=false;
         for (Member member:group.getMembers()) {
             if(user.getUserId().equals(member.getUserId())){
@@ -154,6 +156,7 @@ public class GroupActivity extends AppCompatActivity
         }else{
             UnsignedMainGroupFragment unsignedMainGroupFragment=new UnsignedMainGroupFragment();
             unsignedMainGroupFragment.setGroup(group);
+            Log.d("GROUP",group.getGroupInfo().getId());
             transaction=getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.group_fragments_conteiner,unsignedMainGroupFragment);
             transaction.commit();
@@ -187,7 +190,7 @@ public class GroupActivity extends AppCompatActivity
     @Override
     public void getResponse(AddFileResponseModel addFileResponseModel) {
         Log.d("Test",addFileResponseModel.getFileName());
-        addCourseMethodsPresenter.addPlan(user.getToken(),group.getGroupInfo().getId(),addFileResponseModel.getFileName());
+        addCourseMethodsPresenter.addPlan(user.getToken(),group.getGroupInfo().getId(),addFileResponseModel.getFileName(),this);
 
     }
 

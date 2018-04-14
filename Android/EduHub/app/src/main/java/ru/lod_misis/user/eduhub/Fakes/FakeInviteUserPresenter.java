@@ -1,5 +1,7 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
+
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IInviteUserPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.IInviteUserView;
 
@@ -15,7 +17,7 @@ public class FakeInviteUserPresenter  implements IInviteUserPresenter {
     }
 
     @Override
-    public void inviteUser(String name, String role,String groupId,String myId) {
+    public void inviteUser(String name, String role,String groupId,String myId, Context context) {
         inviteUserView.getResponse();
     }
 }

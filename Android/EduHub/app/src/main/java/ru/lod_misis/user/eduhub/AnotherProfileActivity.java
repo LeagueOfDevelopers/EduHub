@@ -119,9 +119,9 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
 
         if(!fakesButton.getCheckButton()){
             Log.d("TOKEN",user.getToken());
-            userProfilePresenter.loadUserProfile(user.getToken(),id);}
+            userProfilePresenter.loadUserProfile(user.getToken(),id,this);}
         else{
-            fakeUserProfilePresenter.loadUserProfile(user.getToken(),id);
+            fakeUserProfilePresenter.loadUserProfile(user.getToken(),id,this);
         }
         backButton.setOnClickListener(click->{
             onBackPressed();

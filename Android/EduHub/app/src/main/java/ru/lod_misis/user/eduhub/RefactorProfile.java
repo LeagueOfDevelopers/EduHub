@@ -82,7 +82,7 @@ UserProfileResponse userProfile;
     SharedPreferences sharedPreferences;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     ChangeUserDataPresenter changeUsersDataPresenter=new ChangeUserDataPresenter(this);
-    FileRepository fileRepository=new FileRepository(this,this);
+    FileRepository fileRepository;
     DecodeFile decodeFile=new DecodeFile(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +95,7 @@ UserProfileResponse userProfile;
         user=savedDataRepository.loadSavedData(sharedPreferences);
         Intent getIntent=getIntent();
         userProfile=(UserProfileResponse) getIntent.getSerializableExtra("UserProfile");
+        fileRepository=new FileRepository(this,this);
 
 
         refreshList=this;
@@ -177,20 +178,26 @@ UserProfileResponse userProfile;
         });
         CardView cv=findViewById(R.id.addContactCard);
         addContact.setOnClickListener(click->{
+            if(contacts.size()<=5){
             cv.setVisibility(View.GONE);
-            editContact.setVisibility(View.VISIBLE);
+            editContact.setVisibility(View.VISIBLE);}else{
+                MakeToast("Максимальное кол-во контактов-5");
+            }
         });
         editContact.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if(checkLink(editContact.getText().toString())){
                     contacts.add(editContact.getText().toString());
                     adapter1=new Contacts_adapter(contacts,activity,context,refreshList);
                     recyclerView.setAdapter(adapter1);
                     cv.setVisibility(View.VISIBLE);
                     editContact.setVisibility(View.GONE);
                     editContact.setText("");
-                    return true;
+                    return true;}else{
+                        MakeToast("Введена некорректная ссылка");
+                    }
                 }
                 return false;
             }
@@ -214,16 +221,19 @@ UserProfileResponse userProfile;
             if(userName.getText().length()>=3&&userName.getText().length()<=70) {
                 if(checkName(userName.getText().toString())){
                     if((editAboutMe.getText().length()<=3000&&editAboutMe.getText().length()<=20)||editAboutMe.getText().toString().equals("")){
-                        if(editBirthYear.getText().toString().equals("")||(Integer.valueOf(editBirthYear.getText().toString())>=1900&&Integer.valueOf(editBirthYear.getText().toString())<= getCurrentYear())){
-                            if(uri!=null){
+                        if(editBirthYear.getText().toString().equals("")||(Integer.valueOf(editBirthYear.getText().toString())>=1900&&
+                                Integer.valueOf(editBirthYear.getText().toString())<= getCurrentYear())){
+
+                                if(uri!=null){
                 fileRepository.loadImageToServer(user.getToken(),uri);}else {
             avatarLink = "";
             if(editBirthYear.getText().toString().equals("")){
                 editBirthYear.setText("0");
             }
-            changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils);
+            changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils,this);
 
-                            }
+                                }
+
                         }else{
                             MakeToast("Минимальынй допустимый год рождения - 1900,максимальный - "+getCurrentYear());
                         }
@@ -277,7 +287,7 @@ UserProfileResponse userProfile;
         if(editBirthYear.getText().toString().equals("")){
             editBirthYear.setText("0");
         }
-        changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils);
+        changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils,this);
         android.content.SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString("AVATARLINK",avatarLink);
         editor.commit();
@@ -326,5 +336,11 @@ UserProfileResponse userProfile;
         Calendar calendar=Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         calendar.setTime(new Date());
         return calendar.get(Calendar.YEAR);
+    }
+    private Boolean checkLink(String link){
+        Pattern p=Pattern.compile("^[vk.com/]\\S+|^[@]\\S+|^[twitter.com/]\\S+|^[ok.ru]\\S+|^[facebook.com/]\\S+" +
+                "|^[instagram.com/]\\S+|^\\S+[.tumblr.com]");
+        Matcher m=p.matcher(link);
+        return m.matches();
     }
 }

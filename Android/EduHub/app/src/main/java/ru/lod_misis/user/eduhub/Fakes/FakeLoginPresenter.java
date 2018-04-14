@@ -1,5 +1,7 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
+
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.ILoginPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.ILoginView;
 import ru.lod_misis.user.eduhub.Models.User;
@@ -16,7 +18,7 @@ public class FakeLoginPresenter implements ILoginPresenter{
     }
 
     @Override
-    public void Login(String email, String password) {
+    public void Login(String email, String password, Context context) {
         User user=new User();
         user.setEmail(email);
         user.setName("Александр");

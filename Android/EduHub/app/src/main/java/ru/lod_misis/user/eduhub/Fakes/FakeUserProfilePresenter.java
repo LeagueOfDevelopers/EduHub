@@ -1,5 +1,7 @@
 package ru.lod_misis.user.eduhub.Fakes;
 
+import android.content.Context;
+
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IUserProfilePresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.IUserProfileView;
 import ru.lod_misis.user.eduhub.Models.Group.Group;
@@ -24,7 +26,7 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
     }
 
     @Override
-    public void loadUserProfile(String token,String userId) {
+    public void loadUserProfile(String token,String userId, Context context) {
         UserProfileResponse userProfileResponse=new UserProfileResponse();
         UserProfile userProfile=new UserProfile();
         userProfile.setEmail("lod.misis.ru");

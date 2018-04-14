@@ -20,13 +20,16 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.auth0.android.jwt.JWT;
 import com.example.user.eduhub.R;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
+import ru.lod_misis.user.eduhub.Classes.FiltresModel;
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
 import ru.lod_misis.user.eduhub.Fragments.CommonFragmentForNotifications;
 import ru.lod_misis.user.eduhub.Fragments.FindGroupsFragment;
@@ -65,16 +68,20 @@ public class AuthorizedUserActivity extends AppCompatActivity
     FakesButton fakesButton=new FakesButton();
     EduHubApi eduHubApi;
     Disposable disposable;
+    Context context=this;
     Boolean bool;
      android.content.SharedPreferences sPref;
     Toolbar toolbar;
     GroupsPresenter groupsPresenter;
     CheckBox checkFakes;
+    ProgressBar progressBar;
     final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE",EXP="EXP";
     RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
-    FileRepository fileRepository=new FileRepository(this,this );
+
+    FileRepository fileRepository;
     DecodeFile decodeFile=new DecodeFile(this);
     FIndGroupsPresenter fIndGroupsPresenter=new FIndGroupsPresenter(this);
+    FiltresModel filtresModel;
 
 
     Button btn;
@@ -84,9 +91,12 @@ public class AuthorizedUserActivity extends AppCompatActivity
         setContentView(R.layout.activity_authorized_user);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
+        progressBar=findViewById(R.id.progressBar);
         setSupportActionBar(toolbar);
-
-
+        Log.d("Cont",context.toString());
+        filtresModel=FiltresModel.getInstance();
+        filtresModel.setType("Default");
+        fileRepository=new FileRepository(this,context );
         sPref=getSharedPreferences("User",MODE_PRIVATE);
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
            Integer exp=savedDataRepository.loadExp(sPref);
@@ -95,8 +105,9 @@ public class AuthorizedUserActivity extends AppCompatActivity
             fakesButton.setCheckButton(bool);
             ProgressBar progressBar=findViewById(R.id.progressBar);
             progressBar.setVisibility(View.VISIBLE);
-            refreshTokenPresenter.refreshToken(savedDataRepository.loadSavedData(sPref).getToken());
+            refreshTokenPresenter.refreshToken(savedDataRepository.loadSavedData(sPref).getToken(),this);
             if(sPref.contains(AVATARLINK)){
+
                 Log.d("AvatarLink",user.getAvatarLink());
                 fileRepository.loadFileFromServer(user.getToken(),user.getAvatarLink());
 
@@ -106,9 +117,9 @@ public class AuthorizedUserActivity extends AppCompatActivity
             Intent intent=getIntent();
             user=(User) intent.getSerializableExtra("user");
             savedDataRepository=new SavedDataRepository();
+            filtresModel=FiltresModel.getInstance();
             JWT jwt = new JWT(user.getToken());
             user.setUserId(jwt.getClaim("UserId").asString());
-
             savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sPref);
             drawer();
 
@@ -165,8 +176,8 @@ public class AuthorizedUserActivity extends AppCompatActivity
                     return false;
                 }else{
                     Log.d("Поиск...","Поиск");
-
-                    fIndGroupsPresenter.findGroupsWithoutFilters(newText);
+                    filtresModel.setTittle(newText);
+                    fIndGroupsPresenter.findGroupsWithFilters(filtresModel.getMinCost(),filtresModel.getMaxCost(),filtresModel.getTittle(),filtresModel.getTags(),filtresModel.getType(),filtresModel.getPrivacy(),context);
                     return true;}
                 }
             }
@@ -232,21 +243,30 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
     @Override
     public void showLoading() {
+        if(progressBar.getVisibility()!=View.VISIBLE){
+        progressBar.setVisibility(View.VISIBLE);
+        }
 
     }
 
     @Override
     public void stopLoading() {
-
+        if(progressBar.getVisibility()!=View.GONE){
+        progressBar.setVisibility(View.GONE);}
     }
 
     @Override
     public void getError(Throwable error) {
-        Intent intent=new Intent(this, Main2Activity.class);
-        SharedPreferences.Editor editor=sPref.edit();
-        editor.clear();
-        editor.commit();
-        startActivity(intent);
+        if(error instanceof HttpException){
+            switch (((HttpException) error).code()){
+                case 401:{Intent intent=new Intent(this, Main2Activity.class);
+                    SharedPreferences.Editor editor=sPref.edit();
+                    editor.clear();
+                    editor.commit();
+                    startActivity(intent);}
+            }
+        }
+
     }
 
     @Override
@@ -330,14 +350,15 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
     @Override
     public void getGroups(ArrayList<Group> groups) {
-        if(groups.size()!=0){
+
         FindGroupsFragment findGroupsFragment=new FindGroupsFragment();
         Bundle bundle=new Bundle();
         bundle.putSerializable("findGroups",groups);
+        bundle.putSerializable("filters",filtresModel);
         findGroupsFragment.setArguments(bundle);
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_fragments_conteiner,findGroupsFragment);
-        fragmentTransaction.commit();}
+        fragmentTransaction.commit();
     }
 
     @Override

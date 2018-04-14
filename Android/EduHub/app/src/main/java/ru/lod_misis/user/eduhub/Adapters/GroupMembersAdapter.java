@@ -1,6 +1,7 @@
 package ru.lod_misis.user.eduhub.Adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -47,27 +48,32 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
     Activity activity;
     IUpdateList updateList;
     Bitmap bitmap;
-    EduHubApi eduHubApi=RetrofitBuilder.getApi();
+    Context context;
+    EduHubApi eduHubApi;
     ResponseBody result;
 
 
-    public GroupMembersAdapter (ArrayList<Member> members, User user, Activity activity, Group group,IUpdateList updateList){
+    public GroupMembersAdapter (ArrayList<Member> members, User user, Activity activity, Group group,IUpdateList updateList,Context context){
         this.members=members;
         this.user=user;
         this.group=group;
         this.updateList=updateList;
         this.activity=activity;
+        fileRepository=new FileRepository(this,context);
+        eduHubApi=RetrofitBuilder.getApi(context);
 
     }
-    public GroupMembersAdapter (ArrayList<Member> members,  Activity activity, Group group,IUpdateList updateList){
+    public GroupMembersAdapter (ArrayList<Member> members,  Activity activity, Group group,IUpdateList updateList,Context context){
         this.members=members;
         this.group=group;
         this.updateList=updateList;
         this.activity=activity;
+        eduHubApi=RetrofitBuilder.getApi(context);
+        fileRepository=new FileRepository(this,context);
         user=null;
 
     }
-    FileRepository fileRepository=new FileRepository(this,activity);
+    FileRepository fileRepository;
     @Override
     public GroupMembersViewHolder onCreateViewHolder(ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_members_item, parent, false);
@@ -156,7 +162,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         });
        holder.kick.setOnClickListener(click->{
            Log.d("GroupIdInMemberAdapter",user.getToken());
-           EduHubApi eduHubApi= RetrofitBuilder.getApi();
+           EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
            if(members.get(i).getRole()==3){
                eduHubApi.exitFromGroupForTeacher(user.getToken(),group.getGroupInfo().getId())
                        .subscribeOn(Schedulers.io())
