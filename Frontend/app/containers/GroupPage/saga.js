@@ -544,16 +544,7 @@ function* getTagsSaga(action) {
 }
 
 function getTags(tag) {
-  return fetch(`${config.API_BASE_URL}/tags/search`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json-patch+json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    },
-    body: JSON.stringify({
-      tag: tag
-    })
-  })
+  return fetch(`${config.API_BASE_URL}/tags/search${tag ? `?tag=${tag}` : ''}`)
     .then(res => res.json())
     .then(res => res)
     .catch(error => error)

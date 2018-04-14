@@ -4,7 +4,12 @@ import {
   INVITE_MODERATOR_START,
   DELETE_MODERATOR_START,
   ANNUL_SANCTION_START,
-  APPLY_SANCTION_START
+  APPLY_SANCTION_START,
+  SEARCH_USERS_START,
+  GET_MODERS_START,
+  GET_REPORTS_START,
+  GET_SANCTIONS_START,
+  GET_ADMIN_HISTORY_START
 } from "./constants";
 
 import {
@@ -15,9 +20,36 @@ import {
   applySanctionSuccess,
   applySanctionFailed,
   annulSanctionSuccess,
-  annulSanctionFailed
+  annulSanctionFailed,
+  searchUsersSuccess,
+  searchUsersFailed,
+  getModersFailed,
+  getModersSuccess,
+  getAdminHistoryFailed,
+  getAdminHistorySuccess,
+  getReportsFailed,
+  getReportsSuccess,
+  getSanctionsFailed,
+  getSanctionsSuccess
 } from "./actions";
 import config from "../../config";
+
+function* searchUsersSaga(action) {
+  try {
+    const data = yield call(getUsers, action.name);
+    yield put(searchUsersSuccess(data.users));
+  }
+  catch(e) {
+    yield put(searchUsersFailed(e))
+  }
+}
+
+function getUsers(name) {
+  return fetch(`${config.API_BASE_URL}/users/search/${name}`)
+    .then(res => res.json())
+    .then(res => res)
+    .catch(error => error)
+}
 
 function* inviteModeratorSaga(action) {
   try {
@@ -117,9 +149,106 @@ function annulSanction(id) {
     .catch(error => error)
 }
 
+function* getModersSaga(action) {
+  try {
+    const data = yield call(getModers);
+    yield put(getModersSuccess(data.users))
+  }
+  catch(e) {
+    yield put(getModersFailed(e))
+  }
+}
+
+function getModers() {
+  return fetch(`${config.API_BASE_URL}/account/moderators`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json-patch+json'
+    }
+  })
+    .then(response => response.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
+function* getReportsSaga(action) {
+  try {
+    const data = yield call(getReports);
+    yield put(getReportsSuccess(data))
+  }
+  catch(e) {
+    yield put(getReportsFailed(e))
+  }
+}
+
+function getReports() {
+  return fetch(`${config.API_BASE_URL}/administration/reports`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json-patch+json'
+    }
+  })
+    .then(response => response.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
+function* getSanctionsSaga(action) {
+  try {
+    const data = yield call(getSanctions);
+    yield put(getSanctionsSuccess(data))
+  }
+  catch(e) {
+    yield put(getSanctionsFailed(e))
+  }
+}
+
+function getSanctions() {
+  return fetch(`${config.API_BASE_URL}/sanctions/active`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json-patch+json'
+    }
+  })
+    .then(response => response.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
+function* getHistorySaga(action) {
+  try {
+    const data = yield call(getHistory);
+    yield put(getAdminHistorySuccess(data))
+  }
+  catch(e) {
+    yield put(getAdminHistoryFailed(e))
+  }
+}
+
+function getHistory() {
+  return fetch(`${config.API_BASE_URL}/sanctions`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json-patch+json'
+    }
+  })
+    .then(response => response.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(INVITE_MODERATOR_START, inviteModeratorSaga);
   yield takeEvery(DELETE_MODERATOR_START, deleteModeratorSaga);
   yield takeEvery(APPLY_SANCTION_START, applySanctionSaga);
   yield takeEvery(ANNUL_SANCTION_START, annulSanctionSaga);
+  yield takeEvery(SEARCH_USERS_START, searchUsersSaga);
+  yield takeEvery(GET_MODERS_START, getModersSaga);
+  yield takeEvery(GET_REPORTS_START, getReportsSaga);
+  yield takeEvery(GET_SANCTIONS_START, getSanctionsSaga);
+  yield takeEvery(GET_ADMIN_HISTORY_START, getHistorySaga);
 }

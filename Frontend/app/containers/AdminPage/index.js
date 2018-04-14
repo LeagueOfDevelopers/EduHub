@@ -11,8 +11,24 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { getUsers } from "../../containers/Header/actions";
-import { makeSelectUsers } from "../../containers/Header/selectors";
+import {
+  searchUsers,
+  inviteModerator,
+  deleteModerator,
+  applySanction,
+  annulSanction,
+  getModers,
+  getReports,
+  getSanctions,
+  getAdminHistory
+} from "./actions";
+import {
+  makeSelectUsers,
+  makeSelectReports,
+  makeSelectSanctions,
+  makeSelectModerators,
+  makeSelectHistory
+} from "./selectors";
 import reducer from './reducer';
 import saga from './saga';
 import { Row, Col, Button, List, Avatar, Icon, Popconfirm, Dropdown, Menu, Select, message } from 'antd';
@@ -20,6 +36,7 @@ import {Link} from "react-router-dom";
 import ReportModal from '../../components/ReportModal';
 import SanctionModal from '../../components/SanctionModal';
 import MakeSanctionModal from '../../components/MakeSanctionModal';
+import config from "../../config";
 
 export class AdminPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -41,6 +58,13 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
     this.handleMakeSanctionCancel = this.handleMakeSanctionCancel.bind(this);
     this.handleInviteVisibleChange = this.handleInviteVisibleChange.bind(this);
     this.handleInviteSelectChange = this.handleInviteSelectChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.getModers();
+    this.props.getReports();
+    this.props.getSanctions();
+    this.props.getHistory();
   }
 
   onReportClick = () => {
@@ -86,89 +110,146 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
           <Col className='sanction-btn' xs={{span: 24}} md={{span: 10}} lg={{span: 14}}><Button onClick={this.onMakeSanctionClick} type='primary' size='large'>Выписать санкцию</Button></Col>
         </Row>
         <Row style={{marginTop: 12}}>
-          <Col xs={{span: 24}} md={{span: 8}} lg={{span: 8}} xl={{span: 6}} xxl={{span: 6}} style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px', marginTop: 16}}>
-            <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 2px 6px -2px rgba(0,0,0,0.36)'}}>
-              <Col style={{textAlign: 'center', width: '100%'}}>Текущие администраторы</Col>
-            </Row>
-            <List
-              className='admin-list'
-              dataSource={[
-                {
-                  name: 'Первый модератор',
-                  inviteCode: 'asdkgh-dsffq-qwewqe-123dfs'
-                }
-              ]}
-              renderItem={item => (
-                <List.Item key={item.userId}>
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar
-                        src={item.avatarLink}
-                      />}
-                    title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
-                    description={item.inviteCode}
-                  />
-                  <Popconfirm
-                    title='Удалить модератора?'
-                    onConfirm={() => console.log('ok')}
-                    okText="Да"
-                    cancelText="Нет"
-                  >
-                    <Icon
-                      style={{fontSize: 18, cursor: 'pointer'}}
-                      type="close"
+          <Col xs={{span: 24}} md={{span: 10}} xl={{span: 13}}>
+            <Col xs={{span: 24}} xl={{span: 11}} style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px', marginTop: 16}}>
+              <List
+                header={(
+                  <Row type='flex' justify='space-between'>
+                    <Col style={{textAlign: 'center', width: '100%', fontSize: 18}}>Текущие администраторы</Col>
+                  </Row>
+                )}
+                className='admin-list'
+                dataSource={this.props.moders}
+                renderItem={item => (
+                  <List.Item key={item.id}>
+                    <List.Item.Meta
+                      avatar={
+                        <Avatar
+                          src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
+                        />}
+                      title={<Link to={`/profile/${item.id}`}>{item.name}</Link>}
+                      description={item.email}
                     />
-                  </Popconfirm>
-                </List.Item>
-              )}
-              footer={
-                (
-                  <Dropdown
-                    overlay={(
-                      <Menu>
-                        <Menu.Item className='unhover'>
-                          <Select
-                            mode='combobox'
-                            className='unhover'
-                            style={{width: '100%'}}
-                            value={this.state.inviteSelectValue}
-                            onChange={this.handleInviteSelectChange}
-                            placeholder='Введите имя пользователя'
-                            defaultActiveFirstOption={false}
-                            showArrow={false}
-                          >
-                            {this.props.users.map(item =>
-                              <Select.Option key={item.name}>
-                                <div>{item.name}</div>
-                              </Select.Option>)
-                            }
-                          </Select>
-                        </Menu.Item>
-                      </Menu>
-                    )}
-                    onVisibleChange={this.handleInviteVisibleChange}
-                    visible={this.state.inviteVisible}
-                    trigger={['click']}
-                  >
-                    <Button
-                      size='large'
-                      style={{width: '100%'}}
+                    <Popconfirm
+                      title='Удалить модератора?'
+                      onConfirm={() => this.props.deleteModerator(item.userId)}
+                      okText="Да"
+                      cancelText="Нет"
                     >
-                      Пригласить
-                    </Button>
-                  </Dropdown>
-                )
-              }
-            >
-            </List>
+                      <Icon
+                        style={{fontSize: 18, cursor: 'pointer'}}
+                        type="close"
+                      />
+                    </Popconfirm>
+                  </List.Item>
+                )}
+                footer={
+                  (
+                    <Dropdown
+                      overlay={(
+                        <Menu>
+                          <Menu.Item className='unhover'>
+                            <Select
+                              mode='combobox'
+                              className='unhover'
+                              style={{width: '100%'}}
+                              value={this.state.inviteSelectValue}
+                              onChange={this.handleInviteSelectChange}
+                              placeholder='Введите имя пользователя'
+                              defaultActiveFirstOption={false}
+                              showArrow={false}
+                            >
+                              {this.props.users.map(item =>
+                                <Select.Option key={item.name}>
+                                  <div onClick={() => this.props.inviteModerator(item.id)}>{item.name}</div>
+                                </Select.Option>)
+                              }
+                            </Select>
+                          </Menu.Item>
+                        </Menu>
+                      )}
+                      onVisibleChange={this.handleInviteVisibleChange}
+                      visible={this.state.inviteVisible}
+                      trigger={['click']}
+                    >
+                      <Button
+                        size='large'
+                        style={{width: '100%'}}
+                      >
+                        Пригласить
+                      </Button>
+                    </Dropdown>
+                  )
+                }
+              >
+              </List>
+            </Col>
+            <Col className='custom-mw' xs={{span: 24}} xl={{span: 11, offset: 2}} >
+              <Col style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px', marginTop: 16}}>
+                <List
+                  header={(
+                    <Row type='flex' justify='space-between'>
+                      <Col style={{textAlign: 'center', width: '100%', fontSize: 18}}>Текущие репорты</Col>
+                    </Row>
+                  )}
+                  className='admin-list'
+                  dataSource={this.props.reports}
+                  renderItem={item => (
+                    <List.Item key={item.userId}>
+                      <List.Item.Meta
+                        avatar={
+                          <Avatar
+                            src={item.avatarLink}
+                          />}
+                        title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
+                        description={item.reason}
+                      />
+                      <Icon
+                        style={{fontSize: 18, cursor: 'pointer'}}
+                        type="ellipsis"
+                        onClick={this.onReportClick}
+                      />
+                    </List.Item>
+                  )}
+                >
+                </List>
+              </Col>
+              <Col style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px', marginTop: 16}}>
+                <List
+                  header={(
+                    <Row type='flex' justify='space-between'>
+                      <Col style={{textAlign: 'center', width: '100%', fontSize: 18}}>Текущие санкции</Col>
+                    </Row>
+                  )}
+                  className='admin-list'
+                  dataSource={this.props.sanctions}
+                  renderItem={item => (
+                    <List.Item key={item.id}>
+                      <List.Item.Meta
+                        title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
+                        description={item.type}
+                      />
+                      <Icon
+                        style={{fontSize: 18, cursor: 'pointer'}}
+                        type="ellipsis"
+                        onClick={this.onSanctionClick}
+                      />
+                    </List.Item>
+                  )}
+                >
+                </List>
+              </Col>
+            </Col>
           </Col>
-          <Col className='event-list-container' xs={{span: 24}} md={{span: 15, offset: 1}} lg={{span: 15, offset: 1}} xl={{span: 10, offset: 1}} xxl={{span: 10, offset: 1}} style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px', marginTop: 16, minHeight: 250}}>
-            <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 2px 6px -2px rgba(0,0,0,0.36)'}}>
-              <Col style={{textAlign: 'center', width: '100%'}}>История событий</Col>
-            </Row>
+          <Col className='event-list-container' xs={{span: 24}} md={{span: 13, offset: 1}} xl={{span: 10, offset: 1}} style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px', marginTop: 16, minHeight: 250}}>
             <List
+              header={(
+                <Row type='flex' justify='space-between'>
+                  <Col style={{textAlign: 'center', width: '100%', fontSize: 18}}>История событий</Col>
+                </Row>
+              )}
               className='event-list'
-              dataSource={[]}
+              dataSource={this.props.history}
               renderItem={(item, index) => (
                 <div>
                   <List.Item key={item.userId}>
@@ -182,80 +263,6 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
               )}
             >
             </List>
-          </Col>
-          <Col xs={{span: 24}} md={{span: 8}} lg={{span: 8}} xl={{span: 6, offset: 1}} xxl={{span: 6, offset: 1}}>
-            <Col style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px', marginTop: 16}}>
-              <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 2px 6px -2px rgba(0,0,0,0.36)'}}>
-                <Col style={{textAlign: 'center', width: '100%'}}>Текущие репорты</Col>
-              </Row>
-              <List
-                className='admin-list'
-                dataSource={[
-                  {
-                    name: 'Первый пользователь',
-                    reason: 'Причина репорта'
-                  },
-                  {
-                    name: 'Второй пользователь',
-                    reason: 'Причина репорта'
-                  }
-                ]}
-                renderItem={item => (
-                  <List.Item key={item.userId}>
-                    <List.Item.Meta
-                      avatar={
-                        <Avatar
-                          src={item.avatarLink}
-                        />}
-                      title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
-                      description={item.reason}
-                    />
-                    <Icon
-                      style={{fontSize: 18, cursor: 'pointer'}}
-                      type="ellipsis"
-                      onClick={this.onReportClick}
-                    />
-                  </List.Item>
-                )}
-              >
-              </List>
-            </Col>
-            <Col style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px', marginTop: 16}}>
-              <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 2px 6px -2px rgba(0,0,0,0.36)'}}>
-                <Col style={{textAlign: 'center', width: '100%'}}>Текущие санкции</Col>
-              </Row>
-              <List
-                className='admin-list'
-                dataSource={[
-                  {
-                    name: 'Первый пользователь',
-                    reason: 'Запрет на преподавание'
-                  },
-                  {
-                    name: 'Второй пользователь',
-                    reason: 'Запрет на преподавание'
-                  }
-                ]}
-                renderItem={item => (
-                  <List.Item key={item.userId}>
-                    <List.Item.Meta
-                      avatar={
-                        <Avatar
-                          src={item.avatarLink}
-                        />}
-                      title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
-                      description={item.reason}
-                    />
-                    <Icon
-                      style={{fontSize: 18, cursor: 'pointer'}}
-                      type="ellipsis"
-                      onClick={this.onSanctionClick}
-                    />
-                  </List.Item>
-                )}
-              >
-              </List>
-            </Col>
           </Col>
         </Row>
         <SanctionModal visible={this.state.sanctionVisible} handleCancel={this.handleSanctionCancel}/>
@@ -271,12 +278,23 @@ AdminPage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  users: makeSelectUsers()
+  users: makeSelectUsers(),
+  moders: makeSelectModerators(),
+  reports: makeSelectReports(),
+  sanctions: makeSelectSanctions(),
+  history: makeSelectHistory()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getUsers: (name) => dispatch(getUsers(name)),
+    getUsers: (name) => dispatch(searchUsers(name)),
+    inviteModerator: (id) => dispatch(inviteModerator(id)),
+    deleteModerator: (id) => dispatch(deleteModerator(id)),
+    annulSanction: (sanctionId) => dispatch(annulSanction(sanctionId)),
+    getModers: () => dispatch(getModers()),
+    getReports: () => dispatch(getReports()),
+    getSanctions: () => dispatch(getSanctions()),
+    getHistory: () => dispatch(getAdminHistory()),
   };
 }
 

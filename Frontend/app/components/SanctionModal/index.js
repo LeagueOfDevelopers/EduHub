@@ -7,6 +7,8 @@
 import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
+import { annulSanction } from "../../containers/AdminPage/actions";
+import { makeSelectCurrentSanction } from "../../containers/AdminPage/selectors";
 import { Form, Input, Col, Row, Modal, Button, message, Rate } from 'antd';
 const FormItem = Form.Item;
 
@@ -56,7 +58,7 @@ class SanctionModal extends React.Component { // eslint-disable-line react/prefe
             <div style={{lineHeight: '20px'}}>Более подробное описание репорта. Более подробное описание репорта. Более подробное описание репорта. Более подробное описание репорта.</div>
           </FormItem>
           <Row type='flex' justify='center' className='lg-center-container-item' style={{marginTop: 40}}>
-            <Button className='group-btn' style={{width: 160, marginBottom: 10}}>Отменить санкцию</Button>
+            <Button className='group-btn' onClick={() => this.props.annulSanction(this.props.sanction.id)} style={{width: 160, marginBottom: 10}}>Отменить санкцию</Button>
           </Row>
         </Form>
       </Modal>
@@ -69,12 +71,12 @@ SanctionModal.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-
+  sanction: makeSelectCurrentSanction()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    annulSanction: (id) => dispatch(annulSanction(id))
   }
 }
 

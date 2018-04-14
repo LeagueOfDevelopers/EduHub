@@ -133,10 +133,25 @@
   display: block;
 }
 
+.admin-list div:nth-child(2){
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.event-list div:nth-child(2) {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
 @media screen and (min-width: 1200px) {
   .user-card-profile-btn {
     display: block;
     margin-top: 0;
+  }
+
+  .custom-mw {
+    width: 46.33%;
+    margin-left: 7.66%;
   }
 }
 
@@ -461,13 +476,6 @@ a:focus {
 .admin-list .ant-list-item-meta-content {
   min-width: 110%;
 }
-
-.event-list-container {
-  max-height: 800px;
-  overflow: auto;
-}
-
-
 
 .event-list .ant-list-item{
   padding-left: 20px;
