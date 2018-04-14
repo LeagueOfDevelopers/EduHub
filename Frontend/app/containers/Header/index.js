@@ -149,7 +149,6 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                         />
                         <Col>
                           <div>{item.name}</div>
-                          <div style={{fontSize: 12, opacity: 0.6}}>{item.email}</div>
                         </Col>
                       </Link>
                     </Option>

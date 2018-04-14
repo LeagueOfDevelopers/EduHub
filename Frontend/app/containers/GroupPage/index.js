@@ -305,7 +305,7 @@ export class GroupPage extends React.Component {
     return (
       <div>
         <Form className='group-form' onSubmit={this.changeGroupData}>
-          <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 160, fontSize: 16}}>
+          <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} style={{marginTop: 40, marginBottom: 160, fontSize: 16}}>
             <Col className='md-center-container' xs={{span: 24}} md={{span: 10}} lg={{span: 7}}>
               <Row className='main-group-info'>
                 <Row style={{marginBottom: 26}}>
@@ -448,13 +448,13 @@ export class GroupPage extends React.Component {
                 />
               </Row>
               {this.state.isCreator ?
-                (<Row style={{width: '100%'}} className='md-center-container'>
+                (<Row style={{width: 'calc(100% + 32px)'}} className='md-center-container'>
                   <InviteMemberSelect groupId={this.state.id}/>
                 </Row>) : null
               }
               {this.state.isCreator && !this.state.isEditing ?
-                <Row>
-                  <Button type='dashed' className='md-center-container md-offset-16px' onClick={() => this.setState({isEditing: true})} style={{width: 280, marginTop: 12}}>Редактировать</Button>
+                <Row style={{width: 'calc(100% + 32px)'}}>
+                  <Button type='dashed' className='md-center-container md-offset-16px' onClick={() => this.setState({isEditing: true})} style={{width: '100%', marginTop: 12}}>Редактировать</Button>
                 </Row>
                 : this.state.isEditing ?
                   <Row>
@@ -468,7 +468,7 @@ export class GroupPage extends React.Component {
                   : null
               }
             </Col>
-            <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 2}} xl={{span: 16, offset: 1}}>
+            <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 2}} xl={{span: 15, offset: 2}}>
               <Row style={{textAlign: 'left', marginTop: 8}}>
                 <Col xs={{span: 24}} lg={{span: 17}}>
                   <SuggestPlanForm

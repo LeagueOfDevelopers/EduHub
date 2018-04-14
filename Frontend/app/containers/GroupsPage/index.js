@@ -45,7 +45,7 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
   render() {
     return (
       <Row style={{marginTop: 40}}>
-        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} onClick={this.showFilterForm} className='filter-btn' style={{height: 50}}>
+        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} onClick={this.showFilterForm} className='filter-btn' style={{height: 50}}>
           <Card
             hoverable
             style={{cursor: 'pointer', width: '100%', height: '100%'}}
@@ -53,11 +53,11 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
             <span style={{color: '#000'}}>Сортировка</span>
           </Card>
         </Col>
-        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}}>
+        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}}>
           <FilterForm id='xs-filter' title={this.state.title} formed={this.state.formed} style={{width: '100%'}}/>
         </Col>
         <FilterForm id='lg-filter' title={this.state.title} formed={this.state.formed}/>
-        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 12, offset: 1}} xl={{span: 13, offset: 1}} xxl={{span: 14, offset: 1}} className='groups-content'>
+        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} lg={{span: 9, offset: 1}} xl={{span: 10, offset: 1}} xxl={{span: 11, offset: 1}} className='groups-content'>
           <Row type='flex' justify='space-between' align='middle'>
             <h3 style={{marginBottom: 0}}>Группы</h3>
           </Row>

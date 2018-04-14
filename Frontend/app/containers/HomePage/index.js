@@ -108,7 +108,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       localStorage.getItem('token') && parseJwt(localStorage.getItem('token')).exp - parseInt(Date.now()/1000) > 0 || !localStorage.getItem('token') ?
         (
           <div>
-            <Col span={20} offset={2} style={{marginTop: 40}}>
+            <Col xs={{span: 22, offset: 1}} sm={{span: 16, offset: 4}} style={{marginTop: 40}}>
               <Card
                 title='Идет набор'
                 bordered={false}
@@ -138,16 +138,16 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   )
                 }
                 <Row type='flex' align='middle' style={{marginTop: 30}}>
-                  <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
+                  <Col className='xs-margin-bottom-14' xs={{span: 24}} md={{span: 8}} style={{fontSize: 16}}>
                     <Link to='/groups?formed=false'>Показать больше</Link>
                   </Col>
                   {localStorage.getItem('token') ?
-                    <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                    <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>
                       <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
                       <Link to='/create_group'><Button type="primary" htmlType="submit">Создать группу</Button></Link>
                     </Col>
                     :
-                    <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                    <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>
                       <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Не нашли то, что искали?</Col>
                       <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Создать группу</Button>
                     </Col>
@@ -155,7 +155,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </Row>
               </Card>
             </Col>
-            <Col span={20} offset={2} style={{marginTop: 40}}>
+            <Col xs={{span: 22, offset: 1}} sm={{span: 16, offset: 4}} style={{marginTop: 40}}>
               <Card
                 title='Набранные группы'
                 bordered={false}
@@ -185,16 +185,16 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   )
                 }
                 <Row type='flex' align='middle' style={{marginTop: 30}}>
-                  <Col className='xs-margin-bottom-14' xs={{span: 24}} sm={{span: 8}} style={{fontSize: 16}}>
+                  <Col className='xs-margin-bottom-14' xs={{span: 24}} md={{span: 8}} style={{fontSize: 16}}>
                     <Link to='/groups?formed=true'>Показать больше</Link>
                   </Col>
                   {!localStorage.getItem('token') ?
-                    <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                    <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>
                       <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
                       <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Стать преподавателем</Button>
                     </Col>
                     : localStorage.getItem('isTeacher') !== 'true' ?
-                        <Col className='xs-text-align-left' xs={{span: 24}} sm={{span: 16}}>
+                        <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>
                           <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
                           <Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}><Button type="primary">Стать преподавателем</Button></Link>
                         </Col>

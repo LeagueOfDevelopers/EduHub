@@ -271,14 +271,14 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
 
     return (
       <div>
-        <Col span={20} offset={2} style={{marginTop: 40, marginBottom: 40}} className='md-center-container'>
-          <Col xs={{span: 24}} md={{span: 10}} lg={{span: 6}} className='lg-center-container-item'>
-            <Form className='profile-form' onSubmit={this.changeProfileData}>
+        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} style={{marginTop: 40, marginBottom: 40}} className='md-center-container'>
+          <Col xs={{span: 24}} md={{span: 11}} lg={{span: 10}} xl={{span: 8}} xxl={{span: 6}} className='lg-center-container-item'>
+            <Form className='profile-form' style={{width: '100%'}} onSubmit={this.changeProfileData}>
               <Card
                 title={
                   <Row type='flex' align='middle'>
                     <Col span={24} style={{display: 'flex', alignItems: 'center'}}>
-                      <Col span={7}>
+                      <Col xs={{span: 8}} lg={{span: 7}}>
                         {
                           this.state.isEditing ?
                             <Upload
@@ -295,7 +295,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                             </Avatar>
                         }
                       </Col>
-                      <Col span={17}>
+                      <Col xs={{span: 16}} lg={{span: 17}}>
                         {this.state.isEditing ?
                           <FormItem style={{width: '100%', marginBottom: 0}}>
                             {getFieldDecorator('name', {
@@ -325,12 +325,16 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 hoverable
                 className='profile-card header-font-size-20 without-border-bottom'
               >
-                <Row style={{marginBottom: 20}}>
-                  <div>Почтовый адрес</div>
-                  <p style={{fontSize: 16, color: '#000'}}>
-                    {this.state.userProfile.email}
-                  </p>
-                </Row>
+                {
+                  this.state.isCurrentUser ?
+                    <Row style={{marginBottom: 20}}>
+                      <div>Почтовый адрес</div>
+                      <p style={{fontSize: 16, color: '#000'}}>
+                        {this.state.userProfile.email}
+                      </p>
+                    </Row>
+                    : null
+                }
                 <Row style={{marginBottom: 20}}>
                   <div>Пол</div>
                   <p style={{fontSize: 16, color: '#000'}}>
@@ -482,9 +486,11 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             </Form>
             {
               this.state.isCurrentUser ?
-                <Link to='/create_group'>
-                  <Button type='primary' size='large' style={{width: '100%', marginTop: 20, minWidth: 280}}>Создать группу</Button>
-                </Link>
+                <div style={{width: '100%'}}>
+                  <Link to='/create_group'>
+                    <Button type='primary' size='large' style={{width: '100%', marginTop: 20}}>Создать группу</Button>
+                  </Link>
+                </div>
                 : null
             }
             {this.state.isCurrentUser ?
@@ -494,7 +500,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   onClick={() => {
                     this.props.makeTeacher();
                   }}
-                  style={{width: '100%', marginTop: 12, minWidth: 280}}
+                  style={{width: '100%', marginTop: 12}}
                 >
                   Стать преподавателем
                 </Button>
@@ -503,15 +509,15 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   onClick={() => {
                     this.props.makeNotTeacher();
                   }}
-                  style={{width: '100%', marginTop: 12, minWidth: 280}}
+                  style={{width: '100%', marginTop: 12}}
                 >
                   Стать учеником
                 </Button>
               : null
             }
           </Col>
-          <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 3}} className='lg-center-container-item xs-groups-tabs'>
-            <Tabs defaultActiveKey="1" type='card'>
+          <Col xs={{span: 24}} md={{span: 12, offset: 1}} lg={{span: 13, offset: 1}} xl={{span: 15, offset: 1}} xxl={{span: 17, offset: 1}} className='lg-center-container-item xs-groups-tabs'>
+            <Tabs defaultActiveKey="1" type='card' style={{width: '100%'}}>
               <TabPane tab="Группы" key="1">
                 {(
                   <div className='cards-holder md-cards-holder-center' style={{margin: '30px 0'}}>

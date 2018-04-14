@@ -73,7 +73,7 @@ class UsersFilterForm extends React.Component { // eslint-disable-line react/pre
 
   render() {
     return (
-      <Col id={this.props.id} xs={{span: 24}} lg={{span: 7, offset: 2}} xl={{span: 6, offset: 2}} xxl={{span: 5, offset: 2}}>
+      <Col id={this.props.id} xs={{span: 24}} lg={{span: 6, offset: 4}} xl={{span: 5, offset: 4}} xxl={{span: 4, offset: 4}}>
         <Card
           hoverable
           className='without-border-bottom'
@@ -112,10 +112,10 @@ class UsersFilterForm extends React.Component { // eslint-disable-line react/pre
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Завершено курсов</div>
             <Radio.Group value={this.state.userExperience} onChange={this.onHandleStudentExperienceChange}>
               {/*<Radio value='none' style={{display: 'block', lineHeight: '30px'}}>Не проходил</Radio>*/}
-              <Radio value='OneClass' style={{display: 'block', lineHeight: '30px'}}>Минимум один курс</Radio>
-              <Radio value='FiveClasses' style={{display: 'block', lineHeight: '30px'}}>Больше пяти курсов</Radio>
-              <Radio value='FifteenClasses' style={{display: 'block', lineHeight: '30px'}}>Больше пятнадцати курсов</Radio>
-              <Radio value='Default' style={{display: 'block', lineHeight: '30px'}}>Не важно</Radio>
+              <Radio value='OneClass' style={{display: 'flex', alignItems: 'center', whiteSpace: 'normal', lineHeight: '30px'}}>Минимум один курс</Radio>
+              <Radio value='FiveClasses' style={{display: 'flex', alignItems: 'center', whiteSpace: 'normal', lineHeight: '30px'}}>Больше пяти курсов</Radio>
+              <Radio value='FifteenClasses' style={{display: 'flex', alignItems: 'center', whiteSpace: 'normal', lineHeight: '20px'}}>Больше пятнадцати курсов</Radio>
+              <Radio value='Default' style={{display: 'flex', alignItems: 'center', whiteSpace: 'normal', lineHeight: '30px'}}>Не важно</Radio>
             </Radio.Group>
           </Row>
           {/*<Divider/>*/}

@@ -121,7 +121,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
           }
           <Row>
             <span style={{whiteSpace: 'nowrap', fontSize: 15, marginRight: '2%' }}>Нет учетной записи?</span>
-            <Link to='/registration'>Зарегистрироваться</Link>
+            <Link to='/registration' onClick={this.props.handleCancel}>Зарегистрироваться</Link>
           </Row>
         </Form>
       </Modal>

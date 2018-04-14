@@ -12,8 +12,8 @@ class ChatRoom extends React.Component {
   constructor(props) {
     super(props);
 
-    const uri = `ws://localhost:10485/api/group/{groupId}/chat`;
-    this.socket = new WebSocket(uri);
+    // const uri = `ws://localhost:10485/api/group/{groupId}/chat`;
+    // this.socket = new WebSocket(uri);
 
     this.state = {
       messages: [],
@@ -22,7 +22,7 @@ class ChatRoom extends React.Component {
   }
 
   componentDidMount() {
-    this.connectSocket(this.socket);
+    // this.connectSocket(this.socket);
     this.scrollToBottom();
   }
 
@@ -50,7 +50,7 @@ class ChatRoom extends React.Component {
   }
 
   componentWillUnmount() {
-    this.socket.close()
+    // this.socket.close()
   }
 
   scrollToBottom() {

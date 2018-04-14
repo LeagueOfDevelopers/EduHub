@@ -58,7 +58,7 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
   render() {
     return (
       <Row style={{margin: '40px 0'}}>
-        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} onClick={this.showFilterForm} className='filter-btn' style={{height: 50}}>
+        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} onClick={this.showFilterForm} className='filter-btn' style={{height: 50}}>
           <Card
             hoverable
             style={{cursor: 'pointer', width: '100%', height: '100%'}}
@@ -66,11 +66,11 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
             <span style={{color: '#000'}}>Сортировка</span>
           </Card>
         </Col>
-        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}}>
+        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}}>
           <FilterForm id='xs-filter' name={this.state.name} style={{width: '100%'}}/>
         </Col>
         <FilterForm name={this.state.name} id='lg-filter'/>
-        <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 11, offset: 2}} xl={{span: 12, offset: 2}} xxl={{span: 13, offset: 2}} className='users-content'>
+        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} lg={{span: 9, offset: 1}} xl={{span: 10, offset: 1}} xxl={{span: 11, offset: 1}} className='users-content'>
           <Row style={{marginBottom: 28}}><h3 style={{marginBottom: 0}}>Пользователи</h3></Row>
           {localStorage.getItem('without_server') !== 'true' ?
             (<div>
