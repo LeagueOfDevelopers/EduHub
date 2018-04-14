@@ -71,12 +71,12 @@ namespace EduHubLibrary.Data
             modelBuilder.Entity<KeyDto>(e =>
             {
                 e.ForMySQLHasCollation("utf8_general_ci");
-                e.ToTable("Key");
+                e.ToTable("KeyData");
             });
             modelBuilder.Entity<GroupDto>(e =>
             {
                 e.ForMySQLHasCollation("utf8_general_ci");
-                e.ToTable("Group");
+                e.ToTable("GroupData");
             });
             modelBuilder.Entity<SanctionDto>(e =>
             {
@@ -105,4 +105,5 @@ namespace EduHubLibrary.Data
             });
         }
     }
+
 }
