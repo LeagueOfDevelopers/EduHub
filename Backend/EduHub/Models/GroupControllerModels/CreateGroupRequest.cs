@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using EduHub.Models.ValidationAttributes;
 using EduHubLibrary.Domain;
 
 namespace EduHub.Models
@@ -9,22 +10,25 @@ namespace EduHub.Models
     {
         /// <summary>Group title</summary>
         [Required]
+        [StringLength(50, MinimumLength = 3)]
         public string Title { get; set; }
 
         /// <summary>Group description</summary>
         [Required]
+        [StringLength(3000, MinimumLength = 20)]
         public string Description { get; set; }
 
         /// <summary>Tags for new group(needed for search)</summary>
         [Required]
+        [ListLength(3, 10)]
         public List<string> Tags { get; set; }
 
-        /// <summary>Should be >= 3</summary>
         [Required]
+        [Range(1, 200)]
         public int Size { get; set; }
 
-        /// <summary>Money paid by one user</summary>
         [Required]
+        [Range(0, long.MaxValue)]
         public double MoneyPerUser { get; set; }
 
         /// <summary>Type of new group</summary>

@@ -6,18 +6,20 @@ namespace EduHub.Models
     public class RegistrationRequest
     {
         [Required]
-        [StringLength(20, MinimumLength = 2)]
+        [StringLength(70, MinimumLength = 3)]
+        [RegularExpression(@"[a-zA-Zа-яА-Я\s]+")]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 6)]
+        [RegularExpression(@".+[@].+[.].+")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength = 6)]
+        [StringLength(50, MinimumLength = 8)]
         public string Password { get; set; }
 
-        [Required] public bool IsTeacher { get; set; }
+        [Required]
+        public bool IsTeacher { get; set; }
 
         public int InviteCode { get; set; }
     }

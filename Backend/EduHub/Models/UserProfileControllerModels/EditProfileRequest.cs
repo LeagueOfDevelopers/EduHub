@@ -1,28 +1,23 @@
 ﻿using EduHubLibrary.Domain.Tools;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using EduHub.Models.ValidationAttributes;
 
 namespace EduHub.Models.UserProfileControllerModels
 {
     public class EditProfileRequest
     {
-        public EditProfileRequest(string name, string aboutUser, Gender gender, string avatarLink, List<string> contacts, int birthYear)
-        {
-            Name = name;
-            AboutUser = aboutUser;
-            Gender = gender;
-            AvatarLink = avatarLink;
-            Contacts = contacts;
-            BirthYear = birthYear;
-        }
-
+        [StringLength(70, MinimumLength = 3)]
+        [RegularExpression(@"[a-zA-Zа-яА-Я\s]+")]
         public string Name { get; set; }
+        [StringLength(3000, MinimumLength = 20)]
         public string AboutUser { get; set; }
         public Gender Gender { get; set; }
         public string AvatarLink { get; set; }
+        [ListLength(0, 5, ErrorMessage = "contacts count must be <= 5")]
+        [ContactCheck]
         public List<string> Contacts { get; set; }
+        [BirthCheck(1900)]
         public int BirthYear { get; set; }
     }
 }
