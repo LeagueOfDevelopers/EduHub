@@ -31,8 +31,7 @@ namespace EduHubTests.FacadesTests
         [TestInitialize]
         public void Initialize()
         {
-            var emailSettings = new EmailSettings("", "", "", "", "", 4);
-            var emailSender = new EmailSender(emailSettings);
+            var emailSender = new Mock<IEmailSender>();
             var keysRepository = new InMemoryKeysRepository();
             var groupRepository = new InMemoryGroupRepository();
             var fileRepository = new InMemoryFileRepository();
@@ -42,7 +41,7 @@ namespace EduHubTests.FacadesTests
             _publisher = new Mock<IEventPublisher>();
             _userRepository = new InMemoryUserRepository();
             _sanctionRepository = new InMemorySanctionRepository();
-            _accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender);
+            _accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender.Object);
             _userFacade = new UserFacade(_userRepository, groupRepository, keysRepository, _publisher.Object);
             _adminId = _accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, adminKey.Value);
             _testUserId = _accountFacade.RegUser("Sasha", Credentials.FromRawData("smt@smt.ru", "2"), false);

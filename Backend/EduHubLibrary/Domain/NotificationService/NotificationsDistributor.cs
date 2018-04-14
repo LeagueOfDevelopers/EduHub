@@ -11,7 +11,7 @@ namespace EduHubLibrary.Domain.NotificationService
 {
     public class NotificationsDistributor : INotificationsDistributor
     {
-        public NotificationsDistributor(IGroupRepository groupRepository, IUserRepository userRepository, EmailSender sender)
+        public NotificationsDistributor(IGroupRepository groupRepository, IUserRepository userRepository, IEmailSender sender)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
@@ -66,6 +66,6 @@ namespace EduHubLibrary.Domain.NotificationService
 
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
-        private readonly EmailSender _sender;
+        private readonly IEmailSender _sender;
     }
 }

@@ -28,8 +28,7 @@ namespace EduHubTests
         [TestInitialize]
         public void Initialize()
         {
-            var emailSettings = new EmailSettings("", "", "", "", "", 4);
-            var emailSender = new EmailSender(emailSettings);
+            var emailSender = new Mock<IEmailSender>();
             var keysRepository = new InMemoryKeysRepository();
             var groupRepository = new InMemoryGroupRepository();
             _userRepository = new InMemoryUserRepository();
@@ -37,7 +36,7 @@ namespace EduHubTests
             _sanctionRepository = new InMemorySanctionRepository();
             var adminKey = new Key("adminEmail", KeyAppointment.BecomeModerator);
             keysRepository.AddKey(adminKey);
-            var accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender);
+            var accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender.Object);
 
             _publisher = new Mock<IEventPublisher>();
             _userEditFacade = new UserEditFacade(_userRepository, fileRepository, _sanctionRepository);

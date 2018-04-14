@@ -4,16 +4,17 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Mailing;
 using EnsureThat;
+using EduHubLibrary.Mailing.EmailModels;
 
 namespace EduHubLibrary.Facades
 {
     public class AccountFacade : IAccountFacade
     {
         private readonly IKeysRepository _keysRepository;
-        private readonly EmailSender _sender;
+        private readonly IEmailSender _sender;
         private readonly IUserRepository _userRepository;
 
-        public AccountFacade(IKeysRepository keysRepository, IUserRepository userRepository, EmailSender sender)
+        public AccountFacade(IKeysRepository keysRepository, IUserRepository userRepository, IEmailSender sender)
         {
             _keysRepository = keysRepository;
             _userRepository = userRepository;
@@ -29,10 +30,8 @@ namespace EduHubLibrary.Facades
 
             var user = new User(username, credentials, isTeacher, UserType.UnConfirmed);
             var key = new Key(user.Credentials.Email, KeyAppointment.ConfirmEmail);
-            var text = string.Format(EmailTemplates.ConfirmEmail, username, _sender.ConfirmAdress, key.Value);
-            var theme = EmailTemplates.ConfirmEmailTheme;
 
-            _sender.SendMessage(credentials.Email, text, theme, username);
+            _sender.SendMessage(credentials.Email, new UserConfirmationMessage(username), MessageThemes.UserConfirmation, username);
             _keysRepository.AddKey(key);
             _userRepository.Add(user);
             return user.Id;
@@ -75,8 +74,7 @@ namespace EduHubLibrary.Facades
             {
                 var key = new Key(email, KeyAppointment.BecomeAdmin);
                 _keysRepository.AddKey(key);
-                var text = string.Format(EmailTemplates.AdminInvitationEmail, key.Value);
-                _sender.SendMessage(email, text, EmailTemplates.AdminInvitationEmailTheme);
+                _sender.SendMessage(email, new AdminInvitationMessage(key.Value), MessageThemes.AdminInvitation);
             }
         }
 
@@ -106,9 +104,8 @@ namespace EduHubLibrary.Facades
             var username = _userRepository.GetUserByEmail(email).UserProfile.Name;
             var key = new Key(email, KeyAppointment.ChangePassword);
             _keysRepository.AddKey(key);
-
-            var text = string.Format(EmailTemplates.RestorePasswordEmail, username, key.Value);
-            _sender.SendMessage(email, text, EmailTemplates.RestorePasswordEmailTheme, username);
+            
+            _sender.SendMessage(email, new RestorePasswordMessage(username, key.Value), MessageThemes.RestorePassword, username);
         }
 
         public void SendTokenToModerator(string email)
@@ -118,8 +115,8 @@ namespace EduHubLibrary.Facades
 
             var key = new Key(email, KeyAppointment.BecomeModerator);
             _keysRepository.AddKey(key);
-            var text = string.Format(EmailTemplates.ModeratorInvitationEmail, key.Value);
-            _sender.SendMessage(email, text, EmailTemplates.ModeratorInvitationEmailTheme);
+
+            _sender.SendMessage(email, new ModeratorInvitationMessage(key.Value), MessageThemes.ModeratorInvitation);
         }
 
         private void CheckKey(Key key, params KeyAppointment[] possipleAppointments)

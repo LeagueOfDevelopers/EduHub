@@ -17,7 +17,7 @@ namespace EduHubTests
     [TestClass]
     public class UserFacadeTests
     {
-        private EmailSender _emailSender;
+        private Mock<IEmailSender> _emailSender;
         private IGroupRepository _groupRepository;
         private IKeysRepository _keysRepository;
         private ISanctionRepository _sanctionRepository;
@@ -32,8 +32,7 @@ namespace EduHubTests
             _groupRepository = new InMemoryGroupRepository();
             _sanctionRepository = new InMemorySanctionRepository();
             _publisher = new Mock<IEventPublisher>();
-            var emailSettings = new EmailSettings("", "", "", "", "", 4);
-            _emailSender = new EmailSender(emailSettings);
+            _emailSender = new Mock<IEmailSender>();
         }
 
         [TestMethod]
@@ -41,7 +40,7 @@ namespace EduHubTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository,
-                _userRepository, _emailSender);
+                _userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
             var publisher = new Mock<IEventPublisher>();
             var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
@@ -74,7 +73,7 @@ namespace EduHubTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository,
-                _userRepository, _emailSender);
+                _userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
 
             accountFacade.RegUser("Alena", new Credentials("email1", "password"), true);
@@ -92,7 +91,7 @@ namespace EduHubTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository,
-                _userRepository, _emailSender);
+                _userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
 
             var userId1 = accountFacade.RegUser("Alenka", new Credentials("email1", "password"), true);
@@ -117,7 +116,7 @@ namespace EduHubTests
             var publisher = new Mock<IEventPublisher>();
             var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(1, 100, 0, 1000), publisher.Object);
-            var accountFacade = new AccountFacade(_keysRepository,_userRepository, _emailSender);
+            var accountFacade = new AccountFacade(_keysRepository,_userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
 
             var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
@@ -145,7 +144,7 @@ namespace EduHubTests
             var publisher = new Mock<IEventPublisher>();
             var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(1, 100, 0, 1000), publisher.Object);
-            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
 
             var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
@@ -174,7 +173,7 @@ namespace EduHubTests
             var publisher = new Mock<IEventPublisher>();
             var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(1, 100, 0, 1000), publisher.Object);
-            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender);
+            var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
 
             var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
@@ -198,7 +197,7 @@ namespace EduHubTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository,
-                _userRepository, _emailSender);
+                _userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
 
             //Act
@@ -214,7 +213,7 @@ namespace EduHubTests
             var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(1, 100, 0, 1000), publisher.Object);
             var accountFacade = new AccountFacade(_keysRepository,
-                _userRepository, _emailSender);
+                _userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
 
             var creatorId =
@@ -242,7 +241,7 @@ namespace EduHubTests
             var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(1, 100, 0, 1000), publisher.Object);
             var accountFacade = new AccountFacade(_keysRepository,
-                _userRepository, _emailSender);
+                _userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
 
             var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);
@@ -266,7 +265,7 @@ namespace EduHubTests
             var groupFacade = new GroupFacade(_groupRepository, _userRepository, _sanctionRepository,
                 new GroupSettings(1, 100, 0, 1000), publisher.Object);
             var accountFacade = new AccountFacade(_keysRepository,
-                _userRepository, _emailSender);
+                _userRepository, _emailSender.Object);
             var userFacade = new UserFacade(_userRepository, _groupRepository, _keysRepository, _publisher.Object);
 
             var creatorId = accountFacade.RegUser("Creator", new Credentials("email1", "password"), false);

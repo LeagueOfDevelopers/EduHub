@@ -29,12 +29,11 @@ namespace EduHubTests
             _groupRepository = new InMemoryGroupRepository();
             var publisher = new Mock<IEventPublisher>();
             var groupSettings = new GroupSettings(3, 100, 100, 1000);
-            var emailSettings = new EmailSettings("", "", "", "", "", 3);
-            var sender = new EmailSender(emailSettings);
+            var sender = new Mock<IEmailSender>();
             var groupFacade = new GroupFacade(_groupRepository, userRepository, sanctionRepository, groupSettings, 
                 publisher.Object);
             var accountFacade = new AccountFacade(keyRepository, userRepository,
-                sender);
+                sender.Object);
 
             _creatorId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
             _testGroupId = groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"c#"}, "Interesting",

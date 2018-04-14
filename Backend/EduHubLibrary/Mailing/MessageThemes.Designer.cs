@@ -22,14 +22,14 @@ namespace EduHubLibrary.Mailing {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EmailTemplates {
+    internal class MessageThemes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal EmailTemplates() {
+        internal MessageThemes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EduHubLibrary.Mailing {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EduHubLibrary.Mailing.EmailTemplates", typeof(EmailTemplates).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EduHubLibrary.Mailing.MessageThemes", typeof(MessageThemes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,76 +61,38 @@ namespace EduHubLibrary.Mailing {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Вы приглашены на роль главного администратора сайта EduHub. Для принятия пришлашения используйте код {0}.
-        /// </summary>
-        internal static string AdminInvitationEmail {
-            get {
-                return ResourceManager.GetString("AdminInvitationEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Приглашение на роль администратора.
         /// </summary>
-        internal static string AdminInvitationEmailTheme {
+        internal static string AdminInvitation {
             get {
-                return ResourceManager.GetString("AdminInvitationEmailTheme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Приветствуем вас на сайте EduHub, {0}!
-        ///
-        ///Для подтверждения регистрации на сайте перейдите по ссылке - {1} /{2}.
-        /// </summary>
-        internal static string ConfirmEmail {
-            get {
-                return ResourceManager.GetString("ConfirmEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Регистрация на EduHub.
-        /// </summary>
-        internal static string ConfirmEmailTheme {
-            get {
-                return ResourceManager.GetString("ConfirmEmailTheme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Вы приглашены на роль модератора сайта EduHub. Для принятия пришлашения используйте код {0}.
-        /// </summary>
-        internal static string ModeratorInvitationEmail {
-            get {
-                return ResourceManager.GetString("ModeratorInvitationEmail", resourceCulture);
+                return ResourceManager.GetString("AdminInvitation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Приглашение на роль модератора.
         /// </summary>
-        internal static string ModeratorInvitationEmailTheme {
+        internal static string ModeratorInvitation {
             get {
-                return ResourceManager.GetString("ModeratorInvitationEmailTheme", resourceCulture);
+                return ResourceManager.GetString("ModeratorInvitation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на {0}, для восстановления пароля на сайте EduHub используйте код {1}.
+        ///   Ищет локализованную строку, похожую на Изменение пароля.
         /// </summary>
-        internal static string RestorePasswordEmail {
+        internal static string RestorePassword {
             get {
-                return ResourceManager.GetString("RestorePasswordEmail", resourceCulture);
+                return ResourceManager.GetString("RestorePassword", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Восстановление пароля.
+        ///   Ищет локализованную строку, похожую на Подтверждение почты.
         /// </summary>
-        internal static string RestorePasswordEmailTheme {
+        internal static string UserConfirmation {
             get {
-                return ResourceManager.GetString("RestorePasswordEmailTheme", resourceCulture);
+                return ResourceManager.GetString("UserConfirmation", resourceCulture);
             }
         }
     }

@@ -14,6 +14,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.6" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.0.1" />
+    <PackageReference Include="RazorLight" Version="2.0.0-beta1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,18 +28,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Mailing\EmailTemplates.Designer.cs">
+    <Compile Update="Mailing\MessageThemes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>EmailTemplates.resx</DependentUpon>
+      <DependentUpon>MessageThemes.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Mailing\EmailTemplates.resx">
+    <EmbeddedResource Update="Mailing\MessageThemes.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EmailTemplates.Designer.cs</LastGenOutput>
+      <LastGenOutput>MessageThemes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="EmailTemplates\AdminInvitationMessage.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

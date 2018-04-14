@@ -4,7 +4,7 @@ using MimeKit;
 
 namespace EduHubLibrary.Mailing
 {
-    public class EmailSender
+    public class EmailSender : IEmailSender
     {
         private readonly EmailSettings _settings;
 
@@ -12,10 +12,8 @@ namespace EduHubLibrary.Mailing
         {
             _settings = settings;
         }
-
-        public string ConfirmAdress => _settings.ConfirmAdress;
-
-        public void SendMessage(string email, string text, string theme, string username = "")
+        
+        public void SendMessage(string email, object messageContent, string theme, string username = "")
         {
             /*
             var message = new MimeMessage();
@@ -23,9 +21,9 @@ namespace EduHubLibrary.Mailing
             message.To.Add(new MailboxAddress(username, email));
             message.Subject = theme;
 
-            message.Body = new TextPart("plain")
+            message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = text
+                Text = EmailDescriber.RenderPartialToString(messageContent)
             };
             
             using (var client = new SmtpClient())
