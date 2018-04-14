@@ -21,11 +21,11 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Find tag among existing tags
         /// </summary>
-        [HttpPost]
+        [HttpGet]
         [SwaggerResponse(200, Type = typeof(TagModel))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [Route("search")]
-        public IActionResult FindTag([FromBody] string tag)
+        public IActionResult FindTag([FromQuery] string tag)
         {
             var foundTags = _tagsManager.FindTag(tag);
             var response = new List<TagModel>();
