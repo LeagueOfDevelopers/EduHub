@@ -65,17 +65,19 @@ namespace EduHub
                     {
                         context.Database.EnsureDeleted();
                     }
-                    context.Database.EnsureCreated();
-                    var dbName = dbContext.Split("database=")[1].Split(";")[0];
-                    context.Database.ExecuteSqlCommand(
-                        "ALTER DATABASE " + dbName + " CHARACTER SET utf8 COLLATE utf8_general_ci;");
-                    var modelNames = context.Model.GetEntityTypes();
-                    foreach (var modelname in modelNames)
-                    {
-                        var mapping = context.Model.FindEntityType(modelname.Name).Relational();
-                        var tableName = mapping.TableName;
+                    if (context.Database.EnsureCreated()) { 
+                        var dbName = dbContext.Split("database=")[1].Split(";")[0];
                         context.Database.ExecuteSqlCommand(
-                            "alter table " + tableName.ToLower() + " convert to character set utf8 collate utf8_unicode_ci;");
+                            "ALTER DATABASE " + dbName + " CHARACTER SET utf8 COLLATE utf8_general_ci;");
+                        var modelNames = context.Model.GetEntityTypes();
+                        foreach (var modelname in modelNames)
+                        {
+                            var mapping = context.Model.FindEntityType(modelname.Name).Relational();
+                            var tableName = mapping.TableName;
+                            context.Database.ExecuteSqlCommand(
+                                "alter table " + tableName.ToLower()
+                                               + " convert to character set utf8 collate utf8_unicode_ci;");
+                        }
                     }
                     context.Database.Migrate();
                 }
