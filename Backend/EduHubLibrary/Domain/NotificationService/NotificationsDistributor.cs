@@ -47,6 +47,7 @@ namespace EduHubLibrary.Domain.NotificationService
 
         private void NotifySubscriber(int userId, INotificationInfo notificationInfo)
         {
+            /*
             var user = _userRepository.GetUserById(userId);
             var settings = user.NotificationsSettings.Settings;
 
@@ -59,13 +60,14 @@ namespace EduHubLibrary.Domain.NotificationService
             {
                 user.AddNotification(new Notification(notificationInfo));
             }
-
+            
             if (doesSubscribedOnMail)
             {
                 var messageContent = MessageMapper.MapNotification(notificationInfo, user.UserProfile.Name);
                 //TODO: themes for messages
                 _sender.SendMessage(user.UserProfile.Email, messageContent, "");
             }
+            */
         }
 
         private readonly IGroupRepository _groupRepository;
