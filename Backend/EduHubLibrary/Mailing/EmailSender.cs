@@ -23,7 +23,7 @@ namespace EduHubLibrary.Mailing
 
             message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = EmailDescriber.RenderPartialToString(messageContent)
+                Text = MessageRenderer.RenderPartialToString(messageContent)
             };
             
             using (var client = new SmtpClient())

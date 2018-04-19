@@ -167,7 +167,7 @@ namespace EduHubLibrary.Facades
             return result.OrderBy(u => u.UserProfile.Name.Length);
         }
 
-        public IEnumerable<Event> GetNotifies(int userId)
+        public IEnumerable<Notification> GetNotifies(int userId)
         {
             return _userRepository.GetUserById(userId).Notifications;
         }

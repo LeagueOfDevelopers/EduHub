@@ -8,6 +8,7 @@ using EduHubLibrary.Domain.NotificationService.UserSettings;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Infrastructure;
 using EnsureThat;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHubLibrary.Facades
 {
@@ -158,7 +159,7 @@ namespace EduHubLibrary.Facades
             _userRepository.Update(currentUser);
         }
 
-        public void ConfigureNotificationsSettings(int userId, EventType configuringNotification, NotificationValue newValue)
+        public void ConfigureNotificationsSettings(int userId, NotificationType configuringNotification, NotificationValue newValue)
         {
             Ensure.Any.IsNotNull(configuringNotification);
             Ensure.Any.IsNotNull(newValue);

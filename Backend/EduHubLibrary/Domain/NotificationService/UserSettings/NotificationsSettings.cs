@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EduHubLibrary.Domain.NotificationService.Notifications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,34 +10,34 @@ namespace EduHubLibrary.Domain.NotificationService.UserSettings
     {
         public NotificationsSettings()
         {
-            Settings = new Dictionary<EventType, NotificationValue>
+            Settings = new Dictionary<NotificationType, NotificationValue>
             {
-                { EventType.CourseFinished, NotificationValue.Everywhere },
-                { EventType.CurriculumAccepted, NotificationValue.Everywhere },
-                { EventType.CurriculumDeclined, NotificationValue.Everywhere },
-                { EventType.CurriculumSuggested, NotificationValue.Everywhere },
-                { EventType.GroupIsFormed, NotificationValue.Everywhere },
-                { EventType.InvitationAccepted, NotificationValue.Everywhere },
-                { EventType.InvitationDeclined, NotificationValue.Everywhere },
-                { EventType.InvitationReceived, NotificationValue.Everywhere },
-                { EventType.MemberLeft, NotificationValue.Everywhere },
-                { EventType.NewCreator, NotificationValue.Everywhere },
-                { EventType.NewMember, NotificationValue.Everywhere },
-                { EventType.ReviewReceived, NotificationValue.Everywhere },
-                { EventType.SanctionsApplied, NotificationValue.Everywhere },
-                { EventType.TeacherFound, NotificationValue.Everywhere }
+                { NotificationType.CourseFinished, NotificationValue.Everywhere },
+                { NotificationType.CurriculumAccepted, NotificationValue.Everywhere },
+                { NotificationType.CurriculumDeclined, NotificationValue.Everywhere },
+                { NotificationType.CurriculumSuggested, NotificationValue.Everywhere },
+                { NotificationType.GroupIsFormed, NotificationValue.Everywhere },
+                { NotificationType.InvitationAccepted, NotificationValue.Everywhere },
+                { NotificationType.InvitationDeclined, NotificationValue.Everywhere },
+                { NotificationType.InvitationReceived, NotificationValue.Everywhere },
+                { NotificationType.MemberLeft, NotificationValue.Everywhere },
+                { NotificationType.NewCreator, NotificationValue.Everywhere },
+                { NotificationType.NewMember, NotificationValue.Everywhere },
+                { NotificationType.ReviewReceived, NotificationValue.Everywhere },
+                { NotificationType.SanctionsAppliedToUser, NotificationValue.Everywhere },
+                { NotificationType.TeacherFound, NotificationValue.Everywhere }
             };
         }
 
-        internal void ConfigureSettings(EventType configuringEvent, NotificationValue newValue)
+        internal void ConfigureSettings(NotificationType configuringNotification, NotificationValue newValue)
         {
-            var newSettings = new Dictionary<EventType, NotificationValue>(Settings.ToDictionary(kv => kv.Key, kv => kv.Value))
+            var newSettings = new Dictionary<NotificationType, NotificationValue>(Settings.ToDictionary(kv => kv.Key, kv => kv.Value))
             {
-                [configuringEvent] = newValue
+                [configuringNotification] = newValue
             };
             Settings = newSettings;
         }
 
-        public IReadOnlyDictionary<EventType, NotificationValue> Settings;
+        public IReadOnlyDictionary<NotificationType, NotificationValue> Settings;
     }
 }

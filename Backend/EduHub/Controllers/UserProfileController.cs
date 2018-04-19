@@ -252,7 +252,7 @@ namespace EduHub.Controllers
         public IActionResult ConfigureNotifications([FromBody] ConfigureNotificationsRequest request)
         {
             var userId = Request.GetUserId();
-            _userEditFacade.ConfigureNotificationsSettings(userId, request.ConfiguringEvent, request.NewValue);
+            _userEditFacade.ConfigureNotificationsSettings(userId, request.ConfiguringNotification, request.NewValue);
             return Ok();
         }
 

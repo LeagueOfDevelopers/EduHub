@@ -2,6 +2,7 @@
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.NotificationService.UserSettings;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHubLibrary.Facades
 {
@@ -17,6 +18,6 @@ namespace EduHubLibrary.Facades
         void StopToBeTeacher(int userId);
         void EditProfile(int userId, string newName, string newAboutUser, Gender newGender, string newAvatarLink,
             List<string> newContactData, int newYear);
-        void ConfigureNotificationsSettings(int userId, EventType configuringNotification, NotificationValue newValue);
+        void ConfigureNotificationsSettings(int userId, NotificationType configuringNotification, NotificationValue newValue);
     }
 }

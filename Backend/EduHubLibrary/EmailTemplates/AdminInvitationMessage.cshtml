@@ -1,7 +1,7 @@
 ﻿@using System
 @using RazorLight
-@inherits TemplatePage<EduHubLibrary.Mailing.EmailModels.AdminInvitationMessage>
-@model EduHubLibrary.Mailing.EmailModels.AdminInvitationMessage
+@inherits TemplatePage<EduHubLibrary.Mailing.MessageModels.AdminInvitationMessage>
+@model EduHubLibrary.Mailing.MessageModels.AdminInvitationMessage
 
 <!doctype html>
 <html>
@@ -111,8 +111,8 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <h2 style="color: #222222; font-family: sans-serif; font-weight: 400; line-height: 1.4; margin: 0; Margin-bottom: 15px; font-size: 20px;">Здравствуйте! Вы успешно зарегистрированы!</h2>
-                                            <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; Margin: 0; Margin-bottom: 10px;">Теперь вам осталось подтвердить свой почтовый адрес.</p>
+                                            <h2 style="color: #222222; font-family: sans-serif; font-weight: 400; line-height: 1.4; margin: 0; Margin-bottom: 15px; font-size: 20px;">Здравствуйте! Вы приглашены на роль администратора сайта eduhub.ru!</h2>
+                                            <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; Margin: 0; Margin-bottom: 10px;">Для дальнейшей работы вам необходимо подтвердить свой почтовый адрес.</p>
                                             <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; Margin: 0; Margin-bottom: 20px;">Чтобы сделать это, перейдите по ссылке ниже или используйте код @Model.InviteCode :</p>
                                             <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; width: 100%; box-sizing: border-box; min-width: 100% !important;" width="100%">
                                                 <tr>

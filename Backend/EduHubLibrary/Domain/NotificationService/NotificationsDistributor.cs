@@ -6,6 +6,8 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Mailing;
+using EduHubLibrary.Domain.Events;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
@@ -18,49 +20,51 @@ namespace EduHubLibrary.Domain.NotificationService
             _sender = sender;
         }
 
-        public void NotifyAdmins(IEventInfo eventInfo)
+        public void NotifyAdmins(INotificationInfo notificationInfo)
         {
             _userRepository.GetAll().Where(u => u.Type.Equals(UserType.Admin)).ToList()
-                .ForEach(u => NotifySubscriber(u.Id, eventInfo));
+                .ForEach(u => NotifySubscriber(u.Id, notificationInfo));
         }
 
-        public void NotifyGroup(int groupId, IEventInfo eventInfo)
+        public void NotifyGroup(int groupId, INotificationInfo notificationInfo)
         {
             _groupRepository.GetGroupById(groupId).Members.ToList().ForEach
-                (m => NotifySubscriber(m.UserId, eventInfo));
+                (m => NotifySubscriber(m.UserId, notificationInfo));
         }
 
-        public void NotifyPerson(int userId, IEventInfo eventInfo)
+        public void NotifyPerson(int userId, INotificationInfo notificationInfo)
         {
-            NotifySubscriber(userId, eventInfo);
+            NotifySubscriber(userId, notificationInfo);
         }
 
-        public void NotifyTeacher(int groupId, IEventInfo eventInfo)
+        public void NotifyTeacher(int groupId, INotificationInfo notificationInfo)
         {
             var teacherId = _groupRepository.GetGroupById(groupId).Members.Find
                 (m => m.MemberRole.Equals(MemberRole.Teacher)).UserId;
 
-            NotifySubscriber(teacherId, eventInfo);
+            NotifySubscriber(teacherId, notificationInfo);
         }
 
-        private void NotifySubscriber(int userId, IEventInfo eventInfo)
+        private void NotifySubscriber(int userId, INotificationInfo notificationInfo)
         {
             var user = _userRepository.GetUserById(userId);
             var settings = user.NotificationsSettings.Settings;
 
-            var doesSubscribedOnSite = settings[eventInfo.GetEventType()].Equals(NotificationValue.OnSite) ||
-                settings[eventInfo.GetEventType()].Equals(NotificationValue.Everywhere);
-            var doesSubscribedOnMail = settings[eventInfo.GetEventType()].Equals(NotificationValue.ToMail) ||
-                settings[eventInfo.GetEventType()].Equals(NotificationValue.Everywhere);
+            var doesSubscribedOnSite = settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.OnSite) ||
+                settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.Everywhere);
+            var doesSubscribedOnMail = settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.ToMail) ||
+                settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.Everywhere);
 
             if (doesSubscribedOnSite)
             {
-                user.AddNotification(new Event(eventInfo));
+                user.AddNotification(new Notification(notificationInfo));
             }
 
             if (doesSubscribedOnMail)
             {
-                //emails' sending will be here
+                var messageContent = MessageMapper.MapNotification(notificationInfo, user.UserProfile.Name);
+                //TODO: themes for messages
+                _sender.SendMessage(user.UserProfile.Email, messageContent, "");
             }
         }
 

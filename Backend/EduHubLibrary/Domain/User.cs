@@ -8,6 +8,7 @@ using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.NotificationService.UserSettings;
 using EduHubLibrary.Domain.Events;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 
 [assembly: InternalsVisibleTo("EventBusTests")]
 
@@ -26,7 +27,7 @@ namespace EduHubLibrary.Domain
             IsActive = true;
             Invitations = new List<Invitation>();
             Notifies = new List<string>();
-            Notifications = new List<Event>();
+            Notifications = new List<Notification>();
             NotificationsSettings = new NotificationsSettings();
         }
 
@@ -68,7 +69,7 @@ namespace EduHubLibrary.Domain
         public int Id { get; internal set; }
         public List<Invitation> Invitations { get; }
         public List<string> Notifies { get; }
-        public List<Event> Notifications { get; }
+        public List<Notification> Notifications { get; }
         public NotificationsSettings NotificationsSettings { get; }
 
         public void ConfigureTeacherProfile(List<string> skills)
@@ -126,7 +127,7 @@ namespace EduHubLibrary.Domain
             return Ensure.Any.IsNotNull(Invitations.Find(current => current.Id == invitationId));
         }
 
-        internal void AddNotification(Event notification)
+        internal void AddNotification(Notification notification)
         {
             Ensure.Any.IsNotNull(notification);
             Notifications.Add(notification);
@@ -138,9 +139,9 @@ namespace EduHubLibrary.Domain
             Credentials = newCredentials;
         }
 
-        internal void ConfigureNotificationsSettings(EventType configuringEvent, NotificationValue newValue)
+        internal void ConfigureNotificationsSettings(NotificationType configuringEvent, NotificationValue newValue)
         {
-                NotificationsSettings.ConfigureSettings(configuringEvent, newValue);
+            NotificationsSettings.ConfigureSettings(configuringEvent, newValue);
         }
     }
 }

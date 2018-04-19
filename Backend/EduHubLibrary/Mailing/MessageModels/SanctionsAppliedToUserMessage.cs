@@ -5,17 +5,17 @@ using System.Text;
 
 namespace EduHubLibrary.Mailing.MessageModels
 {
-    public class SanctionsAppliedMessage
+    public class SanctionsAppliedToUserMessage
     {
-        public SanctionsAppliedMessage(string brokenRule, SanctionType sanctionType, bool isReceiverAdmin)
+        public SanctionsAppliedToUserMessage(string brokenRule, SanctionType sanctionType, string receiverName)
         {
             BrokenRule = brokenRule;
             SanctionType = sanctionType;
-            IsReceiverAdmin = isReceiverAdmin;
+            ReceiverName = receiverName;
         }
 
         public string BrokenRule { get; }
         public SanctionType SanctionType { get; }
-        public bool IsReceiverAdmin { get; }
+        public string ReceiverName { get; }
     }
 }

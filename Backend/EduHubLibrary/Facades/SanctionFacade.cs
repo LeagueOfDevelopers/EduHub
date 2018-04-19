@@ -54,10 +54,11 @@ namespace EduHubLibrary.Facades
                                _userRepository.GetUserById(moderatorId).Type.Equals(UserType.Admin),
                 nameof(AddSanction), opt => opt.WithException(new NotEnoughPermissionsException(moderatorId)));
 
+            var suspectedUser = _userRepository.GetUserById(userId);
             var sanction = new Sanction(brokenRule, userId, moderatorId, type, expirationDate);
             _sanctionRepository.Add(sanction);
 
-            _publisher.PublishEvent(new SanctionsAppliedEvent(brokenRule, type, userId));
+            _publisher.PublishEvent(new SanctionsAppliedEvent(brokenRule, type, suspectedUser.UserProfile.Name, userId));
 
             return sanction.Id;
         }

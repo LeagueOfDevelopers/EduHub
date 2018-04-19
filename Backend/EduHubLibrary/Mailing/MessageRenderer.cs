@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EduHubLibrary.Mailing
 {
-    public class EmailDescriber
+    public class MessageRenderer
     {
         public static string RenderPartialToString(object model)
         {

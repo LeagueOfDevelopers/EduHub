@@ -1,4 +1,5 @@
 ﻿using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 using EduHubLibrary.Domain.NotificationService.UserSettings;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,13 @@ namespace EduHub.Models.UserProfileControllerModels
 {
     public class ConfigureNotificationsRequest
     {
-        public ConfigureNotificationsRequest(EventType configuringEvent, NotificationValue newValue)
+        public ConfigureNotificationsRequest(NotificationType configuringNotification, NotificationValue newValue)
         {
-            ConfiguringEvent = configuringEvent;
+            ConfiguringNotification = configuringNotification;
             NewValue = newValue;
         }
 
-        public EventType ConfiguringEvent { get; set; }
+        public NotificationType ConfiguringNotification { get; set; }
         public NotificationValue NewValue { get; set; }
     }
 }

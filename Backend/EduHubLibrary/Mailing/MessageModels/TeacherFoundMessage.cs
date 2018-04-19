@@ -6,13 +6,15 @@ namespace EduHubLibrary.Mailing.MessageModels
 {
     public class TeacherFoundMessage
     {
-        public TeacherFoundMessage(string teacherName, string groupTitle)
+        public TeacherFoundMessage(string teacherName, string groupTitle, string receiverName)
         {
             TeacherName = teacherName;
             GroupTitle = groupTitle;
+            ReceiverName = receiverName;
         }
 
         public string TeacherName { get; }
         public string GroupTitle { get; }
+        public string ReceiverName { get; }
     }
 }

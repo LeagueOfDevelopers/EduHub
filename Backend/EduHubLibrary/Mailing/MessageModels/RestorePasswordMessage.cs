@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EduHubLibrary.Mailing.EmailModels
+namespace EduHubLibrary.Mailing.MessageModels
 {
     public class RestorePasswordMessage
     {

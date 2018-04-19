@@ -7,15 +7,17 @@ namespace EduHubLibrary.Domain.Events
 {
     public class SanctionsAppliedEvent : EventInfoBase
     {
-        public SanctionsAppliedEvent(string brokenRule, SanctionType sanctionType, int userId)
+        public SanctionsAppliedEvent(string brokenRule, SanctionType sanctionType, string username, int userId)
         {
             BrokenRule = brokenRule;
             SanctionType = sanctionType;
+            Username = username;
             UserId = userId;
         }
 
         public string BrokenRule { get; }
         public SanctionType SanctionType { get; }
+        public string Username { get; }
         public int UserId { get; }
 
         public override EventType GetEventType()
