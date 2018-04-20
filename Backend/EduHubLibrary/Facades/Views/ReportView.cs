@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EduHubLibrary.Domain.NotificationService.Notifications
+namespace EduHubLibrary.Facades.Views
 {
-    public class ReportMessageNotification : INotificationInfo
+    public class ReportView
     {
-        public ReportMessageNotification(string senderName, string suspectedName, string reason, string description)
+        public ReportView(string senderName, string suspectedName, string reason, string description)
         {
             SenderName = senderName;
             SuspectedName = suspectedName;
@@ -18,10 +18,5 @@ namespace EduHubLibrary.Domain.NotificationService.Notifications
         public string SuspectedName { get; }
         public string Reason { get; }
         public string Description { get; }
-
-        public NotificationType GetNotificationType()
-        {
-            return NotificationType.ReportMessage;
-        }
     }
 }

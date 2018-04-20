@@ -1,9 +1,13 @@
 ﻿using EduHub.Extensions;
+using EduHub.Models.AdminControllerModels;
+using EduHub.Models.Tools;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EduHub.Controllers
 {
@@ -61,12 +65,16 @@ namespace EduHub.Controllers
 
         [HttpGet]
         [Route("reports")]
-        [SwaggerResponse(200, Type = typeof(Event))]
+        [SwaggerResponse(200, Type = typeof(ReportModel))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult GetAllReports()
         {
-            var response = _reportFacade.GetAll();
+            var reports = new List<ReportModel>();
+            _reportFacade.GetAll().ToList().ForEach(r => reports.Add(new ReportModel(r.SenderName, 
+                r.SuspectedName, r.Reason, r.Description)));
+            var response = new AllReportsResponse(reports);
+
             return Ok(response);
         }
     }

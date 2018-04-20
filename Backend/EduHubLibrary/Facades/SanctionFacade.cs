@@ -53,7 +53,6 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(_userRepository.GetUserById(moderatorId).Type.Equals(UserType.Moderator) ||
                                _userRepository.GetUserById(moderatorId).Type.Equals(UserType.Admin),
                 nameof(AddSanction), opt => opt.WithException(new NotEnoughPermissionsException(moderatorId)));
-
             var suspectedUser = _userRepository.GetUserById(userId);
             var sanction = new Sanction(brokenRule, userId, moderatorId, type, expirationDate);
             _sanctionRepository.Add(sanction);

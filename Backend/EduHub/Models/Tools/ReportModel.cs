@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace EduHubLibrary.Domain.NotificationService.Notifications
+namespace EduHub.Models.Tools
 {
-    public class ReportMessageNotification : INotificationInfo
+    public class ReportModel
     {
-        public ReportMessageNotification(string senderName, string suspectedName, string reason, string description)
+        public ReportModel(string senderName, string suspectedName, string reason, string description)
         {
             SenderName = senderName;
             SuspectedName = suspectedName;
@@ -18,10 +19,5 @@ namespace EduHubLibrary.Domain.NotificationService.Notifications
         public string SuspectedName { get; }
         public string Reason { get; }
         public string Description { get; }
-
-        public NotificationType GetNotificationType()
-        {
-            return NotificationType.ReportMessage;
-        }
     }
 }

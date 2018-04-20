@@ -17,7 +17,7 @@ namespace EduHubLibrary.Domain.Consumers
 
         public void Consume(ReportMessageEvent @event)
         {
-            _distributor.NotifyAdmins(new ReportMessageNotification(@event.SenderName, @event.SuspectedName, @event.BrokenRule));
+            _distributor.NotifyAdmins(new ReportMessageNotification(@event.SenderName, @event.SuspectedName, @event.Reason, @event.Description));
 
             _eventRepository.AddEvent(new Event(@event));
         }

@@ -5,6 +5,8 @@ using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Events;
 using System.Linq;
+using EduHubLibrary.Facades.Views;
+using Newtonsoft.Json;
 
 namespace EduHubLibrary.Facades
 {
@@ -17,16 +19,24 @@ namespace EduHubLibrary.Facades
             _publisher = publisher;
         }
 
-        public IEnumerable<Event> GetAll()
+        public IEnumerable<ReportView> GetAll()
         {
-            return _eventRepository.GetAllEvents().Where(e => e.EventType.Equals(EventType.ReportMessage));
+            var reportsEvents = _eventRepository.GetAllEvents().Where(e => e.EventType.Equals(EventType.ReportMessage));
+            var reports = new List<ReportView>();
+            reportsEvents.ToList().ForEach(r =>
+            {
+                var report = JsonConvert.DeserializeObject<ReportMessageEvent>(r.EventInfo);
+                reports.Add(new ReportView(report.SenderName, report.SuspectedName, report.Reason, report.Description));
+            });
+
+            return reports;
         }
 
-        public void Report(int senderId, int suspectedId, string brokenRule)
+        public void Report(int senderId, int suspectedId, string reason, string description)
         {
             var sender = _userRepository.GetUserById(senderId);
             var suspected = _userRepository.GetUserById(suspectedId);
-            _publisher.PublishEvent(new ReportMessageEvent(sender.UserProfile.Name, suspected.UserProfile.Name, brokenRule));
+            _publisher.PublishEvent(new ReportMessageEvent(sender.UserProfile.Name, suspected.UserProfile.Name, reason, description));
         }
 
         private readonly IUserRepository _userRepository;

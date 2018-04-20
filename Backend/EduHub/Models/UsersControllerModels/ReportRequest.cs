@@ -7,11 +7,13 @@ namespace EduHub.Models.UsersControllerModels
 {
     public class ReportRequest
     {
-        public ReportRequest(string brokenRule)
+        public ReportRequest(string reason, string description)
         {
-            BrokenRule = brokenRule;
+            Reason = reason;
+            Description = description;
         }
-        
-        public string BrokenRule { get; set; }
+
+        public string Reason { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -73,7 +73,7 @@ namespace EduHubLibrary.Mailing
 
         private ReportMessage Map(ReportMessageNotification notification, string receiverName)
         {
-            return new ReportMessage(notification.SenderName, notification.SuspectedName, notification.BrokenRule, receiverName);
+            return new ReportMessage(notification.SenderName, notification.SuspectedName, notification.Reason, notification.Description, receiverName);
         }
 
         private ReviewReceivedMessage Map(ReviewReceivedNotification notification, string receiverName)

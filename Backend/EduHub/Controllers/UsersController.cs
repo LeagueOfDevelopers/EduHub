@@ -93,7 +93,7 @@ namespace EduHub.Controllers
         public IActionResult Report([FromBody] ReportRequest request, [FromRoute] int suspectedId)
         {
             var userId = Request.GetUserId();
-            _reportFacade.Report(userId, suspectedId, request.BrokenRule);
+            _reportFacade.Report(userId, suspectedId, request.Reason, request.Description);
             return Ok();
         }
     }

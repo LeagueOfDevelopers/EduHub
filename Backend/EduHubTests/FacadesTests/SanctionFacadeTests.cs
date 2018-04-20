@@ -152,7 +152,7 @@ namespace EduHubTests.FacadesTests
                 SanctionType.NotAllowToEditProfile, DateTimeOffset.Now.AddMilliseconds(1));
 
             //Act
-            Thread.Sleep(2);
+            Thread.Sleep(4);
 
             //Assert
             Assert.AreEqual(false, sanctionFacade.GetAll().ToList()[0].IsActive);
