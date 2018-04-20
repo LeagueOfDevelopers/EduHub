@@ -4,17 +4,15 @@ namespace EduHub.Models.NotificationsModels
 {
     public class ReviewReceivedResponse
     {
-        public ReviewReceivedResponse(string groupTitle, Guid groupId, string reviewerName, Guid reviewId)
+        public ReviewReceivedResponse(string groupTitle, string reviewerName, string reviewType)
         {
             GroupTitle = groupTitle;
-            GroupId = groupId;
             ReviewerName = reviewerName;
-            ReviewId = reviewId;
+            ReviewType = reviewType;
         }
 
         public string GroupTitle { get; }
-        public Guid GroupId { get; }
         public string ReviewerName { get; }
-        public Guid ReviewId { get; }
+        public string ReviewType { get; }
     }
 }

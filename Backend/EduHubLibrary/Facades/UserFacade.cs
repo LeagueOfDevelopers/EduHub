@@ -185,7 +185,6 @@ namespace EduHubLibrary.Facades
                     t.UserProfile.Name,
                     t.UserProfile.IsTeacher,
                     t.Id,
-                    t.UserProfile.Email,
                     t.UserProfile.AvatarLink,
                     t.IsActive
                 )));

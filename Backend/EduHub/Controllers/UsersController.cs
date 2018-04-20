@@ -76,8 +76,7 @@ namespace EduHub.Controllers
             var result = _userFacade.FindUsersForInvite(request.Username, request.GroupId);
             var items = new List<MinUserForInvitationItem>();
             result.ToList().ForEach(res => items.Add(
-                new MinUserForInvitationItem(res.Invited, res.Username, res.IsTeacher,
-                    res.Id, res.Email, res.AvatarLink)
+                new MinUserForInvitationItem(res.Invited, res.Username, res.IsTeacher, res.Id, res.AvatarLink)
             ));
             var response = new MinUserForInvitationResponse(items);
             return Ok(response);

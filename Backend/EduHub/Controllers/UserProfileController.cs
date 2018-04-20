@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using EduHub.Models.UserProfileControllerModels;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.NotificationService.UserSettings;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHub.Controllers
 {
@@ -262,7 +263,7 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpGet]
         [Route("notifications/settings")]
-        [SwaggerResponse(200, Type = typeof(IReadOnlyDictionary<EventType, NotificationValue>))]
+        [SwaggerResponse(200, Type = typeof(IReadOnlyDictionary<NotificationType, NotificationValue>))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetNotificationsSettings()
@@ -323,7 +324,7 @@ namespace EduHub.Controllers
             var sanctions = _sanctionFacade.GetAllActiveOfUser(userId).ToList();
         
             ProfileResponse response;
-            var userProfile = new UserProfileModel(user.UserProfile.Name, user.UserProfile.Email,
+            var userProfile = new UserProfileModel(user.UserProfile.Name,
                 user.UserProfile.AboutUser, user.UserProfile.BirthYear, user.UserProfile.Gender,
                 user.UserProfile.IsTeacher, user.UserProfile.AvatarLink, user.UserProfile.Contacts, sanctions);
             if (user.UserProfile.IsTeacher)
