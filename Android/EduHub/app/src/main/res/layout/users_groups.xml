@@ -32,12 +32,7 @@
 
 
     </android.support.v4.widget.SwipeRefreshLayout>
-        <Button
-            android:id="@+id/create_group_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Создать группу"
-            android:layout_alignParentBottom="true"/>
+
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

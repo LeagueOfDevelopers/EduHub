@@ -58,7 +58,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Мои группы");
         sharedPreferences=getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
-        Button button=v.findViewById(R.id.create_group_btn);
+
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -70,10 +70,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
             groupsPresenter.loadUsersGroup(user.getToken(),user.getUserId(),getContext());}else{
             fakeGroupRepository.loadUsersGroup(user.getToken(),user.getUserId(),getContext());
         }
-        button.setOnClickListener(click->{
-            Intent intent=new Intent(getActivity(), CreateGroupActivity.class);
-            startActivity(intent);
-        });
+
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

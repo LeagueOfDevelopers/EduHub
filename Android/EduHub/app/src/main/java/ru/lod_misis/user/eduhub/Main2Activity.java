@@ -54,7 +54,7 @@ SavedDataRepository savedDataRepository=new SavedDataRepository();
             startActivity(intent);
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("EduHub");
+        toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

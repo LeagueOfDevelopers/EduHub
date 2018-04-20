@@ -1,6 +1,6 @@
 package ru.lod_misis.user.eduhub.Interfaces;
 
-import ru.lod_misis.user.eduhub.Classes.Message;
+import ru.lod_misis.user.eduhub.Models.Group.Message;
 
 import java.util.ArrayList;
 

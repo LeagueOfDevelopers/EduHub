@@ -46,6 +46,8 @@ android {
 }
 
 dependencies {
+    compile 'com.github.stfalcon:chatkit:0.2.2'
+    compile 'joda-time:joda-time:2.9.9'
     compile 'com.sothree.slidinguppanel:library:3.4.0'
     debugCompile 'com.readystatesoftware.chuck:library:1.1.0'
     releaseCompile 'com.readystatesoftware.chuck:library-no-op:1.1.0'

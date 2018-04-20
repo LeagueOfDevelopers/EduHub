@@ -72,7 +72,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     TextView cost;
     RecyclerView recyclerView;
     TextView discription;
-    SwipeRefreshLayout swipeConteiner;
+
     FakesButton fakesButton=new FakesButton();
     GroupInformationPresenter groupInformationPresenter=new GroupInformationPresenter(this);
     FakeGroupInformationPresenter fakeGroupInformationPresenter=new FakeGroupInformationPresenter(this);
@@ -105,6 +105,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     EditText addReview;
     CardView course;
     DownloadManager downloadManager;
+    SwipeRefreshLayout swipeContainer;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.group_information_fragment, null);
@@ -134,6 +135,8 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         status=v.findViewById(R.id.status);
         members=v.findViewById(R.id.members);
         cost=v.findViewById(R.id.cost);
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+
         recyclerView=v.findViewById(R.id.tags);
         discription=v.findViewById(R.id.discription);
         downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
@@ -146,8 +149,9 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         }
 
         exit.setOnClickListener(click->{
+
             if(!fakesButton.getCheckButton()){
-                for (Member member :group.getMembers()
+                for (Member member :fullGroup.getMembers()
                      ) {
                     if(member.getUserId().equals(user.getUserId())){
                         if(member.getRole()==3){
@@ -244,20 +248,28 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         });
         link.setOnClickListener(click->{
             if(!link.getText().toString().equals("")&&fullGroup!=null){
-                Uri uri=Uri.parse("http://85.143.104.47:2411/api/file/"+group.getGroupInfo().getCurriculum());
+                Uri uri=Uri.parse("http://85.143.104.47:2411/api/file/"+fullGroup.getGroupInfo().getCurriculum());
                 DownloadManager.Request request = new DownloadManager.Request(uri);
                 request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
                 request.setAllowedOverRoaming(false);
-                request.setTitle(group.getGroupInfo().getCurriculum());
-                request.setDescription(group.getGroupInfo().getCurriculum());
+                request.setTitle(fullGroup.getGroupInfo().getCurriculum());
+                request.setDescription(fullGroup.getGroupInfo().getCurriculum());
                 request.setVisibleInDownloadsUi(true);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, group.getGroupInfo().getCurriculum());
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fullGroup.getGroupInfo().getCurriculum());
 
 
                 downloadManager.enqueue(request);
 
             }
         });
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(!fakesButton.getCheckButton()){
+                    groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
+            }
+        });
+
         return v;
 
     }
@@ -277,7 +289,8 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
 
     @Override
     public void stopLoading() {
-
+        if(swipeContainer.isRefreshing()){
+        swipeContainer.setRefreshing(false);}
     }
 
     @Override
@@ -321,7 +334,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                     case 0: {
                         closeCourseCard.setVisibility(View.GONE);
                         status.setText("Не предложено");
-                        link.setText(group.getGroupInfo().getCurriculum());
+                        link.setVisibility(View.GONE);
                         refactorCourse.setVisibility(View.GONE);
                         add_review_card.setVisibility(View.GONE);
 

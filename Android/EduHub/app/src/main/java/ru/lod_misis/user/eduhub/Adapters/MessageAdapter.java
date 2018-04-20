@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import ru.lod_misis.user.eduhub.Classes.Message;
+import ru.lod_misis.user.eduhub.Models.Group.Message;
 import ru.lod_misis.user.eduhub.Models.User;
 import com.example.user.eduhub.R;
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/title_dialog"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text="Присоединиться к группе"/>
+
+        <Button
+            android:layout_centerHorizontal="true"
+            android:id="@+id/teacher"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        style="@style/MyCustomTabLayout"
+        android:text="Учитель"
+        android:layout_below="@+id/title_dialog"
+        android:layout_marginTop="15dp"/>
+        <Button
+            android:layout_centerHorizontal="true"
+            android:id="@+id/student"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            style="@style/MyCustomTabLayout"
+            android:text="Ученик"
+            android:layout_below="@+id/teacher"
+            android:layout_marginTop="15dp"/>
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

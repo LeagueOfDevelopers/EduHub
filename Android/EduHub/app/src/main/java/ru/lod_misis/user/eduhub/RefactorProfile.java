@@ -338,8 +338,9 @@ UserProfileResponse userProfile;
         return calendar.get(Calendar.YEAR);
     }
     private Boolean checkLink(String link){
-        Pattern p=Pattern.compile("^[vk.com/]\\S+|^[@]\\S+|^[twitter.com/]\\S+|^[ok.ru]\\S+|^[facebook.com/]\\S+" +
-                "|^[instagram.com/]\\S+|^\\S+[.tumblr.com]");
+        Log.d("Link",link);
+        Pattern p=Pattern.compile("^vk.com/\\S+$|^@\\S+$|^twitter.com/\\S+$|^ok.ru\\S+$|^facebook.com/\\S+$" +
+                "|^instagram.com/\\S+$");
         Matcher m=p.matcher(link);
         return m.matches();
     }

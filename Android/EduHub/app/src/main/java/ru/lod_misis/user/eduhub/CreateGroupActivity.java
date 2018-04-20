@@ -53,8 +53,7 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
         final TagsEditText tags=findViewById(R.id.tagsEditText);
         final CheckBox checkBox=findViewById(R.id.privacy);
         final EditText description=findViewById(R.id.about_group);
-        ImageView plus=findViewById(R.id.plus);
-        ImageView minus=findViewById(R.id.minus);
+
         Button createGroup=findViewById(R.id.create_group);
         user=savedDataRepository.loadSavedData(sPref);
         Toolbar toolbar=findViewById(R.id.toolbar);
@@ -95,19 +94,7 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
         });
         EditText nameOfGroup=findViewById(R.id.name_of_group_create);
 
-        plus.setOnClickListener(click->{
-            if(maxParticipants.getText().toString().equals("")){
-                maxParticipants.setText("0");
-            }
-            maxParticipants.setText((Integer.valueOf(maxParticipants.getText().toString())+1)+"");
-        });
-        minus.setOnClickListener(click->{
-            if(maxParticipants.getText().toString().equals("")){
-                maxParticipants.setText("0");
-            }if(Integer.valueOf(maxParticipants.getText().toString())>=0){
-            maxParticipants.setText((Integer.valueOf(maxParticipants.getText().toString())-1)+"");
-            }
-        });
+
 
 
 

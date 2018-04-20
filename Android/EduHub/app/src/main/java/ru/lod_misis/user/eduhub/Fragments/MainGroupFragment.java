@@ -69,6 +69,8 @@ public class MainGroupFragment extends Fragment {
         groupInformationFragment=new GroupInformationFragment();
         groupInformationFragment.setGroup(group);
         chat=new ChatFragment();
+        chat.setGroup(group);
+        chat.setUser(user);
 
         groupMembersFragment=new GroupMembersFragment();
         groupMembersFragment.setGroup(group);

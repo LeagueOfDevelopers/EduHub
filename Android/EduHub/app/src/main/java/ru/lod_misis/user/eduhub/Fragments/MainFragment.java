@@ -1,5 +1,6 @@
 package ru.lod_misis.user.eduhub.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 import ru.lod_misis.user.eduhub.Adapters.ViewPagerAdapter;
+import ru.lod_misis.user.eduhub.CreateGroupActivity;
 
 import com.example.user.eduhub.R;
 
@@ -33,7 +36,7 @@ public class MainFragment extends Fragment {
         authorized_fragment=new Authorized_fragment();
 
         authorized_fragment2=new AuthorizedFragmentForTeacher();
-
+        Button button=v.findViewById(R.id.create_group_btn);
 
 
         pager=v.findViewById(R.id.pager);
@@ -45,6 +48,10 @@ public class MainFragment extends Fragment {
 
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(pager);
+        button.setOnClickListener(click->{
+            Intent intent=new Intent(getActivity(), CreateGroupActivity.class);
+            startActivity(intent);
+        });
         return v;
     }
 }

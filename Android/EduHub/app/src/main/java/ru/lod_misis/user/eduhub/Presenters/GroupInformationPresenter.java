@@ -39,7 +39,7 @@ public class GroupInformationPresenter implements IGroupInfirmationPresenter {
                         error->{
                             Log.e("ERROR",error+"");},
                         ()->{
-
+                            groupView.stopLoading();
                             groupView.getInformationAboutGroup(group);});
     }
 }

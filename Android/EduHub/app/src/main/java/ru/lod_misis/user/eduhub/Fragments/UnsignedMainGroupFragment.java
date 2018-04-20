@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ru.lod_misis.user.eduhub.Adapters.ViewPagerAdapter;
+import ru.lod_misis.user.eduhub.Dialog.CustomDialog;
 import ru.lod_misis.user.eduhub.Fakes.FakeSignInUserToGroupPresenter;
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
 import ru.lod_misis.user.eduhub.Interfaces.IFragmentsActivities;
@@ -126,12 +127,8 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
                else{
                     fakeSignInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());
                 }}else{
-                    if(!fakessButton.getCheckButton()){
-                        Log.d("CheckButton",fakessButton.getCheckButton().toString());
-                        signInUserToGroupPresenter.signInTeacherToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());}
-                    else{
-                        fakeSignInUserToGroupPresenter.signInTeacherToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());
-                    }
+                    CustomDialog customDialog=new CustomDialog(getContext(),group,user.getToken(),fragmentsActivities);
+                    customDialog.show();
                 }
 
             }else{

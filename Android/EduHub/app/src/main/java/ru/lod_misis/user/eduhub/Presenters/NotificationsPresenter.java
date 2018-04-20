@@ -67,12 +67,13 @@ public class NotificationsPresenter implements INotificationsPresenter {
     @Override
     public void getAllNotifications(String token,Context context) {
 notifications2=new ArrayList<>();
+Log.d("token",token);
         EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.loadAllNotifications("Bearer "+token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(next->{notifications=(ArrayList<Notifications>)next;},
-                        throwable -> {},
+                        throwable -> {Log.e("Notif",throwable.toString());},
                         ()->{
                             for (Notifications notification:notifications
                                  ) {

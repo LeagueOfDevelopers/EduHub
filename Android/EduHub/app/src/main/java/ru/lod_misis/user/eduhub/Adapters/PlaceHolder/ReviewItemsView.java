@@ -12,6 +12,16 @@ import com.mindorks.placeholderview.annotations.View;
 import com.mindorks.placeholderview.annotations.expand.ChildPosition;
 import com.mindorks.placeholderview.annotations.expand.ParentPosition;
 
+import org.joda.time.DateTime;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
 /**
  * Created by User on 31.01.2018.
  */
@@ -51,21 +61,24 @@ public class ReviewItemsView {
         author.setText(review.getFromUser());
         Log.d("FromUser",review.getFromUser());
         Log.d("Date",review.getDate());
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-mm-dd'T'HH:mm:ss.SSSSSSZ");
+        Log.d("newDate",dateFormat.format(new Date()).toString());
+        DateTime dt = new DateTime( review.getDate() ) ;
 
-        date.setText(review.getDate());
-      /*  Long dateInt=new Date(review.getDate().toString()).getTime();
+
+        Long dateInt=dt.toDate().getTime()/1000/60/60;
 
         Log.d("Date",dateInt.toString());
         Long days;
         Long mes;
-        if(new Date().getTime()-dateInt==0){
+        if(new Date().getTime()/1000/60/60-dateInt==0){
             date.setText("<часа назад");
         }else{
-            if(new Date().getTime()-dateInt<24){
-                date.setText(new Date().getTime()-dateInt+"ч. назад");
+            if(new Date().getTime()/1000/60/60-dateInt<24){
+                date.setText(new Date().getTime()/1000/60/60-dateInt+"ч. назад");
             }
-            if(new Date().getTime()-dateInt>24){
-                days=(new Date().getTime()-dateInt)/24;
+            if(new Date().getTime()/1000/60/60-dateInt>24){
+                days=(new Date().getTime()/1000/60/60-dateInt)/24;
                 if(days==1){
                     date.setText(days+" день назад");
                 }else{
@@ -99,8 +112,9 @@ public class ReviewItemsView {
 
 
             }
-        }*/
+        }
 
 
     }
+
 }
