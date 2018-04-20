@@ -18,7 +18,27 @@ namespace EduHubLibrary.Domain.NotificationService
             _groupRepository = groupRepository;
             _userRepository = userRepository;
             _sender = sender;
+
             _messageMapper = new MessageMapper();
+            _messageThemes = new Dictionary<NotificationType, string>
+            {
+                { NotificationType.CourseFinished, MessageThemes.CourseFinished },
+                { NotificationType.CurriculumAccepted, MessageThemes.CurriculumAccepted },
+                { NotificationType.CurriculumDeclined, MessageThemes.CurriculumDeclined },
+                { NotificationType.CurriculumSuggested, MessageThemes.CurriculumSuggested },
+                { NotificationType.GroupIsFormed, MessageThemes.GroupIsFormed },
+                { NotificationType.InvitationAccepted, MessageThemes.InvitationAccepted },
+                { NotificationType.InvitationDeclined, MessageThemes.InvitationDeclined },
+                { NotificationType.InvitationReceived, MessageThemes.InvitationReceived },
+                { NotificationType.MemberLeft, MessageThemes.MemberLeft },
+                { NotificationType.NewCreator, MessageThemes.NewCreator },
+                { NotificationType.NewMember, MessageThemes.NewMember },
+                { NotificationType.ReportMessage, MessageThemes.ReportMessage },
+                { NotificationType.ReviewReceived, MessageThemes.ReviewReceived },
+                { NotificationType.SanctionsAppliedToAdmin, MessageThemes.SanctionsAppliedForAdmin },
+                { NotificationType.SanctionsAppliedToUser, MessageThemes.SanctionsAppliedForUser },
+                { NotificationType.TeacherFound, MessageThemes.TeacherFound }
+            };
         }
 
         public void NotifyAdmins(INotificationInfo notificationInfo)
@@ -63,7 +83,7 @@ namespace EduHubLibrary.Domain.NotificationService
             {
                 NotifyOnSite(user, notificationInfo);
             }
-            
+
             if (doesSubscribedOnMail)
             {
                 NotifyOnMail(user, notificationInfo);
@@ -78,12 +98,15 @@ namespace EduHubLibrary.Domain.NotificationService
         private void NotifyOnMail(User user, INotificationInfo notificationInfo)
         {
             var messageContent = _messageMapper.MapNotification(notificationInfo, user.UserProfile.Name);
-            _sender.SendMessage(user.UserProfile.Email, messageContent, MessageThemes.Notification);
+            var notificationType = notificationInfo.GetNotificationType();
+            _sender.SendMessage(user.UserProfile.Email, messageContent, _messageThemes[notificationType]);
         }
 
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
         private readonly IEmailSender _sender;
+
         private readonly MessageMapper _messageMapper;
+        private readonly Dictionary<NotificationType, string> _messageThemes;
     }
 }

@@ -70,11 +70,110 @@ namespace EduHubLibrary.Mailing {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Курс завершен.
+        /// </summary>
+        internal static string CourseFinished {
+            get {
+                return ResourceManager.GetString("CourseFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Принят учебный план.
+        /// </summary>
+        internal static string CurriculumAccepted {
+            get {
+                return ResourceManager.GetString("CurriculumAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Учебный план отклонен.
+        /// </summary>
+        internal static string CurriculumDeclined {
+            get {
+                return ResourceManager.GetString("CurriculumDeclined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Предложен учебный план.
+        /// </summary>
+        internal static string CurriculumSuggested {
+            get {
+                return ResourceManager.GetString("CurriculumSuggested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Группа сформирована.
+        /// </summary>
+        internal static string GroupIsFormed {
+            get {
+                return ResourceManager.GetString("GroupIsFormed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Принято приглашение.
+        /// </summary>
+        internal static string InvitationAccepted {
+            get {
+                return ResourceManager.GetString("InvitationAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Приглашение отклонено.
+        /// </summary>
+        internal static string InvitationDeclined {
+            get {
+                return ResourceManager.GetString("InvitationDeclined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Получено приглашение.
+        /// </summary>
+        internal static string InvitationReceived {
+            get {
+                return ResourceManager.GetString("InvitationReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пользователь покинул группу.
+        /// </summary>
+        internal static string MemberLeft {
+            get {
+                return ResourceManager.GetString("MemberLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Приглашение на роль модератора.
         /// </summary>
         internal static string ModeratorInvitation {
             get {
                 return ResourceManager.GetString("ModeratorInvitation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Новый руководитель группы.
+        /// </summary>
+        internal static string NewCreator {
+            get {
+                return ResourceManager.GetString("NewCreator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Новый член группы.
+        /// </summary>
+        internal static string NewMember {
+            get {
+                return ResourceManager.GetString("NewMember", resourceCulture);
             }
         }
         
@@ -88,11 +187,56 @@ namespace EduHubLibrary.Mailing {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Новая жалоба.
+        /// </summary>
+        internal static string ReportMessage {
+            get {
+                return ResourceManager.GetString("ReportMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Изменение пароля.
         /// </summary>
         internal static string RestorePassword {
             get {
                 return ResourceManager.GetString("RestorePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Новый отзыв.
+        /// </summary>
+        internal static string ReviewReceived {
+            get {
+                return ResourceManager.GetString("ReviewReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Новая санкция.
+        /// </summary>
+        internal static string SanctionsAppliedForAdmin {
+            get {
+                return ResourceManager.GetString("SanctionsAppliedForAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Новая санкция.
+        /// </summary>
+        internal static string SanctionsAppliedForUser {
+            get {
+                return ResourceManager.GetString("SanctionsAppliedForUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Преподаватель утвержден.
+        /// </summary>
+        internal static string TeacherFound {
+            get {
+                return ResourceManager.GetString("TeacherFound", resourceCulture);
             }
         }
         

@@ -120,14 +120,62 @@
   <data name="AdminInvitation" xml:space="preserve">
     <value>Приглашение на роль администратора</value>
   </data>
+  <data name="CourseFinished" xml:space="preserve">
+    <value>Курс завершен</value>
+  </data>
+  <data name="CurriculumAccepted" xml:space="preserve">
+    <value>Принят учебный план</value>
+  </data>
+  <data name="CurriculumDeclined" xml:space="preserve">
+    <value>Учебный план отклонен</value>
+  </data>
+  <data name="CurriculumSuggested" xml:space="preserve">
+    <value>Предложен учебный план</value>
+  </data>
+  <data name="GroupIsFormed" xml:space="preserve">
+    <value>Группа сформирована</value>
+  </data>
+  <data name="InvitationAccepted" xml:space="preserve">
+    <value>Принято приглашение</value>
+  </data>
+  <data name="InvitationDeclined" xml:space="preserve">
+    <value>Приглашение отклонено</value>
+  </data>
+  <data name="InvitationReceived" xml:space="preserve">
+    <value>Получено приглашение</value>
+  </data>
+  <data name="MemberLeft" xml:space="preserve">
+    <value>Пользователь покинул группу</value>
+  </data>
   <data name="ModeratorInvitation" xml:space="preserve">
     <value>Приглашение на роль модератора</value>
+  </data>
+  <data name="NewCreator" xml:space="preserve">
+    <value>Новый руководитель группы</value>
+  </data>
+  <data name="NewMember" xml:space="preserve">
+    <value>Новый член группы</value>
   </data>
   <data name="Notification" xml:space="preserve">
     <value>Новое уведомление</value>
   </data>
+  <data name="ReportMessage" xml:space="preserve">
+    <value>Новая жалоба</value>
+  </data>
   <data name="RestorePassword" xml:space="preserve">
     <value>Изменение пароля</value>
+  </data>
+  <data name="ReviewReceived" xml:space="preserve">
+    <value>Новый отзыв</value>
+  </data>
+  <data name="SanctionsAppliedForAdmin" xml:space="preserve">
+    <value>Новая санкция</value>
+  </data>
+  <data name="SanctionsAppliedForUser" xml:space="preserve">
+    <value>Новая санкция</value>
+  </data>
+  <data name="TeacherFound" xml:space="preserve">
+    <value>Преподаватель утвержден</value>
   </data>
   <data name="UserConfirmation" xml:space="preserve">
     <value>Подтверждение почты</value>
