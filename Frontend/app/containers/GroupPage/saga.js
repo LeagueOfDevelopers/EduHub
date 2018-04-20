@@ -37,7 +37,9 @@ import {
   addTeacherReviewFailed,
   addTeacherReviewSuccess,
   getTagsSuccess,
-  getTagsFailed
+  getTagsFailed,
+  finishCourseFailed,
+  finishCourseSuccess
 } from "./actions";
 import {
   ENTER_GROUP_START,
@@ -58,7 +60,8 @@ import {
   GET_CURRENT_CHAT_START,
   SEND_MESSAGE_START,
   ADD_TEACHER_REVIEW_START,
-  GET_GROUP_TAGS_START
+  GET_GROUP_TAGS_START,
+  FINISH_COURSE_START
 } from "./constants";
 import config from '../../config';
 
@@ -550,6 +553,29 @@ function getTags(tag) {
     .catch(error => error)
 }
 
+function* finishCourseSaga(action) {
+  try {
+    yield call(finishCourse, action.id);
+    yield put(finishCourseSuccess());
+  }
+  catch (e) {
+    yield put(finishCourseFailed(e))
+  }
+}
+
+function finishCourse(id) {
+  return fetch(`${config.API_BASE_URL}/group/${id}/course`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+    .then(res => res.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(ENTER_GROUP_START, enterGroupSaga);
   yield takeEvery(LEAVE_GROUP_START, leaveGroupSaga);
@@ -570,4 +596,5 @@ export default function* () {
   yield takeEvery(SEND_MESSAGE_START, sendMessageSaga);
   yield takeEvery(ADD_TEACHER_REVIEW_START, addTeacherReviewSaga);
   yield takeEvery(GET_GROUP_TAGS_START, getTagsSaga);
+  yield takeEvery(FINISH_COURSE_START, finishCourseSaga);
 }

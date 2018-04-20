@@ -61,7 +61,10 @@ import {
   ADD_TEACHER_REVIEW_SUCCESS,
   GET_GROUP_TAGS_FAILED,
   GET_GROUP_TAGS_START,
-  GET_GROUP_TAGS_SUCCESS
+  GET_GROUP_TAGS_SUCCESS,
+  FINISH_COURSE_FAILED,
+  FINISH_COURSE_START,
+  FINISH_COURSE_SUCCESS
 } from './constants';
 
 
@@ -464,6 +467,26 @@ export function getTagsSuccess(tags) {
 export function getTagsFailed(error) {
   return {
     type: GET_GROUP_TAGS_FAILED,
+    error
+  };
+}
+
+export function finishCourse(id) {
+  return {
+    type: FINISH_COURSE_START,
+    id
+  };
+}
+
+export function finishCourseSuccess() {
+  return {
+    type: FINISH_COURSE_SUCCESS
+  };
+}
+
+export function finishCourseFailed(error) {
+  return {
+    type: FINISH_COURSE_FAILED,
     error
   };
 }

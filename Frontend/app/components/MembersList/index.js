@@ -29,7 +29,7 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
     return (
       <div className='group-member-list' style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px'}}>
         <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 2px 6px -2px rgba(0,0,0,0.36)'}}>
-          <Col>Участников</Col>
+          <Col>Участники</Col>
           <Col>{this.props.memberAmount + '/' + this.props.size}</Col>
         </Row>
         <div className="member-container">

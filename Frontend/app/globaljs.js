@@ -13,7 +13,7 @@ export function getMemberRole(enumRole) {
     case 2:
       return 'Создатель';
     case 3:
-      return 'Учитель';
+      return 'Преподаватель';
   }
 }
 
@@ -39,6 +39,19 @@ export function getGender(enumType) {
       return 'Мужской';
     case 2:
       return 'Женский';
+  }
+}
+
+export function getCourseStatus(enumType) {
+  switch (enumType) {
+    case 0:
+      return 'В ожидании';
+    case 1:
+      return 'Идет одобрение плана обучения';
+    case 2:
+      return 'Курс начат';
+    case 3:
+      return 'Курс завершен';
   }
 }
 

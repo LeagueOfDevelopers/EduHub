@@ -30,7 +30,7 @@ import {
 import { makeSelectNeedUpdate, makeSelectChat, makeSelectTags } from "./selectors";
 import {Link} from "react-router-dom";
 import config from "../../config";
-import {getGroupType, parseJwt, getMemberRole, connectSockets} from "../../globalJS";
+import {getGroupType, parseJwt, getMemberRole, connectSockets, getCourseStatus} from "../../globalJS";
 import {Col, Row, Button, message, Input, Select, InputNumber, Switch, Form} from 'antd';
 import MemberList from '../../components/MembersList/Loadable';
 import Chat from '../../components/Chat/Loadable';
@@ -173,15 +173,11 @@ export class GroupPage extends React.Component {
 
   componentDidMount() {
     this.getCurrentGroup();
-
-    if(this.props.match.params.review === 'review' || this.state.groupData.groupInfo.courseStatus === 3) {
-      setTimeout(this.onReviewClick, 1000);
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.needUpdate && !this.props.needUpdate) {
-      this.getCurrentGroup();
+      this.componentDidMount()
     }
   }
 
@@ -208,6 +204,10 @@ export class GroupPage extends React.Component {
         item.userId == this.state.userData.UserId).role === 3) : false
     });
     this.props.getCurrentChat(this.state.id);
+
+    if(this.state.groupData.groupInfo.courseStatus === 3) {
+      setTimeout(this.onReviewClick, 1000);
+    }
   }
 
   onChangeTitleHandle = (e) => {
@@ -305,7 +305,7 @@ export class GroupPage extends React.Component {
     return (
       <div>
         <Form className='group-form' onSubmit={this.changeGroupData}>
-          <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} style={{marginTop: 40, marginBottom: 160, fontSize: 16}}>
+          <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} style={{marginTop: 40, marginBottom: 40, fontSize: 16}}>
             <Col className='md-center-container' xs={{span: 24}} md={{span: 10}} lg={{span: 7}}>
               <Row className='main-group-info'>
                 <Row style={{marginBottom: 26}}>
@@ -327,33 +327,34 @@ export class GroupPage extends React.Component {
                         : this.state.groupData.groupInfo.title}
                     </h3>
                   </Col>
-                  { Boolean(this.state.groupData.members.find(item =>
-                    item.role == 3)) ?
-                    (<span style={{color: 'rgba(0,0,0,0.6)'}}>Преподаватель найден</span>)
-                    : (<span style={{color: 'rgba(0,0,0,0.6)'}}>Идет поиск преподавателя</span>)
+                  {
+                    getCourseStatus(this.state.groupData.groupInfo.courseStatus)
                   }
                 </Row>
-                <Row gutter={6} type='flex' justify='start' align='middle' style={{marginBottom: 8}}>
-                  {this.state.isEditing ?
-                    <FormItem style={{width: '100%', marginBottom: 0}}>
-                      {getFieldDecorator('tags', {
-                        rules: [
-                          {required: true, message: 'Пожалуйста, введите изучаемые технологии!'},
-                          {validator: this.validateTagsInput}
-                        ],
-                        initialValue: this.state.tagsInput
-                      })(
-                        <Select onChange={this.onChangeTagsHandle} style={{width: '100%'}} onSearch={this.onHandleSearch} mode="tags" placeholder="Введите, что хотите изучить" notFoundContent={null}>
-                          {this.props.tags.length && this.props.tags.length !== 0 ?
-                            this.props.tags.map((item, index) =>
-                            <Option key={item.tag}>{item.tag}</Option>
-                          ) : null}
-                        </Select>)
-                      }
-                    </FormItem>
-                    : this.state.groupData.groupInfo.tags.map((item) =>
-                      <Link key={item} to="#">{item}</Link>
-                    )}
+                <Row gutter={6} type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
+                  <Col>Тэги</Col>
+                  <Col>
+                    {this.state.isEditing ?
+                      <FormItem style={{width: '100%', marginBottom: 0}}>
+                        {getFieldDecorator('tags', {
+                          rules: [
+                            {required: true, message: 'Пожалуйста, введите изучаемые технологии!'},
+                            {validator: this.validateTagsInput}
+                          ],
+                          initialValue: this.state.tagsInput
+                        })(
+                          <Select onChange={this.onChangeTagsHandle} style={{width: '100%'}} onSearch={this.onHandleSearch} mode="tags" placeholder="Введите, что хотите изучить" notFoundContent={null}>
+                            {this.props.tags.length && this.props.tags.length !== 0 ?
+                              this.props.tags.map((item, index) =>
+                                <Option key={item.tag}>{item.tag}</Option>
+                              ) : null}
+                          </Select>)
+                        }
+                      </FormItem>
+                      : this.state.groupData.groupInfo.tags.map((item) =>
+                        <Link key={item} to="#">{item} </Link>
+                      )}
+                  </Col>
                 </Row>
                 <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
                   <Col>Формат</Col>
@@ -415,9 +416,7 @@ export class GroupPage extends React.Component {
                     (<Row style={{marginBottom: 12}}>
                       <Col>Эта группа является приватной</Col>
                     </Row>)
-                    : (<Row style={{marginBottom: 12}}>
-                      <Col>Эта группа не является приватной</Col>
-                    </Row>)
+                    : null
                 }
                 {this.state.isEditing ?
                   <Row type='flex' align='middle' style={{marginBottom: 12}}>
@@ -454,7 +453,7 @@ export class GroupPage extends React.Component {
               }
               {this.state.isCreator && !this.state.isEditing ?
                 <Row style={{width: 'calc(100% + 32px)'}}>
-                  <Button type='dashed' className='md-center-container md-offset-16px' onClick={() => this.setState({isEditing: true})} style={{width: '100%', marginTop: 12}}>Редактировать</Button>
+                  <Button type='dashed' className='md-center-container md-offset-16px' onClick={() => this.setState({isEditing: true})} style={{width: '100%', marginTop: 12, marginBottom: 12}}>Редактировать</Button>
                 </Row>
                 : this.state.isEditing ?
                   <Row>
@@ -469,34 +468,23 @@ export class GroupPage extends React.Component {
               }
             </Col>
             <Col xs={{span: 24}} md={{span: 12, offset: 2}} lg={{span: 15, offset: 2}} xl={{span: 15, offset: 2}}>
-              <Row style={{textAlign: 'left', marginTop: 8}}>
-                <Col xs={{span: 24}} lg={{span: 17}}>
-                  <SuggestPlanForm
-                    members={this.state.groupData.members}
-                    groupId={this.state.id}
-                    curriculum={this.state.groupData.groupInfo.curriculum}
-                    isTeacher={this.state.isTeacher}
-                    currentUserData={this.state.userData}
-                    currentPlan={this.state.groupData.groupInfo.curriculum}
-                  />
-                </Col>
-                <Col xs={{span: 24}} lg={{span: 7}} style={{textAlign: 'right'}}>
-                  <EnterGroupBtn
-                    memberAmount={this.state.groupData.groupInfo.memberAmount}
-                    size={this.state.groupData.groupInfo.size}
-                    isInGroup={this.state.isInGroup}
-                    isTeacher={this.state.isTeacher}
-                    userData={this.state.userData}
-                    groupId={this.state.id}
-                    onSignInClick={this.onSignInClick}
-                  />
-                </Col>
-              </Row>
               <Row>
-                <Row style={{marginTop: 42}}>
-                  <Col><h3 style={{fontSize: 18}}>Описание</h3></Col>
+                <Row style={{marginTop: 4}}>
+                  <Col span={10}><span style={{fontSize: 18, fontWeight: 600}}>Описание</span></Col>
+                  <Col span={14} style={{textAlign: 'right'}}>
+                    <EnterGroupBtn
+                      memberAmount={this.state.groupData.groupInfo.memberAmount}
+                      size={this.state.groupData.groupInfo.size}
+                      isInGroup={this.state.isInGroup}
+                      isTeacher={this.state.isTeacher}
+                      userData={this.state.userData}
+                      groupId={this.state.id}
+                      onSignInClick={this.onSignInClick}
+                      members={this.state.groupData.members}
+                    />
+                  </Col>
                 </Row>
-                <Row style={{marginBottom: 40}}>
+                <Row style={{marginBottom: 22, marginTop: 4}}>
                   <p className='word-break'>
                     {this.state.isEditing ?
                       <FormItem style={{width: '100%', marginBottom: 0}}>
@@ -514,6 +502,24 @@ export class GroupPage extends React.Component {
                       : this.state.groupData.groupInfo.description}
                   </p>
                 </Row>
+                {
+                  this.state.groupData.groupInfo.curriculum || this.state.isTeacher?
+                    <Row style={{textAlign: 'left', marginTop: 8, marginBottom: 28}}>
+                      <Col style={{marginBottom: 8}}><span style={{fontSize: 18, fontWeight: 600}}>Учебный план</span></Col>
+                      <Col xs={{span: 24}}>
+                        <SuggestPlanForm
+                          members={this.state.groupData.members}
+                          groupId={this.state.id}
+                          curriculum={this.state.groupData.groupInfo.curriculum}
+                          isTeacher={this.state.isTeacher}
+                          currentUserData={this.state.userData}
+                          currentPlan={this.state.groupData.groupInfo.curriculum}
+                          courseStatus={this.state.groupData.groupInfo.courseStatus}
+                        />
+                      </Col>
+                    </Row>
+                    : null
+                }
               </Row>
               <Row style={{width: '100%'}}>
                 {

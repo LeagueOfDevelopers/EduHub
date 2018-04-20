@@ -62,7 +62,10 @@ import {
   ADD_TEACHER_REVIEW_START,
   GET_GROUP_TAGS_FAILED,
   GET_GROUP_TAGS_START,
-  GET_GROUP_TAGS_SUCCESS
+  GET_GROUP_TAGS_SUCCESS,
+  FINISH_COURSE_SUCCESS,
+  FINISH_COURSE_FAILED,
+  FINISH_COURSE_START
 } from './constants';
 import {message} from "antd";
 
@@ -317,6 +320,19 @@ function groupPageReducer(state = initialState, action) {
       return state
         .set('pending', false)
         .set('error', true);
+    case FINISH_COURSE_START:
+      return state
+        .set('pending', true)
+        .set('needUpdate', true);
+    case FINISH_COURSE_SUCCESS:
+      return state
+        .set('pending', false)
+        .set('needUpdate', false);
+    case FINISH_COURSE_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true)
+        .set('needUpdate', false);
     default:
       return state;
   }

@@ -98,16 +98,22 @@ class UsersFilterForm extends React.Component { // eslint-disable-line react/pre
             </Select>
           </Row>
           <Divider/>
-          <Row>
-            <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Опыт преподавания</div>
-            <Radio.Group value={this.state.teacherExperience} onChange={this.onHandleTeacherExperienceChange}>
-              <Radio value='OneClass' style={{display: 'block', lineHeight: '30px'}}>Минимум одно занятие</Radio>
-              <Radio value='FiveClasses' style={{display: 'block', lineHeight: '30px'}}>Больше пяти занятий</Radio>
-              <Radio value='TenClasses' style={{display: 'block', lineHeight: '30px'}}>Больше десяти занятий</Radio>
-              <Radio value='Default' style={{display: 'block', lineHeight: '30px'}}>Не важно</Radio>
-            </Radio.Group>
-          </Row>
-          <Divider/>
+          {
+            this.state.wantToTeach ?
+              <div>
+                <Row>
+                  <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Опыт преподавания</div>
+                  <Radio.Group value={this.state.teacherExperience} onChange={this.onHandleTeacherExperienceChange}>
+                    <Radio value='OneClass' style={{display: 'block', lineHeight: '30px'}}>Минимум одно занятие</Radio>
+                    <Radio value='FiveClasses' style={{display: 'block', lineHeight: '30px'}}>Больше пяти занятий</Radio>
+                    <Radio value='TenClasses' style={{display: 'block', lineHeight: '30px'}}>Больше десяти занятий</Radio>
+                    <Radio value='Default' style={{display: 'block', lineHeight: '30px'}}>Не важно</Radio>
+                  </Radio.Group>
+                </Row>
+                <Divider/>
+              </div>
+              : null
+          }
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Завершено курсов</div>
             <Radio.Group value={this.state.userExperience} onChange={this.onHandleStudentExperienceChange}>

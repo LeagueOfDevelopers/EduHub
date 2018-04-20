@@ -22,8 +22,20 @@
 }
 
 .profile-card {
-  min-width: 280px;
   cursor: default;
+}
+
+.teacher-review {
+  margin: 14px 0;
+}
+
+.teacher-panel {
+  margin: 0 !important;
+}
+
+.group-member-list .ant-list-item-meta {
+  display: flex;
+  align-items: center;
 }
 
 .word-break {

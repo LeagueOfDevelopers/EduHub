@@ -53,14 +53,14 @@ class ReviewModal extends React.Component { // eslint-disable-line react/prefer-
         bodyStyle={{padding: '30px 10%'}}
         footer={null}
       >
-        <Row style={{margin: '10px 0 44px'}}>
+        <Row style={{margin: '0px 0 40px'}}>
           <h2 style={{marginBottom: 0}}>{`Оставьте свой отзыв о преподавателе курса "${this.props.courseTitle}"`}</h2>
         </Row>
         <Form id='sign-in-form' onSubmit={this.handleSubmit}>
           <FormItem>
             <Input size='large' value={this.state.title} onChange={this.onHandleTitleChange} placeholder="Оглавление отзыва..."/>
           </FormItem>
-          <FormItem>
+          <FormItem style={{marginBottom: 16}}>
             <Input.TextArea rows={6} value={this.state.review} onChange={this.onHandleReviewChange} placeholder="Здесь вы можете написать свой отзыв..."/>
           </FormItem>
           <FormItem

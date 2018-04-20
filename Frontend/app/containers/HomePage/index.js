@@ -139,7 +139,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 }
                 <Row type='flex' align='middle' style={{marginTop: 30}}>
                   <Col className='xs-margin-bottom-14' xs={{span: 24}} md={{span: 8}} style={{fontSize: 16}}>
-                    <Link to='/groups?formed=false'>Показать больше</Link>
+                    <Link to='/groups?formed=false'>Расширенный поиск</Link>
                   </Col>
                   {localStorage.getItem('token') ?
                     <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>
@@ -155,7 +155,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 </Row>
               </Card>
             </Col>
-            <Col xs={{span: 22, offset: 1}} sm={{span: 16, offset: 4}} style={{marginTop: 40}}>
+            <Col xs={{span: 22, offset: 1}} sm={{span: 16, offset: 4}} style={{marginTop: 20, marginBottom: 40}}>
               <Card
                 title='Набранные группы'
                 bordered={false}
@@ -186,7 +186,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 }
                 <Row type='flex' align='middle' style={{marginTop: 30}}>
                   <Col className='xs-margin-bottom-14' xs={{span: 24}} md={{span: 8}} style={{fontSize: 16}}>
-                    <Link to='/groups?formed=true'>Показать больше</Link>
+                    <Link to='/groups?formed=true'>Расширенный поиск</Link>
                   </Col>
                   {!localStorage.getItem('token') ?
                     <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>

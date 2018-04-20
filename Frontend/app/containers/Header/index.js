@@ -124,11 +124,12 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             defaultActiveFirstOption={false}
             showArrow={false}
             onChange={this.handleSelectChange}
+            notFoundContent='Ничего не найдено'
           >
             <OptGroup key={1} label={(
               <Col>
                 <Col span={12}>Пользователи</Col>
-                <Col span={12} style={{textAlign: 'right'}}><Link to={`/users${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Показать больше</Link></Col>
+                <Col span={12} style={{textAlign: 'right'}}><Link to={`/users${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Расширенный поиск</Link></Col>
               </Col>
             )}>
               {
@@ -159,7 +160,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             <OptGroup key={2} label={(
               <Col>
                 <Col span={12}>Группы</Col>
-                <Col span={12} style={{textAlign: 'right'}}><Link to={`/groups${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Показать больше</Link></Col>
+                <Col span={12} style={{textAlign: 'right'}}><Link to={`/groups${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Расширенный поиск</Link></Col>
               </Col>
             )}>
               {

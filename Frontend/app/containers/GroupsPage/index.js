@@ -44,7 +44,7 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
 
   render() {
     return (
-      <Row style={{marginTop: 40}}>
+      <Row style={{marginTop: 40, marginBottom: 40}}>
         <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} onClick={this.showFilterForm} className='filter-btn' style={{height: 50}}>
           <Card
             hoverable
@@ -61,7 +61,7 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
           <Row type='flex' justify='space-between' align='middle'>
             <h3 style={{marginBottom: 0}}>Группы</h3>
           </Row>
-          <Row className='cards-holder font-size-20' style={{marginTop: 28, marginBottom: 160}}>
+          <Row className='cards-holder font-size-20' style={{marginTop: 28}}>
             {this.props.groups && this.props.groups.length && this.props.groups.length !== 0 ?
               this.props.groups.map((item) =>
                 <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>

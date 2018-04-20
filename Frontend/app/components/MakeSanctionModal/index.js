@@ -65,7 +65,7 @@ class MakeSanctionModal extends React.Component { // eslint-disable-line react/p
         bodyStyle={{padding: '30px 10%'}}
         footer={null}
       >
-        <Row style={{margin: '10px 0 44px'}}>
+        <Row style={{margin: '0px 0 40px'}}>
           <h2 style={{marginBottom: 0}}>Выписка санкции</h2>
         </Row>
         <Form>
@@ -107,7 +107,7 @@ class MakeSanctionModal extends React.Component { // eslint-disable-line react/p
               style={{width: '100%'}}
             />
           </FormItem>
-          <Row type='flex' justify='center' className='lg-center-container-item' style={{marginTop: 40}}>
+          <Row type='flex' justify='center' className='lg-center-container-item' style={{marginTop: 42}}>
             <Button
               className='group-btn lg-margin-right-0'
               type='primary'

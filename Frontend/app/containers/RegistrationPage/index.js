@@ -128,9 +128,9 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     const {getFieldDecorator} = this.props.form;
     return (
       <div>
-        <Row style={{textAlign: 'center', marginTop: 30}}><h3>Регистрация</h3></Row>
+        <Row style={{textAlign: 'center', marginTop: 40}}><h3 style={{marginBottom: 0}}>Регистрация</h3></Row>
         <Row><Divider/></Row>
-        <Row style={{marginTop: 20}}>
+        <Row style={{marginTop: 0}}>
           <Form className='form' onSubmit={this.handleSubmit}>
             <FormItem
               {...formItemLayout}
@@ -184,16 +184,16 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
                 <Switch onChange={this.onHandleTeacherStatusChange}/>)
               }
             </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="Код приглашения"
-            >
-              {getFieldDecorator('inviteCode', {
-                initialValue: this.state.inviteCode
-              })(
-                <Input onChange={this.onHandleInviteCodeChange} placeholder="Можете оставить поле пустым"/>)
-              }
-            </FormItem>
+            {/*<FormItem*/}
+              {/*{...formItemLayout}*/}
+              {/*label="Код приглашения"*/}
+            {/*>*/}
+              {/*{getFieldDecorator('inviteCode', {*/}
+                {/*initialValue: this.state.inviteCode*/}
+              {/*})(*/}
+                {/*<Input onChange={this.onHandleInviteCodeChange} placeholder="Можете оставить поле пустым"/>)*/}
+              {/*}*/}
+            {/*</FormItem>*/}
             <Col offset={10} className='sm-row-center' style={{marginTop: 20}}>
               <FormItem {...tailFormItemLayout}>
                 <div>

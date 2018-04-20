@@ -28,7 +28,7 @@ export class RegistrationAccepted extends React.Component { // eslint-disable-li
 
   render() {
     return (
-      <Row style={{marginTop: 80, padding: 40, backgroundColor: 'rgba(0,0,0,0.1)'}}>
+      <Row style={{marginTop: 80, padding: 40, fontSize: 24}}>
         <Col span={24} style={{marginBottom: 30, textAlign: 'center'}}>
           {this.props.status !== 400 ?
             'Вы успешно зарегистрированы.'

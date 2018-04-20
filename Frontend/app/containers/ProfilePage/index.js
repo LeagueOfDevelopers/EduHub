@@ -94,6 +94,60 @@ const defaultMyGroups = [
   }
 ];
 
+const defaultTeacherProfile = {
+  reviews: [
+    {
+      fromUser: 'DJLSFFSKJ',
+      fromGroup: 'wqe1wqedsadsa',
+      title: "stringdskjn ndknskn",
+      text: "stringstringstringstringstring stringstringstringstringstring        text: \"stringstringstringstringstring stringstringstringstringstring \",\n",
+      date: "2018-04-15T13:15:39.510Z"
+    },
+    {
+      fromUser: 'qweqrr',
+      fromGroup: 'wqe1wqedsadsa',
+      title: "string",
+      text: "string",
+      date: "2018-04-15T13:15:39.510Z"
+    },
+    {
+      fromUser: 'qweqrr',
+      fromGroup: 'wqe1wqedsadsa',
+      title: "string",
+      text: "string",
+      date: "2018-04-15T13:15:39.510Z"
+    },
+    {
+      fromUser: 'qweqrr',
+      fromGroup: 'wqe1wqedsadsa',
+      title: "string",
+      text: "string",
+      date: "2018-04-15T13:15:39.510Z"
+    },
+    {
+      fromUser: 'qweqrr',
+      fromGroup: 'wqe1wqedsadsa',
+      title: "string",
+      text: "string",
+      date: "2018-04-15T13:15:39.510Z"
+    },
+    {
+      fromUser: 'qweqrr',
+      fromGroup: 'wqe1wqedsadsa',
+      title: "string",
+      text: "string",
+      date: "2018-04-15T13:15:39.510Z"
+    },
+    {
+      fromUser: 'qweqrr',
+      fromGroup: 'wqe1wqedsadsa',
+      title: "string",
+      text: "string",
+      date: "2018-04-15T13:15:39.510Z"
+    },
+  ]
+};
+
 export class ProfilePage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
@@ -204,6 +258,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.setState({contactsInputs: this.state.contactsInputs.map((item, index) =>
       index === i ? e.target.value : item
     )})
+    console.log(this.state.contactsInputs)
   };
 
   cancelChanges = () => {
@@ -285,7 +340,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                               {...props}
                               style={{display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: 30, marginRight: 14, width: 50, height: 50, borderRadius: '50%', cursor: 'pointer'}}
                             >
-                              {this.state.imageUrl ? <img src={`${config.API_BASE_URL}/file/img/${this.state.imageUrl}`} style={{height: 50, width: 50, borderRadius: '50%'}} alt="" /> : <Icon type={this.state.loading ? 'loading' : 'plus'} />}
+                              {this.state.imageUrl ? <img src={`${config.API_BASE_URL}/file/img/${this.state.imageUrl}`} style={{height: 50, width: 50, borderRadius: '50%'}} alt="" /> : <Icon type={this.state.loading ? 'loading' : 'user'} />}
                             </Upload>
                             :
                             <Avatar
@@ -314,12 +369,6 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                         }
                       </Col>
                     </Col>
-                    {!this.state.isEditing && this.state.isCurrentUser ?
-                      <Col style={{position:'absolute', top: 26, right: 20, textAlign: 'right'}}>
-                        <img src={require('../../images/edit.svg')} onClick={() => this.setState({isEditing: true})} style={{width: 20, cursor: 'pointer'}}/>
-                      </Col>
-                      : null
-                    }
                   </Row>
                 }
                 hoverable
@@ -440,21 +489,31 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                         <div>
                           {this.state.contactsInputs.map((item, i) =>
                             <div key={i}>
-                              <Col span={20}>
-                                <Input
-                                  placeholder='Ссылка на профиль'
-                                  onChange={(e) => this.onHandleChangeContact(e, i)}
-                                  value={this.state.contactsInputs[i]}
-                                  style={{marginBottom: 8, width: '100%'}}
-                                />
-                              </Col>
-                              <Col span={4} style={{textAlign: 'right'}}>
-                                <Icon
-                                  className="dynamic-delete-button"
-                                  type="minus-circle-o"
-                                  onClick={() => this.removeContact(i)}
-                                />
-                              </Col>
+                              <FormItem style={{width: '100%', marginBottom: 0}}>
+                                {getFieldDecorator(`link-${i}`, {
+                                  rules: [
+                                    {pattern: /^(http:\/\/|https:\/\/)(t.me\/|telegram.me\/|vk.com\/|www.facebook.com\/|ok.ru\/profile\/|twitter.com\/#!\/|instagram.com\/|www.tumblr.com\/dashboard\/blog\/|www.behance.net\/|github.com\/)|api.whatsapp.com\/send\?phone=|viber:\/\/chat\?number=/, message: 'Пожалуйста, введите действительное значение ссылки!'}
+                                  ]
+                                })(
+                                  <div>
+                                    <Col span={20}>
+                                      <Input
+                                        placeholder='Ссылка на профиль'
+                                        onChange={(e) => this.onHandleChangeContact(e, i)}
+                                        value={this.state.contactsInputs[i]}
+                                        style={{marginBottom: 8, width: '100%'}}
+                                      />
+                                    </Col>
+                                    <Col span={4} style={{textAlign: 'right'}}>
+                                      <Icon
+                                        className="dynamic-delete-button"
+                                        type="close"
+                                        onClick={() => this.removeContact(i)}
+                                      />
+                                    </Col>
+                                  </div>)
+                                }
+                              </FormItem>
                             </div>
                           )}
                           {
@@ -477,9 +536,15 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                       <Button type='primary' htmlType='submit' style={{width: '100%'}}>Подтвердить</Button>
                     </Col>
                     <Col span={24}>
-                      <Button type='danger' onClick={this.cancelChanges} style={{marginTop: 6, width: '100%'}}>Отмена</Button>
+                      <Button onClick={this.cancelChanges} style={{marginTop: 6, width: '100%'}}>Отмена</Button>
                     </Col>
                   </div>
+                  : null
+                }
+                {!this.state.isEditing && this.state.isCurrentUser ?
+                  <Button onClick={() => this.setState({isEditing: true})} style={{width: '100%', marginTop: 12}}>
+                    Редактировать
+                  </Button>
                   : null
                 }
               </Card>
@@ -488,7 +553,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               this.state.isCurrentUser ?
                 <div style={{width: '100%'}}>
                   <Link to='/create_group'>
-                    <Button type='primary' size='large' style={{width: '100%', marginTop: 20}}>Создать группу</Button>
+                    <Button type='primary' style={{width: '100%', marginTop: 12}}>Создать группу</Button>
                   </Link>
                 </div>
                 : null
@@ -517,10 +582,10 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             }
           </Col>
           <Col xs={{span: 24}} md={{span: 12, offset: 1}} lg={{span: 13, offset: 1}} xl={{span: 15, offset: 1}} xxl={{span: 17, offset: 1}} className='lg-center-container-item xs-groups-tabs'>
-            <Tabs defaultActiveKey="1" type='card' style={{width: '100%'}}>
+            <Tabs defaultActiveKey="1" style={{width: '100%'}}>
               <TabPane tab="Группы" key="1">
-                {(
-                  <div className='cards-holder md-cards-holder-center' style={{margin: '30px 0'}}>
+                {this.props.myGroups.length !== 0 ?
+                  <div className='cards-holder md-cards-holder-center' style={{margin: '16px 0'}}>
                     {localStorage.getItem('withoutServer') === 'true' ?
                       defaultMyGroups.map((item, i) =>
                         <Link to={`/group/${item.groupInfo.id}`} key={item.groupInfo.id}>
@@ -535,13 +600,40 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                       )
                     }
                   </div>
-                )}
+                  :
+                  <Row type='flex' justify='center'>
+                    Групп пока нет
+                  </Row>
+                }
               </TabPane>
               {this.state.teacherProfile ? (
-                <TabPane tab="Профиль преподавателя" key="3">
-
-                </TabPane>
-              ) : null
+                <TabPane tab="Профиль преподавателя" key="2" className='teacher-panel' style={{margin: '16px 0'}}>
+                  {this.state.teacherProfile.reviews && this.state.teacherProfile.reviews.length !== 0 ?
+                    this.state.teacherProfile.reviews.map((item, index) =>
+                      <Card key={index} hoverable className='teacher-review'>
+                        <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 10}}>
+                          <Col style={{fontWeight: 700, fontSize: 16}}>{item.fromUser}</Col>
+                          <Col style={{opacity: 0.7}}>{`${new Date(item.date).getDate() < 10 ?
+                            '0' + new Date(item.date).getDate()
+                            : new Date(item.date).getDate()}.${new Date(item.date).getMonth() < 10 ?
+                            '0' + new Date(item.date).getMonth()
+                            : new Date(item.date).getMonth()}.${new Date(item.date).getFullYear()}`}</Col>
+                        </Row>
+                        <Row style={{marginBottom: 2}}>
+                          <Col style={{fontWeight: 500}}>{item.title}</Col>
+                        </Row>
+                        <Row>
+                          <Col>{item.text}</Col>
+                        </Row>
+                      </Card>
+                    )
+                    :
+                    <Row type='flex' justify='center'>
+                      Отзывов пока нет
+                    </Row>
+                  }
+                </TabPane>)
+                : null
               }
               {this.state.userData && this.props.match.params.id === this.state.userData.UserId ? (
                 <TabPane tab="Панель администратора" key="3" style={{minHeight: 300}}>
@@ -551,8 +643,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                       <Icon type="bar-chart" style={{fontSize: 60, marginTop: 20, display: 'block'}}/>
                     </div>
                   </Link>
-                </TabPane>
-              ) : null
+                </TabPane>)
+                : null
               }
             </Tabs>
           </Col>

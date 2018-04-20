@@ -152,9 +152,9 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Row style={{textAlign: 'center', marginTop: 30}}><h3>Создание группы</h3></Row>
+        <Row style={{textAlign: 'center', marginTop: 40}}><h3 style={{marginBottom: 0}}>Создание группы</h3></Row>
         <Row><Divider/></Row>
-        <Row style={{marginTop: 20}}>
+        <Row style={{marginTop: 0}}>
           <Form onSubmit={this.handleSubmit} className='form'>
             <FormItem
               {...formItemLayout}

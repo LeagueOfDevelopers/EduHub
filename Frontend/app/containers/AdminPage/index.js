@@ -104,7 +104,7 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
 
   render() {
     return (
-      <Col span={20} offset={2} style={{padding: '20px 0'}}>
+      <Col span={20} offset={2} style={{padding: '40px 0'}}>
         <Row type='flex' justify='space-between' align='middle'>
           <Col xs={{span: 24}} md={{span: 14}} lg={{span: 10}} style={{height: 60, fontSize: 22, backgroundColor: 'rgba(0,0,0,0.1)', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'black'}}>Панель администратора</Col>
           <Col className='sanction-btn' xs={{span: 24}} md={{span: 10}} lg={{span: 14}}><Button onClick={this.onMakeSanctionClick} type='primary' size='large'>Выписать санкцию</Button></Col>
