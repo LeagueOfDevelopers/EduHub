@@ -48,7 +48,8 @@ namespace EduHub.Controllers
         public IActionResult GetMessage([FromRoute] int groupId, [FromRoute] int messageId)
         {
             var message = _chatFacade.GetMessage(messageId, groupId);
-            var response = new MessageInfoResponse(message.Id, message.SenderId, message.SentOn, message.Text);
+            var response = new MessageInfoResponse(message.Id, message.SenderId, message.SenderName, 
+                message.SentOn, message.Text);
             return Ok(response);
         }
 
@@ -65,7 +66,7 @@ namespace EduHub.Controllers
             var response = new List<MessageInfoResponse>();
             var messagesView = _groupFacade.GetGroup(groupId);
             messagesView.MessageView.ToList().ForEach(
-                m => response.Add(new MessageInfoResponse(m.Id, m.SenderId, m.SentOn, m.Text)));
+                m => response.Add(new MessageInfoResponse(m.Id, m.SenderId, m.SenderName, m.SentOn, m.Text)));
             return Ok(response);
         }
     }

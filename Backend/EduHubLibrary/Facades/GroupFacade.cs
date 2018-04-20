@@ -137,8 +137,8 @@ namespace EduHubLibrary.Facades
 
             var messagesList = new List<MessageView>();
 
-            currentGroup.Messages.ToList().ForEach(m => messagesList.Add(new MessageView(m.Id, m.SenderId,
-                m.SentOn, m.Text)));
+            currentGroup.Messages.ToList().ForEach(m => messagesList.Add(new MessageView(m.Id, m.SenderId, 
+                _userRepository.GetUserById(m.SenderId).UserProfile.Name, m.SentOn, m.Text)));
 
             var responseView = new FullGroupView(groupInfoView, membersInfo, messagesList, reviewView);
             return responseView;

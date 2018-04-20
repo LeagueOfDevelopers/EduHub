@@ -1,10 +1,11 @@
 ﻿using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Facades.Views.GroupViews;
 
 namespace EduHubLibrary.Facades
 {
     public interface IChatFacade
     {
         int SendMessage(int senderId, int groupId, string text);
-        Message GetMessage(int messageId, int groupId);
+        MessageView GetMessage(int messageId, int groupId);
     }
 }

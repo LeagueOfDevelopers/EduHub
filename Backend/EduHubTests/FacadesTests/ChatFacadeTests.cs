@@ -18,21 +18,22 @@ namespace EduHubTests
     {
         private int _creatorId;
         private IGroupRepository _groupRepository;
+        private IUserRepository _userRepository;
         private int _testGroupId;
 
         [TestInitialize]
         public void Initialize()
         {
             var keyRepository = new InMemoryKeysRepository();
-            var userRepository = new InMemoryUserRepository();
+            _userRepository = new InMemoryUserRepository();
             var sanctionRepository = new InMemorySanctionRepository();
             _groupRepository = new InMemoryGroupRepository();
             var publisher = new Mock<IEventPublisher>();
             var groupSettings = new GroupSettings(3, 100, 100, 1000);
             var sender = new Mock<IEmailSender>();
-            var groupFacade = new GroupFacade(_groupRepository, userRepository, sanctionRepository, groupSettings, 
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository, sanctionRepository, groupSettings, 
                 publisher.Object);
-            var accountFacade = new AccountFacade(keyRepository, userRepository,
+            var accountFacade = new AccountFacade(keyRepository, _userRepository,
                 sender.Object);
 
             _creatorId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
@@ -44,7 +45,7 @@ namespace EduHubTests
         public void SendMessageToChat_GetOneMessageInListInChat()
         {
             //Arrange
-            var chatFacade = new ChatFacade(_groupRepository);
+            var chatFacade = new ChatFacade(_groupRepository, _userRepository);
 
             //Act
             chatFacade.SendMessage(_creatorId, _testGroupId, "Some message");
@@ -58,7 +59,7 @@ namespace EduHubTests
         public void SendInvalidMessageToChat_GetException()
         {
             //Arrange
-            var chatFacade = new ChatFacade(_groupRepository);
+            var chatFacade = new ChatFacade(_groupRepository, _userRepository);
 
             //Act
             chatFacade.SendMessage(_creatorId, _testGroupId, " ");

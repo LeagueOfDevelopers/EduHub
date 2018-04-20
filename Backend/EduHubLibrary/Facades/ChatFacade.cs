@@ -2,16 +2,19 @@
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
+using EduHubLibrary.Facades.Views.GroupViews;
 
 namespace EduHubLibrary.Facades
 {
     public class ChatFacade : IChatFacade
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IUserRepository _userRepository;
 
-        public ChatFacade(IGroupRepository groupRepository)
+        public ChatFacade(IGroupRepository groupRepository, IUserRepository userRepository)
         {
             _groupRepository = groupRepository;
+            _userRepository = userRepository;
         }
 
         public int SendMessage(int senderId, int groupId, string text)
@@ -28,9 +31,11 @@ namespace EduHubLibrary.Facades
             return currentGroup.Messages.ToList().LastOrDefault(m => m.Text == text).Id;
         }
 
-        public Message GetMessage(int messageId, int groupId)
+        public MessageView GetMessage(int messageId, int groupId)
         {
-            return _groupRepository.GetGroupById(groupId).Messages.ToList().Find(m => m.Id.Equals(messageId));
+            var message = _groupRepository.GetGroupById(groupId).Messages.ToList().Find(m => m.Id.Equals(messageId));
+            var sendername = _userRepository.GetUserById(message.SenderId).UserProfile.Name;
+            return new MessageView(message.Id, message.SenderId, sendername, message.SentOn, message.Text);
         }
     }
 }

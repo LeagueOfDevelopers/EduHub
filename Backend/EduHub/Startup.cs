@@ -154,7 +154,7 @@ namespace EduHub
             var userEditFacade = new UserEditFacade(userRepository, fileRepository, sanctionRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, sanctionRepository, groupSettings, publisher);
             var fileFacade = new FileFacade(fileRepository);
-            var chatFacade = new ChatFacade(groupRepository);
+            var chatFacade = new ChatFacade(groupRepository, userRepository);
             var sanctionsFacade = new SanctionFacade(sanctionRepository, userRepository, publisher);
             var userAccountFacade = new AccountFacade(keysRepository, userRepository, emailSender);
             var reportFacade = new ReportFacade(userRepository, eventRepository, publisher);
