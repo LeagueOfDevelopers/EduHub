@@ -6,15 +6,15 @@ namespace EduHubLibrary.Mailing.MessageModels
 {
     public class NewMemberMessage
     {
-        public NewMemberMessage(string groupTitle, string username, string receiverName)
+        public NewMemberMessage(string groupTitle, string userName, string receiverName)
         {
             GroupTitle = groupTitle;
-            Username = username;
+            UserName = userName;
             ReceiverName = receiverName;
         }
 
         public string GroupTitle { get; }
-        public string Username { get; }
+        public string UserName { get; }
         public string ReceiverName { get; }
     }
 }

@@ -18,12 +18,16 @@ namespace EduHubLibrary.Domain.NotificationService
             _groupRepository = groupRepository;
             _userRepository = userRepository;
             _sender = sender;
+            _messageMapper = new MessageMapper();
         }
 
         public void NotifyAdmins(INotificationInfo notificationInfo)
         {
-            _userRepository.GetAll().Where(u => u.Type.Equals(UserType.Admin)).ToList()
-                .ForEach(u => NotifySubscriber(u.Id, notificationInfo));
+            _userRepository.GetAll().Where(u => u.Type.Equals(UserType.Admin)).ToList().ForEach(u =>
+            {
+                NotifyOnMail(u, notificationInfo);
+                NotifyOnSite(u, notificationInfo);
+            });
         }
 
         public void NotifyGroup(int groupId, INotificationInfo notificationInfo)
@@ -47,7 +51,6 @@ namespace EduHubLibrary.Domain.NotificationService
 
         private void NotifySubscriber(int userId, INotificationInfo notificationInfo)
         {
-            /*
             var user = _userRepository.GetUserById(userId);
             var settings = user.NotificationsSettings.Settings;
 
@@ -58,20 +61,29 @@ namespace EduHubLibrary.Domain.NotificationService
 
             if (doesSubscribedOnSite)
             {
-                user.AddNotification(new Notification(notificationInfo));
+                NotifyOnSite(user, notificationInfo);
             }
             
             if (doesSubscribedOnMail)
             {
-                var messageContent = MessageMapper.MapNotification(notificationInfo, user.UserProfile.Name);
-                //TODO: themes for messages
-                _sender.SendMessage(user.UserProfile.Email, messageContent, "");
+                NotifyOnMail(user, notificationInfo);
             }
-            */
+        }
+
+        private void NotifyOnSite(User user, INotificationInfo notificationInfo)
+        {
+            user.AddNotification(new Notification(notificationInfo));
+        }
+
+        private void NotifyOnMail(User user, INotificationInfo notificationInfo)
+        {
+            var messageContent = _messageMapper.MapNotification(notificationInfo, user.UserProfile.Name);
+            _sender.SendMessage(user.UserProfile.Email, messageContent, MessageThemes.Notification);
         }
 
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
         private readonly IEmailSender _sender;
+        private readonly MessageMapper _messageMapper;
     }
 }

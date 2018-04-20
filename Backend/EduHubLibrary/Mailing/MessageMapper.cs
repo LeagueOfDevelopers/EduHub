@@ -11,9 +11,9 @@ namespace EduHubLibrary.Mailing
 {
     public class MessageMapper
     {
-        public static object MapNotification(INotificationInfo notification, string receiverName)
+        public object MapNotification(INotificationInfo notification, string receiverName)
         {
-            return ((dynamic)notification, receiverName);
+            return Map((dynamic)notification, receiverName);
         }
 
         private CourseFinishedMessage Map(CourseFinishedNotification notification, string receiverName)

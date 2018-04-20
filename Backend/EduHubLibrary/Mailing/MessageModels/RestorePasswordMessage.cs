@@ -6,13 +6,13 @@ namespace EduHubLibrary.Mailing.MessageModels
 {
     public class RestorePasswordMessage
     {
-        public RestorePasswordMessage(string username, int key)
+        public RestorePasswordMessage(string userName, int key)
         {
-            Username = username;
+            UserName = userName;
             Key = key;
         }
 
-        public string Username { get; }
+        public string UserName { get; }
         public int Key { get; }
     }
 }

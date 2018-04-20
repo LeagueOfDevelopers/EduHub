@@ -79,6 +79,15 @@ namespace EduHubLibrary.Mailing {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Новое уведомление.
+        /// </summary>
+        internal static string Notification {
+            get {
+                return ResourceManager.GetString("Notification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Изменение пароля.
         /// </summary>
         internal static string RestorePassword {

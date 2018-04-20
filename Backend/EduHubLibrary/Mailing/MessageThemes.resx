@@ -123,6 +123,9 @@
   <data name="ModeratorInvitation" xml:space="preserve">
     <value>Приглашение на роль модератора</value>
   </data>
+  <data name="Notification" xml:space="preserve">
+    <value>Новое уведомление</value>
+  </data>
   <data name="RestorePassword" xml:space="preserve">
     <value>Изменение пароля</value>
   </data>
