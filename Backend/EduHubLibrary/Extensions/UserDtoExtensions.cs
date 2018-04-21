@@ -21,9 +21,9 @@ namespace EduHubLibrary.Extensions
             result.IsTeacher = source.UserProfile.IsTeacher;
             result.AvatarLink = source.UserProfile.AvatarLink;
 
-            source.TeacherProfile?.Skills?.ForEach(s => new TagUser(0, s));
+            source.TeacherProfile?.Skills?.ToList().ForEach(s => new TagUser(0, s));
 
-            source.TeacherProfile?.Reviews?.ForEach(review =>
+            source.TeacherProfile?.Reviews?.ToList().ForEach(review =>
                 result.Reviews.Add(new ReviewDto(review.Id, review.FromUser, review.FromGroup,
                     review.Title, review.Text, review.Date)));
 

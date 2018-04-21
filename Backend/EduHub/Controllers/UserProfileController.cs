@@ -243,6 +243,22 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
+        ///     Edites teacher's skills
+        /// </summary>
+        [Authorize]
+        [HttpPut]
+        [Route("teaching/skills")]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        public IActionResult EditTeacherProfile([FromBody] EditTeacherProfileRequest request)
+        {
+            var userId = Request.GetUserId();
+            _userEditFacade.EditTeacherProfile(userId, request.NewSkills);
+            return Ok();
+        }
+
+
+        /// <summary>
         ///     Configures notifications' settings
         /// </summary>
         [Authorize]
@@ -330,7 +346,7 @@ namespace EduHub.Controllers
             if (user.UserProfile.IsTeacher)
             {
                 var reviews = new List<ReviewModel>();
-                user.TeacherProfile.Reviews.ForEach(r =>
+                user.TeacherProfile.Reviews.ToList().ForEach(r =>
                 {
                     reviews.Add(new ReviewModel(r.FromUser, r.Title, r.Text, r.Date, r.FromGroup));
                 });

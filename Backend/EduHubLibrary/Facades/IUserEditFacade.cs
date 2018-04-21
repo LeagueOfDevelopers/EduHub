@@ -18,6 +18,7 @@ namespace EduHubLibrary.Facades
         void StopToBeTeacher(int userId);
         void EditProfile(int userId, string newName, string newAboutUser, Gender newGender, string newAvatarLink,
             List<string> newContactData, int newYear);
+        void EditTeacherProfile(int userId, List<string> newSkills);
         void ConfigureNotificationsSettings(int userId, NotificationType configuringNotification, NotificationValue newValue);
     }
 }

@@ -326,5 +326,45 @@ namespace EduHubTests
             //Act
             _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", new List<string> { "new" }, 1899);
         }
+
+        [TestMethod]
+        public void ConfigureTeacherProfile_GetEditedSkills()
+        {
+            //Arrange
+            var newSkills = new List<string> { "skill1", "skill2", "skill3" };
+            _userEditFacade.BecomeTeacher(_testUserId);
+
+            //Act
+            _userEditFacade.EditTeacherProfile(_testUserId, newSkills);
+
+            //Assert
+            var testUser = _userFacade.GetUser(_testUserId);
+            Assert.AreEqual(newSkills, testUser.TeacherProfile.Skills);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ConfigureTeacherProfileWithInvalidValue_GetException()
+        {
+            //Arrange
+            var newSkills = new List<string> { "skill1", " ", "" };
+            _userEditFacade.BecomeTeacher(_testUserId);
+
+            //Act
+            _userEditFacade.EditTeacherProfile(_testUserId, newSkills);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(UserIsNotTeacher))]
+        public void ConfigureTeacherProfileAtNotTeacher_GetException()
+        {
+            //Arrange
+            var newSkills = new List<string> { "skill1", "skill2", "skill3" };
+            _userEditFacade.BecomeTeacher(_testUserId);
+            _userEditFacade.StopToBeTeacher(_testUserId);
+
+            //Act
+            _userEditFacade.EditTeacherProfile(_testUserId, newSkills);
+        }
     }
 }

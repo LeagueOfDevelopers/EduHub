@@ -6,6 +6,7 @@ using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EduHubLibrary.Interators;
+using System.Linq;
 
 namespace EduHubTests
 {
@@ -127,7 +128,7 @@ namespace EduHubTests
             teacher.TeacherProfile.AddReview(guid, "The best", "The beast teacher of the year", guid);
 
             //Assert
-            Assert.AreEqual(review.Text, teacher.TeacherProfile.Reviews[0].Text);
+            Assert.AreEqual(review.Text, teacher.TeacherProfile.Reviews.ToList()[0].Text);
         }
 
         [TestMethod]

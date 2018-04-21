@@ -4,13 +4,13 @@ namespace EduHub.Models.Tools
 {
     public class TeacherProfileModel
     {
-        public TeacherProfileModel(List<ReviewModel> reviews, List<string> skills)
+        public TeacherProfileModel(IEnumerable<ReviewModel> reviews, IEnumerable<string> skills)
         {
             Reviews = reviews;
             Skills = skills;
         }
 
-        public List<ReviewModel> Reviews { get; set; }
-        public List<string> Skills { get; set; }
+        public IEnumerable<ReviewModel> Reviews { get; set; }
+        public IEnumerable<string> Skills { get; set; }
     }
 }

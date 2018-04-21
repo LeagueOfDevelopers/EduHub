@@ -168,5 +168,21 @@ namespace EduHubLibrary.Facades
             currentUser.NotificationsSettings.ConfigureSettings(configuringNotification, newValue);
             _userRepository.Update(currentUser);
         }
+
+        public void EditTeacherProfile(int userId, List<string> newSkills)
+        {
+            CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
+
+            var currentUser = _userRepository.GetUserById(userId);
+            Ensure.Bool.IsTrue(currentUser.UserProfile.IsTeacher, nameof(EditTeacherProfile),
+                opt => opt.WithException(new UserIsNotTeacher(userId)));
+            Ensure.Any.IsNotNull(newSkills);
+
+            if (newSkills.TrueForAll(s => !string.IsNullOrWhiteSpace(s)))
+                currentUser.TeacherProfile.ConfigureSkills(newSkills);
+            else throw new ArgumentException();
+
+            _userRepository.Update(currentUser);
+        }
     }
 }

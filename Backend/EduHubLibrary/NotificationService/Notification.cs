@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
@@ -10,12 +11,12 @@ namespace EduHubLibrary.Domain.NotificationService
         public Notification(INotificationInfo notificationInfo)
         {
             OccurredOn = DateTimeOffset.Now;
-            NotificationInfo = notificationInfo;
+            NotificationInfo = JsonConvert.SerializeObject(notificationInfo);
             NotificationType = notificationInfo.GetNotificationType();
         }
 
         public DateTimeOffset OccurredOn { get; }
-        public INotificationInfo NotificationInfo { get; }
+        public string NotificationInfo { get; }
         public NotificationType NotificationType { get; }
     }
 }

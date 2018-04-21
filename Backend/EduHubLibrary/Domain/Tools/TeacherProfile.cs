@@ -18,13 +18,23 @@ namespace EduHubLibrary.Domain.Tools
             Skills = Ensure.Any.IsNotNull(skillsList);
         }
 
-        public List<Review> Reviews { get; set; }
-        public List<string> Skills { get; set; }
+        public IEnumerable<Review> Reviews { get; private set; }
+        public IEnumerable<string> Skills { get; set; }
 
         public void AddReview(int fromUser, string title, string text, int fromGroup)
         {
             var newReview = new Review(fromUser, title, text, fromGroup);
-            Reviews.Add(newReview);
+            var newReviews = new List<Review>
+            {
+                newReview
+            };
+
+            Reviews = newReviews;
+        }
+
+        public void ConfigureSkills(List<string> newSkills)
+        {
+            Skills = newSkills;
         }
     }
 }
