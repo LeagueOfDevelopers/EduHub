@@ -29,10 +29,7 @@ class UserCard extends React.Component { // eslint-disable-line react/prefer-sta
               style={{minHeight: 50, minWidth: 50, marginRight: 20, borderRadius: '50%'}}
             >
             </Avatar>
-            <div style={{display: 'inline', fontSize: 16}}>
-              <div style={{color: '#000'}}>{this.props.name}</div>
-              <div className='word-break'>{this.props.email}</div>
-            </div>
+            <div style={{color: '#000', fontSize: 16}}>{this.props.name}</div>
           </Col>
           <Col className='md-center-container user-card-profile-btn' xs={{span: 24}} md={{span: 10}} lg={{span: 24}} xl={{span: 10}} style={{textAlign: 'right'}}>
             <Link to={`/profile/${this.props.id}`}><Button>Перейти к профилю</Button></Link>

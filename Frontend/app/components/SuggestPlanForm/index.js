@@ -118,8 +118,10 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
             </Row>
             {
               this.props.members.find(item =>
+                item.userId == this.props.currentUserData.UserId) && this.props.members.find(item =>
                 item.userId == this.props.currentUserData.UserId).curriculumStatus  === 0 ||
               this.props.members.find(item =>
+                item.userId == this.props.currentUserData.UserId) && this.props.members.find(item =>
               item.userId == this.props.currentUserData.UserId).curriculumStatus  === 1 ?
                 <Row type='flex'>
                   <Col>

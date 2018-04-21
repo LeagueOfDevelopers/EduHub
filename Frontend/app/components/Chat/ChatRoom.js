@@ -88,25 +88,27 @@ class ChatRoom extends React.Component {
     return (
       <div className='chatroom'>
         <div className='header'>Чат</div>
-        <ul className='chat' ref={chat => this.chat = chat}>
-          {localStorage.getItem('withoutServer') === 'true' ?
-            this.state.messages.map(msg =>
-              <Message key={msg.id} message={msg} user={localStorage.getItem('name')}/>
-            )
-            :
-            this.props.chat ?
-              this.props.chat.map(msg =>
-                <Message key={msg.id} message={msg}/>
-            )
-              :
-              [].map((msg, index) =>
-                <Message key={index}/>
+        <div>
+          <ul className='chat' ref={chat => this.chat = chat}>
+            {localStorage.getItem('withoutServer') === 'true' ?
+              this.state.messages.map(msg =>
+                <Message key={msg.id} message={msg} user={localStorage.getItem('name')}/>
               )
-          }
-        </ul>
-        <form className='input' onSubmit={event => this.submitMessage(event)}>
-          <Input size='large' ref={input => this.msgInput = input} placeholder='Введите сообщение' />
-        </form>
+              :
+              this.props.chat ?
+                this.props.chat.map(msg =>
+                  <Message key={msg.id} message={msg}/>
+                )
+                :
+                [].map((msg, index) =>
+                  <Message key={index}/>
+                )
+            }
+          </ul>
+          <form className='input' onSubmit={event => this.submitMessage(event)}>
+            <Input size='large' ref={input => this.msgInput = input} placeholder='Введите сообщение' />
+          </form>
+        </div>
         {this.state.showIsInGroupError ?
           (<div style={{color: 'red'}}>Вы должны вступить в группу</div>)
           : ''

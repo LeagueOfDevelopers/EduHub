@@ -521,7 +521,7 @@ export class GroupPage extends React.Component {
                     : null
                 }
               </Row>
-              <Row style={{width: '100%'}}>
+              <Row style={{width: '100%', paddingBottom: 40}}>
                 {
                   <Chat chat={this.props.currentChat} groupId={this.state.id} isInGroup={this.state.isInGroup}/>
                 }

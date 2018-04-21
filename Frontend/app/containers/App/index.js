@@ -28,6 +28,7 @@ import RegistrationAcceptedPage from '../../containers/RegistrationAcceptedPage'
 import UsersPage from '../../containers/UsersPage';
 import AdminPage from '../../containers/AdminPage';
 import Footer from '../../components/Footer';
+import ResetPasswordPage from '../ResetPasswordPage';
 
 export default class App extends React.Component{
   render() {
@@ -50,6 +51,7 @@ export default class App extends React.Component{
             <Route path='/registration_accepted/:key' component={RegistrationAcceptedPage}/>
             <Route path='/users' component={UsersPage}/>
             <Route path='/admin/:id' component={AdminPage}/>
+            <Route path='/reset_password/:key' component={ResetPasswordPage}/>
             <Route path='' component={NotFoundPage} />
           </Switch>
         </ScrollFix>
