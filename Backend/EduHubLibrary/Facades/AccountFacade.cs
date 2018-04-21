@@ -31,8 +31,8 @@ namespace EduHubLibrary.Facades
             var user = new User(username, credentials, isTeacher, UserType.UnConfirmed);
             var key = new Key(user.Credentials.Email, KeyAppointment.ConfirmEmail);
 
-            _sender.SendMessage(credentials.Email, new UserConfirmationMessage(username, key.Value), MessageThemes.UserConfirmation, username);
             _keysRepository.AddKey(key);
+            _sender.SendMessage(credentials.Email, new UserConfirmationMessage(username, key.Value), MessageThemes.UserConfirmation, username);
             _userRepository.Add(user);
             return user.Id;
         }
