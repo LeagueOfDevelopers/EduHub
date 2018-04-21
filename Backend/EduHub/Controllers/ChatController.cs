@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EduHub.Extensions;
+using EduHub.Middleware;
 using EduHub.Models;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
@@ -16,11 +18,15 @@ namespace EduHub.Controllers
     {
         private readonly IChatFacade _chatFacade;
         private readonly IGroupFacade _groupFacade;
+        private readonly NotificationsMessageHandler _notificationsMessageHandler;
 
-        public ChatController(IChatFacade chatFacade, IGroupFacade groupFacade)
+
+        public ChatController(IChatFacade chatFacade, IGroupFacade groupFacade,
+            NotificationsMessageHandler notificationsMessageHandler)
         {
             _chatFacade = chatFacade;
             _groupFacade = groupFacade;
+            _notificationsMessageHandler = notificationsMessageHandler;
         }
 
         /// <summary>
@@ -31,10 +37,14 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, Type = typeof(MessageSentResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult SendMessage([FromBody] SendMessageRequest messageRequest, [FromRoute] int groupId)
+        public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest messageRequest, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
+            var users = _groupFacade.GetGroupMembers(groupId).ToList();
+            var userIds = new List<int>();
+            users.ForEach(m => userIds.Add(m.UserId));
             var response = new MessageSentResponse(_chatFacade.SendMessage(userId, groupId, messageRequest.Text));
+            await _notificationsMessageHandler.SendMessageToAllAsync(messageRequest.Text, groupId, userIds);
             return Ok(response);
         }
 

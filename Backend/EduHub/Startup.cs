@@ -2,6 +2,7 @@
 using System.Text;
 using EduHub.Extensions;
 using EduHub.Filters;
+using EduHub.Middleware;
 using EduHub.Security;
 using EduHubLibrary.Data;
 using EduHubLibrary.Domain;
@@ -46,7 +47,7 @@ namespace EduHub
         {
             StartLoggly();
 
-            //services.AddWebSocketManager();
+            services.AddWebSocketManager();
 
             IFileRepository fileRepository;
             IGroupRepository groupRepository;
@@ -219,9 +220,9 @@ namespace EduHub
         {
             app.UseSwagger();
             app.UseStaticFiles();
-            //app.UseWebSockets();
-            //app.MapWebSocketManager("/api/group/{groupId}/chat",
-            //    serviceProvider.GetService<NotificationsMessageHandler>());
+            app.UseWebSockets();
+            app.MapWebSocketManager("/api/sockets/creation",
+                serviceProvider.GetService<NotificationsMessageHandler>());
 
             app.UseSwaggerUI(current => { current.SwaggerEndpoint("/swagger/v1/swagger.json", "EduHub API"); });
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
