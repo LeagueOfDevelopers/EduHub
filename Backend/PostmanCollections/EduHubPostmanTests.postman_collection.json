@@ -39,7 +39,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"creator\",\r\n  \"email\": \"creator@creator.creator\",\r\n  \"password\": \"creator123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
+							"raw": "{\r\n  \"name\": \"creator\",\r\n  \"email\": \"creator@creator.creator\",\r\n  \"password\": \"creator123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\"\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/account/registration",
@@ -85,7 +85,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"invited\",\r\n  \"email\": \"invited@invited.invited\",\r\n  \"password\": \"invited123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
+							"raw": "{\r\n  \"name\": \"invited\",\r\n  \"email\": \"invited@invited.invited\",\r\n  \"password\": \"invited123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\"\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/account/registration",
@@ -128,7 +128,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"teacher\",\r\n  \"email\": \"teacher@teacher.teacher\",\r\n  \"password\": \"teacher123\",\r\n  \"isTeacher\": true,\r\n  \"avatarLink\": \"http://vk.com/im\",\r\n  \"inviteCode\": \"string\"\r\n}"
+							"raw": "{\r\n  \"name\": \"teacher\",\r\n  \"email\": \"teacher@teacher.teacher\",\r\n  \"password\": \"teacher123\",\r\n  \"isTeacher\": true,\r\n  \"avatarLink\": \"http://vk.com/im\"\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/account/registration",
@@ -308,7 +308,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"some Group\",\r\n  \"description\": \"some Description\",\r\n  \"tags\": [\r\n    \"js\",\r\n    \"c#\"\r\n  ],\r\n  \"size\": 3,\r\n  \"moneyPerUser\": 100,\r\n  \"groupType\": 0,\r\n  \"isPrivate\": false\r\n}"
+							"raw": "{\r\n  \"title\": \"some Group\",\r\n  \"description\": \"some Description here ok man 30 symbols text\",\r\n  \"tags\": [\r\n    \"js\",\r\n    \"c#\",\r\n    \"c\"\r\n  ],\r\n  \"size\": 3,\r\n  \"moneyPerUser\": 100,\r\n  \"groupType\": 1,\r\n  \"isPrivate\": false\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/group/",
@@ -973,7 +973,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{creatorToken}}",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJSb2xlIjoiVW5jb25maXJtZWQiLCJVc2VySWQiOiIyIiwiZXhwIjoxNTIzMDY1MjAzLCJpc3MiOiJsb2QtbWlzaXMucnUifQ.jrXpuhWEm1XfbwIbCuht7_NOBEnxeWjAjPP4bJLiN0A",
 									"type": "string"
 								}
 							]
@@ -987,15 +987,17 @@
 									"key": "file",
 									"description": "",
 									"type": "file",
-									"src": "d6d3ca60c7d8da1eef27309698d68e61.jpg"
+									"src": "WaORp4o80Rk.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/file",
+							"raw": "http://localhost:10485/api/file",
+							"protocol": "http",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "10485",
 							"path": [
 								"api",
 								"file"
@@ -1008,6 +1010,49 @@
 				{
 					"name": "GetFile",
 					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:10485/api/file/img/2_62a76676-ec7a-4958-8c21-67f060c13ca9.jpg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10485",
+							"path": [
+								"api",
+								"file",
+								"img",
+								"2_62a76676-ec7a-4958-8c21-67f060c13ca9.jpg"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ValidationTests",
+			"description": "",
+			"item": [
+				{
+					"name": "Invalid contact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
@@ -1018,18 +1063,310 @@
 								}
 							]
 						},
-						"method": "GET",
-						"header": [],
-						"body": {},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"contacts\": [\r\n    \"http://vk1.com/1\"\r\n  ]\r\n}"
+						},
 						"url": {
-							"raw": "{{url}}/api/file/{{filename}}",
+							"raw": "{{url}}/api/user/profile/contacts",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"file",
-								"{{filename}}"
+								"user",
+								"profile",
+								"contacts"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Valid contact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"contacts\": [\r\n    \"http://vk.com/1\"\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/user/profile/contacts",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"profile",
+								"contacts"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "RegUserWithInvalidEmail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"creator\",\r\n  \"email\": \"creator@creatorcreator\",\r\n  \"password\": \"creator123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/registration",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"registration"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "RegUserWithInvalidPassword",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"creator\",\r\n  \"email\": \"creator@creator.creator\",\r\n  \"password\": \"creator\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/registration",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"registration"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "RegUserWithInvalidName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"cr\",\r\n  \"email\": \"creator@creator.creator\",\r\n  \"password\": \"creator123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/registration",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"registration"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "CreateGroupWithInvalidTags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"some Group\",\r\n  \"description\": \"some Description here ok man 30 symbols text\",\r\n  \"tags\": [\r\n    \"js\",\r\n    \"c#\"\r\n  ],\r\n  \"size\": 3,\r\n  \"moneyPerUser\": 100,\r\n  \"groupType\": 1,\r\n  \"isPrivate\": false\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/group/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								""
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "CreateGroupWithInvalidDescription",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"some Group\",\r\n  \"description\": \"some Description\",\r\n  \"tags\": [\r\n    \"js\",\r\n    \"c#\",\r\n    \"c\"\r\n  ],\r\n  \"size\": 3,\r\n  \"moneyPerUser\": 100,\r\n  \"groupType\": 1,\r\n  \"isPrivate\": false\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/group/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								""
 							]
 						},
 						"description": null
@@ -1037,6 +1374,92 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "ExitGroup",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{creatorToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/group/{{groupId}}/member/{{creatorId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"group",
+						"{{groupId}}",
+						"member",
+						"{{creatorId}}"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "GetFullGroupInfo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/group/{{groupId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"group",
+						"{{groupId}}"
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "JoinGroup",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{invitedToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{url}}/api/group/{{groupId}}/member",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"group",
+						"{{groupId}}",
+						"member"
+					]
+				},
+				"description": null
+			},
+			"response": []
 		}
 	]
 }
