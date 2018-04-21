@@ -54,7 +54,8 @@ public class ChatFragment extends Fragment implements IChatView  {
         expandablePlaceHolderView=v.findViewById(R.id.messages_list_layout);
         ImageButton btn=v.findViewById(R.id.enter_message_button);
         if(!fakesButton.getCheckButton()){
-
+            if(user!=null&&group!=null){
+                fakeChatPresenter.loadAllMessages(user.getToken(),group.getGroupInfo().getId());}
         }else{
             if(user!=null&&group!=null){
                 fakeChatPresenter.loadAllMessages(user.getToken(),group.getGroupInfo().getId());}

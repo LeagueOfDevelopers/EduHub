@@ -22,7 +22,7 @@ public class CommonFragmentForNotifications extends Fragment {
     ViewPagerAdapter adapter;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.main_fragment, null);
+        View v = inflater.inflate(R.layout.main_notifications_fragment, null);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Главная");
         InvitationFragment invitationFragment=new InvitationFragment();

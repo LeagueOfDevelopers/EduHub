@@ -45,8 +45,9 @@ public class MessageView {
     private User user;
     Context context;
     float dp;
+    static int i=0;
     RelativeLayout.LayoutParams layoutParams;
-    
+
 
 
     public MessageView(Message message, User user, Context context) {
@@ -56,12 +57,19 @@ public class MessageView {
          dp =context.getResources().getDisplayMetrics().density;
          layoutParams=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+
     }
 
     @Resolve
     private void onResolved() {
         if(message.getSenderId().equals(user.getUserId())){
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            layoutParams.setMargins(7*(int)dp,8*(int)dp,7*(int)dp,8*(int)dp);
+            cardOfMessage.setLayoutParams(layoutParams);
+            Log.d("123",i+"");
+            i++;
+        }else{
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             layoutParams.setMargins(7*(int)dp,8*(int)dp,7*(int)dp,8*(int)dp);
             cardOfMessage.setLayoutParams(layoutParams);
         }
