@@ -7,11 +7,20 @@ namespace EduHub.Extensions
 {
     public static class StringException
     {
-        public static Guid GetUserId(this string auth)
+        public static int GetUserId(this string auth)
         {
             var handler = new JwtSecurityTokenHandler();
-            var userId =
-                Guid.Parse(handler.ReadJwtToken(auth.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+            int userId;
+            try
+            {
+                userId = int.Parse(handler.ReadJwtToken(auth).Claims.First(c => c.Type == "UserId").Value);
+
+            }
+            catch(Exception e)
+            {
+                throw new ArgumentNullException(e.Message);
+            }
+
             return userId;
         }
 

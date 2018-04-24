@@ -32,12 +32,19 @@ namespace EduHubLibrary.SocketTool
             if (socket.State != WebSocketState.Open)
                 return;
 
-            await socket.SendAsync(buffer: new ArraySegment<byte>(array: Encoding.ASCII.GetBytes(message),
-                                                                  offset: 0,
-                                                                  count: message.Length),
-                                   messageType: WebSocketMessageType.Text,
-                                   endOfMessage: true,
-                                   cancellationToken: CancellationToken.None);
+            try
+            {
+                await socket.SendAsync(buffer: new ArraySegment<byte>(array: Encoding.ASCII.GetBytes(message),
+                        offset: 0,
+                        count: message.Length),
+                    messageType: WebSocketMessageType.Text,
+                    endOfMessage: true,
+                    cancellationToken: CancellationToken.None);
+            }
+            catch
+            {
+                throw new ArgumentNullException("bad handshake");
+            }
         }
 
         public async Task SendMessageAsync(string socketId, string message)

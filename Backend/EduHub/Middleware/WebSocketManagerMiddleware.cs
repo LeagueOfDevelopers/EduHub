@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using EduHub.Extensions;
 using EduHubLibrary.SocketTool;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Http;
 
 namespace EduHub.SocketTool
@@ -26,7 +25,9 @@ namespace EduHub.SocketTool
             if (!context.WebSockets.IsWebSocketRequest)
                 return;
 
-            var userId = context.Request.GetUserId();
+            var token = context.Request.Query["token"].ToString();
+            var userId = token.GetUserId();
+
             if (userId == 0)
                 return;
 
