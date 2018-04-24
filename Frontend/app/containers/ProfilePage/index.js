@@ -377,7 +377,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 {
                   this.state.isCurrentUser ?
                     <Row style={{marginBottom: 20}}>
-                      <div>Почтовый адрес</div>
+                      <div>Email</div>
                       <p style={{fontSize: 16, color: '#000'}}>
                         {this.state.userProfile.email}
                       </p>
@@ -462,7 +462,6 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                         <FormItem style={{width: '100%', marginBottom: 0}}>
                           {getFieldDecorator('aboutUser', {
                             rules: [
-                              {required: true, message: 'Пожалуйста, введите информацию о себе!'},
                               {min: 20, message: 'Должно быть не менее 20 символов!'},
                               {max: 3000, message: 'Должно быть не более 3000 символов!'}
                             ],

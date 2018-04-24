@@ -12,7 +12,7 @@ class ChatRoom extends React.Component {
   constructor(props) {
     super(props);
 
-    // const uri = `ws://localhost:10485/api/group/{groupId}/chat`;
+    const uri = `ws://localhost:10485/api/sockets/creation?token=${localStorage.getItem('token')}`;
     // this.socket = new WebSocket(uri);
 
     this.state = {
@@ -36,10 +36,10 @@ class ChatRoom extends React.Component {
     };
     socket.onmessage = function(event) {
       _this.props.getCurrentChat(_this.props.groupId);
-      console.log('message received ' + JSON.stringify(event.data));
+      console.log('message received ' + JSON.stringify(JSON.parse(event.data)));
     };
     socket.onerror = function(event) {
-      console.log("error");
+      console.log("error " + JSON.stringify(event));
     };
   }
 

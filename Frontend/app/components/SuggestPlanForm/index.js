@@ -58,7 +58,7 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
                 this.props.currentPlan ?
                   <Col span={24} className='word-break' style={{marginBottom: 10}}>
                     <span style={{marginRight: 12}}>Файл:</span>
-                    <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} target='_blank' download='plan'>
+                    <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} target='_blank' download={true}>
                       Скачать план обучения
                     </a>
                   </Col>
@@ -109,7 +109,7 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
                 this.props.currentPlan ?
                   <Col span={24} className='word-break' style={{marginBottom: 10}}>
                     <span style={{marginRight: 12}}>Файл:</span>
-                    <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} target='_blank' download='plan'>
+                    <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} target='_blank' download>
                       Скачать план обучения
                     </a>
                   </Col>

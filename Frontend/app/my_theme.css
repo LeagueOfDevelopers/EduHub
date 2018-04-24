@@ -394,7 +394,7 @@ a:focus {
 }
 
 .chatroom .chat .message {
-  box-shadow: rgba(0, 0, 0, 0.36) 0px 0px 5px -2px;
+  box-shadow: rgba(0, 0, 0, 0.36) 0px 0px 5px -1px;
   position: relative;
   padding: 5px 13px;
   border-radius: 10px;
