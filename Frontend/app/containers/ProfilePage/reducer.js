@@ -32,7 +32,10 @@ import {
   MAKE_TEACHER_SUCCESS,
   EDIT_PROFILE_FAILED,
   EDIT_PROFILE_SUCCESS,
-  EDIT_PROFILE_START
+  EDIT_PROFILE_START,
+  EDIT_SKILLS_FAILED,
+  EDIT_SKILLS_SUCCESS,
+  EDIT_SKILLS_START
 } from './constants';
 
 const initialState = fromJS({
@@ -163,6 +166,19 @@ function profilePageReducer(state = initialState, action) {
         .set('pending', false)
         .set('needUpdate', false);
     case MAKE_NOT_TEACHER_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true)
+        .set('needUpdate', false);
+    case EDIT_SKILLS_START:
+      return state
+        .set('pending', true)
+        .set('needUpdate', true);
+    case EDIT_SKILLS_SUCCESS:
+      return state
+        .set('pending', false)
+        .set('needUpdate', false);
+    case EDIT_SKILLS_FAILED:
       return state
         .set('pending', false)
         .set('error', true)

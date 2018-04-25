@@ -32,18 +32,8 @@ function appReducer(state = initialState, action) {
         localStorage.setItem('avatarLink', `${action.avatarLink}`);
         localStorage.setItem('token', `${action.token}`);
         localStorage.setItem('isTeacher', `${action.isTeacher}`);
-        location.assign('/')
-      }
-      if(action.name === 'SyntaxError') {
-        return state
-          .set('loading', false)
-          .set('error', false)
-          .setIn(['currentUser', 'name'], action.name)
-          .setIn(['currentUser', 'avatarLink'], action.avatarLink)
-          .setIn(['currentUser', 'token'], action.token)
-          .set('isExists', false)
-      }
-      else {
+        location.assign('/');
+
         return state
           .set('loading', false)
           .set('error', false)
@@ -52,6 +42,15 @@ function appReducer(state = initialState, action) {
           .setIn(['currentUser', 'token'], action.token)
           .setIn(['currentUser', 'isTeacher'], action.isTeacher)
           .set('isExists', true)
+      }
+      else {
+        return state
+          .set('loading', false)
+          .set('error', false)
+          .setIn(['currentUser', 'name'], action.name)
+          .setIn(['currentUser', 'avatarLink'], action.avatarLink)
+          .setIn(['currentUser', 'token'], action.token)
+          .set('isExists', false)
       }
 
     case LOAD_CURRENT_USER_ERROR:

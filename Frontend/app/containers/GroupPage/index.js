@@ -203,7 +203,7 @@ export class GroupPage extends React.Component {
       isTeacher: this.state.isInGroup ? Boolean(result.members.find(item =>
         item.userId == this.state.userData.UserId).role === 3) : false
     });
-    this.props.getCurrentChat(this.state.id);
+    localStorage.getItem('token') ? this.props.getCurrentChat(this.state.id) : null;
 
     if(this.state.groupData.groupInfo.courseStatus === 3) {
       setTimeout(this.onReviewClick, 1000);

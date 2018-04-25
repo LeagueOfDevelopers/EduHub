@@ -8,7 +8,8 @@ import {
   EDIT_CONTACTS,
   MAKE_TEACHER,
   MAKE_NOT_TEACHER,
-  EDIT_PROFILE_START
+  EDIT_PROFILE_START,
+  EDIT_SKILLS_START
 } from "./constants";
 import {
   getCurrentUserGroupsSuccess,
@@ -28,7 +29,9 @@ import {
   makeTeacherFailed,
   makeTeacherSuccess,
   editProfileSuccess,
-  editProfileFailed
+  editProfileFailed,
+  editSkillsFailed,
+  editSkillsSuccess
 } from "./actions";
 import config from '../../config';
 
@@ -102,7 +105,6 @@ function makeNotTeacher() {
 function* editProfileSaga(action) {
   try {
     const {name, avatarLink} = yield action;
-    yield call(console.log, name, avatarLink)
     yield call(editProfile, name, action.aboutUser, action.gender, action.contacts, action.birthYear, avatarLink);
     yield put(editProfileSuccess(name, avatarLink))
   }
@@ -256,6 +258,31 @@ function editContacts(contacts) {
     .catch(error => error)
 }
 
+function* editSkillsSaga(action) {
+  try {
+    yield call(editSkills, action.skills);
+    yield put(editSkillsSuccess())
+  }
+  catch(e) {
+    yield put(editSkillsFailed(e))
+  }
+}
+
+function editSkills(skills) {
+  return fetch(`${config.API_BASE_URL}/user/profile/teaching/skills`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      newSkills: skills
+    })
+  })
+    .then(res => res.json())
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(GET_CURRENT_USER_GROUPS, getUserGroupsSaga);
   yield takeEvery(EDIT_NAME, editUsernameSaga);
@@ -266,4 +293,5 @@ export default function* () {
   yield takeEvery(MAKE_TEACHER, makeTeacherSaga);
   yield takeEvery(MAKE_NOT_TEACHER, makeNotTeacherSaga);
   yield takeEvery(EDIT_PROFILE_START, editProfileSaga);
+  yield takeEvery(EDIT_SKILLS_START, editSkillsSaga);
 }

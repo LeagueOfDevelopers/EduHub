@@ -12,7 +12,7 @@ export default class Message extends React.Component {
       this.props.message ?
         <li className={`message ${parseJwt(localStorage.getItem('token')).UserId == this.props.message.senderId ? "right" : "left"}`}>
           {parseJwt(localStorage.getItem('token')).UserId != this.props.message.senderId
-          && <span style={{opacity: 0.8}}>{this.props.message.senderId}</span>
+          && <span style={{opacity: 0.8}}>{this.props.message.senderName}</span>
           }
           <p style={{margin: '6px 0'}}>{this.props.message.text}</p>
           <div style={{textAlign: 'right', fontSize: 14, opacity: 0.5}}>

@@ -345,13 +345,20 @@ a:focus {
   font-size: 20px;
 }
 
-
+.teacher-container {
+  border-radius: 4px;
+  overflow: auto;
+  padding: 8px 16px;
+}
 
 .member-container {
   border-radius: 4px;
   overflow: auto;
   padding: 8px 16px;
-  height: 400px;
+}
+
+.teacher-container .ant-list-item-meta {
+  min-width: 90%;
 }
 
 .member-container .ant-list-item-meta {

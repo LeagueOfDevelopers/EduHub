@@ -12,8 +12,8 @@ class ChatRoom extends React.Component {
   constructor(props) {
     super(props);
 
-    const uri = `ws://localhost:10485/api/sockets/creation?token=${localStorage.getItem('token')}`;
-    // this.socket = new WebSocket(uri);
+    const uri = `ws://85.143.104.47:2411/api/sockets/creation?token=${localStorage.getItem('token')}`;
+    this.socket = new WebSocket(uri);
 
     this.state = {
       messages: [],
@@ -22,7 +22,7 @@ class ChatRoom extends React.Component {
   }
 
   componentDidMount() {
-    // this.connectSocket(this.socket);
+    localStorage.getItem('token') ? this.connectSocket(this.socket) : null;
     this.scrollToBottom();
   }
 
@@ -50,7 +50,7 @@ class ChatRoom extends React.Component {
   }
 
   componentWillUnmount() {
-    // this.socket.close()
+    this.socket.close()
   }
 
   scrollToBottom() {

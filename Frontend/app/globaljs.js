@@ -42,6 +42,23 @@ export function getGender(enumType) {
   }
 }
 
+export function getGenderType(gender) {
+  switch (gender) {
+    case 'Неизвестно':
+      return 0;
+    case 'Мужской':
+      return 1;
+    case 'Женский':
+      return 2;
+    case 'Unknown':
+      return 0;
+    case 'Man':
+      return 1;
+    case 'Woman':
+      return 2;
+  }
+}
+
 export function getCourseStatus(enumType) {
   switch (enumType) {
     case 0:

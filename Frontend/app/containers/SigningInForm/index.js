@@ -34,7 +34,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
     };
 
     this.login = this.login.bind(this);
@@ -43,11 +43,12 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
   }
 
   onHandleEmailChange = (e) => {
-    this.setState({email: e.target.value})
+    this.setState({email: e.target.value, isExists: true});
+    setTimeout(() => console.log(this.state.isExists), 0)
   };
 
   onHandlePasswordChange = (e) => {
-    this.setState({password: e.target.value})
+    this.setState({password: e.target.value, isExists: true})
   };
 
   login = (email, password) => {

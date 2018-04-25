@@ -21,11 +21,12 @@ import {
   editContacts,
   makeTeacher,
   makeNotTeacher,
-  editProfile
+  editProfile,
+  editSkills
 } from "./actions";
 import reducer from './reducer';
 import saga from './saga';
-import {parseJwt, getGender} from "../../globalJS";
+import {parseJwt, getGender, getGenderType} from "../../globalJS";
 import config from '../../config';
 import {Link} from "react-router-dom";
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
@@ -168,6 +169,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       nameInput: '',
       genderInput: 'Unknown',
       birthYearInput: 1900,
+      skillsInput: [],
       aboutInput: '',
       imageUrl: null,
       avatarLoading: false,
@@ -258,7 +260,6 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.setState({contactsInputs: this.state.contactsInputs.map((item, index) =>
       index === i ? e.target.value : item
     )})
-    console.log(this.state.contactsInputs)
   };
 
   cancelChanges = () => {
@@ -281,12 +282,21 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
         if(this.state.contactsInputs.length !== this.state.userProfile.contacts.length || this.state.contactsInputs.filter((item, i) =>
             item !== this.state.userProfile.contacts[i]
           ).length !== 0 || this.state.aboutInput !== this.state.userProfile.aboutUser || this.state.birthYearInput !== this.state.userProfile.birthYear ||
-          this.state.genderInput !== getGender(this.state.userProfile.gender) || this.state.nameInput !== this.state.userProfile.name || this.state.imageUrl !== this.state.userProfile.avatarLink) {
+          getGenderType(this.state.genderInput) !== this.state.userProfile.gender || this.state.nameInput !== this.state.userProfile.name || this.state.imageUrl !== this.state.userProfile.avatarLink) {
           setTimeout(() => this.props.editProfile(this.state.nameInput, this.state.aboutInput, this.state.genderInput, this.state.contactsInputs, this.state.birthYearInput, this.state.imageUrl ? this.state.imageUrl : ''), 0);
+        }
+        if(this.state.teacherProfile.skills && (this.state.skillsInput.length !== this.state.teacherProfile.skills.length || this.state.skillsInput.filter((item, i) =>
+            item !== this.state.teacherProfile.skills[i]
+          ).length !== 0) || !this.state.teacherProfile.skills) {
+          setTimeout(() => this.props.editSkills(this.state.skillsInput), 0);
         }
         this.setState({isEditing: false});
       }
     })
+  };
+
+  onChangeSkillsHandle = (e) => {
+    this.setState({skillsInput: e})
   };
 
   handleAvatarLinkChange = (info) => {
@@ -435,17 +445,30 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                           {this.state.teacherProfile.skills &&
                           this.state.teacherProfile.skills.length !== 0 ?
                             this.state.teacherProfile.skills.map((item) =>
-                              <Link to="#" key={item}>{item}</Link>
+                              <Link to="#" key={item}>{item} </Link>
                             )
                             :
                             !this.state.isEditing && this.state.isCurrentUser ? (
-                                <div>
-                                  <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
-                                  <span onClick={() => this.setState({isEditing: true})} style={{color: '#52c41a', marginTop: 4, cursor: 'pointer'}}>
-                                Теперь вы можете указать свои навыки!
-                              </span>
-                                </div>
+                              <div>
+                                <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
+                                {
+                                  this.state.teacherProfile.skills && this.state.teacherProfile.skills.length === 0 ?
+                                    <span onClick={() => this.setState({isEditing: true})} style={{color: '#1890ff', marginTop: 4, cursor: 'pointer'}}>
+                                      Теперь вы можете указать свои навыки!
+                                    </span>
+                                    : null
+                                }
+                              </div>
                               )
+                              : this.state.isEditing ?
+                              <FormItem style={{width: '100%', marginBottom: 0}}>
+                                {getFieldDecorator('skills', {
+                                  rules: [],
+                                  initialValue: this.state.teacherProfile.skills
+                                })(
+                                  <Select onChange={this.onChangeSkillsHandle} style={{width: '100%'}} mode="tags" placeholder="Введите свои навыки" notFoundContent={null}/>)
+                                }
+                              </FormItem>
                               : null
                           }
                         </p>
@@ -606,43 +629,43 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 }
               </TabPane>
               {this.state.teacherProfile ? (
-                <TabPane tab="Профиль преподавателя" key="2" className='teacher-panel' style={{margin: '16px 0'}}>
-                  {this.state.teacherProfile.reviews && this.state.teacherProfile.reviews.length !== 0 ?
-                    this.state.teacherProfile.reviews.map((item, index) =>
-                      <Card key={index} hoverable className='teacher-review'>
-                        <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 10}}>
-                          <Col style={{fontWeight: 700, fontSize: 16}}>{item.fromUser}</Col>
-                          <Col style={{opacity: 0.7}}>{`${new Date(item.date).getDate() < 10 ?
-                            '0' + new Date(item.date).getDate()
-                            : new Date(item.date).getDate()}.${new Date(item.date).getMonth() < 10 ?
-                            '0' + new Date(item.date).getMonth()
-                            : new Date(item.date).getMonth()}.${new Date(item.date).getFullYear()}`}</Col>
-                        </Row>
-                        <Row style={{marginBottom: 2}}>
-                          <Col style={{fontWeight: 500}}>{item.title}</Col>
-                        </Row>
-                        <Row>
-                          <Col>{item.text}</Col>
-                        </Row>
-                      </Card>
-                    )
-                    :
-                    <Row type='flex' justify='center'>
-                      Отзывов пока нет
-                    </Row>
-                  }
-                </TabPane>)
+                  <TabPane tab="Профиль преподавателя" key="2" className='teacher-panel' style={{margin: '16px 0'}}>
+                    {this.state.teacherProfile.reviews && this.state.teacherProfile.reviews.length !== 0 ?
+                      this.state.teacherProfile.reviews.map((item, index) =>
+                        <Card key={index} hoverable className='teacher-review'>
+                          <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 10}}>
+                            <Col style={{fontWeight: 700, fontSize: 16}}>{item.fromUser}</Col>
+                            <Col style={{opacity: 0.7}}>{`${new Date(item.date).getDate() < 10 ?
+                              '0' + new Date(item.date).getDate()
+                              : new Date(item.date).getDate()}.${new Date(item.date).getMonth() < 10 ?
+                              '0' + new Date(item.date).getMonth()
+                              : new Date(item.date).getMonth()}.${new Date(item.date).getFullYear()}`}</Col>
+                          </Row>
+                          <Row style={{marginBottom: 2}}>
+                            <Col style={{fontWeight: 500}}>{item.title}</Col>
+                          </Row>
+                          <Row>
+                            <Col>{item.text}</Col>
+                          </Row>
+                        </Card>
+                      )
+                      :
+                      <Row type='flex' justify='center'>
+                        Отзывов пока нет
+                      </Row>
+                    }
+                  </TabPane>)
                 : null
               }
               {this.state.userData && this.props.match.params.id === this.state.userData.UserId ? (
-                <TabPane tab="Панель администратора" key="3" style={{minHeight: 300}}>
-                  <Link to={`/admin/${this.props.match.params.id}`} style={{color: '#747474'}}>
-                    <div style={{textAlign: 'center', fontSize: 26, padding: '100px 0'}}>
-                      <span>Нажмите, чтобы перейти в панель администратора</span>
-                      <Icon type="bar-chart" style={{fontSize: 60, marginTop: 20, display: 'block'}}/>
-                    </div>
-                  </Link>
-                </TabPane>)
+                  <TabPane tab="Панель администратора" key="3" style={{minHeight: 300}}>
+                    <Link to={`/admin/${this.props.match.params.id}`} style={{color: '#747474'}}>
+                      <div style={{textAlign: 'center', fontSize: 26, padding: '100px 0'}}>
+                        <span>Нажмите, чтобы перейти в панель администратора</span>
+                        <Icon type="bar-chart" style={{fontSize: 60, marginTop: 20, display: 'block'}}/>
+                      </div>
+                    </Link>
+                  </TabPane>)
                 : null
               }
             </Tabs>
@@ -676,6 +699,7 @@ function mapDispatchToProps(dispatch) {
     editGender: (gender) => dispatch(editGender(gender)),
     makeTeacher: () => dispatch(makeTeacher()),
     makeNotTeacher: () => dispatch(makeNotTeacher()),
+    editSkills: (skills) => dispatch(editSkills(skills)),
     editProfile: (name, aboutUser, gender, contacts, birthYear, avatarLink) => dispatch(editProfile(name, aboutUser, gender, contacts, birthYear, avatarLink))
   };
 }

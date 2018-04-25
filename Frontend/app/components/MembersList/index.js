@@ -27,49 +27,99 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
 
   render() {
     return (
-      <div className='group-member-list' style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 0px 6px -2px'}}>
-        <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 2px 6px -2px rgba(0,0,0,0.36)'}}>
-          <Col>Участники</Col>
-          <Col>{this.props.memberAmount + '/' + this.props.size}</Col>
-        </Row>
-        <div className="member-container">
-          <List
-            dataSource={this.props.members}
-            renderItem={item => (
-              <List.Item key={item.userId}>
-                <List.Item.Meta
-                  avatar={
-                    <Avatar
-                      src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
-                    />}
-                  title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
-                  description={getMemberRole(item.role)}
-                />
-                {this.props.isCreator && item.role !== 2 ?
-                  (<Popconfirm
-                    title='Удалить участника?'
-                    onConfirm={() =>
-                      this.props.leaveGroup(this.props.groupId, item.userId, item.role === 3 ?
-                        'Teacher'
-                        : item.role === 1 ?
-                        'Member'
-                          : null
-                      )
-                    }
-                    okText="Да"
-                    cancelText="Нет"
-                  >
-                    <Icon
-                      style={{fontSize: 18, cursor: 'pointer'}}
-                      type="close"
-                    />
-                  </Popconfirm>)
-                  : null
-                }
-              </List.Item>
-            )}
-          >
-          </List>
+      <div className='group-member-list' style={{boxShadow: 'rgba(0, 0, 0, 0.4) 0px 1px 8px -2px'}}>
+        {
+          this.props.members.find(item => item.role === 3) ?
+            <div>
+              <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 2px 6px -2px rgba(0,0,0,0.36)'}}>
+                <Col>Преподаватель</Col>
+              </Row>
+              <div className="teacher-container">
+                <List
+                  dataSource={this.props.members.filter(item => item.role === 3)}
+                  renderItem={item => (
+                    <List.Item key={item.userId}>
+                      <List.Item.Meta
+                        avatar={
+                          <Avatar
+                            src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
+                          />}
+                        title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
+                        description={getMemberRole(item.role)}
+                      />
+                      {this.props.isCreator && item.role !== 2 ?
+                        (<Popconfirm
+                          title='Удалить участника?'
+                          onConfirm={() =>
+                            this.props.leaveGroup(this.props.groupId, item.userId, item.role === 3 ?
+                              'Teacher'
+                              : item.role === 1 ?
+                                'Member'
+                                : null
+                            )
+                          }
+                          okText="Да"
+                          cancelText="Нет"
+                        >
+                          <Icon
+                            style={{fontSize: 18, cursor: 'pointer'}}
+                            type="close"
+                          />
+                        </Popconfirm>)
+                        : null
+                      }
+                    </List.Item>
+                  )}
+                >
+                </List>
+              </div>
+            </div>
+            : null
+        }
+        <div>
+          <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 1px 8px -2px rgba(0,0,0,0.36)'}}>
+            <Col>Участники</Col>
+            <Col>{this.props.memberAmount + '/' + this.props.size}</Col>
+          </Row>
+          <div className="member-container">
+            <List
+              dataSource={this.props.members.filter(item => item.role !== 3)}
+              renderItem={item => (
+                <List.Item key={item.userId}>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
+                      />}
+                    title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
+                    description={getMemberRole(item.role)}
+                  />
+                  {this.props.isCreator && item.role !== 2 ?
+                    (<Popconfirm
+                      title='Удалить участника?'
+                      onConfirm={() =>
+                        this.props.leaveGroup(this.props.groupId, item.userId, item.role === 3 ?
+                          'Teacher'
+                          : item.role === 1 ?
+                            'Member'
+                            : null
+                        )
+                      }
+                      okText="Да"
+                      cancelText="Нет"
+                    >
+                      <Icon
+                        style={{fontSize: 18, cursor: 'pointer'}}
+                        type="close"
+                      />
+                    </Popconfirm>)
+                    : null
+                  }
+                </List.Item>
+              )}
+            >
+            </List>
+          </div>
         </div>
       </div>
     );

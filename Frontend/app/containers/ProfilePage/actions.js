@@ -31,7 +31,10 @@ import {
   MAKE_TEACHER_SUCCESS,
   EDIT_PROFILE_START,
   EDIT_PROFILE_SUCCESS,
-  EDIT_PROFILE_FAILED
+  EDIT_PROFILE_FAILED,
+  EDIT_SKILLS_FAILED,
+  EDIT_SKILLS_START,
+  EDIT_SKILLS_SUCCESS
 } from './constants';
 
 export function getCurrentUserGroups(id) {
@@ -225,6 +228,27 @@ export function makeNotTeacherSuccess() {
 export function makeNotTeacherFailed(error) {
   return {
     type: MAKE_NOT_TEACHER_FAILED,
+    error
+  };
+}
+
+export function editSkills(skills) {
+  return {
+    type: EDIT_SKILLS_START,
+    skills
+  };
+}
+
+export function editSkillsSuccess() {
+  return {
+    type: EDIT_SKILLS_SUCCESS
+  };
+}
+
+
+export function editSkillsFailed(error) {
+  return {
+    type: EDIT_SKILLS_FAILED,
     error
   };
 }
