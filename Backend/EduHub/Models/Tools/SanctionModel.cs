@@ -9,18 +9,6 @@ namespace EduHub.Models.Tools
 {
     public class SanctionModel
     {
-        public SanctionModel(string brokenRule, int userId, SanctionType sanctionType)
-        {
-            BrokenRule = brokenRule;
-            UserId = userId;
-            SanctionType = sanctionType;
-        }
-
-        public SanctionModel(string brokenRule, int userId, SanctionType sanctionType, DateTimeOffset expirationDate) : this(brokenRule, userId, sanctionType)
-        {
-            ExpirationDate = expirationDate;
-        }
-
         [Required]
         public string BrokenRule { get; set; }
         [Required]

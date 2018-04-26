@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Facades.Views;
 
 namespace EduHub.Models.Tools
 {
     public class UserProfileModel
     {
         public UserProfileModel(string name, string aboutUser, int birthYear, Gender gender,
-            bool isTeacher, string avatarLink, List<string> contacts, List<Sanction> sanctions)
+            bool isTeacher, string avatarLink, List<string> contacts, List<SanctionView> sanctions)
         {
             Name = name;
             AboutUser = aboutUser;
@@ -26,6 +27,6 @@ namespace EduHub.Models.Tools
         public bool IsTeacher { get; set; }
         public string AvatarLink { get; set; }
         public List<string> Contacts { get; set; }
-        public List<Sanction> Sanctions { get; set; }
+        public List<SanctionView> Sanctions { get; set; }
     }
 }

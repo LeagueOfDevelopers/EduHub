@@ -1,10 +1,13 @@
 ﻿using EduHub.Extensions;
+using EduHub.Models.SanctionsController;
 using EduHub.Models.Tools;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EduHub.Controllers
 {
@@ -50,12 +53,13 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize(Policy = "AdminAndModeratorsOnly")]
         [HttpGet]
-        [SwaggerResponse(200, Type = typeof(Sanction))]
+        [SwaggerResponse(200, Type = typeof(SanctionsResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult GetAll()
         {
-            var response = _sanctionFacade.GetAll();
+            var sanctions = _sanctionFacade.GetAll();
+            SanctionsResponse response = new SanctionsResponse(sanctions);
             return Ok(response);
         }
 
@@ -65,12 +69,13 @@ namespace EduHub.Controllers
         [Authorize(Policy = "AdminAndModeratorsOnly")]
         [HttpGet]
         [Route("active")]
-        [SwaggerResponse(200, Type = typeof(Sanction))]
+        [SwaggerResponse(200, Type = typeof(SanctionsResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult GetAllActive()
         {
-            var response = _sanctionFacade.GetAllActive();
+            var sanctions = _sanctionFacade.GetAllActive();
+            SanctionsResponse response = new SanctionsResponse(sanctions);
             return Ok(response);
         }
 

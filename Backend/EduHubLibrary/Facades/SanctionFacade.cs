@@ -8,6 +8,7 @@ using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Events;
 using System.Linq;
+using EduHubLibrary.Facades.Views;
 
 namespace EduHubLibrary.Facades
 {
@@ -69,30 +70,64 @@ namespace EduHubLibrary.Facades
             _sanctionRepository.Update(currentSanction);
         }
 
-        public IEnumerable<Sanction> GetAll()
+        public IEnumerable<SanctionView> GetAll()
         {
-            return _sanctionRepository.GetAll();
+            var sanctions = new List<SanctionView>();
+            _sanctionRepository.GetAll().ToList().ForEach(s =>
+            {
+                var username = _userRepository.GetUserById(s.UserId).UserProfile.Name;
+                sanctions.Add(new SanctionView(s.Id, s.BrokenRule, s.UserId, username, s.ModeratorId, s.IsTemporary,
+                    s.ExpirationDate, s.Type, s.IsActive));
+            });
+
+            return sanctions;
         }
 
-        public IEnumerable<Sanction> GetAllActiveOfUser(int userId)
+        public IEnumerable<SanctionView> GetAllActiveOfUser(int userId)
         {
             Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(GetAllOfUser),
                 opt => opt.WithException(new UserNotFoundException(userId)));
 
-            return _sanctionRepository.GetAllOfUser(userId).Where(s => s.IsActive);
+            var username = _userRepository.GetUserById(userId).UserProfile.Name;
+            var sanctions = new List<SanctionView>();
+
+            _sanctionRepository.GetAllOfUser(userId).Where(s => s.IsActive).ToList().ForEach(s =>
+            {
+                sanctions.Add(new SanctionView(s.Id, s.BrokenRule, s.UserId, username, s.ModeratorId, s.IsTemporary,
+                    s.ExpirationDate, s.Type, s.IsActive));
+            });
+
+            return sanctions;
         }
 
-        public IEnumerable<Sanction> GetAllActive()
+        public IEnumerable<SanctionView> GetAllActive()
         {
-            return _sanctionRepository.GetAllActive();
+            var sanctions = new List<SanctionView>();
+            _sanctionRepository.GetAllActive().ToList().ForEach(s =>
+            {
+                var username = _userRepository.GetUserById(s.UserId).UserProfile.Name;
+                sanctions.Add(new SanctionView(s.Id, s.BrokenRule, s.UserId, username, s.ModeratorId, s.IsTemporary,
+                    s.ExpirationDate, s.Type, s.IsActive));
+             });
+
+            return sanctions;
         }
 
-        public IEnumerable<Sanction> GetAllOfUser(int userId)
+        public IEnumerable<SanctionView> GetAllOfUser(int userId)
         {
             Ensure.Any.IsNotNull(_userRepository.GetUserById(userId), nameof(GetAllOfUser),
                 opt => opt.WithException(new UserNotFoundException(userId)));
 
-            return _sanctionRepository.GetAllOfUser(userId);
+            var username = _userRepository.GetUserById(userId).UserProfile.Name;
+            var sanctions = new List<SanctionView>();
+
+            _sanctionRepository.GetAllOfUser(userId).ToList().ForEach(s =>
+            {
+                sanctions.Add(new SanctionView(s.Id, s.BrokenRule, s.UserId, username, s.ModeratorId, s.IsTemporary,
+                    s.ExpirationDate, s.Type, s.IsActive));
+            });
+
+            return sanctions;
         }
     }
 }

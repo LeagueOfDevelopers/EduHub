@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Facades.Views;
 
 namespace EduHubLibrary.Facades
 {
@@ -12,9 +13,9 @@ namespace EduHubLibrary.Facades
             DateTimeOffset expirationDate);
 
         void CancelSanction(int sanctionId);
-        IEnumerable<Sanction> GetAll();
-        IEnumerable<Sanction> GetAllOfUser(int userId);
-        IEnumerable<Sanction> GetAllActiveOfUser(int userId);
-        IEnumerable<Sanction> GetAllActive();
+        IEnumerable<SanctionView> GetAll();
+        IEnumerable<SanctionView> GetAllOfUser(int userId);
+        IEnumerable<SanctionView> GetAllActiveOfUser(int userId);
+        IEnumerable<SanctionView> GetAllActive();
     }
 }

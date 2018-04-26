@@ -10,7 +10,7 @@ namespace EduHub.Models.UserProfileControllerModels
         [StringLength(70, MinimumLength = 3)]
         [RegularExpression(@"[a-zA-Zа-яА-Я\s]+")]
         public string Name { get; set; }
-        [StringLength(3000, MinimumLength = 20)]
+        [StringLength(3000)]
         public string AboutUser { get; set; }
         public Gender Gender { get; set; }
         public string AvatarLink { get; set; }

@@ -40,7 +40,7 @@ namespace EduHubLibrary.Facades
             CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
 
             var currentUser = _userRepository.GetUserById(userId);
-            currentUser.UserProfile.AboutUser = Ensure.Any.IsNotNull(newAboutUser);
+            currentUser.UserProfile.AboutUser = newAboutUser;
             _userRepository.Update(currentUser);
         }
 
@@ -133,7 +133,7 @@ namespace EduHubLibrary.Facades
 
             var currentUser = _userRepository.GetUserById(userId);
             currentUser.UserProfile.Name = Ensure.String.IsNotNullOrWhiteSpace(newName);
-            currentUser.UserProfile.AboutUser = Ensure.String.IsNotNullOrWhiteSpace(newAboutUser);
+            currentUser.UserProfile.AboutUser = newAboutUser;
             currentUser.UserProfile.Gender = newGender;
 
             if (newAvatarLink.Length == 0)
