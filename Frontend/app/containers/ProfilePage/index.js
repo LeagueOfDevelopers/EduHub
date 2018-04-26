@@ -30,6 +30,7 @@ import {parseJwt, getGender, getGenderType} from "../../globalJS";
 import config from '../../config';
 import {Link} from "react-router-dom";
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
+import MakeReportModal from '../../components/MakeReportModal';
 import {Card, Col, Row, Avatar, Tabs, Input, InputNumber, Select, Button, Icon, Upload, Form} from 'antd';
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
@@ -175,10 +176,13 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       avatarLoading: false,
       contactsInputs: [],
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
-      isCurrentUser: false
+      isCurrentUser: false,
+      reportVisible: false
     };
 
     this.onSetResult = this.onSetResult.bind(this);
+    this.onReportClick = this.onReportClick.bind(this);
+    this.handleReportCancel = this.handleReportCancel.bind(this);
     this.getCurrentUser = this.getCurrentUser.bind(this);
     this.onChangeNameHandle = this.onChangeNameHandle.bind(this);
     this.onChangeGenderHandle = this.onChangeGenderHandle.bind(this);
@@ -191,10 +195,18 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.handleAvatarLinkChange = this.handleAvatarLinkChange.bind(this);
   }
 
+  onReportClick = () => {
+    this.setState({reportVisible: true})
+  };
+
+  handleReportCancel = () => {
+    this.setState({reportVisible: false})
+  };
+
   componentDidMount() {
     if(localStorage.getItem('without_server') !== 'true') {
-      this.props.getCurrentUserGroups(this.props.match.params.id);
       this.getCurrentUser(this.props.match.params.id);
+      this.props.getCurrentUserGroups(this.props.match.params.id);
     }
     else {
       this.onSetResult(defaultUserData)
@@ -228,7 +240,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       birthYearInput: result.userProfile.birthYear ? result.userProfile.birthYear : 1900,
       aboutInput: result.userProfile.aboutUser ? result.userProfile.aboutUser : '',
       contactsInputs: result.userProfile.contacts ? result.userProfile.contacts : [],
-      isCurrentUser: Boolean(this.props.match.params.id == this.state.userData.UserId)
+      isCurrentUser: Boolean(this.state.userData && this.props.match.params.id == this.state.userData.UserId)
     });
   };
 
@@ -602,6 +614,14 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                 </Button>
               : null
             }
+            {this.state.isCurrentUser ? null :
+                <Button
+                  onClick={this.onReportClick}
+                  style={{width: '100%', marginTop: 12}}
+                >
+                  Пожаловаться
+                </Button>
+            }
           </Col>
           <Col xs={{span: 24}} md={{span: 12, offset: 1}} lg={{span: 13, offset: 1}} xl={{span: 15, offset: 1}} xxl={{span: 17, offset: 1}} className='lg-center-container-item xs-groups-tabs'>
             <Tabs defaultActiveKey="1" style={{width: '100%'}}>
@@ -671,6 +691,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             </Tabs>
           </Col>
         </Col>
+        <MakeReportModal visible={this.state.reportVisible} handleCancel={this.handleReportCancel} userId={this.props.match.params.id} username={this.state.userProfile.name}/>
       </div>
     );
   }

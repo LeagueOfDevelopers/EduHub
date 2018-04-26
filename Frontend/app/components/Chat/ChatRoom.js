@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { sendMessage, getCurrentChat } from "../../containers/GroupPage/actions";
 import { connectSockets } from "../../globalJS";
-import {Input} from 'antd';
+import {Input, Avatar, Row, Col} from 'antd';
 import Message from './Message';
 
 class ChatRoom extends React.Component {
@@ -13,7 +13,7 @@ class ChatRoom extends React.Component {
     super(props);
 
     const uri = `ws://85.143.104.47:2411/api/sockets/creation?token=${localStorage.getItem('token')}`;
-    this.socket = new WebSocket(uri);
+    localStorage.getItem('token') ? this.socket = new WebSocket(uri) : null;
 
     this.state = {
       messages: [],
@@ -47,10 +47,16 @@ class ChatRoom extends React.Component {
     if(prevProps.chat && this.props.chat && (prevProps.chat.length !== this.props.chat.length) || !prevProps.chat && this.props.chat) {
       this.scrollToBottom()
     }
+
+    if(prevProps.isInGroup !== this.props.isInGroup) {
+      if(this.props.isInGroup) {
+        this.setState({showIsInGroupError: false})
+      }
+    }
   }
 
   componentWillUnmount() {
-    this.socket.close()
+    localStorage.getItem('token') ? this.socket.close() : null
   }
 
   scrollToBottom() {
@@ -58,7 +64,8 @@ class ChatRoom extends React.Component {
   }
 
   submitMessage(e) {
-    e.preventDefault();
+    e ? e.preventDefault() : null;
+
     if(!this.props.isInGroup) {
       this.setState({showIsInGroupError: true})
     }
@@ -73,7 +80,7 @@ class ChatRoom extends React.Component {
             {
               id: Math.random(),
               username: localStorage.getItem('name'),
-              content: ReactDom.findDOMNode(this.msgInput).value,
+              text: ReactDom.findDOMNode(this.msgInput).value,
               time: new Date().getHours() + ':' + (new Date().getMinutes()<10 ? '0' : '') + new Date().getMinutes()
             }
           ])
@@ -82,35 +89,45 @@ class ChatRoom extends React.Component {
       : null;
 
     ReactDom.findDOMNode(this.msgInput).value = '';
+    ReactDom.findDOMNode(this.msgInput).focus();
   }
 
   render() {
     return (
-      <div className='chatroom'>
-        <div className='header'>Чат</div>
-        <div>
-          <ul className='chat' ref={chat => this.chat = chat}>
-            {localStorage.getItem('withoutServer') === 'true' ?
-              this.state.messages.map(msg =>
-                <Message key={msg.id} message={msg} user={localStorage.getItem('name')}/>
-              )
-              :
-              this.props.chat ?
-                this.props.chat.map(msg =>
-                  <Message key={msg.id} message={msg}/>
+      <div>
+        <div className='chatroom'>
+          <div className='header'>Чат</div>
+          <div style={{overflowX: 'hidden'}}>
+            <ul className='chat' ref={chat => this.chat = chat}>
+              {localStorage.getItem('withoutServer') === 'true' ?
+                this.state.messages.map(msg =>
+                  <Message key={msg.id} message={msg} user={localStorage.getItem('name')}/>
                 )
                 :
-                [].map((msg, index) =>
-                  <Message key={index}/>
-                )
-            }
-          </ul>
-          <form className='input' onSubmit={event => this.submitMessage(event)}>
-            <Input size='large' ref={input => this.msgInput = input} placeholder='Введите сообщение' />
-          </form>
+                this.props.chat ?
+                  this.props.chat.map((msg, index) =>
+                    <Message key={msg.id ? msg.id : Math.random()} message={msg}/>
+                  )
+                  :
+                  [].map((msg, index) =>
+                    <Message key={index}/>
+                  )
+              }
+            </ul>
+            <form className='input' onSubmit={event => this.submitMessage(event)}>
+              <Row type='flex'>
+                <Col style={{width: 'calc(100% - 44px)'}}>
+                  <Input size='large' style={{width: '100%'}} ref={input => this.msgInput = input} placeholder='Введите сообщение' />
+                </Col>
+                <Col style={{display: 'flex', height: 40, alignItems: 'center', justifyContent: 'flex-end', minWidth: 24, marginRight: 20}}>
+                  <img src={require('../../images/send-blue.svg')} onClick={() => this.submitMessage()} className='send-msg-btn'/>
+                </Col>
+              </Row>
+            </form>
+          </div>
         </div>
         {this.state.showIsInGroupError ?
-          (<div style={{color: 'red'}}>Вы должны вступить в группу</div>)
+          (<div style={{color: 'red', marginTop: 4}}>Вы должны вступить в группу</div>)
           : ''
         }
       </div>

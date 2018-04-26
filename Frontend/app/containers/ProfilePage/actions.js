@@ -34,7 +34,10 @@ import {
   EDIT_PROFILE_FAILED,
   EDIT_SKILLS_FAILED,
   EDIT_SKILLS_START,
-  EDIT_SKILLS_SUCCESS
+  EDIT_SKILLS_SUCCESS,
+  MAKE_REPORT_FAILED,
+  MAKE_REPORT_START,
+  MAKE_REPORT_SUCCESS
 } from './constants';
 
 export function getCurrentUserGroups(id) {
@@ -249,6 +252,29 @@ export function editSkillsSuccess() {
 export function editSkillsFailed(error) {
   return {
     type: EDIT_SKILLS_FAILED,
+    error
+  };
+}
+
+export function makeReport(userId, reason, description) {
+  return {
+    type: MAKE_REPORT_START,
+    userId,
+    reason,
+    description
+  };
+}
+
+export function makeReportSuccess() {
+  return {
+    type: MAKE_REPORT_SUCCESS
+  };
+}
+
+
+export function makeReportFailed(error) {
+  return {
+    type: MAKE_REPORT_FAILED,
     error
   };
 }

@@ -125,6 +125,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             showArrow={false}
             onChange={this.handleSelectChange}
             notFoundContent='Ничего не найдено'
+            onSelect={(e) => e.preventDefault()}
           >
             <OptGroup key={1} label={(
               <Col>
@@ -135,7 +136,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
               {
                 this.props.users.map((item, index) =>
                   index < selectItemsCount ?
-                    <Option className='search-option-item' key={item.name}>
+                    <Option className='search-option-item' value={item.name + item.id + 'user'}>
                       <Link
                         className='search-user-link'
                         to={`/profile/${item.id}`}
@@ -166,7 +167,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
               {
                 this.props.groups.map((item, index) =>
                   index < selectItemsCount ?
-                    <Option className='search-option-item' key={item.groupInfo.title}>
+                    <Option className='search-option-item' value={item.groupInfo.title + item.groupInfo.id + 'group'}>
                       <Link
                         className='search-user-link'
                         to={`/group/${item.groupInfo.id}`}

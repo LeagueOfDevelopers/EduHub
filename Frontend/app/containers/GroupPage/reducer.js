@@ -68,12 +68,13 @@ import {
   FINISH_COURSE_START
 } from './constants';
 import {message} from "antd";
+import {parseJwt} from "../../globalJS";
 
 const initialState = fromJS({
   username: '',
   groupId: '',
   users: [],
-  chat: null,
+  chat: [],
   tags: [],
   currentPlan: null,
   needUpdate: false,
@@ -288,7 +289,8 @@ function groupPageReducer(state = initialState, action) {
     case SEND_MESSAGE_START:
       return state
         .set('pending', true)
-        .set('needUpdate', true);
+        .set('needUpdate', true)
+        .set('chat', state.toJS().chat.concat({text: action.text, senderId: parseJwt(localStorage.getItem('token')).UserId, sentOn: new Date()}));
     case SEND_MESSAGE_SUCCESS:
       return state
         .set('pending', false)

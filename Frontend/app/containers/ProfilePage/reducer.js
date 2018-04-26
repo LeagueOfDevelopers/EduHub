@@ -35,8 +35,12 @@ import {
   EDIT_PROFILE_START,
   EDIT_SKILLS_FAILED,
   EDIT_SKILLS_SUCCESS,
-  EDIT_SKILLS_START
+  EDIT_SKILLS_START,
+  MAKE_REPORT_FAILED,
+  MAKE_REPORT_SUCCESS,
+  MAKE_REPORT_START
 } from './constants';
+import { message } from 'antd';
 
 const initialState = fromJS({
   groups: [],
@@ -183,6 +187,17 @@ function profilePageReducer(state = initialState, action) {
         .set('pending', false)
         .set('error', true)
         .set('needUpdate', false);
+    case MAKE_REPORT_START:
+      return state
+        .set('pending', true);
+    case MAKE_REPORT_SUCCESS:
+      message.success('Жалоба отправлена!');
+      return state
+        .set('pending', false);
+    case MAKE_REPORT_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
     default:
       return state;
   }

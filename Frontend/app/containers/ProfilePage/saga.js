@@ -9,7 +9,8 @@ import {
   MAKE_TEACHER,
   MAKE_NOT_TEACHER,
   EDIT_PROFILE_START,
-  EDIT_SKILLS_START
+  EDIT_SKILLS_START,
+  MAKE_REPORT_START
 } from "./constants";
 import {
   getCurrentUserGroupsSuccess,
@@ -31,7 +32,9 @@ import {
   editProfileSuccess,
   editProfileFailed,
   editSkillsFailed,
-  editSkillsSuccess
+  editSkillsSuccess,
+  makeReportFailed,
+  makeReportSuccess
 } from "./actions";
 import config from '../../config';
 
@@ -283,6 +286,32 @@ function editSkills(skills) {
     .catch(error => error)
 }
 
+function* makeReportSaga(action) {
+  try {
+    yield call(makeReport, action.userId, action.reason, action.description);
+    yield put(makeReportSuccess())
+  }
+  catch(e) {
+    yield put(makeReportFailed(e))
+  }
+}
+
+function makeReport(userId, reason, description) {
+  return fetch(`${config.API_BASE_URL}/users/${userId}/report`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json-patch+json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+    body: JSON.stringify({
+      reason,
+      description
+    })
+  })
+    .then(res => res.json())
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(GET_CURRENT_USER_GROUPS, getUserGroupsSaga);
   yield takeEvery(EDIT_NAME, editUsernameSaga);
@@ -294,4 +323,5 @@ export default function* () {
   yield takeEvery(MAKE_NOT_TEACHER, makeNotTeacherSaga);
   yield takeEvery(EDIT_PROFILE_START, editProfileSaga);
   yield takeEvery(EDIT_SKILLS_START, editSkillsSaga);
+  yield takeEvery(MAKE_REPORT_START, makeReportSaga);
 }
