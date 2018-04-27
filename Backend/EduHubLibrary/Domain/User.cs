@@ -31,17 +31,10 @@ namespace EduHubLibrary.Domain
             NotificationsSettings = new NotificationsSettings();
         }
 
-        /*private User()
-        {
-            TeacherProfile = new TeacherProfile();
-            UserProfile = new UserProfile();
-            Credentials = new Credentials();
-        }*/
-
         //constr for db
         internal User(string name, Credentials credentials, UserType type,
             List<Invitation> invitationList, TeacherProfile teacherProfile, UserProfile userProfile, bool isActive,
-            List<string> notifiesList, int id = 0)
+            List<Notification> notifiesList, NotificationsSettings notificationsSettings, int id = 0)
         {
             Id = id;
             Ensure.String.IsNotNullOrWhiteSpace(name);
@@ -51,7 +44,8 @@ namespace EduHubLibrary.Domain
             UserProfile = Ensure.Any.IsNotNull(userProfile);
             IsActive = isActive;
             Invitations = Ensure.Any.IsNotNull(invitationList);
-            Notifies = Ensure.Any.IsNotNull(notifiesList);
+            Notifications = Ensure.Any.IsNotNull(notifiesList);
+            NotificationsSettings = Ensure.Any.IsNotNull(notificationsSettings);
         }
 
         //constr for db

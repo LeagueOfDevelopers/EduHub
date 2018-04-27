@@ -15,6 +15,14 @@ namespace EduHubLibrary.Domain.NotificationService
             NotificationType = notificationInfo.GetNotificationType();
         }
 
+        internal Notification(DateTimeOffset occurredOn,
+            string notificationInfo, NotificationType notificationType)
+        {
+            OccurredOn = occurredOn;
+            NotificationInfo = notificationInfo;
+            NotificationType = notificationType;
+        }
+
         public DateTimeOffset OccurredOn { get; }
         public string NotificationInfo { get; }
         public NotificationType NotificationType { get; }

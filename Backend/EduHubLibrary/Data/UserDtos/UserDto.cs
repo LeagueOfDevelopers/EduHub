@@ -23,5 +23,6 @@ namespace EduHubLibrary.Data.UserDtos
         public List<InvitationDto> Invitations { get; set; }
         public List<NotifiesDto> Notifies { get; set; }
         public List<TagUser> Tags { get; set; }
+        public string NotificationSettings { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using EduHubLibrary.Data.UserDtos;
 using EduHubLibrary.Domain;
+using Newtonsoft.Json;
 
 namespace EduHubLibrary.Extensions
 {
@@ -21,7 +22,7 @@ namespace EduHubLibrary.Extensions
             result.IsTeacher = source.UserProfile.IsTeacher;
             result.AvatarLink = source.UserProfile.AvatarLink;
 
-            source.TeacherProfile?.Skills?.ToList().ForEach(s => new TagUser(0, s));
+            source.TeacherProfile?.Skills?.ToList().ForEach(s => result.Tags.Add(new TagUser(0, s)));
 
             source.TeacherProfile?.Reviews?.ToList().ForEach(review =>
                 result.Reviews.Add(new ReviewDto(review.Id, review.FromUser, review.FromGroup,
@@ -38,7 +39,10 @@ namespace EduHubLibrary.Extensions
                 result.Invitations.FirstOrDefault(iDto => iDto.Id == i.Id).Status = i.Status;
             });
 
-            source.Notifies?.ToList().ForEach(n => result.Notifies.Add(new NotifiesDto(0, n)));
+            source.Notifications?.ToList().ForEach(n => result.Notifies.Add(new NotifiesDto(0, n.OccurredOn,
+                n.NotificationInfo, n.NotificationType)));
+
+            destination.NotificationSettings = JsonConvert.SerializeObject(source.NotificationsSettings);
         }
     }
 }

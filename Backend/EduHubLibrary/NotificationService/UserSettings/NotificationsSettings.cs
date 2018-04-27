@@ -38,6 +38,6 @@ namespace EduHubLibrary.Domain.NotificationService.UserSettings
             Settings = newSettings;
         }
 
-        public IReadOnlyDictionary<NotificationType, NotificationValue> Settings;
+        public Dictionary<NotificationType, NotificationValue> Settings;
     }
 }

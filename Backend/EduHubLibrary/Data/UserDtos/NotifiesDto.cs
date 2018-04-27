@@ -1,11 +1,17 @@
-﻿namespace EduHubLibrary.Data.UserDtos
+﻿using System;
+using EduHubLibrary.Domain.NotificationService.Notifications;
+
+namespace EduHubLibrary.Data.UserDtos
 {
     public class NotifiesDto
     {
-        public NotifiesDto(int id, string notifie)
+        public NotifiesDto(int id, DateTimeOffset occurredOn, string notificationInfo,
+            NotificationType notificationType)
         {
             Id = id;
-            Notifie = notifie;
+            OccurredOn = occurredOn;
+            NotificationInfo = notificationInfo;
+            NotificationType = notificationType;
         }
 
         public NotifiesDto()
@@ -13,6 +19,8 @@
         }
 
         public int Id { get; set; }
-        public string Notifie { get; set; }
+        public DateTimeOffset OccurredOn { get; set; }
+        public string NotificationInfo { get; set; }
+        public NotificationType NotificationType { get; set; }
     }
 }
