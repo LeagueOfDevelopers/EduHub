@@ -150,7 +150,7 @@ namespace EduHub
 
             var publisher = eventBus.GetEventPublisher();
 
-            var userFacade = new UserFacade(userRepository, groupRepository, keysRepository, publisher);
+            var userFacade = new UserFacade(userRepository, groupRepository, publisher);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings, publisher);
             var userEditFacade = new UserEditFacade(userRepository, fileRepository, sanctionRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, sanctionRepository, groupSettings, publisher);
@@ -171,7 +171,7 @@ namespace EduHub
             services.AddSingleton<IReportFacade>(reportFacade);
             services.AddSingleton(Env);
 
-            //userAccountFacade.CheckAdminExistence(Configuration.GetValue<string>("AdminEmail"));
+            userAccountFacade.CheckAdminExistence(Configuration.GetValue<string>("AdminEmail"));
 
             services.AddSwaggerGen(current =>
             {

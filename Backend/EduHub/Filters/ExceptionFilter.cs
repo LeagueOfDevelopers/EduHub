@@ -67,6 +67,9 @@ namespace EduHub.Filters
                 case NotImplementedException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case ActionIsNotAllowWithSanctionsException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {

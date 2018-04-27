@@ -6,6 +6,7 @@ using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,7 +27,6 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize(Policy = "AdminAndModeratorsOnly")]
         [HttpPost]
-        [Route("{userId}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
         public IActionResult ApplySanction([FromBody] SanctionModel request)
@@ -34,7 +34,7 @@ namespace EduHub.Controllers
             var moderatorId = Request.GetUserId();
             int sanctionId;
 
-            if (request.ExpirationDate != null)
+            if (request.ExpirationDate != DateTimeOffset.MinValue)
             {
                 sanctionId = _sanctionFacade.AddSanction(request.BrokenRule, request.UserId, moderatorId,
                     request.SanctionType, request.ExpirationDate);

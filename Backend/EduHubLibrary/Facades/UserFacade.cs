@@ -14,16 +14,13 @@ namespace EduHubLibrary.Facades
     public class UserFacade : IUserFacade
     {
         private readonly IGroupRepository _groupRepository;
-        private readonly IKeysRepository _keysRepository;
         private readonly IUserRepository _userRepository;
         private readonly IEventPublisher _publisher;
 
-        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository,
-            IKeysRepository keysRepository, IEventPublisher publisher)
+        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository, IEventPublisher publisher)
         {
             _userRepository = userRepository;
             _groupRepository = groupRepository;
-            _keysRepository = keysRepository;
             _publisher = publisher;
         }
 
