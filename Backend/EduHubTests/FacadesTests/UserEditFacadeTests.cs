@@ -40,7 +40,7 @@ namespace EduHubTests
 
             _publisher = new Mock<IEventPublisher>();
             _userEditFacade = new UserEditFacade(_userRepository, fileRepository, _sanctionRepository);
-            _userFacade = new UserFacade(_userRepository, groupRepository, keysRepository, _publisher.Object);
+            _userFacade = new UserFacade(_userRepository, groupRepository, _publisher.Object);
 
             _adminId = accountFacade.RegUser("admin", Credentials.FromRawData("adminEmail", "password"), false, adminKey.Value);
             _testUserId = accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
