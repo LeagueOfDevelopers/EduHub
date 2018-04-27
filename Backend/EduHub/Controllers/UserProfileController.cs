@@ -340,7 +340,7 @@ namespace EduHub.Controllers
             var sanctions = _sanctionFacade.GetAllActiveOfUser(userId).ToList();
         
             ProfileResponse response;
-            var userProfile = new UserProfileModel(user.UserProfile.Name,
+            var userProfile = new UserProfileModel(user.UserProfile.Name, user.UserProfile.Email,
                 user.UserProfile.AboutUser, user.UserProfile.BirthYear, user.UserProfile.Gender,
                 user.UserProfile.IsTeacher, user.UserProfile.AvatarLink, user.UserProfile.Contacts, sanctions);
             if (user.UserProfile.IsTeacher)

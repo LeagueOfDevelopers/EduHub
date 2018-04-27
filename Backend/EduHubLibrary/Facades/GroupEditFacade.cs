@@ -61,6 +61,9 @@ namespace EduHubLibrary.Facades
                 nameof(ChangeGroupSize), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newSize))));
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
+            Ensure.Bool.IsTrue(newSize >= currentGroup.Members.Count,
+                nameof(ChangeGroupSize), opt => opt.WithException(new ArgumentOutOfRangeException(nameof(newSize))));
+
             currentGroup.GroupInfo.Size = newSize;
             _groupRepository.Update(currentGroup);
         }

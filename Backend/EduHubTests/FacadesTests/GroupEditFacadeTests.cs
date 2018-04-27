@@ -156,6 +156,20 @@ namespace EduHubTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void TryToChangeGroupSizeWithValueThatLessThanMembersCount_GetException()
+        {
+            //Arrange
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreatorId, "Some group", new List<string> { "c#" },
+                "You're welcome!", 2, 100, false, GroupType.Lecture);
+            var memberId = _accountFacade.RegUser("member", Credentials.FromRawData("email", "password"), true);
+            _groupFacade.AddMember(createdGroupId, memberId);
+
+            //Act
+            _groupEditFacade.ChangeGroupSize(createdGroupId, _groupCreatorId, 1);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void ChangeMoneyPerUserWithInvalidValue_GetException()
         {
             //Arrange

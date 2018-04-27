@@ -7,10 +7,10 @@ namespace EduHub.Models.Tools
 {
     public class UserProfileModel
     {
-        public UserProfileModel(string name, string aboutUser, int birthYear, Gender gender,
-            bool isTeacher, string avatarLink, List<string> contacts, List<SanctionView> sanctions)
+        public UserProfileModel(string name, string email, string aboutUser, int birthYear, Gender gender, bool isTeacher, string avatarLink, List<string> contacts, List<SanctionView> sanctions)
         {
             Name = name;
+            Email = email;
             AboutUser = aboutUser;
             BirthYear = birthYear;
             Gender = gender;
@@ -21,6 +21,7 @@ namespace EduHub.Models.Tools
         }
 
         public string Name { get; set; }
+        public string Email { get; set; }
         public string AboutUser { get; set; }
         public int BirthYear { get; set; }
         public Gender Gender { get; set; }
