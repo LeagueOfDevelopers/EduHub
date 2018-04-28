@@ -105,7 +105,7 @@ UserProfileResponse userProfile;
         avatar=findViewById(R.id.avatar);
         if(sharedPreferences.contains("AVATARLINK")){
 
-            fileRepository.loadFileFromServer(user.getToken(),user.getAvatarLink());
+            fileRepository.loadImageFromServer(user.getToken(),user.getAvatarLink());
         }
          addContact=findViewById(R.id.add_contacts);
          editContact=findViewById(R.id.edit_contact);
@@ -220,7 +220,7 @@ UserProfileResponse userProfile;
         saveButton.setOnClickListener(click->{
             if(userName.getText().length()>=3&&userName.getText().length()<=70) {
                 if(checkName(userName.getText().toString())){
-                    if((editAboutMe.getText().length()<=3000&&editAboutMe.getText().length()<=20)||editAboutMe.getText().toString().equals("")){
+                    if((editAboutMe.getText().length()<=3000&&editAboutMe.getText().length()>=20)||editAboutMe.getText().toString().equals("")){
                         if(editBirthYear.getText().toString().equals("")||(Integer.valueOf(editBirthYear.getText().toString())>=1900&&
                                 Integer.valueOf(editBirthYear.getText().toString())<= getCurrentYear())){
 

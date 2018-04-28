@@ -66,7 +66,7 @@ public class MessageView {
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             layoutParams.setMargins(7*(int)dp,8*(int)dp,7*(int)dp,8*(int)dp);
             cardOfMessage.setLayoutParams(layoutParams);
-            Log.d("123",i+"");
+
             i++;
         }else{
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -79,7 +79,8 @@ public class MessageView {
         role.setText(message.getSenderRole());
 
         Long dateInt = dt.toDate().getTime() / 1000 / 60 / 60;
-        Log.d("Date", dateInt.toString());
+        Log.d("messageTime",dateInt.toString()+"||"+new Date().getTime()/1000/60/60);
+
         Long days;
         Long mes;
         if (new Date().getTime() / 1000 / 60 / 60 - dateInt == 0) {

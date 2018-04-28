@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
                     android:id="@+id/kick"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:src="@drawable/ic_delete"
+                    android:src="@drawable/ic_close_black_24dp"
                     android:visibility="gone"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="7dp"/>
@@ -34,7 +35,8 @@
                     android:layout_toRightOf="@+id/kick"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="7dp"
-                    android:src="@drawable/ic_unknown_user"/>
+                    android:src="@drawable/ic_person_48px"
+                    />
 
                 <TextView
                     android:id="@+id/UserName"

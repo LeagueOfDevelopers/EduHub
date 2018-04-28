@@ -8,9 +8,10 @@ android {
         applicationId "ru.lod_misis.user.eduhub"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 3
-        versionName "3.0"
+        versionCode 5
+        versionName "5.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -46,7 +47,7 @@ android {
 }
 
 dependencies {
-    compile 'com.github.stfalcon:chatkit:0.2.2'
+    compile 'com.neovisionaries:nv-websocket-client:2.4'
     compile 'joda-time:joda-time:2.9.9'
     compile 'com.sothree.slidinguppanel:library:3.4.0'
     debugCompile 'com.readystatesoftware.chuck:library:1.1.0'

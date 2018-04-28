@@ -1,5 +1,8 @@
 package ru.lod_misis.user.eduhub.Models.Group;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 /**
@@ -7,17 +10,28 @@ import java.util.Date;
  */
 
 public class Message {
-
+    @SerializedName("senderName")
+    @Expose
     private String senderName;
+    @SerializedName("senderId")
+    @Expose
     private String senderId;
+    @SerializedName("senderRole")
+    @Expose
     private String senderRole;
-    private Date time;
+    @SerializedName("sentOn")
+    @Expose
+    private String time;
+    @SerializedName("text")
+    @Expose
     private String textMessage;
+    @SerializedName("id")
+    @Expose
     private int id;
 
 
 
-    public Message(String senderName, String senderId, String senderRole, Date time, String textMessage, int id) {
+    public Message(String senderName, String senderId, String senderRole, String time, String textMessage, int id) {
 
         this.senderName = senderName;
         this.senderId = senderId;
@@ -36,7 +50,7 @@ public class Message {
     public String getTextMessage(){
         return textMessage;
     }
-    public Date getTime(){
+    public String getTime(){
         return time;
     }
     public String getSenderId() {

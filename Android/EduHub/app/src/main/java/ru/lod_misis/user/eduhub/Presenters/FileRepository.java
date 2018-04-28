@@ -44,7 +44,8 @@ public class FileRepository implements IFileRepository {
     public FileRepository(IFileRepositoryView fileRepositoryView,Context context) {
         this.fileRepositoryView = fileRepositoryView;
         this.context=context;
-         eduHubApi=RetrofitBuilder.getApi(context);
+        Log.d("Context",context+"");
+        eduHubApi=RetrofitBuilder.getApi(context);
 
     }
 
@@ -56,6 +57,7 @@ public class FileRepository implements IFileRepository {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             file = new File(getPath(context,uri));
         }
+
         Log.d("FilePath",file.getPath());
         RequestBody requestFile=RequestBody.create(MediaType.parse("multipart/form-data"),file);
         MultipartBody.Part body=MultipartBody.Part.createFormData("file",file.getName(),requestFile);
@@ -92,7 +94,23 @@ public class FileRepository implements IFileRepository {
                     fileRepositoryView.getFile(result);
                         });
     }
+    @Override
+    public void loadImageFromServer(String token, String fileName) {
+        eduHubApi.loadImageFromServer("Bearer "+token,fileName)
 
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next->{
+
+                            result=next;
+                        },
+                        throwable -> {Log.e("GetFile",throwable.toString());},
+                        ()->{
+
+
+                            fileRepositoryView.getFile(result);
+                        });
+    }
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void loadFiletoServer(String token, Uri uri) {

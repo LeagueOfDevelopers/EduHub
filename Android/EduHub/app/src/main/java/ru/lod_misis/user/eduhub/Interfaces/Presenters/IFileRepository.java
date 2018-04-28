@@ -9,5 +9,6 @@ import android.net.Uri;
 public interface IFileRepository {
     void loadImageToServer(String token, Uri uri);
     void loadFileFromServer(String token,String fileName);
+    void loadImageFromServer(String token,String fileName);
     void loadFiletoServer(String token, Uri uri);
 }

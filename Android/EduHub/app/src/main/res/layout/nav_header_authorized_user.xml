@@ -20,7 +20,7 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginTop="16dp"
-        app:srcCompat="@drawable/ic_unknown_user" />
+        app:srcCompat="@drawable/ic_person_48px" />
 
     <TextView
         android:id="@+id/name_user"

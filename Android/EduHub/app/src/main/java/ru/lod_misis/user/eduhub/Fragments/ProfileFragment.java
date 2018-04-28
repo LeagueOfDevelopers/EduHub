@@ -206,7 +206,7 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
             status.setText("Ученик");
         }
         if(userProfile.getUserProfile().getAvatarLink()!=null){
-            fileRepository.loadFileFromServer(user.getToken(),userProfile.getUserProfile().getAvatarLink());
+            fileRepository.loadImageFromServer(user.getToken(),userProfile.getUserProfile().getAvatarLink());
         }
         if(!userProfile.getUserProfile().getGender().equals("0")){
             v.findViewById(R.id.card_of_sex).setVisibility(View.VISIBLE);

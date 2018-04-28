@@ -6,5 +6,5 @@ package ru.lod_misis.user.eduhub.Interfaces.Presenters;
 
 public interface IChatPresenter {
     void loadAllMessages(String token,String groupId);
-    void sendMessage(String token,String groupId,String text);
+    void sendMessage(String token,String groupId,String messageText);
 }

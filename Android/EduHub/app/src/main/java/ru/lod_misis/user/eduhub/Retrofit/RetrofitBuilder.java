@@ -20,7 +20,7 @@ public class RetrofitBuilder {
     static final String BASE_URL = "http://85.143.104.47:2411/";
 
     public static EduHubApi getApi(Context context) {
-
+Log.d("contextInRetrofit",context.toString());
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();

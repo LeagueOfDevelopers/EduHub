@@ -11,7 +11,9 @@
         android:allowBackup="true"
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name="ru.lod_misis.user.eduhub.MainActivity" />
+        <activity android:name="ru.lod_misis.user.eduhub.MainActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"/>
         <activity
             android:name="ru.lod_misis.user.eduhub.Main2Activity"
             android:label="@string/app_name"
@@ -26,14 +28,13 @@
         <activity
             android:name="ru.lod_misis.user.eduhub.AuthorizedUserActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="ru.lod_misis.user.eduhub.GroupActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+             />
         <activity
             android:name="ru.lod_misis.user.eduhub.CreateGroupActivity"
             android:label="@string/app_name"

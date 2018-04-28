@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class RefactorUserRequestModel {
 
-    @SerializedName("userName")
+    @SerializedName("name")
     @Expose
-    private String userName;
+    private String name;
     @SerializedName("aboutUser")
     @Expose
     private String aboutUser;
@@ -32,11 +32,11 @@ public class RefactorUserRequestModel {
     private String gender;
 
     public String getUserName() {
-        return userName;
+        return name;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.name = userName;
     }
 
     public String getAboutUser() {

@@ -109,7 +109,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
             if(sPref.contains(AVATARLINK)){
 
                 Log.d("AvatarLink",user.getAvatarLink());
-                fileRepository.loadFileFromServer(user.getToken(),user.getAvatarLink());
+                fileRepository.loadImageFromServer(user.getToken(),user.getAvatarLink());
 
             }
         }

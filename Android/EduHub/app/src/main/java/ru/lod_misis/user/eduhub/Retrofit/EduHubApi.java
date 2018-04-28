@@ -13,6 +13,8 @@ import ru.lod_misis.user.eduhub.Models.CreateGroupResponse;
 import ru.lod_misis.user.eduhub.Models.Group.GetAllGroups;
 import ru.lod_misis.user.eduhub.Models.Group.GetGroupsModel;
 import ru.lod_misis.user.eduhub.Models.Group.Group;
+import ru.lod_misis.user.eduhub.Models.Group.Message;
+import ru.lod_misis.user.eduhub.Models.Group.NewMessage;
 import ru.lod_misis.user.eduhub.Models.Group.RefactorGroupRequestModel;
 import ru.lod_misis.user.eduhub.Models.GroupChangeInviteStatusResponse;
 import ru.lod_misis.user.eduhub.Models.InvitationResponse;
@@ -21,6 +23,7 @@ import ru.lod_misis.user.eduhub.Models.LoginModel;
 import ru.lod_misis.user.eduhub.Models.Notivications.Notifications;
 import ru.lod_misis.user.eduhub.Models.Registration.RegistrationModel2;
 import ru.lod_misis.user.eduhub.Models.SearchModel;
+import ru.lod_misis.user.eduhub.Models.SendMessageResponseModel;
 import ru.lod_misis.user.eduhub.Models.User;
 import ru.lod_misis.user.eduhub.Models.Registration.RegistrationModel;
 import ru.lod_misis.user.eduhub.Models.Registration.RegistrationResponseModel;
@@ -81,6 +84,8 @@ public interface EduHubApi {
     Observable<InvitationResponse> getInvitations(@Header("Authorization") String token);
     @PUT("/api/user/profile/invitations")
     Single<GroupChangeInviteStatusResponse> changeStatusOfInvitation(@Header("Authorization") String token, @Body ChangeInvitationStatusModel model);
+    @PUT("/api/user/profile")
+    Completable changesProfile(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @PUT("/api/user/profile/name")
     Completable changesUserName(@Header("Authorization") String token, @Body RefactorUserRequestModel model);
     @PUT("/api/user/profile/about")
@@ -130,6 +135,8 @@ public interface EduHubApi {
                                                       @Part MultipartBody.Part file);
     @GET("/api/file/{filename}")
     Observable<ResponseBody> loafFileFromServer(@Header("Authorization") String token, @Path("filename") String fileName);
+    @GET("/api/file/img/{filename}")
+    Observable<ResponseBody> loadImageFromServer(@Header("Authorization") String token, @Path("filename") String fileName);
     @POST("/api/group/{groupId}/course/review")
     Completable addReview(@Header("Authorization") String token, @Path("groupId") String groupId,@Body AddReviewModel addReviewModel);
     @DELETE(" /api/group/{groupId}/course")
@@ -146,4 +153,8 @@ public interface EduHubApi {
     Observable<List<Group>> findGroupsWithFilters1(@Query("title") String title);
     @GET("api/user/profile/notifications")
     Observable<List<Notifications>> loadAllNotifications(@Header("Authorization") String token);
+    @GET("/api/group/{groupId}/chat")
+    Observable<List<Message>> loadAllMessages(@Header("Authorization") String token,@Path("groupId") String groupId);
+    @POST ("/api/group/{groupId}/chat")
+    Single<SendMessageResponseModel> sendMessage(@Header("Authorization") String token, @Path("groupId") String groupId,@Body NewMessage message);
 }

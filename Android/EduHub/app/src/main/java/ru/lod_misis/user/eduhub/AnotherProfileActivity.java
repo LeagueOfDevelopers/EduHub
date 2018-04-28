@@ -57,7 +57,7 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
     SharedPreferences sharedPreferences;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     FakeUserProfilePresenter fakeUserProfilePresenter=new FakeUserProfilePresenter(this);
-    FileRepository fileRepository=new FileRepository(this,this);
+    FileRepository fileRepository;
 
     Boolean flag=false;
     TextView userName;
@@ -83,6 +83,7 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
     Activity v=this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        fileRepository=new FileRepository(this,this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_another_profile);
         Intent intent=getIntent();
@@ -190,7 +191,7 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
                 status.setText("Ученик");
             }
             if(userProfile.getUserProfile().getAvatarLink()!=null){
-                fileRepository.loadFileFromServer(user.getToken(),userProfile.getUserProfile().getAvatarLink());
+                fileRepository.loadImageFromServer(user.getToken(),userProfile.getUserProfile().getAvatarLink());
             }
             if(!userProfile.getUserProfile().getGender().equals("0")){
                 v.findViewById(R.id.card_of_sex).setVisibility(View.VISIBLE);

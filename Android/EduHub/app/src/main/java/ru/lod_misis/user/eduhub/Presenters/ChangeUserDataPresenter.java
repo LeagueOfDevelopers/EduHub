@@ -51,45 +51,13 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
         }
 
         EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
-        Observable changeUserName =eduHubApi.changesUserName("Bearer "+token,refactorUserRequestModel)
-                .toObservable()
-                .subscribeOn(Schedulers.io());
-        if(aboutUser.equals("")){}else{
-         changeAboutUser=eduHubApi.changesAboutUser("Bearer "+token,refactorUserRequestModel)
-                .toObservable()
-                .subscribeOn(Schedulers.io());}
-        Observable changeUserConatcts=eduHubApi.changesUsersContacts("Bearer "+token,refactorUserRequestModel)
-                .toObservable()
-                .subscribeOn(Schedulers.io());
-        Observable changeUserBirthYear=eduHubApi.changesUsersBirthYear("Bearer "+token,refactorUserRequestModel)
-                .toObservable()
-                .subscribeOn(Schedulers.io());
-        Observable changeUsersGender=eduHubApi.changesUsersGender("Bearer "+token,refactorUserRequestModel)
-                .toObservable()
-                .subscribeOn(Schedulers.io());
-        if(!avatarLink.equals("")){
-         changeUsersAvatarLink=eduHubApi.changesUserAvatar("Bearer "+token,refactorUserRequestModel)
-                .toObservable()
-                .subscribeOn(Schedulers.io());}else{
-
-        }
-
-        if(isTeacher){
-         changeUsersRole=eduHubApi.becomeTeacher("Bearer "+token)
-        .subscribeOn(Schedulers.io())
-        .toObservable();}else{
-             changeUsersRole=eduHubApi.becomeSimpleUser("Bearer "+token)
-                    .subscribeOn(Schedulers.io())
-                    .toObservable();
-        }
-        Observable.merge(changeAboutUser,changeUserBirthYear,changeUserConatcts,changeUserName)
-
-                .mergeWith(Observable.merge(changeUsersRole,changeUsersGender,changeUsersAvatarLink))
+        eduHubApi.changesProfile("Bearer "+token,refactorUserRequestModel)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(next->{},
+                .subscribe(()->{changeUsersDataView.getResponse();},
                         throwable -> {
-                            Log.e("ChangeUserData",throwable.toString());},
-                        ()->{changeUsersDataView.getResponse();});
+                            Log.e("ChangeUserData",throwable.toString());}
+                        );
 
 
 

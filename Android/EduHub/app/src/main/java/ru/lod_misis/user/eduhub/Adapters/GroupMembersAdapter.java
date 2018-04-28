@@ -85,34 +85,40 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
     @Override
     public void onBindViewHolder(GroupMembersViewHolder holder, int i) {
         if(user!=null){
-        Log.d("User",user.getUserId());
+
         for (Member member:members) {
-            Log.d("memberId",member.getUserId());
+
             if(member.getUserId().equals(user.getUserId())){
                 role=member.getRole();
-                Log.d("Role",role+"");
+
             }
 
         }
         }
-        if(members.get(i).getAvatarLink()==null){
-        }
-        else {
-            fileRepository.loadFileFromServer(user.getToken(),members.get(i).getAvatarLink());
-            eduHubApi.loafFileFromServer("Bearer "+user.getToken(),members.get(i).getAvatarLink())
+
+        {if(user!=null) {
+
+            if(members.get(i).getAvatarLink()!=null){
+                Log.d("Avatar",members.get(i).getAvatarLink());
+            eduHubApi.loadImageFromServer("Bearer " + user.getToken(), members.get(i).getAvatarLink())
 
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(next->{
+                    .subscribe(next -> {
 
-                                result=next;
+                                result = next;
                             },
-                            throwable -> {Log.e("GetFile",throwable.toString());},
-                            ()->{
-                                getFile2(result,holder.userImage);
+                            throwable -> {
+                                Log.e("GetFile", throwable.toString());
+                            },
+                            () -> {
+                                getFile2(result, holder.userImage);
                             });
-            userImage2=holder.userImage;
-
+            userImage2 = holder.userImage;
+            }
+        }else{
+            userImage2.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_person_48px));
+        }
         }
         Log.e("Error Role",members.get(i).getRole()+"");
         switch (members.get(i).getRole()+""){
