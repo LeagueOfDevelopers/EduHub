@@ -455,21 +455,18 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                       <Row gutter={6}>
                         <p>
                           {this.state.teacherProfile.skills &&
-                          this.state.teacherProfile.skills.length !== 0 ?
+                          this.state.teacherProfile.skills.length !== 0  && !this.state.isEditing ?
                             this.state.teacherProfile.skills.map((item) =>
                               <Link to="#" key={item}>{item} </Link>
                             )
-                            :
-                            !this.state.isEditing && this.state.isCurrentUser ? (
+                            : this.state.teacherProfile.skills.length === 0 && !this.state.isEditing && !this.state.isCurrentUser ?
+                              <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
+                              : this.state.isCurrentUser && !this.state.isEditing && this.state.teacherProfile.skills.length === 0 ? (
                               <div>
                                 <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
-                                {
-                                  this.state.teacherProfile.skills && this.state.teacherProfile.skills.length === 0 ?
-                                    <span onClick={() => this.setState({isEditing: true})} style={{color: '#1890ff', marginTop: 4, cursor: 'pointer'}}>
-                                      Теперь вы можете указать свои навыки!
-                                    </span>
-                                    : null
-                                }
+                                <span onClick={() => this.setState({isEditing: true})} style={{color: '#1890ff', marginTop: 4, cursor: 'pointer'}}>
+                                  Теперь вы можете указать свои навыки!
+                                </span>
                               </div>
                               )
                               : this.state.isEditing ?

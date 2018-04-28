@@ -43,8 +43,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
   }
 
   onHandleEmailChange = (e) => {
-    this.setState({email: e.target.value, isExists: true});
-    setTimeout(() => console.log(this.state.isExists), 0)
+    this.setState({email: e.target.value});
   };
 
   onHandlePasswordChange = (e) => {
@@ -85,7 +84,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
         width={410}
         bodyStyle={{padding: '24px 26px'}}
         footer={[
-          <Row type='flex' justify='space-between' align='middle' style={{padding: '4px 14px'}}>
+          <Row type='flex' key={1} justify='space-between' align='middle' style={{padding: '4px 14px'}}>
             <Col><Link to='#'>Забыли пароль?</Link></Col>
             <Col>
               <Button onClick={this.props.handleCancel}>Отмена</Button>

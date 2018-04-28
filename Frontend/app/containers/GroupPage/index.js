@@ -203,7 +203,7 @@ export class GroupPage extends React.Component {
       isTeacher: this.state.isInGroup ? Boolean(result.members.find(item =>
         item.userId == this.state.userData.UserId).role === 3) : false
     });
-    localStorage.getItem('token') ? this.props.getCurrentChat(this.state.id) : null;
+    localStorage.getItem('token') && this.state.isInGroup ? this.props.getCurrentChat(this.state.id) : null;
 
     if(this.state.groupData.groupInfo.courseStatus === 3) {
       setTimeout(this.onReviewClick, 1000);
@@ -503,7 +503,7 @@ export class GroupPage extends React.Component {
                   </p>
                 </Row>
                 {
-                  this.state.groupData.groupInfo.curriculum || this.state.isTeacher?
+                  (this.state.groupData.groupInfo.curriculum || this.state.isTeacher) && this.state.isInGroup ?
                     <Row style={{textAlign: 'left', marginTop: 8, marginBottom: 28}}>
                       <Col style={{marginBottom: 8}}><span style={{fontSize: 18, fontWeight: 600}}>Учебный план</span></Col>
                       <Col xs={{span: 24}}>
@@ -515,6 +515,7 @@ export class GroupPage extends React.Component {
                           currentUserData={this.state.userData}
                           currentPlan={this.state.groupData.groupInfo.curriculum}
                           courseStatus={this.state.groupData.groupInfo.courseStatus}
+                          isInGroup={this.state.isInGroup}
                         />
                       </Col>
                     </Row>

@@ -50,47 +50,48 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
     };
 
     return (
-      this.props.isTeacher ?
-        (
-          <Row>
+      this.props.isInGroup ?
+        this.props.isTeacher ?
+          (
             <Row>
+              <Row>
+                {
+                  this.props.currentPlan ?
+                    <Col span={24} className='word-break' style={{marginBottom: 10}}>
+                      <span style={{marginRight: 12}}>Файл:</span>
+                      <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} target='_blank' download={true}>
+                        Скачать план обучения
+                      </a>
+                    </Col>
+                    : null
+                }
+              </Row>
               {
-                this.props.currentPlan ?
-                  <Col span={24} className='word-break' style={{marginBottom: 10}}>
-                    <span style={{marginRight: 12}}>Файл:</span>
-                    <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} target='_blank' download={true}>
-                      Скачать план обучения
-                    </a>
-                  </Col>
-                  : null
-              }
-            </Row>
-            {
-              this.props.courseStatus === 0 || this.props.courseStatus === 1 ?
-                <Row type='flex'>
-                  <Col style={{marginRight: 12}}>
-                    <Upload {...props} fileList={this.state.fileList}>
-                      <Button type='primary' className='group-btn'>
-                        <Icon type="upload" /> Выбрать файл
+                this.props.courseStatus === 0 || this.props.courseStatus === 1 ?
+                  <Row type='flex'>
+                    <Col style={{marginRight: 12}}>
+                      <Upload {...props} fileList={this.state.fileList}>
+                        <Button type='primary' className='group-btn'>
+                          <Icon type="upload" /> Выбрать файл
+                        </Button>
+                      </Upload>
+                    </Col>
+                    <Col>
+                      <Button
+                        className='group-btn'
+                        type="primary"
+                        onClick={() => {
+                          this.props.addPlan(this.props.groupId, this.state.fileList[0].response.filename);
+                          this.setState({fileList: []});
+                        }}
+                        disabled={this.state.fileList.length === 0}
+                        style={{marginBottom: 10}}
+                      >
+                        Предложить учебный план
                       </Button>
-                    </Upload>
-                  </Col>
-                  <Col>
-                    <Button
-                      className='group-btn'
-                      type="primary"
-                      onClick={() => {
-                        this.props.addPlan(this.props.groupId, this.state.fileList[0].response.filename);
-                        this.setState({fileList: []});
-                      }}
-                      disabled={this.state.fileList.length === 0}
-                      style={{marginBottom: 10}}
-                    >
-                      Предложить учебный план
-                    </Button>
-                  </Col>
-                </Row>
-                : this.props.courseStatus === 2 ?
+                    </Col>
+                  </Row>
+                  : this.props.courseStatus === 2 ?
                   <Row type='flex'>
                     <Col style={{marginRight: 12}}>
                       <Button type='primary' className='group-btn' onClick={() => this.props.finishCourse(this.props.groupId)}>
@@ -98,11 +99,11 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
                       </Button>
                     </Col>
                   </Row>
-                : null
-            }
-          </Row>
-        )
-        : !this.props.isTeacher && this.props.curriculum ?
+                  : null
+              }
+            </Row>
+          )
+          : !this.props.isTeacher && this.props.curriculum ?
           <Row>
             <Row>
               {
@@ -122,7 +123,7 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
                 item.userId == this.props.currentUserData.UserId).curriculumStatus  === 0 ||
               this.props.members.find(item =>
                 item.userId == this.props.currentUserData.UserId) && this.props.members.find(item =>
-              item.userId == this.props.currentUserData.UserId).curriculumStatus  === 1 ?
+                item.userId == this.props.currentUserData.UserId).curriculumStatus  === 1 ?
                 <Row type='flex'>
                   <Col>
                     <Button
@@ -145,7 +146,7 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
             }
           </Row>
           : null
-
+        : null
     );
   }
 }

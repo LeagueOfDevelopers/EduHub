@@ -21,7 +21,7 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
       title: this.props.title,
       type: 'Default',
       formed: this.props.formed,
-      tags: [],
+      tags: this.props.tags ? [].concat(this.props.tags) : [],
       minPrice: 0,
       maxPrice: 10000
     };
@@ -36,6 +36,12 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
 
   componentDidMount() {
     this.props.getFilteredGroups(this.state);
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.tags[0] !== this.props.tags[0]) {
+      this.setState({tags: this.props.tags ? [].concat(this.props.tags) : []})
+    }
   }
 
   onHandleTitleChange = (e) => {
@@ -87,7 +93,7 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
           <Divider/>
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Тэги</div>
-            <Select mode="tags" value={this.state.tags} onChange={this.onHandleTagsChange} defaultActiveFirstOption={false} style={{width: '100%'}}>
+            <Select mode="tags" value={this.state.tags} onChange={this.onHandleTagsChange} style={{width: '100%'}}>
               <Select.Option value="html">html</Select.Option>
               <Select.Option value="css">css</Select.Option>
               <Select.Option value="js">js</Select.Option>

@@ -26,7 +26,8 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
 
     this.state = {
       formed: getQueryVariable('formed') === 'true',
-      title: getQueryVariable('name')
+      title: getQueryVariable('name'),
+      tags: getQueryVariable('tags')
     };
 
     this.showFilterForm = this.showFilterForm.bind(this);
@@ -34,6 +35,12 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
 
   componentDidMount() {
 
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.location.search !== this.props.location.search) {
+      this.setState({tags: getQueryVariable('tags')})
+    }
   }
 
   showFilterForm = () => {
@@ -54,9 +61,9 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
           </Card>
         </Col>
         <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}}>
-          <FilterForm id='xs-filter' title={this.state.title} formed={this.state.formed} style={{width: '100%'}}/>
+          <FilterForm id='xs-filter' title={this.state.title} tags={this.state.tags} formed={this.state.formed} style={{width: '100%'}}/>
         </Col>
-        <FilterForm id='lg-filter' title={this.state.title} formed={this.state.formed}/>
+        <FilterForm id='lg-filter' title={this.state.title} tags={this.state.tags} formed={this.state.formed}/>
         <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} lg={{span: 9, offset: 1}} xl={{span: 10, offset: 1}} xxl={{span: 11, offset: 1}} className='groups-content'>
           <Row type='flex' justify='space-between' align='middle'>
             <h3 style={{marginBottom: 0}}>Группы</h3>
