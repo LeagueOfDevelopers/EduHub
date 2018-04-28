@@ -503,7 +503,7 @@ export class GroupPage extends React.Component {
                   </p>
                 </Row>
                 {
-                  (this.state.groupData.groupInfo.curriculum || this.state.isTeacher) ?
+                  (this.state.groupData.groupInfo.curriculum || this.state.isTeacher) && this.state.isInGroup ?
                     <Row style={{textAlign: 'left', marginTop: 8, marginBottom: 28}}>
                       <Col style={{marginBottom: 8}}><span style={{fontSize: 18, fontWeight: 600}}>Учебный план</span></Col>
                       <Col xs={{span: 24}}>
