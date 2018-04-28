@@ -35,7 +35,7 @@ class EnterGroupBtn extends React.Component { // eslint-disable-line react/prefe
   render() {
     return (
       <div>
-        {((!this.props.members.find(item => item.role === 3) && localStorage.getItem('isTeacher') === 'true') || this.props.memberAmount < this.props.size) ?
+        {this.props.courseStatus !== 3 && this.props.courseStatus !== 2 ?
           this.props.isInGroup ?
             (<Row className='lg-center-container-item'>
                 <Button className='group-btn' onClick={() => {
@@ -46,51 +46,52 @@ class EnterGroupBtn extends React.Component { // eslint-disable-line react/prefe
                 </Button>
               </Row>
             )
-            : localStorage.getItem('isTeacher') === 'true' && !this.props.members.find(item => item.role === 3) ?
-            <Row className='lg-center-container-item'>
-              <Dropdown
-                overlay={(
-                  <Menu>
-                    <Menu.Item className='unhover' key='0'>
-                      <Button
-                        onClick={() => {
-                          this.setState({roleVisible: false});
-                          this.props.enterGroup(this.props.groupId, 'Member');
-                          if (!this.props.userData) {
-                            this.props.onSignInClick()
-                          }
-                        }}
-                        style={{display: 'block', width: '100%', marginBottom: 1}}
-                      >
-                        Участник
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          this.setState({roleVisible: false});
-                          this.props.enterGroup(this.props.groupId, 'Teacher');
-                          if (!this.props.userData) {
-                            this.props.onSignInClick()
-                          }
-                        }}
-                        style={{display: 'block', width: '100%'}}
-                      >
-                        Учитель
-                      </Button>
-                    </Menu.Item>
-                  </Menu>
-                )}
-                onVisibleChange={this.handleVisibleChange}
-                visible={this.state.roleVisible}
-                trigger={['click']}
-                placement="bottomRight"
-                style={{width: 146}}
-              >
+            : this.props.memberAmount < this.props.size ?
+              localStorage.getItem('isTeacher') === 'true' && !this.props.members.find(item => item.role === 3) ?
+                <Row className='lg-center-container-item'>
+                  <Dropdown
+                    overlay={(
+                      <Menu>
+                        <Menu.Item className='unhover' key='0'>
+                          <Button
+                            onClick={() => {
+                              this.setState({roleVisible: false});
+                              this.props.enterGroup(this.props.groupId, 'Member');
+                              if (!this.props.userData) {
+                                this.props.onSignInClick()
+                              }
+                            }}
+                            style={{display: 'block', width: '100%', marginBottom: 1}}
+                          >
+                            Участник
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              this.setState({roleVisible: false});
+                              this.props.enterGroup(this.props.groupId, 'Teacher');
+                              if (!this.props.userData) {
+                                this.props.onSignInClick()
+                              }
+                            }}
+                            style={{display: 'block', width: '100%'}}
+                          >
+                            Учитель
+                          </Button>
+                        </Menu.Item>
+                      </Menu>
+                    )}
+                    onVisibleChange={this.handleVisibleChange}
+                    visible={this.state.roleVisible}
+                    trigger={['click']}
+                    placement="bottomRight"
+                    style={{width: 146}}
+                  >
 
-                  <Button type='primary' className='group-btn'>
-                    Вступить в группу
-                  </Button>
-              </Dropdown>
-            </Row>
+                      <Button type='primary' className='group-btn'>
+                        Вступить в группу
+                      </Button>
+                  </Dropdown>
+                </Row>
             :
             <Row className='lg-center-container-item'>
               <Button type='primary' className='group-btn' onClick={() => {
@@ -102,6 +103,7 @@ class EnterGroupBtn extends React.Component { // eslint-disable-line react/prefe
                 Вступить в группу
               </Button>
             </Row>
+            : null
           : null
         }
       </div>

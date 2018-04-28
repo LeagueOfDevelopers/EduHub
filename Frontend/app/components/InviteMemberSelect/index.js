@@ -96,7 +96,7 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
       >
         <Button
           className='md-offset-16px'
-          style={{width: '100%'}}
+          style={{width: '100%', marginBottom: 12}}
           type='primary'
         >
           Пригласить

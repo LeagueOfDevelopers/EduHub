@@ -205,7 +205,7 @@ export class GroupPage extends React.Component {
     });
     localStorage.getItem('token') && this.state.isInGroup ? this.props.getCurrentChat(this.state.id) : null;
 
-    if(this.state.groupData.groupInfo.courseStatus === 3) {
+    if(this.state.groupData.groupInfo.courseStatus === 3 && !this.state.isTeacher && this.state.isInGroup) {
       setTimeout(this.onReviewClick, 1000);
     }
   }
@@ -377,30 +377,21 @@ export class GroupPage extends React.Component {
                   </Col>
                 </Row>
                 <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
-
-                  <Col span={24}>
+                  <Col span={10}>Стоимость</Col>
+                  <Col span={14} style={{textAlign: 'right'}}>
                     {this.state.isEditing ?
                       <FormItem style={{width: '100%', marginBottom: 0}}>
                         {getFieldDecorator('price', {
                           rules: [
-                            {required: true, message: 'Пожалуйста, введите стоимость занятия в рублях!'}
-                          ]
+                            {required: true, message: 'Пожалуйста, введите стоимость занятия!'}
+                          ],
+                          initialValue: this.state.priceInput
                         })(
-                          <div>
-                            <Col span={10}>Стоимость</Col>
-                            <Col span={14} style={{textAlign: 'right'}}>
-                              <InputNumber min={1} value={this.state.priceInput} onChange={this.onChangePriceHandle}/>
-                            </Col>
-                          </div>
-                          )
+                          <InputNumber min={1} onChange={this.onChangePriceHandle}/>)
                         }
                       </FormItem>
-                      : (
-                        <div>
-                          <Col span={10}>Стоимость</Col>
-                          <Col span={14} style={{textAlign: 'right'}}>{this.state.groupData.groupInfo.cost} руб.</Col>
-                        </div>
-                      )}
+                      : `${this.state.groupData.groupInfo.cost} руб.`
+                    }
                   </Col>
                 </Row>
                 {this.state.isEditing ?
@@ -446,22 +437,22 @@ export class GroupPage extends React.Component {
                   isCreator={this.state.isCreator}
                 />
               </Row>
-              {this.state.isCreator ?
+              {this.state.isCreator && !this.state.isEditing && this.state.groupData.groupInfo.memberAmount < this.state.groupData.groupInfo.size && this.state.groupData.groupInfo.courseStatus !== 2 && this.state.groupData.groupInfo.courseStatus !== 3 ?
                 (<Row style={{width: 'calc(100% + 32px)'}} className='md-center-container'>
                   <InviteMemberSelect groupId={this.state.id}/>
                 </Row>) : null
               }
-              {this.state.isCreator && !this.state.isEditing ?
+              {this.state.isCreator && !this.state.isEditing && this.state.groupData.groupInfo.courseStatus !== 2 && this.state.groupData.groupInfo.courseStatus !== 3 ?
                 <Row style={{width: 'calc(100% + 32px)'}}>
-                  <Button type='dashed' className='md-center-container md-offset-16px' onClick={() => this.setState({isEditing: true})} style={{width: '100%', marginTop: 12, marginBottom: 12}}>Редактировать</Button>
+                  <Button type='dashed' className='md-center-container md-offset-16px' onClick={() => this.setState({isEditing: true})} style={{width: '100%', marginBottom: 12}}>Редактировать</Button>
                 </Row>
                 : this.state.isEditing ?
-                  <Row>
+                  <Row style={{width: 'calc(100% + 32px)'}}>
                     <Col span={24} className='md-center-container md-offset-16px'>
-                      <Button type='primary' htmlType='submit' style={{width: 280, marginTop: 22}}>Подтвердить</Button>
+                      <Button type='primary' htmlType='submit' style={{width: '100%'}}>Подтвердить</Button>
                     </Col>
                     <Col span={24} className='md-center-container md-offset-16px'>
-                      <Button type='danger' onClick={this.cancelChanges} style={{width: 280, marginTop: 10}}>Отмена</Button>
+                      <Button type='danger' onClick={this.cancelChanges} style={{width: '100%', marginTop: 10}}>Отмена</Button>
                     </Col>
                   </Row>
                   : null
@@ -481,6 +472,7 @@ export class GroupPage extends React.Component {
                       groupId={this.state.id}
                       onSignInClick={this.onSignInClick}
                       members={this.state.groupData.members}
+                      courseStatus={this.state.groupData.groupInfo.courseStatus}
                     />
                   </Col>
                 </Row>

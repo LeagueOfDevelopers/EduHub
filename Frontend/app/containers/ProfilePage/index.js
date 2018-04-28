@@ -380,7 +380,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                                 {required: true, message: 'Пожалуйста, введите свое имя!'},
                                 {message: 'Имя должно быть не меньше 3 символов!', min: 3},
                                 {message: 'Имя должно быть не больше 70 символов!', max: 70},
-                                {message: 'В имени не должно быть цифр!', pattern: /^[a-zA-Zа-яА-Я\s]+$/}
+                                {message: 'В имени должны быть только буквы!', pattern: /^[a-zA-Zа-яА-Яё\s]+$/}
                               ],
                               initialValue: this.state.nameInput
                             })(
