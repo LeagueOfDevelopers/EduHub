@@ -40,6 +40,7 @@ namespace EduHub.Controllers
         public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest messageRequest, [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
+
             var users = _groupFacade.GetGroupMembers(groupId).ToList();
             var userIds = new List<int>();
             users.ForEach(m => userIds.Add(m.UserId));
@@ -51,13 +52,16 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Returns message by id
         /// </summary>
+        [Authorize]
         [HttpGet]
         [SwaggerResponse(200, Type = typeof(MessageInfoResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [Route("{messageId}")]
         public IActionResult GetMessage([FromRoute] int groupId, [FromRoute] int messageId)
         {
-            var message = _chatFacade.GetMessage(messageId, groupId);
+            var userId = Request.GetUserId();
+
+            var message = _chatFacade.GetMessage(messageId, groupId, userId);
             var response = new MessageInfoResponse(message.Id, message.SenderId, message.SenderName, 
                 message.SentOn, message.Text);
             return Ok(response);
@@ -73,9 +77,11 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetAllMessages([FromRoute] int groupId)
         {
+            var userId = Request.GetUserId();
+
             var response = new List<MessageInfoResponse>();
-            var messagesView = _groupFacade.GetGroup(groupId);
-            messagesView.MessageView.ToList().ForEach(
+            var messageView = _chatFacade.GetMessagesForGroup(groupId, userId);
+            messageView.ToList().ForEach(
                 m => response.Add(new MessageInfoResponse(m.Id, m.SenderId, m.SenderName, m.SentOn, m.Text)));
             return Ok(response);
         }

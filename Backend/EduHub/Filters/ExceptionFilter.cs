@@ -29,7 +29,7 @@ namespace EduHub.Filters
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
                 case NotEnoughPermissionsException exception:
-                    context.Result = new BadRequestObjectResult(exception.Message);
+                    context.Result = new UnauthorizedResult();
                     return;
                 case UserNotFoundException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);

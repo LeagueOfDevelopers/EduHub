@@ -135,12 +135,7 @@ namespace EduHubLibrary.Facades
                     r.Title, r.Text, r.Date)));
             }
 
-            var messagesList = new List<MessageView>();
-
-            currentGroup.Messages.ToList().ForEach(m => messagesList.Add(new MessageView(m.Id, m.SenderId, 
-                _userRepository.GetUserById(m.SenderId).UserProfile.Name, m.SentOn, m.Text)));
-
-            var responseView = new FullGroupView(groupInfoView, membersInfo, messagesList, reviewView);
+            var responseView = new FullGroupView(groupInfoView, membersInfo, reviewView);
             return responseView;
         }
 
