@@ -20,7 +20,7 @@ namespace EduHubLibrary.Facades
             int minUserGroups);
 
         IEnumerable<User> FindByName(string name);
-        IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId);
+        IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId, bool isTeacher);
         IEnumerable<Notification> GetNotifies(int userId);
         void DemoteModerator(int moderatorId);
     }

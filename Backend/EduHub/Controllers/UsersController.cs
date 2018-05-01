@@ -73,7 +73,7 @@ namespace EduHub.Controllers
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult SearchUserForInvitation([FromBody] SearchUserForInvitationRequest request)
         {
-            var result = _userFacade.FindUsersForInvite(request.Username, request.GroupId);
+            var result = _userFacade.FindUsersForInvite(request.Username, request.GroupId, request.WantToTeach);
             var items = new List<MinUserForInvitationItem>();
             result.ToList().ForEach(res => items.Add(
                 new MinUserForInvitationItem(res.Invited, res.Username, res.IsTeacher, res.Id, res.AvatarLink)
