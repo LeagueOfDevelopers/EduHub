@@ -71,11 +71,23 @@ namespace EduHub.Controllers
         public IActionResult GetAllReports()
         {
             var reports = new List<ReportModel>();
-            _reportFacade.GetAll().ToList().ForEach(r => reports.Add(new ReportModel(r.SenderName, 
+            _reportFacade.GetAll().ToList().ForEach(r => reports.Add(new ReportModel(r.ReportId, r.SenderName, 
                 r.SuspectedName, r.Reason, r.Description)));
             var response = new AllReportsResponse(reports);
 
             return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("reports/{reportId}")]
+        [SwaggerResponse(200, Type = typeof(ReportModel))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        public IActionResult GetReport([FromRoute] int reportId)
+        {
+            var report = _reportFacade.Get(reportId);
+            var response = new ReportModel(report.ReportId, report.SenderName, report.SuspectedName, report.Reason, report.Description);
+            return Ok();
         }
     }
 }

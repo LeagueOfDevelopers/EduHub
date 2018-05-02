@@ -93,6 +93,7 @@ namespace EduHubLibrary.Domain.NotificationService
         private void NotifyOnSite(User user, INotificationInfo notificationInfo)
         {
             user.AddNotification(new Notification(notificationInfo));
+            _userRepository.Update(user);
         }
 
         private void NotifyOnMail(User user, INotificationInfo notificationInfo)

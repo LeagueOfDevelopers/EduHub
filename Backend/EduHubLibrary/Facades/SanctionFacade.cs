@@ -133,5 +133,15 @@ namespace EduHubLibrary.Facades
 
             return sanctions;
         }
+
+        public SanctionView Get(int sanctionId)
+        {
+            var sanction = _sanctionRepository.Get(sanctionId);
+            var username = _userRepository.GetUserById(sanction.UserId).UserProfile.Name;
+            var sanctionView = new SanctionView(sanctionId, sanction.BrokenRule, sanction.UserId, username,
+                sanction.ModeratorId, sanction.IsTemporary, sanction.ExpirationDate, sanction.Type, sanction.IsActive);
+
+            return sanctionView;
+        }
     }
 }

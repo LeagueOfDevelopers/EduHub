@@ -3,6 +3,7 @@ using EduHub.Models.SanctionsController;
 using EduHub.Models.Tools;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
+using EduHubLibrary.Facades.Views;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -29,7 +30,7 @@ namespace EduHub.Controllers
         [HttpPost]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult ApplySanction([FromBody] SanctionModel request)
+        public IActionResult ApplySanction([FromBody] ApplySanctionRequest request)
         {
             var moderatorId = Request.GetUserId();
             int sanctionId;
@@ -76,6 +77,23 @@ namespace EduHub.Controllers
         {
             var sanctions = _sanctionFacade.GetAllActive();
             SanctionsResponse response = new SanctionsResponse(sanctions);
+            return Ok(response);
+        }
+
+        /// <summary>
+        ///     Get sanction
+        /// </summary>
+        [Authorize(Policy = "AdminAndModeratorsOnly")]
+        [HttpGet]
+        [Route("{sanctionId}")]
+        [SwaggerResponse(200, Type = typeof(SanctionModel))]
+        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
+        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
+        public IActionResult GetSanction([FromRoute] int sanctionId)
+        {
+            var sanction = _sanctionFacade.Get(sanctionId);
+            var response = new SanctionModel(sanction.BrokenRule, sanction.UserId, sanction.UserName,
+                sanction.ModeratorId, sanction.IsTemporary, sanction.ExpirationDate, sanction.Type, sanction.IsActive);
             return Ok(response);
         }
 

@@ -13,6 +13,7 @@ namespace EduHubLibrary.Facades
             DateTimeOffset expirationDate);
 
         void CancelSanction(int sanctionId);
+        SanctionView Get(int sanctionId);
         IEnumerable<SanctionView> GetAll();
         IEnumerable<SanctionView> GetAllOfUser(int userId);
         IEnumerable<SanctionView> GetAllActiveOfUser(int userId);

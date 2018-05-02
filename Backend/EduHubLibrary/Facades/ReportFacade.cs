@@ -26,10 +26,20 @@ namespace EduHubLibrary.Facades
             reportsEvents.ToList().ForEach(r =>
             {
                 var report = JsonConvert.DeserializeObject<ReportMessageEvent>(r.EventInfo);
-                reports.Add(new ReportView(report.SenderName, report.SuspectedName, report.Reason, report.Description));
+                reports.Add(new ReportView(r.Id, report.SenderName, report.SuspectedName, report.Reason, report.Description));
             });
 
             return reports;
+        }
+
+        public ReportView Get(int reportId)
+        {
+            var report = _eventRepository.GetEvent(reportId);
+            var reportEvent = JsonConvert.DeserializeObject<ReportMessageEvent>(report.EventInfo);
+            var reportView = new ReportView(report.Id, reportEvent.SenderName, reportEvent.SuspectedName,
+                reportEvent.Reason, reportEvent.Description);
+
+            return reportView;
         }
 
         public void Report(int senderId, int suspectedId, string reason, string description)

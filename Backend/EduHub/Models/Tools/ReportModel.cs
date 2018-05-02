@@ -7,14 +7,16 @@ namespace EduHub.Models.Tools
 {
     public class ReportModel
     {
-        public ReportModel(string senderName, string suspectedName, string reason, string description)
+        public ReportModel(int reportId, string senderName, string suspectedName, string reason, string description)
         {
+            ReportId = reportId;
             SenderName = senderName;
             SuspectedName = suspectedName;
             Reason = reason;
             Description = description;
         }
 
+        public int ReportId { get; }
         public string SenderName { get; }
         public string SuspectedName { get; }
         public string Reason { get; }

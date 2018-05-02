@@ -10,5 +10,6 @@ namespace EduHubLibrary.Facades
     {
         void Report(int senderId, int suspectedId, string reason, string description);
         IEnumerable<ReportView> GetAll();
+        ReportView Get(int reportId);
     }
 }
