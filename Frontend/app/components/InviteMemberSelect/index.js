@@ -39,7 +39,7 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
 
   handleSelectChange = (value) => {
     this.setState({selectValue: value});
-    setTimeout(() => this.props.searchInvitationUsers(this.props.groupId, value), 0);
+    setTimeout(() => this.props.searchInvitationUsers(this.props.groupId, value, this.state.inviteMemberRole ? this.state.inviteMemberRole : 'Member'), 0);
   };
 
   tryInviteMember(invitedId) {
@@ -80,10 +80,16 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
                   defaultActiveFirstOption={false}
                   showArrow={false}
                 >
-                  {this.props.users.map(item =>
-                    <Select.Option key={item.username}>
-                      <div onClick={() => this.tryInviteMember(item.id)}>{item.username}</div>
-                    </Select.Option>)
+                  {
+                    this.state.selectValue ?
+                      this.props.users.map(item =>
+                        <Select.Option key={item.username}>
+                          <div onClick={() => this.tryInviteMember(item.id)}>{item.username}</div>
+                        </Select.Option>)
+                      : [].map(item =>
+                        <Select.Option key={item.username}>
+                          <div onClick={() => this.tryInviteMember(item.id)}>{item.username}</div>
+                        </Select.Option>)
                   }
                 </Select>
               </Menu.Item>
@@ -121,7 +127,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    searchInvitationUsers: (groupId, username) => dispatch(searchInvitationMember(groupId, username)),
+    searchInvitationUsers: (groupId, username, role) => dispatch(searchInvitationMember(groupId, username, role)),
     inviteMember: (groupId, invitedId, role) => dispatch(inviteMember(groupId, invitedId, role))
   };
 }

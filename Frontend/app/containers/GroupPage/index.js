@@ -516,7 +516,7 @@ export class GroupPage extends React.Component {
               </Row>
               <Row style={{width: '100%', paddingBottom: 40}}>
                 {
-                  <Chat chat={this.props.currentChat} groupId={this.state.id} isInGroup={this.state.isInGroup}/>
+                  <Chat chat={this.state.isInGroup ? this.props.currentChat : []} groupId={this.state.id} isInGroup={this.state.isInGroup}/>
                 }
               </Row>
             </Col>

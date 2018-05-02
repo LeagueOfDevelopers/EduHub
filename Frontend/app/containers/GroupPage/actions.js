@@ -284,11 +284,12 @@ export function editPrivacyFailed(error) {
   };
 }
 
-export function searchInvitationMember(groupId, username) {
+export function searchInvitationMember(groupId, username, role) {
   return {
     type: SEARCH_INVITATION_MEMBER,
     groupId,
-    username
+    username,
+    role
   };
 }
 

@@ -421,6 +421,7 @@ a:focus {
   margin: 10px 0;
   max-width: 92%;
   word-wrap: break-word;
+  min-width: 80px;
 }
 
 .chatroom .chat .message.right {

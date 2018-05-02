@@ -350,7 +350,7 @@ function editGroupPrice(id, price) {
 
 function* searchInvitationUsersSaga(action) {
   try {
-    const data = yield call(getUsers, action.groupId, action.username);
+    const data = yield call(getUsers, action.groupId, action.username, action.role);
     yield put(searchInvitationMemberSuccess(data.users));
   }
   catch(e) {
@@ -358,7 +358,7 @@ function* searchInvitationUsersSaga(action) {
   }
 }
 
-function getUsers(groupId, username) {
+function getUsers(groupId, username, role) {
   return fetch(`${config.API_BASE_URL}/users/searchForInvitation`, {
     method: 'POST',
     headers: {
@@ -366,7 +366,8 @@ function getUsers(groupId, username) {
     },
     body: JSON.stringify({
       groupId: groupId,
-      username: username
+      username: username,
+      wantToTeach: (role === 'Teacher')
     })
   })
     .then(res => res.json())
