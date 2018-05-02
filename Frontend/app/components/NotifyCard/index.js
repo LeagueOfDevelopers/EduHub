@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getMemberRole } from "../../globalJS";
+import {getMemberRole, getSanctionType} from "../../globalJS";
 import {Card, Row, Col} from 'antd';
 import config from "../../config";
 
@@ -16,7 +16,7 @@ class NotifyCard extends React.PureComponent { // eslint-disable-line react/pref
   }
 
   render() {
-    const eventInfo = JSON.parse(this.props.eventInfo);
+    const eventInfo = JSON.parse(this.props.notificationInfo);
     return (
       <Card
         hoverable
@@ -29,42 +29,44 @@ class NotifyCard extends React.PureComponent { // eslint-disable-line react/pref
           <Col span={16}>
             <span>
               {
-                this.props.eventType === 1 ?
+                this.props.notificationType === 1 ?
                   `Преподаватель ${eventInfo.TeacherName} завершил курс в группе "${eventInfo.GroupTitle}"`
-                : this.props.eventType === 2 ?
+                : this.props.notificationType === 2 ?
                   `Учебный план группы "${eventInfo.GroupTitle}" принят`
-                  : this.props.eventType === 3 ?
+                  : this.props.notificationType === 3 ?
                     `Пользователь ${eventInfo.DeclinedName} отклонил учебный план группы "${eventInfo.GroupTitle}"`
-                    : this.props.eventType === 4 ?
+                    : this.props.notificationType === 4 ?
                       (
                         <div>
                           <span style={{display: 'block'}}>В группе {eventInfo.GroupTitle} предложен учебный план</span>
                           <a target='_blank' href={`${config.API_BASE_URL}/file/${eventInfo.CurriculumLink}`}>Скачать учебный план</a>
                         </div>
                       )
-                      : this.props.eventType === 5 ?
+                      : this.props.notificationType === 5 ?
                         `Группа "${eventInfo.GroupTitle}" сформирована`
-                        : this.props.eventType === 6 ?
+                        : this.props.notificationType === 6 ?
                           `Пользователь ${eventInfo.InvitedName} принял ваше приглашение в группу "${eventInfo.GroupTitle}"`
-                          : this.props.eventType === 7 ?
+                          : this.props.notificationType === 7 ?
                             `Пользователь ${eventInfo.InvitedName} отклонил ваше приглашение в группу "${eventInfo.GroupTitle}"`
-                            : this.props.eventType === 8 ?
+                            : this.props.notificationType === 8 ?
                               `Пользователь ${eventInfo.InviterName} пригласил вас в группу "${eventInfo.GroupTitle}" на роль "${getMemberRole(eventInfo.SuggestedRole)}"`
-                              : this.props.eventType === 9 ?
+                              : this.props.notificationType === 9 ?
                                 `Пользователь ${eventInfo.Username} покинул группу "${eventInfo.GroupTitle}"`
-                                : this.props.eventType === 10 ?
+                                : this.props.notificationType === 10 ?
                                   `Пользователь ${eventInfo.NewCreatorUsername} стал новым создателем группы "${eventInfo.GroupTitle}"`
-                                  : this.props.eventType === 11 ?
+                                  : this.props.notificationType === 11 ?
                                     `Пользователь ${eventInfo.Username} присоединился в группу "${eventInfo.GroupTitle}"`
-                                    : this.props.eventType === 12 ?
-                                      `Пользователь ${eventInfo.SenderName} отправил репорт на пользователя ${eventInfo.SuspectedName} за нарушение правила ${eventInfo.BrokenRule}`
-                                      : this.props.eventType === 13 ?
+                                    : this.props.notificationType === 12 ?
+                                      `Пользователь ${eventInfo.SenderName} отправил репорт на пользователя ${eventInfo.SuspectedName} за нарушение правила "${eventInfo.BrokenRule}"`
+                                      : this.props.notificationType === 13 ?
                                         `Пользователь ${eventInfo.ReviewerName} оставил отзыв о преподавателе группы "${eventInfo.GroupTitle}"`
-                                        : this.props.eventType === 14 ?
-                                          'Санкция применена'
-                                          : this.props.eventType === 15 ?
-                                            `Пользователь ${eventInfo.TeacherName} стал новым учителем группы "${eventInfo.GroupTitle}"`
-                                            : ''
+                                        : this.props.notificationType === 14 ?
+                                          `К вам была применена санкция "${getSanctionType(eventInfo.SanctionType)}" за нарушение правила "${eventInfo.BrokenRule}"`
+                                          : this.props.notificationType === 15 ?
+                                            `К пользователю ${eventInfo.Username} была применена санкция "${getSanctionType(eventInfo.SanctionType)}" за нарушение правила "${eventInfo.BrokenRule}"`
+                                            : this.props.notificationType === 16 ?
+                                              `Пользователь ${eventInfo.TeacherName} стал новым учителем группы "${eventInfo.GroupTitle}"`
+                                              : ''
               }
             </span>
           </Col>

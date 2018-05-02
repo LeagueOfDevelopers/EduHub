@@ -25,7 +25,7 @@ function* changeInvitationStatusSaga(action) {
 function* getNotifiesSaga() {
   try {
     const notifies = yield call(getNotifies);
-    yield put(getNotifiesSuccess(notifies))
+    yield put(getNotifiesSuccess(notifies.reverse()))
   }
   catch(e) {
     yield put(getNotifiesFailed(e))
@@ -35,7 +35,7 @@ function* getNotifiesSaga() {
 function* getInvitesSaga() {
   try {
     const data = yield call(getInvites);
-    yield put(getInvitesSuccess(data.invitations))
+    yield put(getInvitesSuccess(data.invitations.reverse()))
   }
   catch(e) {
     yield put(getInvitesFailed(e))

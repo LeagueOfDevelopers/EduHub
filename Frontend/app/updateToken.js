@@ -12,7 +12,7 @@ export const updateToken = store => next => action => {
     })
       .then(res => res.json())
       .then(res => {
-        if(action.token !== undefined) {
+        if(res.token) {
           localStorage.setItem('name', `${res.name}`);
           localStorage.setItem('avatarLink', `${res.avatarLink}`);
           localStorage.setItem('token', `${res.token}`);

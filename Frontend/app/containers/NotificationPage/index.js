@@ -91,6 +91,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
 
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.needUpdate !== this.props.needUpdate) {
+      this.props.getNotifies();
       this.props.getInvites();
     }
   }
@@ -110,7 +111,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                 )
                 :
                 <div>
-                  {this.props.notifies.reverse().map(item =>
+                  {this.props.notifies.map(item =>
                     <NotifyCard key={item.id} {...item}/>
                   )}
                 </div>
@@ -126,7 +127,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                 )
                 :
                 (<div>
-                    {this.props.invites.reverse().map(item =>
+                    {this.props.invites.map(item =>
                       <InviteCard key={item.id} {...item}/>
                     )}
                   </div>

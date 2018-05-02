@@ -72,6 +72,17 @@ export function getCourseStatus(enumType) {
   }
 }
 
+export function getSanctionType(enumType) {
+  switch (enumType) {
+    case 0:
+      return 'Не разрешено преподавать';
+    case 1:
+      return 'Не разрешено вступать в группы';
+    case 2:
+      return 'Не разрешено редактировать профиль';
+  }
+}
+
 
 export function getQueryVariable(variable) {
   let query = window.location.search.substring(1);
