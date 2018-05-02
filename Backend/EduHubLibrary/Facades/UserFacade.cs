@@ -8,6 +8,7 @@ using EduHubLibrary.Facades.Views;
 using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Events;
+using System;
 
 namespace EduHubLibrary.Facades
 {
@@ -92,6 +93,9 @@ namespace EduHubLibrary.Facades
             var invitedUser = _userRepository.GetUserById(invitedId);
             var inviterUser = _userRepository.GetUserById(inviterId);
 
+            Ensure.Bool.IsTrue(currentGroup.Status == CourseStatus.Searching 
+                               || currentGroup.Status == CourseStatus.InProgress,
+                nameof(CourseStatus), opt => opt.WithException(new InvalidOperationException()));
             Ensure.Bool.IsTrue(currentGroup.IsMember(inviterId), nameof(Invite),
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
             Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),   
