@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.Events;
 
 [assembly: InternalsVisibleTo("EduHubTests")]
 
@@ -28,6 +27,7 @@ namespace EduHubLibrary.Domain
             GroupInfo = new GroupInfo(title, description, tags, groupType, isPrivate, isActive, size,
                 moneyPerUser);
             Members = new List<Member>();
+            KickedId = new List<int>();
             Invitations = new List<Invitation>();
             var creator = new Member(creatorId, MemberRole.Creator);
             Members.Add(creator);
@@ -35,14 +35,15 @@ namespace EduHubLibrary.Domain
         }
 
         internal Group(IEnumerable<Message> messages, GroupInfo groupInfo, User teacher, CourseStatus status, 
-            List<Member> members, List<Invitation> invitations)
+            List<Member> members, List<Invitation> invitations, List<int> kicked)
         {
-            Messages = messages;
-            GroupInfo = groupInfo;
+            Messages = Ensure.Any.IsNotNull(messages);
+            GroupInfo = Ensure.Any.IsNotNull(groupInfo);
             Teacher = teacher;
             Status = status;
-            Members = members;
-            Invitations = invitations;
+            Members = Ensure.Any.IsNotNull(members);
+            Invitations = Ensure.Any.IsNotNull(invitations);
+            KickedId = Ensure.Any.IsNotNull(kicked);
         }
 
         public IEnumerable<Message> Messages { get; internal set; }
@@ -51,6 +52,7 @@ namespace EduHubLibrary.Domain
         public CourseStatus Status { get; internal set; }
         public List<Member> Members { get; internal set; }
         public List<Invitation> Invitations { get; internal set; }
+        public List<int> KickedId { get; internal set; }
 
         internal void AddMember(int newMemberId)
         {
@@ -80,6 +82,11 @@ namespace EduHubLibrary.Domain
             Ensure.Bool.IsTrue(requestedPerson == deletingPerson || requestedMember.MemberRole == MemberRole.Creator,
                 nameof(DeleteMember), opt => opt.WithException(new NotEnoughPermissionsException(requestedPerson)));
 
+            if (requestedPerson != deletingPerson)
+            {
+                KickedId.Add(deletingPerson);
+            }
+
             if (deletingMember.MemberRole == MemberRole.Creator)
             {
                 DeleteCreator(deletingMember);
@@ -87,6 +94,7 @@ namespace EduHubLibrary.Domain
             }
 
             Members.Remove(deletingMember);
+            CheckVoting();
         }
 
         internal void DeleteTeacher(int requestedPerson)
@@ -121,6 +129,11 @@ namespace EduHubLibrary.Domain
         internal bool IsTeacher(int userId)
         {
             return Teacher?.Id == userId;
+        }
+
+        internal bool IsKicked(int userId)
+        {
+            return KickedId.Any(i => i == userId);
         }
 
         internal Member GetMember(int userId)
@@ -164,9 +177,7 @@ namespace EduHubLibrary.Domain
 
             var currentMember = GetMember(userId);
             currentMember.CurriculumStatus = MemberCurriculumStatus.Accepted;
-            if (Members.All(m =>
-                m.CurriculumStatus == MemberCurriculumStatus.Accepted) && Members.Count == GroupInfo.Size)
-                Status = CourseStatus.Started;
+            CheckVoting();
         }
 
         internal void DeclineCurriculum(int userId)
@@ -221,11 +232,19 @@ namespace EduHubLibrary.Domain
             var newCreator = Members[creatorIndex + 1];
             newCreator.MemberRole = MemberRole.Creator;
             Members.Remove(deletingCreator);
+            CheckVoting();
         }
 
         private void ClearMemberCourseData()
         {
             Members.ForEach(m => { m.CurriculumStatus = MemberCurriculumStatus.InProgress; });
+        }
+
+        internal void CheckVoting()
+        {
+            if (Members.All(m =>
+                    m.CurriculumStatus == MemberCurriculumStatus.Accepted) && Members.Count == GroupInfo.Size)
+                Status = CourseStatus.Started;
         }
     }
 }

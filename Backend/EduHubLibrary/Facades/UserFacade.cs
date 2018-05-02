@@ -94,9 +94,11 @@ namespace EduHubLibrary.Facades
 
             Ensure.Bool.IsTrue(currentGroup.IsMember(inviterId), nameof(Invite),
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
-            Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),
+            Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),   
                 opt => opt.WithException(new AlreadyMemberException(invitedId, groupId)));
-            Ensure.Bool.IsFalse(invitedUser.Invitations.Any(c => c.GroupId == groupId),
+            Ensure.Bool.IsFalse(invitedUser.Invitations.Any(c => c.GroupId == groupId 
+                                                                 && (c.Status == InvitationStatus.InProgress 
+                                                                  || c.Status == InvitationStatus.Declined)),
                 nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
             if (suggestedRole == MemberRole.Teacher)
                 Ensure.Bool.IsTrue(invitedUser.UserProfile.IsTeacher, nameof(Invite),

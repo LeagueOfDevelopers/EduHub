@@ -31,5 +31,6 @@ namespace EduHubLibrary.Data.GroupDtos
         public List<MemberDto> Members { get; set; } = new List<MemberDto>();
         public List<InvitationDto> Invitations { get; set; } = new List<InvitationDto>();
         public List<TagGroup> Tags { get; set; } = new List<TagGroup>();
+        public List<KickedId> Kicked { get; set; } = new List<KickedId>();
     }
 }

@@ -51,6 +51,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Members)
                     .Include(g => g.Messages)
                     .Include(g => g.Invitations)
+                    .Include(g => g.Kicked)
                     .Include(g => g.Tags)
                     .FirstOrDefault(g => g.Id == group.GroupInfo.Id && !g.IsDeleted);
 
@@ -59,6 +60,8 @@ namespace EduHubLibrary.Infrastructure
 
                 _context.RemoveRange(currentGroupDto.Tags);
                 currentGroupDto.Tags.RemoveAll(t => true);
+                _context.RemoveRange(currentGroupDto.Kicked);
+                currentGroupDto.Kicked.RemoveAll(t => true);
                 _context.RemoveRange(currentGroupDto.Members);
                 currentGroupDto.Members.RemoveAll(t => true);
 
@@ -77,6 +80,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Members)
                     .Include(g => g.Messages)
                     .Include(g => g.Tags)
+                    .Include(g => g.Kicked)
                     .Where(g => !g.IsDeleted)
                     .ToList();
                 var allGroups = new List<Group>();
@@ -93,6 +97,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Invitations)
                     .Include(g => g.Messages)
                     .Include(g => g.Members)
+                    .Include(g => g.Kicked)
                     .Include(g => g.Tags)
                     .FirstOrDefault(g => g.Id == id && !g.IsDeleted);
                 Ensure.Any.IsNotNull(currentGroupDto, nameof(currentGroupDto),
@@ -109,6 +114,7 @@ namespace EduHubLibrary.Infrastructure
                 var foundValues = _context.Groups
                     .Include(g => g.Invitations)
                     .Include(g => g.Members)
+                    .Include(g => g.Kicked)
                     .Include(g => g.Messages)
                     .Include(g => g.Tags)
                     .Where(g => g.Members.Any(m => m.Id == memberId) && !g.IsDeleted)

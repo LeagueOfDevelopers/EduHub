@@ -62,6 +62,8 @@ namespace EduHubLibrary.Facades
             var currentGroup = _groupRepository.GetGroupById(groupId);
             Ensure.Bool.IsTrue(currentGroup.Teacher?.Id != newMemberId, nameof(currentUser),
                 opt => opt.WithException(new AlreadyTeacherException(newMemberId)));
+            Ensure.Bool.IsFalse(currentGroup.IsKicked(newMemberId), nameof(newMemberId),
+                opt => opt.WithException(new NotEnoughPermissionsException(newMemberId)));
             currentGroup.AddMember(newMemberId);
             _groupRepository.Update(currentGroup);
 

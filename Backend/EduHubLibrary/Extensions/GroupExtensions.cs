@@ -17,6 +17,9 @@ namespace EduHubLibrary.Extensions
             var tags = new List<string>();
             source.Tags.ToList().ForEach(tagDto => tags.Add(tagDto.Name));
 
+            var kicked = new List<int>();
+            source.Kicked.ToList().ForEach(k => kicked.Add(k.UserId));
+
             User teacher = null;
             if (source.TeacherId != 0) teacher = new User(source.TeacherName, source.TeacherEmail, source.TeacherId);
 
@@ -33,7 +36,7 @@ namespace EduHubLibrary.Extensions
                 source.Curriculum, tags, source.GroupType,
                 source.IsPrivate, source.IsActive, source.Size, source.Price);
 
-            var result = new Group(messages, groupInfo, teacher, source.Status, members, invitations);
+            var result = new Group(messages, groupInfo, teacher, source.Status, members, invitations, kicked);
             return result;
         }
     }

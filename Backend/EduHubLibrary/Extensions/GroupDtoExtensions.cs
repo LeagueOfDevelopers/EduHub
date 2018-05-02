@@ -45,6 +45,8 @@ namespace EduHubLibrary.Extensions
                     result.Messages.Add(new MessageDto(message.Id, message.SenderId, message.SentOn, message.Text));
             });
 
+            sourse.KickedId?.ToList().ForEach(id => result.Kicked.Add(new KickedId(0, id)));
+
             sourse.Invitations?.ForEach(i =>
             {
                 if (result.Invitations.All(iDto => i.Id != iDto.Id))

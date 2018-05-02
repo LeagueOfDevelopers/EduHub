@@ -70,6 +70,12 @@ namespace EduHub.Filters
                 case ActionIsNotAllowWithSanctionsException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case AlreadyInvitedException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
+                case InvalidOperationException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {
