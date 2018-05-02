@@ -146,6 +146,49 @@
 					"response": []
 				},
 				{
+					"name": "RegKickedUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"postman.setEnvironmentVariable(\"kickedId\", jsonData.id);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"kicked\",\r\n  \"email\": \"kicked@kicked.kicked\",\r\n  \"password\": \"kicked123\",\r\n  \"isTeacher\": false,\r\n  \"avatarLink\": \"http://vk.com/im\"\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/registration",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"registration"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
 					"name": "LoginAsCreator",
 					"event": [
 						{
@@ -272,6 +315,48 @@
 					"response": []
 				},
 				{
+					"name": "LoginAsKicked",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"postman.setEnvironmentVariable(\"kickedToken\", jsonData.token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\":\"kicked@kicked.kicked\",\n  \"password\":\"kicked123\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/account/login/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"login",
+								""
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
 					"name": "CreateGroup",
 					"event": [
 						{
@@ -308,7 +393,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"some Group\",\r\n  \"description\": \"some Description here ok man 30 symbols text\",\r\n  \"tags\": [\r\n    \"js\",\r\n    \"c#\",\r\n    \"c\"\r\n  ],\r\n  \"size\": 3,\r\n  \"moneyPerUser\": 100,\r\n  \"groupType\": 1,\r\n  \"isPrivate\": false\r\n}"
+							"raw": "{\r\n  \"title\": \"some Group\",\r\n  \"description\": \"some Description here ok man 30 symbols text\",\r\n  \"tags\": [\r\n    \"js\",\r\n    \"c#\",\r\n    \"c\"\r\n  ],\r\n  \"size\": 4,\r\n  \"moneyPerUser\": 100,\r\n  \"groupType\": 1,\r\n  \"isPrivate\": false\r\n}"
 						},
 						"url": {
 							"raw": "{{url}}/api/group/",
@@ -662,19 +747,19 @@
 					"response": []
 				},
 				{
-					"name": "EditGroupSize",
+					"name": "KickedEnterGroup",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "{{creatorToken}}",
+									"value": "{{kickedToken}}",
 									"type": "string"
 								}
 							]
 						},
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -683,10 +768,10 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"groupSize\": 2\r\n}"
+							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/api/group/{{groupId}}/size",
+							"raw": "{{url}}/api/group/{{groupId}}/member",
 							"host": [
 								"{{url}}"
 							],
@@ -694,7 +779,7 @@
 								"api",
 								"group",
 								"{{groupId}}",
-								"size"
+								"member"
 							]
 						},
 						"description": ""
@@ -818,6 +903,140 @@
 								"{{groupId}}",
 								"course",
 								"curriculum"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "KickedKick",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/member/{{kickedId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"member",
+								"{{kickedId}}"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "KickedTryEnterGroup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"response is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{kickedToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/member",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"member"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "EditGroupSize",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{creatorToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"groupSize\": 2\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/api/group/{{groupId}}/size",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"group",
+								"{{groupId}}",
+								"size"
 							]
 						},
 						"description": ""
