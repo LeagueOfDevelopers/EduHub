@@ -24,7 +24,13 @@ const makeSelectNeedUpdate = () => createSelector(
   (profileState) => profileState.get('needUpdate')
 );
 
+const makeSelectTags = () => createSelector(
+  selectProfilePageDomain,
+  (profileState) => profileState.get('tags')
+);
+
 export {
   makeSelectUserGroups,
-  makeSelectNeedUpdate
+  makeSelectNeedUpdate,
+  makeSelectTags
 };

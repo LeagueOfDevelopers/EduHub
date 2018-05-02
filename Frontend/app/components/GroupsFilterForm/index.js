@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { getFilteredGroups } from "../../containers/GroupsPage/actions";
+import { getTags } from '../../containers/GroupsPage/actions';
+import { makeSelectTags } from "../../containers/GroupsPage/selectors";
 import {Row, Col, Card, Input, Select, Radio, Checkbox, Divider, InputNumber} from 'antd';
 
 
@@ -21,7 +23,7 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
       title: this.props.title,
       type: 'Default',
       formed: this.props.formed,
-      tags: this.props.tags ? [].concat(this.props.tags) : [],
+      tags: this.props.queryTags.length ? [].concat(this.props.queryTags) : [],
       minPrice: 0,
       maxPrice: 10000
     };
@@ -32,16 +34,17 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
     this.onHandleTypeChange = this.onHandleTypeChange.bind(this);
     this.onHandleMinPriceChange = this.onHandleMinPriceChange.bind(this);
     this.onHandleMaxPriceChange = this.onHandleMaxPriceChange.bind(this);
+    this.onHandleSearch = this.onHandleSearch.bind(this);
   }
 
   componentDidMount() {
     this.props.getFilteredGroups(this.state);
   }
 
-  componentDidUpdate(prevProps) {
-    if(prevProps.tags[0] !== this.props.tags[0]) {
-      this.setState({tags: this.props.tags ? [].concat(this.props.tags) : []})
-    }
+  componentWillReceiveProps(nextProps) {
+    this.props.queryTags[0] !== nextProps.queryTags[0] ?
+      this.setState({tags: nextProps.queryTags.length ? [].concat(nextProps.queryTags) : []})
+      : null;
   }
 
   onHandleTitleChange = (e) => {
@@ -52,6 +55,10 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
   onHandleFormedChange = (e) => {
     this.setState({formed: e.target.checked});
     setTimeout(() => this.props.getFilteredGroups(this.state), 0);
+  };
+
+  onHandleSearch = (e) => {
+    this.props.getTags(e);
   };
 
   onHandleTagsChange = (e) => {
@@ -93,11 +100,11 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
           <Divider/>
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Тэги</div>
-            <Select mode="tags" value={this.state.tags} onChange={this.onHandleTagsChange} style={{width: '100%'}}>
-              <Select.Option value="html">html</Select.Option>
-              <Select.Option value="css">css</Select.Option>
-              <Select.Option value="js">js</Select.Option>
-              <Select.Option value="c#">c#</Select.Option>
+            <Select mode="tags" value={this.state.tags} onChange={this.onHandleTagsChange} onSearch={this.onHandleSearch} notFoundContent={null} style={{width: '100%'}}>
+              {this.props.tags && this.props.tags.length && this.props.tags.length !== 0 ?
+                this.props.tags.map((item, index) =>
+                  <Select.Option key={item}>{item}</Select.Option>
+                ) : null}
             </Select>
           </Row>
           <Divider/>
@@ -128,12 +135,13 @@ GroupsFilterForm.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-
+  tags: makeSelectTags()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getFilteredGroups: (filters) => dispatch(getFilteredGroups(filters))
+    getFilteredGroups: (filters) => dispatch(getFilteredGroups(filters)),
+    getTags: (tag) => dispatch(getTags(tag))
   }
 }
 

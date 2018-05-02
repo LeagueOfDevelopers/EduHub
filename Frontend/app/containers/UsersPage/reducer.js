@@ -8,11 +8,15 @@ import { fromJS } from 'immutable';
 import {
   GET_FILTERED_USERS_START,
   GET_FILTERED_USERS_SUCCESS,
-  GET_FILTERED_USERS_FAILED
+  GET_FILTERED_USERS_FAILED,
+  GET_GROUP_TAGS_SUCCESS,
+  GET_GROUP_TAGS_FAILED,
+  GET_GROUP_TAGS_START
 } from './constants';
 
 const initialState = fromJS({
   users: [],
+  tags: [],
   filters: {},
   pending: false,
   error: false
@@ -32,6 +36,17 @@ function usersPageReducer(state = initialState, action) {
       return state
         .set('error', action.error)
         .set('pending', false);
+    case GET_GROUP_TAGS_START:
+      return state
+        .set('pending', true);
+    case GET_GROUP_TAGS_SUCCESS:
+      return state
+        .set('tags', action.tags)
+        .set('pending', false);
+    case GET_GROUP_TAGS_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
     default:
       return state;
   }

@@ -7,7 +7,10 @@
 import {
   GET_FILTERED_GROUPS_ERROR,
   GET_FILTERED_GROUPS_START,
-  GET_FILTERED_GROUPS_SUCCESS
+  GET_FILTERED_GROUPS_SUCCESS,
+  GET_GROUP_TAGS_START,
+  GET_GROUP_TAGS_FAILED,
+  GET_GROUP_TAGS_SUCCESS
 } from './constants';
 
 export const getFilteredGroups = (filters) => (
@@ -31,3 +34,23 @@ export const getFilteredGroupsError = (error) => (
   }
 )
 
+export function getTags(tag) {
+  return {
+    type: GET_GROUP_TAGS_START,
+    tag
+  };
+}
+
+export function getTagsSuccess(tags) {
+  return {
+    type: GET_GROUP_TAGS_SUCCESS,
+    tags
+  };
+}
+
+export function getTagsFailed(error) {
+  return {
+    type: GET_GROUP_TAGS_FAILED,
+    error
+  };
+}

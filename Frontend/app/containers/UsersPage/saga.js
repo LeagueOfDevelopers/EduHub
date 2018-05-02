@@ -1,6 +1,6 @@
 import { takeEvery, call, put, select } from 'redux-saga/effects';
-import { GET_FILTERED_USERS_START } from "./constants";
-import { getFilteredUsersSuccess, getFilteredUsersFailed } from "./actions";
+import { GET_FILTERED_USERS_START, GET_GROUP_TAGS_START } from "./constants";
+import { getFilteredUsersSuccess, getFilteredUsersFailed, getTagsSuccess, getTagsFailed} from "./actions";
 import config from "../../config";
 
 function* getFilteredUsersSaga(action) {
@@ -26,6 +26,24 @@ function getFilteredUsers(filters) {
     .catch(error => error)
 }
 
+function* getTagsSaga(action) {
+  try {
+    const data = yield call(getTags, action.tag);
+    yield put(getTagsSuccess(data.map(item => item.tag)));
+  }
+  catch (e) {
+    yield put(getTagsFailed(e))
+  }
+}
+
+function getTags(tag) {
+  return fetch(`${config.API_BASE_URL}/tags/search${tag ? `?tag=${tag}` : ''}`)
+    .then(res => res.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(GET_FILTERED_USERS_START, getFilteredUsersSaga);
+  yield takeEvery(GET_GROUP_TAGS_START, getTagsSaga);
 }

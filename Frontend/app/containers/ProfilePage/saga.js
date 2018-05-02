@@ -10,7 +10,8 @@ import {
   MAKE_NOT_TEACHER,
   EDIT_PROFILE_START,
   EDIT_SKILLS_START,
-  MAKE_REPORT_START
+  MAKE_REPORT_START,
+  GET_GROUP_TAGS_START
 } from "./constants";
 import {
   getCurrentUserGroupsSuccess,
@@ -34,7 +35,9 @@ import {
   editSkillsFailed,
   editSkillsSuccess,
   makeReportFailed,
-  makeReportSuccess
+  makeReportSuccess,
+  getTagsFailed,
+  getTagsSuccess
 } from "./actions";
 import config from '../../config';
 
@@ -312,6 +315,23 @@ function makeReport(userId, reason, description) {
     .catch(error => error)
 }
 
+function* getTagsSaga(action) {
+  try {
+    const data = yield call(getTags, action.tag);
+    yield put(getTagsSuccess(data.map(item => item.tag)));
+  }
+  catch (e) {
+    yield put(getTagsFailed(e))
+  }
+}
+
+function getTags(tag) {
+  return fetch(`${config.API_BASE_URL}/tags/search${tag ? `?tag=${tag}` : ''}`)
+    .then(res => res.json())
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(GET_CURRENT_USER_GROUPS, getUserGroupsSaga);
   yield takeEvery(EDIT_NAME, editUsernameSaga);
@@ -324,4 +344,5 @@ export default function* () {
   yield takeEvery(EDIT_PROFILE_START, editProfileSaga);
   yield takeEvery(EDIT_SKILLS_START, editSkillsSaga);
   yield takeEvery(MAKE_REPORT_START, makeReportSaga);
+  yield takeEvery(GET_GROUP_TAGS_START, getTagsSaga);
 }

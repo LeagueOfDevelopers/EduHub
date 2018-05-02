@@ -61,9 +61,9 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
           </Card>
         </Col>
         <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}}>
-          <FilterForm id='xs-filter' title={this.state.title} tags={this.state.tags} formed={this.state.formed} style={{width: '100%'}}/>
+          <FilterForm id='xs-filter' title={this.state.title} queryTags={this.state.tags} formed={this.state.formed} style={{width: '100%'}}/>
         </Col>
-        <FilterForm id='lg-filter' title={this.state.title} tags={this.state.tags} formed={this.state.formed}/>
+        <FilterForm id='lg-filter' title={this.state.title} queryTags={this.state.tags} formed={this.state.formed}/>
         <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} lg={{span: 9, offset: 1}} xl={{span: 10, offset: 1}} xxl={{span: 11, offset: 1}} className='groups-content'>
           <Row type='flex' justify='space-between' align='middle'>
             <h3 style={{marginBottom: 0}}>Группы</h3>

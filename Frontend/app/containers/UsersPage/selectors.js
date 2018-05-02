@@ -19,7 +19,12 @@ const makeSelectUsers = () => createSelector(
   (usersState) => usersState.get('users')
 );
 
+const makeSelectTags = () => createSelector(
+  selectUsersPageDomain,
+  (usersState) => usersState.get('tags')
+);
 
 export {
   makeSelectUsers,
+  makeSelectTags
 };

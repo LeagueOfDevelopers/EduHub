@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectUserGroups, makeSelectNeedUpdate} from './selectors';
+import {makeSelectUserGroups, makeSelectNeedUpdate, makeSelectTags} from './selectors';
 import {
   getCurrentUserGroups,
   editUsername,
@@ -22,7 +22,8 @@ import {
   makeTeacher,
   makeNotTeacher,
   editProfile,
-  editSkills
+  editSkills,
+  getTags
 } from "./actions";
 import reducer from './reducer';
 import saga from './saga';
@@ -193,6 +194,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.removeContact = this.removeContact.bind(this);
     this.cancelChanges = this.cancelChanges.bind(this);
     this.handleAvatarLinkChange = this.handleAvatarLinkChange.bind(this);
+    this.onHandleSearch = this.onHandleSearch.bind(this);
   }
 
   onReportClick = () => {
@@ -201,6 +203,10 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
 
   handleReportCancel = () => {
     this.setState({reportVisible: false})
+  };
+
+  onHandleSearch = (e) => {
+    this.props.getTags(e);
   };
 
   componentDidMount() {
@@ -297,9 +303,9 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
           getGenderType(this.state.genderInput) !== this.state.userProfile.gender || this.state.nameInput !== this.state.userProfile.name || this.state.imageUrl !== this.state.userProfile.avatarLink) {
           setTimeout(() => this.props.editProfile(this.state.nameInput, this.state.aboutInput, this.state.genderInput, this.state.contactsInputs, this.state.birthYearInput, this.state.imageUrl ? this.state.imageUrl : ''), 0);
         }
-        if(this.state.teacherProfile.skills && (this.state.skillsInput.length !== this.state.teacherProfile.skills.length || this.state.skillsInput.filter((item, i) =>
+        if(this.state.teacherProfile && this.state.teacherProfile.skills && (this.state.skillsInput.length !== this.state.teacherProfile.skills.length || this.state.teacherProfile && this.state.teacherProfile.skills && this.state.skillsInput.filter((item, i) =>
             item !== this.state.teacherProfile.skills[i]
-          ).length !== 0) || !this.state.teacherProfile.skills) {
+          ).length !== 0) || this.state.teacherProfile && !this.state.teacherProfile.skills) {
           setTimeout(() => this.props.editSkills(this.state.skillsInput), 0);
         }
         this.setState({isEditing: false});
@@ -475,7 +481,12 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                                   rules: [],
                                   initialValue: this.state.teacherProfile.skills
                                 })(
-                                  <Select onChange={this.onChangeSkillsHandle} style={{width: '100%'}} mode="tags" placeholder="Введите свои навыки" notFoundContent={null}/>)
+                                  <Select onChange={this.onChangeSkillsHandle} style={{width: '100%'}} onSearch={this.onHandleSearch} mode="tags" placeholder="Введите свои навыки" notFoundContent={null}>
+                                    {this.props.tags && this.props.tags.length ?
+                                      this.props.tags.map((item, index) =>
+                                        <Select.Option key={item}>{item}</Select.Option>
+                                      ) : null}
+                                  </Select>)
                                 }
                               </FormItem>
                               : null
@@ -704,7 +715,8 @@ ProfilePage.defaultProps = {
 
 const mapStateToProps = createStructuredSelector({
   myGroups: makeSelectUserGroups(),
-  needUpdate: makeSelectNeedUpdate()
+  needUpdate: makeSelectNeedUpdate(),
+  tags: makeSelectTags()
 });
 
 function mapDispatchToProps(dispatch) {
@@ -718,7 +730,8 @@ function mapDispatchToProps(dispatch) {
     makeTeacher: () => dispatch(makeTeacher()),
     makeNotTeacher: () => dispatch(makeNotTeacher()),
     editSkills: (skills) => dispatch(editSkills(skills)),
-    editProfile: (name, aboutUser, gender, contacts, birthYear, avatarLink) => dispatch(editProfile(name, aboutUser, gender, contacts, birthYear, avatarLink))
+    editProfile: (name, aboutUser, gender, contacts, birthYear, avatarLink) => dispatch(editProfile(name, aboutUser, gender, contacts, birthYear, avatarLink)),
+    getTags: (tag) => dispatch(getTags(tag))
   };
 }
 
@@ -726,6 +739,7 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 const withReducer = injectReducer({ key: 'profilePage', reducer });
 const withSaga = injectSaga({ key: 'profilePage', saga });
+
 
 export default compose(
   withReducer,

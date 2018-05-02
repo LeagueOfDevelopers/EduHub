@@ -38,12 +38,16 @@ import {
   EDIT_SKILLS_START,
   MAKE_REPORT_FAILED,
   MAKE_REPORT_SUCCESS,
-  MAKE_REPORT_START
+  MAKE_REPORT_START,
+  GET_GROUP_TAGS_START,
+  GET_GROUP_TAGS_FAILED,
+  GET_GROUP_TAGS_SUCCESS
 } from './constants';
 import { message } from 'antd';
 
 const initialState = fromJS({
   groups: [],
+  tags: [],
   needUpdate: false,
   pending: false,
   error: false
@@ -195,6 +199,17 @@ function profilePageReducer(state = initialState, action) {
       return state
         .set('pending', false);
     case MAKE_REPORT_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
+    case GET_GROUP_TAGS_START:
+      return state
+        .set('pending', true);
+    case GET_GROUP_TAGS_SUCCESS:
+      return state
+        .set('tags', action.tags)
+        .set('pending', false);
+    case GET_GROUP_TAGS_FAILED:
       return state
         .set('pending', false)
         .set('error', true);

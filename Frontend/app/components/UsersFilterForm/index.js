@@ -9,7 +9,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { getFilteredUsers } from "../../containers/UsersPage/actions";
+import { getFilteredUsers, getTags } from "../../containers/UsersPage/actions";
+import { makeSelectTags } from "../../containers/UsersPage/selectors";
 import {Row, Col, Card, Input, Select, Radio, Checkbox, Divider} from 'antd';
 
 
@@ -32,6 +33,7 @@ class UsersFilterForm extends React.Component { // eslint-disable-line react/pre
     this.onHandleStudentExperienceChange = this.onHandleStudentExperienceChange.bind(this);
     this.onHandleTeacherRateStartChange = this.onHandleTeacherRateStartChange.bind(this);
     this.onHandleTeacherRateEndChange = this.onHandleTeacherRateEndChange.bind(this);
+    this.onHandleSearch = this.onHandleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +43,10 @@ class UsersFilterForm extends React.Component { // eslint-disable-line react/pre
   onHandleNameChange = (e) => {
     this.setState({name: e.target.value});
     setTimeout(() => this.props.getFilteredUsers(this.state), 0);
+  };
+
+  onHandleSearch = (e) => {
+    this.props.getTags(e);
   };
 
   onHandleRoleChange = (e) => {
@@ -90,11 +96,11 @@ class UsersFilterForm extends React.Component { // eslint-disable-line react/pre
           <Divider/>
           <Row>
             <div className='margin-bottom-12' style={{fontSize: 16, color: '#000'}}>Навыки</div>
-            <Select mode="tags" value={this.state.tags} onChange={this.onHandleSkillsChange} defaultActiveFirstOption={false} style={{width: '100%'}}>
-              <Select.Option value="html">html</Select.Option>
-              <Select.Option value="css">css</Select.Option>
-              <Select.Option value="js">js</Select.Option>
-              <Select.Option value="c#">c#</Select.Option>
+            <Select mode="tags" value={this.state.tags} onChange={this.onHandleSkillsChange} onSearch={this.onHandleSearch} style={{width: '100%'}} notFoundContent=''>
+              {this.props.tags && this.props.tags.length && this.props.tags.length !== 0 ?
+                this.props.tags.map((item, index) =>
+                  <Select.Option key={item}>{item}</Select.Option>
+                ) : null}
             </Select>
           </Row>
           <Divider/>
@@ -156,12 +162,13 @@ UsersFilterForm.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-
+ tags: makeSelectTags()
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    getFilteredUsers: (filters) => dispatch(getFilteredUsers(filters))
+    getFilteredUsers: (filters) => dispatch(getFilteredUsers(filters)),
+    getTags: (tag) => dispatch(getTags(tag))
   }
 }
 

@@ -7,6 +7,7 @@
 import React from 'react';
 import {Card, Row, Col, Button, message, Avatar} from 'antd';
 import {Link} from "react-router-dom";
+import {getGender} from "../../globalJS";
 
 
 class UserCard extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -23,13 +24,22 @@ class UserCard extends React.Component { // eslint-disable-line react/prefer-sta
         bodyStyle={{padding: '14px 22px'}}
       >
         <Row type='flex' align='middle'>
-          <Col className='md-margin-bottom-14' xs={{span: 24}} md={{span: 14}} lg={{span: 24}} xl={{span: 14}} style={{display: 'flex'}}>
+          <Col className='md-margin-bottom-14' xs={{span: 24}} md={{span: 14}} lg={{span: 24}} xl={{span: 14}} style={{display: 'flex', alignItems: 'center'}}>
             <Avatar
               src={this.props.avatarLink}
               style={{minHeight: 50, minWidth: 50, marginRight: 20, borderRadius: '50%'}}
             >
             </Avatar>
-            <div style={{color: '#000', fontSize: 16}}>{this.props.name}</div>
+            <div>
+              <div style={{color: '#000', fontSize: 16, display: 'flex', flexWrap: 'wrap', alignItems: 'center'}}>
+                <span style={{marginRight: 14}}>{this.props.name}</span>
+                <span title='Пользователь является преподавателем' style={{opacity: 0.4, fontSize: 14}}>{this.props.isTeacher ? 'Преподаватель' : ''}</span>
+              </div>
+              <div style={{display: 'flex', flexWrap: 'wrap', alignItems: 'center'}}>
+                <span title='Пол пользователя' style={{opacity: 0.5, marginRight: 14, fontSize: 14}}>{getGender(this.props.gender)}</span>
+                <span style={{opacity: 0.5, fontSize: 14}}>{this.props.birthYear ? `${this.props.birthYear} год рождения` : ''}</span>
+              </div>
+            </div>
           </Col>
           <Col className='md-center-container user-card-profile-btn' xs={{span: 24}} md={{span: 10}} lg={{span: 24}} xl={{span: 10}} style={{textAlign: 'right'}}>
             <Link to={`/profile/${this.props.id}`}><Button>Перейти к профилю</Button></Link>

@@ -37,7 +37,10 @@ import {
   EDIT_SKILLS_SUCCESS,
   MAKE_REPORT_FAILED,
   MAKE_REPORT_START,
-  MAKE_REPORT_SUCCESS
+  MAKE_REPORT_SUCCESS,
+  GET_GROUP_TAGS_START,
+  GET_GROUP_TAGS_FAILED,
+  GET_GROUP_TAGS_SUCCESS
 } from './constants';
 
 export function getCurrentUserGroups(id) {
@@ -279,4 +282,24 @@ export function makeReportFailed(error) {
   };
 }
 
+export function getTags(tag) {
+  return {
+    type: GET_GROUP_TAGS_START,
+    tag
+  };
+}
+
+export function getTagsSuccess(tags) {
+  return {
+    type: GET_GROUP_TAGS_SUCCESS,
+    tags
+  };
+}
+
+export function getTagsFailed(error) {
+  return {
+    type: GET_GROUP_TAGS_FAILED,
+    error
+  };
+}
 

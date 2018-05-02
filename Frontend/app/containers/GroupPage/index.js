@@ -102,7 +102,8 @@ export class GroupPage extends React.Component {
           courseStatus: 0,
           curriculum: null
         },
-        members: []
+        members: [],
+        reviews: []
       },
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
       isInGroup: false,
@@ -185,7 +186,8 @@ export class GroupPage extends React.Component {
     this.setState({
       groupData: {
         groupInfo: result.groupInfo,
-        members: result.members
+        members: result.members,
+        reviews: result.reviews
       },
       titleInput: result.groupInfo.title,
       descInput: result.groupInfo.description,
@@ -205,7 +207,7 @@ export class GroupPage extends React.Component {
     });
     localStorage.getItem('token') && this.state.isInGroup ? this.props.getCurrentChat(this.state.id) : null;
 
-    if(this.state.groupData.groupInfo.courseStatus === 3 && !this.state.isTeacher && this.state.isInGroup) {
+    if(this.state.groupData.groupInfo.courseStatus === 3 && !this.state.isTeacher && this.state.isInGroup && !this.state.groupData.reviews.filter(item => item.fromUser == this.state.userData.UserId).length) {
       setTimeout(this.onReviewClick, 1000);
     }
   }

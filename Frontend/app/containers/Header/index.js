@@ -134,28 +134,30 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
               </Col>
             )}>
               {
-                this.props.users.map((item, index) =>
-                  index < selectItemsCount ?
-                    <Option className='search-option-item' key={item.name + item.id + 'user'}>
-                      <Link
-                        className='search-user-link'
-                        to={`/profile/${item.id}`}
-                        style={{display: 'flex', alignItems: 'center'}}
-                      >
-                        <Avatar
-                          src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
-                          size='large'
-                          style={{
-                            marginRight: 10
-                          }}
-                        />
-                        <Col>
-                          <div>{item.name}</div>
-                        </Col>
-                      </Link>
-                    </Option>
-                    : ''
-                )
+                this.state.searchValue ?
+                  this.props.users.map((item, index) =>
+                    index < selectItemsCount ?
+                      <Option className='search-option-item' key={item.name + item.id + 'user'}>
+                        <Link
+                          className='search-user-link'
+                          to={`/profile/${item.id}`}
+                          style={{display: 'flex', alignItems: 'center'}}
+                        >
+                          <Avatar
+                            src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
+                            size='large'
+                            style={{
+                              marginRight: 10
+                            }}
+                          />
+                          <Col>
+                            <div>{item.name}</div>
+                          </Col>
+                        </Link>
+                      </Option>
+                      : ''
+                  )
+                  : ''
               }
             </OptGroup>
             <OptGroup key={2} label={(
@@ -165,19 +167,21 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
               </Col>
             )}>
               {
-                this.props.groups.map((item, index) =>
-                  index < selectItemsCount ?
-                    <Option className='search-option-item' key={item.groupInfo.title + item.groupInfo.id + 'group'}>
-                      <Link
-                        className='search-user-link'
-                        to={`/group/${item.groupInfo.id}`}
-                      >
-                        <div>{item.groupInfo.title}</div>
-                        <div>{item.groupInfo.tags.map(tag => <Link to={`/groups?tags=${tag}`} key={tag} style={{marginRight: 6}}>{tag}</Link>)}</div>
-                      </Link>
-                    </Option>
-                    : ''
-                )
+                this.state.searchValue ?
+                  this.props.groups.map((item, index) =>
+                    index < selectItemsCount ?
+                      <Option className='search-option-item' key={item.groupInfo.title + item.groupInfo.id + 'group'}>
+                        <Link
+                          className='search-user-link'
+                          to={`/group/${item.groupInfo.id}`}
+                        >
+                          <div>{item.groupInfo.title}</div>
+                          <div>{item.groupInfo.tags.map(tag => <Link to={`/groups?tags=${tag}`} key={tag} style={{marginRight: 6}}>{tag}</Link>)}</div>
+                        </Link>
+                      </Option>
+                      : ''
+                  )
+                  : ''
               }
             </OptGroup>
           </Select>
