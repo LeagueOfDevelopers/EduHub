@@ -7,7 +7,7 @@
 import React from 'react';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { addPlan, acceptPlan, declinePlan, finishCourse } from "../../containers/GroupPage/actions";
+import { addPlan, acceptPlan, declinePlan, finishCourse, downloadCourseFile } from "../../containers/GroupPage/actions";
 import {Col, Row, Button, Upload, Icon, message, Avatar} from 'antd';
 import config from "../../config";
 
@@ -59,7 +59,7 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
                   this.props.currentPlan ?
                     <Col span={24} className='word-break' style={{marginBottom: 10}}>
                       <span style={{marginRight: 12}}>Файл:</span>
-                      <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} target='_blank' download={true}>
+                      <a onClick={() => this.props.downloadCourseFile(this.props.currentPlan)} target='_blank' download={true}>
                         Скачать план обучения
                       </a>
                     </Col>
@@ -110,7 +110,7 @@ class SuggestPlanForm extends React.Component { // eslint-disable-line react/pre
                 this.props.currentPlan ?
                   <Col span={24} className='word-break' style={{marginBottom: 10}}>
                     <span style={{marginRight: 12}}>Файл:</span>
-                    <a href={`${config.API_BASE_URL}/file/${this.props.currentPlan}`} target='_blank' download>
+                    <a onClick={() => this.props.downloadCourseFile(this.props.currentPlan)} target='_blank' download>
                       Скачать план обучения
                     </a>
                   </Col>
@@ -164,7 +164,8 @@ function mapDispatchToProps(dispatch) {
     addPlan: (groupId, plan) => dispatch(addPlan(groupId, plan)),
     acceptPlan: (groupId) => dispatch(acceptPlan(groupId)),
     declinePlan: (groupId) => dispatch(declinePlan(groupId)),
-    finishCourse: (groupId) => dispatch(finishCourse(groupId))
+    finishCourse: (groupId) => dispatch(finishCourse(groupId)),
+    downloadCourseFile: (link) => dispatch(downloadCourseFile(link))
   }
 }
 

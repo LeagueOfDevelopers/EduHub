@@ -39,7 +39,9 @@ import {
   getTagsSuccess,
   getTagsFailed,
   finishCourseFailed,
-  finishCourseSuccess
+  finishCourseSuccess,
+  downloadCourseFileSuccess,
+  downloadCourseFileFailed
 } from "./actions";
 import {
   ENTER_GROUP_START,
@@ -61,7 +63,8 @@ import {
   SEND_MESSAGE_START,
   ADD_TEACHER_REVIEW_START,
   GET_GROUP_TAGS_START,
-  FINISH_COURSE_START
+  FINISH_COURSE_START,
+  DOWNLOAD_COURSE_FILE_START
 } from "./constants";
 import config from '../../config';
 
@@ -576,6 +579,28 @@ function finishCourse(id) {
     .catch(error => error)
 }
 
+function* downloadCourseFileSaga(action) {
+  try {
+    const file = yield call(downloadCourseFile, action.link);
+    yield put(downloadCourseFileSuccess(file));
+  }
+  catch (e) {
+    yield put(downloadCourseFileFailed(e))
+  }
+}
+
+function downloadCourseFile(link) {
+  return fetch(`${config.API_BASE_URL}/file/${link}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+    .then(res => res.blob())
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(ENTER_GROUP_START, enterGroupSaga);
   yield takeEvery(LEAVE_GROUP_START, leaveGroupSaga);
@@ -597,4 +622,5 @@ export default function* () {
   yield takeEvery(ADD_TEACHER_REVIEW_START, addTeacherReviewSaga);
   yield takeEvery(GET_GROUP_TAGS_START, getTagsSaga);
   yield takeEvery(FINISH_COURSE_START, finishCourseSaga);
+  yield takeEvery(DOWNLOAD_COURSE_FILE_START, downloadCourseFileSaga);
 }

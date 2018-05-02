@@ -64,7 +64,10 @@ import {
   GET_GROUP_TAGS_SUCCESS,
   FINISH_COURSE_FAILED,
   FINISH_COURSE_START,
-  FINISH_COURSE_SUCCESS
+  FINISH_COURSE_SUCCESS,
+  DOWNLOAD_COURSE_FILE_FAILED,
+  DOWNLOAD_COURSE_FILE_START,
+  DOWNLOAD_COURSE_FILE_SUCCESS
 } from './constants';
 
 
@@ -488,5 +491,26 @@ export function finishCourseFailed(error) {
   return {
     type: FINISH_COURSE_FAILED,
     error
+  };
+}
+
+export function downloadCourseFile(link) {
+  return {
+    type: DOWNLOAD_COURSE_FILE_START,
+    link
+  };
+}
+
+export function downloadCourseFileSuccess(file) {
+  return {
+    type: DOWNLOAD_COURSE_FILE_SUCCESS,
+    file
+  };
+}
+
+export function downloadCourseFileFailed(link) {
+  return {
+    type: DOWNLOAD_COURSE_FILE_FAILED,
+    link
   };
 }

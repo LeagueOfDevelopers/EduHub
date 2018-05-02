@@ -46,8 +46,8 @@ class EnterGroupBtn extends React.Component { // eslint-disable-line react/prefe
                 </Button>
               </Row>
             )
-            : this.props.memberAmount < this.props.size ?
-              localStorage.getItem('isTeacher') === 'true' && !this.props.members.find(item => item.role === 3) ?
+            : this.props.memberAmount < this.props.size || localStorage.getItem('isTeacher') === 'true' && !this.props.members.find(item => item.role === 3) ?
+              this.props.memberAmount < this.props.size && localStorage.getItem('isTeacher') === 'true' && !this.props.members.find(item => item.role === 3) ?
                 <Row className='lg-center-container-item'>
                   <Dropdown
                     overlay={(
@@ -92,7 +92,7 @@ class EnterGroupBtn extends React.Component { // eslint-disable-line react/prefe
                       </Button>
                   </Dropdown>
                 </Row>
-            :
+            : this.props.memberAmount < this.props.size || localStorage.getItem('isTeacher') !== 'true' ?
             <Row className='lg-center-container-item'>
               <Button type='primary' className='group-btn' onClick={() => {
                 this.props.enterGroup(this.props.groupId, 'Member');
@@ -103,6 +103,18 @@ class EnterGroupBtn extends React.Component { // eslint-disable-line react/prefe
                 Вступить в группу
               </Button>
             </Row>
+            : localStorage.getItem('isTeacher') === 'true' && !this.props.members.find(item => item.role === 3) ?
+            <Row className='lg-center-container-item'>
+              <Button type='primary' className='group-btn' onClick={() => {
+                this.props.enterGroup(this.props.groupId, 'Teacher');
+                if (!this.props.userData) {
+                  this.props.onSignInClick()
+                }
+              }}>
+                Вступить в группу
+              </Button>
+            </Row>
+                  : null
             : null
           : null
         }

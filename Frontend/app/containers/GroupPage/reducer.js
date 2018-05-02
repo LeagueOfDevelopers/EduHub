@@ -65,7 +65,10 @@ import {
   GET_GROUP_TAGS_SUCCESS,
   FINISH_COURSE_SUCCESS,
   FINISH_COURSE_FAILED,
-  FINISH_COURSE_START
+  FINISH_COURSE_START,
+  DOWNLOAD_COURSE_FILE_START,
+  DOWNLOAD_COURSE_FILE_FAILED,
+  DOWNLOAD_COURSE_FILE_SUCCESS
 } from './constants';
 import {message} from "antd";
 import {parseJwt} from "../../globalJS";
@@ -335,6 +338,29 @@ function groupPageReducer(state = initialState, action) {
         .set('pending', false)
         .set('error', true)
         .set('needUpdate', false);
+    case DOWNLOAD_COURSE_FILE_START:
+      return state
+        .set('pending', true);
+    case DOWNLOAD_COURSE_FILE_SUCCESS:
+      let a = document.createElement("a");
+      let url = URL.createObjectURL(action.file);
+      a.href = url;
+      a.download = 'plan';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 0);
+
+      return state
+        .set('pending', false)
+        .set('error', false);
+    case DOWNLOAD_COURSE_FILE_FAILED:
+      message.error('Не удалось загузить файл!');
+      return state
+        .set('pending', false)
+        .set('error', true);
     default:
       return state;
   }
