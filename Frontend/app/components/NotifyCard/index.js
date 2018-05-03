@@ -7,6 +7,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {getMemberRole, getSanctionType} from "../../globalJS";
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import { downloadCourseFile } from "../../containers/NotificationPage/actions";
 import {Card, Row, Col} from 'antd';
 import config from "../../config";
 
@@ -39,7 +42,7 @@ class NotifyCard extends React.PureComponent { // eslint-disable-line react/pref
                       (
                         <div>
                           <span style={{display: 'block'}}>В группе {eventInfo.GroupTitle} предложен учебный план</span>
-                          <a target='_blank' href={`${config.API_BASE_URL}/file/${eventInfo.CurriculumLink}`}>Скачать учебный план</a>
+                          <a target='_blank' onClick={() => this.props.downloadCourseFile(eventInfo.CurriculumLink)}>Скачать учебный план</a>
                         </div>
                       )
                       : this.props.notificationType === 5 ?
@@ -66,7 +69,11 @@ class NotifyCard extends React.PureComponent { // eslint-disable-line react/pref
                                             `К пользователю ${eventInfo.Username} была применена санкция "${getSanctionType(eventInfo.SanctionType)}" за нарушение правила "${eventInfo.BrokenRule}"`
                                             : this.props.notificationType === 16 ?
                                               `Пользователь ${eventInfo.TeacherName} стал новым учителем группы "${eventInfo.GroupTitle}"`
-                                              : ''
+                                              : this.props.notificationType === 17 ?
+                                                `Примененная к вам санкция "${getSanctionType(eventInfo.SanctionType)}" за нарушение правила "${eventInfo.BrokenRule}" была отменена`
+                                                : this.props.notificationType === 18 ?
+                                                  `Примененная к пользователю ${eventInfo.Username} санкция "${getSanctionType(eventInfo.SanctionType)}" за нарушение правила "${eventInfo.BrokenRule}" была отменена`
+                                                  : ''
               }
             </span>
           </Col>
@@ -96,10 +103,17 @@ class NotifyCard extends React.PureComponent { // eslint-disable-line react/pref
 }
 
 NotifyCard.propTypes = {
-  readed: PropTypes.bool,
-  fromUser: PropTypes.string,
-  date: PropTypes.string,
-  text: PropTypes.string
+
 };
 
-export default NotifyCard;
+const mapStateToProps = createStructuredSelector({
+
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    downloadCourseFile: (link) => dispatch(downloadCourseFile(link))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotifyCard);

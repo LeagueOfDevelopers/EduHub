@@ -13,7 +13,10 @@ import {
   GET_INVITES_FAILED,
   GET_NOTIFIES_START,
   GET_NOTIFIES_SUCCESS,
-  GET_NOTIFIES_FAILED
+  GET_NOTIFIES_FAILED,
+  DOWNLOAD_COURSE_FILE_START,
+  DOWNLOAD_COURSE_FILE_FAILED,
+  DOWNLOAD_COURSE_FILE_SUCCESS
 } from './constants';
 
 export function changeInvitationStatus(invitationId, status) {
@@ -76,5 +79,26 @@ export function getInvitesFailed(error) {
   return {
     type: GET_INVITES_FAILED,
     error
+  };
+}
+
+export function downloadCourseFile(link) {
+  return {
+    type: DOWNLOAD_COURSE_FILE_START,
+    link
+  };
+}
+
+export function downloadCourseFileSuccess(file) {
+  return {
+    type: DOWNLOAD_COURSE_FILE_SUCCESS,
+    file
+  };
+}
+
+export function downloadCourseFileFailed(link) {
+  return {
+    type: DOWNLOAD_COURSE_FILE_FAILED,
+    link
   };
 }

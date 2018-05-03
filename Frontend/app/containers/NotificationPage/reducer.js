@@ -14,7 +14,10 @@ import {
   GET_INVITES_FAILED,
   GET_NOTIFIES_START,
   GET_NOTIFIES_SUCCESS,
-  GET_NOTIFIES_FAILED
+  GET_NOTIFIES_FAILED,
+  DOWNLOAD_COURSE_FILE_START,
+  DOWNLOAD_COURSE_FILE_FAILED,
+  DOWNLOAD_COURSE_FILE_SUCCESS
 } from './constants';
 import {message} from 'antd';
 
@@ -68,6 +71,29 @@ function notificationPageReducer(state = initialState, action) {
         .set('pending', false)
         .set('invites', action.invites);
     case GET_INVITES_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
+    case DOWNLOAD_COURSE_FILE_START:
+      return state
+        .set('pending', true);
+    case DOWNLOAD_COURSE_FILE_SUCCESS:
+      let a = document.createElement("a");
+      let url = URL.createObjectURL(action.file);
+      a.href = url;
+      a.download = 'plan';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function() {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 0);
+
+      return state
+        .set('pending', false)
+        .set('error', false);
+    case DOWNLOAD_COURSE_FILE_FAILED:
+      message.error('Не удалось загузить файл!');
       return state
         .set('pending', false)
         .set('error', true);

@@ -53,7 +53,7 @@ function getUsers(name) {
 
 function* inviteModeratorSaga(action) {
   try {
-    yield call(inviteModerator, action.id);
+    yield call(inviteModerator, action.email);
     yield put(inviteModeratorSuccess())
   }
   catch(e) {
@@ -61,13 +61,16 @@ function* inviteModeratorSaga(action) {
   }
 }
 
-function inviteModerator(id) {
-  return fetch(`${config.API_BASE_URL}/administration/${id}`, {
+function inviteModerator(email) {
+  return fetch(`${config.API_BASE_URL}/account/moderators`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'application/json-patch+json'
-      }
+      },
+      body: JSON.stringify({
+        email
+      })
     })
     .then(response => response.json())
     .then(res => res)
@@ -229,7 +232,7 @@ function* getHistorySaga(action) {
 }
 
 function getHistory() {
-  return fetch(`${config.API_BASE_URL}/sanctions`, {
+  return fetch(`${config.API_BASE_URL}/administration/history`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,

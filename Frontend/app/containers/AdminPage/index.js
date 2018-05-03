@@ -68,7 +68,6 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
     this.props.getReports();
     this.props.getSanctions();
     this.props.getHistory();
-    this.onSanctionClick()
   }
 
   onReportClick = (reportId) => {
@@ -167,7 +166,7 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
                             >
                               {this.props.users.map(item =>
                                 <Select.Option key={item.name}>
-                                  <div onClick={() => this.props.inviteModerator(item.id)}>{item.name}</div>
+                                  <div onClick={() => this.props.inviteModerator(item.email)}>{item.name}</div>
                                 </Select.Option>)
                               }
                             </Select>
@@ -254,10 +253,24 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
               dataSource={this.props.history}
               renderItem={(item, index) => (
                 <div>
-                  <List.Item key={item.id}>
+                  <List.Item key={index}>
                     <List.Item.Meta
-                      title={item.event}
-                      description={item.date}
+                      title={item.notificationType === 15 ?
+                        `К пользователю ${JSON.parse(item.notificationInfo).Username} была применена санкция "${getSanctionType(JSON.parse(item.notificationInfo).SanctionType)}" за нарушение правила "${JSON.parse(item.notificationInfo).BrokenRule}"`
+                        : item.notificationType === 18 ?
+                          `Примененная к пользователю ${JSON.parse(item.notificationInfo).Username} санкция "${getSanctionType(JSON.parse(item.notificationInfo).SanctionType)}" за нарушение правила "${JSON.parse(item.notificationInfo).BrokenRule}" была отменена`
+                          : ''
+                      }
+                      description={`${new Date(item.occurredOn).getDate() < 10 ?
+                        '0' + new Date(item.occurredOn).getDate()
+                        : new Date(item.occurredOn).getDate()}.${new Date(item.occurredOn).getMonth() < 10 ?
+                        '0' + new Date(item.occurredOn).getMonth()
+                        : new Date(item.occurredOn).getMonth()}.${new Date(item.occurredOn).getFullYear()}
+                    ${new Date(item.occurredOn).getHours() < 10 ?
+                        '0' + new Date(item.occurredOn).getHours()
+                        : new Date(item.occurredOn).getHours()}:${new Date(item.occurredOn).getMinutes() < 10 ?
+                        '0' + new Date(item.occurredOn).getMinutes()
+                        : new Date(item.occurredOn).getMinutes()}`}
                     >
                     </List.Item.Meta>
                   </List.Item>
@@ -290,7 +303,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getUsers: (name) => dispatch(searchUsers(name)),
-    inviteModerator: (id) => dispatch(inviteModerator(id)),
+    inviteModerator: (email) => dispatch(inviteModerator(email)),
     deleteModerator: (id) => dispatch(deleteModerator(id)),
     annulSanction: (sanctionId) => dispatch(annulSanction(sanctionId)),
     getModers: () => dispatch(getModers()),

@@ -1,14 +1,16 @@
 import { takeEvery, call, put, select } from 'redux-saga/effects';
 import config from '../../config';
 
-import { CHANGE_INVITATION_STATUS_START, GET_INVITES_START, GET_NOTIFIES_START } from "./constants";
+import { CHANGE_INVITATION_STATUS_START, GET_INVITES_START, GET_NOTIFIES_START, DOWNLOAD_COURSE_FILE_START } from "./constants";
 import {
   changeInvitationStatusSuccess,
   changeInvitationStatusFailed,
   getInvitesSuccess,
   getInvitesFailed,
   getNotifiesSuccess,
-  getNotifiesFailed
+  getNotifiesFailed,
+  downloadCourseFileFailed,
+  downloadCourseFileSuccess
 } from "./actions";
 
 function* changeInvitationStatusSaga(action) {
@@ -81,8 +83,31 @@ function changeInvitationStatus(idOfInvitation, statusOfInvitation) {
     .catch(error => error)
 }
 
+function* downloadCourseFileSaga(action) {
+  try {
+    const file = yield call(downloadCourseFile, action.link);
+    yield put(downloadCourseFileSuccess(file));
+  }
+  catch (e) {
+    yield put(downloadCourseFileFailed(e))
+  }
+}
+
+function downloadCourseFile(link) {
+  return fetch(`${config.API_BASE_URL}/file/${link}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    }
+  })
+    .then(res => res.blob())
+    .then(res => res)
+    .catch(error => error)
+}
+
 export default function* () {
   yield takeEvery(CHANGE_INVITATION_STATUS_START, changeInvitationStatusSaga);
   yield takeEvery(GET_NOTIFIES_START, getNotifiesSaga);
   yield takeEvery(GET_INVITES_START, getInvitesSaga);
+  yield takeEvery(DOWNLOAD_COURSE_FILE_START, downloadCourseFileSaga);
 }

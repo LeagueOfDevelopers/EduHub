@@ -61,10 +61,10 @@ export function searchUsersFailed(error) {
   };
 }
 
-export function inviteModerator(id) {
+export function inviteModerator(email) {
   return {
     type: INVITE_MODERATOR_START,
-    id
+    email
   };
 }
 

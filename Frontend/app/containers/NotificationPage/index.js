@@ -170,6 +170,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                 >
                   <Col className='xs-text-align-left'>
                     <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -177,9 +178,279 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     </Select>
                   </Col>
                 </FormItem>
-                <Col style={{marginTop: 20, textAlign: 'center'}}>
-                    <Button htmlType="button" style={{marginRight: '4%'}}>Отменить</Button>
-                    <Button type="primary">Подтвердить</Button>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <FormItem
+                  labelCol={{
+                    xs: { span: 24 },
+                    sm: { span: 14 }
+                  }}
+                  colon={false}
+                  label="Уведомления о завершении курса"
+                >
+                  <Col className='xs-text-align-left'>
+                    <Select style={{width: 180}}>
+                      <Option value="Default">По умолчанию</Option>
+                      <Option value="DontSend">Не отправлять</Option>
+                      <Option value="ToMail">На почту</Option>
+                      <Option value="OnSite">На сайте</Option>
+                      <Option value="Everywhere">Везде</Option>
+                    </Select>
+                  </Col>
+                </FormItem>
+                <Col style={{marginTop: 20, textAlign: 'center', marginBottom: 40}}>
+                    <Button htmlType="button" onClick={() => this.setState({isEditing: false})} style={{marginRight: '4%'}}>Отменить</Button>
+                    <Button type="primary" onClick={() => this.setState({isEditing: false})}>Подтвердить</Button>
                 </Col>
               </Row>
             </Col>
