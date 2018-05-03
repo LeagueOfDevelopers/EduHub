@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EduHub.Models.ValidationAttributes
 {
     public class ListLength : ValidationAttribute
     {
-        private readonly int _minLength;
         private readonly int _maxLength;
+        private readonly int _minLength;
 
         public ListLength(int minLength, int maxLength)
         {
@@ -22,10 +18,7 @@ namespace EduHub.Models.ValidationAttributes
         {
             var list = value as IList;
 
-            if(list != null)
-            { 
-                return list.Count <= _maxLength && list.Count >= _minLength;
-            }
+            if (list != null) return list.Count <= _maxLength && list.Count >= _minLength;
 
             return false;
         }

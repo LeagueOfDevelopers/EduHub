@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Runtime.CompilerServices;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
@@ -13,7 +12,7 @@ namespace EduHubLibrary.Domain
 {
     public class Group
     {
-        public Group(int creatorId, string title, List<string> tags, string description, int size, double moneyPerUser, 
+        public Group(int creatorId, string title, List<string> tags, string description, int size, double moneyPerUser,
             bool isPrivate, GroupType groupType)
         {
             Ensure.Any.IsNotNull(tags);
@@ -34,7 +33,7 @@ namespace EduHubLibrary.Domain
             Messages = new List<Message>();
         }
 
-        internal Group(IEnumerable<Message> messages, GroupInfo groupInfo, User teacher, CourseStatus status, 
+        internal Group(IEnumerable<Message> messages, GroupInfo groupInfo, User teacher, CourseStatus status,
             List<Member> members, List<Invitation> invitations, List<int> kicked)
         {
             Messages = Ensure.Any.IsNotNull(messages);
@@ -82,10 +81,7 @@ namespace EduHubLibrary.Domain
             Ensure.Bool.IsTrue(requestedPerson == deletingPerson || requestedMember.MemberRole == MemberRole.Creator,
                 nameof(DeleteMember), opt => opt.WithException(new NotEnoughPermissionsException(requestedPerson)));
 
-            if (requestedPerson != deletingPerson)
-            {
-                KickedId.Add(deletingPerson);
-            }
+            if (requestedPerson != deletingPerson) KickedId.Add(deletingPerson);
 
             if (deletingMember.MemberRole == MemberRole.Creator)
             {

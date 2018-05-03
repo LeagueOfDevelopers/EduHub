@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
@@ -10,7 +9,7 @@ namespace EduHubLibrary.SocketTool
 {
     public class WebSocketConnectionManager
     {
-        private List<ChatSocketHolder> _chatSockets = new List<ChatSocketHolder>();
+        private readonly List<ChatSocketHolder> _chatSockets = new List<ChatSocketHolder>();
 
         public WebSocket GetSocketById(string id)
         {
@@ -27,6 +26,7 @@ namespace EduHubLibrary.SocketTool
         {
             return _chatSockets.FirstOrDefault(p => p.Socket == socket).Id;
         }
+
         public void AddSocket(WebSocket socket, int userId)
         {
             _chatSockets.Add(new ChatSocketHolder(CreateConnectionId(), socket, userId));
@@ -37,10 +37,9 @@ namespace EduHubLibrary.SocketTool
             var socket = _chatSockets.Find(p => p.Id == id).Socket;
             _chatSockets.RemoveAll(p => p.Socket == socket);
 
-            await socket.CloseAsync(closeStatus: WebSocketCloseStatus.NormalClosure,
-                statusDescription: "Closed by the WebSocketManager",
-                cancellationToken: CancellationToken.None);
-
+            await socket.CloseAsync(WebSocketCloseStatus.NormalClosure,
+                "Closed by the WebSocketManager",
+                CancellationToken.None);
         }
 
         private string CreateConnectionId()

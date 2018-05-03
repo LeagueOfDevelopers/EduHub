@@ -1,13 +1,11 @@
 ﻿using EduHubLibrary.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Mailing.MessageModels
 {
     public class InvitationReceivedMessage
     {
-        public InvitationReceivedMessage(string groupTitle, string inviterName, MemberRole suggestedRole, string receiverName)
+        public InvitationReceivedMessage(string groupTitle, string inviterName, MemberRole suggestedRole,
+            string receiverName)
         {
             GroupTitle = groupTitle;
             InviterName = inviterName;

@@ -1,5 +1,4 @@
-﻿using System;
-using EduHubLibrary.Domain;
+﻿using EduHubLibrary.Domain;
 
 namespace EduHub.Models.NotificationsModels
 {

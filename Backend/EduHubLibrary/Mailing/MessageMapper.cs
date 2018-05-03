@@ -1,12 +1,6 @@
-﻿using AutoMapper;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.NotificationService.Notifications;
+﻿using EduHubLibrary.Domain.NotificationService.Notifications;
 using EduHubLibrary.Mailing.MessageModels;
 using EduHubLibrary.NotificationService.NotificationTypes;
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Text;
 
 namespace EduHubLibrary.Mailing
 {
@@ -14,7 +8,7 @@ namespace EduHubLibrary.Mailing
     {
         public object MapNotification(INotificationInfo notification, string receiverName)
         {
-            return Map((dynamic)notification, receiverName);
+            return Map((dynamic) notification, receiverName);
         }
 
         private CourseFinishedMessage Map(CourseFinishedNotification notification, string receiverName)
@@ -54,7 +48,8 @@ namespace EduHubLibrary.Mailing
 
         private InvitationReceivedMessage Map(InvitationReceivedNotification notification, string receiverName)
         {
-            return new InvitationReceivedMessage(notification.GroupTitle, notification.InviterName, notification.SuggestedRole, receiverName);
+            return new InvitationReceivedMessage(notification.GroupTitle, notification.InviterName,
+                notification.SuggestedRole, receiverName);
         }
 
         private MemberLeftMessage Map(MemberLeftNotification notification, string receiverName)
@@ -64,7 +59,8 @@ namespace EduHubLibrary.Mailing
 
         private NewCreatorMessage Map(NewCreatorNotification notification, string receiverName)
         {
-            return new NewCreatorMessage(notification.GroupTitle, notification.ExCreatorUsername, notification.NewCreatorUsername, receiverName);
+            return new NewCreatorMessage(notification.GroupTitle, notification.ExCreatorUsername,
+                notification.NewCreatorUsername, receiverName);
         }
 
         private NewMemberMessage Map(NewMemberNotification notification, string receiverName)
@@ -74,17 +70,20 @@ namespace EduHubLibrary.Mailing
 
         private ReportMessage Map(ReportMessageNotification notification, string receiverName)
         {
-            return new ReportMessage(notification.SenderName, notification.SuspectedName, notification.Reason, notification.Description, receiverName);
+            return new ReportMessage(notification.SenderName, notification.SuspectedName, notification.Reason,
+                notification.Description, receiverName);
         }
 
         private ReviewReceivedMessage Map(ReviewReceivedNotification notification, string receiverName)
         {
-            return new ReviewReceivedMessage(notification.GroupTitle, notification.ReviewerName, notification.ReviewType, receiverName);
+            return new ReviewReceivedMessage(notification.GroupTitle, notification.ReviewerName,
+                notification.ReviewType, receiverName);
         }
 
         private SanctionsAppliedToAdminMessage Map(SanctionAppliedToAdminNotification notification, string receiverName)
         {
-            return new SanctionsAppliedToAdminMessage(notification.BrokenRule, notification.SanctionType, notification.Username, receiverName);
+            return new SanctionsAppliedToAdminMessage(notification.BrokenRule, notification.SanctionType,
+                notification.Username, receiverName);
         }
 
         private SanctionsAppliedToUserMessage Map(SanctionsAppliedToUserNotification notification, string receiverName)
@@ -92,14 +91,18 @@ namespace EduHubLibrary.Mailing
             return new SanctionsAppliedToUserMessage(notification.BrokenRule, notification.SanctionType, receiverName);
         }
 
-        private SanctionsCancelledToAdminMessage Map(SanctionCancelledToAdminNotification notification, string receiverName)
+        private SanctionsCancelledToAdminMessage Map(SanctionCancelledToAdminNotification notification,
+            string receiverName)
         {
-            return new SanctionsCancelledToAdminMessage(notification.BrokenRule, notification.SanctionType, notification.Username, receiverName);
+            return new SanctionsCancelledToAdminMessage(notification.BrokenRule, notification.SanctionType,
+                notification.Username, receiverName);
         }
 
-        private SanctionsCancelledToUserMessage Map(SanctionsCancelledToUserNotification notification, string receiverName)
+        private SanctionsCancelledToUserMessage Map(SanctionsCancelledToUserNotification notification,
+            string receiverName)
         {
-            return new SanctionsCancelledToUserMessage(notification.BrokenRule, notification.SanctionType, receiverName);
+            return new SanctionsCancelledToUserMessage(notification.BrokenRule, notification.SanctionType,
+                receiverName);
         }
 
         private TeacherFoundMessage Map(TeacherFoundNotification notification, string receiverName)

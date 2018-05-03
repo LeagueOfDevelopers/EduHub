@@ -20,16 +20,11 @@ namespace EduHub.Models
 
         /// <summary>Tags for new group(needed for search)</summary>
         [Required]
-        [ListLength(3, 10)]
-        public List<string> Tags { get; set; }
+        [ListLength(3, 10)] public List<string> Tags { get; set; }
 
-        [Required]
-        [Range(1, 200)]
-        public int Size { get; set; }
+        [Required] [Range(1, 200)] public int Size { get; set; }
 
-        [Required]
-        [Range(0, long.MaxValue)]
-        public double MoneyPerUser { get; set; }
+        [Required] [Range(0, long.MaxValue)] public double MoneyPerUser { get; set; }
 
         /// <summary>Type of new group</summary>
         [Required]

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
-using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 using EduHubLibrary.Domain.NotificationService.UserSettings;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Infrastructure;
 using EnsureThat;
-using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHubLibrary.Facades
 {
@@ -69,7 +68,7 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(_fileRepository.DoesFileExists(newAvatarLink),
                 nameof(EditAboutUser),
                 opt => opt.WithException(new FileDoesNotExistException()));
-            
+
             currentUser.UserProfile.AvatarLink = newAvatarLink;
             _userRepository.Update(currentUser);
         }
@@ -118,15 +117,7 @@ namespace EduHubLibrary.Facades
             _userRepository.Update(currentUser);
         }
 
-        private void CheckSanctions(int userId, SanctionType sanctionType)
-        {
-            Ensure.Bool.IsFalse(_sanctionRepository.GetAllOfUser(userId).ToList()
-                    .Exists(s => s.Type.Equals(sanctionType) && s.IsActive), nameof(CheckSanctions),
-                opt => opt.WithException(
-                    new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToEditProfile)));
-        }
-
-        public void EditProfile(int userId, string newName, string newAboutUser, Gender newGender, string newAvatarLink, 
+        public void EditProfile(int userId, string newName, string newAboutUser, Gender newGender, string newAvatarLink,
             List<string> newContactData, int newYear)
         {
             CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
@@ -159,7 +150,8 @@ namespace EduHubLibrary.Facades
             _userRepository.Update(currentUser);
         }
 
-        public void ConfigureNotificationsSettings(int userId, NotificationType configuringNotification, NotificationValue newValue)
+        public void ConfigureNotificationsSettings(int userId, NotificationType configuringNotification,
+            NotificationValue newValue)
         {
             Ensure.Any.IsNotNull(configuringNotification);
             Ensure.Any.IsNotNull(newValue);
@@ -183,6 +175,14 @@ namespace EduHubLibrary.Facades
             else throw new ArgumentException();
 
             _userRepository.Update(currentUser);
+        }
+
+        private void CheckSanctions(int userId, SanctionType sanctionType)
+        {
+            Ensure.Bool.IsFalse(_sanctionRepository.GetAllOfUser(userId).ToList()
+                    .Exists(s => s.Type.Equals(sanctionType) && s.IsActive), nameof(CheckSanctions),
+                opt => opt.WithException(
+                    new ActionIsNotAllowWithSanctionsException(SanctionType.NotAllowToEditProfile)));
         }
     }
 }

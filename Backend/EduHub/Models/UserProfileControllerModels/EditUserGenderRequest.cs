@@ -5,7 +5,6 @@ namespace EduHub.Models
 {
     public class EditUserGenderRequest
     {
-        [Required]
-        public Gender Gender { get; set; }
+        [Required] public Gender Gender { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EduHub.Models.NotificationsModels
+﻿namespace EduHub.Models.NotificationsModels
 {
     public class NewMemberResponse
     {
@@ -9,7 +7,7 @@ namespace EduHub.Models.NotificationsModels
             GroupTitle = groupTitle;
             Username = username;
         }
-        
+
         public string GroupTitle { get; }
         public string Username { get; }
     }

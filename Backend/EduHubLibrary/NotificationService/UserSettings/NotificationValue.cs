@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EduHubLibrary.Domain.NotificationService.UserSettings
+﻿namespace EduHubLibrary.Domain.NotificationService.UserSettings
 {
     public enum NotificationValue
     {

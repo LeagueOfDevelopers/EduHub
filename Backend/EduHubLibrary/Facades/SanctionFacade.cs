@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.EventBus.EventTypes;
+using EduHubLibrary.Facades.Views;
 using EduHubLibrary.Infrastructure;
 using EnsureThat;
-using EduHubLibrary.Domain.NotificationService;
-using System.Linq;
-using EduHubLibrary.Facades.Views;
-using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {
     public class SanctionFacade : ISanctionFacade
     {
+        private readonly IEventPublisher _publisher;
         private readonly ISanctionRepository _sanctionRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IEventPublisher _publisher;
 
-        public SanctionFacade(ISanctionRepository sanctionRepository, IUserRepository userRepository, IEventPublisher publisher)
+        public SanctionFacade(ISanctionRepository sanctionRepository, IUserRepository userRepository,
+            IEventPublisher publisher)
         {
             _sanctionRepository = sanctionRepository;
             _userRepository = userRepository;
@@ -40,7 +41,8 @@ namespace EduHubLibrary.Facades
             var sanction = new Sanction(brokenRule, userId, moderatorId, type);
             _sanctionRepository.Add(sanction);
 
-            _publisher.PublishEvent(new SanctionsAppliedEvent(brokenRule, type, suspectedUser.UserProfile.Name, userId));
+            _publisher.PublishEvent(new SanctionsAppliedEvent(brokenRule, type, suspectedUser.UserProfile.Name,
+                userId));
 
             return sanction.Id;
         }
@@ -62,7 +64,8 @@ namespace EduHubLibrary.Facades
             var sanction = new Sanction(brokenRule, userId, moderatorId, type, expirationDate);
             _sanctionRepository.Add(sanction);
 
-            _publisher.PublishEvent(new SanctionsAppliedEvent(brokenRule, type, suspectedUser.UserProfile.Name, userId));
+            _publisher.PublishEvent(new SanctionsAppliedEvent(brokenRule, type, suspectedUser.UserProfile.Name,
+                userId));
 
             return sanction.Id;
         }
@@ -116,7 +119,7 @@ namespace EduHubLibrary.Facades
                 var username = _userRepository.GetUserById(s.UserId).UserProfile.Name;
                 sanctions.Add(new SanctionView(s.Id, s.BrokenRule, s.UserId, username, s.ModeratorId, s.IsTemporary,
                     s.ExpirationDate, s.Type, s.IsActive));
-             });
+            });
 
             return sanctions;
         }

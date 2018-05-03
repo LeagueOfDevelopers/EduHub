@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EduHubLibrary.Domain.Tools;
+﻿using EduHubLibrary.Domain.Tools;
 
 namespace EduHub.Models.UsersControllerModels
 {
@@ -32,6 +28,5 @@ namespace EduHub.Models.UsersControllerModels
         public bool IsTeacher { get; set; }
         public TeacherProfile TeacherProfile { get; set; }
         public bool IsActive { get; set; }
-
     }
 }

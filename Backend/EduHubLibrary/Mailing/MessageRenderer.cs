@@ -1,9 +1,7 @@
-﻿using RazorLight;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
+using RazorLight;
 
 namespace EduHubLibrary.Mailing
 {
@@ -14,7 +12,7 @@ namespace EduHubLibrary.Mailing
             var modelType = model.GetType().ToString().Split('.').Last();
 
             var templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EmailTemplates");
-            string templateAbsolutePath = Path.Combine(templatePath, modelType + ".cshtml");
+            var templateAbsolutePath = Path.Combine(templatePath, modelType + ".cshtml");
             var template = File.ReadAllText(templateAbsolutePath);
 
             var engine = new RazorLightEngineBuilder().UseMemoryCachingProvider().Build();

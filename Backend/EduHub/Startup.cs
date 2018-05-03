@@ -6,6 +6,9 @@ using EduHub.Middleware;
 using EduHub.Security;
 using EduHubLibrary.Data;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Consumers;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.EventBus.EventTypes;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
@@ -17,6 +20,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -24,10 +28,6 @@ using Serilog;
 using Serilog.Events;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.Consumers;
-using Microsoft.EntityFrameworkCore;
-using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHub
 {
@@ -62,11 +62,9 @@ namespace EduHub
                 var dbContext = Configuration.GetValue<string>("MysqlConnectionString");
                 using (var context = new EduhubContext(dbContext))
                 {
-                    if (bool.Parse(Configuration.GetValue<string>("DeleteDB")))
+                    if (bool.Parse(Configuration.GetValue<string>("DeleteDB"))) context.Database.EnsureDeleted();
+                    if (context.Database.EnsureCreated())
                     {
-                        context.Database.EnsureDeleted();
-                    }
-                    if (context.Database.EnsureCreated()) { 
                         var dbName = dbContext.Split("database=")[1].Split(";")[0];
                         context.Database.ExecuteSqlCommand(
                             "ALTER DATABASE " + dbName + " CHARACTER SET utf8 COLLATE utf8_general_ci;");
@@ -80,8 +78,10 @@ namespace EduHub
                                                + " convert to character set utf8 collate utf8_unicode_ci;");
                         }
                     }
+
                     context.Database.Migrate();
                 }
+
                 fileRepository = new InMysqlFileRepository(dbContext);
                 groupRepository = new InMysqlGroupRepository(dbContext);
                 keysRepository = new InMysqlKeyRepository(dbContext);
@@ -154,7 +154,8 @@ namespace EduHub
             var userFacade = new UserFacade(userRepository, groupRepository, eventRepository, publisher);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings, publisher);
             var userEditFacade = new UserEditFacade(userRepository, fileRepository, sanctionRepository);
-            var groupFacade = new GroupFacade(groupRepository, userRepository, sanctionRepository, groupSettings, publisher);
+            var groupFacade = new GroupFacade(groupRepository, userRepository, sanctionRepository, groupSettings,
+                publisher);
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository, userRepository);
             var sanctionsFacade = new SanctionFacade(sanctionRepository, userRepository, publisher);
@@ -298,7 +299,7 @@ namespace EduHub
 
                     options.AddPolicy("AdminAndModeratorsOnly",
                         new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-                        .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Admin, Claims.Roles.Moderator).Build());
+                            .RequireClaim(Claims.Roles.RoleClaim, Claims.Roles.Admin, Claims.Roles.Moderator).Build());
                 });
         }
     }

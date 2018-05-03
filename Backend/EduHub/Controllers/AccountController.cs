@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using EduHub.Extensions;
 using EduHub.Models;
 using EduHub.Security;
@@ -7,8 +8,6 @@ using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace EduHub.Controllers
 {
@@ -16,9 +15,9 @@ namespace EduHub.Controllers
     [Route("api/account")]
     public class AccountController : Controller
     {
-        private readonly IAccountFacade _userAccountFacade;
         private readonly IJwtIssuer _jwtIssuer;
         private readonly SecuritySettings _securitySettings;
+        private readonly IAccountFacade _userAccountFacade;
         private readonly IUserFacade _userFacade;
 
 
@@ -41,13 +40,16 @@ namespace EduHub.Controllers
         public IActionResult Registrate([FromBody] RegistrationRequest request)
         {
             int newId;
-            
+
             if (!request.InviteCode.Equals(0))
-                newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email.ToLower(), request.Password),
-                request.IsTeacher, request.InviteCode);
-            else newId = _userAccountFacade.RegUser(request.Name, Credentials.FromRawData(request.Email.ToLower(), request.Password),
-                request.IsTeacher);
-            
+                newId = _userAccountFacade.RegUser(request.Name,
+                    Credentials.FromRawData(request.Email.ToLower(), request.Password),
+                    request.IsTeacher, request.InviteCode);
+            else
+                newId = _userAccountFacade.RegUser(request.Name,
+                    Credentials.FromRawData(request.Email.ToLower(), request.Password),
+                    request.IsTeacher);
+
             var response = new RegistrationResponse(newId);
             return Ok(response);
         }
@@ -158,7 +160,7 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Send token for registration to new moderator
         /// </summary>
-        [Authorize(Policy ="AdminOnly")]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         [Route("moderators")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]

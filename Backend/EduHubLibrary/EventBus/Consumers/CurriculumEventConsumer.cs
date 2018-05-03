@@ -1,15 +1,16 @@
 ﻿using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.NotificationService.Notifications;
 using EduHubLibrary.EventBus.EventTypes;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Domain.Consumers
 {
-    public class CurriculumEventConsumer : IEventConsumer<CurriculumAcceptedEvent>, IEventConsumer<CurriculumSuggestedEvent>,
+    public class CurriculumEventConsumer : IEventConsumer<CurriculumAcceptedEvent>,
+        IEventConsumer<CurriculumSuggestedEvent>,
         IEventConsumer<CurriculumDeclinedEvent>
     {
+        private readonly INotificationsDistributor _distributor;
+        private readonly IEventRepository _eventRepository;
+
         public CurriculumEventConsumer(INotificationsDistributor distributor, IEventRepository eventRepository)
         {
             _distributor = distributor;
@@ -22,19 +23,18 @@ namespace EduHubLibrary.Domain.Consumers
             _eventRepository.AddEvent(new Event(@event));
         }
 
-        public void Consume(CurriculumSuggestedEvent @event)
-        {
-            _distributor.NotifyGroup(@event.GroupId, new CurriculumSuggestedNotification(@event.CurriculumLink, @event.GroupTitle));
-            _eventRepository.AddEvent(new Event(@event));
-        }
-
         public void Consume(CurriculumDeclinedEvent @event)
         {
-            _distributor.NotifyTeacher(@event.GroupId, new CurriculumDeclinedNotification(@event.GroupTitle, @event.DeclinedName));
+            _distributor.NotifyTeacher(@event.GroupId,
+                new CurriculumDeclinedNotification(@event.GroupTitle, @event.DeclinedName));
             _eventRepository.AddEvent(new Event(@event));
         }
 
-        private readonly INotificationsDistributor _distributor;
-        private readonly IEventRepository _eventRepository;
+        public void Consume(CurriculumSuggestedEvent @event)
+        {
+            _distributor.NotifyGroup(@event.GroupId,
+                new CurriculumSuggestedNotification(@event.CurriculumLink, @event.GroupTitle));
+            _eventRepository.AddEvent(new Event(@event));
+        }
     }
 }

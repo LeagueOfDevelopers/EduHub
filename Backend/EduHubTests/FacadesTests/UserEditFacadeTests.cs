@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using EduHubLibrary.Common;
+using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
-using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.NotificationService;
 using Moq;
 
 namespace EduHubTests
@@ -17,13 +16,13 @@ namespace EduHubTests
     [TestClass]
     public class UserEditFacadeTests
     {
-        private int _testUserId;
         private int _adminId;
-        private IUserRepository _userRepository;
+        private Mock<IEventPublisher> _publisher;
         private ISanctionRepository _sanctionRepository;
+        private int _testUserId;
         private IUserEditFacade _userEditFacade;
         private IUserFacade _userFacade;
-        private Mock<IEventPublisher> _publisher;
+        private IUserRepository _userRepository;
 
         [TestInitialize]
         public void Initialize()
@@ -43,7 +42,8 @@ namespace EduHubTests
             _userEditFacade = new UserEditFacade(_userRepository, fileRepository, _sanctionRepository);
             _userFacade = new UserFacade(_userRepository, groupRepository, eventRepository, _publisher.Object);
 
-            _adminId = accountFacade.RegUser("admin", Credentials.FromRawData("adminEmail", "password"), false, adminKey.Value);
+            _adminId = accountFacade.RegUser("admin", Credentials.FromRawData("adminEmail", "password"), false,
+                adminKey.Value);
             _testUserId = accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false);
         }
 
@@ -201,7 +201,7 @@ namespace EduHubTests
             Assert.AreEqual(false, testUser.UserProfile.IsTeacher);
             Assert.AreEqual(false, _userFacade.GetUser(_testUserId).UserProfile.IsTeacher);
         }
-        
+
         [TestMethod]
         [ExpectedException(typeof(ActionIsNotAllowWithSanctionsException))]
         public void TryToEditNameWithSanctions_GetException()
@@ -271,7 +271,7 @@ namespace EduHubTests
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
-            _userEditFacade.EditContacts(_testUserId, new List<string> { "new" });
+            _userEditFacade.EditContacts(_testUserId, new List<string> {"new"});
         }
 
         [TestMethod]
@@ -295,11 +295,12 @@ namespace EduHubTests
             var newAbout = "NewAbout";
             var newGender = Gender.Woman;
             var newAvatarLink = "";
-            var newContactData = new List<string> { "new1", "new2" };
+            var newContactData = new List<string> {"new1", "new2"};
             var newBirthYear = 1998;
 
             //Act
-            _userEditFacade.EditProfile(_testUserId, newName, newAbout, newGender, newAvatarLink, newContactData, newBirthYear);
+            _userEditFacade.EditProfile(_testUserId, newName, newAbout, newGender, newAvatarLink, newContactData,
+                newBirthYear);
 
             //Assert
             Assert.AreEqual(newName, testUser.UserProfile.Name);
@@ -314,7 +315,7 @@ namespace EduHubTests
         public void EditProfileWithInvalidContactData_GetException()
         {
             //Arrange
-            var newContactData = new List<string> { "new", " " };
+            var newContactData = new List<string> {"new", " "};
 
             //Act
             _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", newContactData, 1998);
@@ -325,14 +326,14 @@ namespace EduHubTests
         public void EditProfileWithInvalidBirthYear_GetException()
         {
             //Act
-            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", new List<string> { "new" }, 1899);
+            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", new List<string> {"new"}, 1899);
         }
 
         [TestMethod]
         public void ConfigureTeacherProfile_GetEditedSkills()
         {
             //Arrange
-            var newSkills = new List<string> { "skill1", "skill2", "skill3" };
+            var newSkills = new List<string> {"skill1", "skill2", "skill3"};
             _userEditFacade.BecomeTeacher(_testUserId);
 
             //Act
@@ -348,7 +349,7 @@ namespace EduHubTests
         public void ConfigureTeacherProfileWithInvalidValue_GetException()
         {
             //Arrange
-            var newSkills = new List<string> { "skill1", " ", "" };
+            var newSkills = new List<string> {"skill1", " ", ""};
             _userEditFacade.BecomeTeacher(_testUserId);
 
             //Act
@@ -360,7 +361,7 @@ namespace EduHubTests
         public void ConfigureTeacherProfileAtNotTeacher_GetException()
         {
             //Arrange
-            var newSkills = new List<string> { "skill1", "skill2", "skill3" };
+            var newSkills = new List<string> {"skill1", "skill2", "skill3"};
             _userEditFacade.BecomeTeacher(_testUserId);
             _userEditFacade.StopToBeTeacher(_testUserId);
 

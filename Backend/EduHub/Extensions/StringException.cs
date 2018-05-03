@@ -14,9 +14,8 @@ namespace EduHub.Extensions
             try
             {
                 userId = int.Parse(handler.ReadJwtToken(auth).Claims.First(c => c.Type == "UserId").Value);
-
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new ArgumentNullException(e.Message);
             }
@@ -29,7 +28,7 @@ namespace EduHub.Extensions
             var auth = request.Headers["Authorization"].ToString();
             var handler = new JwtSecurityTokenHandler();
             var userId =
-                Int32.Parse(handler.ReadJwtToken(auth.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
+                int.Parse(handler.ReadJwtToken(auth.Substring(7)).Claims.First(c => c.Type == "UserId").Value);
             return userId;
         }
     }

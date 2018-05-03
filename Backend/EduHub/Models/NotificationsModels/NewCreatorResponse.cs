@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EduHub.Models.NotificationsModels
+﻿namespace EduHub.Models.NotificationsModels
 {
     public class NewCreatorResponse
     {
@@ -10,7 +8,7 @@ namespace EduHub.Models.NotificationsModels
             ExCreatorUsername = exCreatorUsername;
             NewCreatorUsername = newCreatorUsername;
         }
-        
+
         public string GroupTitle { get; }
         public string ExCreatorUsername { get; }
         public string NewCreatorUsername { get; }

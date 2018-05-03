@@ -4,6 +4,7 @@ using System.Linq;
 using EduHub.Extensions;
 using EduHub.Models;
 using EduHub.Models.Examples;
+using EduHub.Models.GroupControllerModels;
 using EduHub.Models.Tools;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
@@ -12,7 +13,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using EduHub.Models.GroupControllerModels;
 
 namespace EduHub.Controllers
 {
@@ -257,8 +257,9 @@ namespace EduHub.Controllers
             groupMembersInfo.ToList().ForEach(m =>
                 membersInfo.Add(new MemberInfo(m.UserId, m.Username, m.AvatarLink, m.MemberRole,
                     m.Paid, m.CurriculumStatus)));
-            List<ReviewModel> reviews = new List<ReviewModel>();
-            group.ReviewView.ToList().ForEach(v => reviews.Add(new ReviewModel(v.FromUser, v.Title, v.Text, v.Date, v.FromGroup)));
+            var reviews = new List<ReviewModel>();
+            group.ReviewView.ToList().ForEach(v =>
+                reviews.Add(new ReviewModel(v.FromUser, v.Title, v.Text, v.Date, v.FromGroup)));
             var response = new GroupResponse(fullGroupInfo, membersInfo, reviews);
             return Ok(response);
         }

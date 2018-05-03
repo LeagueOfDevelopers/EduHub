@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Domain.NotificationService.Notifications;
+using EduHubLibrary.Domain.NotificationService.UserSettings;
 using EduHubLibrary.Domain.Tools;
 using EnsureThat;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.NotificationService.UserSettings;
-using EduHubLibrary.Domain.NotificationService.Notifications;
 
 [assembly: InternalsVisibleTo("EventBusTests")]
 

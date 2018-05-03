@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EduHub.Extensions;
@@ -37,7 +36,8 @@ namespace EduHub.Controllers
         [SwaggerResponse(200, Type = typeof(MessageSentResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest messageRequest, [FromRoute] int groupId)
+        public async Task<IActionResult> SendMessage([FromBody] SendMessageRequest messageRequest,
+            [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
 
@@ -62,7 +62,7 @@ namespace EduHub.Controllers
             var userId = Request.GetUserId();
 
             var message = _chatFacade.GetMessage(messageId, groupId, userId);
-            var response = new MessageInfoResponse(message.Id, message.SenderId, message.SenderName, 
+            var response = new MessageInfoResponse(message.Id, message.SenderId, message.SenderName,
                 message.SentOn, message.Text);
             return Ok(response);
         }

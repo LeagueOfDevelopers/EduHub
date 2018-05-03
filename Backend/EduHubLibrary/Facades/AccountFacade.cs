@@ -3,8 +3,8 @@ using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Mailing;
-using EnsureThat;
 using EduHubLibrary.Mailing.MessageModels;
+using EnsureThat;
 
 namespace EduHubLibrary.Facades
 {
@@ -32,7 +32,8 @@ namespace EduHubLibrary.Facades
             var key = new Key(user.Credentials.Email, KeyAppointment.ConfirmEmail);
 
             _keysRepository.AddKey(key);
-            _sender.SendMessage(credentials.Email, new UserConfirmationMessage(username, key.Value), MessageThemes.UserConfirmation, username);
+            _sender.SendMessage(credentials.Email, new UserConfirmationMessage(username, key.Value),
+                MessageThemes.UserConfirmation, username);
             _userRepository.Add(user);
             return user.Id;
         }
@@ -104,8 +105,9 @@ namespace EduHubLibrary.Facades
             var username = _userRepository.GetUserByEmail(email).UserProfile.Name;
             var key = new Key(email, KeyAppointment.ChangePassword);
             _keysRepository.AddKey(key);
-            
-            _sender.SendMessage(email, new RestorePasswordMessage(username, key.Value), MessageThemes.RestorePassword, username);
+
+            _sender.SendMessage(email, new RestorePasswordMessage(username, key.Value), MessageThemes.RestorePassword,
+                username);
         }
 
         public void SendTokenToModerator(string email)

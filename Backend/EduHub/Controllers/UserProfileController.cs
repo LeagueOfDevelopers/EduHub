@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EduHub.Extensions;
 using EduHub.Models;
 using EduHub.Models.NotificationsModels;
 using EduHub.Models.Tools;
+using EduHub.Models.UserProfileControllerModels;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.NotificationService.Notifications;
+using EduHubLibrary.Domain.NotificationService.UserSettings;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using EduHub.Models.UserProfileControllerModels;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.NotificationService.UserSettings;
-using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHub.Controllers
 {
@@ -22,9 +20,9 @@ namespace EduHub.Controllers
     public class UserProfileController : Controller
     {
         private readonly IGroupFacade _groupFacade;
+        private readonly ISanctionFacade _sanctionFacade;
         private readonly IUserEditFacade _userEditFacade;
         private readonly IUserFacade _userFacade;
-        private readonly ISanctionFacade _sanctionFacade;
 
         public UserProfileController(IUserFacade userFacade, IGroupFacade groupFacade, IUserEditFacade userEditFacade,
             ISanctionFacade sanctionFacade)
@@ -338,7 +336,7 @@ namespace EduHub.Controllers
         {
             var user = _userFacade.GetUser(userId);
             var sanctions = _sanctionFacade.GetAllActiveOfUser(userId).ToList();
-        
+
             ProfileResponse response;
             var userProfile = new UserProfileModel(user.UserProfile.Name, user.UserProfile.Email,
                 user.UserProfile.AboutUser, user.UserProfile.BirthYear, user.UserProfile.Gender,

@@ -11,7 +11,6 @@ namespace EduHub.SocketTool
     public class WebSocketManagerMiddleware
     {
         private readonly RequestDelegate _next;
-        private WebSocketHandler _webSocketHandler { get; set; }
 
         public WebSocketManagerMiddleware(RequestDelegate next,
             WebSocketHandler webSocketHandler)
@@ -19,6 +18,8 @@ namespace EduHub.SocketTool
             _next = next;
             _webSocketHandler = webSocketHandler;
         }
+
+        private WebSocketHandler _webSocketHandler { get; }
 
         public async Task Invoke(HttpContext context)
         {
@@ -38,15 +39,12 @@ namespace EduHub.SocketTool
             {
                 if (result.MessageType == WebSocketMessageType.Text)
                 {
-                    return;
                 }
 
                 else if (result.MessageType == WebSocketMessageType.Close)
                 {
                     await _webSocketHandler.OnDisconnected(socket);
-                    return;
                 }
-
             });
         }
 
@@ -56,8 +54,8 @@ namespace EduHub.SocketTool
 
             while (socket.State == WebSocketState.Open)
             {
-                var result = await socket.ReceiveAsync(buffer: new ArraySegment<byte>(buffer),
-                    cancellationToken: CancellationToken.None);
+                var result = await socket.ReceiveAsync(new ArraySegment<byte>(buffer),
+                    CancellationToken.None);
 
                 handleMessage(result, buffer);
             }

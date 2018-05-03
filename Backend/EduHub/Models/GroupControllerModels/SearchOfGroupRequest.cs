@@ -5,7 +5,6 @@ namespace EduHub.Models.GroupControllerModels
 {
     public class SearchOfGroupRequest
     {
-        [Required]
-        public List<string> Tags { get; set; }
+        [Required] public List<string> Tags { get; set; }
     }
 }

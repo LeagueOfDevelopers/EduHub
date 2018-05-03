@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using EduHubLibrary.Domain.NotificationService;
 
 namespace EduHubTests
 {
@@ -18,8 +18,8 @@ namespace EduHubTests
     {
         private int _creatorId;
         private IGroupRepository _groupRepository;
-        private IUserRepository _userRepository;
         private int _testGroupId;
+        private IUserRepository _userRepository;
 
         [TestInitialize]
         public void Initialize()
@@ -31,7 +31,7 @@ namespace EduHubTests
             var publisher = new Mock<IEventPublisher>();
             var groupSettings = new GroupSettings(3, 100, 100, 1000);
             var sender = new Mock<IEmailSender>();
-            var groupFacade = new GroupFacade(_groupRepository, _userRepository, sanctionRepository, groupSettings, 
+            var groupFacade = new GroupFacade(_groupRepository, _userRepository, sanctionRepository, groupSettings,
                 publisher.Object);
             var accountFacade = new AccountFacade(keyRepository, _userRepository,
                 sender.Object);

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.NotificationService;
-using System;
 using EduHubLibrary.Interators;
 using EnsureThat;
-using EduHubLibrary.Domain.Exceptions;
 
 namespace EduHubLibrary.Infrastructure
 {

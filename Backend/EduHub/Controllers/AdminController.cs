@@ -1,13 +1,12 @@
-﻿using EduHub.Extensions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using EduHub.Extensions;
 using EduHub.Models.AdminControllerModels;
 using EduHub.Models.Tools;
-using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EduHub.Controllers
 {
@@ -61,7 +60,7 @@ namespace EduHub.Controllers
         public IActionResult GetAllReports()
         {
             var reports = new List<ReportModel>();
-            _reportFacade.GetAll().ToList().ForEach(r => reports.Add(new ReportModel(r.ReportId, r.SenderName, 
+            _reportFacade.GetAll().ToList().ForEach(r => reports.Add(new ReportModel(r.ReportId, r.SenderName,
                 r.SuspectedName, r.Reason, r.Description)));
             var response = new AllReportsResponse(reports);
 
@@ -76,7 +75,8 @@ namespace EduHub.Controllers
         public IActionResult GetReport([FromRoute] int reportId)
         {
             var report = _reportFacade.Get(reportId);
-            var response = new ReportModel(report.ReportId, report.SenderName, report.SuspectedName, report.Reason, report.Description);
+            var response = new ReportModel(report.ReportId, report.SenderName, report.SuspectedName, report.Reason,
+                report.Description);
             return Ok();
         }
     }

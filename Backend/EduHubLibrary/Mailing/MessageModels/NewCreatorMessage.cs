@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EduHubLibrary.Mailing.MessageModels
+﻿namespace EduHubLibrary.Mailing.MessageModels
 {
     public class NewCreatorMessage
     {
-        public NewCreatorMessage(string groupTitle, string exCreatorUsername, string newCreatorUsername, string receiverName)
+        public NewCreatorMessage(string groupTitle, string exCreatorUsername, string newCreatorUsername,
+            string receiverName)
         {
             GroupTitle = groupTitle;
             ExCreatorUsername = exCreatorUsername;

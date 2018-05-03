@@ -4,7 +4,6 @@ namespace EduHub.Models
 {
     public class EditAboutUserRequest
     {
-        [StringLength(3000)]
-        public string AboutUser { get; set; }
+        [StringLength(3000)] public string AboutUser { get; set; }
     }
 }

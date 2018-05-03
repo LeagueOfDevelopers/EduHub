@@ -1,13 +1,12 @@
-﻿using EduHubLibrary.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using EduHubLibrary.Domain;
 
 namespace EduHubLibrary.Facades.Views
 {
     public class SanctionView
     {
-        public SanctionView(int id, string brokenRule, int userId, string userName, int moderatorId, bool isTemporary, DateTimeOffset expirationDate, SanctionType type, bool isActive)
+        public SanctionView(int id, string brokenRule, int userId, string userName, int moderatorId, bool isTemporary,
+            DateTimeOffset expirationDate, SanctionType type, bool isActive)
         {
             Id = id;
             BrokenRule = brokenRule;
@@ -28,6 +27,6 @@ namespace EduHubLibrary.Facades.Views
         public bool IsTemporary { get; }
         public DateTimeOffset ExpirationDate { get; }
         public SanctionType Type { get; }
-        public bool IsActive { get; private set; }
+        public bool IsActive { get; }
     }
 }

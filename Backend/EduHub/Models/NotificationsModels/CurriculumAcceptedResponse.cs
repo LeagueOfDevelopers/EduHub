@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EduHub.Models.NotificationsModels
+﻿namespace EduHub.Models.NotificationsModels
 {
     public class CurriculumAcceptedResponse
     {

@@ -1,4 +1,7 @@
-﻿using EduHubLibrary.Common;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.NotificationService;
@@ -6,27 +9,21 @@ using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Interators;
 using EduHubLibrary.Mailing;
-using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 
 namespace EduHubTests.FacadesTests
 {
     [TestClass]
     public class SanctionFacadeTests
     {
+        private IAccountFacade _accountFacade;
         private int _adminId;
+        private Mock<IEventPublisher> _publisher;
+        private ISanctionRepository _sanctionRepository;
         private int _testUserId;
         private IUserFacade _userFacade;
-        private IAccountFacade _accountFacade;
         private IUserRepository _userRepository;
-        private ISanctionRepository _sanctionRepository;
-        private Mock<IEventPublisher> _publisher;
 
         [TestInitialize]
         public void Initialize()
@@ -44,7 +41,8 @@ namespace EduHubTests.FacadesTests
             _sanctionRepository = new InMemorySanctionRepository();
             _accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender.Object);
             _userFacade = new UserFacade(_userRepository, groupRepository, eventRepository, _publisher.Object);
-            _adminId = _accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, adminKey.Value);
+            _adminId = _accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
+                adminKey.Value);
             _testUserId = _accountFacade.RegUser("Sasha", Credentials.FromRawData("smt@smt.ru", "2"), false);
         }
 
@@ -69,7 +67,7 @@ namespace EduHubTests.FacadesTests
             var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
             //Act
-            sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, 
+            sanctionFacade.AddSanction("Some rule", _testUserId, _adminId,
                 SanctionType.NotAllowToEditProfile, DateTimeOffset.Now);
         }
 
@@ -81,7 +79,8 @@ namespace EduHubTests.FacadesTests
             var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
             //Act
-            sanctionFacade.AddSanction("some rule", IntIterator.GetNextId(), _adminId, SanctionType.NotAllowToEditProfile);
+            sanctionFacade.AddSanction("some rule", IntIterator.GetNextId(), _adminId,
+                SanctionType.NotAllowToEditProfile);
         }
 
         [TestMethod]
@@ -90,8 +89,9 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
-            var pseudoModerator = _accountFacade.RegUser("not admin", Credentials.FromRawData("pseudo@email.ru", "password"), false);
-            
+            var pseudoModerator = _accountFacade.RegUser("not admin",
+                Credentials.FromRawData("pseudo@email.ru", "password"), false);
+
             //Act
             sanctionFacade.AddSanction("some rule", _testUserId, pseudoModerator, SanctionType.NotAllowToEditProfile);
         }
@@ -101,7 +101,8 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
-            var sanctionId = sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+            var sanctionId =
+                sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
             sanctionFacade.CancelSanction(sanctionId);
@@ -127,13 +128,17 @@ namespace EduHubTests.FacadesTests
             //Arrange
             var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
-            var user1 = _accountFacade.RegUser("not admin", Credentials.FromRawData("user1@email.ru", "password"), false);
-            var user2 = _accountFacade.RegUser("not admin", Credentials.FromRawData("user2@email.ru", "password"), false);
-            var user3 = _accountFacade.RegUser("not admin", Credentials.FromRawData("user3@email.ru", "password"), false);
+            var user1 = _accountFacade.RegUser("not admin", Credentials.FromRawData("user1@email.ru", "password"),
+                false);
+            var user2 = _accountFacade.RegUser("not admin", Credentials.FromRawData("user2@email.ru", "password"),
+                false);
+            var user3 = _accountFacade.RegUser("not admin", Credentials.FromRawData("user3@email.ru", "password"),
+                false);
 
             sanctionFacade.AddSanction("some rule", user1, _adminId, SanctionType.NotAllowToJoinGroup);
             sanctionFacade.AddSanction("some rule", user2, _adminId, SanctionType.NotAllowToEditProfile);
-            var canceledSanctionId = sanctionFacade.AddSanction("some rule", user3, _adminId, SanctionType.NotAllowToTeach);
+            var canceledSanctionId =
+                sanctionFacade.AddSanction("some rule", user3, _adminId, SanctionType.NotAllowToTeach);
             sanctionFacade.CancelSanction(canceledSanctionId);
 
             //Act
@@ -143,13 +148,13 @@ namespace EduHubTests.FacadesTests
             Assert.AreEqual(user1, actual[0].UserId);
             Assert.AreEqual(user2, actual[1].UserId);
         }
-        
+
         [TestMethod]
         public void CheckActivityOfExpiredSanction_GetInactiveSanction()
         {
             //Arrange
             var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
-            var sanctionId = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, 
+            var sanctionId = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId,
                 SanctionType.NotAllowToEditProfile, DateTimeOffset.Now.AddMilliseconds(1));
 
             //Act
@@ -165,9 +170,12 @@ namespace EduHubTests.FacadesTests
             //Arrange
             var sanctionFacade = new SanctionFacade(_sanctionRepository, _userRepository, _publisher.Object);
 
-            var sanctionId1 =  sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
-            var sanctionId2 = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
-            var sanctionId3 = sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+            var sanctionId1 =
+                sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+            var sanctionId2 =
+                sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
+            var sanctionId3 =
+                sanctionFacade.AddSanction("Some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             sanctionFacade.CancelSanction(sanctionId3);
 

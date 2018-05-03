@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EduHubLibrary.Data.GroupDtos
+﻿namespace EduHubLibrary.Data.GroupDtos
 {
     public class KickedId
     {

@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain;
+﻿using System.Collections.Generic;
 using System.Linq;
+using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.EventBus.EventTypes;
 using EduHubLibrary.Facades.Views;
 using Newtonsoft.Json;
-using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {
     public class ReportFacade : IReportFacade
     {
+        private readonly IEventRepository _eventRepository;
+        private readonly IEventPublisher _publisher;
+
+        private readonly IUserRepository _userRepository;
+
         public ReportFacade(IUserRepository userRepository, IEventRepository eventRepository, IEventPublisher publisher)
         {
             _userRepository = userRepository;
@@ -26,7 +29,8 @@ namespace EduHubLibrary.Facades
             reportsEvents.ToList().ForEach(r =>
             {
                 var report = JsonConvert.DeserializeObject<ReportMessageEvent>(r.EventInfo);
-                reports.Add(new ReportView(r.Id, report.SenderName, report.SuspectedName, report.Reason, report.Description));
+                reports.Add(new ReportView(r.Id, report.SenderName, report.SuspectedName, report.Reason,
+                    report.Description));
             });
 
             return reports;
@@ -46,11 +50,8 @@ namespace EduHubLibrary.Facades
         {
             var sender = _userRepository.GetUserById(senderId);
             var suspected = _userRepository.GetUserById(suspectedId);
-            _publisher.PublishEvent(new ReportMessageEvent(sender.UserProfile.Name, suspected.UserProfile.Name, reason, description));
+            _publisher.PublishEvent(new ReportMessageEvent(sender.UserProfile.Name, suspected.UserProfile.Name, reason,
+                description));
         }
-
-        private readonly IUserRepository _userRepository;
-        private readonly IEventRepository _eventRepository;
-        private readonly IEventPublisher _publisher;
     }
 }

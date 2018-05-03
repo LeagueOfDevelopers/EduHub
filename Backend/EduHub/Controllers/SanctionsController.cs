@@ -1,15 +1,11 @@
-﻿using EduHub.Extensions;
+﻿using System;
+using EduHub.Extensions;
 using EduHub.Models.SanctionsController;
 using EduHub.Models.Tools;
-using EduHubLibrary.Domain;
 using EduHubLibrary.Facades;
-using EduHubLibrary.Facades.Views;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EduHub.Controllers
 {
@@ -18,6 +14,8 @@ namespace EduHub.Controllers
     [Route("api/sanctions")]
     public class SanctionController : Controller
     {
+        private readonly ISanctionFacade _sanctionFacade;
+
         public SanctionController(ISanctionFacade sanctionFacade)
         {
             _sanctionFacade = sanctionFacade;
@@ -36,15 +34,11 @@ namespace EduHub.Controllers
             int sanctionId;
 
             if (request.ExpirationDate != DateTimeOffset.MinValue)
-            {
                 sanctionId = _sanctionFacade.AddSanction(request.BrokenRule, request.UserId, moderatorId,
                     request.SanctionType, request.ExpirationDate);
-            }
             else
-            {
                 sanctionId = _sanctionFacade.AddSanction(request.BrokenRule, request.UserId, moderatorId,
                     request.SanctionType);
-            }
 
             return Ok(sanctionId);
         }
@@ -60,7 +54,7 @@ namespace EduHub.Controllers
         public IActionResult GetAll()
         {
             var sanctions = _sanctionFacade.GetAll();
-            SanctionsResponse response = new SanctionsResponse(sanctions);
+            var response = new SanctionsResponse(sanctions);
             return Ok(response);
         }
 
@@ -76,7 +70,7 @@ namespace EduHub.Controllers
         public IActionResult GetAllActive()
         {
             var sanctions = _sanctionFacade.GetAllActive();
-            SanctionsResponse response = new SanctionsResponse(sanctions);
+            var response = new SanctionsResponse(sanctions);
             return Ok(response);
         }
 
@@ -110,7 +104,5 @@ namespace EduHub.Controllers
             _sanctionFacade.CancelSanction(sanctionId);
             return Ok();
         }
-
-        private readonly ISanctionFacade _sanctionFacade;
     }
 }

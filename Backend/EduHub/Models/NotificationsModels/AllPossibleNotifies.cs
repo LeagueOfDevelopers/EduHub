@@ -2,15 +2,20 @@
 {
     public class AllPossibleNotifies
     {
-        public AllPossibleNotifies(MemberLeftResponse memberLeftResponse, NewMemberResponse newMemberResponse, 
-            NewCreatorResponse newCreatorResponse, CourseFinishedResponse courseFinishedResponse, 
-            CurriculumAcceptedResponse curriculumAcceptedResponse, CurriculumDeclinedResponse curriculumDeclinedResponse,
-            CurriculumSuggestedResponse curriculumSuggestedResponse, GroupIsFormedResponse groupIsFormedResponse, 
-            InvitationAcceptedResponse invitationAcceptedResponse, InvitationDeclinedResponse invitationDeclinedResponse,
-            InvitationReceivedResponse invitationReceivedResponse, ReportMessageResponse reportMessageResponse, 
-            ReviewReceivedResponse reviewReceivedResponse, SanctionsAppliedForUserResponse sanctionsAppliedForUserResponse, 
-            SanctionsAppliedForAdminResponse sanctionsAppliedForAdminResponse, SanctionsCancelledForUserResponse sanctionsCancelledForUserResponse,
-            SanctionsCancelledForAdminResponse sanctionsCancelledForAdminResponse, TeacherFoundResponse teacherFoundResponse)
+        public AllPossibleNotifies(MemberLeftResponse memberLeftResponse, NewMemberResponse newMemberResponse,
+            NewCreatorResponse newCreatorResponse, CourseFinishedResponse courseFinishedResponse,
+            CurriculumAcceptedResponse curriculumAcceptedResponse,
+            CurriculumDeclinedResponse curriculumDeclinedResponse,
+            CurriculumSuggestedResponse curriculumSuggestedResponse, GroupIsFormedResponse groupIsFormedResponse,
+            InvitationAcceptedResponse invitationAcceptedResponse,
+            InvitationDeclinedResponse invitationDeclinedResponse,
+            InvitationReceivedResponse invitationReceivedResponse, ReportMessageResponse reportMessageResponse,
+            ReviewReceivedResponse reviewReceivedResponse,
+            SanctionsAppliedForUserResponse sanctionsAppliedForUserResponse,
+            SanctionsAppliedForAdminResponse sanctionsAppliedForAdminResponse,
+            SanctionsCancelledForUserResponse sanctionsCancelledForUserResponse,
+            SanctionsCancelledForAdminResponse sanctionsCancelledForAdminResponse,
+            TeacherFoundResponse teacherFoundResponse)
         {
             MemberLeftResponse = memberLeftResponse;
             NewMemberResponse = newMemberResponse;

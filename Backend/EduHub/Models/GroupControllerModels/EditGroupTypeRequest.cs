@@ -5,7 +5,6 @@ namespace EduHub.Models
 {
     public class EditGroupTypeRequest
     {
-        [Required]
-        public GroupType GroupType { get; set; }
+        [Required] public GroupType GroupType { get; set; }
     }
 }

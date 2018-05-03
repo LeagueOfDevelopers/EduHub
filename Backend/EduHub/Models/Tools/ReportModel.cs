@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace EduHub.Models.Tools
+﻿namespace EduHub.Models.Tools
 {
     public class ReportModel
     {

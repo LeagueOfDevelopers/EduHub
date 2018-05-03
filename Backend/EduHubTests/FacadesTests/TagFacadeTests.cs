@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
-using EduHubLibrary.Mailing;
-using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EduHubTests
@@ -78,9 +73,9 @@ namespace EduHubTests
             tagFacade.UseTag("Tag2");
 
             //Assert
-            var expectedTags = new List<string> { "Tag2", "Tag1" };
+            var expectedTags = new List<string> {"Tag2", "Tag1"};
             var actualTags = tagFacade.FindTag("Tag").ToList();
-            
+
             Assert.AreEqual(expectedTags[0], actualTags[0]);
             Assert.AreEqual(expectedTags[1], actualTags[1]);
             Assert.AreEqual(expectedTags.Count, actualTags.Count);

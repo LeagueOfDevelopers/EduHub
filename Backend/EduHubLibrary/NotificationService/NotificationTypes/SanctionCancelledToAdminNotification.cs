@@ -1,8 +1,5 @@
 ﻿using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.NotificationService.Notifications;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.NotificationService.NotificationTypes
 {

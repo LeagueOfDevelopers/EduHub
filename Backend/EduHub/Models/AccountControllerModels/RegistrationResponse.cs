@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EduHub.Models
+﻿namespace EduHub.Models
 {
     public class RegistrationResponse
     {

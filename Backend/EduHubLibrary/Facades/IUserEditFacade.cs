@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using EduHubLibrary.Domain.Tools;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.NotificationService.UserSettings;
 using EduHubLibrary.Domain.NotificationService.Notifications;
+using EduHubLibrary.Domain.NotificationService.UserSettings;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHubLibrary.Facades
 {
@@ -16,9 +15,13 @@ namespace EduHubLibrary.Facades
         void EditBirthYear(int userId, int newYear);
         void BecomeTeacher(int userId);
         void StopToBeTeacher(int userId);
+
         void EditProfile(int userId, string newName, string newAboutUser, Gender newGender, string newAvatarLink,
             List<string> newContactData, int newYear);
+
         void EditTeacherProfile(int userId, List<string> newSkills);
-        void ConfigureNotificationsSettings(int userId, NotificationType configuringNotification, NotificationValue newValue);
+
+        void ConfigureNotificationsSettings(int userId, NotificationType configuringNotification,
+            NotificationValue newValue);
     }
 }

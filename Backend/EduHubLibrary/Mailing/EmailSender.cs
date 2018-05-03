@@ -1,6 +1,4 @@
 ﻿using EduHubLibrary.Settings;
-using MailKit.Net.Smtp;
-using MimeKit;
 
 namespace EduHubLibrary.Mailing
 {
@@ -12,7 +10,7 @@ namespace EduHubLibrary.Mailing
         {
             _settings = settings;
         }
-        
+
         public void SendMessage(string email, object messageContent, string theme, string username = "")
         {
             /*

@@ -2,9 +2,8 @@
 using System.Linq;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
-using EduHubLibrary.Domain.Tools;
-using EnsureThat;
 using EduHubLibrary.Facades.Views.GroupViews;
+using EnsureThat;
 
 namespace EduHubLibrary.Facades
 {
@@ -24,7 +23,7 @@ namespace EduHubLibrary.Facades
             Ensure.String.IsNotNullOrWhiteSpace(text);
             Ensure.Bool.IsTrue(HasRights(groupId, senderId), nameof(HasRights),
                 opt => opt.WithException(new NotEnoughPermissionsException(senderId)));
-;
+            ;
             var currentGroup = _groupRepository.GetGroupById(groupId);
             using (var chat = new ChatSession(currentGroup))
             {

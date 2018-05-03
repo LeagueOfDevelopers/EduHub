@@ -1,7 +1,5 @@
-﻿using EduHubLibrary.Domain.NotificationService.Notifications;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 using Newtonsoft.Json;
 
 namespace EduHubLibrary.Domain.NotificationService

@@ -4,14 +4,9 @@ using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
-using EduHubLibrary.Interators;
 using EduHubLibrary.Mailing;
-using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubTests.FacadesTests
 {
@@ -19,11 +14,11 @@ namespace EduHubTests.FacadesTests
     public class AccountFacadeTests
     {
         private Mock<IEmailSender> _emailSender;
+        private IEventRepository _eventRepository;
         private IGroupRepository _groupRepository;
         private IKeysRepository _keysRepository;
-        private IUserRepository _userRepository;
-        private IEventRepository _eventRepository;
         private Mock<IEventPublisher> _publisher;
+        private IUserRepository _userRepository;
 
         [TestInitialize]
         public void Initialize()
@@ -33,7 +28,7 @@ namespace EduHubTests.FacadesTests
             _groupRepository = new InMemoryGroupRepository();
             _eventRepository = new InMemoryEventRepository();
             _publisher = new Mock<IEventPublisher>();
-            
+
             _emailSender = new Mock<IEmailSender>();
         }
 
@@ -118,7 +113,8 @@ namespace EduHubTests.FacadesTests
             _keysRepository.AddKey(key);
 
             //Act
-            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("anotherEmail", "password"), true, key.Value);
+            var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("anotherEmail", "password"), true,
+                key.Value);
         }
 
         [TestMethod]

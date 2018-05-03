@@ -4,9 +4,9 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.EventBus.EventTypes;
 using EduHubLibrary.Settings;
 using EnsureThat;
-using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {

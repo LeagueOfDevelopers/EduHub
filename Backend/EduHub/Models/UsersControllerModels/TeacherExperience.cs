@@ -5,6 +5,6 @@
         Default = 0,
         OneClass = 1,
         FiveClasses = 5,
-        TenClasses = 10,
+        TenClasses = 10
     }
 }

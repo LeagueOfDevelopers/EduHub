@@ -120,7 +120,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(u => u.Notifies)
                     .FirstOrDefault(u => u.Email == email);
                 Ensure.Any.IsNotNull(userDto, nameof(email),
-                    opt=> opt.WithException(new UserNotFoundException(email)));
+                    opt => opt.WithException(new UserNotFoundException(email)));
                 var user = UserExtensions.ParseFromUserDto(userDto);
                 _context.SaveChanges();
                 return user;
@@ -139,7 +139,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(u => u.Notifies)
                     .FirstOrDefault(u => u.Email == credentials.Email
                                          && u.PasswordHash == credentials.PasswordHash);
-                Ensure.Any.IsNotNull(userDto, nameof(credentials), 
+                Ensure.Any.IsNotNull(userDto, nameof(credentials),
                     opt => opt.WithException(new UserNotFoundException()));
 
                 var user = UserExtensions.ParseFromUserDto(userDto);

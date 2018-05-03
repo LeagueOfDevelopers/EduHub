@@ -1,13 +1,11 @@
 ﻿using EduHubLibrary.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Mailing.MessageModels
 {
     public class SanctionsAppliedToAdminMessage
     {
-        public SanctionsAppliedToAdminMessage(string brokenRule, SanctionType sanctionType, string userName, string receiverName)
+        public SanctionsAppliedToAdminMessage(string brokenRule, SanctionType sanctionType, string userName,
+            string receiverName)
         {
             BrokenRule = brokenRule;
             SanctionType = sanctionType;

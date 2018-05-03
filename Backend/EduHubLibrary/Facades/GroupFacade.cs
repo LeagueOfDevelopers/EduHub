@@ -5,11 +5,11 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.EventBus.EventTypes;
 using EduHubLibrary.Facades.Views.GroupViews;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
 using EnsureThat;
-using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {
@@ -67,7 +67,8 @@ namespace EduHubLibrary.Facades
             currentGroup.AddMember(newMemberId);
             _groupRepository.Update(currentGroup);
 
-            _publisher.PublishEvent(new NewMemberEvent(groupId, currentGroup.GroupInfo.Title, currentUser.UserProfile.Name));
+            _publisher.PublishEvent(new NewMemberEvent(groupId, currentGroup.GroupInfo.Title,
+                currentUser.UserProfile.Name));
             if (currentGroup.Members.Count == currentGroup.GroupInfo.Size)
                 _publisher.PublishEvent(new GroupIsFormedEvent(currentGroup.GroupInfo.Title, groupId));
         }
@@ -88,12 +89,13 @@ namespace EduHubLibrary.Facades
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var memberRole = currentGroup.GetMember(deletingPerson).MemberRole;
-            
+
             currentGroup.DeleteMember(requestedPerson, deletingPerson);
             var deletingUser = _userRepository.GetUserById(deletingPerson);
             _groupRepository.Update(currentGroup);
 
-            _publisher.PublishEvent(new MemberLeftEvent(groupId, currentGroup.GroupInfo.Title, deletingUser.UserProfile.Name));
+            _publisher.PublishEvent(new MemberLeftEvent(groupId, currentGroup.GroupInfo.Title,
+                deletingUser.UserProfile.Name));
             if (memberRole.Equals(MemberRole.Creator))
             {
                 var newCreatorId = currentGroup.Members.Find(m => m.MemberRole.Equals(MemberRole.Creator)).UserId;
@@ -134,7 +136,7 @@ namespace EduHubLibrary.Facades
                     MemberRole.Teacher, false, MemberCurriculumStatus.Unknown));
                 teacher.TeacherProfile?.Reviews.Where(r => r.FromGroup == id).ToList()
                     .ForEach(r => reviewView.Add(new ReviewView(r.FromUser, r.FromGroup,
-                    r.Title, r.Text, r.Date)));
+                        r.Title, r.Text, r.Date)));
             }
 
             var responseView = new FullGroupView(groupInfoView, membersInfo, reviewView);
@@ -191,7 +193,8 @@ namespace EduHubLibrary.Facades
             var allGroups = _groupRepository.GetAll();
             allGroups = allGroups.Where(g => g.Status != CourseStatus.Finished && !g.GroupInfo.IsPrivate).ToList();
             var result = new List<MinGroupView>();
-            allGroups.ToList().ForEach(g => result.Add(new MinGroupView(g.GroupInfo.Id, g.GroupInfo.Title, g.Members.Count, g.GroupInfo.Size,
+            allGroups.ToList().ForEach(g => result.Add(new MinGroupView(g.GroupInfo.Id, g.GroupInfo.Title,
+                g.Members.Count, g.GroupInfo.Size,
                 g.GroupInfo.Price, g.GroupInfo.GroupType, g.GroupInfo.Tags)));
             return result;
         }
@@ -214,7 +217,8 @@ namespace EduHubLibrary.Facades
             currentGroup.ApproveTeacher(teacher);
             _groupRepository.Update(currentGroup);
 
-            _publisher.PublishEvent(new TeacherFoundEvent(teacher.UserProfile.Name, currentGroup.GroupInfo.Title, groupId));
+            _publisher.PublishEvent(new TeacherFoundEvent(teacher.UserProfile.Name, currentGroup.GroupInfo.Title,
+                groupId));
         }
 
         public void AcceptCurriculum(int userId, int groupId)
@@ -270,7 +274,8 @@ namespace EduHubLibrary.Facades
             currentGroup.FinishCurriculum(userId);
             _groupRepository.Update(currentGroup);
 
-            _publisher.PublishEvent(new CourseFinishedEvent(currentGroup.GroupInfo.Title, groupId, teacher.UserProfile.Name));
+            _publisher.PublishEvent(new CourseFinishedEvent(currentGroup.GroupInfo.Title, groupId,
+                teacher.UserProfile.Name));
         }
 
         public void AddReview(int groupId, int userId, string title, string text)

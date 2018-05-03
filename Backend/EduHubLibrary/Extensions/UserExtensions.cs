@@ -3,9 +3,9 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Data.UserDtos;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.NotificationService.UserSettings;
+using EduHubLibrary.Domain.Tools;
 using Newtonsoft.Json;
 
 namespace EduHubLibrary.Extensions
@@ -41,7 +41,7 @@ namespace EduHubLibrary.Extensions
             var settings = JsonConvert.DeserializeObject<NotificationsSettings>(source.NotificationSettings);
 
             var destination = new User(source.Name, new Credentials(source.Email, source.PasswordHash),
-                source.Type, invitationList, teacherProfile, userProfile, source.IsActive, notifiesList, settings, 
+                source.Type, invitationList, teacherProfile, userProfile, source.IsActive, notifiesList, settings,
                 source.Id);
 
             return destination;

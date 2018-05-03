@@ -1,25 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.EventBus.EventTypes;
 using EduHubLibrary.Facades.Views;
 using EnsureThat;
-using EduHubLibrary.Domain.NotificationService;
-using System;
-using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {
     public class UserFacade : IUserFacade
     {
-        private readonly IGroupRepository _groupRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IEventRepository _eventRepository;
+        private readonly IGroupRepository _groupRepository;
         private readonly IEventPublisher _publisher;
+        private readonly IUserRepository _userRepository;
 
-        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository, 
+        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository,
             IEventRepository eventRepository, IEventPublisher publisher)
         {
             _userRepository = userRepository;
@@ -58,11 +58,12 @@ namespace EduHubLibrary.Facades
                         opt => opt.WithException(new AlreadyTeacherException(userId)));
                     currentGroup.AddMember(currentInvitation.ToUser);
                     _groupRepository.Update(currentGroup);
-                    
+
                     _publisher.PublishEvent(new NewMemberEvent(currentGroup.GroupInfo.Id, currentGroup.GroupInfo.Title,
                         currentUser.UserProfile.Name));
                     if (currentGroup.Members.Count == currentGroup.GroupInfo.Size)
-                        _publisher.PublishEvent(new GroupIsFormedEvent(currentGroup.GroupInfo.Title, currentGroup.GroupInfo.Id));
+                        _publisher.PublishEvent(new GroupIsFormedEvent(currentGroup.GroupInfo.Title,
+                            currentGroup.GroupInfo.Id));
                 }
                 else if (currentInvitation.SuggestedRole == MemberRole.Teacher)
                 {
@@ -73,17 +74,19 @@ namespace EduHubLibrary.Facades
                     currentGroup.ApproveTeacher(currentUser);
                     _groupRepository.Update(currentGroup);
 
-                    _publisher.PublishEvent(new TeacherFoundEvent(currentUser.UserProfile.Name, 
+                    _publisher.PublishEvent(new TeacherFoundEvent(currentUser.UserProfile.Name,
                         currentGroup.GroupInfo.Title, currentGroup.GroupInfo.Id));
                 }
 
-                _publisher.PublishEvent(new InvitationAcceptedEvent(currentGroup.GroupInfo.Title, currentUser.UserProfile.Name, 
+                _publisher.PublishEvent(new InvitationAcceptedEvent(currentGroup.GroupInfo.Title,
+                    currentUser.UserProfile.Name,
                     currentInvitation.FromUser));
             }
             else if (status.Equals(InvitationStatus.Declined))
             {
                 currentUser.DeclineInvitation(invitationId);
-                _publisher.PublishEvent(new InvitationDeclinedEvent(currentGroup.GroupInfo.Title, currentUser.UserProfile.Name, 
+                _publisher.PublishEvent(new InvitationDeclinedEvent(currentGroup.GroupInfo.Title,
+                    currentUser.UserProfile.Name,
                     currentInvitation.FromUser));
             }
 
@@ -96,16 +99,16 @@ namespace EduHubLibrary.Facades
             var invitedUser = _userRepository.GetUserById(invitedId);
             var inviterUser = _userRepository.GetUserById(inviterId);
 
-            Ensure.Bool.IsTrue(currentGroup.Status == CourseStatus.Searching 
+            Ensure.Bool.IsTrue(currentGroup.Status == CourseStatus.Searching
                                || currentGroup.Status == CourseStatus.InProgress,
                 nameof(CourseStatus), opt => opt.WithException(new InvalidOperationException()));
             Ensure.Bool.IsTrue(currentGroup.IsMember(inviterId), nameof(Invite),
                 opt => opt.WithException(new NotEnoughPermissionsException(inviterId)));
-            Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),   
+            Ensure.Bool.IsFalse(currentGroup.IsMember(invitedId), nameof(Invite),
                 opt => opt.WithException(new AlreadyMemberException(invitedId, groupId)));
-            Ensure.Bool.IsFalse(invitedUser.Invitations.Any(c => c.GroupId == groupId 
-                                                                 && (c.Status == InvitationStatus.InProgress 
-                                                                  || c.Status == InvitationStatus.Declined)),
+            Ensure.Bool.IsFalse(invitedUser.Invitations.Any(c => c.GroupId == groupId
+                                                                 && (c.Status == InvitationStatus.InProgress
+                                                                     || c.Status == InvitationStatus.Declined)),
                 nameof(Invite), opt => opt.WithException(new AlreadyInvitedException(invitedId, groupId)));
             if (suggestedRole == MemberRole.Teacher)
                 Ensure.Bool.IsTrue(invitedUser.UserProfile.IsTeacher, nameof(Invite),
@@ -121,7 +124,8 @@ namespace EduHubLibrary.Facades
             _userRepository.Update(invitedUser);
             _groupRepository.Update(currentGroup);
 
-            _publisher.PublishEvent(new InvitationReceivedEvent(currentGroup.GroupInfo.Title, inviterUser.UserProfile.Name, 
+            _publisher.PublishEvent(new InvitationReceivedEvent(currentGroup.GroupInfo.Title,
+                inviterUser.UserProfile.Name,
                 invitedId, suggestedRole));
         }
 
@@ -202,7 +206,7 @@ namespace EduHubLibrary.Facades
         public IEnumerable<User> GetAllModerators(int callerId)
         {
             return _userRepository.GetAll().Where(u =>
-            (u.Type.Equals(UserType.Moderator) || u.Type.Equals(UserType.Admin)) && u.Id != callerId);
+                (u.Type.Equals(UserType.Moderator) || u.Type.Equals(UserType.Admin)) && u.Id != callerId);
         }
 
         public void DemoteModerator(int moderatorId)

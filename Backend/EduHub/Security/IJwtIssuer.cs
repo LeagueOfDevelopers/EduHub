@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EduHub.Security
+﻿namespace EduHub.Security
 {
     public interface IJwtIssuer
     {

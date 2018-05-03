@@ -64,10 +64,7 @@ namespace EduHub.Controllers
         {
             var file = _fileFacade.GetFile(filename);
 
-            if (!file.Filename.IsImg())
-            {
-                return Unauthorized();
-            }
+            if (!file.Filename.IsImg()) return Unauthorized();
 
             var downloadPath = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
             var filePath = Path.Combine(downloadPath, file.Filename);

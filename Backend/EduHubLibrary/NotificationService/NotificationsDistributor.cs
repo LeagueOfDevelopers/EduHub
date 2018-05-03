@@ -1,18 +1,23 @@
-﻿using EduHubLibrary.Domain.NotificationService.UserSettings;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Common;
-using EduHubLibrary.Facades;
-using EduHubLibrary.Mailing;
 using EduHubLibrary.Domain.NotificationService.Notifications;
+using EduHubLibrary.Domain.NotificationService.UserSettings;
+using EduHubLibrary.Mailing;
 
 namespace EduHubLibrary.Domain.NotificationService
 {
     public class NotificationsDistributor : INotificationsDistributor
     {
-        public NotificationsDistributor(IGroupRepository groupRepository, IUserRepository userRepository, IEmailSender sender)
+        private readonly IGroupRepository _groupRepository;
+
+        private readonly MessageMapper _messageMapper;
+        private readonly Dictionary<NotificationType, string> _messageThemes;
+        private readonly IEmailSender _sender;
+        private readonly IUserRepository _userRepository;
+
+        public NotificationsDistributor(IGroupRepository groupRepository, IUserRepository userRepository,
+            IEmailSender sender)
         {
             _groupRepository = groupRepository;
             _userRepository = userRepository;
@@ -21,24 +26,24 @@ namespace EduHubLibrary.Domain.NotificationService
             _messageMapper = new MessageMapper();
             _messageThemes = new Dictionary<NotificationType, string>
             {
-                { NotificationType.CourseFinished, MessageThemes.CourseFinished },
-                { NotificationType.CurriculumAccepted, MessageThemes.CurriculumAccepted },
-                { NotificationType.CurriculumDeclined, MessageThemes.CurriculumDeclined },
-                { NotificationType.CurriculumSuggested, MessageThemes.CurriculumSuggested },
-                { NotificationType.GroupIsFormed, MessageThemes.GroupIsFormed },
-                { NotificationType.InvitationAccepted, MessageThemes.InvitationAccepted },
-                { NotificationType.InvitationDeclined, MessageThemes.InvitationDeclined },
-                { NotificationType.InvitationReceived, MessageThemes.InvitationReceived },
-                { NotificationType.MemberLeft, MessageThemes.MemberLeft },
-                { NotificationType.NewCreator, MessageThemes.NewCreator },
-                { NotificationType.NewMember, MessageThemes.NewMember },
-                { NotificationType.ReportMessage, MessageThemes.ReportMessage },
-                { NotificationType.ReviewReceived, MessageThemes.ReviewReceived },
-                { NotificationType.SanctionsAppliedToAdmin, MessageThemes.SanctionsAppliedForAdmin },
-                { NotificationType.SanctionsAppliedToUser, MessageThemes.SanctionsAppliedForUser },
-                { NotificationType.SanctionsCancelledToAdmin, MessageThemes.SanctionsCancelledForAdmin },
-                { NotificationType.SanctionsCancelledToUser, MessageThemes.SanctionsCancelledForUser },
-                { NotificationType.TeacherFound, MessageThemes.TeacherFound }
+                {NotificationType.CourseFinished, MessageThemes.CourseFinished},
+                {NotificationType.CurriculumAccepted, MessageThemes.CurriculumAccepted},
+                {NotificationType.CurriculumDeclined, MessageThemes.CurriculumDeclined},
+                {NotificationType.CurriculumSuggested, MessageThemes.CurriculumSuggested},
+                {NotificationType.GroupIsFormed, MessageThemes.GroupIsFormed},
+                {NotificationType.InvitationAccepted, MessageThemes.InvitationAccepted},
+                {NotificationType.InvitationDeclined, MessageThemes.InvitationDeclined},
+                {NotificationType.InvitationReceived, MessageThemes.InvitationReceived},
+                {NotificationType.MemberLeft, MessageThemes.MemberLeft},
+                {NotificationType.NewCreator, MessageThemes.NewCreator},
+                {NotificationType.NewMember, MessageThemes.NewMember},
+                {NotificationType.ReportMessage, MessageThemes.ReportMessage},
+                {NotificationType.ReviewReceived, MessageThemes.ReviewReceived},
+                {NotificationType.SanctionsAppliedToAdmin, MessageThemes.SanctionsAppliedForAdmin},
+                {NotificationType.SanctionsAppliedToUser, MessageThemes.SanctionsAppliedForUser},
+                {NotificationType.SanctionsCancelledToAdmin, MessageThemes.SanctionsCancelledForAdmin},
+                {NotificationType.SanctionsCancelledToUser, MessageThemes.SanctionsCancelledForUser},
+                {NotificationType.TeacherFound, MessageThemes.TeacherFound}
             };
         }
 
@@ -75,20 +80,16 @@ namespace EduHubLibrary.Domain.NotificationService
             var user = _userRepository.GetUserById(userId);
             var settings = user.NotificationsSettings.Settings;
 
-            var doesSubscribedOnSite = settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.OnSite) ||
+            var doesSubscribedOnSite =
+                settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.OnSite) ||
                 settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.Everywhere);
-            var doesSubscribedOnMail = settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.ToMail) ||
+            var doesSubscribedOnMail =
+                settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.ToMail) ||
                 settings[notificationInfo.GetNotificationType()].Equals(NotificationValue.Everywhere);
 
-            if (doesSubscribedOnSite)
-            {
-                NotifyOnSite(user, notificationInfo);
-            }
+            if (doesSubscribedOnSite) NotifyOnSite(user, notificationInfo);
 
-            if (doesSubscribedOnMail)
-            {
-                NotifyOnMail(user, notificationInfo);
-            }
+            if (doesSubscribedOnMail) NotifyOnMail(user, notificationInfo);
         }
 
         private void NotifyOnSite(User user, INotificationInfo notificationInfo)
@@ -103,12 +104,5 @@ namespace EduHubLibrary.Domain.NotificationService
             var notificationType = notificationInfo.GetNotificationType();
             _sender.SendMessage(user.UserProfile.Email, messageContent, _messageThemes[notificationType]);
         }
-
-        private readonly IGroupRepository _groupRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IEmailSender _sender;
-
-        private readonly MessageMapper _messageMapper;
-        private readonly Dictionary<NotificationType, string> _messageThemes;
     }
 }

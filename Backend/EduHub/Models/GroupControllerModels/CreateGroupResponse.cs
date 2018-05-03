@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace EduHub.Models
+﻿namespace EduHub.Models
 {
     public class CreateGroupResponse
     {
         public CreateGroupResponse(int id)
-        { 
+        {
             Id = id;
         }
 

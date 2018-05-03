@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EduHub.Extensions;
 using EduHub.Models;
 using EduHub.Models.UsersControllerModels;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using EduHub.Extensions;
 
 namespace EduHub.Controllers
 {
@@ -14,8 +14,8 @@ namespace EduHub.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
-        private readonly IUserFacade _userFacade;
         private readonly IReportFacade _reportFacade;
+        private readonly IUserFacade _userFacade;
 
         public UsersController(IUserFacade userFacade, IReportFacade reportFacade)
         {
@@ -34,7 +34,8 @@ namespace EduHub.Controllers
             [FromQuery] bool wantToTeach, [FromQuery] TeacherExperience teacherExperience,
             [FromQuery] UserExperience userExperience, [FromQuery] string name = "")
         {
-            var foundUsers = _userFacade.FindUser(name, wantToTeach, tags, (int)teacherExperience, (int)userExperience);
+            var foundUsers =
+                _userFacade.FindUser(name, wantToTeach, tags, (int) teacherExperience, (int) userExperience);
             var items = new List<UserFilterResponse>();
             foundUsers.ToList().ForEach(u => items.Add(new UserFilterResponse(u.Id, u.UserProfile.Name,
                 u.UserProfile.Email, u.UserProfile.AvatarLink, u.UserProfile.IsTeacher,

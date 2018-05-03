@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EduHubLibrary.Domain.NotificationService;
 using Moq;
 
 namespace EduHubTests
@@ -19,7 +19,7 @@ namespace EduHubTests
         private int _groupCreatorId;
         private IGroupEditFacade _groupEditFacade;
         private IGroupFacade _groupFacade;
-   
+
         [TestInitialize]
         public void Initialize()
         {
@@ -159,7 +159,7 @@ namespace EduHubTests
         public void TryToChangeGroupSizeWithValueThatLessThanMembersCount_GetException()
         {
             //Arrange
-            var createdGroupId = _groupFacade.CreateGroup(_groupCreatorId, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreatorId, "Some group", new List<string> {"c#"},
                 "You're welcome!", 2, 100, false, GroupType.Lecture);
             var memberId = _accountFacade.RegUser("member", Credentials.FromRawData("email", "password"), true);
             _groupFacade.AddMember(createdGroupId, memberId);

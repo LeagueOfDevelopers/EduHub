@@ -1,9 +1,4 @@
-﻿using EduHubLibrary.Domain.NotificationService;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EduHubLibrary.Mailing
+﻿namespace EduHubLibrary.Mailing
 {
     public interface IEmailSender
     {

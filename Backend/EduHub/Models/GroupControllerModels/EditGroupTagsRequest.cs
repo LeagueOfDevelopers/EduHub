@@ -6,8 +6,6 @@ namespace EduHub.Models
 {
     public class EditGroupTagsRequest
     {
-        [Required]
-        [ListLength(3, 10)]
-        public List<string> GroupTags { get; set; }
+        [Required] [ListLength(3, 10)] public List<string> GroupTags { get; set; }
     }
 }

@@ -10,12 +10,12 @@ namespace EduHubLibrary.SocketTool
 {
     public abstract class WebSocketHandler
     {
-        protected WebSocketConnectionManager WebSocketConnectionManager { get; set; }
-
         public WebSocketHandler(WebSocketConnectionManager webSocketConnectionManager)
         {
             WebSocketConnectionManager = webSocketConnectionManager;
         }
+
+        protected WebSocketConnectionManager WebSocketConnectionManager { get; set; }
 
         public virtual async Task OnConnected(WebSocket socket, int userId)
         {
@@ -34,12 +34,12 @@ namespace EduHubLibrary.SocketTool
 
             try
             {
-                await socket.SendAsync(buffer: new ArraySegment<byte>(array: Encoding.ASCII.GetBytes(message),
-                        offset: 0,
-                        count: message.Length),
-                    messageType: WebSocketMessageType.Text,
-                    endOfMessage: true,
-                    cancellationToken: CancellationToken.None);
+                await socket.SendAsync(new ArraySegment<byte>(Encoding.ASCII.GetBytes(message),
+                        0,
+                        message.Length),
+                    WebSocketMessageType.Text,
+                    true,
+                    CancellationToken.None);
             }
             catch
             {
@@ -56,10 +56,8 @@ namespace EduHubLibrary.SocketTool
         {
             var msg = new SocketMessage(message, groupId);
             foreach (var pair in WebSocketConnectionManager.GetAll(userId))
-            {
                 if (pair.Socket.State == WebSocketState.Open)
                     await SendMessageAsync(pair.Socket, JsonConvert.SerializeObject(msg));
-            }
         }
     }
 }

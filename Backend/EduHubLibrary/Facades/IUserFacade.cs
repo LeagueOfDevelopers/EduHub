@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Facades.Views;
 using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.Facades.Views;
 
 namespace EduHubLibrary.Facades
 {
@@ -16,6 +16,7 @@ namespace EduHubLibrary.Facades
         IEnumerable<Invitation> GetAllInvitationsForUser(int userId);
         IEnumerable<Group> GetAllGroupsOfUser(int userId);
         IEnumerable<User> GetAllModerators(int callerId);
+
         IEnumerable<User> FindUser(string name, bool isTeacher, List<string> requiredTags, int minTeacherGroups,
             int minUserGroups);
 

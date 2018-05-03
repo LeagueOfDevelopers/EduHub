@@ -4,14 +4,14 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
+using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
+using EduHubLibrary.Interators;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Interators;
 
 namespace EduHubTests
 {
@@ -21,9 +21,9 @@ namespace EduHubTests
         private IAccountFacade _accountFacade;
         private User _groupCreator;
         private IGroupFacade _groupFacade;
-        private IUserFacade _userFacade;
         private ISanctionFacade _sanctionFacade;
-        
+        private IUserFacade _userFacade;
+
         [TestInitialize]
         public void Initialize()
         {
@@ -42,7 +42,8 @@ namespace EduHubTests
             _sanctionFacade = new SanctionFacade(inMemorySanctionRepository, inMemoryUserRepository, publisher.Object);
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, inMemorySanctionRepository,
                 new GroupSettings(3, 100, 0, 1000), publisher.Object);
-            _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, inMemoryEventRepository, publisher.Object);
+            _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, inMemoryEventRepository,
+                publisher.Object);
             _accountFacade = new AccountFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender.Object);
             var creatorId = _accountFacade.RegUser("Alena", new Credentials("email", "password"), true, adminKey.Value);
@@ -151,7 +152,7 @@ namespace EduHubTests
         public void TryToJoinTheGroupWithSanctions_GetException()
         {
             //Arrange
-            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
             var testUserId = _accountFacade.RegUser("Alena", Credentials.FromRawData("some email", "password"), false);
             _sanctionFacade.AddSanction("some rule", testUserId, _groupCreator.Id, SanctionType.NotAllowToJoinGroup);
@@ -164,7 +165,7 @@ namespace EduHubTests
         public void AddNewMemberWithSanctionWithInvitation_MemberWasAdded()
         {
             //Arrange
-            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> { "c#" },
+            var createdGroupId = _groupFacade.CreateGroup(_groupCreator.Id, "Some group", new List<string> {"c#"},
                 "You're welcome!", 3, 20, false, GroupType.Lecture);
             var testUserId = _accountFacade.RegUser("Alena", Credentials.FromRawData("some email", "password"), false);
             _sanctionFacade.AddSanction("some rule", testUserId, _groupCreator.Id, SanctionType.NotAllowToJoinGroup);

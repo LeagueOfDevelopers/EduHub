@@ -1,15 +1,12 @@
-﻿using EduHubLibrary.Domain;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using EduHubLibrary.Domain;
 
 namespace EduHub.Models.Tools
 {
     public class SanctionModel
     {
-        public SanctionModel(string brokenRule, int userId, string userName, int moderatorId, bool isTemporary, DateTimeOffset expirationDate, SanctionType type, bool isActive)
+        public SanctionModel(string brokenRule, int userId, string userName, int moderatorId, bool isTemporary,
+            DateTimeOffset expirationDate, SanctionType type, bool isActive)
         {
             BrokenRule = brokenRule;
             UserId = userId;

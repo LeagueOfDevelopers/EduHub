@@ -1,25 +1,18 @@
 ﻿using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.NotificationService.Notifications;
 using EduHubLibrary.EventBus.EventTypes;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Domain.Consumers
 {
     public class GroupEventsConsumer : IEventConsumer<NewCreatorEvent>, IEventConsumer<GroupIsFormedEvent>
     {
+        private readonly INotificationsDistributor _distributor;
+        private readonly IEventRepository _eventRepository;
+
         public GroupEventsConsumer(INotificationsDistributor distributor, IEventRepository eventRepository)
         {
             _distributor = distributor;
             _eventRepository = eventRepository;
-        }
-
-        public void Consume(NewCreatorEvent @event)
-        {
-            _distributor.NotifyGroup(@event.GroupId, new NewCreatorNotification(@event.GroupTitle, @event.ExCreatorUsername,
-                @event.NewCreatorUsername));
-            _eventRepository.AddEvent(new Event(@event));
         }
 
         public void Consume(GroupIsFormedEvent @event)
@@ -28,7 +21,12 @@ namespace EduHubLibrary.Domain.Consumers
             _eventRepository.AddEvent(new Event(@event));
         }
 
-        private readonly INotificationsDistributor _distributor;
-        private readonly IEventRepository _eventRepository;
+        public void Consume(NewCreatorEvent @event)
+        {
+            _distributor.NotifyGroup(@event.GroupId, new NewCreatorNotification(@event.GroupTitle,
+                @event.ExCreatorUsername,
+                @event.NewCreatorUsername));
+            _eventRepository.AddEvent(new Event(@event));
+        }
     }
 }

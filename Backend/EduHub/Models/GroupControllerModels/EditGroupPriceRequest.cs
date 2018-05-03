@@ -4,8 +4,6 @@ namespace EduHub.Models
 {
     public class EditGroupPriceRequest
     {
-        [Required]
-        [Range(0, long.MaxValue)]
-        public double GroupPrice { get; set; }
+        [Required] [Range(0, long.MaxValue)] public double GroupPrice { get; set; }
     }
 }

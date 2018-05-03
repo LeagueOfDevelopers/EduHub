@@ -5,8 +5,6 @@ namespace EduHub.Models
 {
     public class EditBirthYearRequest
     {
-        [Required]
-        [BirthCheck(1900)]
-        public int BirthYear { get; set; }
+        [Required] [BirthCheck(1900)] public int BirthYear { get; set; }
     }
 }

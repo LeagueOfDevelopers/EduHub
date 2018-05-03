@@ -5,11 +5,6 @@ namespace EduHubLibrary.SocketTool
 {
     public class ChatSocket
     {
-        public Guid Id { get; set; }
-        public int UserId { get; set; }
-        public int GroupId { get; set; }
-        public WebSocket Socket { get; set; }
-
         public ChatSocket(Guid id, int userId, int groupId, WebSocket socket)
         {
             Id = id;
@@ -17,5 +12,10 @@ namespace EduHubLibrary.SocketTool
             GroupId = groupId;
             Socket = socket;
         }
+
+        public Guid Id { get; set; }
+        public int UserId { get; set; }
+        public int GroupId { get; set; }
+        public WebSocket Socket { get; set; }
     }
 }
