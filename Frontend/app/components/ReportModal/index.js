@@ -38,22 +38,22 @@ class ReportModal extends React.Component { // eslint-disable-line react/prefer-
           <FormItem
             label='Отправитель'
           >
-            <div style={{lineHeight: '20px'}}>Первый пользователь</div>
+            <div style={{lineHeight: '20px'}}>{this.props.report.senderName}</div>
           </FormItem>
           <FormItem
             label="Жалоба на"
           >
-            <div style={{lineHeight: '20px'}}>Второй пользователь</div>
+            <div style={{lineHeight: '20px'}}>{this.props.report.suspectedName}</div>
           </FormItem>
           <FormItem
             label="Причина"
           >
-            <div style={{lineHeight: '20px'}}>Причина репорта</div>
+            <div style={{lineHeight: '20px'}}>{this.props.report.reason}</div>
           </FormItem>
           <FormItem
             label="Описание"
           >
-            <div style={{lineHeight: '20px'}}>Более подробное описание репорта. Более подробное описание репорта. Более подробное описание репорта. Более подробное описание репорта.</div>
+            <div style={{lineHeight: '20px'}}>{this.props.report.description}</div>
           </FormItem>
           <Row type='flex' justify='center' className='lg-center-container-item' style={{marginTop: 40}}>
             <Button
@@ -64,7 +64,6 @@ class ReportModal extends React.Component { // eslint-disable-line react/prefer-
             >
               Выписать санкцию
             </Button>
-            <Button className='group-btn' style={{width: 160, marginBottom: 10}}>Отменить репорт</Button>
           </Row>
         </Form>
       </Modal>

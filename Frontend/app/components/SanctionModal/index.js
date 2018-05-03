@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { annulSanction } from "../../containers/AdminPage/actions";
 import { makeSelectCurrentSanction } from "../../containers/AdminPage/selectors";
 import { Form, Input, Col, Row, Modal, Button, message, Rate } from 'antd';
+import {getSanctionType} from "../../globalJS";
 const FormItem = Form.Item;
 
 
@@ -40,22 +41,36 @@ class SanctionModal extends React.Component { // eslint-disable-line react/prefe
           <FormItem
             label='Отправитель'
           >
-            <div style={{lineHeight: '20px'}}>Первый модератор</div>
+            <div style={{lineHeight: '20px'}}>{this.props.sanction.moderatorId}</div>
           </FormItem>
           <FormItem
             label="Санкция на"
           >
-            <div style={{lineHeight: '20px'}}>Второй пользователь</div>
+            <div style={{lineHeight: '20px'}}>{this.props.sanction.userName}</div>
           </FormItem>
           <FormItem
             label="Тип санкции"
           >
-            <div style={{lineHeight: '20px'}}>Запрет на преподавание</div>
+            <div style={{lineHeight: '20px'}}>{getSanctionType(this.props.sanction.type)}</div>
           </FormItem>
           <FormItem
             label="Описание"
           >
-            <div style={{lineHeight: '20px'}}>Более подробное описание репорта. Более подробное описание репорта. Более подробное описание репорта. Более подробное описание репорта.</div>
+            <div style={{lineHeight: '20px'}}>{this.props.sanction.brokenRule}</div>
+          </FormItem>
+          <FormItem
+            label="Дата окончания"
+          >
+            <div style={{lineHeight: '20px'}}>{`${new Date(this.props.sanction.expirationDate).getDate() < 10 ?
+              '0' + new Date(this.props.sanction.expirationDate).getDate()
+              : new Date(this.props.sanction.expirationDate).getDate()}.${new Date(this.props.sanction.expirationDate).getMonth() < 10 ?
+              '0' + new Date(this.props.sanction.expirationDate).getMonth()
+              : new Date(this.props.sanction.expirationDate).getMonth()}.${new Date(this.props.sanction.expirationDate).getFullYear()}
+                      ${new Date(this.props.sanction.expirationDate).getHours() < 10 ?
+              '0' + new Date(this.props.sanction.expirationDate).getHours()
+              : new Date(this.props.sanction.expirationDate).getHours()}:${new Date(this.props.sanction.expirationDate).getMinutes() < 10 ?
+              '0' + new Date(this.props.sanction.expirationDate).getMinutes()
+              : new Date(this.props.sanction.expirationDate).getMinutes()}`}</div>
           </FormItem>
           <Row type='flex' justify='center' className='lg-center-container-item' style={{marginTop: 40}}>
             <Button className='group-btn' onClick={() => this.props.annulSanction(this.props.sanction.id)} style={{width: 160, marginBottom: 10}}>Отменить санкцию</Button>

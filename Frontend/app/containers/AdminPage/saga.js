@@ -62,7 +62,7 @@ function* inviteModeratorSaga(action) {
 }
 
 function inviteModerator(id) {
-  return fetch(`${config.API_BASE_URL}/administrate/${id}`, {
+  return fetch(`${config.API_BASE_URL}/administration/${id}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -85,7 +85,7 @@ function* deleteModeratorSaga(action) {
 }
 
 function deleteModerator(id) {
-  return fetch(`${config.API_BASE_URL}/administrate/${id}`, {
+  return fetch(`${config.API_BASE_URL}/administration/${id}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -108,7 +108,7 @@ function* applySanctionSaga(action) {
 }
 
 function applySanction(brokenRule, userId, sanctionType, expirationDate) {
-  return fetch(`${config.API_BASE_URL}/sanctions/${userId}`, {
+  return fetch(`${config.API_BASE_URL}/sanctions`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,

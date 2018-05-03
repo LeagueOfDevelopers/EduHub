@@ -34,6 +34,7 @@ class MakeSanctionModal extends React.Component { // eslint-disable-line react/p
   }
 
   onHandleTitleChange = (e) => {
+    this.props.searchUsers(e);
     this.setState({selectValue: e})
   };
 
@@ -46,10 +47,11 @@ class MakeSanctionModal extends React.Component { // eslint-disable-line react/p
   };
 
   onHandleExpDateChange = (value, dateString) => {
-    this.setState({expDateValue: dateString})
+    this.setState({expDateValue: value})
   };
 
   applySanction = () => {
+    console.log(this.state)
     this.state.expDateValue && this.state.brokenRuleValue && this.state.selectedUserId && this.state.sanctionTypeValue ?
       this.props.applySanction(this.state.selectedUserId, this.state.brokenRuleValue, this.state.sanctionTypeValue, this.state.expDateValue)
       : message.error('Введите все данные!')
@@ -135,6 +137,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     applySanction: (userId, brokenRule, sanctionType, expirationDate) => dispatch(applySanction(brokenRule, userId, sanctionType, expirationDate)),
+    searchUsers: (username) => dispatch(searchUsers(username))
   }
 }
 

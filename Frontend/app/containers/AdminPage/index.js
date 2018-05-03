@@ -37,6 +37,7 @@ import ReportModal from '../../components/ReportModal';
 import SanctionModal from '../../components/SanctionModal';
 import MakeSanctionModal from '../../components/MakeSanctionModal';
 import config from "../../config";
+import {getSanctionType, parseJwt} from "../../globalJS";
 
 export class AdminPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -48,6 +49,8 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
       reportVisible: false,
       sanctionVisible: false,
       makeSanctionVisible: false,
+      currentReport: {},
+      currentSanction: {}
     };
 
     this.onReportClick = this.onReportClick.bind(this);
@@ -65,18 +68,21 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
     this.props.getReports();
     this.props.getSanctions();
     this.props.getHistory();
+    this.onSanctionClick()
   }
 
-  onReportClick = () => {
-    this.setState({reportVisible: true})
+  onReportClick = (reportId) => {
+    let currentReport = this.props.reports.find(item => item.reportId === reportId) || {};
+    this.setState({reportVisible: true, currentReport})
   };
 
   handleReportCancel = () => {
     this.setState({reportVisible: false})
   };
 
-  onSanctionClick = () => {
-    this.setState({sanctionVisible: true})
+  onSanctionClick = (sanctionId) => {
+    let currentSanction = this.props.sanctions.find(item => item.id === sanctionId) || {};
+    this.setState({sanctionVisible: true, currentSanction})
   };
 
   handleSanctionCancel = () => {
@@ -132,7 +138,7 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
                     />
                     <Popconfirm
                       title='Удалить модератора?'
-                      onConfirm={() => this.props.deleteModerator(item.userId)}
+                      onConfirm={() => this.props.deleteModerator(item.id)}
                       okText="Да"
                       cancelText="Нет"
                     >
@@ -195,19 +201,15 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
                   className='admin-list'
                   dataSource={this.props.reports}
                   renderItem={item => (
-                    <List.Item key={item.userId}>
+                    <List.Item key={item.reportId}>
                       <List.Item.Meta
-                        avatar={
-                          <Avatar
-                            src={item.avatarLink}
-                          />}
-                        title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
+                        title={item.suspectedName}
                         description={item.reason}
                       />
                       <Icon
                         style={{fontSize: 18, cursor: 'pointer'}}
                         type="ellipsis"
-                        onClick={this.onReportClick}
+                        onClick={() => this.onReportClick(item.reportId)}
                       />
                     </List.Item>
                   )}
@@ -226,13 +228,13 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
                   renderItem={item => (
                     <List.Item key={item.id}>
                       <List.Item.Meta
-                        title={<Link to={`/profile/${item.userId}`}>{item.name}</Link>}
-                        description={item.type}
+                        title={<Link to={`/profile/${item.userId}`}>{item.userName}</Link>}
+                        description={getSanctionType(item.type)}
                       />
                       <Icon
                         style={{fontSize: 18, cursor: 'pointer'}}
                         type="ellipsis"
-                        onClick={this.onSanctionClick}
+                        onClick={() => this.onSanctionClick(item.id)}
                       />
                     </List.Item>
                   )}
@@ -252,7 +254,7 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
               dataSource={this.props.history}
               renderItem={(item, index) => (
                 <div>
-                  <List.Item key={item.userId}>
+                  <List.Item key={item.id}>
                     <List.Item.Meta
                       title={item.event}
                       description={item.date}
@@ -265,9 +267,9 @@ export class AdminPage extends React.Component { // eslint-disable-line react/pr
             </List>
           </Col>
         </Row>
-        <SanctionModal visible={this.state.sanctionVisible} handleCancel={this.handleSanctionCancel}/>
+        <SanctionModal sanction={this.state.currentSanction} visible={this.state.sanctionVisible} handleCancel={this.handleSanctionCancel}/>
         <MakeSanctionModal visible={this.state.makeSanctionVisible} handleCancel={this.handleMakeSanctionCancel}/>
-        <ReportModal visible={this.state.reportVisible} onSanctionClick={this.onMakeSanctionClick} handleCancel={this.handleReportCancel}/>
+        <ReportModal report={this.state.currentReport} visible={this.state.reportVisible} onSanctionClick={this.onMakeSanctionClick} handleCancel={this.handleReportCancel}/>
       </Col>
     );
   }
