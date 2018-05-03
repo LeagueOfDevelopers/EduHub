@@ -155,7 +155,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
         <Row style={{textAlign: 'center', marginTop: 40}}><h3 style={{marginBottom: 0}}>Создание группы</h3></Row>
         <Row><Divider/></Row>
         <Row style={{marginTop: 0}}>
-          <Form onSubmit={this.handleSubmit} className='form'>
+          <Form onSubmit={this.handleSubmit} hideRequiredMark={true} className='form'>
             <FormItem
               {...formItemLayout}
               label="Название группы"

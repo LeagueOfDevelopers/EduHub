@@ -33,6 +33,26 @@
   margin: 0 !important;
 }
 
+.notify-setting-btn {
+  font-size: 24px;
+  position: absolute;
+  right: -30px;
+  top: 42px;
+  cursor: pointer;
+  transition: 0.4s;
+  opacity: 1;
+}
+
+.notify-setting-btn-hidden {
+  font-size: 24px;
+  position: absolute;
+  right: -30px;
+  top: 42px;
+  cursor: pointer;
+  opacity: 0;
+  transition: 0.4s;
+}
+
 .group-member-list .ant-list-item-meta {
   display: flex;
   align-items: center;
@@ -303,6 +323,27 @@
 
   .xs-groups-tabs {
     width: 98%;
+  }
+
+  .notify-setting-btn {
+    font-size: 24px;
+    position: absolute;
+    right: 0;
+    top: 20px;
+    cursor: pointer;
+    transition: 0.4s;
+    opacity: 1;
+    z-index: 100;
+  }
+
+  .notify-setting-btn-hidden {
+    font-size: 24px;
+    position: absolute;
+    right: 0;
+    top: 20px;
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.4s;
   }
 }
 
