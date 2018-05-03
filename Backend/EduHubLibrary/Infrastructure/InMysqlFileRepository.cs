@@ -2,7 +2,9 @@
 using EduHubLibrary.Data;
 using EduHubLibrary.Data.FileDtos;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Extensions;
+using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
 {
@@ -38,6 +40,8 @@ namespace EduHubLibrary.Infrastructure
             using (var _context = new EduhubContext(_connectionString))
             {
                 var userFileDto = _context.Files.FirstOrDefault(f => f.Filename == filename);
+                Ensure.Any.IsNotNull(userFileDto, nameof(userFileDto),
+                    opt => opt.WithException(new FileDoesNotExistException()));
                 return UserFileExtensions.ParseFromUserFileDto(userFileDto);
             }
         }
