@@ -1,9 +1,10 @@
-﻿using EduHubLibrary.Domain.NotificationService;
+﻿using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.NotificationService;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EduHubLibrary.Domain.Events
+namespace EduHubLibrary.EventBus.EventTypes
 {
     public class InvitationReceivedEvent : EventInfoBase
     {

@@ -34,5 +34,17 @@ namespace EduHubLibrary.Infrastructure
         {
             return _events;
         }
+
+        public IEnumerable<Event> GetModeratorsHistory()
+        {
+            var adminsEvents = new List<Event>();
+            _events.ForEach(e =>
+            {
+                if (e.EventType.Equals(EventType.SanctionCancelled) || e.EventType.Equals(EventType.SanctionsApplied))
+                    adminsEvents.Add(e);
+            });
+
+            return adminsEvents;
+        }
     }
 }

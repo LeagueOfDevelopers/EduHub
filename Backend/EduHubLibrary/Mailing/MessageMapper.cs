@@ -2,6 +2,7 @@
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.NotificationService.Notifications;
 using EduHubLibrary.Mailing.MessageModels;
+using EduHubLibrary.NotificationService.NotificationTypes;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -89,6 +90,16 @@ namespace EduHubLibrary.Mailing
         private SanctionsAppliedToUserMessage Map(SanctionsAppliedToUserNotification notification, string receiverName)
         {
             return new SanctionsAppliedToUserMessage(notification.BrokenRule, notification.SanctionType, receiverName);
+        }
+
+        private SanctionsCancelledToAdminMessage Map(SanctionCancelledToAdminNotification notification, string receiverName)
+        {
+            return new SanctionsCancelledToAdminMessage(notification.BrokenRule, notification.SanctionType, notification.Username, receiverName);
+        }
+
+        private SanctionsCancelledToUserMessage Map(SanctionsCancelledToUserNotification notification, string receiverName)
+        {
+            return new SanctionsCancelledToUserMessage(notification.BrokenRule, notification.SanctionType, receiverName);
         }
 
         private TeacherFoundMessage Map(TeacherFoundNotification notification, string receiverName)

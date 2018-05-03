@@ -6,7 +6,6 @@ using System.Linq;
 using EduHubLibrary.Common;
 using EduHubLibrary.Facades;
 using EduHubLibrary.Mailing;
-using EduHubLibrary.Domain.Events;
 using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHubLibrary.Domain.NotificationService
@@ -37,6 +36,8 @@ namespace EduHubLibrary.Domain.NotificationService
                 { NotificationType.ReviewReceived, MessageThemes.ReviewReceived },
                 { NotificationType.SanctionsAppliedToAdmin, MessageThemes.SanctionsAppliedForAdmin },
                 { NotificationType.SanctionsAppliedToUser, MessageThemes.SanctionsAppliedForUser },
+                { NotificationType.SanctionsCancelledToAdmin, MessageThemes.SanctionsCancelledForAdmin },
+                { NotificationType.SanctionsCancelledToUser, MessageThemes.SanctionsCancelledForUser },
                 { NotificationType.TeacherFound, MessageThemes.TeacherFound }
             };
         }

@@ -7,5 +7,6 @@ namespace EduHubLibrary.Domain.NotificationService
         void AddEvent(Event @event);
         IEnumerable<Event> GetAllEvents();
         Event GetEvent(int eventId);
+        IEnumerable<Event> GetModeratorsHistory();
     }
 }

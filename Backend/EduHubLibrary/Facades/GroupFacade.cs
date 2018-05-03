@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.Events;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Tools;
@@ -10,6 +9,7 @@ using EduHubLibrary.Facades.Views.GroupViews;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Settings;
 using EnsureThat;
+using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {

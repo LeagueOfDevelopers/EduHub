@@ -6,9 +6,9 @@ using System.Text;
 
 namespace EduHubLibrary.EventBus.EventTypes
 {
-    public class SanctionsAppliedEvent : EventInfoBase
+    public class SanctionCancelledEvent : EventInfoBase
     {
-        public SanctionsAppliedEvent(string brokenRule, SanctionType sanctionType, string username, int userId)
+        public SanctionCancelledEvent(string brokenRule, SanctionType sanctionType, string username, int userId)
         {
             BrokenRule = brokenRule;
             SanctionType = sanctionType;
@@ -23,7 +23,7 @@ namespace EduHubLibrary.EventBus.EventTypes
 
         public override EventType GetEventType()
         {
-            return EventType.SanctionsApplied;
+            return EventType.SanctionCancelled;
         }
     }
 }

@@ -7,7 +7,6 @@ using EduHubLibrary.Domain.Tools;
 using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.NotificationService.UserSettings;
-using EduHubLibrary.Domain.Events;
 using EduHubLibrary.Domain.NotificationService.Notifications;
 
 [assembly: InternalsVisibleTo("EventBusTests")]

@@ -232,6 +232,24 @@ namespace EduHubLibrary.Mailing {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Санкция отменена.
+        /// </summary>
+        internal static string SanctionsCancelledForAdmin {
+            get {
+                return ResourceManager.GetString("SanctionsCancelledForAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Санкция отменена.
+        /// </summary>
+        internal static string SanctionsCancelledForUser {
+            get {
+                return ResourceManager.GetString("SanctionsCancelledForUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Преподаватель утвержден.
         /// </summary>
         internal static string TeacherFound {

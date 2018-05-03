@@ -25,6 +25,7 @@ namespace EduHubLibrary.Domain.NotificationService.UserSettings
                 { NotificationType.NewMember, NotificationValue.Everywhere },
                 { NotificationType.ReviewReceived, NotificationValue.Everywhere },
                 { NotificationType.SanctionsAppliedToUser, NotificationValue.Everywhere },
+                { NotificationType.SanctionsCancelledToUser, NotificationValue.Everywhere },
                 { NotificationType.TeacherFound, NotificationValue.Everywhere }
             };
         }

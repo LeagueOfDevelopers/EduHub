@@ -18,6 +18,7 @@
         ReviewReceived = 13,
         SanctionsApplied = 14,
         TeacherFound = 15,
-        UsingTag = 16
+        UsingTag = 16,
+        SanctionCancelled = 17
     }
 }

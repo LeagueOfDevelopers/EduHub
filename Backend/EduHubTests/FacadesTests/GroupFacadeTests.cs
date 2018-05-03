@@ -31,6 +31,7 @@ namespace EduHubTests
             var inMemoryGroupRepository = new InMemoryGroupRepository();
             var inMemoryKeyRepository = new InMemoryKeysRepository();
             var inMemorySanctionRepository = new InMemorySanctionRepository();
+            var inMemoryEventRepository = new InMemoryEventRepository();
             var groupSettings = new GroupSettings(2, 10, 0, 1000);
             var emailSender = new Mock<IEmailSender>();
             var publisher = new Mock<IEventPublisher>();
@@ -41,7 +42,7 @@ namespace EduHubTests
             _sanctionFacade = new SanctionFacade(inMemorySanctionRepository, inMemoryUserRepository, publisher.Object);
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, inMemorySanctionRepository,
                 new GroupSettings(3, 100, 0, 1000), publisher.Object);
-            _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, publisher.Object);
+            _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, inMemoryEventRepository, publisher.Object);
             _accountFacade = new AccountFacade(inMemoryKeyRepository, inMemoryUserRepository,
                 emailSender.Object);
             var creatorId = _accountFacade.RegUser("Alena", new Credentials("email", "password"), true, adminKey.Value);

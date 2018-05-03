@@ -6,9 +6,9 @@ using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Infrastructure;
 using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.Events;
 using System.Linq;
 using EduHubLibrary.Facades.Views;
+using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {
@@ -72,6 +72,10 @@ namespace EduHubLibrary.Facades
             var currentSanction = _sanctionRepository.Get(sanctionId);
             currentSanction.Cancel();
             _sanctionRepository.Update(currentSanction);
+
+            var username = _userRepository.GetUserById(currentSanction.UserId).UserProfile.Name;
+            _publisher.PublishEvent(new SanctionCancelledEvent(currentSanction.BrokenRule, currentSanction.Type,
+                username, currentSanction.UserId));
         }
 
         public IEnumerable<SanctionView> GetAll()

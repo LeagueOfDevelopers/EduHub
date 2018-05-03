@@ -7,8 +7,8 @@ using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Facades.Views;
 using EnsureThat;
 using EduHubLibrary.Domain.NotificationService;
-using EduHubLibrary.Domain.Events;
 using System;
+using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {
@@ -16,12 +16,15 @@ namespace EduHubLibrary.Facades
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IEventRepository _eventRepository;
         private readonly IEventPublisher _publisher;
 
-        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository, IEventPublisher publisher)
+        public UserFacade(IUserRepository userRepository, IGroupRepository groupRepository, 
+            IEventRepository eventRepository, IEventPublisher publisher)
         {
             _userRepository = userRepository;
             _groupRepository = groupRepository;
+            _eventRepository = eventRepository;
             _publisher = publisher;
         }
 
@@ -205,6 +208,11 @@ namespace EduHubLibrary.Facades
         public void DemoteModerator(int moderatorId)
         {
             _userRepository.GetUserById(moderatorId).StopToBeModerator();
+        }
+
+        public IEnumerable<Event> GetModeratorsHistory()
+        {
+            return _eventRepository.GetModeratorsHistory();
         }
     }
 }

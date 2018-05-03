@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.Events;
 using System.Linq;
 using EduHubLibrary.Facades.Views;
 using Newtonsoft.Json;
+using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {

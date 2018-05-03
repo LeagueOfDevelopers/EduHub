@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using EduHubLibrary.Domain;
-using EduHubLibrary.Domain.Events;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Settings;
 using EnsureThat;
+using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Facades
 {

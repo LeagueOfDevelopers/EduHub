@@ -27,7 +27,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Consumers;
 using Microsoft.EntityFrameworkCore;
-using EduHubLibrary.Domain.Events;
+using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHub
 {
@@ -125,15 +125,16 @@ namespace EduHub
             eventBus.StartListening();
 
             var adminsEventConsumer = new AdminsEventConsumer(notificationsDistributor, eventRepository);
-            var courseEventConsumer = new CourseEventConsumer(notificationsDistributor);
-            var curriculumEventConsumer = new CurriculumEventConsumer(notificationsDistributor);
-            var groupEventsConsumer = new GroupEventsConsumer(notificationsDistributor);
-            var invitationConsumer = new InvitationConsumer(notificationsDistributor);
-            var memberActionsConsumer = new MemberActionsConsumer(notificationsDistributor);
+            var courseEventConsumer = new CourseEventConsumer(notificationsDistributor, eventRepository);
+            var curriculumEventConsumer = new CurriculumEventConsumer(notificationsDistributor, eventRepository);
+            var groupEventsConsumer = new GroupEventsConsumer(notificationsDistributor, eventRepository);
+            var invitationConsumer = new InvitationConsumer(notificationsDistributor, eventRepository);
+            var memberActionsConsumer = new MemberActionsConsumer(notificationsDistributor, eventRepository);
 
             eventBus.RegisterConsumer(new TagPopularityConsumer(tagFacade));
             eventBus.RegisterConsumer<ReportMessageEvent>(adminsEventConsumer);
             eventBus.RegisterConsumer<SanctionsAppliedEvent>(adminsEventConsumer);
+            eventBus.RegisterConsumer<SanctionCancelledEvent>(adminsEventConsumer);
             eventBus.RegisterConsumer<TeacherFoundEvent>(courseEventConsumer);
             eventBus.RegisterConsumer<CourseFinishedEvent>(courseEventConsumer);
             eventBus.RegisterConsumer<ReviewReceivedEvent>(courseEventConsumer);
@@ -150,7 +151,7 @@ namespace EduHub
 
             var publisher = eventBus.GetEventPublisher();
 
-            var userFacade = new UserFacade(userRepository, groupRepository, publisher);
+            var userFacade = new UserFacade(userRepository, groupRepository, eventRepository, publisher);
             var groupEditFacade = new GroupEditFacade(groupRepository, groupSettings, publisher);
             var userEditFacade = new UserEditFacade(userRepository, fileRepository, sanctionRepository);
             var groupFacade = new GroupFacade(groupRepository, userRepository, sanctionRepository, groupSettings, publisher);

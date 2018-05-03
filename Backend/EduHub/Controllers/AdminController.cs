@@ -26,27 +26,17 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     Generates invitation for admin account
+        ///     Returns history of moderators' actions
         /// </summary>
-        [HttpPost]
-        [Route("{userId}/invitation")]
+        [HttpGet]
+        [Route("history")]
+        [SwaggerResponse(200, Type = typeof(AllPossibleModeratorsActions))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult GenerateInvitation([FromRoute] int userId)
+        public IActionResult GetModeratorsHistory()
         {
-            return Ok();
-        }
-
-        /// <summary>
-        ///     Makes user admin
-        /// </summary>
-        [HttpPost]
-        [Route("{userId}")]
-        [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        [SwaggerResponse(401, Type = typeof(UnauthorizedResult))]
-        public IActionResult AddAdmin([FromRoute] int userId)
-        {
-            return Ok();
+            var response = _userFacade.GetModeratorsHistory().ToList();
+            return Ok(response);
         }
 
         /// <summary>

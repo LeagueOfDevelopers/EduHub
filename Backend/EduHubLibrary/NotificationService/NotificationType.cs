@@ -22,6 +22,8 @@ namespace EduHubLibrary.Domain.NotificationService.Notifications
         ReviewReceived,
         SanctionsAppliedToUser,
         SanctionsAppliedToAdmin,
-        TeacherFound
+        TeacherFound,
+        SanctionsCancelledToUser,
+        SanctionsCancelledToAdmin
     }
 }

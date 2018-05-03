@@ -35,6 +35,7 @@ namespace EduHubTests.FacadesTests
             var keysRepository = new InMemoryKeysRepository();
             var groupRepository = new InMemoryGroupRepository();
             var fileRepository = new InMemoryFileRepository();
+            var eventRepository = new InMemoryEventRepository();
             var adminKey = new Key("ivanov@mail.ru", KeyAppointment.BecomeAdmin);
             keysRepository.AddKey(adminKey);
 
@@ -42,7 +43,7 @@ namespace EduHubTests.FacadesTests
             _userRepository = new InMemoryUserRepository();
             _sanctionRepository = new InMemorySanctionRepository();
             _accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender.Object);
-            _userFacade = new UserFacade(_userRepository, groupRepository, _publisher.Object);
+            _userFacade = new UserFacade(_userRepository, groupRepository, eventRepository, _publisher.Object);
             _adminId = _accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false, adminKey.Value);
             _testUserId = _accountFacade.RegUser("Sasha", Credentials.FromRawData("smt@smt.ru", "2"), false);
         }

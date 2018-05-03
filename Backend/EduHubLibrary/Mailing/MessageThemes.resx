@@ -174,6 +174,12 @@
   <data name="SanctionsAppliedForUser" xml:space="preserve">
     <value>Новая санкция</value>
   </data>
+  <data name="SanctionsCancelledForAdmin" xml:space="preserve">
+    <value>Санкция отменена</value>
+  </data>
+  <data name="SanctionsCancelledForUser" xml:space="preserve">
+    <value>Санкция отменена</value>
+  </data>
   <data name="TeacherFound" xml:space="preserve">
     <value>Преподаватель утвержден</value>
   </data>

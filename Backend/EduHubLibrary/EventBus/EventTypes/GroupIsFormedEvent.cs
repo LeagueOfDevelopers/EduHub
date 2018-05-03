@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EduHubLibrary.Domain.Events
+namespace EduHubLibrary.EventBus.EventTypes
 {
     public class GroupIsFormedEvent : EventInfoBase
     {

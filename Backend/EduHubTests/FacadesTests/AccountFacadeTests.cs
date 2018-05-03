@@ -22,6 +22,7 @@ namespace EduHubTests.FacadesTests
         private IGroupRepository _groupRepository;
         private IKeysRepository _keysRepository;
         private IUserRepository _userRepository;
+        private IEventRepository _eventRepository;
         private Mock<IEventPublisher> _publisher;
 
         [TestInitialize]
@@ -30,6 +31,7 @@ namespace EduHubTests.FacadesTests
             _userRepository = new InMemoryUserRepository();
             _keysRepository = new InMemoryKeysRepository();
             _groupRepository = new InMemoryGroupRepository();
+            _eventRepository = new InMemoryEventRepository();
             _publisher = new Mock<IEventPublisher>();
             
             _emailSender = new Mock<IEmailSender>();
@@ -41,7 +43,7 @@ namespace EduHubTests.FacadesTests
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository,
                 _userRepository, _emailSender.Object);
-            var userFacade = new UserFacade(_userRepository, _groupRepository, _publisher.Object);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _eventRepository, _publisher.Object);
             var expectedName = "yaroslav";
             var expectedPass = "123123";
             var expectedEmail = "bus.yaroslav@gmail.com";
@@ -64,7 +66,7 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
-            var userFacade = new UserFacade(_userRepository, _groupRepository, _publisher.Object);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _eventRepository, _publisher.Object);
             var key = new Key("email", KeyAppointment.BecomeAdmin);
             _keysRepository.AddKey(key);
 
@@ -82,7 +84,7 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
-            var userFacade = new UserFacade(_userRepository, _groupRepository, _publisher.Object);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _eventRepository, _publisher.Object);
             var key = new Key("email", KeyAppointment.ChangePassword);
             _keysRepository.AddKey(key);
 
@@ -96,7 +98,7 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
-            var userFacade = new UserFacade(_userRepository, _groupRepository, _publisher.Object);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _eventRepository, _publisher.Object);
             var key = new Key("email", KeyAppointment.BecomeAdmin);
             _keysRepository.AddKey(key);
 
@@ -111,7 +113,7 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
-            var userFacade = new UserFacade(_userRepository, _groupRepository, _publisher.Object);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _eventRepository, _publisher.Object);
             var key = new Key("expectedEmail", KeyAppointment.BecomeAdmin);
             _keysRepository.AddKey(key);
 
@@ -124,7 +126,7 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
-            var userFacade = new UserFacade(_userRepository, _groupRepository, _publisher.Object);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _eventRepository, _publisher.Object);
             var key = new Key("email", KeyAppointment.BecomeModerator);
             _keysRepository.AddKey(key);
 
@@ -141,7 +143,7 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
-            var userFacade = new UserFacade(_userRepository, _groupRepository, _publisher.Object);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _eventRepository, _publisher.Object);
             var key = new Key("email", KeyAppointment.ConfirmEmail);
             _keysRepository.AddKey(key);
             var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
@@ -160,7 +162,7 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
-            var userFacade = new UserFacade(_userRepository, _groupRepository, _publisher.Object);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _eventRepository, _publisher.Object);
             var expectedPasswordHash = Credentials.FromRawData("someEmail", "newPassword").PasswordHash;
             var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
 
@@ -177,7 +179,7 @@ namespace EduHubTests.FacadesTests
         {
             //Arrange
             var accountFacade = new AccountFacade(_keysRepository, _userRepository, _emailSender.Object);
-            var userFacade = new UserFacade(_userRepository, _groupRepository, _publisher.Object);
+            var userFacade = new UserFacade(_userRepository, _groupRepository, _eventRepository, _publisher.Object);
             var expectedPasswordHash = Credentials.FromRawData("someEmail", "newPassword").PasswordHash;
             var userId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
 

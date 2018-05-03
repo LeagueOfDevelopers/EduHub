@@ -1,5 +1,5 @@
-﻿using EduHubLibrary.Domain.Events;
-using EduHubLibrary.Domain.NotificationService;
+﻿using EduHubLibrary.Domain.NotificationService;
+using EduHubLibrary.EventBus.EventTypes;
 
 namespace EduHubLibrary.Domain.Consumers
 {

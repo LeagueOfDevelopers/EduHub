@@ -1,6 +1,6 @@
 ﻿using EduHubLibrary.Domain.NotificationService;
 
-namespace EduHubLibrary.Domain.Events
+namespace EduHubLibrary.EventBus.EventTypes
 {
     public class UsingTagEvent : EventInfoBase
     {
