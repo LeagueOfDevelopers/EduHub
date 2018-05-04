@@ -56,6 +56,7 @@ public class ChatFragment extends Fragment implements IChatView  {
     private Boolean flag=false;
     Context context;
     private OkHttpClient client;
+    WebSocket ws;
 
     //private FakeMessageRep messageRep=new FakeMessageRep();
     ArrayList<Message> messages=new ArrayList<>();
@@ -160,14 +161,14 @@ public class ChatFragment extends Fragment implements IChatView  {
 
     @Override
     public void newMessage(NewMessageResponse message) {
+        Log.d("123",123+"");
         Message message1=new Message("",message.getGroupId()+"","","",message.getText(),0);
         expandablePlaceHolderView.addView(new MessageView(message1,user,context));
     }
     private void startListenerWebSocket(){
-        Log.d("socket","ws://85.143.104.47:2411/api/sockets/creation?token="+user.getToken());
 
         try {
-            WebSocket ws = new WebSocketFactory().createSocket("ws://85.143.104.47:2411/api/sockets/creation?token="+user.getToken());
+            ws = new WebSocketFactory().createSocket("ws://85.143.104.47:2411/api/sockets/creation?token="+user.getToken());
             ws.addListener(new WebSocketAdapter(){
                 @Override
                 public void onError(WebSocket websocket, WebSocketException cause) throws Exception {
@@ -178,7 +179,7 @@ public class ChatFragment extends Fragment implements IChatView  {
                 @Override
                 public void onConnected(WebSocket websocket, Map<String, List<String>> headers) throws Exception {
                     super.onConnected(websocket, headers);
-                    Log.d("openListener","Началося");
+                    Log.e("openListener","Началося");
                 }
 
                 @Override
@@ -188,8 +189,6 @@ public class ChatFragment extends Fragment implements IChatView  {
                     Gson gson=new Gson();
                     NewMessageResponse message1=gson.fromJson(message,NewMessageResponse.class);
                     newMessage(message1);
-
-
                 }
 
                 @Override
@@ -210,5 +209,12 @@ public class ChatFragment extends Fragment implements IChatView  {
             Log.e("Error Socket",e.toString());
         }
 
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ws.disconnect();
     }
 }

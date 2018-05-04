@@ -17,6 +17,7 @@ import com.example.user.eduhub.R;
 
 import ru.lod_misis.user.eduhub.Fakes.FakeGroupInformationPresenter;
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
+import ru.lod_misis.user.eduhub.Fragments.GroupInformationFragment;
 import ru.lod_misis.user.eduhub.Fragments.MainGroupFragment;
 import ru.lod_misis.user.eduhub.Fragments.UnsignedMainGroupFragment;
 import ru.lod_misis.user.eduhub.Interfaces.IFragmentsActivities;
@@ -51,6 +52,7 @@ public class GroupActivity extends AppCompatActivity
     FileRepository fileRepository;
     ImageButton back;
     ProgressBar progressBar;
+    GroupInformationFragment groupInformationFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,11 +119,16 @@ public class GroupActivity extends AppCompatActivity
 
     @Override
     public void getError(Throwable error) {
-
+        if(groupInformationFragment.getView().findViewById(R.id.progressBar).getVisibility()==(View.VISIBLE)){
+            groupInformationFragment.getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
+            groupInformationFragment.getView().findViewById(R.id.course).setVisibility(View.VISIBLE);
+            groupInformationFragment.load(groupId,this);
+        }
     }
 
     @Override
     public void getInformationAboutGroup(Group group) {
+        groupInformationFragment=new GroupInformationFragment();
         group.getGroupInfo().setId(this.group.getGroupInfo().getId());
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
         Log.d("MyId",user.getUserId());
@@ -137,6 +144,8 @@ public class GroupActivity extends AppCompatActivity
 
         if(flag){
         mainGroupFragment=new MainGroupFragment();
+
+        mainGroupFragment.setGroupInformationFragment(groupInformationFragment);
         mainGroupFragment.setGroup(group);
         transaction=getSupportFragmentManager().beginTransaction();
         Log.d("TRANSACTION",transaction.isEmpty()+"");
@@ -148,6 +157,7 @@ public class GroupActivity extends AppCompatActivity
         transaction.commit();}else{
             UnsignedMainGroupFragment unsignedMainGroupFragment=new UnsignedMainGroupFragment();
             unsignedMainGroupFragment.setGroup(group);
+            unsignedMainGroupFragment.setGroupInformationFragment(groupInformationFragment);
 
             transaction=getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.group_fragments_conteiner,unsignedMainGroupFragment);
@@ -156,6 +166,7 @@ public class GroupActivity extends AppCompatActivity
         }else{
             UnsignedMainGroupFragment unsignedMainGroupFragment=new UnsignedMainGroupFragment();
             unsignedMainGroupFragment.setGroup(group);
+            unsignedMainGroupFragment.setGroupInformationFragment(groupInformationFragment);
             Log.d("GROUP",group.getGroupInfo().getId());
             transaction=getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.group_fragments_conteiner,unsignedMainGroupFragment);
@@ -182,7 +193,10 @@ public class GroupActivity extends AppCompatActivity
 
                Uri uri=data.getData();
                Log.d("URI",uri.toString());
+
                 fileRepository.loadFiletoServer(user.getToken(),uri);
+                groupInformationFragment.getView().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+                groupInformationFragment.getView().findViewById(R.id.course).setVisibility(View.GONE);
 
             }
     }
@@ -201,12 +215,17 @@ public class GroupActivity extends AppCompatActivity
 
     @Override
     public void getResponseAfterAddCourse() {
+        groupInformationFragment.getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
+        groupInformationFragment.getView().findViewById(R.id.course).setVisibility(View.VISIBLE);
+        groupInformationFragment.load(groupId,this);
         Log.d("ResponseAfterAddCourse","2");
         onResume();
     }
+
 
     @Override
     public void getResponseAfterYourResponse() {
 
     }
+    
 }

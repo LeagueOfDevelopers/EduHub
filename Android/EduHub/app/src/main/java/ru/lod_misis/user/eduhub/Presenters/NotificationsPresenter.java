@@ -97,6 +97,7 @@ Log.d("token",token);
             }
         }
         String json=jsonBuilder.toString();
+        notification.setDate(notifications.getOccurredOn());
         switch (notifications.getEventType()){
 
             case 1:{
@@ -112,6 +113,7 @@ Log.d("token",token);
 
                 CourseAccepted courseAccepted=gson.fromJson(json,CourseAccepted.class);
                 notification.setText("В группе "+courseAccepted.getGroupTitle()+" был принят учебный план");
+
 
                 return notification;}
             case 3:{

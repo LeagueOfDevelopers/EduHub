@@ -31,6 +31,7 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
 
     @Override
     public void changeUsersData(String token,String name, String aboutUser, ArrayList<String> contacts, Integer birthYear, String avatarLink, String sex,Boolean isTeacher,String[] skills,Context context) {
+        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         Observable changeAboutUser=Observable.empty();
         Observable changeUsersAvatarLink=Observable.empty();
         RefactorUserRequestModel refactorUserRequestModel=new RefactorUserRequestModel();
@@ -39,6 +40,7 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
         refactorUserRequestModel.setAvatarLink(avatarLink);
         refactorUserRequestModel.setBirthYear(birthYear);
         refactorUserRequestModel.setContacts(contacts);
+
         if(sex.equals("Мужской")){
             refactorUserRequestModel.setGender("Man");
         }else{
@@ -49,8 +51,18 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
                 refactorUserRequestModel.setGender("Unknown");
             }
         }
+        if(isTeacher){
+           eduHubApi.becomeTeacher("Bearer "+token)
+                   .subscribeOn(Schedulers.io())
+                   .observeOn(AndroidSchedulers.mainThread())
+                   .subscribe();
+        }else{
+            eduHubApi.becomeSimpleUser("Bearer "+token)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+        }
 
-        EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.changesProfile("Bearer "+token,refactorUserRequestModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

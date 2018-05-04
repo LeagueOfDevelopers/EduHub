@@ -53,6 +53,7 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
     FakeSignInUserToGroupPresenter fakeSignInUserToGroupPresenter=new FakeSignInUserToGroupPresenter(this);
     FakesButton fakessButton=new FakesButton();
     IFragmentsActivities fragmentsActivities;
+    GroupInformationFragment fragment;
     final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE";
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -79,7 +80,7 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         ImageView imageView = v.findViewById(R.id.icon_group);
         imageView.setImageResource(R.mipmap.ic_launcher_round);
-        groupInformationFragment = new GroupInformationFragment();
+
         groupInformationFragment.setGroup(group);
         groupInformationFragment.setFlag(true);
         user=savedDataRepository.loadSavedData(sPref);
@@ -127,7 +128,7 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
                else{
                     fakeSignInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());
                 }}else{
-                    CustomDialog customDialog=new CustomDialog(getContext(),group,user.getToken(),fragmentsActivities);
+                    CustomDialog customDialog=new CustomDialog(getContext(),group,user.getToken(),fragmentsActivities,groupInformationFragment);
                     customDialog.show();
                 }
 
@@ -158,9 +159,14 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
     public void getResponse() {
         MainGroupFragment mainGroupFragment=new MainGroupFragment();
         mainGroupFragment.setGroup(group);
+        mainGroupFragment.setGroupInformationFragment(groupInformationFragment);
         fragmentsActivities.switchingFragmets(mainGroupFragment);
     }
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public void setGroupInformationFragment(GroupInformationFragment groupInformationFragment) {
+        this.groupInformationFragment = groupInformationFragment;
     }
 }

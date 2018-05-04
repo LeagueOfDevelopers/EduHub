@@ -45,4 +45,11 @@ public class SavedDataRepository {
         editor.putBoolean("CheckButton",bool);
         editor.commit();
     }
+    public void saveLoadingProgress(String id,Boolean isLoad,SharedPreferences sPref){
+        android.content.SharedPreferences.Editor editor=sPref.edit();
+        editor.putBoolean("groupLoading"+id,isLoad);
+    }
+    public Boolean getLoadingProgress(String id,SharedPreferences sPref){
+        return sPref.getBoolean("groupLoading"+id,false);
+    }
 }

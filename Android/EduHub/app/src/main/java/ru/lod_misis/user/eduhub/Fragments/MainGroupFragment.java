@@ -52,6 +52,11 @@ public class MainGroupFragment extends Fragment {
             throw new ClassCastException(activity.toString() + " must implement onSomeEventListener");
         }
     }
+
+    public void setGroupInformationFragment(GroupInformationFragment groupInformationFragment) {
+        this.groupInformationFragment = groupInformationFragment;
+    }
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.main_group_fragment, null);
         Log.d("Group",group.toString());
@@ -66,7 +71,7 @@ public class MainGroupFragment extends Fragment {
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         ImageView imageView=v.findViewById(R.id.icon_group);
         imageView.setImageResource(R.mipmap.ic_launcher_round);
-        groupInformationFragment=new GroupInformationFragment();
+
         groupInformationFragment.setGroup(group);
         chat=new ChatFragment();
         chat.setGroup(group);

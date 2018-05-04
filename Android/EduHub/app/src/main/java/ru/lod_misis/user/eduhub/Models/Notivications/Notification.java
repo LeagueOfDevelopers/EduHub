@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Notification {
     private String text;
-    private Date date;
+    private String date;
 
     public String getText() {
         return text;
@@ -18,11 +18,11 @@ public class Notification {
         this.text = text;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

@@ -14,10 +14,10 @@ public class Notifications {
     @SerializedName("occurredOn")
     @Expose
     private String occurredOn;
-    @SerializedName("eventInfo")
+    @SerializedName("notificationInfo")
     @Expose
     private String eventInfo;
-    @SerializedName("eventType")
+    @SerializedName("notificationType")
     @Expose
     private Integer eventType;
 

@@ -13,6 +13,7 @@ import com.example.user.eduhub.R;
 
 import ru.lod_misis.user.eduhub.Fakes.FakeSignInUserToGroupPresenter;
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
+import ru.lod_misis.user.eduhub.Fragments.GroupInformationFragment;
 import ru.lod_misis.user.eduhub.Fragments.MainGroupFragment;
 import ru.lod_misis.user.eduhub.Interfaces.IFragmentsActivities;
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.ISignInUserToGroupPresenter;
@@ -34,11 +35,13 @@ public class CustomDialog extends Dialog implements ISignInUserToGroupView {
     SignInUserToGroupPresenter signInUserToGroupPresenter=new SignInUserToGroupPresenter(this);
     FakeSignInUserToGroupPresenter fakeSignInUserToGroupPresenter=new FakeSignInUserToGroupPresenter(this);
     IFragmentsActivities fragmentsActivities;
-    public CustomDialog(@NonNull Context context, Group group,String token,IFragmentsActivities fragmentsActivities) {
+    GroupInformationFragment groupInformationFragment;
+    public CustomDialog(@NonNull Context context, Group group,String token,IFragmentsActivities fragmentsActivities,GroupInformationFragment groupInformationFragment) {
         super(context);
         this.context=context;
         this.group=group;
         this.token=token;
+        this.groupInformationFragment=groupInformationFragment;
         this.fragmentsActivities=fragmentsActivities;
     }
 
@@ -96,7 +99,9 @@ public class CustomDialog extends Dialog implements ISignInUserToGroupView {
     public void getResponse() {
         MainGroupFragment mainGroupFragment=new MainGroupFragment();
         mainGroupFragment.setGroup(group);
+        mainGroupFragment.setGroupInformationFragment(groupInformationFragment);
         fragmentsActivities.switchingFragmets(mainGroupFragment);
         dismiss();
     }
+
 }

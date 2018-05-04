@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -93,6 +95,18 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
             }
         });
         EditText nameOfGroup=findViewById(R.id.name_of_group_create);
+        tags.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode==KeyEvent.KEYCODE_SPACE){
+                    Log.d("12312",tags.getText().toString());
+                    String[] tagss=tags.getText().toString().split(" ");
+                    tags.setTags(tagss);
+
+                }
+                return false;
+            }
+        });
 
 
 
