@@ -43,7 +43,7 @@ namespace EduHubLibrary.SocketTool
             }
             catch
             {
-                throw new ArgumentNullException("bad handshake");
+                await OnDisconnected(socket);
             }
         }
 
