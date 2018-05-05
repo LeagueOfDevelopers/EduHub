@@ -76,6 +76,12 @@ namespace EduHub.Filters
                 case InvalidOperationException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case TagNotFoundException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
+                case KeyNotFoundException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {

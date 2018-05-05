@@ -2,8 +2,10 @@
 using System.Linq;
 using EduHubLibrary.Data;
 using EduHubLibrary.Data.TagDtos;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Extensions;
+using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
 {
@@ -52,6 +54,8 @@ namespace EduHubLibrary.Infrastructure
             using (var _context = new EduhubContext(_connectionString))
             {
                 var tagDto = _context.Tags.FirstOrDefault(t => t.Name == tag);
+                Ensure.Any.IsNotNull(tagDto, nameof(tagDto),
+                    opt => opt.WithException(new TagNotFoundException(tag)));
                 return TagExtensions.ParseFromTagDto(tagDto);
             }
         }

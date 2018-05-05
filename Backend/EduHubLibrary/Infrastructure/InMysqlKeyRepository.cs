@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using EduHubLibrary.Data;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Extensions;
+using EnsureThat;
 
 namespace EduHubLibrary.Infrastructure
 {
@@ -30,6 +32,8 @@ namespace EduHubLibrary.Infrastructure
             using (var _context = new EduhubContext(_connectionString))
             {
                 var keyDto = _context.Keys.FirstOrDefault(k => k.Value == keyId);
+                Ensure.Any.IsNotNull(keyDto, nameof(keyDto),
+                    opt => opt.WithException(new KeyNotFoundException(keyId)));
                 var key = KeyExtensions.ParseFromKeyDto(keyDto);
                 return key;
             }
