@@ -8,15 +8,15 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class SearchModel {
-    @SerializedName("name")
-    @Expose
-    private String name;
     @SerializedName("groupId")
     @Expose
     private String groupId;
     @SerializedName("username")
     @Expose
     private String username;
+    @SerializedName("wantToTeach")
+    @Expose
+    private Boolean wantToTeach;
 
     public String getGroupId() {
         return groupId;
@@ -34,11 +34,11 @@ public class SearchModel {
         this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public Boolean getWantToTeach() {
+        return wantToTeach;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setWantToTeach(Boolean wantToTeach) {
+        this.wantToTeach = wantToTeach;
     }
 }

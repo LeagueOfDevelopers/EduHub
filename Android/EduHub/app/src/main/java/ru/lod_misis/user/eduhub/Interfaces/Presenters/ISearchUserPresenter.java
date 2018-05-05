@@ -9,5 +9,5 @@ import android.content.Context;
 public interface ISearchUserPresenter {
 
     void searchUser(String name, Context context);
-    void searchUserForInvitation(String name,String groupId, Context context);
+    void searchUserForInvitation(String name,String groupId, Context context,Boolean isTeacher);
 }

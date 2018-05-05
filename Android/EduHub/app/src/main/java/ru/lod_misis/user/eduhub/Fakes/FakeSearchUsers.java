@@ -51,7 +51,7 @@ public class FakeSearchUsers implements ISearchUserPresenter {
     }
 
     @Override
-    public void searchUserForInvitation(String name, String groupId, Context context) {
+    public void searchUserForInvitation(String name, String groupId, Context context,Boolean isTeacher) {
         searchUser(name,context);
     }
 }

@@ -27,7 +27,7 @@ public class SearchUserPresenter implements ISearchUserPresenter {
     public void searchUser(String name, Context context) {
         Log.d("NAME",name);
         SearchModel searchModel=new SearchModel();
-        searchModel.setName(name);
+        searchModel.setUsername(name);
         EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.searchUser(searchModel)
                 .subscribeOn(Schedulers.io())
@@ -39,11 +39,12 @@ public class SearchUserPresenter implements ISearchUserPresenter {
     }
 
     @Override
-    public void searchUserForInvitation(String name, String groupId,Context context) {
+    public void searchUserForInvitation(String name, String groupId,Context context,Boolean isTeacher) {
         Log.d("NAME",name);
         SearchModel searchModel=new SearchModel();
         searchModel.setUsername(name);
         searchModel.setGroupId(groupId);
+        searchModel.setWantToTeach(isTeacher);
         EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         eduHubApi.searchUserForInvitation(searchModel)
                 .subscribeOn(Schedulers.io())

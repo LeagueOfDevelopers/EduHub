@@ -106,6 +106,7 @@ public class LoginFragment extends Fragment implements ILoginView {
         if(error instanceof HttpException){
             switch (((HttpException) error).code()){
                 case 401:{MakeToast("Такого сочетания email и пароля не найдено");}
+                case 400:{MakeToast("Такого пользователя не существует");}
             }
         }
     }

@@ -2,6 +2,9 @@ package ru.lod_misis.user.eduhub.Presenters;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Switch;
+
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.ILoginPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.ILoginView;
@@ -42,7 +45,7 @@ public class LoginPresenter implements ILoginPresenter {
                     .subscribe(response->{
                                 user=response;
                                 loginView.login(user);},
-                            error->{Log.e("LoginErr",error+"");
+                            error->{
                         loginView.getError(error);});
         }
         else{

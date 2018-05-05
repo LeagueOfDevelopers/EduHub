@@ -53,6 +53,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
     FakeSearchUsers fakeSearchUsers=new FakeSearchUsers(this);
     String role;
     Boolean flag;
+    Boolean isTeacher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +78,12 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
         searchUser.setOnClickListener(click->{
             if(!edit.getText().toString().equals("")){
                 if(!fakesButton.getCheckButton()){
-                searchUserPresenter.searchUserForInvitation(edit.getText().toString(),groupId,this);}
+                    if(role.equals("Ученик")){
+                        isTeacher=false;
+                    }else{
+                        isTeacher=true;
+                    }
+                searchUserPresenter.searchUserForInvitation(edit.getText().toString(),groupId,this,isTeacher);}
                 else {fakeSearchUsers.searchUser(edit.getText().toString(),this);}}
 
         });
