@@ -378,7 +378,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                             </Avatar>
                         }
                       </Col>
-                      <Col xs={{span: 16}} lg={{span: 17}}>
+                      <Col className='word-break' xs={{span: 16}} lg={{span: 17}}>
                         {this.state.isEditing ?
                           <FormItem style={{width: '100%', marginBottom: 0}}>
                             {getFieldDecorator('name', {

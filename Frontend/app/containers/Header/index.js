@@ -108,13 +108,13 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
   showSideMenu = () => {
     document.getElementById('side-menu').classList.remove('side-menu-hidden');
     document.getElementById('side-menu').classList.add('side-menu');
-    document.body.style.overflowY = 'hidden';
+    setTimeout(() => document.body.style.overflowY = 'hidden', 300);
   };
 
   hideSideMenu = () => {
     document.getElementById('side-menu').classList.remove('side-menu');
     document.getElementById('side-menu').classList.add('side-menu-hidden');
-    document.body.style.overflowY = 'scroll';
+    setTimeout(() => document.body.style.overflowY = 'scroll', 300);
   };
 
   render() {
@@ -206,7 +206,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
           <img onClick={this.showSideMenu} style={{width: 26, height: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
         </Col>
         <Col id='side-menu' className='side-menu-hidden'>
-          <Row type='flex' style={{alignItems: 'center'}}>
+          <Row type='flex' style={{alignItems: 'center', overflow: 'hidden'}}>
             <Col xs={{span: 2}}>
               <img onClick={this.hideSideMenu} style={{width: 26, height: 26, cursor: 'pointer'}} src={require('images/right-arrow.svg')} alt=""/>
             </Col>
@@ -286,30 +286,30 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             </Col>
             {localStorage.getItem('token') ? (
               <Col span={24}>
-                <Col span={24} style={{display: 'flex', alignItems: 'center', marginTop: 20, marginBottom: 12}}>
+                <Col span={24} style={{display: 'flex', alignItems: 'center', marginTop: 22, marginBottom: 18}}>
                   <Link style={{color: 'black'}} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}>
-                    <Avatar
+                    <img
                       src={localStorage.getItem('avatarLink') !== '' && localStorage.getItem('avatarLink') !== 'null' ? `${config.API_BASE_URL}/file/img/${localStorage.getItem('avatarLink')}` : null}
-                      size='large'
                       style={{
                         backgroundColor: "#fff",
                         color: "rgba(0,0,0,0.65)",
-                        minHeight: 40,
-                        minWidth: 40,
+                        height: 60,
+                        width: 60,
+                        borderRadius: '50%',
                         cursor: 'pointer'
                       }}
                     />
                   </Link>
-                  <Link style={{color: 'black'}} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}>
-                    <span className='userName'
-                          style={{whiteSpace: 'nowrap', cursor: 'pointer', opacity: 0.8}}>{localStorage.getItem('name')}</span>
+                  <Link style={{color: 'black', width: 'calc(100% - 60px)'}} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}>
+                    <div className='userName ellipsis'
+                          style={{cursor: 'pointer', opacity: 0.8, fontSize: 22}}>{localStorage.getItem('name')}</div>
                   </Link>
                 </Col>
                 <Col span={24} className='menu-item'>
                   {localStorage.getItem('token') ?
                     (<Link style={{color: 'black'}} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}/notifications`}>
-                      <div style={{opacity: 0.8, display: 'flex', alignItems: 'center'}}>
-                        <img src={require('../../images/notification.svg')} style={{width: 22, marginRight: 8, marginLeft: -1}}></img>
+                      <div style={{opacity: 0.8, display: 'flex', alignItems: 'center', fontSize: 20}}>
+                        <img src={require('../../images/notification.svg')} style={{width: 28, marginRight: 16, marginLeft: -1}}></img>
                         Уведомления
                       </div>
                     </Link>)
@@ -318,8 +318,8 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                   }
                 </Col>
                 <Col span={24} className='menu-item' style={{marginTop: 12}}>
-                  <div style={{color: 'red', opacity: 0.8, display: 'flex', alignItems: 'center'}} onClick={this.logout}>
-                    <img src={require('../../images/logout.svg')} style={{width: 22, marginRight: 8}}></img>
+                  <div style={{color: 'red', opacity: 0.8, display: 'flex', alignItems: 'center', fontSize: 20}} onClick={this.logout}>
+                    <img src={require('../../images/logout.svg')} style={{width: 28, marginRight: 12, marginLeft: 2}}></img>
                     Выйти
                   </div>
                 </Col>
