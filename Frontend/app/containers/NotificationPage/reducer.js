@@ -15,15 +15,22 @@ import {
   GET_NOTIFIES_START,
   GET_NOTIFIES_SUCCESS,
   GET_NOTIFIES_FAILED,
-  DOWNLOAD_COURSE_FILE_START,
-  DOWNLOAD_COURSE_FILE_FAILED,
-  DOWNLOAD_COURSE_FILE_SUCCESS
+  DOWNLOAD_COURSE_PLAN_START,
+  DOWNLOAD_COURSE_PLAN_FAILED,
+  DOWNLOAD_COURSE_PLAN_SUCCESS,
+  SET_NOTIFY_SETTING_FAILED,
+  SET_NOTIFY_SETTING_START,
+  SET_NOTIFY_SETTING_SUCCESS,
+  GET_NOTIFIES_SETTINGS_FAILED,
+  GET_NOTIFIES_SETTINGS_START,
+  GET_NOTIFIES_SETTINGS_SUCCESS
 } from './constants';
 import {message} from 'antd';
 
 const initialState = fromJS({
   notifies: [],
   invites: [],
+  notifiesSettings: {},
   pending: false,
   error: false,
   needUpdate: false,
@@ -74,10 +81,10 @@ function notificationPageReducer(state = initialState, action) {
       return state
         .set('pending', false)
         .set('error', true);
-    case DOWNLOAD_COURSE_FILE_START:
+    case DOWNLOAD_COURSE_PLAN_START:
       return state
         .set('pending', true);
-    case DOWNLOAD_COURSE_FILE_SUCCESS:
+    case DOWNLOAD_COURSE_PLAN_SUCCESS:
       let a = document.createElement("a");
       let url = URL.createObjectURL(action.file);
       a.href = url;
@@ -92,11 +99,35 @@ function notificationPageReducer(state = initialState, action) {
       return state
         .set('pending', false)
         .set('error', false);
-    case DOWNLOAD_COURSE_FILE_FAILED:
+    case DOWNLOAD_COURSE_PLAN_FAILED:
       message.error('Не удалось загузить файл!');
       return state
         .set('pending', false)
         .set('error', true);
+    case GET_NOTIFIES_SETTINGS_START:
+      return state
+        .set('pending', true);
+    case GET_NOTIFIES_SETTINGS_SUCCESS:
+      return state
+        .set('pending', false)
+        .set('notifiesSettings', action.settings);
+    case GET_NOTIFIES_SETTINGS_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true);
+    case SET_NOTIFY_SETTING_START:
+      return state
+        .set('pending', true)
+        .set('needUpdate', true);
+    case SET_NOTIFY_SETTING_SUCCESS:
+      return state
+        .set('pending', false)
+        .set('needUpdate', false);
+    case SET_NOTIFY_SETTING_FAILED:
+      return state
+        .set('pending', false)
+        .set('error', true)
+        .set('needUpdate', false);
     default:
       return state;
   }

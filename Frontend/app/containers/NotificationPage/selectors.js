@@ -20,9 +20,15 @@ const makeSelectNeedUpdate = () => createSelector(
   (notifyPageState) => notifyPageState.get('needUpdate')
 );
 
+const makeSelectNotifiesSettings = () => createSelector(
+  selectNotificationPageDomain,
+  (notifyPageState) => notifyPageState.get('notifiesSettings')
+);
+
 export {
   selectNotificationPageDomain,
   makeSelectNotifies,
   makeSelectInvites,
-  makeSelectNeedUpdate
+  makeSelectNeedUpdate,
+  makeSelectNotifiesSettings
 };

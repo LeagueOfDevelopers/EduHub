@@ -14,10 +14,12 @@ import injectReducer from 'utils/injectReducer';
 import {makeSelectNotifies, makeSelectInvites, makeSelectNeedUpdate} from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import {getInvites, getNotifies} from "./actions";
+import {getInvites, getNotifies, setNotifySetting} from "./actions";
 import NotifyCard from '../../components/NotifyCard';
 import InviteCard from '../../components/InviteCard';
 import {Row, Col, Tabs, Button, Icon, Select, Divider, Form} from 'antd';
+import {getNotifySettingType, getNotifySettingTypeRevert} from "../../globalJS";
+import config from "../../config";
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -75,12 +77,63 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
 
     this.state = {
       needUpdate: this.props.needUpdate,
-      isEditing: false
+      isEditing: false,
+      CourseFinished: 4,
+      CurriculumAccepted: 4,
+      CurriculumDeclined: 4,
+      CurriculumSuggested: 4,
+      GroupIsFormed: 4,
+      InvitationAccepted: 4,
+      InvitationDeclined: 4,
+      InvitationReceived: 4,
+      MemberLeft: 4,
+      NewCreator: 4,
+      NewMember: 4,
+      ReviewReceived: 4,
+      SanctionsAppliedToUser: 4,
+      SanctionsCancelledToUser: 4,
+      TeacherFound: 4
     };
 
     this.showSettingBtn = this.showSettingBtn.bind(this);
     this.hideSettingBtn = this.hideSettingBtn.bind(this);
+    this.onHandleSettingChange = this.onHandleSettingChange.bind(this);
+    this.getNotifiesSettings = this.getNotifiesSettings.bind(this);
+    this.onSetResult = this.onSetResult.bind(this);
   }
+
+  getNotifiesSettings = () => {
+    return fetch(`${config.API_BASE_URL}/user/profile/notifications/settings`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json-patch+json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+      .then(res => res.json())
+      .then(res => this.onSetResult(res))
+      .catch(error => error)
+  };
+
+  onSetResult = (result) => {
+    this.setState({
+      CourseFinished: result.CourseFinished,
+      CurriculumAccepted: result.CurriculumAccepted,
+      CurriculumDeclined: result.CurriculumDeclined,
+      CurriculumSuggested: result.CurriculumSuggested,
+      GroupIsFormed: result.GroupIsFormed,
+      InvitationAccepted: result.InvitationAccepted,
+      InvitationDeclined: result.InvitationDeclined,
+      InvitationReceived: result.InvitationReceived,
+      MemberLeft: result.MemberLeft,
+      NewCreator: result.NewCreator,
+      NewMember: result.NewMember,
+      ReviewReceived: result.ReviewReceived,
+      SanctionsAppliedToUser: result.SanctionsAppliedToUser,
+      SanctionsCancelledToUser: result.SanctionsCancelledToUser,
+      TeacherFound: result.TeacherFound
+    })
+  };
 
   componentDidMount() {
     if(localStorage.getItem('without_server') === 'true') {
@@ -92,13 +145,13 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
     else {
       this.props.getNotifies();
       this.props.getInvites();
+      this.getNotifiesSettings();
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.needUpdate !== this.props.needUpdate) {
-      this.props.getNotifies();
-      this.props.getInvites();
+      this.componentDidMount()
     }
   }
 
@@ -110,6 +163,11 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
   hideSettingBtn = () => {
     document.getElementById('setting-btn').classList.remove('notify-setting-btn');
     document.getElementById('setting-btn').classList.add('notify-setting-btn-hidden');
+  };
+
+  onHandleSettingChange = (notifyType, settingType) => {
+    this.setState({[notifyType]: getNotifySettingTypeRevert(settingType)});
+    setTimeout(() => this.props.setNotifySetting(notifyType, settingType), 0);
   };
 
   render() {
@@ -159,7 +217,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
             <Col xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 12, offset: 6}}>
               <Row style={{textAlign: 'center', marginTop: 40}}><h4 style={{marginBottom: 0}}>Настройка уведомлений</h4></Row>
               <Row><Divider/></Row>
-              <Row style={{marginTop: 0}}>
+              <Row style={{marginTop: 0}} className='notify-settings'>
                 <FormItem
                   labelCol={{
                     xs: { span: 24 },
@@ -169,8 +227,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                   label="Уведомления о завершении курса"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.CourseFinished)} onChange={(e) => this.onHandleSettingChange('CourseFinished', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -184,11 +241,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления о принятии плана курса"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.CurriculumAccepted)} onChange={(e) => this.onHandleSettingChange('CurriculumAccepted', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -202,11 +258,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления об отклонении плана курса"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.CurriculumDeclined)} onChange={(e) => this.onHandleSettingChange('CurriculumDeclined', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -220,11 +275,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления о предложении плана курса"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.CurriculumSuggested)} onChange={(e) => this.onHandleSettingChange('CurriculumSuggested', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -238,11 +292,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления о формировании группы"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.GroupIsFormed)} onChange={(e) => this.onHandleSettingChange('GroupIsFormed', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -256,11 +309,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления о принятии приглашения"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.InvitationAccepted)} onChange={(e) => this.onHandleSettingChange('InvitationAccepted', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -274,11 +326,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления об откланении приглашения"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.InvitationDeclined)} onChange={(e) => this.onHandleSettingChange('InvitationDeclined', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -292,11 +343,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления о получении приглашения"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.InvitationReceived)} onChange={(e) => this.onHandleSettingChange('InvitationReceived', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -310,11 +360,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления о выходе из группы"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.MemberLeft)} onChange={(e) => this.onHandleSettingChange('MemberLeft', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -328,11 +377,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления о вступлении в группу"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.NewMember)} onChange={(e) => this.onHandleSettingChange('NewMember', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -346,11 +394,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления о получении отзыва"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.ReviewReceived)} onChange={(e) => this.onHandleSettingChange('ReviewReceived', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -364,11 +411,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления, если к вам применили санкцию"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.SanctionsAppliedToUser)} onChange={(e) => this.onHandleSettingChange('SanctionsAppliedToUser', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -382,11 +428,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления о вступлении учителя в группу"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.TeacherFound)} onChange={(e) => this.onHandleSettingChange('TeacherFound', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -400,47 +445,10 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                     sm: { span: 14 }
                   }}
                   colon={false}
-                  label="Уведомления о завершении курса"
+                  label="Уведомления, если санкцию, примененную к вам, отменили"
                 >
                   <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
-                      <Option value="DontSend">Не отправлять</Option>
-                      <Option value="ToMail">На почту</Option>
-                      <Option value="OnSite">На сайте</Option>
-                      <Option value="Everywhere">Везде</Option>
-                    </Select>
-                  </Col>
-                </FormItem>
-                <FormItem
-                  labelCol={{
-                    xs: { span: 24 },
-                    sm: { span: 14 }
-                  }}
-                  colon={false}
-                  label="Уведомления о завершении курса"
-                >
-                  <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
-                      <Option value="DontSend">Не отправлять</Option>
-                      <Option value="ToMail">На почту</Option>
-                      <Option value="OnSite">На сайте</Option>
-                      <Option value="Everywhere">Везде</Option>
-                    </Select>
-                  </Col>
-                </FormItem>
-                <FormItem
-                  labelCol={{
-                    xs: { span: 24 },
-                    sm: { span: 14 }
-                  }}
-                  colon={false}
-                  label="Уведомления о завершении курса"
-                >
-                  <Col className='xs-text-align-left'>
-                    <Select style={{width: 180}}>
-                      <Option value="Default">По умолчанию</Option>
+                    <Select value={getNotifySettingType(this.state.SanctionsCancelledToUser)} onChange={(e) => this.onHandleSettingChange('SanctionsCancelledToUser', e)} style={{width: 180}}>
                       <Option value="DontSend">Не отправлять</Option>
                       <Option value="ToMail">На почту</Option>
                       <Option value="OnSite">На сайте</Option>
@@ -449,8 +457,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
                   </Col>
                 </FormItem>
                 <Col style={{marginTop: 20, textAlign: 'center', marginBottom: 40}}>
-                    <Button htmlType="button" onClick={() => this.setState({isEditing: false})} style={{marginRight: '4%'}}>Отменить</Button>
-                    <Button type="primary" onClick={() => this.setState({isEditing: false})}>Подтвердить</Button>
+                  <Button onClick={() => this.setState({isEditing: false})} style={{minWidth: 200}}>Назад</Button>
                 </Col>
               </Row>
             </Col>
@@ -462,6 +469,27 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
 
 NotificationPage.propTypes = {
   dispatch: PropTypes.func,
+  settings: PropTypes.object
+};
+
+NotificationPage.defaultProps = {
+  settings: {
+    CourseFinished: 4,
+    CurriculumAccepted: 4,
+    CurriculumDeclined: 4,
+    CurriculumSuggested: 4,
+    GroupIsFormed: 4,
+    InvitationAccepted: 4,
+    InvitationDeclined: 4,
+    InvitationReceived: 4,
+    MemberLeft: 4,
+    NewCreator: 4,
+    NewMember: 4,
+    ReviewReceived: 4,
+    SanctionsAppliedToUser: 4,
+    SanctionsCancelledToUser: 4,
+    TeacherFound: 4
+  }
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -473,7 +501,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getNotifies: () => dispatch(getNotifies()),
-    getInvites: () => dispatch(getInvites())
+    getInvites: () => dispatch(getInvites()),
+    setNotifySetting: (notifyType, settingType) => dispatch(setNotifySetting(notifyType, settingType))
   }
 }
 

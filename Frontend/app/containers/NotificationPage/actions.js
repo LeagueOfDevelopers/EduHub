@@ -14,9 +14,15 @@ import {
   GET_NOTIFIES_START,
   GET_NOTIFIES_SUCCESS,
   GET_NOTIFIES_FAILED,
-  DOWNLOAD_COURSE_FILE_START,
-  DOWNLOAD_COURSE_FILE_FAILED,
-  DOWNLOAD_COURSE_FILE_SUCCESS
+  DOWNLOAD_COURSE_PLAN_START,
+  DOWNLOAD_COURSE_PLAN_FAILED,
+  DOWNLOAD_COURSE_PLAN_SUCCESS,
+  SET_NOTIFY_SETTING_FAILED,
+  SET_NOTIFY_SETTING_START,
+  SET_NOTIFY_SETTING_SUCCESS,
+  GET_NOTIFIES_SETTINGS_FAILED,
+  GET_NOTIFIES_SETTINGS_START,
+  GET_NOTIFIES_SETTINGS_SUCCESS
 } from './constants';
 
 export function changeInvitationStatus(invitationId, status) {
@@ -84,21 +90,62 @@ export function getInvitesFailed(error) {
 
 export function downloadCourseFile(link) {
   return {
-    type: DOWNLOAD_COURSE_FILE_START,
+    type: DOWNLOAD_COURSE_PLAN_START,
     link
   };
 }
 
 export function downloadCourseFileSuccess(file) {
   return {
-    type: DOWNLOAD_COURSE_FILE_SUCCESS,
+    type: DOWNLOAD_COURSE_PLAN_SUCCESS,
     file
   };
 }
 
-export function downloadCourseFileFailed(link) {
+export function downloadCourseFileFailed(error) {
   return {
-    type: DOWNLOAD_COURSE_FILE_FAILED,
-    link
+    type: DOWNLOAD_COURSE_PLAN_FAILED,
+    error
+  };
+}
+
+export function getNotifiesSettings() {
+  return {
+    type: GET_NOTIFIES_SETTINGS_START
+  };
+}
+
+export function getNotifiesSettingsSuccess(settings) {
+  return {
+    type: GET_NOTIFIES_SETTINGS_SUCCESS,
+    settings
+  };
+}
+
+export function getNotifiesSettingsFailed(error) {
+  return {
+    type: GET_NOTIFIES_SETTINGS_FAILED,
+    error
+  };
+}
+
+export function setNotifySetting(notifyType, settingType) {
+  return {
+    type: SET_NOTIFY_SETTING_START,
+    notifyType,
+    settingType
+  };
+}
+
+export function setNotifySettingSuccess() {
+  return {
+    type: SET_NOTIFY_SETTING_SUCCESS
+  };
+}
+
+export function setNotifySettingFailed(error) {
+  return {
+    type: SET_NOTIFY_SETTING_FAILED,
+    error
   };
 }

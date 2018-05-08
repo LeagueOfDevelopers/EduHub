@@ -1,7 +1,12 @@
+body {
+  overflow-x: hidden;
+}
+
 *, p{
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .ant-form-item-label {
@@ -23,6 +28,34 @@
 
 .profile-card {
   cursor: default;
+}
+
+.side-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #c4c4c4;
+  padding: 16px;
+  width: 80%;
+  overflow: hidden;
+  height: 100%;
+  transition: 0.8s;
+  box-shadow: 0px 0px 18px 0px rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+
+.side-menu-hidden {
+  position: fixed;
+  top: 0;
+  right: -80%;
+  padding: 16px;
+  background-color: #c4c4c4;
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 0;
+  height: 100%;
+  transition: 0.8s;
+  z-index: 1000;
 }
 
 .teacher-review {
@@ -81,12 +114,13 @@
   margin-left: 10px;
 }
 
-.header .menu-btn {
+.menu-btn {
   display: none;
 }
 
-.header .profile {
-  display: block;
+.header .unregistered-person {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .ant-dropdown-menu-item {
@@ -182,6 +216,10 @@
   max-width: 960px;
 }
 
+.side-search {
+  margin-top: 12px;
+}
+
 @media screen and (min-width: 1200px) {
   .user-card-profile-btn {
     display: block;
@@ -219,14 +257,6 @@
 
   .md-cards-holder-center {
     justify-content: center;
-  }
-
-  .header .menu-btn {
-    display: block;
-  }
-
-  .header .profile {
-    display: none;
   }
 
   .plan-file-btn {
@@ -282,6 +312,10 @@
     display: none;
   }
 
+  .header .unregistered-person {
+    display: none;
+  }
+
   .md-center-container, .lg-center-container-item, .md-center-container{
     display: flex;
     flex-wrap: wrap;
@@ -308,14 +342,33 @@
     text-align: center;
     margin-top: 16px;
   }
+
+  .md-text-center {
+    text-align: center;
+  }
+
+  .md-margin-top-30 {
+    margin-top: 30px;
+  }
+
+  .registered-person {
+    display: none;
+  }
+
+  .menu-btn {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .registered-person {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 
 @media screen and (max-width: 576px) {
-  .header .userName {
-    display: none;
-    margin-left: 0;
-  }
-
   .form .ant-row {
     margin-right: 10px;
     margin-left: 10px;
@@ -363,8 +416,10 @@ a:focus {
   text-decoration: none;
 }
 
-.unassembled-groups-list .ant-card-head, .assembled-groups-list  .ant-card-head{
-  padding-left: 24px;
+.notify-settings .ant-form-item-label{
+  line-height: inherit;
+  white-space: inherit;
+  padding-right: 10px;
   padding-right: 24px;
 }
 
@@ -585,5 +640,3 @@ a:focus {
 .ant-list-item{
   word-break: break-word;
 }
-
-

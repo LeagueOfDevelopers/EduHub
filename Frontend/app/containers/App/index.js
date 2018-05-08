@@ -40,19 +40,19 @@ export default class App extends React.Component{
         <ScrollFix location={window.location.href}>
           <Switch>
             <Route exact path="/" component={HomePage} />
-            <Route path='/create_group' component={CreateGroupPage}/>
-            <Route path='/registration' component={RegistrationPage}/>
+            <Route exact path='/create_group' component={CreateGroupPage}/>
+            <Route exact path='/registration' component={RegistrationPage}/>
             <Route exact path='/profile/:id' component={ProfilePage}/>
             <Route exact path='/group/:id' component={GroupPage}/>
-            <Route path='/group/:id/:review' component={GroupPage}/>
-            <Route path='/groups' component={GroupsPage}/>
-            <Route path='/profile/:id/notifications' component={NotificationPage}/>
-            <Route path='/registration_success' component={RegistrationSuccessPage}/>
-            <Route path='/registration_accepted/:key' component={RegistrationAcceptedPage}/>
-            <Route path='/users' component={UsersPage}/>
-            <Route path='/admin/:id' component={AdminPage}/>
-            <Route path='/reset_password/:key' component={ResetPasswordPage}/>
-            <Route path='' component={NotFoundPage} />
+            <Route exact path='/group/:id/:review' component={GroupPage}/>
+            <Route exact path='/groups' component={GroupsPage}/>
+            <Route exact path='/profile/:id/notifications' component={NotificationPage}/>
+            <Route exact path='/registration_success' component={RegistrationSuccessPage}/>
+            <Route exact path='/registration_accepted/:key' component={RegistrationAcceptedPage}/>
+            <Route exact path='/users' component={UsersPage}/>
+            <Route exact path='/admin/:id' component={AdminPage}/>
+            <Route exact path='/reset_password/:key' component={ResetPasswordPage}/>
+            <Route exact path='' component={NotFoundPage} />
           </Switch>
         </ScrollFix>
         {/*<footer>*/}

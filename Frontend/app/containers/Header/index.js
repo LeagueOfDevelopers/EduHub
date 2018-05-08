@@ -41,6 +41,8 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     this.onSignInClick = this.onSignInClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.showSideMenu = this.showSideMenu.bind(this);
+    this.hideSideMenu = this.hideSideMenu.bind(this);
   }
 
   onSignInClick = () => {
@@ -103,6 +105,18 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     this.props.getGroups(value);
   };
 
+  showSideMenu = () => {
+    document.getElementById('side-menu').classList.remove('side-menu-hidden');
+    document.getElementById('side-menu').classList.add('side-menu');
+    document.body.style.overflowY = 'hidden';
+  };
+
+  hideSideMenu = () => {
+    document.getElementById('side-menu').classList.remove('side-menu');
+    document.getElementById('side-menu').classList.add('side-menu-hidden');
+    document.body.style.overflowY = 'scroll';
+  };
+
   render() {
     return (
       <Row type="flex" align="middle" className='header' style={{width: '100hr'}}>
@@ -113,7 +127,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             </Link>
           </Logo>
         </Col>
-        <Col md={{span: 9, offset: 1}} lg={{span: 7, offset: 0}} style={{position: 'relative'}}>
+        <Col md={{span: 7, offset: 1}} lg={{span: 7, offset: 0}} style={{position: 'relative'}}>
           <Select
             mode="combobox"
             className='search'
@@ -188,32 +202,163 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
           <Icon type="search" className='search'
                 style={{fontSize: 20, position: 'absolute', top: 10, right: 10, opacity: 0.8}}/>
         </Col>
+        <Col className='menu-btn' xs={{span: 12}} md={{span: 6, offset: 2}} lg={{span: 9, offset: 0}}>
+          <img onClick={this.showSideMenu} style={{width: 26, height: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
+        </Col>
+        <Col id='side-menu' className='side-menu-hidden'>
+          <Row type='flex' style={{alignItems: 'center'}}>
+            <Col xs={{span: 2}}>
+              <img onClick={this.hideSideMenu} style={{width: 26, height: 26, cursor: 'pointer'}} src={require('images/right-arrow.svg')} alt=""/>
+            </Col>
+            <Col className='side-search' xs={{span: 24}}>
+              <Select
+                mode="combobox"
+                style={{width: '100%'}}
+                value={this.state.searchValue}
+                placeholder="Поиск"
+                size='large'
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                onChange={this.handleSelectChange}
+                notFoundContent='Ничего не найдено'
+                onSelect={(e) => e.preventDefault()}
+              >
+                <OptGroup key={1} label={(
+                  <Col>
+                    <Col span={12}>Пользователи</Col>
+                    <Col span={12} style={{textAlign: 'right'}}><Link to={`/users${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Расширенный поиск</Link></Col>
+                  </Col>
+                )}>
+                  {
+                    this.state.searchValue ?
+                      this.props.users.map((item, index) =>
+                        index < selectItemsCount ?
+                          <Option className='search-option-item' key={item.name + item.id + 'user'}>
+                            <Link
+                              className='search-user-link'
+                              to={`/profile/${item.id}`}
+                              style={{display: 'flex', alignItems: 'center'}}
+                            >
+                              <Avatar
+                                src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
+                                size='large'
+                                style={{
+                                  marginRight: 10
+                                }}
+                              />
+                              <Col>
+                                <div>{item.name}</div>
+                              </Col>
+                            </Link>
+                          </Option>
+                          : ''
+                      )
+                      : ''
+                  }
+                </OptGroup>
+                <OptGroup key={2} label={(
+                  <Col>
+                    <Col span={12}>Группы</Col>
+                    <Col span={12} style={{textAlign: 'right'}}><Link to={`/groups${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Расширенный поиск</Link></Col>
+                  </Col>
+                )}>
+                  {
+                    this.state.searchValue ?
+                      this.props.groups.map((item, index) =>
+                        index < selectItemsCount ?
+                          <Option className='search-option-item' key={item.groupInfo.title + item.groupInfo.id + 'group'}>
+                            <Link
+                              className='search-user-link'
+                              to={`/group/${item.groupInfo.id}`}
+                            >
+                              <div>{item.groupInfo.title}</div>
+                              <div>{item.groupInfo.tags.map(tag => <Link to={`/groups?tags=${tag}`} key={tag} style={{marginRight: 6}}>{tag}</Link>)}</div>
+                            </Link>
+                          </Option>
+                          : ''
+                      )
+                      : ''
+                  }
+                </OptGroup>
+              </Select>
+              <Icon type="search"
+                    style={{fontSize: 20, position: 'absolute', top: 10, right: 10, opacity: 0.8}}/>
+            </Col>
+            {localStorage.getItem('token') ? (
+              <Col span={24}>
+                <Col span={24} style={{display: 'flex', alignItems: 'center', marginTop: 20, marginBottom: 12}}>
+                  <Link style={{color: 'black'}} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}>
+                    <Avatar
+                      src={localStorage.getItem('avatarLink') !== '' && localStorage.getItem('avatarLink') !== 'null' ? `${config.API_BASE_URL}/file/img/${localStorage.getItem('avatarLink')}` : null}
+                      size='large'
+                      style={{
+                        backgroundColor: "#fff",
+                        color: "rgba(0,0,0,0.65)",
+                        minHeight: 40,
+                        minWidth: 40,
+                        cursor: 'pointer'
+                      }}
+                    />
+                  </Link>
+                  <Link style={{color: 'black'}} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}>
+                    <span className='userName'
+                          style={{whiteSpace: 'nowrap', cursor: 'pointer', opacity: 0.8}}>{localStorage.getItem('name')}</span>
+                  </Link>
+                </Col>
+                <Col span={24} className='menu-item'>
+                  {localStorage.getItem('token') ?
+                    (<Link style={{color: 'black'}} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}/notifications`}>
+                      <div style={{opacity: 0.8, display: 'flex', alignItems: 'center'}}>
+                        <img src={require('../../images/notification.svg')} style={{width: 22, marginRight: 8, marginLeft: -1}}></img>
+                        Уведомления
+                      </div>
+                    </Link>)
+                    :
+                    null
+                  }
+                </Col>
+                <Col span={24} className='menu-item' style={{marginTop: 12}}>
+                  <div style={{color: 'red', opacity: 0.8, display: 'flex', alignItems: 'center'}} onClick={this.logout}>
+                    <img src={require('../../images/logout.svg')} style={{width: 22, marginRight: 8}}></img>
+                    Выйти
+                  </div>
+                </Col>
+              </Col>
+              )
+              : (
+                <Col span={24}>
+                  <Button htmlType="button" size='large' onClick={this.onSignInClick} style={{width: '100%', marginTop: 20}}>Войти</Button>
+                  <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
+                  <Link to='/registration'>
+                    <Button size='large' type="primary" style={{width: '100%', marginTop: 12}} htmlType="submit">Зарегистрироваться</Button>
+                  </Link>
+                </Col>
+              )}
+          </Row>
+        </Col>
         {localStorage.getItem('token') ? (
-          <Col xs={{span: 12}} md={{span: 6}} lg={{span: 9}} style={{display: 'flex', justifyContent: 'flex-end'}}>
-            <Dropdown overlay={this.acc_menu} trigger={['click']}>
-              <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
-                <Avatar
-                  src={localStorage.getItem('avatarLink') !== '' && localStorage.getItem('avatarLink') !== 'null' ? `${config.API_BASE_URL}/file/img/${localStorage.getItem('avatarLink')}` : null}
-                  size='large'
-                  style={{
-                    backgroundColor: "#fff",
-                    color: "rgba(0,0,0,0.65)",
-                    minHeight: 40,
-                    minWidth: 40,
-                    cursor: 'pointer'
-                  }}
-                />
-                <span className='userName'
-                      style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>{localStorage.getItem('name')}</span>
-              </div>
-            </Dropdown>
-          </Col>
+            <Col className='registered-person' xs={{span: 12}} md={{span: 6, offset: 2}} lg={{span: 9, offset: 0}}>
+              <Dropdown overlay={this.acc_menu} trigger={['click']}>
+                <div style={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginLeft: '36%'}}>
+                  <Avatar
+                    src={localStorage.getItem('avatarLink') !== '' && localStorage.getItem('avatarLink') !== 'null' ? `${config.API_BASE_URL}/file/img/${localStorage.getItem('avatarLink')}` : null}
+                    size='large'
+                    style={{
+                      backgroundColor: "#fff",
+                      color: "rgba(0,0,0,0.65)",
+                      minHeight: 40,
+                      minWidth: 40,
+                      cursor: 'pointer'
+                    }}
+                  />
+                  <span className='userName'
+                        style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>{localStorage.getItem('name')}</span>
+                </div>
+              </Dropdown>
+            </Col>
           )
           : (
-            <Col xs={{span: 12}} md={{span: 6}} lg={{span: 9}} style={{display: 'flex', justifyContent: 'flex-end'}}>
-              <Dropdown className="unregistered-person" overlay={this.menu} trigger={['click']}>
-                <img className='menu-btn' style={{width: 26, height: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
-              </Dropdown>
+            <Col className="unregistered-person" xs={{span: 12}} md={{span: 6, offset: 2}} lg={{span: 9, offset: 0}}>
               <Button className='profile' htmlType="button" onClick={this.onSignInClick} style={{marginRight: '4%'}}>Войти</Button>
               <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
               <Link className="profile" to='/registration'>

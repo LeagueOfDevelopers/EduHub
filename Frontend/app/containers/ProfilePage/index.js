@@ -685,7 +685,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   </TabPane>)
                 : null
               }
-              {this.state.userData && this.props.match.params.id === this.state.userData.UserId ? (
+              {this.state.userData && this.props.match.params.id === this.state.userData.UserId && (this.state.userData.Role === 'Admin' || this.state.userData.Role === 'Moderator') ? (
                   <TabPane tab="Панель администратора" key="3" style={{minHeight: 300}}>
                     <Link to={`/admin/${this.props.match.params.id}`} style={{color: '#747474'}}>
                       <div style={{textAlign: 'center', fontSize: 26, padding: '100px 0'}}>

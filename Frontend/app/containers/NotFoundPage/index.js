@@ -10,16 +10,24 @@
  */
 
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-
+import {Row, Col, Button} from 'antd';
 import messages from './messages';
+import {Link} from "react-router-dom";
 
 export default class NotFound extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <h1>
-        <FormattedMessage {...messages.header} />
-      </h1>
+      <Row type='flex' style={{height: 'calc(100vh - 60px)', alignItems: 'center'}}>
+        <Col xs={{span: 20, offset: 2}} md={{span: 8, offset: 2}} className='md-text-center md-margin-top-30'>
+          <h1 style={{fontWeight: 600}}>
+            This page not found :(
+          </h1>
+          <Button type='primary' onClick={() => location.assign('/')}>Перейти на главную</Button>
+        </Col>
+        <Col xs={{span: 20, offset: 2}} md={{span: 10, offset: 2}}>
+          <img style={{width: '100%', maxWidth: 550}} src={require('../../images/404_4.jpg')} alt=""/>
+        </Col>
+      </Row>
     );
   }
 }

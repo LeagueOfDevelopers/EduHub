@@ -31,6 +31,36 @@ export function getGroupType(enumType) {
   }
 }
 
+export function getNotifySettingType(enumType) {
+  switch (enumType) {
+    case 0:
+      return 'Default';
+    case 1:
+      return 'DontSend';
+    case 2:
+      return 'ToMail';
+    case 3:
+      return 'OnSite';
+    case 4:
+      return 'Everywhere';
+  }
+}
+
+export function getNotifySettingTypeRevert(enumType) {
+  switch (enumType) {
+    case 'Default':
+      return 0;
+    case 'DontSend':
+      return 1;
+    case 'ToMail':
+      return 2;
+    case 'OnSite':
+      return 3;
+    case 'Everywhere':
+      return 4;
+  }
+}
+
 export function getGender(enumType) {
   switch (enumType) {
     case 0:
