@@ -13,7 +13,6 @@ namespace EduHubLibrary.Mailing
 
         public void SendMessage(string email, object messageContent, string theme, string username = "")
         {
-            /*
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("EduHub", _settings.Email));
             message.To.Add(new MailboxAddress(username, email));
@@ -35,7 +34,6 @@ namespace EduHubLibrary.Mailing
                 client.Send(message);
                 client.Disconnect(true);
             }
-            */
         }
     }
 }
