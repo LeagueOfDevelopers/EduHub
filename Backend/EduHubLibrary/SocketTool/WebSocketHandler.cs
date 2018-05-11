@@ -52,9 +52,10 @@ namespace EduHubLibrary.SocketTool
             await SendMessageAsync(WebSocketConnectionManager.GetSocketById(socketId), message);
         }
 
-        public async Task SendMessageToAllAsync(string message, int groupId, IEnumerable<int> userId)
+        public async Task SendMessageToAllAsync(int id, int senderId, string senderName,
+            DateTimeOffset sentOn, string text, IEnumerable<int> userId)
         {
-            var msg = new SocketMessage(message, groupId);
+            var msg = new SocketMessage(id, senderId, senderName, sentOn, text);
             foreach (var pair in WebSocketConnectionManager.GetAll(userId))
                 if (pair.Socket.State == WebSocketState.Open)
                     await SendMessageAsync(pair.Socket, JsonConvert.SerializeObject(msg));

@@ -40,12 +40,14 @@ namespace EduHub.Controllers
             [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
-
             var users = _groupFacade.GetGroupMembers(groupId).ToList();
             var userIds = new List<int>();
             users.ForEach(m => userIds.Add(m.UserId));
-            var response = new MessageSentResponse(_chatFacade.SendMessage(userId, groupId, messageRequest.Text));
-            await _notificationsMessageHandler.SendMessageToAllAsync(messageRequest.Text, groupId, userIds);
+            var messageId = _chatFacade.SendMessage(userId, groupId, messageRequest.Text);
+            var message = _chatFacade.GetMessage(messageId, groupId, userId);
+            var response = new MessageSentResponse(messageId);
+            await _notificationsMessageHandler.SendMessageToAllAsync(message.Id, message.SenderId, message.SenderName,
+                message.SentOn, message.Text, userIds);
             return Ok(response);
         }
 
