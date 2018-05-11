@@ -27,12 +27,16 @@ namespace EduHubLibrary.Facades
             var currentGroup = _groupRepository.GetGroupById(groupId);
             using (var chat = new ChatSession(currentGroup))
             {
-                chat.SendMessage(senderId, text);
+                chat.SendUserMessage(senderId, text);
             }
-
+                    
             _groupRepository.Update(currentGroup);
             currentGroup = _groupRepository.GetGroupById(groupId);
-            return currentGroup.Messages.ToList().LastOrDefault(m => m.Text == text).Id;
+            return currentGroup.Messages.ToList().LastOrDefault(m =>
+            {
+                var message = (UserMessage)m;
+                return message.Text == text;
+            }).Id;
         }
 
         public MessageView GetMessage(int messageId, int groupId, int userId)
@@ -40,7 +44,7 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsTrue(HasRights(groupId, userId), nameof(HasRights),
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
 
-            var message = _groupRepository.GetGroupById(groupId).Messages.ToList().Find(m => m.Id.Equals(messageId));
+            var message = (UserMessage)_groupRepository.GetGroupById(groupId).Messages.ToList().Find(m => m.Id.Equals(messageId));
             var sendername = _userRepository.GetUserById(message.SenderId).UserProfile.Name;
             return new MessageView(message.Id, message.SenderId, sendername, message.SentOn, message.Text);
         }
@@ -54,8 +58,15 @@ namespace EduHubLibrary.Facades
 
             var messagesList = new List<MessageView>();
 
-            currentGroup.Messages.ToList().ForEach(m => messagesList.Add(new MessageView(m.Id, m.SenderId,
-                _userRepository.GetUserById(m.SenderId).UserProfile.Name, m.SentOn, m.Text)));
+            //TODO: return UserMessage and GroupMessage
+            /*
+            currentGroup.Messages.ToList().ForEach(m =>
+            {
+                var message = (UserMessage)m;
+                messagesList.Add(new MessageView(message.Id, message.SenderId,
+                  _userRepository.GetUserById(message.SenderId).UserProfile.Name, message.SentOn, message.Text));
+            });
+            */
 
             return messagesList;
         }

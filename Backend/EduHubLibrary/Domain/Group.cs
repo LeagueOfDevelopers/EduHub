@@ -30,10 +30,10 @@ namespace EduHubLibrary.Domain
             Invitations = new List<Invitation>();
             var creator = new Member(creatorId, MemberRole.Creator);
             Members.Add(creator);
-            Messages = new List<Message>();
+            Messages = new List<BaseMessage>();
         }
 
-        internal Group(IEnumerable<Message> messages, GroupInfo groupInfo, User teacher, CourseStatus status,
+        internal Group(IEnumerable<BaseMessage> messages, GroupInfo groupInfo, User teacher, CourseStatus status,
             List<Member> members, List<Invitation> invitations, List<int> kicked)
         {
             Messages = Ensure.Any.IsNotNull(messages);
@@ -45,7 +45,7 @@ namespace EduHubLibrary.Domain
             KickedId = Ensure.Any.IsNotNull(kicked);
         }
 
-        public IEnumerable<Message> Messages { get; internal set; }
+        public IEnumerable<BaseMessage> Messages { get; internal set; }
         public GroupInfo GroupInfo { get; internal set; }
         public User Teacher { get; internal set; }
         public CourseStatus Status { get; internal set; }
@@ -204,9 +204,9 @@ namespace EduHubLibrary.Domain
             return tags.TrueForAll(t => GroupInfo.Tags.Contains(t));
         }
 
-        internal void CommitChatSession(IEnumerable<Message> newMessages)
+        internal void CommitChatSession(IEnumerable<BaseMessage> newMessages)
         {
-            var newMessageList = new List<Message>(Messages);
+            var newMessageList = new List<BaseMessage>(Messages);
             newMessageList.AddRange(newMessages);
             Messages = newMessageList;
         }

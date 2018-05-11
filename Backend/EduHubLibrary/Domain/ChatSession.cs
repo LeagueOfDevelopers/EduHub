@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using EduHubLibrary.Domain.Tools;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 
 [assembly: InternalsVisibleTo("ChatTests")]
 
@@ -10,11 +11,11 @@ namespace EduHubLibrary.Domain
     public class ChatSession : IDisposable
     {
         private readonly Group _group;
-        private readonly List<Message> _messages;
+        private readonly List<BaseMessage> _messages;
 
         public ChatSession(Group group)
         {
-            _messages = new List<Message>();
+            _messages = new List<BaseMessage>();
             _group = group;
         }
 
@@ -23,9 +24,17 @@ namespace EduHubLibrary.Domain
             _group.CommitChatSession(_messages);
         }
 
-        internal int SendMessage(int senderId, string text)
+        internal int SendUserMessage(int senderId, string text)
         {
-            var message = new Message(senderId, text);
+            var message = new UserMessage(senderId, text);
+            _messages.Add(message);
+
+            return message.Id;
+        }
+
+        internal int SendGroupMessage(INotificationInfo notificationInfo)
+        {
+            var message = new GroupMessage(notificationInfo);
             _messages.Add(message);
 
             return message.Id;

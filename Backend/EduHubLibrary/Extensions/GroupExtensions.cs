@@ -23,9 +23,9 @@ namespace EduHubLibrary.Extensions
             User teacher = null;
             if (source.TeacherId != 0) teacher = new User(source.TeacherName, source.TeacherEmail, source.TeacherId);
 
-            var messages = new List<Message>();
-            source.Messages.ForEach(message => messages.Add(new Message(message.Id, message.SenderId,
-                message.SentOn, message.Text)));
+            var messages = new List<BaseMessage>();
+            source.Messages.ForEach(message => messages.Add(new UserMessage(message.SenderId, message.Text,
+                message.Id, message.SentOn)));
 
             var invitations = new List<Invitation>();
             source.Invitations.ForEach(invitation => invitations.Add(new Invitation(invitation.FromUser,

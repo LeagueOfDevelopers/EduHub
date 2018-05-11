@@ -240,7 +240,7 @@ namespace EduHubLibrary.Facades
 
             using (var cs = new ChatSession(currentGroup))
             {
-                cs.SendMessage(userId, reason);
+                cs.SendUserMessage(userId, reason);
             }
 
             _groupRepository.Update(currentGroup);

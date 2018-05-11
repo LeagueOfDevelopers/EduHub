@@ -311,11 +311,11 @@ namespace EduHubTests
             var group = new Group(creatorId, "SomeGroup", new List<string> {"c#"},
                 "The best", 3, 0, false, GroupType.Seminar);
 
-            var someMessages = new List<Message>
+            var someMessages = new List<BaseMessage>
             {
-                new Message(creatorId, "message1"),
-                new Message(creatorId, "message2"),
-                new Message(creatorId, "message3")
+                new UserMessage(creatorId, "message1"),
+                new UserMessage(creatorId, "message2"),
+                new UserMessage(creatorId, "message3")
             };
 
             //Act

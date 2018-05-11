@@ -173,7 +173,7 @@ namespace EduHub
             services.AddSingleton<IReportFacade>(reportFacade);
             services.AddSingleton(Env);
 
-            userAccountFacade.CheckAdminExistence(Configuration.GetValue<string>("AdminEmail"));
+            userAccountFacade.CheckAdminExistence("reindeers7@yandex.ru");
 
             services.AddSwaggerGen(current =>
             {

@@ -39,11 +39,13 @@ namespace EduHubLibrary.Extensions
                 result.Members.Add(new MemberDto(0, member.UserId, member.MemberRole,
                     member.Paid, member.CurriculumStatus)));
 
+            /*
             sourse.Messages?.ToList().ForEach(message =>
             {
                 if (result.Messages.All(messageDto => messageDto.Id != message.Id))
                     result.Messages.Add(new MessageDto(message.Id, message.SenderId, message.SentOn, message.Text));
             });
+            */
 
             sourse.KickedId?.ToList().ForEach(id => result.Kicked.Add(new KickedId(0, id)));
 
