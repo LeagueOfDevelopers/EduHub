@@ -23,6 +23,7 @@ namespace EduHubTests
         private IGroupFacade _groupFacade;
         private ISanctionFacade _sanctionFacade;
         private IUserFacade _userFacade;
+        private UserSettings userSettings;
 
         [TestInitialize]
         public void Initialize()
@@ -35,6 +36,7 @@ namespace EduHubTests
             var groupSettings = new GroupSettings(2, 10, 0, 1000);
             var emailSender = new Mock<IEmailSender>();
             var publisher = new Mock<IEventPublisher>();
+            userSettings = new UserSettings("");
 
             var adminKey = new Key("email", KeyAppointment.BecomeAdmin);
             inMemoryKeyRepository.AddKey(adminKey);
@@ -45,7 +47,7 @@ namespace EduHubTests
             _userFacade = new UserFacade(inMemoryUserRepository, inMemoryGroupRepository, inMemoryEventRepository,
                 publisher.Object);
             _accountFacade = new AccountFacade(inMemoryKeyRepository, inMemoryUserRepository,
-                emailSender.Object);
+                emailSender.Object, userSettings);
             var creatorId = _accountFacade.RegUser("Alena", new Credentials("email", "password"), true, adminKey.Value);
             _groupCreator = _userFacade.GetUser(creatorId);
         }

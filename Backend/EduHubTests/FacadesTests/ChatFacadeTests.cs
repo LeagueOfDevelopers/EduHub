@@ -20,6 +20,7 @@ namespace EduHubTests
         private IGroupRepository _groupRepository;
         private int _testGroupId;
         private IUserRepository _userRepository;
+        private UserSettings userSettings;
 
         [TestInitialize]
         public void Initialize()
@@ -33,8 +34,9 @@ namespace EduHubTests
             var sender = new Mock<IEmailSender>();
             var groupFacade = new GroupFacade(_groupRepository, _userRepository, sanctionRepository, groupSettings,
                 publisher.Object);
+            userSettings = new UserSettings("");
             var accountFacade = new AccountFacade(keyRepository, _userRepository,
-                sender.Object);
+                sender.Object, userSettings);
 
             _creatorId = accountFacade.RegUser("Alena", Credentials.FromRawData("email", "password"), true);
             _testGroupId = groupFacade.CreateGroup(_creatorId, "Some group", new List<string> {"c#"}, "Interesting",

@@ -4,6 +4,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Mailing;
 using EduHubLibrary.Mailing.MessageModels;
+using EduHubLibrary.Settings;
 using EnsureThat;
 
 namespace EduHubLibrary.Facades
@@ -13,12 +14,15 @@ namespace EduHubLibrary.Facades
         private readonly IKeysRepository _keysRepository;
         private readonly IEmailSender _sender;
         private readonly IUserRepository _userRepository;
+        private readonly UserSettings _userSettings;
 
-        public AccountFacade(IKeysRepository keysRepository, IUserRepository userRepository, IEmailSender sender)
+        public AccountFacade(IKeysRepository keysRepository, IUserRepository userRepository,
+            IEmailSender sender, UserSettings userSettings)
         {
             _keysRepository = keysRepository;
             _userRepository = userRepository;
             _sender = sender;
+            _userSettings = userSettings;
         }
 
         public int RegUser(string username, Credentials credentials, bool isTeacher)
@@ -28,7 +32,7 @@ namespace EduHubLibrary.Facades
             Ensure.Bool.IsFalse(_userRepository.GetAll().Any(u => u.Credentials.Email.Equals(credentials.Email)),
                 nameof(RegUser), opt => opt.WithException(new UserAlreadyExistsException(credentials.Email)));
 
-            var user = new User(username, credentials, isTeacher, UserType.UnConfirmed);
+            var user = new User(username, credentials, isTeacher, UserType.UnConfirmed, _userSettings.DefaultAvatar);
             var key = new Key(user.Credentials.Email, KeyAppointment.ConfirmEmail);
 
             _keysRepository.AddKey(key);
@@ -51,7 +55,7 @@ namespace EduHubLibrary.Facades
             CheckKey(key, KeyAppointment.BecomeAdmin, KeyAppointment.BecomeModerator);
 
             var userType = key.Appointment.Equals(KeyAppointment.BecomeAdmin) ? UserType.Admin : UserType.Moderator;
-            var user = new User(username, credentials, isTeacher, userType);
+            var user = new User(username, credentials, isTeacher, userType, _userSettings.DefaultAvatar);
             _userRepository.Add(user);
 
             return user.Id;

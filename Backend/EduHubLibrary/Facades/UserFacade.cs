@@ -8,6 +8,7 @@ using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.EventBus.EventTypes;
 using EduHubLibrary.Facades.Views;
+using EduHubLibrary.Settings;
 using EnsureThat;
 
 namespace EduHubLibrary.Facades

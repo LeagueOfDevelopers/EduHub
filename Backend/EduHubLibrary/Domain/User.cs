@@ -15,14 +15,15 @@ namespace EduHubLibrary.Domain
 {
     public class User
     {
-        public User(string name, Credentials credentials, bool isTeacher, UserType type, int id = 0)
+        public User(string name, Credentials credentials, bool isTeacher,
+            UserType type, string avatarLink = "", int id = 0)
         {
             Id = id;
             Ensure.String.IsNotNullOrWhiteSpace(name);
             Credentials = Ensure.Any.IsNotNull(credentials);
             Type = type;
             TeacherProfile = new TeacherProfile();
-            UserProfile = new UserProfile(name, Credentials.Email, isTeacher);
+            UserProfile = new UserProfile(name, Credentials.Email, isTeacher, avatarLink);
             IsActive = true;
             Invitations = new List<Invitation>();
             Notifies = new List<string>();
@@ -51,7 +52,7 @@ namespace EduHubLibrary.Domain
         internal User(string name, string email, int id)
         {
             Id = id;
-            UserProfile = new UserProfile(name, email, true);
+            UserProfile = new UserProfile(name, email, true, "");
         }
 
         public Credentials Credentials { get; private set; }

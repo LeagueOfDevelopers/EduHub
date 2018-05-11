@@ -19,6 +19,7 @@ namespace EduHubTests
         private int _groupCreatorId;
         private IGroupEditFacade _groupEditFacade;
         private IGroupFacade _groupFacade;
+        private UserSettings userSettings;
 
         [TestInitialize]
         public void Initialize()
@@ -30,11 +31,12 @@ namespace EduHubTests
             var groupSettings = new GroupSettings(2, 10, 0, 1000);
             var emailSender = new Mock<IEmailSender>();
             var publisher = new Mock<IEventPublisher>();
+            userSettings = new UserSettings("");
 
             _groupFacade = new GroupFacade(inMemoryGroupRepository, inMemoryUserRepository, inMemorySanctionRepository,
                 new GroupSettings(3, 100, 0, 1000), publisher.Object);
             _accountFacade = new AccountFacade(inMemoryKeyRepository, inMemoryUserRepository,
-                emailSender.Object);
+                emailSender.Object, userSettings);
             _groupEditFacade = new GroupEditFacade(inMemoryGroupRepository, groupSettings, publisher.Object);
             _groupCreatorId =
                 _accountFacade.RegUser("Alena", new Credentials("email", "password"), true);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using EduHub.Extensions;
 using EduHub.Filters;
@@ -108,6 +109,13 @@ namespace EduHub
                 Configuration.GetValue<string>("ConfirmAddress"),
                 int.Parse(Configuration.GetValue<string>("SmtpPort")));
 
+
+            var defaultAvatarFilename = Configuration.GetValue<string>("DefaultAvatarFilename");
+            var defaultAvatarContentType = Configuration.GetValue<string>("DefaultAvatarContentType");
+            var extension = Path.GetExtension(defaultAvatarFilename);
+            var userSettings = new UserSettings(defaultAvatarFilename);
+            fileRepository.AddFile(new UserFile(defaultAvatarFilename, defaultAvatarContentType));
+
             var tagFacade = new TagFacade(tagRepository);
             var emailSender = new EmailSender(emailSettings);
             var notificationsDistributor = new NotificationsDistributor(groupRepository, userRepository, emailSender);
@@ -159,7 +167,7 @@ namespace EduHub
             var fileFacade = new FileFacade(fileRepository);
             var chatFacade = new ChatFacade(groupRepository, userRepository);
             var sanctionsFacade = new SanctionFacade(sanctionRepository, userRepository, publisher);
-            var userAccountFacade = new AccountFacade(keysRepository, userRepository, emailSender);
+            var userAccountFacade = new AccountFacade(keysRepository, userRepository, emailSender, userSettings);
             var reportFacade = new ReportFacade(userRepository, eventRepository, publisher);
             services.AddSingleton<IUserFacade>(userFacade);
             services.AddSingleton<IGroupFacade>(groupFacade);

@@ -9,6 +9,7 @@ using EduHubLibrary.Facades;
 using EduHubLibrary.Infrastructure;
 using EduHubLibrary.Interators;
 using EduHubLibrary.Mailing;
+using EduHubLibrary.Settings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -24,6 +25,7 @@ namespace EduHubTests.FacadesTests
         private int _testUserId;
         private IUserFacade _userFacade;
         private IUserRepository _userRepository;
+        private UserSettings userSettings;
 
         [TestInitialize]
         public void Initialize()
@@ -35,11 +37,12 @@ namespace EduHubTests.FacadesTests
             var eventRepository = new InMemoryEventRepository();
             var adminKey = new Key("ivanov@mail.ru", KeyAppointment.BecomeAdmin);
             keysRepository.AddKey(adminKey);
+            userSettings = new UserSettings("");
 
             _publisher = new Mock<IEventPublisher>();
             _userRepository = new InMemoryUserRepository();
             _sanctionRepository = new InMemorySanctionRepository();
-            _accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender.Object);
+            _accountFacade = new AccountFacade(keysRepository, _userRepository, emailSender.Object, userSettings);
             _userFacade = new UserFacade(_userRepository, groupRepository, eventRepository, _publisher.Object);
             _adminId = _accountFacade.RegUser("Ivan", Credentials.FromRawData("ivanov@mail.ru", "1"), false,
                 adminKey.Value);

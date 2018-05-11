@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using EnsureThat;
 
 namespace EduHubLibrary.Domain.Tools
 {
     public class UserProfile
     {
-        public UserProfile(string name, string email, bool isTeacher)
+        public UserProfile(string name, string email, bool isTeacher, string avatarLink)
         {
             Email = email;
             Name = name;
             IsTeacher = isTeacher;
+            AvatarLink = Ensure.Any.IsNotNull(avatarLink);
             Contacts = new List<string>();
         }
 
