@@ -112,9 +112,11 @@ namespace EduHub
 
             var defaultAvatarFilename = Configuration.GetValue<string>("DefaultAvatarFilename");
             var defaultAvatarContentType = Configuration.GetValue<string>("DefaultAvatarContentType");
-            var extension = Path.GetExtension(defaultAvatarFilename);
             var userSettings = new UserSettings(defaultAvatarFilename);
-            fileRepository.AddFile(new UserFile(defaultAvatarFilename, defaultAvatarContentType));
+            if (!fileRepository.DoesFileExists(defaultAvatarFilename))
+            { 
+                fileRepository.AddFile(new UserFile(defaultAvatarFilename, defaultAvatarContentType));
+            }
 
             var tagFacade = new TagFacade(tagRepository);
             var emailSender = new EmailSender(emailSettings);
