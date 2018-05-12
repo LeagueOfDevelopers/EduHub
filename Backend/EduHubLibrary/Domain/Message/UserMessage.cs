@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EduHubLibrary.Domain.Message;
 
 namespace EduHubLibrary.Domain
 {
@@ -22,5 +23,10 @@ namespace EduHubLibrary.Domain
 
         public int SenderId { get; }
         public string Text { get; internal set; }
+
+        internal override MessageType GetMessageType()
+        {
+            return MessageType.UserMessage;
+        }
     }
 }

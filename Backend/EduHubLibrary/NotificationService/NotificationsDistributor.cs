@@ -58,8 +58,10 @@ namespace EduHubLibrary.Domain.NotificationService
 
         public void NotifyGroup(int groupId, INotificationInfo notificationInfo)
         {
-            _groupRepository.GetGroupById(groupId).Members.ToList().ForEach
-                (m => NotifySubscriber(m.UserId, notificationInfo));
+            var currentGroup = _groupRepository.GetGroupById(groupId);
+            currentGroup.Members.ToList().ForEach(m => NotifySubscriber(m.UserId, notificationInfo));
+
+            SendNotificationToChat(notificationInfo, currentGroup);
         }
 
         public void NotifyPerson(int userId, INotificationInfo notificationInfo)
@@ -103,6 +105,14 @@ namespace EduHubLibrary.Domain.NotificationService
             var messageContent = _messageMapper.MapNotification(notificationInfo, user.UserProfile.Name);
             var notificationType = notificationInfo.GetNotificationType();
             _sender.SendMessage(user.UserProfile.Email, messageContent, _messageThemes[notificationType]);
+        }
+
+        private void SendNotificationToChat(INotificationInfo notificationInfo, Group group)
+        {
+            using (var chat = new ChatSession(group))
+            {
+                chat.SendGroupMessage(notificationInfo);
+            }
         }
     }
 }

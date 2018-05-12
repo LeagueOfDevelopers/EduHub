@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EduHubLibrary.Domain.Message;
+using System;
 
 namespace EduHubLibrary.Domain.Tools
 {
@@ -15,6 +16,8 @@ namespace EduHubLibrary.Domain.Tools
             Id = id;
             SentOn = sentOn;
         }
+
+        internal abstract MessageType GetMessageType();
 
         public int Id { get; internal set; }
         public DateTimeOffset SentOn { get; }

@@ -10,6 +10,7 @@ using EduHubLibrary.EventBus.EventTypes;
 using EduHubLibrary.Facades.Views;
 using EduHubLibrary.Settings;
 using EnsureThat;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHubLibrary.Facades
 {
@@ -62,9 +63,9 @@ namespace EduHubLibrary.Facades
 
                     _publisher.PublishEvent(new NewMemberEvent(currentGroup.GroupInfo.Id, currentGroup.GroupInfo.Title,
                         currentUser.UserProfile.Name));
+
                     if (currentGroup.Members.Count == currentGroup.GroupInfo.Size)
-                        _publisher.PublishEvent(new GroupIsFormedEvent(currentGroup.GroupInfo.Title,
-                            currentGroup.GroupInfo.Id));
+                        _publisher.PublishEvent(new GroupIsFormedEvent(currentGroup.GroupInfo.Title, currentGroup.GroupInfo.Id));
                 }
                 else if (currentInvitation.SuggestedRole == MemberRole.Teacher)
                 {

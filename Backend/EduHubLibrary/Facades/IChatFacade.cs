@@ -6,7 +6,7 @@ namespace EduHubLibrary.Facades
     public interface IChatFacade
     {
         int SendMessage(int senderId, int groupId, string text);
-        MessageView GetMessage(int messageId, int groupId, int userId);
-        IEnumerable<MessageView> GetMessagesForGroup(int groupId, int userId);
+        UserMessageView GetMessage(int messageId, int groupId, int userId);
+        IEnumerable<BaseMessageView> GetMessagesForGroup(int groupId, int userId);
     }
 }

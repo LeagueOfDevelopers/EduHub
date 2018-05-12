@@ -4,6 +4,7 @@ using EduHubLibrary.Domain;
 using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Facades.Views.GroupViews;
 using EnsureThat;
+using EduHubLibrary.Domain.Message;
 
 namespace EduHubLibrary.Facades
 {
@@ -39,34 +40,39 @@ namespace EduHubLibrary.Facades
             }).Id;
         }
 
-        public MessageView GetMessage(int messageId, int groupId, int userId)
+        public UserMessageView GetMessage(int messageId, int groupId, int userId)
         {
             Ensure.Bool.IsTrue(HasRights(groupId, userId), nameof(HasRights),
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
 
             var message = (UserMessage)_groupRepository.GetGroupById(groupId).Messages.ToList().Find(m => m.Id.Equals(messageId));
             var sendername = _userRepository.GetUserById(message.SenderId).UserProfile.Name;
-            return new MessageView(message.Id, message.SenderId, sendername, message.SentOn, message.Text);
+            return new UserMessageView(message.SenderId, sendername, message.Text, message.Id, message.SentOn);
         }
 
-        public IEnumerable<MessageView> GetMessagesForGroup(int groupId, int userId)
+        public IEnumerable<BaseMessageView> GetMessagesForGroup(int groupId, int userId)
         {
             Ensure.Bool.IsTrue(HasRights(groupId, userId), nameof(HasRights),
                 opt => opt.WithException(new NotEnoughPermissionsException(userId)));
 
             var currentGroup = _groupRepository.GetGroupById(groupId);
 
-            var messagesList = new List<MessageView>();
-
-            //TODO: return UserMessage and GroupMessage
-            /*
+            var messagesList = new List<BaseMessageView>();
+            
             currentGroup.Messages.ToList().ForEach(m =>
             {
-                var message = (UserMessage)m;
-                messagesList.Add(new MessageView(message.Id, message.SenderId,
-                  _userRepository.GetUserById(message.SenderId).UserProfile.Name, message.SentOn, message.Text));
+                if (m.GetMessageType().Equals(MessageType.UserMessage))
+                {
+                    var message = (UserMessage)m;
+                    messagesList.Add(new UserMessageView(message.SenderId,
+                      _userRepository.GetUserById(message.SenderId).UserProfile.Name, message.Text, message.Id, message.SentOn));
+                }
+                else if (m.GetMessageType().Equals(MessageType.GroupMessage))
+                {
+                    var message = (GroupMessage)m;
+                    messagesList.Add(new GroupMessageView(message.NotificationInfo, message.Id, message.SentOn));
+                }
             });
-            */
 
             return messagesList;
         }

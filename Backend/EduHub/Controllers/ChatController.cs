@@ -8,6 +8,7 @@ using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using EduHub.Models.ChatControllerModels;
 
 namespace EduHub.Controllers
 {
@@ -52,11 +53,11 @@ namespace EduHub.Controllers
         }
 
         /// <summary>
-        ///     Returns message by id
+        ///     Returns user's message by id
         /// </summary>
         [Authorize]
         [HttpGet]
-        [SwaggerResponse(200, Type = typeof(MessageInfoResponse))]
+        [SwaggerResponse(200, Type = typeof(UserMessageResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         [Route("{messageId}")]
         public IActionResult GetMessage([FromRoute] int groupId, [FromRoute] int messageId)
@@ -64,8 +65,8 @@ namespace EduHub.Controllers
             var userId = Request.GetUserId();
 
             var message = _chatFacade.GetMessage(messageId, groupId, userId);
-            var response = new MessageInfoResponse(message.Id, message.SenderId, message.SenderName,
-                message.SentOn, message.Text);
+            var response = new UserMessageResponse(message.Id, message.SentOn, message.MessageType, message.SenderId, 
+                message.SenderName, message.Text);
             return Ok(response);
         }
 
@@ -75,16 +76,13 @@ namespace EduHub.Controllers
         /// </summary>
         [Authorize]
         [HttpGet]
-        [SwaggerResponse(200, Type = typeof(MessageInfoResponse))]
+        [SwaggerResponse(200, Type = typeof(AllPossibleMessages))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetAllMessages([FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
+            var response =  _chatFacade.GetMessagesForGroup(groupId, userId);
 
-            var response = new List<MessageInfoResponse>();
-            var messageView = _chatFacade.GetMessagesForGroup(groupId, userId);
-            messageView.ToList().ForEach(
-                m => response.Add(new MessageInfoResponse(m.Id, m.SenderId, m.SenderName, m.SentOn, m.Text)));
             return Ok(response);
         }
     }
