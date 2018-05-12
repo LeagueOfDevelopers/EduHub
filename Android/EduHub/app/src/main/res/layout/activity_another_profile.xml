@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.lod_misis.user.eduhub.AnotherProfileActivity"
-    android:background="@color/veryGrey">
+    android:orientation="vertical"
+    android:id="@+id/main_another_profile_layout"
+    android:visibility="gone"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <RelativeLayout
-        android:id="@+id/window"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
 
-        android:visibility="gone">
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <android.support.design.widget.AppBarLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/blue"
             android:theme="@style/AppTheme.PopupOverlay">
 
             <RelativeLayout
@@ -31,7 +33,7 @@
                     android:layout_height="24dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="7dp"
-                    android:background="@color/grey"
+                    android:background="@color/blue"
                     android:src="@drawable/ic_arrow_back_black_24dp" />
 
                 <android.support.v7.widget.Toolbar
@@ -39,354 +41,310 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/back"
-                    android:background="?attr/colorPrimary"
+                    android:background="@color/blue"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
             </RelativeLayout>
         </android.support.design.widget.AppBarLayout>
+        </LinearLayout>
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/top_card"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_below="@+id/header"
-            android:background="@color/metalic">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/metalic">
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/avatar"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:maxHeight="100dp"
+                    android:maxWidth="100dp"
                     app:srcCompat="@drawable/ic_person_48px" />
 
                 <TextView
                     android:id="@+id/name_user_profile"
-                    android:layout_width="120dp"
-                    android:layout_height="16dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_toRightOf="@+id/avatar"
-                    android:text="Александр"
-                    android:textColor="@color/black"
-                    android:textSize="12dp"
-                    android:textStyle="bold|italic" />
-
-                <TextView
-                    android:id="@+id/email_user_profile"
-                    android:layout_width="120dp"
-                    android:layout_height="14dp"
-                    android:layout_below="@+id/name_user_profile"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_toRightOf="@+id/avatar"
-                    android:text="eduHub@misis.ru"
-                    android:textColor="@color/black"
-                    android:textSize="11dp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:text="Дмитрий Борисович"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/status"
                     android:layout_width="wrap_content"
-                    android:layout_height="14dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="22dp"
-                    android:gravity="end"
-                    android:maxWidth="150dp"
-                    android:text="статус"
-                    android:textAlignment="viewEnd"
-                    android:textColor="@color/black"
-                    android:textSize="11dp" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="19dp"
+                    android:layout_marginTop="11.5dp"
+                    android:text="Преподаю"
+                    android:textColor="#FFFFFF" />
 
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/top_card"
-            android:layout_marginTop="15dp">
+            </LinearLayout>
 
-            <RelativeLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/header_meddle_card"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="25dp">
 
-                    <RelativeLayout
-
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/metalic">
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/personal_data"
-                            android:layout_width="102dp"
-                            android:layout_height="25dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
                             android:text="Личные данные"
-                            android:textColor="@color/black"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/name_user_profile_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="Имя"
+                            android:textColor="@color/dark_grey"
                             android:textSize="12dp" />
 
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_name"
+                        <TextView
+                            android:id="@+id/name_user_profile2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="Дмитрий Борисович"
+                            android:textColor="@color/black" />
+                        <Button
+                            android:id="@+id/line1"
                             android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/personal_data"
-                            app:cardCornerRadius="0dp">
+                            android:layout_height="1sp"
+                            android:background="@color/dark_grey"
+                            android:layout_marginTop="8dp"/>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
+                        <TextView
+                            android:id="@+id/email_user_profile2_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="Email"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="12dp" />
 
-                                <TextView
-                                    android:id="@+id/title_card_of_name"
-                                    android:layout_width="70dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Имя"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <TextView
-                                    android:id="@+id/name_user_profile2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Александр"
-                                    android:textColor="@color/black" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_email"
+                        <TextView
+                            android:id="@+id/email_user_profile2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="LolKek@gmail.com"
+                            android:textColor="@color/black" />
+                        <Button
+                            android:id="@+id/line2"
                             android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_name"
-                            app:cardCornerRadius="0dp">
+                            android:layout_height="1px"
+                            android:background="@color/dark_grey"
+                            android:layout_marginTop="8dp"/>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
+                        <TextView
+                            android:id="@+id/sex_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="Пол"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="12dp" />
 
-                                <TextView
-                                    android:id="@+id/title_card_of_email"
-                                    android:layout_width="70dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Email"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <TextView
-                                    android:id="@+id/email_user_profile2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="eduHub@misis.ru"
-                                    android:textColor="@color/black"
-
-                                    android:textSize="12dp" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_sex"
+                        <TextView
+                            android:id="@+id/sex"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="Мужской"
+                            android:textColor="@color/black" />
+                        <Button
+                            android:id="@+id/line3"
                             android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_email"
-                            app:cardCornerRadius="0dp">
+                            android:layout_height="1px"
+                            android:background="@color/dark_grey"
+                            android:layout_marginTop="8dp"/>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
+                        <TextView
+                            android:id="@+id/birth_year_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="Дата рождения"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="12dp" />
 
-                                <TextView
-                                    android:id="@+id/title_card_of_sex"
-                                    android:layout_width="70dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Пол"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <TextView
-                                    android:id="@+id/sex"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Мужской"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_birth"
+                        <TextView
+                            android:id="@+id/birth_year"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="04.03.1999"
+                            android:textColor="@color/black" />
+                        <Button
+                            android:id="@+id/line4"
                             android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_sex"
-                            app:cardCornerRadius="0dp">
+                            android:layout_height="1px"
+                            android:background="@color/dark_grey"
+                            android:layout_marginTop="8dp"/>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
+                        <TextView
+                            android:id="@+id/aboutMe_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="Обо мне"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="12dp" />
 
-                                <TextView
-                                    android:id="@+id/title_card_of_birth"
-                                    android:layout_width="70dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Год рождения"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <TextView
-                                    android:id="@+id/birth_year"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="1999"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_aboutMe"
+                        <TextView
+                            android:id="@+id/aboutMe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="Дизайн супер.Приступил к верстке.Тут может быть еще много текста,надеюсь верстка не поедет."
+                            android:textColor="@color/black" />
+                        <Button
+                            android:id="@+id/line5"
                             android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_birth"
-                            app:cardCornerRadius="0dp">
+                            android:layout_height="1px"
+                            android:background="@color/dark_grey"
+                            android:layout_marginTop="8dp"/>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
+                        <TextView
+                            android:id="@+id/skils_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="Навыки"
+                            android:textColor="@color/dark_grey" />
 
-                                <TextView
-                                    android:id="@+id/title_card_of_aboutMe"
-                                    android:layout_width="70dp"
-                                    android:layout_height="46dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Обо мне"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <TextView
-                                    android:id="@+id/aboutMe"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Занимаюсь разработкой под андроид.Также постепенно совершенствуюсь и двигаюсь вперед,с оптимизмом в будущее!"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-                            </RelativeLayout>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/skils"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
 
-                        </android.support.v7.widget.CardView>
-
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_skils"
+                        </android.support.v7.widget.RecyclerView>
+                        <Button
+                            android:id="@+id/line6"
                             android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_aboutMe"
-                            app:cardCornerRadius="0dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
-
-                                <TextView
-                                    android:id="@+id/title_card_of_skils"
-                                    android:layout_width="70dp"
-                                    android:layout_height="46dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Навыки"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <android.support.v7.widget.RecyclerView
-                                    android:id="@+id/skils"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:layout_marginTop="15dp" />
-                            </RelativeLayout>
-
-
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/links"
+                            android:layout_height="1px"
+                            android:background="@color/dark_grey"
+                            android:layout_marginTop="8dp"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/contacts"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
                             android:layout_width="match_parent"
-                            android:layout_height="55dp"
-                            android:layout_below="@+id/card_of_skils"
-                            app:cardBackgroundColor="@color/metalic">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp">
 
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/contacts"
-                                android:layout_width="wrap_content"
-                                android:layout_height="35dp"
-                                android:layout_marginLeft="12dp"
-                                android:layout_marginTop="8dp"
-                                android:background="@color/metalic">
+                        </android.support.v7.widget.RecyclerView>
 
-                            </android.support.v7.widget.RecyclerView>
-
-                        </android.support.v7.widget.CardView>
-                    </RelativeLayout>
-
+                        <TextView
+                            android:id="@+id/contacts_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="4dp"
+                            android:text="Контакты"
+                            android:textColor="@color/dark_grey" />
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
 
-                <com.mindorks.placeholderview.ExpandablePlaceHolderView
-                    android:id="@+id/expandableView"
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/header_meddle_card"
-                    android:layout_marginTop="15dp"
-                    android:scrollbars="vertical" />
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="25dp">
 
-                <com.mindorks.placeholderview.ExpandablePlaceHolderView
-                    android:id="@+id/expandableView2"
+                    <com.mindorks.placeholderview.ExpandablePlaceHolderView
+                        android:id="@+id/expandableView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp">
+
+                    </com.mindorks.placeholderview.ExpandablePlaceHolderView>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/expandableView"
-                    android:scrollbars="vertical" />
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="25dp">
 
-            </RelativeLayout>
-        </ScrollView>
-    </RelativeLayout>
+                    <com.mindorks.placeholderview.ExpandablePlaceHolderView
+                        android:id="@+id/expandableView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp">
 
-</android.support.constraint.ConstraintLayout>
+                    </com.mindorks.placeholderview.ExpandablePlaceHolderView>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+</FrameLayout>
+
+
+
+

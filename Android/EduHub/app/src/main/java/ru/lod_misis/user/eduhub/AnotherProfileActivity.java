@@ -1,6 +1,7 @@
 package ru.lod_misis.user.eduhub;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,6 +46,7 @@ import ru.lod_misis.user.eduhub.Presenters.UserProfilePresenter;
 
 import com.example.user.eduhub.R;
 import com.mindorks.placeholderview.ExpandablePlaceHolderView;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,6 +60,21 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     FakeUserProfilePresenter fakeUserProfilePresenter=new FakeUserProfilePresenter(this);
     FileRepository fileRepository;
+    FrameLayout mainLayout;
+    View line1;
+    View line2;
+    View line3;
+    View line4;
+    View line5;
+    View line6;
+
+    TextView headerSex;
+    TextView headerName;
+    TextView headerEmail;
+    TextView headerSkils;
+    TextView headerBirthyear;
+    TextView headerContacts;
+    TextView headerAboutMe;
 
     Boolean flag=false;
     TextView userName;
@@ -78,7 +95,7 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
     DialogInterface.OnClickListener myClickListener;
     RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
     User user;
-    RelativeLayout relativeLayout;
+
     FrameLayout load;
     Activity v=this;
     @Override
@@ -91,7 +108,7 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
         sharedPreferences =getSharedPreferences("User",MODE_PRIVATE);
         user=savedDataRepository.loadSavedData(sharedPreferences);
         ImageButton backButton=findViewById(R.id.back);
-        relativeLayout=findViewById(R.id.window);
+
 
         avatar=v.findViewById(R.id.avatar);
         userName=v.findViewById(R.id.name_user_profile);
@@ -100,13 +117,26 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
         userEmail2=v.findViewById(R.id.email_user_profile2);
         status=v.findViewById(R.id.status);
         sex=v.findViewById(R.id.sex);
-
+        mainLayout=findViewById(R.id.main_another_profile_layout);
         birthYear=v.findViewById(R.id.birth_year);
         aboutMe=v.findViewById(R.id.aboutMe);
         refactor=v.findViewById(R.id.refactor);
         contacts=v.findViewById(R.id.contacts);
 
+        line1=v.findViewById(R.id.line1);
+        line2=v.findViewById(R.id.line2);
+        line3=v.findViewById(R.id.line3);
+        line4=v.findViewById(R.id.line4);
+        line5=v.findViewById(R.id.line5);
+        line6=v.findViewById(R.id.line6);
 
+        headerAboutMe=v.findViewById(R.id.aboutMe_header);
+        headerBirthyear=v.findViewById(R.id.birth_year_header);
+        headerContacts=v.findViewById(R.id.contacts_header);
+        headerEmail=v.findViewById(R.id.email_user_profile2_header);
+        headerName=v.findViewById(R.id.name_user_profile_header);
+        headerSex=v.findViewById(R.id.sex_header);
+        headerSkils=v.findViewById(R.id.skils_header);
 
         exit=v.findViewById(R.id.exit);
 
@@ -176,41 +206,55 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
     @Override
     public void getUserProfile(UserProfileResponse userProfile) {
         {
-            Log.d("window",relativeLayout.toString());
 
-            relativeLayout.setVisibility(View.VISIBLE);
-            Log.d("IsVisible",(relativeLayout.getVisibility())+"");
-            Log.d("Role12",userProfile.getUserProfile().getIsTeacher().toString());
-            userEmail.setText(userProfile.getUserProfile().getEmail());
+
+
+            expandablePlaceHolderView.setVisibility(View.GONE);
+            expandablePlaceHolderView2.setVisibility(View.GONE);
+
+            Log.d("Role",userProfile.getUserProfile().getIsTeacher().toString());
+
             userEmail2.setText(userProfile.getUserProfile().getEmail());
             userName.setText(userProfile.getUserProfile().getName());
             userName2.setText(userProfile.getUserProfile().getName());
             if(userProfile.getUserProfile().getIsTeacher()){
-                status.setText("Преподаватель");
-            }else{
-                status.setText("Ученик");
+                status.setText("Преподаю");
             }
+            else{
+                status.setText("Учусь");
+            }
+
             if(userProfile.getUserProfile().getAvatarLink()!=null){
-                fileRepository.loadImageFromServer(user.getToken(),userProfile.getUserProfile().getAvatarLink());
+                Picasso.get().load("http://85.143.104.47:2411/api/file/img/"+userProfile.getUserProfile().getAvatarLink()).into(avatar);
+
             }
             if(!userProfile.getUserProfile().getGender().equals("0")){
-                v.findViewById(R.id.card_of_sex).setVisibility(View.VISIBLE);
+                sex.setVisibility(View.VISIBLE);
+                line3.setVisibility(View.VISIBLE);
+                headerSex.setVisibility(View.VISIBLE);
                 if (userProfile.getUserProfile().getGender().equals("1")){
                     sex.setText("Мужской");
                 }else{
                     sex.setText("Женский");
                 }
             }else {
-                v.findViewById(R.id.card_of_sex).setVisibility(View.GONE);
+                sex.setVisibility(View.GONE);
+                line3.setVisibility(View.GONE);
+                headerSex.setVisibility(View.GONE);
             }
             if(userProfile.getUserProfile().getBirthYear().toString().equals("0")){
-                v.findViewById(R.id.card_of_birth).setVisibility(View.GONE);
+                line4.setVisibility(View.GONE);
+                headerBirthyear.setVisibility(View.GONE);
+                birthYear.setVisibility(View.GONE);
+
             }else {
-                v.findViewById(R.id.card_of_birth).setVisibility(View.VISIBLE);
+
                 birthYear.setText(userProfile.getUserProfile().getBirthYear()+"");
             }
             if(userProfile.getUserProfile().getContacts().size()==0){
-                v.findViewById(R.id.links).setVisibility(View.GONE);
+                headerContacts.setVisibility(View.GONE);
+                contacts.setVisibility(View.GONE);
+
             }else{
                 v.findViewById(R.id.links).setVisibility(View.VISIBLE);
                 contacts.setHasFixedSize(true);
@@ -221,16 +265,19 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
             }
 
             if(userProfile.getUserProfile().getAboutUser()==null){
-                v.findViewById(R.id.card_of_aboutMe).setVisibility(View.GONE);
+                headerAboutMe.setVisibility(View.GONE);
+                aboutMe.setVisibility(View.GONE);
+                line5.setVisibility(View.GONE);
             }else{
-                v.findViewById(R.id.card_of_aboutMe).setVisibility(View.VISIBLE);
+
                 aboutMe.setText(userProfile.getUserProfile().getAboutUser());}
             if(userProfile.getUserProfile().getIsTeacher()){
                 if(userProfile.getTeacherProfile().getSkills().size()==0){
-                    v.findViewById(R.id.card_of_skils).setVisibility(View.VISIBLE);
-                    v.findViewById(R.id.card_of_skils).setVisibility(View.GONE);
+                    headerSkils.setVisibility(View.GONE);
+                    v.findViewById(R.id.skils).setVisibility(View.GONE);
+                    line6.setVisibility(View.GONE);
                 }else{
-                    v.findViewById(R.id.card_of_skils).setVisibility(View.VISIBLE);
+
                     RecyclerView recyclerView=v.findViewById(R.id.skils);
                     recyclerView.setHasFixedSize(true);
                     StaggeredGridLayoutManager staggeredGridLayoutManager=new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);
@@ -238,21 +285,24 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
                     TagsAdapter adapter=new TagsAdapter((ArrayList<String>) userProfile.getTeacherProfile().getSkills());
                     recyclerView.setAdapter(adapter);
                 }}else{
-                v.findViewById(R.id.card_of_skils).setVisibility(View.GONE);
+                headerSkils.setVisibility(View.GONE);
+                v.findViewById(R.id.skils).setVisibility(View.GONE);
+                line6.setVisibility(View.GONE);
             }
 
             if(userProfile.getUserProfile().getIsTeacher()){
                 expandablePlaceHolderView.setVisibility(View.VISIBLE);
-                expandablePlaceHolderView2.setVisibility(View.VISIBLE);
+
                 Log.d("ROLE2",userProfile.getUserProfile().getIsTeacher().toString());
                 expandablePlaceHolderView.addView(new ReviewsHeaderView(this,userProfile.getTeacherProfile().getReviews().size()+" отзывов"));
                 for(Review review:userProfile.getTeacherProfile().getReviews()){
                     expandablePlaceHolderView.addView(new ReviewItemsView(this,review));
                 }
                 if(userProfile.getTeacherProfile().getJobExp()!=null){
-                    expandablePlaceHolderView.addView(new JobExpHeaderVIew(this,userProfile.getTeacherProfile().getJobExp().size()+" групп"));
+                    expandablePlaceHolderView2.setVisibility(View.VISIBLE);
+                    expandablePlaceHolderView2.addView(new JobExpHeaderVIew(this,userProfile.getTeacherProfile().getJobExp().size()+" групп"));
                     for(Group group:userProfile.getTeacherProfile().getJobExp()){
-                        expandablePlaceHolderView.addView(new JobExpItemView(this,group));
+                        expandablePlaceHolderView2.addView(new JobExpItemView(this,group));
                     }
                 }}else{
                 expandablePlaceHolderView.setVisibility(View.GONE);
@@ -261,6 +311,7 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
 
 
 
+
         }
-    }
+    mainLayout.setVisibility(View.VISIBLE);}
 }

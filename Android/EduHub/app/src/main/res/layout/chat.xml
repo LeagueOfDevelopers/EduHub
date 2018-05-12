@@ -37,7 +37,8 @@
                     android:id="@+id/enter_message_button"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:layout_toRightOf="@+id/edit_message" />
+                    android:layout_toRightOf="@+id/edit_message"
+                    android:src="@drawable/ic_menu_send"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 

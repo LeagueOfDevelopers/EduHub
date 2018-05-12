@@ -33,8 +33,7 @@ public class ReviewItemsView {
     @ChildPosition
     private int mChildPosition;
 
-    @View(R.id.reviewTitle)
-    private TextView reviewTitle;
+
 
     @View(R.id.reviewText)
     private TextView reviewText;
@@ -56,7 +55,7 @@ public class ReviewItemsView {
 
     @Resolve
     private void onResolved() {
-        reviewTitle.setText(review.getTitle());
+
         reviewText.setText(review.getText());
         author.setText(review.getFromUser());
         Log.d("FromUser",review.getFromUser());

@@ -21,10 +21,10 @@ import com.mindorks.placeholderview.annotations.expand.Toggle;
 @SingleTop
 @Layout(R.layout.review_header)
 public class ReviewsHeaderView {
-    @View(R.id.number_of_reviews)
-    private TextView numberOfReviews;
+    @View(R.id.review_header)
+    private TextView headerReviews;
 
-    @Toggle(R.id.number_of_reviews)
+    @Toggle(R.id.review_header)
     private TextView toggleView;
 
     @ParentPosition
@@ -39,7 +39,7 @@ public class ReviewsHeaderView {
     }
     @Resolve
     private void onResolved() {
-        numberOfReviews.setText(heading);
+
 
     }
 

@@ -25,6 +25,8 @@ import ru.lod_misis.user.eduhub.Models.Group.Member;
 import ru.lod_misis.user.eduhub.Models.User;
 import ru.lod_misis.user.eduhub.Presenters.FileRepository;
 import com.example.user.eduhub.R;
+import com.squareup.picasso.Picasso;
+
 import ru.lod_misis.user.eduhub.Retrofit.EduHubApi;
 import ru.lod_misis.user.eduhub.Retrofit.RetrofitBuilder;
 
@@ -60,6 +62,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         this.updateList=updateList;
         this.activity=activity;
         fileRepository=new FileRepository(this,context);
+        this.context=context;
         eduHubApi=RetrofitBuilder.getApi(context);
 
     }
@@ -70,6 +73,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         this.activity=activity;
         eduHubApi=RetrofitBuilder.getApi(context);
         fileRepository=new FileRepository(this,context);
+        this.context=context;
         user=null;
 
     }
@@ -96,29 +100,17 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         }
         }
 
-        {if(user!=null) {
+        {
 
             if(members.get(i).getAvatarLink()!=null){
                 Log.d("Avatar",members.get(i).getAvatarLink());
-            eduHubApi.loadImageFromServer("Bearer " + user.getToken(), members.get(i).getAvatarLink())
+                Picasso.get().load("http://85.143.104.47:2411/api/file/img/"+members.get(i).getAvatarLink()).into(holder.userImage);
 
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(next -> {
-
-                                result = next;
-                            },
-                            throwable -> {
-                                Log.e("GetFile", throwable.toString());
-                            },
-                            () -> {
-                                getFile2(result, holder.userImage);
-                            });
-            userImage2 = holder.userImage;
+            }else{
+                userImage2 = holder.userImage;
+                userImage2.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_person_48px));
             }
-        }else{
-            userImage2.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_person_48px));
-        }
+
         }
         Log.e("Error Role",members.get(i).getRole()+"");
         switch (members.get(i).getRole()+""){

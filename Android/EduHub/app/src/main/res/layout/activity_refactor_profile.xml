@@ -1,504 +1,349 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.lod_misis.user.eduhub.RefactorProfile">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/veryGrey">
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/header"
+    xmlns:TagsEditText="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.PopupOverlay">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp">
+        android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/back"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="7dp"
-                android:layout_centerVertical="true"
-                android:background="@color/grey"
-                android:src="@drawable/ic_arrow_back_black_24dp" />
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/back"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-        </RelativeLayout>
-    </android.support.design.widget.AppBarLayout>
-
-        <ScrollView
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/header">
+            android:layout_height="wrap_content"
+            android:background="@color/blue"
+            android:theme="@style/AppTheme.PopupOverlay">
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/veryGrey">
+                android:layout_height="45dp">
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/top_card"
+                <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:background="@color/blue"
+                    android:src="@drawable/ic_arrow_back_black_24dp" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/back"
+                    android:background="@color/blue"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+            </RelativeLayout>
+        </android.support.design.widget.AppBarLayout>
 
-                    android:layout_alignParentTop="true"
-                    android:background="@color/metalic">
+    </LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/metalic">
+                <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    app:srcCompat="@drawable/ic_person_48px" />
 
-                        <ImageView
-                            android:id="@+id/avatar"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginTop="12dp"
-                            app:srcCompat="@drawable/ic_add_avatar" />
+                <TextView
+                    android:id="@+id/name_user_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:text="Дмитрий Борисович"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/name_user_profile"
-                            android:layout_width="120dp"
-                            android:layout_height="16dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_toRightOf="@+id/avatar"
-                            android:text="Александр"
-                            android:textColor="@color/black"
-                            android:textSize="12dp"
-                            android:textStyle="bold|italic" />
+                <Switch
+                    android:id="@+id/isTeacher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="19dp"
+                    android:layout_marginTop="11.5dp"
+                    android:text="Преподаю"
+                    android:textColor="#FFFFFF" />
 
-                        <TextView
-                            android:id="@+id/email_user_profile"
-                            android:layout_width="120dp"
-                            android:layout_height="14dp"
-                            android:layout_below="@+id/name_user_profile"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_toRightOf="@+id/avatar"
-                            android:text="eduHub@misis.ru"
-                            android:textColor="@color/black"
-                            android:textSize="11dp" />
+            </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="14dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="22dp"
-                            android:gravity="end"
-                            android:text="статус"
-                            android:textAlignment="viewEnd"
-                            android:textColor="@color/black"
-                            android:textSize="11dp" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
-
-
-                    android:id="@+id/middle_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/top_card"
-                    android:layout_marginTop="15dp">
+                    android:layout_marginBottom="25dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="25dp">
 
-                    <RelativeLayout
-
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/metalic">
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/header_meddle_card"
-                            android:layout_width="102dp"
-                            android:layout_height="25dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+
                             android:text="Личные данные"
-                            android:textColor="@color/black"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:text="Имя"
+                            android:textColor="@color/dark_grey"
                             android:textSize="12dp" />
 
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_name"
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/error_layout_name"
                             android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/header_meddle_card"
-                            app:cardCornerRadius="0dp">
+                            android:layout_height="wrap_content">
 
-                            <RelativeLayout
+                            <EditText
+                                android:id="@+id/name_user_profile2"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Дмитрий Борисович"
+                                android:textColor="@color/black" />
 
-                                <TextView
-                                    android:id="@+id/title_card_of_name"
-                                    android:layout_width="70dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Имя"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
+                        </android.support.design.widget.TextInputLayout>
 
-                                <EditText
-                                    android:id="@+id/name_user_profile2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="25dp"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="#FFFFFF"
-                                    android:gravity="center_vertical"
-                                    android:paddingBottom="2dp"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:paddingTop="2dp"
-                                    android:singleLine="true"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Email"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="12dp" />
 
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_email"
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/error_layout_email"
                             android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_name"
-                            app:cardCornerRadius="0dp">
+                            android:layout_height="wrap_content">
 
-                            <RelativeLayout
+                            <EditText
+                                android:id="@+id/email_user_profile2"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="LolKek@gmail.com"
+                                android:textColor="@color/black" />
+                        </android.support.design.widget.TextInputLayout>
 
-                                <TextView
-                                    android:id="@+id/title_card_of_email"
-                                    android:layout_width="70dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Email"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Пол"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="12dp" />
 
-                                <EditText
-                                    android:id="@+id/email_user_profile2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="25dp"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="#FFFFFF"
-                                    android:gravity="center_vertical"
-                                    android:paddingBottom="2dp"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:paddingTop="2dp"
-                                    android:singleLine="true"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_sex"
-                            android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_email"
-                            app:cardCornerRadius="0dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
-
-                                <TextView
-                                    android:id="@+id/title_card_of_sex"
-                                    android:layout_width="70dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Пол"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <Spinner
-                                    android:id="@+id/sex"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="25dp"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="#FFFFFF"
-                                    android:gravity="center_vertical"
-                                    android:paddingBottom="2dp"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:singleLine="true"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_birth"
-                            android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_sex"
-                            app:cardCornerRadius="0dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
-
-                                <TextView
-                                    android:id="@+id/title_card_of_birth"
-                                    android:layout_width="70dp"
-                                    android:layout_height="50dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Год рождения"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <EditText
-                                    android:id="@+id/Edit_birth_year"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="25dp"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="#FFFFFF"
-                                    android:gravity="center_vertical"
-                                    android:paddingBottom="2dp"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:paddingTop="2dp"
-                                    android:singleLine="true"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_aboutMe"
-                            android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_birth"
-                            app:cardCornerRadius="0dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
-
-                                <TextView
-                                    android:id="@+id/title_card_of_aboutMe"
-                                    android:layout_width="70dp"
-                                    android:layout_height="46dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Обо мне"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <EditText
-                                    android:id="@+id/EditAboutMe"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="25dp"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="#FFFFFF"
-                                    android:gravity="center_vertical"
-                                    android:paddingBottom="2dp"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:paddingTop="2dp"
-                                    android:singleLine="true"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-                            </RelativeLayout>
-
-
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/card_of_skils"
-                            android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_below="@+id/card_of_aboutMe"
-                            app:cardCornerRadius="0dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/metalic">
-
-                                <TextView
-                                    android:id="@+id/title_card_of_skils"
-                                    android:layout_width="70dp"
-                                    android:layout_height="46dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:gravity="center_vertical"
-                                    android:text="Навыки"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <mabbas007.tagsedittext.TagsEditText
-                                    android:id="@+id/edit_skils"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="25dp"
-                                    android:layout_marginLeft="82dp"
-                                    android:layout_marginRight="12dp"
-                                    android:layout_marginTop="10dp"
-                                    android:background="#FFFFFF"
-                                    android:gravity="center_vertical"
-                                    android:paddingBottom="2dp"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:paddingTop="2dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp"
-                                    app:allowSpaceInTag="true"
-                                    app:tagsBackground="@color/veryGrey"
-                                    app:tagsCloseImageRight="@drawable/tag_close"
-                                    app:tagsPaddingBottom="2dp"
-                                    app:tagsPaddingLeft="5dp"
-                                    app:tagsTextColor="@color/black"
-                                    app:tagsTextSize="10dp" />
-
-
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
-                            android:id="@+id/isTeacher_card"
-                            android:layout_width="match_parent"
-                            android:layout_height="47dp"
-                            android:layout_below="@+id/card_of_skils"
-                            app:cardBackgroundColor="@color/metalic"
-                            app:cardCornerRadius="0dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:layout_width="81dp"
-                                    android:layout_height="25dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:layout_marginTop="8dp"
-                                    android:text="Преподавать"
-                                    android:textColor="@color/black"
-                                    android:textSize="12dp" />
-
-                                <Switch
-                                    android:id="@+id/isTeacher"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="20dp"
-                                    android:layout_marginLeft="105dp"
-                                    android:layout_marginTop="5dp" />
-
-
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                        <android.support.v7.widget.CardView
+                        <Spinner
+                            android:id="@+id/sex"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/isTeacher_card"
-                            app:cardBackgroundColor="@color/metalic">
+                            android:layout_marginTop="4dp"
+                            android:text="Мужской"
+                            android:textColor="@color/black" />
 
-                            <RelativeLayout
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Дата рождения"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="12dp" />
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/error_layout_birth_year"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/birth_year"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="04.03.1999"
+                                android:textColor="@color/black" />
+                        </android.support.design.widget.TextInputLayout>
 
-                                <android.support.v7.widget.RecyclerView
-                                    android:id="@+id/contacts"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="12dp"
-                                    android:layout_marginRight="12dp"
-                                    android:layout_marginTop="12dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Обо мне"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="12dp" />
 
-                                </android.support.v7.widget.RecyclerView>
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/error_layout_aboutMe"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                                <android.support.v7.widget.CardView
-                                    android:id="@+id/addContactCard"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/contacts"
-                                    app:cardBackgroundColor="@color/metalic"
-                                    app:cardCornerRadius="0dp">
+                            <EditText
+                                android:id="@+id/EditAboutMe"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Дизайн супер.Приступил к верстке.Тут может быть еще много текста,надеюсь верстка не поедет."
+                                android:textColor="@color/black" />
+                        </android.support.design.widget.TextInputLayout>
 
-                                    <RelativeLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/header_skils"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Навыки"
+                            android:textColor="@color/dark_grey" />
 
-                                        <ImageView
-                                            android:id="@+id/add_contacts"
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:layout_marginBottom="8dp"
-                                            android:layout_marginLeft="12dp"
-                                            android:layout_marginTop="8dp"
-                                            android:src="@drawable/ic_add_circle_outline_black_24dp" />
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/error_layout_skills"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="25dp"
-                                            android:layout_marginBottom="8dp"
-                                            android:layout_marginLeft="45dp"
-                                            android:layout_marginTop="11dp"
-                                            android:text="Добавить контакт" />
-                                    </RelativeLayout>
-                                </android.support.v7.widget.CardView>
+                            <mabbas007.tagsedittext.TagsEditText
+                                android:id="@+id/edit_skils"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:allowSpaceInTag="true"
+                                app:tagsBackground="@drawable/chip1"
+                                app:tagsCloseImagePadding="@dimen/defaultTagsCloseImagePadding"
+                                app:tagsCloseImageRight="@drawable/tag_close"
+                                app:tagsPaddingLeft="6dp"
+                                app:tagsPaddingRight="6dp"
+                                app:tagsTextColor="@color/black"
+                                app:tagsTextSize="@dimen/defaultTagsTextSize" />
+                        </android.support.design.widget.TextInputLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Контакты"
+                            android:textColor="@color/dark_grey"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/contacts"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp">
+
+                        </android.support.v7.widget.RecyclerView>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            >
+
+                            <ImageView
+                                android:id="@+id/add_contacts"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginTop="8dp"
+                                android:src="@drawable/ic_add_circle_outline_black_24dp" />
+
+                            <TextView
+                                android:id="@+id/header_edit_contact"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginLeft="33dp"
+                                android:layout_marginTop="11dp"
+                                android:text="Добавить контакт" />
+                            <ImageButton
+                                android:id="@+id/edit_contact_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_menu_send"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@+id/add_contacts"
+                                android:layout_marginTop="8dp"
+                                android:visibility="gone"
+                                />
+
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/error_layout_contact"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/add_contacts"
+                                android:layout_toLeftOf="@+id/edit_contact_btn"
+                                android:visibility="gone"
+                                >
 
                                 <EditText
                                     android:id="@+id/edit_contact"
                                     android:layout_width="match_parent"
-                                    android:layout_height="25dp"
-                                    android:layout_below="@+id/contacts"
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_marginLeft="12dp"
-                                    android:layout_marginTop="8dp"
-                                    android:background="#FFFFFF"
+                                    android:layout_height="wrap_content"
                                     android:singleLine="true"
-                                    android:visibility="gone" />
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginTop="8dp"/>
+                            </android.support.design.widget.TextInputLayout>
 
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-
-                    </RelativeLayout>
+                        </RelativeLayout>
 
 
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
+            </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
 
-                <Button
-                    android:id="@+id/save_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_below="@+id/middle_card"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/metalic"
-                    android:text="Cохранить" />
-            </RelativeLayout>
-        </ScrollView>
+</LinearLayout>
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="@color/blue"
+        android:textColor="#FFFFFF"
+        android:text="Cохранить" />
+</FrameLayout>
 
-    </RelativeLayout>
-</android.support.constraint.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+

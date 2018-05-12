@@ -5,40 +5,29 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="115dp"
+        android:layout_height="wrap_content"
         android:background="@color/metalic">
 
-        <TextView
-            android:id="@+id/reviewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="19dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="4dp"
-            android:text="Основы программирования"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:maxWidth="250dp"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/reviewText"
-            android:layout_below="@+id/reviewTitle"
             android:textColor="@color/black"
             android:textSize="13dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="13dp"
             android:text="Ооооооооооооооооооооооооооооооооооооо"/>
 
         <TextView
             android:id="@+id/author"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/reviewText"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="9dp"
             android:text="Блинов Александр"
             android:maxWidth="150dp"
             android:textSize="11dp" />
@@ -46,13 +35,13 @@
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/reviewText"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="9dp"
             android:gravity="end|center_vertical"
             android:text="2 декабря 2018"
             android:textSize="11dp"

@@ -96,7 +96,7 @@ public class FileRepository implements IFileRepository {
     }
     @Override
     public void loadImageFromServer(String token, String fileName) {
-        eduHubApi.loadImageFromServer("Bearer "+token,fileName)
+        eduHubApi.loadImageFromServer(fileName)
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

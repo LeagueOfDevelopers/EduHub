@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -40,6 +41,9 @@ public class LoginFragment extends Fragment implements ILoginView {
     User user;
     Disposable disposable;
     FakesButton fakesButton=new FakesButton();
+    TextInputLayout errorLayoutEmail;
+    TextInputLayout errorLayoutPassword;
+
     FakeLoginPresenter fakeLoginPresenter=new FakeLoginPresenter(this);
 
     public void onAttach(Activity activity) {
@@ -58,6 +62,7 @@ public class LoginFragment extends Fragment implements ILoginView {
         final EditText password = (EditText) v.findViewById(R.id.edit_password);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Вход");
+
         Button signIn = v.findViewById(R.id.sign_in);
         TextView signUp = v.findViewById(R.id.sign_up);
         signUp.setOnClickListener(new View.OnClickListener() {

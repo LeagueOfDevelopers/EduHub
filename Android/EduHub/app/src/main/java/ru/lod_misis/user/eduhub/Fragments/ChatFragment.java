@@ -217,6 +217,7 @@ public class ChatFragment extends Fragment implements IChatView  {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ws.disconnect();
+        if(ws!=null){
+        ws.disconnect();}
     }
 }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 
@@ -46,10 +47,13 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
     EditText password;
     EditText email;
     CheckBox checkBox2;
+    TextInputLayout errorLayoutName;
+    TextInputLayout errorLayoutEmail;
+    TextInputLayout errorLayoutPassword;
     FakesButton fakesButton=new FakesButton();
     FakeRegistrPresenter fakeRegistrPresenter=new FakeRegistrPresenter(this);
     FakeLoginPresenter fakeLoginPresenter=new FakeLoginPresenter(this);
-    SwitchButton isTeacher;
+    Switch isTeacher;
 
 
     public void onAttach(Activity activity) {
@@ -70,7 +74,9 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
         name=v.findViewById(R.id.registr_login);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Регистрация");
-
+        errorLayoutEmail=v.findViewById(R.id.error_layout_registr_email);
+        errorLayoutName=v.findViewById(R.id.error_layout_registr_login);
+        errorLayoutPassword=v.findViewById(R.id.registr_password2);
 
 
         Button submit=v.findViewById(R.id.registr_btn);
@@ -80,22 +86,36 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
             public void onClick(View view) {
                 boolean isTeacherFlag;
                 if(name.getText().length()>=3&&name.getText().length()<=70){
+                    errorLayoutName.setErrorEnabled(false);
                     if(checkName(name.getText().toString())){
+                        errorLayoutName.setErrorEnabled(false);
                     if(email.getText().length()>0){
+                        errorLayoutEmail.setErrorEnabled(false);
                         if(password.getText().length()>=8&&password.getText().length()<=50){
+                            errorLayoutPassword.setErrorEnabled(false);
                isTeacherFlag=isTeacher.isChecked();
                 if(!fakesButton.getCheckButton()){
                 registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag,getContext());}
                 else{
                     fakeRegistrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag,getContext());
                 }
-                        }else{MakeToast("Минимальная длина пароля - 8 символов,максимальная - 50");}
+                        }else{errorLayoutPassword.setErrorEnabled(true);
+                        errorLayoutPassword.setError("Минимальная длина пароля - 8 символов,максимальная - 50");
+                            MakeToast("Минимальная длина пароля - 8 символов,максимальная - 50");}
                     }else{
+                        errorLayoutEmail.setErrorEnabled(true);
+                        errorLayoutEmail.setError("Заполните поле Email");
                         MakeToast("Заполните поле Email");
                     }}else{
+                        errorLayoutName.setErrorEnabled(true);
+                        errorLayoutName.setError("Допустимые символы для имени-[a-z,A-Z,а-я,А-Я]");
                         MakeToast("Допустимые символы для имени-[a-z,A-Z,а-я,А-Я]");
                     }
-                }else{MakeToast("Минимальная длина имени - 3 символа,максимальная - 70");}
+
+                }else{
+                    errorLayoutName.setErrorEnabled(true);
+                    errorLayoutName.setError("Минимальная длина имени - 3 символа,максимальная - 70");
+                    MakeToast("Минимальная длина имени - 3 символа,максимальная - 70");}
 
             }
         });

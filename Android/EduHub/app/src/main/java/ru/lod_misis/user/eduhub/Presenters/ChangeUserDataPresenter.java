@@ -5,11 +5,13 @@ import android.util.Log;
 
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.IChangeUsersDataPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.IChangeUsersDataView;
+import ru.lod_misis.user.eduhub.Models.UserProfile.ChangedSkilsRequestModel;
 import ru.lod_misis.user.eduhub.Models.UserProfile.RefactorUserRequestModel;
 import ru.lod_misis.user.eduhub.Retrofit.EduHubApi;
 import ru.lod_misis.user.eduhub.Retrofit.RetrofitBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import io.reactivex.Observable;
@@ -47,7 +49,7 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
             if (sex.equals("Женский")) {
                 refactorUserRequestModel.setGender("Woman");
             }
-            if(sex.equals("")){
+            if(sex.equals("Неизвестно")){
                 refactorUserRequestModel.setGender("Unknown");
             }
         }
@@ -61,8 +63,21 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe();
-        }
+        }Log.d("123",skills.length+"");
+        if(skills!=null&&skills.length!=0){
 
+            ChangedSkilsRequestModel changedSkilsRequestModel=new ChangedSkilsRequestModel();
+            ArrayList<String> skills2=new ArrayList<>();
+            for (String skill:skills
+                 ) {
+                skills2.add(skill);
+            }
+            changedSkilsRequestModel.setNewSkills(skills2);
+            eduHubApi.changedSkils("Bearer "+token,changedSkilsRequestModel)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe();
+        }
         eduHubApi.changesProfile("Bearer "+token,refactorUserRequestModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

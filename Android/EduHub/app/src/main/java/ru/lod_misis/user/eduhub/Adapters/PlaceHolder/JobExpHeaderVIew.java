@@ -22,10 +22,10 @@ import com.mindorks.placeholderview.annotations.expand.Toggle;
 @SingleTop
 @Layout(R.layout.job_exp_header)
 public class JobExpHeaderVIew {
-    @View(R.id.number_of_groups)
-    private TextView numberOfGroup;
+    @View(R.id.job_exp_header)
+    private TextView header;
 
-    @Toggle(R.id.number_of_groups)
+    @Toggle(R.id.job_exp_header)
     private TextView toggleView;
 
     @ParentPosition
@@ -40,7 +40,7 @@ public class JobExpHeaderVIew {
     }
     @Resolve
     private void onResolved() {
-        numberOfGroup.setText(heading);
+
 
     }
 
