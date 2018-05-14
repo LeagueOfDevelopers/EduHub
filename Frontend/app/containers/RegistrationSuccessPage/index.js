@@ -28,7 +28,7 @@ export class RegistrationSuccessPage extends React.PureComponent { // eslint-dis
 }
 
 RegistrationSuccessPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
 };
 
 

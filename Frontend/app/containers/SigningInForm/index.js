@@ -85,7 +85,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
         bodyStyle={{padding: '24px 26px'}}
         footer={[
           <Row type='flex' key={1} justify='space-between' align='middle' style={{padding: '4px 14px'}}>
-            <Col><Link to='#'>Забыли пароль?</Link></Col>
+            <Col><a href='/reset_password' onClick={this.props.handleCancel}>Забыли пароль?</a></Col>
             <Col>
               <Button onClick={this.props.handleCancel}>Отмена</Button>
               <Button type="primary" htmlType='submit' form='sign-in-form'>Войти</Button>

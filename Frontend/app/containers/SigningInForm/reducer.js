@@ -32,7 +32,7 @@ function appReducer(state = initialState, action) {
         localStorage.setItem('avatarLink', `${action.avatarLink}`);
         localStorage.setItem('token', `${action.token}`);
         localStorage.setItem('isTeacher', `${action.isTeacher}`);
-        location.assign('/');
+        setTimeout(() => location.assign('/'), 500);
 
         return state
           .set('loading', false)

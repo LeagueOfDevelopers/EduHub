@@ -23,7 +23,7 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
       title: this.props.title,
       type: 'Default',
       formed: this.props.formed,
-      tags: this.props.queryTags.length ? [].concat(this.props.queryTags) : [],
+      tags: this.props.queryTags && this.props.queryTags.length ? [].concat(this.props.queryTags) : [],
       minPrice: 0,
       maxPrice: 10000
     };
@@ -42,8 +42,8 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
   }
 
   componentWillReceiveProps(nextProps) {
-    this.props.queryTags[0] !== nextProps.queryTags[0] ?
-      this.setState({tags: nextProps.queryTags.length ? [].concat(nextProps.queryTags) : []})
+    this.props.queryTags && this.props.queryTags[0] !== nextProps.queryTags[0] ?
+      this.setState({tags: nextProps.queryTags && nextProps.queryTags.length ? [].concat(nextProps.queryTags) : []})
       : null;
   }
 

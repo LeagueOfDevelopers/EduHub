@@ -328,7 +328,6 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
               : (
                 <Col span={24}>
                   <Button htmlType="button" size='large' onClick={this.onSignInClick} style={{width: '100%', marginTop: 20}}>Войти</Button>
-                  <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
                   <Link to='/registration'>
                     <Button size='large' type="primary" style={{width: '100%', marginTop: 12}} htmlType="submit">Зарегистрироваться</Button>
                   </Link>
