@@ -23,7 +23,7 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
       title: this.props.title,
       type: 'Default',
       formed: this.props.formed,
-      tags: this.props.queryTags && this.props.queryTags.length ? [].concat(this.props.queryTags) : [],
+      tags: this.props.queryTags && this.props.queryTags.length ? [].concat(this.props.queryTags.replace('*', '#')) : [],
       minPrice: 0,
       maxPrice: 10000
     };
@@ -42,9 +42,10 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
   }
 
   componentWillReceiveProps(nextProps) {
-    this.props.queryTags && this.props.queryTags[0] !== nextProps.queryTags[0] ?
-      this.setState({tags: nextProps.queryTags && nextProps.queryTags.length ? [].concat(nextProps.queryTags) : []})
-      : null;
+    if(this.props.queryTags && this.props.queryTags !== nextProps.queryTags) {
+      this.setState({tags: nextProps.queryTags && nextProps.queryTags.length ? [].concat(nextProps.queryTags.replace('*', '#')) : []});
+      setTimeout(() => this.componentDidMount(), 0);
+    }
   }
 
   onHandleTitleChange = (e) => {

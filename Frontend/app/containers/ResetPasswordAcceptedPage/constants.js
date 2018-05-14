@@ -1,7 +1,7 @@
 /*
  *
- * ResetPasswordAcceptedPage constants
+ * SendResetPasswordInfoPage constants
  *
  */
 
-export const DEFAULT_ACTION = 'app/ResetPasswordAcceptedPage/DEFAULT_ACTION';
+export const DEFAULT_ACTION = 'DEFAULT_ACTION';

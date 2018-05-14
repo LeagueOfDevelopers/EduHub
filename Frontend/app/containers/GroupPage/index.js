@@ -354,7 +354,7 @@ export class GroupPage extends React.Component {
                         }
                       </FormItem>
                       : this.state.groupData.groupInfo.tags.map((item) =>
-                        <Link key={item} to="#">{item} </Link>
+                        <Link key={item} to={`/groups?tags=${item.replace('#', '*')}`}>{item} </Link>
                       )}
                   </Col>
                 </Row>

@@ -29,6 +29,7 @@ import UsersPage from '../../containers/UsersPage';
 import AdminPage from '../../containers/AdminPage';
 import Footer from '../../components/Footer';
 import ResetPasswordPage from '../ResetPasswordPage';
+import SendResetPasswordInfoPage from '../SendResetPasswordInfoPage';
 import ResetPasswordAcceptedPage from '../ResetPasswordAcceptedPage';
 
 export default class App extends React.Component{
@@ -53,7 +54,8 @@ export default class App extends React.Component{
             <Route exact path='/users' component={UsersPage}/>
             <Route exact path='/admin/:id' component={AdminPage}/>
             <Route exact path='/reset_password/:key' component={ResetPasswordPage}/>
-            <Route exact path='/reset_password' component={ResetPasswordAcceptedPage}/>
+            <Route exact path='/reset_password_accepted' component={ResetPasswordAcceptedPage}/>
+            <Route exact path='/reset_password' component={SendResetPasswordInfoPage}/>
             <Route exact path='' component={NotFoundPage} />
           </Switch>
         </ScrollFix>

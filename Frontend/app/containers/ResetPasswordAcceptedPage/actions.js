@@ -1,12 +1,12 @@
 /*
  *
- * ResetPasswordAcceptedPage actions
+ * SendResetPasswordInfoPage actions
  *
  */
 
 import {
   DEFAULT_ACTION,
-} from './constants';
+} from '../../containers/ResetPasswordAcceptedPage/constants';
 
 export function defaultAction() {
   return {

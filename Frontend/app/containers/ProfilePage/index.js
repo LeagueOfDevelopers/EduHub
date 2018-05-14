@@ -463,7 +463,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                           {this.state.teacherProfile.skills &&
                           this.state.teacherProfile.skills.length !== 0  && !this.state.isEditing ?
                             this.state.teacherProfile.skills.map((item) =>
-                              <Link to="#" key={item}>{item} </Link>
+                              <Link to={`/groups?tags=${item.replace('#', '*')}`} key={item}>{item} </Link>
                             )
                             : this.state.teacherProfile.skills.length === 0 && !this.state.isEditing && !this.state.isCurrentUser ?
                               <div style={{fontSize: 16, color: '#000'}}>Не указано</div>

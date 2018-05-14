@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 
 /**
- * Direct selector to the resetPasswordAcceptedPage state domain
+ * Direct selector to the sendResetPasswordInfoPage state domain
  */
-const selectResetPasswordAcceptedPageDomain = (state) => state.get('resetPasswordAcceptedPage');
+const selectSendResetPasswordInfoPageDomain = (state) => state.get('sendResetPasswordInfoPage');
 
 /**
  * Other specific selectors
@@ -14,12 +14,12 @@ const selectResetPasswordAcceptedPageDomain = (state) => state.get('resetPasswor
  * Default selector used by ResetPasswordAcceptedPage
  */
 
-const makeSelectResetPasswordAcceptedPage = () => createSelector(
-  selectResetPasswordAcceptedPageDomain,
+const makeSelectSendResetPasswordInfoPage = () => createSelector(
+  selectSendResetPasswordInfoPageDomain,
   (substate) => substate.toJS()
 );
 
-export default makeSelectResetPasswordAcceptedPage;
+export default makeSelectSendResetPasswordInfoPage;
 export {
-  selectResetPasswordAcceptedPageDomain,
+  selectSendResetPasswordInfoPageDomain,
 };

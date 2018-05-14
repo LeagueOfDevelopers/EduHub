@@ -1,9 +1,9 @@
 
 import { fromJS } from 'immutable';
-import resetPasswordAcceptedPageReducer from '../reducer';
+import sendResetPasswordInfoPageReducer from '../reducer';
 
-describe('resetPasswordAcceptedPageReducer', () => {
+describe('sendResetPasswordInfoPageReducer', () => {
   it('returns the initial state', () => {
-    expect(resetPasswordAcceptedPageReducer(undefined, {})).toEqual(fromJS({}));
+    expect(sendResetPasswordInfoPageReducer(undefined, {})).toEqual(fromJS({}));
   });
 });

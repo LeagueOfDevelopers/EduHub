@@ -35,8 +35,9 @@ class ChatRoom extends React.Component {
       console.log("closed connection");
     };
     socket.onmessage = function(event) {
-      _this.props.getCurrentChat(_this.props.groupId);
+      // _this.props.getCurrentChat(_this.props.groupId);
       console.log('message received ' + JSON.stringify(JSON.parse(event.data)));
+      _this.setProps({chat: [..._this.props.chat, JSON.parse(event.data)]});
     };
     socket.onerror = function(event) {
       console.log("error " + JSON.stringify(event));

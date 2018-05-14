@@ -1,7 +1,7 @@
 // import { fromJS } from 'immutable';
-// import { selectSendResetPasswordInfoPageDomain } from '../selectors';
+// import { selectResetPasswordAcceptedPageDomain } from '../selectors';
 
-describe('selectSendResetPasswordInfoPageDomain', () => {
+describe('selectResetPasswordAcceptedPageDomain', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

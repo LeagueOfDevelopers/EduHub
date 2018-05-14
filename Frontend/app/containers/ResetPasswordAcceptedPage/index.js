@@ -1,21 +1,12 @@
 /**
  *
- * ResetPasswordAcceptedPage
+ * SendResetPasswordInfoPage
  *
  */
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
-
-import injectSaga from 'utils/injectSaga';
-import injectReducer from 'utils/injectReducer';
-import makeSelectResetPasswordAcceptedPage from './selectors';
-import reducer from './reducer';
-import saga from './saga';
-import {Row, Col, Button} from 'antd';
+import {Row, Col} from 'antd';
 
 export class ResetPasswordAcceptedPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -38,23 +29,4 @@ ResetPasswordAcceptedPage.propTypes = {
   dispatch: PropTypes.func,
 };
 
-const mapStateToProps = createStructuredSelector({
-
-});
-
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
-
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
-
-const withReducer = injectReducer({ key: 'resetPasswordAcceptedPage', reducer });
-const withSaga = injectSaga({ key: 'resetPasswordAcceptedPage', saga });
-
-export default compose(
-  withReducer,
-  withSaga,
-  withConnect,
-)(ResetPasswordAcceptedPage);
+export default ResetPasswordAcceptedPage;
