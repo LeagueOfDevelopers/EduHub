@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using EduHub.Models.ValidationAttributes;
 using EduHubLibrary.Domain.Tools;
@@ -20,6 +21,6 @@ namespace EduHub.Models.UserProfileControllerModels
         [ContactCheck]
         public List<string> Contacts { get; set; }
 
-        [BirthCheck(1900)] public int BirthYear { get; set; }
+        [BirthCheck(1900)] public DateTimeOffset BirthYear { get; set; }
     }
 }

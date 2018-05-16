@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EnsureThat;
 
 namespace EduHubLibrary.Domain.Tools
@@ -15,7 +16,7 @@ namespace EduHubLibrary.Domain.Tools
         }
 
         public UserProfile(string name, string email, string aboutUser,
-            int birthYear, Gender gender, bool isTeacher, string avatarLink, List<string> contacts)
+            DateTimeOffset birthYear, Gender gender, bool isTeacher, string avatarLink, List<string> contacts)
         {
             Name = name;
             Email = email;
@@ -30,7 +31,7 @@ namespace EduHubLibrary.Domain.Tools
         public string Name { get; internal set; }
         public string Email { get; internal set; }
         public string AboutUser { get; internal set; }
-        public int BirthYear { get; internal set; }
+        public DateTimeOffset BirthYear { get; internal set; }
         public Gender Gender { get; internal set; }
         public bool IsTeacher { get; internal set; }
         public string AvatarLink { get; internal set; }

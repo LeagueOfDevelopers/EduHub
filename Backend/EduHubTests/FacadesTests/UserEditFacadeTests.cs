@@ -155,7 +155,7 @@ namespace EduHubTests
         {
             //Arrange
             var testUser = _userFacade.GetUser(_testUserId);
-            var newBirthday = 1998;
+            var newBirthday = DateTimeOffset.UtcNow;
 
             //Act
             _userEditFacade.EditBirthYear(_testUserId, newBirthday);
@@ -171,7 +171,7 @@ namespace EduHubTests
         public void EditUserWithInValidBirthday_GetException()
         {
             //Arrange
-            var newBirthday = 101998;
+            var newBirthday = DateTimeOffset.MaxValue;
 
             //Act
             _userEditFacade.EditBirthYear(_testUserId, newBirthday);
@@ -262,7 +262,7 @@ namespace EduHubTests
             sanctionFacade.AddSanction("some rule", _testUserId, _adminId, SanctionType.NotAllowToEditProfile);
 
             //Act
-            _userEditFacade.EditBirthYear(_testUserId, 1990);
+            _userEditFacade.EditBirthYear(_testUserId, DateTimeOffset.UtcNow);
         }
 
         [TestMethod]
@@ -299,7 +299,7 @@ namespace EduHubTests
             var newGender = Gender.Woman;
             var newAvatarLink = "";
             var newContactData = new List<string> {"new1", "new2"};
-            var newBirthYear = 1998;
+            var newBirthYear = DateTimeOffset.UtcNow;
 
             //Act
             _userEditFacade.EditProfile(_testUserId, newName, newAbout, newGender, newAvatarLink, newContactData,
@@ -321,15 +321,16 @@ namespace EduHubTests
             var newContactData = new List<string> {"new", " "};
 
             //Act
-            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", newContactData, 1998);
+            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", newContactData, DateTimeOffset.UtcNow);
         }
 
         [TestMethod]
         [ExpectedException(typeof(IndexOutOfRangeException))]
         public void EditProfileWithInvalidBirthYear_GetException()
         {
+            var birthDate = new DateTimeOffset(1899, 1, 1, 1, 1, 1, new TimeSpan(1, 0, 0));
             //Act
-            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", new List<string> {"new"}, 1899);
+            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", new List<string> {"new"}, birthDate);
         }
 
         [TestMethod]

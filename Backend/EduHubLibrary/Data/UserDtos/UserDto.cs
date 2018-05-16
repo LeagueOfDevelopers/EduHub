@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EduHubLibrary.Common;
 using EduHubLibrary.Domain.Tools;
 
@@ -13,7 +14,7 @@ namespace EduHubLibrary.Data.UserDtos
         public string PasswordHash { get; set; }
         public string Name { get; set; }
         public string AboutUser { get; set; }
-        public int BirthYear { get; set; }
+        public DateTimeOffset BirthYear { get; set; }
         public Gender Gender { get; set; }
         public bool IsTeacher { get; set; }
         public string AvatarLink { get; set; }

@@ -14,9 +14,9 @@ namespace EduHub.Models.ValidationAttributes
 
         public override bool IsValid(object value)
         {
-            var year = Convert.ToInt32(value);
+            var birthDate = (DateTimeOffset) value;
             var current = DateTime.Now.Year;
-            return year >= _startYear && year <= current;
+            return birthDate.Year >= _startYear && birthDate.Year <= current;
         }
     }
 }

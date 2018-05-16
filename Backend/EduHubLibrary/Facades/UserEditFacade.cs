@@ -87,14 +87,14 @@ namespace EduHubLibrary.Facades
             _userRepository.Update(currentUser);
         }
 
-        public void EditBirthYear(int userId, int newYear)
+        public void EditBirthYear(int userId, DateTimeOffset newYear)
         {
             CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
 
             var currentUser = _userRepository.GetUserById(userId);
 
             //hardcoded value
-            if (newYear > 1900 && newYear < DateTimeOffset.Now.Year || newYear == 0)
+            if (newYear.Year > 1900 && newYear < DateTimeOffset.UtcNow || newYear == DateTimeOffset.MinValue)
                 currentUser.UserProfile.BirthYear = newYear;
             else throw new IndexOutOfRangeException();
 
@@ -118,7 +118,7 @@ namespace EduHubLibrary.Facades
         }
 
         public void EditProfile(int userId, string newName, string newAboutUser, Gender newGender, string newAvatarLink,
-            List<string> newContactData, int newYear)
+            List<string> newContactData, DateTimeOffset newYear)
         {
             CheckSanctions(userId, SanctionType.NotAllowToEditProfile);
 
@@ -143,7 +143,7 @@ namespace EduHubLibrary.Facades
                 currentUser.UserProfile.Contacts = newContactData;
             else throw new ArgumentException();
 
-            if (newYear > 1900 && newYear < DateTimeOffset.Now.Year || newYear == 0)
+            if (newYear.Year > 1900 && newYear < DateTimeOffset.UtcNow || newYear == DateTimeOffset.MinValue)
                 currentUser.UserProfile.BirthYear = newYear;
             else throw new IndexOutOfRangeException();
 

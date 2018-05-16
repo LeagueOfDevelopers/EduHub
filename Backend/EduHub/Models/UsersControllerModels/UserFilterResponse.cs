@@ -1,4 +1,5 @@
-﻿using EduHubLibrary.Domain.Tools;
+﻿using System;
+using EduHubLibrary.Domain.Tools;
 
 namespace EduHub.Models.UsersControllerModels
 {
@@ -6,7 +7,7 @@ namespace EduHub.Models.UsersControllerModels
     {
         public UserFilterResponse(int id, string name, string email,
             string avatarLink, bool isTeacher, TeacherProfile teacherProfile,
-            bool isActive, Gender gender, int birthYear)
+            bool isActive, Gender gender, DateTimeOffset birthYear)
         {
             Id = id;
             Name = name;
@@ -24,7 +25,7 @@ namespace EduHub.Models.UsersControllerModels
         public string Email { get; set; }
         public string AvatarLink { get; set; }
         public Gender Gender { get; set; }
-        public int BirthYear { get; set; }
+        public DateTimeOffset BirthYear { get; set; }
         public bool IsTeacher { get; set; }
         public TeacherProfile TeacherProfile { get; set; }
         public bool IsActive { get; set; }
