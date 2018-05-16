@@ -82,6 +82,9 @@ namespace EduHub.Filters
                 case KeyNotFoundException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case InappropriateEmailException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {
