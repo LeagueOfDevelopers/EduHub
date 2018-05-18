@@ -11,7 +11,8 @@ import React from 'react';
 class Footer extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div style={{height: 80, width: '100%', backgroundColor: '#c4c4c4'}}>
+      <div className='footer'>
+        &copy; 2017 League Of Developers
       </div>
     );
   }

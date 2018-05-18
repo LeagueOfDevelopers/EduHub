@@ -305,7 +305,7 @@ export class GroupPage extends React.Component {
   render() {
     const {getFieldDecorator} = this.props.form;
     return (
-      <div>
+      <div style={{height: 'calc(100% - 64px)'}}>
         <Form className='group-form' onSubmit={this.changeGroupData}>
           <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} style={{marginTop: 40, marginBottom: 40, fontSize: 16}}>
             <Col className='md-center-container' xs={{span: 24}} md={{span: 10}} lg={{span: 7}}>

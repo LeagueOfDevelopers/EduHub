@@ -172,7 +172,7 @@ export class NotificationPage extends React.Component { // eslint-disable-line r
 
   render() {
     return (
-      <Row className='notify-tabs'>
+      <Row className='notify-tabs' style={{height: 'calc(100% - 64px)'}}>
         {
           !this.state.isEditing ?
             <Col className='notify-area' onMouseEnter={this.showSettingBtn} onMouseLeave={this.hideSettingBtn} xs={{span: 22, offset: 1}} sm={{span: 20, offset: 2}} lg={{span: 12, offset: 6}}>

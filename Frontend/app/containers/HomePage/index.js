@@ -107,10 +107,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     return (
       localStorage.getItem('token') && parseJwt(localStorage.getItem('token')).exp - parseInt(Date.now()/1000) > 0 || !localStorage.getItem('token') ?
         (
-          <div>
+          <div style={{height: 'calc(100% - 64px)'}}>
             <Col xs={{span: 22, offset: 1}} sm={{span: 16, offset: 4}} style={{marginTop: 40}}>
               <Card
-                title='Идет набор'
+                title='Группы, которым требуются ученики'
                 bordered={false}
                 className='unassembled-groups-list font-size-20'
               >
@@ -157,7 +157,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             </Col>
             <Col xs={{span: 22, offset: 1}} sm={{span: 16, offset: 4}} style={{marginTop: 20, marginBottom: 40}}>
               <Card
-                title='Набранные группы'
+                title='Группы, которым требуются преподаватели'
                 bordered={false}
                 className='assembled-groups-list font-size-20'
               >

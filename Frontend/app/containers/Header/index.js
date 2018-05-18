@@ -122,7 +122,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
       <Row type="flex" align="middle" className='header' style={{width: '100hr'}}>
         <Col xs={{span: 8, offset: 2}} md={{span: 4, offset: 2}}>
           <Logo>
-            <Link to='/' style={{color: 'rgba(0,0,0,0.65)'}}>
+            <Link to='/' style={{color: '#ffffff'}}>
               EduHub
             </Link>
           </Logo>
@@ -203,7 +203,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                 style={{fontSize: 20, position: 'absolute', top: 10, right: 10, opacity: 0.8}}/>
         </Col>
         <Col className='menu-btn' xs={{span: 12}} md={{span: 6, offset: 2}} lg={{span: 9, offset: 0}}>
-          <img onClick={this.showSideMenu} style={{width: 26, height: 26, cursor: 'pointer'}} src={require('images/menu.svg')} alt=""/>
+          <img onClick={this.showSideMenu} style={{width: 26, height: 26, cursor: 'pointer'}} src={require('images/menu-white.svg')} alt=""/>
         </Col>
         <Col id='side-menu' className='side-menu-hidden'>
           <Row type='flex' style={{alignItems: 'center', overflow: 'hidden'}}>
@@ -291,7 +291,6 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                     <img
                       src={localStorage.getItem('avatarLink') !== '' && localStorage.getItem('avatarLink') !== 'null' ? `${config.API_BASE_URL}/file/img/${localStorage.getItem('avatarLink')}` : null}
                       style={{
-                        backgroundColor: "#fff",
                         color: "rgba(0,0,0,0.65)",
                         height: 60,
                         width: 60,
@@ -343,7 +342,6 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                     src={localStorage.getItem('avatarLink') !== '' && localStorage.getItem('avatarLink') !== 'null' ? `${config.API_BASE_URL}/file/img/${localStorage.getItem('avatarLink')}` : null}
                     size='large'
                     style={{
-                      backgroundColor: "#fff",
                       color: "rgba(0,0,0,0.65)",
                       minHeight: 40,
                       minWidth: 40,
@@ -351,7 +349,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                     }}
                   />
                   <span className='userName'
-                        style={{whiteSpace: 'nowrap', cursor: 'pointer'}}>{localStorage.getItem('name')}</span>
+                        style={{whiteSpace: 'nowrap', cursor: 'pointer', color: '#ffffff'}}>{localStorage.getItem('name')}</span>
                 </div>
               </Dropdown>
             </Col>

@@ -35,7 +35,7 @@ import ResetPasswordAcceptedPage from '../ResetPasswordAcceptedPage';
 export default class App extends React.Component{
   render() {
     return (
-      <div>
+      <div style={{height: '100vh'}}>
         <header>
           <Header/>
         </header>
@@ -59,9 +59,9 @@ export default class App extends React.Component{
             <Route exact path='' component={NotFoundPage} />
           </Switch>
         </ScrollFix>
-        {/*<footer>*/}
-          {/*<Footer/>*/}
-        {/*</footer>*/}
+        <footer>
+          <Footer/>
+        </footer>
       </div>
     );
   }

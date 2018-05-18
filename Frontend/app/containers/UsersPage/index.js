@@ -57,7 +57,7 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
 
   render() {
     return (
-      <Row style={{margin: '40px 0'}}>
+      <Row style={{margin: '40px 0', height: 'calc(100% - 64px)'}}>
         <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} onClick={this.showFilterForm} className='filter-btn' style={{height: 50}}>
           <Card
             hoverable

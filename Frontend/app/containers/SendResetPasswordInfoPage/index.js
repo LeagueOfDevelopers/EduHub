@@ -59,7 +59,7 @@ export class SendResetPasswordInfoPage extends React.Component { // eslint-disab
   render() {
     const {getFieldDecorator} = this.props.form;
     return (
-      <div>
+      <div style={{height: 'calc(100% - 64px)'}}>
         <Row style={{textAlign: 'center', marginTop: 40}}><h3 style={{marginBottom: 0}}>Восстановление пароля</h3></Row>
         <Row><Divider/></Row>
         <Row style={{marginTop: 40}} type='flex' justify='center'>

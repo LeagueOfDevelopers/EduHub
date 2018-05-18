@@ -13,7 +13,7 @@ import {Row, Col, Button} from 'antd';
 export class RegistrationSuccessPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <Row style={{marginTop: 80, padding: 40, fontSize: 24}}>
+      <Row style={{marginTop: 80, padding: 40, fontSize: 24, height: 'calc(100% - 64px)'}}>
         <Col span={24}>
           <div style={{textAlign: 'center'}}>
             Заявка на регистрацию принята.
