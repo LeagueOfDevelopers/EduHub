@@ -8,13 +8,15 @@ namespace EduHubLibrary.Facades.Views.GroupViews
 {
     public class GroupMessageView : BaseMessageView
     {
-        public GroupMessageView(INotificationInfo notificationInfo, int id, DateTimeOffset sentOn)
+        public GroupMessageView(string notificationInfo, NotificationType notificationType, int id, DateTimeOffset sentOn)
             : base(id, sentOn)
         {
             NotificationInfo = notificationInfo;
             MessageType = MessageType.GroupMessage;
+            NotificationType = NotificationType;
         }
 
-        public INotificationInfo NotificationInfo { get; }
+        public string NotificationInfo { get; }
+        public NotificationType NotificationType { get; }
     }
 }

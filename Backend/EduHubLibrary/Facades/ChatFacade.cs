@@ -70,7 +70,8 @@ namespace EduHubLibrary.Facades
                 else if (m.GetMessageType().Equals(MessageType.GroupMessage))
                 {
                     var message = (GroupMessage)m;
-                    messagesList.Add(new GroupMessageView(message.NotificationInfo, message.Id, message.SentOn));
+                    messagesList.Add(new GroupMessageView(message.NotificationInfo, message.NotificationType,
+                        message.Id, message.SentOn));
                 }
             });
 

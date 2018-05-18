@@ -25,7 +25,7 @@ namespace EduHubLibrary.Mailing
                 Text = MessageRenderer.RenderPartialToString(messageContent)
             };
             
-            using (var client = new SmtpClient())
+            /*using (var client = new SmtpClient())
             {
                 client.Connect(_settings.SmtpAdress, _settings.SmtpPort);
 
@@ -33,7 +33,7 @@ namespace EduHubLibrary.Mailing
 
                 client.Send(message);
                 client.Disconnect(true);
-            }
+            }*/
         }
     }
 }

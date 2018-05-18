@@ -2,6 +2,7 @@
 using EduHubLibrary.Data.GroupDtos;
 using EduHubLibrary.Data.UserDtos;
 using EduHubLibrary.Domain;
+using EduHubLibrary.Domain.Message;
 
 namespace EduHubLibrary.Extensions
 {
@@ -39,13 +40,30 @@ namespace EduHubLibrary.Extensions
                 result.Members.Add(new MemberDto(0, member.UserId, member.MemberRole,
                     member.Paid, member.CurriculumStatus)));
 
-            /*
+            
             sourse.Messages?.ToList().ForEach(message =>
             {
-                if (result.Messages.All(messageDto => messageDto.Id != message.Id))
-                    result.Messages.Add(new MessageDto(message.Id, message.SenderId, message.SentOn, message.Text));
+                var type = message.GetMessageType();
+                if (type == MessageType.GroupMessage)
+                {
+                    var groupMessage = message as GroupMessage;
+                    if (result.GroupMessages.All(groupMessageDto => groupMessageDto.Id != message.Id))
+                    { 
+                        result.GroupMessages.Add(new GroupMessageDto(groupMessage.Id, 
+                            groupMessage.SentOn, groupMessage.NotificationType,
+                            groupMessage.NotificationInfo));
+                    }
+                }
+                else if(type == MessageType.UserMessage)
+                {
+                    var userMessage = message as UserMessage;
+                    if (result.Messages.All(messageDto => messageDto.Id != message.Id))
+                    {
+                        result.Messages.Add(new MessageDto(userMessage.Id,
+                        userMessage.SenderId, userMessage.SentOn, userMessage.Text));
+                    }
+                }
             });
-            */
 
             sourse.KickedId?.ToList().ForEach(id => result.Kicked.Add(new KickedId(0, id)));
 

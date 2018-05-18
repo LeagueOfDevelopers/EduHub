@@ -2,6 +2,7 @@
 using System.Linq;
 using EduHub.Extensions;
 using EduHub.Models;
+using EduHub.Models.AccountControllerModels;
 using EduHub.Security;
 using EduHubLibrary.Common;
 using EduHubLibrary.Facades;
@@ -113,9 +114,10 @@ namespace EduHub.Controllers
         [HttpPost]
         [Route("confirm/{key}")]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult Confirm([FromRoute] int key)
+        [SwaggerResponse(200)]
+        public IActionResult Confirm([FromBody] ConfirmKeyRequest request)
         {
-            _userAccountFacade.ConfirmUser(key);
+            _userAccountFacade.ConfirmUser(request.Key);
             return Ok();
         }
 
@@ -124,6 +126,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPost]
         [Route("password/restore")]
+        [SwaggerResponse(200)]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult RestorePassword([FromBody] string email)
         {
@@ -137,6 +140,7 @@ namespace EduHub.Controllers
         [Authorize]
         [HttpPut]
         [Route("password")]
+        [SwaggerResponse(200)]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult ChangePassword([FromBody] string newPassword)
         {
@@ -150,6 +154,7 @@ namespace EduHub.Controllers
         /// </summary>
         [HttpPut]
         [Route("password/{key}")]
+        [SwaggerResponse(200)]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult ChangePassword([FromRoute] int key, [FromBody] string newPassword)
         {
@@ -163,6 +168,7 @@ namespace EduHub.Controllers
         [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         [Route("moderators")]
+        [SwaggerResponse(200)]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult SendTokenToModerator([FromBody] string email)
         {

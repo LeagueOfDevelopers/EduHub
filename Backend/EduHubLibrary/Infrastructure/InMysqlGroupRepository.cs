@@ -53,6 +53,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Invitations)
                     .Include(g => g.Kicked)
                     .Include(g => g.Tags)
+                    .Include(g => g.GroupMessages)
                     .FirstOrDefault(g => g.Id == group.GroupInfo.Id && !g.IsDeleted);
 
                 Ensure.Any.IsNotNull(currentGroupDto, nameof(currentGroupDto),
@@ -80,6 +81,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Members)
                     .Include(g => g.Messages)
                     .Include(g => g.Tags)
+                    .Include(g => g.GroupMessages)
                     .Include(g => g.Kicked)
                     .Where(g => !g.IsDeleted)
                     .ToList();
@@ -97,6 +99,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Invitations)
                     .Include(g => g.Messages)
                     .Include(g => g.Members)
+                    .Include(g => g.GroupMessages)
                     .Include(g => g.Kicked)
                     .Include(g => g.Tags)
                     .FirstOrDefault(g => g.Id == id && !g.IsDeleted);
@@ -116,6 +119,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Members)
                     .Include(g => g.Kicked)
                     .Include(g => g.Messages)
+                    .Include(g => g.GroupMessages)
                     .Include(g => g.Tags)
                     .Where(g => g.Members.Any(m => m.Id == memberId) && !g.IsDeleted)
                     .ToList();

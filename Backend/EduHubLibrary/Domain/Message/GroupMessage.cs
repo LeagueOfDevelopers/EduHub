@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using EduHubLibrary.Domain.Message;
+using Newtonsoft.Json;
 
 namespace EduHubLibrary.Domain
 {
@@ -11,16 +12,26 @@ namespace EduHubLibrary.Domain
     {
         public GroupMessage(INotificationInfo notificationInfo)
         {
-            NotificationInfo = notificationInfo;
+            NotificationType = notificationInfo.GetNotificationType();
+            NotificationInfo = JsonConvert.SerializeObject(notificationInfo);
         }
 
         public GroupMessage(INotificationInfo notificationInfo, int id, DateTimeOffset sentOn)
             : base(id, sentOn)
         {
-            NotificationInfo = notificationInfo;
+            NotificationType = notificationInfo.GetNotificationType();
+            NotificationInfo = JsonConvert.SerializeObject(notificationInfo);
         }
 
-        public INotificationInfo NotificationInfo { get; }
+        internal GroupMessage(int id, DateTimeOffset sentOn, string notificationInfo,
+            NotificationType notificationType) : base(id, sentOn)
+        {
+            NotificationInfo = notificationInfo;
+            NotificationType = notificationType;
+        }
+
+        public string NotificationInfo { get; }
+        public NotificationType NotificationType { get; }
 
         internal override MessageType GetMessageType()
         {

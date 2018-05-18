@@ -28,6 +28,7 @@ namespace EduHubLibrary.Data.GroupDtos
         public string TeacherEmail { get; set; }
 
         public List<MessageDto> Messages { get; set; } = new List<MessageDto>();
+        public List<GroupMessageDto> GroupMessages { get; set; } = new List<GroupMessageDto>();
         public List<MemberDto> Members { get; set; } = new List<MemberDto>();
         public List<InvitationDto> Invitations { get; set; } = new List<InvitationDto>();
         public List<TagGroup> Tags { get; set; } = new List<TagGroup>();
