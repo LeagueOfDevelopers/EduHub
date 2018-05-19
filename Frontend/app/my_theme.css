@@ -556,9 +556,9 @@ a:focus {
 .chatroom .chat .message.right {
   float: right;
   clear: both;
-  background-color: #1890ff;
+  background-color: #FF5E3A;
   color: #ffffff;
-  box-shadow: #1890ff 0px 1px 16px -6px;
+  box-shadow: #FF5E3A 0px 1px 16px -6px;
   border-radius: 18px 4px 18px 18px;
 }
 
@@ -674,48 +674,48 @@ a:focus {
   word-break: break-word;
 }
 
-/*.ant-btn:hover {*/
-  /*border-color: #eb5735;*/
-  /*color: #eb5735;*/
-/*}*/
+.ant-btn:hover {
+  border-color: #eb5735;
+  color: #eb5735;
+}
 
-/*.ant-btn:focus {*/
-  /*background-color: #fff;*/
-  /*color: inherit;*/
-  /*border-color: #d9d9d9;*/
-/*}*/
+.ant-btn:focus {
+  background-color: #fff;
+  color: inherit;
+  border-color: #d9d9d9;
+}
 
-/*.ant-btn:active {*/
-  /*border-color: #ca462a;*/
-  /*color: #eb5735;*/
-/*}*/
+.ant-btn:active {
+  border-color: #ca462a;
+  color: #eb5735;
+}
 
-/*.ant-btn-primary {*/
-  /*background-color: #FF5E3A;*/
-  /*border-color: #FF5E3A;*/
-/*}*/
+.ant-btn-primary {
+  background-color: #FF5E3A;
+  border-color: #FF5E3A;
+}
 
-/*.ant-btn-primary:hover {*/
-  /*background-color: #eb5735;*/
-  /*border-color: #eb5735;*/
-  /*color: #ffffff;*/
-/*}*/
+.ant-btn-primary:hover {
+  background-color: #eb5735;
+  border-color: #eb5735;
+  color: #ffffff;
+}
 
-/*.ant-btn-primary:focus {*/
-  /*background-color: #FF5E3A;*/
-  /*border-color: #FF5E3A;*/
-  /*color: #ffffff;*/
-/*}*/
+.ant-btn-primary:focus {
+  background-color: #FF5E3A;
+  border-color: #FF5E3A;
+  color: #ffffff;
+}
 
-/*.ant-btn-primary:active {*/
-  /*background-color: #ca462a;*/
-  /*border-color: #ca462a;*/
-  /*color: #ffffff;*/
-/*}*/
+.ant-btn-primary:active {
+  background-color: #ca462a;
+  border-color: #ca462a;
+  color: #ffffff;
+}
 
-/*.ant-list-item-meta-title > a:hover {*/
-  /*color: #e85b3a;*/
-/*}*/
+.ant-list-item-meta-title > a:hover {
+  color: #e85b3a;
+}
 
 .ant-card-head-title {
   color: #2C365D;

@@ -243,7 +243,8 @@
     "sanitize.css": "4.1.0",
     "styled-components": "2.0.0",
     "warning": "3.0.0",
-    "whatwg-fetch": "2.0.3"
+    "whatwg-fetch": "2.0.3",
+    "moment": "latest"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "2.0.1",

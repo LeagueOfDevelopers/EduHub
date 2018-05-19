@@ -61,6 +61,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     super(props);
 
     this.handleCancel = this.handleCancel.bind(this);
+    this.getGroups = this.getGroups.bind(this);
 
     this.state = {
       signInVisible: false,
@@ -80,22 +81,19 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   componentDidMount() {
     if(localStorage.getItem('without_server') !== 'true') {
-      this.getUnassembledGroups();
-      this.getAssembledGroups();
+      this.getGroups();
     }
   }
 
-  getUnassembledGroups = () => {
-    return fetch(`${config.API_BASE_URL}/group/search?type=Default&formed=false&minPrice=0&maxPrice=10000`)
+  getGroups = () => {
+    return fetch(`${config.API_BASE_URL}/group`)
       .then(response => response.json())
-      .then(res => this.setState({unassembledGroups: res}))
-      .catch(error => error)
-  };
-
-  getAssembledGroups = () => {
-    return fetch(`${config.API_BASE_URL}/group/search?type=Default&formed=true&minPrice=0&maxPrice=10000`)
-      .then(response => response.json())
-      .then(res => this.setState({assembledGroups: res}))
+      .then(res => this.setState(
+        {
+          unassembledGroups: res.fillingGroups,
+          assembledGroups: res.fullGroups
+        }
+      ))
       .catch(error => error)
   };
 
@@ -194,10 +192,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                       <Button type="primary" onClick={() => this.setState({signInVisible: true})}>Стать преподавателем</Button>
                     </Col>
                     : localStorage.getItem('isTeacher') !== 'true' ?
-                        <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>
-                          <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
-                          <Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}><Button type="primary">Стать преподавателем</Button></Link>
-                        </Col>
+                      <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>
+                        <Col style={{display: 'inline', fontSize: 18, marginRight: '2%'}}>Уже знаете, чему будете учить?</Col>
+                        <Link to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}><Button type="primary">Стать преподавателем</Button></Link>
+                      </Col>
                       : null
                   }
                 </Row>

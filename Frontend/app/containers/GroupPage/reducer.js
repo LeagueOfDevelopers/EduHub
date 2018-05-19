@@ -68,7 +68,9 @@ import {
   FINISH_COURSE_START,
   DOWNLOAD_COURSE_FILE_START,
   DOWNLOAD_COURSE_FILE_FAILED,
-  DOWNLOAD_COURSE_FILE_SUCCESS
+  DOWNLOAD_COURSE_FILE_SUCCESS,
+  GET_MESSAGE,
+  CLEAR_CHAT
 } from './constants';
 import {message} from "antd";
 import {parseJwt} from "../../globalJS";
@@ -292,7 +294,7 @@ function groupPageReducer(state = initialState, action) {
     case SEND_MESSAGE_START:
       return state
         .set('pending', true)
-        .set('needUpdate', true)
+        // .set('needUpdate', true)
         .set('chat', state.toJS().chat.concat({text: action.text, senderId: parseJwt(localStorage.getItem('token')).UserId, sentOn: new Date()}));
     case SEND_MESSAGE_SUCCESS:
       return state
@@ -361,6 +363,12 @@ function groupPageReducer(state = initialState, action) {
       return state
         .set('pending', false)
         .set('error', true);
+    case GET_MESSAGE:
+      return state
+        .set('chat', action.msgData.senderId != parseJwt(localStorage.getItem('token')).UserId ? state.toJS().chat.concat(action.msgData) : state.toJS().chat);
+    case CLEAR_CHAT:
+      return state
+        .set('chat', []);
     default:
       return state;
   }

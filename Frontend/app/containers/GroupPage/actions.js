@@ -5,6 +5,8 @@
  */
 
 import {
+  GET_MESSAGE,
+  CLEAR_CHAT,
   ENTER_GROUP_START,
   ENTER_GROUP_SUCCESS,
   ENTER_GROUP_FAILED,
@@ -513,5 +515,18 @@ export function downloadCourseFileFailed(link) {
   return {
     type: DOWNLOAD_COURSE_FILE_FAILED,
     link
+  };
+}
+
+export function getMessage(msgData) {
+  return {
+    type: GET_MESSAGE,
+    msgData
+  };
+}
+
+export function clearChat() {
+  return {
+    type: CLEAR_CHAT
   };
 }

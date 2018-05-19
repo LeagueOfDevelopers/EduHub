@@ -11,6 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import moment from 'moment';
 import {makeSelectUserGroups, makeSelectNeedUpdate, makeSelectTags} from './selectors';
 import {
   getCurrentUserGroups,
@@ -32,7 +33,7 @@ import config from '../../config';
 import {Link} from "react-router-dom";
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
 import MakeReportModal from '../../components/MakeReportModal';
-import {Card, Col, Row, Avatar, Tabs, Input, InputNumber, Select, Button, Icon, Upload, Form} from 'antd';
+import {Card, Col, Row, Avatar, Tabs, Input, DatePicker, Select, Button, Icon, Upload, Form} from 'antd';
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 
@@ -170,7 +171,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       isEditing: false,
       nameInput: '',
       genderInput: 'Unknown',
-      birthYearInput: 1900,
+      birthYearInput: '',
       skillsInput: [],
       aboutInput: '',
       imageUrl: null,
@@ -243,7 +244,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       imageUrl: result.userProfile.avatarLink,
       nameInput: result.userProfile.name,
       genderInput: result.userProfile.gender === 1 ? 'Man' : result.userProfile.gender === 2 ? 'Woman' : 'Unknown',
-      birthYearInput: result.userProfile.birthYear ? result.userProfile.birthYear : 1900,
+      birthYearInput: result.userProfile.birthYear ? result.userProfile.birthYear : new Date(),
       aboutInput: result.userProfile.aboutUser ? result.userProfile.aboutUser : '',
       contactsInputs: result.userProfile.contacts ? result.userProfile.contacts : [],
       isCurrentUser: Boolean(this.state.userData && this.props.match.params.id == this.state.userData.UserId)
@@ -258,8 +259,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     this.setState({genderInput: e})
   };
 
-  onChangeBirthYearHandle = (e) => {
-    this.setState({birthYearInput: e})
+  onChangeBirthYearHandle = (date, dateString) => {
+    this.setState({birthYearInput: date});
   };
 
   onChangeAboutHandle = (e) => {
@@ -435,22 +436,29 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   </p>
                 </Row>
                 <Row style={{marginBottom: 20}}>
-                  <div>Год рождения</div>
+                  <div>Дата рождения</div>
                   <p style={{fontSize: 16, color: '#000'}}>
                     {
                       this.state.isEditing ?
                         <FormItem style={{width: '100%', marginBottom: 0}}>
                           {getFieldDecorator('birthYear', {
                             rules: [
-                              {required: true, message: 'Пожалуйста, введите год рождения!'}
+                              {required: true, message: 'Пожалуйста, введите дату рождения!'}
                             ],
-                            initialValue: this.state.birthYearInput
+                            initialValue: moment(new Date(this.state.birthYearInput).toLocaleString(), 'DD.MM.YYYY')
                           })(
-                            <InputNumber onChange={this.onChangeBirthYearHandle} min={1900} max={new Date().getFullYear()} style={{width: 150}}/>)
+                            <DatePicker onChange={this.onChangeBirthYearHandle} format='DD.MM.YYYY' style={{width: '100%'}}/>)
                           }
                         </FormItem>
                         : this.state.userProfile.birthYear ?
-                        this.state.userProfile.birthYear : 'Не указано'
+                        `${new Date(this.state.userProfile.birthYear).getDate() < 10 ?
+                          '0' + new Date(this.state.userProfile.birthYear).getDate()
+                          : new Date(this.state.userProfile.birthYear).getDate()}.${new Date(this.state.userProfile.birthYear).getMonth() < 10 ?
+                          '0' + new Date(this.state.userProfile.birthYear).getMonth()
+                          : new Date(this.state.userProfile.birthYear).getMonth()}.${
+                          new Date(this.state.userProfile.birthYear).getFullYear() < 1000 ?
+                          '000' + new Date(this.state.userProfile.birthYear).getFullYear()
+                          : new Date(this.state.userProfile.birthYear).getFullYear()}`: 'Не указано'
                     }
                   </p>
                 </Row>
@@ -468,28 +476,28 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                             : this.state.teacherProfile.skills.length === 0 && !this.state.isEditing && !this.state.isCurrentUser ?
                               <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
                               : this.state.isCurrentUser && !this.state.isEditing && this.state.teacherProfile.skills.length === 0 ? (
-                              <div>
-                                <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
-                                <span onClick={() => this.setState({isEditing: true})} style={{color: '#1890ff', marginTop: 4, cursor: 'pointer'}}>
+                                  <div>
+                                    <div style={{fontSize: 16, color: '#000'}}>Не указано</div>
+                                    <span onClick={() => this.setState({isEditing: true})} style={{color: '#1890ff', marginTop: 4, cursor: 'pointer'}}>
                                   Теперь вы можете указать свои навыки!
                                 </span>
-                              </div>
-                              )
-                              : this.state.isEditing ?
-                              <FormItem style={{width: '100%', marginBottom: 0}}>
-                                {getFieldDecorator('skills', {
-                                  rules: [],
-                                  initialValue: this.state.teacherProfile.skills
-                                })(
-                                  <Select onChange={this.onChangeSkillsHandle} style={{width: '100%'}} onSearch={this.onHandleSearch} mode="tags" placeholder="Введите свои навыки" notFoundContent={null}>
-                                    {this.props.tags && this.props.tags.length ?
-                                      this.props.tags.map((item, index) =>
-                                        <Select.Option key={item}>{item}</Select.Option>
-                                      ) : null}
-                                  </Select>)
-                                }
-                              </FormItem>
-                              : null
+                                  </div>
+                                )
+                                : this.state.isEditing ?
+                                  <FormItem style={{width: '100%', marginBottom: 0}}>
+                                    {getFieldDecorator('skills', {
+                                      rules: [],
+                                      initialValue: this.state.teacherProfile.skills
+                                    })(
+                                      <Select onChange={this.onChangeSkillsHandle} style={{width: '100%'}} onSearch={this.onHandleSearch} mode="tags" placeholder="Введите свои навыки" notFoundContent={null}>
+                                        {this.props.tags && this.props.tags.length ?
+                                          this.props.tags.map((item, index) =>
+                                            <Select.Option key={item}>{item}</Select.Option>
+                                          ) : null}
+                                      </Select>)
+                                    }
+                                  </FormItem>
+                                  : null
                           }
                         </p>
                       </Row>
@@ -623,12 +631,12 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
               : null
             }
             {this.state.isCurrentUser ? null :
-                <Button
-                  onClick={this.onReportClick}
-                  style={{width: '100%', marginTop: 12}}
-                >
-                  Пожаловаться
-                </Button>
+              <Button
+                onClick={this.onReportClick}
+                style={{width: '100%', marginTop: 12}}
+              >
+                Пожаловаться
+              </Button>
             }
           </Col>
           <Col xs={{span: 24}} md={{span: 12, offset: 1}} lg={{span: 13, offset: 1}} xl={{span: 15, offset: 1}} xxl={{span: 17, offset: 1}} className='lg-center-container-item xs-groups-tabs'>

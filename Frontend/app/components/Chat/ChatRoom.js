@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { sendMessage, getCurrentChat } from "../../containers/GroupPage/actions";
+import { sendMessage, getCurrentChat, getMessage } from "../../containers/GroupPage/actions";
 import { connectSockets } from "../../globalJS";
 import {Input, Avatar, Row, Col} from 'antd';
 import Message from './Message';
@@ -36,8 +36,15 @@ class ChatRoom extends React.Component {
     };
     socket.onmessage = function(event) {
       // _this.props.getCurrentChat(_this.props.groupId);
-      console.log('message received ' + JSON.stringify(JSON.parse(event.data)));
-      _this.setProps({chat: [..._this.props.chat, JSON.parse(event.data)]});
+      let msgData = JSON.parse(event.data);
+      console.log('message received ' + JSON.stringify(msgData));
+      _this.props.getMessage({
+        id: msgData.Id,
+        senderId: msgData.SenderId,
+        senderName: msgData.SenderName,
+        sentOn: msgData.SentOn,
+        text: msgData.Text
+      });
     };
     socket.onerror = function(event) {
       console.log("error " + JSON.stringify(event));
@@ -121,7 +128,7 @@ class ChatRoom extends React.Component {
                   <Input size='large' style={{width: '100%'}} ref={input => this.msgInput = input} placeholder='Введите сообщение' />
                 </Col>
                 <Col style={{display: 'flex', height: 40, alignItems: 'center', justifyContent: 'flex-end', minWidth: 24, marginRight: 20}}>
-                  <img src={require('../../images/send-blue.svg')} onClick={() => this.submitMessage()} className='send-msg-btn'/>
+                  <img src={require('../../images/send-orange.svg')} onClick={() => this.submitMessage()} className='send-msg-btn'/>
                 </Col>
               </Row>
             </form>
@@ -154,7 +161,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     sendMessage: (groupId, text) => dispatch(sendMessage(groupId, text)),
-    getCurrentChat: (groupId) => dispatch(getCurrentChat(groupId))
+    getCurrentChat: (groupId) => dispatch(getCurrentChat(groupId)),
+    getMessage: (msgData) => dispatch(getMessage(msgData))
   }
 }
 

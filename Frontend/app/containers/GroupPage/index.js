@@ -25,7 +25,8 @@ import {
   editGroupType,
   getCurrentChat,
   getCurrentPlan,
-  getTags
+  getTags,
+  clearChat
 } from "./actions";
 import { makeSelectNeedUpdate, makeSelectChat, makeSelectTags } from "./selectors";
 import {Link} from "react-router-dom";
@@ -174,6 +175,10 @@ export class GroupPage extends React.Component {
 
   componentDidMount() {
     this.getCurrentGroup();
+  }
+
+  componentWillUnmount() {
+    this.props.clearChat();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -576,7 +581,8 @@ function mapDispatchToProps(dispatch) {
     editGroupType: (id, type) => dispatch(editGroupType(id, type)),
     getCurrentChat: (groupId) => dispatch(getCurrentChat(groupId)),
     getCurrentPlan: (plan) => dispatch(getCurrentPlan(plan)),
-    getTags: (tag) => dispatch(getTags(tag))
+    getTags: (tag) => dispatch(getTags(tag)),
+    clearChat: () => dispatch(clearChat())
   };
 }
 

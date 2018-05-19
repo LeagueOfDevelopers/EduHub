@@ -7,7 +7,7 @@
 import React from 'react';
 import {Card, Row, Col, Button, message, Avatar} from 'antd';
 import {Link} from "react-router-dom";
-import {getGender} from "../../globalJS";
+import {getGender, getAge} from "../../globalJS";
 
 
 class UserCard extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -36,8 +36,15 @@ class UserCard extends React.Component { // eslint-disable-line react/prefer-sta
                 <span title='Пользователь является преподавателем' style={{opacity: 0.4, fontSize: 14}}>{this.props.isTeacher ? 'Преподаватель' : ''}</span>
               </div>
               <div style={{display: 'flex', flexWrap: 'wrap', alignItems: 'center'}}>
-                <span title='Пол пользователя' style={{opacity: 0.5, marginRight: 14, fontSize: 14}}>{getGender(this.props.gender)}</span>
-                <span style={{opacity: 0.5, fontSize: 14}}>{this.props.birthYear ? `${this.props.birthYear} год рождения` : ''}</span>
+                <span title='Пол пользователя' style={{opacity: 0.5, marginRight: 24, fontSize: 14}}>{getGender(this.props.gender)}</span>
+                <span style={{opacity: 0.5, fontSize: 14}}>
+                  {this.props.birthYear ?
+                    `${getAge(this.props.birthYear)}
+                      ${getAge(this.props.birthYear) % 10 === 1 ? 'год'
+                      : getAge(this.props.birthYear) % 10 > 1 && getAge(this.props.birthYear) % 10 < 5 ? 'года'
+                        : getAge(this.props.birthYear) % 10 > 4 || getAge(this.props.birthYear) % 10 === 0 ? 'лет' : ''}`
+                          : ''}
+                </span>
               </div>
             </div>
           </Col>
