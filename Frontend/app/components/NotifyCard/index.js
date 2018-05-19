@@ -81,9 +81,9 @@ class NotifyCard extends React.PureComponent { // eslint-disable-line react/pref
             <span style={{fontSize: 14, opacity: 0.7}}>
               {`${new Date(this.props.occurredOn).getDate() < 10 ?
                 '0' + new Date(this.props.occurredOn).getDate()
-                  : new Date(this.props.occurredOn).getDate()}.${new Date(this.props.occurredOn).getMonth() < 10 ?
-                    '0' + new Date(this.props.occurredOn).getMonth()
-                     : new Date(this.props.occurredOn).getMonth()}.${new Date(this.props.occurredOn).getFullYear()}
+                  : new Date(this.props.occurredOn).getDate()}.${+new Date(this.props.occurredOn).getMonth() + 1 < 10 ?
+                    '0' + +(new Date(this.props.occurredOn).getMonth() + 1)
+                     : +new Date(this.props.occurredOn).getMonth() + 1}.${new Date(this.props.occurredOn).getFullYear()}
                       ${new Date(this.props.occurredOn).getHours() < 10 ?
                         '0' + new Date(this.props.occurredOn).getHours()
                           : new Date(this.props.occurredOn).getHours()}:${new Date(this.props.occurredOn).getMinutes() < 10 ?

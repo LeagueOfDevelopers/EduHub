@@ -147,7 +147,7 @@ export function getAge(date) {
   let today = new Date();
   let birthDate = new Date(date);
   let age = today.getFullYear() - birthDate.getFullYear();
-  let m = today.getMonth() - birthDate.getMonth();
+  let m = +today.getMonth() - +birthDate.getMonth() + 1;
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }

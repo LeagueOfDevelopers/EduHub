@@ -453,9 +453,10 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                         : this.state.userProfile.birthYear ?
                         `${new Date(this.state.userProfile.birthYear).getDate() < 10 ?
                           '0' + new Date(this.state.userProfile.birthYear).getDate()
-                          : new Date(this.state.userProfile.birthYear).getDate()}.${new Date(this.state.userProfile.birthYear).getMonth() < 10 ?
-                          '0' + new Date(this.state.userProfile.birthYear).getMonth()
-                          : new Date(this.state.userProfile.birthYear).getMonth()}.${
+                          : new Date(this.state.userProfile.birthYear).getDate()}.${
+                          +new Date(this.state.userProfile.birthYear).getMonth() + 1 < 10 ?
+                            '0' + +(new Date(this.state.userProfile.birthYear).getMonth() + 1)
+                          : +new Date(this.state.userProfile.birthYear).getMonth() + 1}.${
                           new Date(this.state.userProfile.birthYear).getFullYear() < 1000 ?
                           '000' + new Date(this.state.userProfile.birthYear).getFullYear()
                           : new Date(this.state.userProfile.birthYear).getFullYear()}`: 'Не указано'
