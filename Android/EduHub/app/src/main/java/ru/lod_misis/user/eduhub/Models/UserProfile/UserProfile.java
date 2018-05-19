@@ -23,7 +23,7 @@ public class UserProfile implements Serializable {
     private String aboutUser;
     @SerializedName("birthYear")
     @Expose
-    private Integer birthYear;
+    private String birthYear;
     @SerializedName("gender")
     @Expose
     private String gender;
@@ -61,11 +61,11 @@ public class UserProfile implements Serializable {
         this.aboutUser = aboutUser;
     }
 
-    public Integer getBirthYear() {
+    public String getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(Integer birthYear) {
+    public void setBirthYear(String birthYear) {
         this.birthYear = birthYear;
     }
 

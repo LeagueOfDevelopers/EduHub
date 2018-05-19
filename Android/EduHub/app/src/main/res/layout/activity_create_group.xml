@@ -1,45 +1,222 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.lod_misis.user.eduhub.CreateGroupActivity">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
+    xmlns:TagsEditText="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/create_group"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp">
-
-            <ImageButton
-                android:id="@+id/back"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="7dp"
-                android:layout_centerVertical="true"
-                android:background="@color/grey"
-                android:src="@drawable/ic_arrow_back_black_24dp" />
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/back"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme" />
-        </RelativeLayout>
-    </android.support.design.widget.AppBarLayout>
-    <include layout="@layout/content_create_group_activity"
+        android:clickable="true"
+        app:backgroundTint="@color/orange"
+        app:srcCompat="@drawable/ic_check_black_16dp"
+        android:layout_gravity="end|bottom"
+        android:layout_marginRight="27dp"
+        android:layout_marginBottom="39dp"/>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/header"
-        />
-    </RelativeLayout>
+        android:orientation="vertical">
 
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/darkBlue"
+            android:theme="@style/AppTheme.PopupOverlay">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:background="@color/darkBlue"
+                    android:src="@drawable/ic_arrow_back_black_24dp" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/back"
+                    android:background="@color/darkBlue"
+                    app:titleTextColor="#FFFFFF"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+            </RelativeLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="50dp"
+                    android:background="@color/darkBlue">
+                    <TextView
+                        android:id="@+id/title_of_group_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="21dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Название"
+                        android:textColor="#FFFFFF"/>
+                    <EditText
+                        android:layout_below="@+id/title_of_group_title"
+                        android:id="@+id/name_of_group_create"
+                        android:layout_marginLeft="21dp"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FFFFFF"
+                        android:textColorHint="#FFFFFF"
+
+                        />
+                    <Spinner
+                        android:id="@+id/type_of_education"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="21dp"
+                        android:layout_below="@+id/title_of_group_title"
+                        android:layout_marginTop="10dp"
+                        >
+                    </Spinner>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="25dp">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="29dp">
+                                <TextView
+                                    android:id="@+id/title_of_cost_education"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Стоимость обучения"
+                                    />
+
+                                <EditText
+                                    android:id="@+id/cost"
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignLeft="@+id/title_of_cost_education"
+                                    android:layout_alignStart="@+id/title_of_cost_education"
+                                    android:layout_below="@+id/title_of_cost_education"
+                                    android:layout_marginTop="10dp"
+                                    android:drawableLeft="@drawable/ic_ruble_currency_sign2"
+                                    android:inputType="numberDecimal" />
+                                <TextView
+                                    android:id="@+id/title_of_sizeGroup"
+                                    android:layout_width="115dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginRight="15dp"
+                                    android:text="Размер"/>
+
+                                <EditText
+                                    android:id="@+id/participants"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignLeft="@+id/title_of_sizeGroup"
+                                    android:layout_alignStart="@+id/title_of_sizeGroup"
+                                    android:layout_below="@+id/title_of_sizeGroup"
+                                    android:layout_marginRight="15dp"
+                                    android:layout_marginTop="10dp"
+                                    android:drawableLeft="@drawable/ic_person_black_16dp"
+                                    android:paddingLeft="5dp"
+
+                                    android:inputType="number" />
+                            </RelativeLayout>
+                            <TextView
+                                android:id="@+id/title_about_group"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Требования к преподавателю"
+                                android:layout_marginTop="34dp"
+                                />
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/layout_edit_about_group"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                app:counterEnabled="true"
+                                app:counterMaxLength="125"
+                                >
+                                <EditText
+                                    android:id="@+id/about_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+                            </android.support.design.widget.TextInputLayout>
+                            <TextView
+                                android:id="@+id/title_tags"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Теги"
+                                />
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/layout_tags"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                app:counterEnabled="true"
+                                app:counterMaxLength="5">
+
+                                <mabbas007.tagsedittext.TagsEditText
+                                    android:id="@+id/tagsEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:allowSpaceInTag="true"
+                                    app:tagsBackground="@drawable/chip1"
+                                    app:tagsCloseImagePadding="@dimen/defaultTagsCloseImagePadding"
+                                    app:tagsCloseImageRight="@drawable/tag_close"
+                                    app:tagsPaddingLeft="6dp"
+                                    app:tagsPaddingRight="6dp"
+                                    app:tagsTextColor="@color/black"
+                                    app:tagsTextSize="@dimen/defaultTagsTextSize" />
+                            </android.support.design.widget.TextInputLayout>
+
+                            <CheckBox
+                                android:id="@+id/privacy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Вход только по приглашениям"/>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+</FrameLayout>
+
+
+

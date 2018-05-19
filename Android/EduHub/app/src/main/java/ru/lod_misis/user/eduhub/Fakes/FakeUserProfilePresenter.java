@@ -80,7 +80,7 @@ public class FakeUserProfilePresenter implements IUserProfilePresenter {
             groups.add(group);
         }
         userProfile.setGender("2");
-        userProfile.setBirthYear(1999);
+        userProfile.setBirthYear("1990");
         userProfile.setAboutUser("Начинающий Андроид разработчик");
         teacherProfile.setReviews(reviews);
         teacherProfile.setJobExp(groups);

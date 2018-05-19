@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface IChangeUsersDataPresenter {
-    void changeUsersData(String token,String name, String aboutUser, ArrayList<String> contacts,Integer birthYear,String avatarLink,String sex,Boolean isTeacher,String[] skills, Context context);
+    void changeUsersData(String token,String name, String aboutUser, ArrayList<String> contacts,String birthYear,String avatarLink,String sex,Boolean isTeacher,String[] skills, Context context);
 }

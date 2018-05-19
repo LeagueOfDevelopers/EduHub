@@ -97,7 +97,12 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
                                              if((keyCode == KeyEvent.KEYCODE_ENTER)) {
                                                  if(!edit.getText().toString().equals("")){
                                                      if(!fakesButton.getCheckButton()){
-                                                         searchUserPresenter.searchUser(edit.getText().toString(),context);}
+                                                         if(role.equals("Ученик")){
+                                                             isTeacher=false;
+                                                         }else{
+                                                             isTeacher=true;
+                                                         }
+                                                         searchUserPresenter.searchUserForInvitation(edit.getText().toString(),groupId,context,isTeacher);}
                                                      else {fakeSearchUsers.searchUser(edit.getText().toString(),context);}}
                                                  return true;
                                              }
@@ -107,7 +112,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
         );
         Spinner spinner=findViewById(R.id.UserRole);
         String[] roles={"Ученик","Учитель"};
-        SpinnerAdapterForMemberRole adapter=new SpinnerAdapterForMemberRole(this,R.layout.spinner_item_for_members_role, roles);
+        SpinnerAdapterForMemberRole adapter=new SpinnerAdapterForMemberRole(this,R.layout.spinner_item2, roles);
         spinner.setAdapter(adapter);
         // заголовок
         spinner.setPrompt("Type of education");

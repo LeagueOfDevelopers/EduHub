@@ -32,7 +32,7 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
     }
 
     @Override
-    public void changeUsersData(String token,String name, String aboutUser, ArrayList<String> contacts, Integer birthYear, String avatarLink, String sex,Boolean isTeacher,String[] skills,Context context) {
+    public void changeUsersData(String token,String name, String aboutUser, ArrayList<String> contacts, String birthYear, String avatarLink, String sex,Boolean isTeacher,String[] skills,Context context) {
         EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
         Observable changeAboutUser=Observable.empty();
         Observable changeUsersAvatarLink=Observable.empty();
@@ -64,7 +64,7 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe();
         }Log.d("123",skills.length+"");
-        if(skills!=null&&skills.length!=0){
+        if(skills!=null&&skills.length!=0&&isTeacher){
 
             ChangedSkilsRequestModel changedSkilsRequestModel=new ChangedSkilsRequestModel();
             ArrayList<String> skills2=new ArrayList<>();

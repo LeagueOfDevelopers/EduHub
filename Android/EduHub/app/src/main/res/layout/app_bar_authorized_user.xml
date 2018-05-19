@@ -12,7 +12,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue"
+        android:background="@color/darkBlue"
         android:theme="@style/AppTheme.PopupOverlay">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,7 +21,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@color/blue"
+            android:background="@color/darkBlue"
+            app:titleTextColor="#FFFFFF"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             />
 

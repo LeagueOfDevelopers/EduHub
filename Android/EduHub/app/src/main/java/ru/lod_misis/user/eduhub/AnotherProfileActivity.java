@@ -34,6 +34,7 @@ import ru.lod_misis.user.eduhub.Interfaces.View.IFileRepositoryView;
 import ru.lod_misis.user.eduhub.Interfaces.View.IRefreshTokenView;
 import ru.lod_misis.user.eduhub.Interfaces.View.IUserProfileView;
 import ru.lod_misis.user.eduhub.Models.AddFileResponseModel;
+import ru.lod_misis.user.eduhub.Models.ConverDate;
 import ru.lod_misis.user.eduhub.Models.Group.Group;
 import ru.lod_misis.user.eduhub.Models.SavedDataRepository;
 import ru.lod_misis.user.eduhub.Models.User;
@@ -225,7 +226,7 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
             }
 
             if(userProfile.getUserProfile().getAvatarLink()!=null){
-                Picasso.get().load("http://85.143.104.47:2411/api/file/img/"+userProfile.getUserProfile().getAvatarLink()).into(avatar);
+                Picasso.get().load("http://85.143.104.47:2411/api/file/img/"+userProfile.getUserProfile().getAvatarLink()).resize(150,150).into(avatar);
 
             }
             if(!userProfile.getUserProfile().getGender().equals("0")){
@@ -242,14 +243,14 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
                 line3.setVisibility(View.GONE);
                 headerSex.setVisibility(View.GONE);
             }
-            if(userProfile.getUserProfile().getBirthYear().toString().equals("0")){
+            if(userProfile.getUserProfile().getBirthYear().toString().equals("0001-01-01T00:00:00+00:00")){
                 line4.setVisibility(View.GONE);
                 headerBirthyear.setVisibility(View.GONE);
                 birthYear.setVisibility(View.GONE);
 
             }else {
-
-                birthYear.setText(userProfile.getUserProfile().getBirthYear()+"");
+                ConverDate converDate=new ConverDate();
+                birthYear.setText(converDate.convertDate(userProfile.getUserProfile().getBirthYear(),false));
             }
             if(userProfile.getUserProfile().getContacts().size()==0){
                 headerContacts.setVisibility(View.GONE);

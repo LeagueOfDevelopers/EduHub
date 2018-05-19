@@ -2,6 +2,9 @@ package ru.lod_misis.user.eduhub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -56,7 +59,7 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
         final CheckBox checkBox=findViewById(R.id.privacy);
         final EditText description=findViewById(R.id.about_group);
 
-        Button createGroup=findViewById(R.id.create_group);
+        FloatingActionButton createGroup=findViewById(R.id.create_group);
         user=savedDataRepository.loadSavedData(sPref);
         Toolbar toolbar=findViewById(R.id.toolbar);
         toolbar.setTitle("Создание группы");
@@ -66,10 +69,8 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
          flag=false;
         privacy.setOnClickListener(click->{
             if(flag){
-                privacy.setButtonDrawable(R.drawable.ic_black_circle);
                 flag=false;
             }else{
-                privacy.setButtonDrawable(R.drawable.ic_check_circle_black_24dp);
                 flag=true;
             }
         });
@@ -95,6 +96,7 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
             }
         });
         EditText nameOfGroup=findViewById(R.id.name_of_group_create);
+        nameOfGroup.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         tags.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {

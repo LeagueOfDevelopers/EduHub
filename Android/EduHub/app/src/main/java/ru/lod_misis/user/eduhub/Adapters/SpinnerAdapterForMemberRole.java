@@ -33,7 +33,7 @@ public class SpinnerAdapterForMemberRole extends ArrayAdapter<String> {
 
         View view= mInflater.inflate(this.mLayout, parent, false);
 
-        TextView type=view.findViewById(R.id.spenner_item);
+        TextView type=view.findViewById(R.id.spinner_item2);
 
         type.setText(memberRoles[position].toString());
 

@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -106,6 +107,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     EditText reason_negative_response;
     EditText addReview;
     CardView course;
+    RelativeLayout mainLayout;
     DownloadManager downloadManager;
     SwipeRefreshLayout swipeContainer;
     ProgressBar progressBar;
@@ -123,6 +125,8 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         voteCard=v.findViewById(R.id.vote_card);
         course=v.findViewById(R.id.course);
         result=v.findViewById(R.id.result);
+        mainLayout=v.findViewById(R.id.main_layout);
+        mainLayout.setVisibility(View.GONE);
         suggestion_course_card=v.findViewById(R.id.suggestion_course_card);
         reason_negative_response_card=v.findViewById(R.id.reason_negative_response_card);
         positive_response=v.findViewById(R.id.possitive_button_about_course);
@@ -497,6 +501,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
             linkCard.setVisibility(View.GONE);
             reason_negative_response_card.setVisibility(View.GONE);
             suggestion_course_card.setVisibility(View.GONE);}
+            mainLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

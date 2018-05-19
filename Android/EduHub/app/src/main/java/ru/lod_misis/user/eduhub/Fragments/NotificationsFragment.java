@@ -44,8 +44,7 @@ public class NotificationsFragment extends Fragment implements INotificationsVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.notification_fragment, null);
-        Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Уведомления");
+
         swipeRefreshLayout=v.findViewById(R.id.swipeConteinerForNotifications);
         expandablePlaceHolderView=v.findViewById(R.id.expandableView);
         SharedPreferences sPref=getActivity().getSharedPreferences("User",MODE_PRIVATE);

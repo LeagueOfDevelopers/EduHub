@@ -28,7 +28,9 @@ import ru.lod_misis.user.eduhub.Models.Tag;
 import ru.lod_misis.user.eduhub.Models.User;
 import ru.lod_misis.user.eduhub.Models.Registration.RegistrationModel;
 import ru.lod_misis.user.eduhub.Models.Registration.RegistrationResponseModel;
+import ru.lod_misis.user.eduhub.Models.UserProfile.ChangeSettingNotification;
 import ru.lod_misis.user.eduhub.Models.UserProfile.ChangedSkilsRequestModel;
+import ru.lod_misis.user.eduhub.Models.UserProfile.NotificationsSettings;
 import ru.lod_misis.user.eduhub.Models.UserProfile.RefactorUserRequestModel;
 import ru.lod_misis.user.eduhub.Models.UserProfile.UserProfileResponse;
 import ru.lod_misis.user.eduhub.Models.UserProfile.UserSearchProfileResponse;
@@ -213,4 +215,10 @@ public interface EduHubApi {
 
     @GET("/api/tags/search")
     Single<ArrayList<Tag>> findTags(@Query("tag") String tag);
+
+    @GET("/api/user/profile/notifications/settings")
+    Single<NotificationsSettings> getSettingsNotifications(@Header("Authorization") String token);
+
+    @PUT ("/api/user/profile/notifications/settings")
+    Completable changeNotificationsSettings(@Header("Authorization") String token, @Body ChangeSettingNotification model);
 }

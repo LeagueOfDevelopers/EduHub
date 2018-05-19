@@ -1,6 +1,7 @@
 package ru.lod_misis.user.eduhub;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,11 +19,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -38,6 +41,7 @@ import ru.lod_misis.user.eduhub.Interfaces.View.IChangeUsersDataView;
 import ru.lod_misis.user.eduhub.Interfaces.View.IFileRepositoryView;
 import ru.lod_misis.user.eduhub.Interfaces.View.IFindTagsView;
 import ru.lod_misis.user.eduhub.Models.AddFileResponseModel;
+import ru.lod_misis.user.eduhub.Models.ConverDate;
 import ru.lod_misis.user.eduhub.Models.DecodeFile;
 import ru.lod_misis.user.eduhub.Models.SavedDataRepository;
 import ru.lod_misis.user.eduhub.Models.User;
@@ -49,6 +53,8 @@ import com.example.user.eduhub.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,6 +92,7 @@ UserProfileResponse userProfile;
     EditText editUserEmail;
     EditText editBirthYear;
     EditText editAboutMe;
+    ConverDate converDate=new ConverDate();
     TextInputLayout textInputLayoutName;
     TextInputLayout textInputLayoutEmail;
     TextInputLayout textInputLayoutAboutMe;
@@ -99,6 +106,8 @@ UserProfileResponse userProfile;
     FindTagsPresenter findTagsPresenter;
     FileRepository fileRepository;
     ImageButton edittContactBtn;
+    Integer GlobalYear=0;
+    Switch isTeacher;
     DecodeFile decodeFile=new DecodeFile(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +133,7 @@ UserProfileResponse userProfile;
         avatar=findViewById(R.id.avatar);
         if(userProfile.getUserProfile().getAvatarLink()!=null){
             avatarLink=userProfile.getUserProfile().getAvatarLink();
-            Picasso.get().load("http://85.143.104.47:2411/api/file/img/"+userProfile.getUserProfile().getAvatarLink()).into(avatar);
+            Picasso.get().load("http://85.143.104.47:2411/api/file/img/"+userProfile.getUserProfile().getAvatarLink()).resize(150,150).into(avatar);
         }
 
 
@@ -138,7 +147,7 @@ UserProfileResponse userProfile;
         recyclerView=findViewById(R.id.contacts);
          editSkils=findViewById(R.id.edit_skils);
 
-        Switch isTeacher=findViewById(R.id.isTeacher);
+        isTeacher=findViewById(R.id.isTeacher);
         isTeacher.setChecked(userProfile.getUserProfile().getIsTeacher());
         Spinner sex=findViewById(R.id.sex);
         sexes.add("Неизвестно");
@@ -151,7 +160,7 @@ UserProfileResponse userProfile;
         textInputLayoutSkills=findViewById(R.id.error_layout_skills);
         textInputLayoutContacts=findViewById(R.id.error_layout_contact);
 
-        SpinnerAdapterForSex adapter=new SpinnerAdapterForSex(this,R.layout.spenner_item,sexes);
+        SpinnerAdapterForSex adapter=new SpinnerAdapterForSex(this,R.layout.spinner_item2,sexes);
         sex.setAdapter(adapter);
         // заголовок
         sex.setPrompt("Пол");
@@ -166,12 +175,18 @@ UserProfileResponse userProfile;
                 skils[i]=userProfile.getTeacherProfile().getSkills().get(i);
             }
             editSkils.setTags( skils);}}else{
-            findViewById(R.id.card_of_skils).setVisibility(View.GONE);
+            headerSkils.setVisibility(View.GONE);
+            editSkils.setVisibility(View.GONE);
         }
         if(userProfile.getUserProfile().getAboutUser()!=null){
             editAboutMe.setText(userProfile.getUserProfile().getAboutUser());}
-        if(!userProfile.getUserProfile().getBirthYear().toString().equals("0")){
-            editBirthYear.setText(userProfile.getUserProfile().getBirthYear()+"");}
+            else{
+            editAboutMe.setText("");
+        }
+        if(!userProfile.getUserProfile().getBirthYear().toString().equals("0001-01-01T00:00:00+00:00")){
+
+            editBirthYear.setText(converDate.convertDate(userProfile.getUserProfile().getBirthYear(),false));
+        }
             else{editBirthYear.setText("");}
 
         if(userProfile.getUserProfile().getContacts()!=null){
@@ -201,6 +216,7 @@ UserProfileResponse userProfile;
                 startActivityForResult(intent,1);
             }
         });
+
         editSkils.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -221,6 +237,27 @@ UserProfileResponse userProfile;
                 }
             }
         });
+        editBirthYear.setOnClickListener(new View.OnClickListener() {
+            Calendar calendar = Calendar.getInstance();
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(RefactorProfile.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Date date = new Date(year - 1900, month, dayOfMonth);
+                        GlobalYear=year;
+                        editBirthYear.setText(converDate.convertDate(date.getTime() + "", true));
+
+                    }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        }
+
+
+
+
+
+        );
         addContact.setOnClickListener(click->{
             if(contacts.size()<=5){
             textInputLayoutContacts.setVisibility(View.VISIBLE);
@@ -274,33 +311,38 @@ UserProfileResponse userProfile;
                 MakeToast("Введена некорректная ссылка");
             }
         });
-        isTeacher.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                userProfile.getUserProfile().setIsTeacher(b);
-                if(b){
-                    headerSkils.setVisibility(View.VISIBLE);
-                    editSkils.setVisibility(View.VISIBLE);
-                }else{
-                    headerSkils.setVisibility(View.GONE);
-                    editSkils.setVisibility(View.GONE);
-                }
 
+        isTeacher.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            userProfile.getUserProfile().setIsTeacher(isChecked);
+            if(isChecked){
+                headerSkils.setVisibility(View.VISIBLE);
+                editSkils.setVisibility(View.VISIBLE);
+            }else{
+                headerSkils.setVisibility(View.GONE);
+                editSkils.setVisibility(View.GONE);
             }
         });
+
         back.setOnClickListener(click->{
             onBackPressed();
         });
         saveButton.setOnClickListener(click->{
-
-            if(editUserName.getText().length()>=3&&editAboutMe.getText().length()<=70) {
+            SimpleDateFormat dateFormat=new SimpleDateFormat("dd.MM.yyyy");
+            Date myDate=null;
+            try {
+               myDate = dateFormat.parse(editBirthYear.getText().toString());
+               GlobalYear =myDate.getYear()+1900;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if(editUserName.getText().length()>=3&&editUserName.getText().length()<=70) {
                 textInputLayoutName.setErrorEnabled(false);
                 if(checkName(editUserName.getText().toString())){
                     textInputLayoutName.setErrorEnabled(false);
                     if((editAboutMe.getText().length()<=3000&&editAboutMe.getText().length()>=20)||editAboutMe.getText().toString().equals("")){
                         textInputLayoutAboutMe.setErrorEnabled(false);
-                        if(editBirthYear.getText().toString().equals("")||(Integer.valueOf(editBirthYear.getText().toString())>=1900&&
-                                Integer.valueOf(editBirthYear.getText().toString())<= getCurrentYear())){
+                        if(editBirthYear.getText().toString().equals("")|(GlobalYear>=1900&&
+                                myDate.before(new Date()))){
                             textInputLayoutBirthYear.setErrorEnabled(false);
                             skils=new String[editSkils.getTags().size()];
                             for (int i=0;i<editSkils.getTags().size();i++){
@@ -311,13 +353,20 @@ UserProfileResponse userProfile;
                 }else {
 
             if(editBirthYear.getText().toString().equals("")){
-                editBirthYear.setText("0");
-            }
-            Log.d("12344454",editSkils.getTags().size()+"");
+                changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,"0001-01-01T00:00:00+00:00",avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils,this);
 
-            changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils,this);
+            }else {
+                Log.d("12344454", editSkils.getTags().size() + "");
 
-                                }
+                try {
+
+                    changeUsersDataPresenter.changeUsersData(user.getToken(), editUserName.getText().toString(), editAboutMe.getText().toString(), contacts, converDate.convertDateForRequest(dateFormat.parse(editBirthYear.getText().toString()).getTime()+1000*60*60*24), avatarLink, str, userProfile.getUserProfile().getIsTeacher(), skils, this);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+            }  }
 
                         }else{
                             textInputLayoutBirthYear.setErrorEnabled(true);
@@ -335,6 +384,7 @@ UserProfileResponse userProfile;
                     MakeToast("Допустимые символы для имени-[a-z,A-Z,а-я,А-Я]");
                 }
             }else{
+                Log.d("123123123Error",editUserName.getText().toString());
                 textInputLayoutName.setErrorEnabled(true);
                 textInputLayoutName.setError("Минимальная длина имени - 3 символа,максимальная - 70");
                 MakeToast("Минимальная длина имени - 3 символа,максимальная - 70");
@@ -380,7 +430,7 @@ UserProfileResponse userProfile;
         if(editBirthYear.getText().toString().equals("")){
             editBirthYear.setText("0");
         }
-        changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,Integer.valueOf(editBirthYear.getText().toString()),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils,this);
+        changeUsersDataPresenter.changeUsersData(user.getToken(),editUserName.getText().toString(),editAboutMe.getText().toString(),contacts,editBirthYear.getText().toString(),avatarLink,str,userProfile.getUserProfile().getIsTeacher(),skils,this);
         user.setAvatarLink(avatarLink);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.clear();

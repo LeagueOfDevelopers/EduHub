@@ -8,8 +8,8 @@ android {
         applicationId "ru.lod_misis.user.eduhub"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 6
-        versionName "6.0"
+        versionCode 8
+        versionName "8.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

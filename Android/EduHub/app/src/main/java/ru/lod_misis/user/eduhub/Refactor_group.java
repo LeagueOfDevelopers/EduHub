@@ -2,10 +2,14 @@ package ru.lod_misis.user.eduhub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -29,6 +33,7 @@ import ru.lod_misis.user.eduhub.Presenters.ChangeGroupSettingsPresenter;
 import java.util.ArrayList;
 
 import mabbas007.tagsedittext.TagsEditText;
+import ru.lod_misis.user.eduhub.Presenters.CreateGroupPresenter;
 
 public class Refactor_group extends AppCompatActivity implements IChangeGroupSettingsView {
 
@@ -46,7 +51,6 @@ public class Refactor_group extends AppCompatActivity implements IChangeGroupSet
     ChangeGroupSettingsPresenter changeGroupSettingsPresenter=new ChangeGroupSettingsPresenter(this);
     String[] tagsArray;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,38 +59,32 @@ public class Refactor_group extends AppCompatActivity implements IChangeGroupSet
         final EditText maxParticipants=findViewById(R.id.participants);
         final EditText cost=findViewById(R.id.cost);
         final TagsEditText tags=findViewById(R.id.tagsEditText);
+        final CheckBox checkBox=findViewById(R.id.privacy);
         final EditText description=findViewById(R.id.about_group);
-        ImageView plus=findViewById(R.id.plus);
-        ImageView minus=findViewById(R.id.minus);
-        Button save_changes=findViewById(R.id.change_settings);
-        user=(User) savedDataRepository.loadSavedData(sPref);
-        Log.d("UserToken",user.getToken());
-        Toolbar toolbar=findViewById(R.id.toolbar);
-        toolbar.setTitle("Редактирование группы");
-        Intent intent=getIntent();
         group=(Group)getIntent().getSerializableExtra("Group");
+        FloatingActionButton createGroup=findViewById(R.id.change_settings);
+        user=savedDataRepository.loadSavedData(sPref);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        toolbar.setTitle("Создание группы");
+        ChangeGroupSettingsPresenter changeGroupSettingsPresenter=new ChangeGroupSettingsPresenter(this);
         ImageButton backButton=findViewById(R.id.back);
         CheckBox privacy=findViewById(R.id.privacy);
-        cost.setText(group.getGroupInfo().getCost().toString());
-        description.setText(group.getGroupInfo().getDescription());
         flag=false;
         privacy.setOnClickListener(click->{
             if(flag){
-                privacy.setButtonDrawable(R.drawable.ic_black_circle);
                 flag=false;
             }else{
-                privacy.setButtonDrawable(R.drawable.ic_check_circle_black_24dp);
                 flag=true;
             }
         });
         spinner=findViewById(R.id.type_of_education);
-        String[] types={"Лекция","Мастер класс","Семинар"};
+        String[] types={"Лекция","Мастер класс","Cеминар"};
         adapter=new SpinnerAdapter(this,R.layout.spenner_item, types);
         spinner.setAdapter(adapter);
-
         // заголовок
         spinner.setPrompt("Type of education");
-
+        // выделяем элемент
+        spinner.setSelection(0);
         // устанавливаем обработчик нажатия
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -100,74 +98,56 @@ public class Refactor_group extends AppCompatActivity implements IChangeGroupSet
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-        tagsArray=new String[group.getGroupInfo().getTags().size()];
-        for(int i=0;i<group.getGroupInfo().getTags().size();i++){
-            tagsArray[i]=group.getGroupInfo().getTags().get(i);
-        }
-        tags.setTags(tagsArray);
         EditText nameOfGroup=findViewById(R.id.name_of_group_create);
-        nameOfGroup.setText(group.getGroupInfo().getTitle());
-        maxParticipants.setText(group.getGroupInfo().getSize().toString());
-        plus.setOnClickListener(click->{
-            if(maxParticipants.getText().toString().equals("")){
-                maxParticipants.setText("0");
+        nameOfGroup.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        tags.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode==KeyEvent.KEYCODE_SPACE){
+                    Log.d("12312",tags.getText().toString());
+                    String[] tagss=tags.getText().toString().split(" ");
+                    tags.setTags(tagss);
+
+                }
+                return false;
             }
-            maxParticipants.setText((Integer.valueOf(maxParticipants.getText().toString())+1)+"");
         });
 
-        minus.setOnClickListener(click->{
-            if(maxParticipants.getText().toString().equals("")){
-                maxParticipants.setText("0");
-            }if(Integer.valueOf(maxParticipants.getText().toString())>=0){
-                maxParticipants.setText((Integer.valueOf(maxParticipants.getText().toString())-1)+"");
-            }
-        });
+
 
 
 
         backButton.setOnClickListener(click->{
             onBackPressed();
         });
-
-
-
-
-
-
-        save_changes.setOnClickListener(click->{
+        createGroup.setOnClickListener(click->{
             if(!nameOfGroup.getText().toString().equals("")&&!cost.getText().toString().equals("")&&!maxParticipants.getText().toString().equals("")&&type!=null&&!tags.getText().toString().equals("")&&!description.getText()
-                    .toString().equals("")){if(Integer.valueOf(maxParticipants.getText().toString())<=200){
-                if(nameOfGroup.getText().length()>=3&&nameOfGroup.getText().length()<=70){
-                    if(description.getText().length()>=20&&description.getText().length()<=3000){
-                        if(tags.getTags().size()<=10&&tags.getTags().size()>=3) {
-                    if(!fakesButton.getCheckButton()){
-                        changeGroupSettingsPresenter.chngeGroupSettings(user.getToken(),group.getGroupInfo().getId(),nameOfGroup.getText().toString(),Integer.valueOf(maxParticipants.getText().toString()),Double.valueOf(cost.getText().toString()),type,(ArrayList<String>)tags.getTags(),description.getText().toString(),privacy.isChecked(),this);
+                    .toString().equals("")){
+                if(Integer.valueOf(maxParticipants.getText().toString())<=200){
+                    if(nameOfGroup.getText().length()>=3&&nameOfGroup.getText().length()<=70){
+                        if(description.getText().length()>=20&&description.getText().length()<=3000){
+                            if(tags.getTags().size()<=10&&tags.getTags().size()>=3) {
+                                if(!fakesButton.getCheckButton()){
+                                    changeGroupSettingsPresenter.chngeGroupSettings(user.getToken(),group.getGroupInfo().getId(),nameOfGroup.getText().toString(),Integer.valueOf(maxParticipants.getText().toString()),Double.valueOf(cost.getText().toString()),type,(ArrayList<String>)tags.getTags(),description.getText().toString(),privacy.isChecked(),this);
+                                }
+                                else{
+                                    onBackPressed();
+                                }
+                            }else{
+                                MakeToast("Минимальное кол-во тэгов - 3,максимальное - 10");
+                            }
+                        } else{
+                            MakeToast("Минимальная длина описания группы - 20 символов,максимальная - 3000");
                         }
-                    else{
-                        onBackPressed();
+                    } else {
+                        MakeToast("Минимальная длина названия группы - 3 символа,максимальная - 70");
                     }
-                }else{
-                    MakeToast("Минимальное кол-во тэгов - 3,максимальное - 10");
-                }
-            } else{
-                MakeToast("Минимальная длина описания группы - 20 символов,максимальная - 3000");
+                } else{MakeToast("Максимальный размер группы 200");}
+            }else {
+                MakeToast("Заполните все поля");
+
             }
-        } else {
-            MakeToast("Минимальная длина названия группы - 3 символа,максимальная - 70");
-        }
-    } else{MakeToast("Максимальный размер группы 200");}
-}else {
-        MakeToast("Заполните все поля");
-
-        }
         });
-    }
-
-
-    private void MakeToast(String s) {
-        Toast toast = Toast.makeText(getApplicationContext(),
-                (s), Toast.LENGTH_LONG);
-        toast.show();
     }
 
     @Override
@@ -189,7 +169,11 @@ public class Refactor_group extends AppCompatActivity implements IChangeGroupSet
     public void getResponse() {
         onBackPressed();
     }
-
+    private void MakeToast(String s) {
+        Toast toast = Toast.makeText(getApplicationContext(),
+                (s), Toast.LENGTH_LONG);
+        toast.show();
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -198,3 +182,4 @@ public class Refactor_group extends AppCompatActivity implements IChangeGroupSet
         startActivity(intent);
     }
 }
+

@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:backgroundTint="@color/blue"
+        app:backgroundTint="@color/orange"
         app:srcCompat="@android:drawable/ic_menu_edit"
         android:layout_gravity="end|bottom"
         android:layout_marginRight="27dp"
@@ -30,7 +30,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue"
+            android:background="@color/darkBlue"
             android:orientation="vertical">
 
             <ImageView

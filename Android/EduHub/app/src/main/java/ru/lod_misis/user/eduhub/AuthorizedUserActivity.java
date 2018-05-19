@@ -35,6 +35,7 @@ import ru.lod_misis.user.eduhub.Fragments.CommonFragmentForNotifications;
 import ru.lod_misis.user.eduhub.Fragments.FindGroupsFragment;
 import ru.lod_misis.user.eduhub.Fragments.MainFragment;
 import ru.lod_misis.user.eduhub.Fragments.InvitationFragment;
+import ru.lod_misis.user.eduhub.Fragments.NotificationSettings;
 import ru.lod_misis.user.eduhub.Fragments.ProfileFragment;
 import ru.lod_misis.user.eduhub.Fragments.UsersGroupsFragment;
 import ru.lod_misis.user.eduhub.Interfaces.View.IFileRepositoryView;
@@ -103,12 +104,11 @@ public class AuthorizedUserActivity extends AppCompatActivity
             user=savedDataRepository.loadSavedData(sPref);
             bool=savedDataRepository.loadCheckButtonResult(sPref);
             fakesButton.setCheckButton(bool);
-            ProgressBar progressBar=findViewById(R.id.progressBar);
-            progressBar.setVisibility(View.VISIBLE);
-            refreshTokenPresenter.refreshToken(savedDataRepository.loadSavedData(sPref).getToken(),this);
-            if(sPref.contains(AVATARLINK)){
 
-                Log.d("AvatarLink",user.getAvatarLink());
+            refreshTokenPresenter.refreshToken(savedDataRepository.loadSavedData(sPref).getToken(),this);
+            if(user.getAvatarLink()!=null){
+
+
                 fileRepository.loadImageFromServer(user.getToken(),user.getAvatarLink());
 
             }
@@ -223,7 +223,13 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
             fragmentTransaction.commit();
         } else if (id == R.id.settings) {
+            NotificationSettings notificationSettings=new NotificationSettings();
+            Log.d("Rolrlrlrlrlr",user.getRole());
+            notificationSettings.setUser(user);
+            fragmentTransaction=getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_fragments_conteiner,notificationSettings);
 
+            fragmentTransaction.commit();
         } else if (id == R.id.notification) {
              CommonFragmentForNotifications commonFragmentForNotifications=new CommonFragmentForNotifications();
             fragmentTransaction=getSupportFragmentManager().beginTransaction();
@@ -271,12 +277,13 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
     @Override
     public void getResponse(User user) {
-        this.user=user;
+
         JWT jwt = new JWT(user.getToken());
         user.setUserId(jwt.getClaim("UserId").asString());
         Log.d("USERID",user.getUserId());
         savedDataRepository=new SavedDataRepository();
         savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sPref);
+        this.user=savedDataRepository.loadSavedData(sPref);
         drawer();
     }
 
