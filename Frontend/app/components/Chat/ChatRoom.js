@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
-import decoder from 'text-encoding';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { sendMessage, getCurrentChat, getMessage } from "../../containers/GroupPage/actions";
@@ -44,7 +43,7 @@ class ChatRoom extends React.Component {
         senderId: msgData.SenderId,
         senderName: msgData.SenderName,
         sentOn: msgData.SentOn,
-        text: decoder.TextDecoder('windows-1252').decode(msgData.Text)
+        text: msgData.Text
       });
     };
     socket.onerror = function(event) {

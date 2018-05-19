@@ -123,7 +123,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
         <Col xs={{span: 8, offset: 2}} md={{span: 4, offset: 2}}>
           <Logo>
             <Link to='/' style={{color: '#ffffff'}}>
-              EduHub
+              <img style={{width: 130}} src={require('../../images/logo.svg')} alt=""/>
             </Link>
           </Logo>
         </Col>
