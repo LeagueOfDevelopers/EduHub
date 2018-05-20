@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.Domain.NotificationService.Notifications;
+using EduHubLibrary.Domain.Tools;
 
 [assembly: InternalsVisibleTo("ChatTests")]
 

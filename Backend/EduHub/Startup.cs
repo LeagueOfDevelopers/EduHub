@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using EduHub.Extensions;
 using EduHub.Filters;
@@ -114,9 +113,7 @@ namespace EduHub
             var defaultAvatarContentType = Configuration.GetValue<string>("DefaultAvatarContentType");
             var userSettings = new UserSettings(defaultAvatarFilename);
             if (!fileRepository.DoesFileExists(defaultAvatarFilename))
-            { 
                 fileRepository.AddFile(new UserFile(defaultAvatarFilename, defaultAvatarContentType));
-            }
 
             var tagFacade = new TagFacade(tagRepository);
             var emailSender = new EmailSender(emailSettings);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace EduHub.Models.ChatControllerModels
+﻿namespace EduHub.Models.ChatControllerModels
 {
     public class AllPossibleMessages
     {

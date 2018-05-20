@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using EduHub.Extensions;
 using EduHub.Middleware;
 using EduHub.Models;
+using EduHub.Models.ChatControllerModels;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using EduHub.Models.ChatControllerModels;
 
 namespace EduHub.Controllers
 {
@@ -65,7 +65,7 @@ namespace EduHub.Controllers
             var userId = Request.GetUserId();
 
             var message = _chatFacade.GetMessage(messageId, groupId, userId);
-            var response = new UserMessageResponse(message.Id, message.SentOn, message.MessageType, message.SenderId, 
+            var response = new UserMessageResponse(message.Id, message.SentOn, message.MessageType, message.SenderId,
                 message.SenderName, message.Text);
             return Ok(response);
         }
@@ -81,7 +81,7 @@ namespace EduHub.Controllers
         public IActionResult GetAllMessages([FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
-            var response =  _chatFacade.GetMessagesForGroup(groupId, userId);
+            var response = _chatFacade.GetMessagesForGroup(groupId, userId);
 
             return Ok(response);
         }

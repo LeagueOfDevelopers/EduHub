@@ -321,7 +321,8 @@ namespace EduHubTests
             var newContactData = new List<string> {"new", " "};
 
             //Act
-            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", newContactData, DateTimeOffset.UtcNow);
+            _userEditFacade.EditProfile(_testUserId, "new", "new", Gender.Man, "", newContactData,
+                DateTimeOffset.UtcNow);
         }
 
         [TestMethod]

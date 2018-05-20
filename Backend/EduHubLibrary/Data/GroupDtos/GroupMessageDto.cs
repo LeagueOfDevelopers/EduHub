@@ -1,5 +1,5 @@
-﻿using EduHubLibrary.Domain.NotificationService.Notifications;
-using System;
+﻿using System;
+using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHubLibrary.Data.GroupDtos
 {
@@ -22,6 +22,5 @@ namespace EduHubLibrary.Data.GroupDtos
         public DateTimeOffset SentOn { get; set; }
         public NotificationType NotificationType { get; set; }
         public string NotificationInfo { get; set; }
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EduHubLibrary.Settings;
 using MailKit.Net.Smtp;
 using MimeKit;
+using MimeKit.Text;
 
 namespace EduHubLibrary.Mailing
 {
@@ -20,11 +21,11 @@ namespace EduHubLibrary.Mailing
             message.To.Add(new MailboxAddress(username, email));
             message.Subject = theme;
 
-            message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            message.Body = new TextPart(TextFormat.Html)
             {
                 Text = MessageRenderer.RenderPartialToString(messageContent)
             };
-            
+
             using (var client = new SmtpClient())
             {
                 client.Connect(_settings.SmtpAdress, _settings.SmtpPort);

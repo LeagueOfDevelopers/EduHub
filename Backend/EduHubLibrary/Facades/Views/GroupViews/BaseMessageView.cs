@@ -1,6 +1,5 @@
-﻿using EduHubLibrary.Domain.Message;
-using EduHubLibrary.Domain.NotificationService.Notifications;
-using System;
+﻿using System;
+using EduHubLibrary.Domain.Message;
 
 namespace EduHubLibrary.Facades.Views.GroupViews
 {

@@ -1,14 +1,12 @@
-﻿using EduHubLibrary.Domain.Message;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using EduHubLibrary.Domain.Message;
 
 namespace EduHub.Models.ChatControllerModels
 {
     public class UserMessageResponse
     {
-        public UserMessageResponse(int id, DateTimeOffset sentOn, MessageType messageType, int senderId, string senderName, string text)
+        public UserMessageResponse(int id, DateTimeOffset sentOn, MessageType messageType, int senderId,
+            string senderName, string text)
         {
             Id = id;
             SentOn = sentOn;

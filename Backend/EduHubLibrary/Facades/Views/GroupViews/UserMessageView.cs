@@ -1,7 +1,5 @@
 ﻿using System;
 using EduHubLibrary.Domain.Message;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Facades.Views.GroupViews
 {
