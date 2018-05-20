@@ -20,6 +20,6 @@ namespace EduHubLibrary.Domain.Tools
         internal abstract MessageType GetMessageType();
 
         public int Id { get; internal set; }
-        public DateTimeOffset SentOn { get; }
+        public DateTimeOffset SentOn { get; internal set; }
     }
 }

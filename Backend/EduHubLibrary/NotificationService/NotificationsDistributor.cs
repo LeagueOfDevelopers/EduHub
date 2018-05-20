@@ -60,8 +60,8 @@ namespace EduHubLibrary.Domain.NotificationService
         {
             var currentGroup = _groupRepository.GetGroupById(groupId);
             currentGroup.Members.ToList().ForEach(m => NotifySubscriber(m.UserId, notificationInfo));
-
             SendNotificationToChat(notificationInfo, currentGroup);
+            _groupRepository.Update(currentGroup);
         }
 
         public void NotifyPerson(int userId, INotificationInfo notificationInfo)

@@ -31,8 +31,6 @@ namespace EduHubLibrary.Extensions
             source.GroupMessages.ForEach(message => messages.Add(new GroupMessage(message.Id,
                 message.SentOn, message.NotificationInfo, message.NotificationType)));
 
-            messages.OrderBy(message => message.SentOn);
-
             var invitations = new List<Invitation>();
             source.Invitations.ForEach(invitation => invitations.Add(new Invitation(invitation.FromUser,
                 invitation.ToUser,

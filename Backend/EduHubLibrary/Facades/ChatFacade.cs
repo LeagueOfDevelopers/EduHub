@@ -5,6 +5,7 @@ using EduHubLibrary.Domain.Exceptions;
 using EduHubLibrary.Facades.Views.GroupViews;
 using EnsureThat;
 using EduHubLibrary.Domain.Message;
+using System;
 
 namespace EduHubLibrary.Facades
 {
@@ -26,14 +27,16 @@ namespace EduHubLibrary.Facades
                 opt => opt.WithException(new NotEnoughPermissionsException(senderId)));
             ;
             var currentGroup = _groupRepository.GetGroupById(groupId);
+            int newMessageId;
             using (var chat = new ChatSession(currentGroup))
             {
-                chat.SendUserMessage(senderId, text);
+                newMessageId = chat.SendUserMessage(senderId, text);
             }
-                    
+            
             _groupRepository.Update(currentGroup);
             currentGroup = _groupRepository.GetGroupById(groupId);
-            return currentGroup.Messages.ToList().LastOrDefault(m =>
+            return currentGroup.Messages.ToList().Where(message => message.GetMessageType()
+            == MessageType.UserMessage).LastOrDefault(m =>
             {
                 var message = (UserMessage)m;
                 return message.Text == text;
@@ -74,6 +77,8 @@ namespace EduHubLibrary.Facades
                         message.Id, message.SentOn));
                 }
             });
+
+            messagesList.Sort((x, y) => DateTimeOffset.Compare(x.SentOn, y.SentOn));
 
             return messagesList;
         }

@@ -12,6 +12,7 @@ namespace EduHubLibrary.Domain
     {
         public GroupMessage(INotificationInfo notificationInfo)
         {
+            SentOn = DateTimeOffset.UtcNow;
             NotificationType = notificationInfo.GetNotificationType();
             NotificationInfo = JsonConvert.SerializeObject(notificationInfo);
         }

@@ -18,8 +18,8 @@ namespace EduHubLibrary.Data.GroupDtos
         {
         }
 
-        public int Id { get; internal set; }
-        public DateTimeOffset SentOn { get; }
+        public int Id { get; set; }
+        public DateTimeOffset SentOn { get; set; }
         public NotificationType NotificationType { get; set; }
         public string NotificationInfo { get; set; }
 

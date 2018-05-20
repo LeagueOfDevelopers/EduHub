@@ -1,8 +1,6 @@
 ﻿using EduHubLibrary.Domain.NotificationService.Notifications;
 using EduHubLibrary.Domain.Message;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EduHubLibrary.Facades.Views.GroupViews
 {
@@ -13,7 +11,7 @@ namespace EduHubLibrary.Facades.Views.GroupViews
         {
             NotificationInfo = notificationInfo;
             MessageType = MessageType.GroupMessage;
-            NotificationType = NotificationType;
+            NotificationType = notificationType;
         }
 
         public string NotificationInfo { get; }
