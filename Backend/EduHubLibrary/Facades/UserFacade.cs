@@ -153,7 +153,7 @@ namespace EduHubLibrary.Facades
         {
             var allUsers = _userRepository.GetAll().ToList();
             var allGroups = _groupRepository.GetAll().ToList();
-            allUsers = allUsers.Where(u => u.UserProfile.Name.StartsWith(name))
+            allUsers = allUsers.Where(u => u.UserProfile.Name.Contains(name))
                 .OrderBy(u => u.UserProfile.Name.Length).ToList();
 
             if (isTeacher) allUsers = allUsers.FindAll(u => u.UserProfile.IsTeacher);

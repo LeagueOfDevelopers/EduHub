@@ -165,7 +165,7 @@ namespace EduHubLibrary.Facades
             GroupType type = GroupType.Default, double minPrice = 0, double maxPrice = 0, bool formed = false)
         {
             var allGroups = _groupRepository.GetAll().ToList();
-            allGroups = allGroups.Where(g => g.GroupInfo.Title.StartsWith(title))
+            allGroups = allGroups.Where(g => g.GroupInfo.Title.Contains(title))
                 .OrderBy(g => g.GroupInfo.Title.Length).ToList();
 
             if (tags != null && tags.Any())
