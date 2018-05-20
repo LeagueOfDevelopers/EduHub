@@ -190,8 +190,13 @@ namespace EduHubLibrary.Facades
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var targets = _userRepository.GetAll().ToList()
                 .FindAll(u => u.UserProfile.Name.Contains(name))
-                .Where(u => !(currentGroup.IsMember(u.Id) || currentGroup.IsTeacher(u.Id)))
-                .Where(u => u.UserProfile.IsTeacher == isTeacher);
+                .Where(u => !(currentGroup.IsMember(u.Id) || currentGroup.IsTeacher(u.Id)));
+
+            if (isTeacher)
+            {
+                targets = targets.Where(u => u.UserProfile.IsTeacher == isTeacher);
+            }
+
             var result = new List<UserInviteInfo>();
             targets.ToList().ForEach(t => result.Add(
                 new UserInviteInfo(
