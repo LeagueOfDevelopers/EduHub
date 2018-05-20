@@ -142,7 +142,7 @@ namespace EduHubLibrary.Facades
             var groupsOfUser = new List<Group>();
 
             foreach (var group in _groupRepository.GetAll())
-                if (group.Members.Any(member => member.UserId.Equals(userId)))
+                if (group.Members.Any(member => member.UserId.Equals(userId)) || group.Teacher.Id == userId)
                     groupsOfUser.Add(group);
 
             return groupsOfUser;
