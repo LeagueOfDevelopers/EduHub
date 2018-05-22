@@ -41,9 +41,9 @@ namespace EduHub.Controllers
             [FromRoute] int groupId)
         {
             var userId = Request.GetUserId();
-            var users = _groupFacade.GetGroupMembers(groupId).ToList();
+            var users = _groupFacade.GetGroup(groupId).GroupMemberInfo;
             var userIds = new List<int>();
-            users.ForEach(m => userIds.Add(m.UserId));
+            users.ToList().ForEach(m => userIds.Add(m.UserId));
             var messageId = _chatFacade.SendMessage(userId, groupId, messageRequest.Text);
             var message = _chatFacade.GetMessage(messageId, groupId, userId);
             var response = new MessageSentResponse(messageId);
