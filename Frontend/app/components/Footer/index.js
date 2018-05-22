@@ -12,7 +12,7 @@ class Footer extends React.PureComponent { // eslint-disable-line react/prefer-s
   render() {
     return (
       <div className='footer'>
-        &copy; 2017 League Of Developers
+        &copy; {new Date().getFullYear()} League Of Developers
       </div>
     );
   }

@@ -30,7 +30,7 @@ export class RegistrationAccepted extends React.Component { // eslint-disable-li
     return (
       <Row style={{marginTop: 80, padding: 40, fontSize: 24, height: 'calc(100% - 64px)'}}>
         <Col span={24} style={{marginBottom: 30, textAlign: 'center'}}>
-          {this.props.status !== 400 ?
+          {this.props.status && this.props.status !== 400 ?
             'Вы успешно зарегистрированы.'
             :
             'Ссылка недействительна.'

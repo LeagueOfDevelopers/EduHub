@@ -444,9 +444,9 @@ export class GroupPage extends React.Component {
                   isCreator={this.state.isCreator}
                 />
               </Row>
-              {this.state.isCreator && !this.state.isEditing && this.state.groupData.groupInfo.memberAmount < this.state.groupData.groupInfo.size && this.state.groupData.groupInfo.courseStatus !== 2 && this.state.groupData.groupInfo.courseStatus !== 3 ?
+              {this.state.isCreator && !this.state.isEditing && this.state.groupData.groupInfo.courseStatus !== 2 && this.state.groupData.groupInfo.courseStatus !== 3 ?
                 (<Row style={{width: 'calc(100% + 32px)'}} className='md-center-container'>
-                  <InviteMemberSelect groupId={this.state.id}/>
+                  <InviteMemberSelect groupId={this.state.id} memberAmount={this.state.groupData.groupInfo.memberAmount} size={this.state.groupData.groupInfo.size} teacher={this.state.groupData.members.filter(item => item.role === 3)[0]}/>
                 </Row>) : null
               }
               {this.state.isCreator && !this.state.isEditing && this.state.groupData.groupInfo.courseStatus !== 2 && this.state.groupData.groupInfo.courseStatus !== 3 ?

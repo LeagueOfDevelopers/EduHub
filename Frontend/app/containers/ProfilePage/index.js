@@ -618,7 +618,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   }}
                   style={{width: '100%', marginTop: 12}}
                 >
-                  Стать преподавателем
+                  Преподавать
                 </Button>
                 :
                 <Button
@@ -627,7 +627,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   }}
                   style={{width: '100%', marginTop: 12}}
                 >
-                  Стать учеником
+                  Не преподавать
                 </Button>
               : null
             }

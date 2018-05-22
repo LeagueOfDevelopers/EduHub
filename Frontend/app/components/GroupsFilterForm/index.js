@@ -84,7 +84,7 @@ class GroupsFilterForm extends React.Component { // eslint-disable-line react/pr
 
   render() {
     return (
-      <Col id={this.props.id} xs={{span: 24}} lg={{span: 6, offset: 4}} xl={{span: 5, offset: 4}} xxl={{span: 4, offset: 4}}>
+      <Col id={this.props.id} xs={{span: 24}} lg={{span: 6, offset: 4}} xl={{span: 5, offset: 4}} xxl={{span: 4, offset: 4}} style={this.props.style ? this.props.style : null}>
         <Card
           hoverable
           className='without-border-bottom'

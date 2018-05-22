@@ -141,63 +141,75 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             notFoundContent='Ничего не найдено'
             onSelect={(e) => e.preventDefault()}
           >
-            <OptGroup key={1} label={(
-              <Col>
-                <Col span={12}>Пользователи</Col>
-                <Col span={12} style={{textAlign: 'right'}}><Link to={`/users${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Расширенный поиск</Link></Col>
-              </Col>
-            )}>
-              {
-                this.state.searchValue ?
-                  this.props.users.map((item, index) =>
-                    index < selectItemsCount ?
-                      <Option className='search-option-item' key={item.name + item.id + 'user'}>
-                        <Link
-                          className='search-user-link'
-                          to={`/profile/${item.id}`}
-                          style={{display: 'flex', alignItems: 'center'}}
-                        >
-                          <Avatar
-                            src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
-                            size='large'
-                            style={{
-                              marginRight: 10
-                            }}
-                          />
-                          <Col>
-                            <div>{item.name}</div>
-                          </Col>
-                        </Link>
-                      </Option>
+            {
+              this.state.searchValue ?
+                <OptGroup key={1} label={(
+                  <Col>
+                    <Col span={12}>Пользователи</Col>
+                    <Col span={12} style={{textAlign: 'right'}}><Link to={`/users${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Расширенный поиск</Link></Col>
+                  </Col>
+                )}>
+                  {
+                    this.state.searchValue ?
+                      this.props.users.map((item, index) =>
+                        index < selectItemsCount ?
+                          <Option className='search-option-item' key={item.name + item.id + 'user'}>
+                            <Link
+                              className='search-user-link'
+                              to={`/profile/${item.id}`}
+                              style={{display: 'flex', alignItems: 'center'}}
+                            >
+                              <Avatar
+                                src={item.avatarLink ? `${config.API_BASE_URL}/file/img/${item.avatarLink}` : null}
+                                size='large'
+                                style={{
+                                  marginRight: 10
+                                }}
+                              />
+                              <Col>
+                                <div>{item.name}</div>
+                              </Col>
+                            </Link>
+                          </Option>
+                          : ''
+                      )
                       : ''
-                  )
-                  : ''
-              }
-            </OptGroup>
-            <OptGroup key={2} label={(
-              <Col>
-                <Col span={12}>Группы</Col>
-                <Col span={12} style={{textAlign: 'right'}}><Link to={`/groups${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Расширенный поиск</Link></Col>
-              </Col>
-            )}>
-              {
-                this.state.searchValue ?
-                  this.props.groups.map((item, index) =>
-                    index < selectItemsCount ?
-                      <Option className='search-option-item' key={item.groupInfo.title + item.groupInfo.id + 'group'}>
-                        <Link
-                          className='search-user-link'
-                          to={`/group/${item.groupInfo.id}`}
-                        >
-                          <div>{item.groupInfo.title}</div>
-                          <div>{item.groupInfo.tags.map(tag => <Link to={`/groups?tags=${tag}`} key={tag} style={{marginRight: 6}}>{tag}</Link>)}</div>
-                        </Link>
-                      </Option>
+                  }
+                </OptGroup>
+                : [].map((item, index) =>
+                  <Option key={index}>
+                  </Option>)
+            }
+            {
+              this.state.searchValue ?
+                <OptGroup key={2} label={(
+                  <Col>
+                    <Col span={12}>Группы</Col>
+                    <Col span={12} style={{textAlign: 'right'}}><Link to={`/groups${this.state.searchValue ? `?name=${this.state.searchValue}` : ''}`}>Расширенный поиск</Link></Col>
+                  </Col>
+                )}>
+                  {
+                    this.state.searchValue ?
+                      this.props.groups.map((item, index) =>
+                        index < selectItemsCount ?
+                          <Option className='search-option-item' key={item.groupInfo.title + item.groupInfo.id + 'group'}>
+                            <Link
+                              className='search-user-link'
+                              to={`/group/${item.groupInfo.id}`}
+                            >
+                              <div>{item.groupInfo.title}</div>
+                              <div>{item.groupInfo.tags.map(tag => <Link to={`/groups?tags=${tag}`} key={tag} style={{marginRight: 6}}>{tag}</Link>)}</div>
+                            </Link>
+                          </Option>
+                          : ''
+                      )
                       : ''
-                  )
-                  : ''
-              }
-            </OptGroup>
+                  }
+                </OptGroup>
+                : [].map((item, index) =>
+                  <Option key={index}>
+                  </Option>)
+            }
           </Select>
           <Icon type="search" className='search'
                 style={{fontSize: 20, position: 'absolute', top: 10, right: 10, opacity: 0.8}}/>
@@ -299,14 +311,14 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                       }}
                     />
                   </Link>
-                  <Link style={{color: 'black', width: 'calc(100% - 60px)'}} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}>
+                  <Link style={{color: '#fff', width: 'calc(100% - 60px)'}} onClick={this.hideSideMenu} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}`}>
                     <div className='userName ellipsis'
                           style={{cursor: 'pointer', opacity: 0.8, fontSize: 22}}>{localStorage.getItem('name')}</div>
                   </Link>
                 </Col>
                 <Col span={24} className='menu-item'>
                   {localStorage.getItem('token') ?
-                    (<Link style={{color: 'black'}} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}/notifications`}>
+                    (<Link style={{color: '#fff'}} onClick={this.hideSideMenu} to={`/profile/${parseJwt(localStorage.getItem('token')).UserId}/notifications`}>
                       <div style={{opacity: 0.8, display: 'flex', alignItems: 'center', fontSize: 20}}>
                         <img src={require('../../images/notification.svg')} style={{width: 28, marginRight: 16, marginLeft: -1}}></img>
                         Уведомления
@@ -317,8 +329,8 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                   }
                 </Col>
                 <Col span={24} className='menu-item' style={{marginTop: 12}}>
-                  <div style={{color: 'red', opacity: 0.8, display: 'flex', alignItems: 'center', fontSize: 20}} onClick={this.logout}>
-                    <img src={require('../../images/logout.svg')} style={{width: 28, marginRight: 12, marginLeft: 2}}></img>
+                  <div style={{color: '#fff', opacity: 0.8, display: 'flex', alignItems: 'center', fontSize: 20}} onClick={this.logout}>
+                    <img src={require('../../images/logout.svg')} style={{width: 26, marginRight: 12, marginLeft: 5}}></img>
                     Выйти
                   </div>
                 </Col>

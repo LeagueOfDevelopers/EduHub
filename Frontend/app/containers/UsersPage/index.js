@@ -69,8 +69,8 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
         <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}}>
           <FilterForm id='xs-filter' name={this.state.name} style={{width: '100%'}}/>
         </Col>
-        <FilterForm name={this.state.name} id='lg-filter'/>
-        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} lg={{span: 9, offset: 1}} xl={{span: 10, offset: 1}} xxl={{span: 11, offset: 1}} className='users-content'>
+        <FilterForm name={this.state.name} id='lg-filter' style={{marginBottom: 40}}/>
+        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} lg={{span: 9, offset: 1}} xl={{span: 10, offset: 1}} xxl={{span: 11, offset: 1}} className='users-content' style={{marginBottom: 40}}>
           <Row style={{marginBottom: 28}}><h3 style={{marginBottom: 0}}>Пользователи</h3></Row>
           {localStorage.getItem('without_server') !== 'true' ?
             (<div>

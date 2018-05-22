@@ -60,6 +60,7 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
 
   render() {
     return (
+      this.props.memberAmount < this.props.size && !this.props.teacher ?
       <Dropdown
         overlay={(
           <Menu>
@@ -108,6 +109,103 @@ class InviteMemberSelect extends React.Component { // eslint-disable-line react/
           Пригласить
         </Button>
       </Dropdown>
+        : this.props.memberAmount === this.props.size && !this.props.teacher ?
+        <Dropdown
+          overlay={(
+            <Menu>
+              {!this.state.inviteMemberRole ?
+                <Menu.Item className='unhover' key='0'>
+                  <Button onClick={() => this.setState({inviteMemberRole: 'Teacher'})} style={{display: 'block', width: '100%'}}>Учитель</Button>
+                </Menu.Item>
+                :
+                <Menu.Item className='unhover'>
+                  <Select
+                    mode='combobox'
+                    className='unhover'
+                    style={{width: '100%'}}
+                    value={this.state.selectValue}
+                    onChange={this.handleSelectChange}
+                    placeholder='Введите имя пользователя'
+                    defaultActiveFirstOption={false}
+                    showArrow={false}
+                  >
+                    {
+                      this.state.selectValue ?
+                        this.props.users.map(item =>
+                          <Select.Option key={item.username}>
+                            <div onClick={() => this.tryInviteMember(item.id)}>{item.username}</div>
+                          </Select.Option>)
+                        : [].map(item =>
+                          <Select.Option key={item.username}>
+                            <div onClick={() => this.tryInviteMember(item.id)}>{item.username}</div>
+                          </Select.Option>)
+                    }
+                  </Select>
+                </Menu.Item>
+              }
+            </Menu>
+          )}
+          onVisibleChange={this.handleVisibleChange}
+          visible={this.state.inviteVisible}
+          trigger={['click']}
+        >
+          <Button
+            className='md-offset-16px'
+            style={{width: '100%', marginBottom: 12}}
+            type='primary'
+          >
+            Пригласить
+          </Button>
+        </Dropdown>
+        : this.props.memberAmount < this.props.size && this.props.teacher ?
+          <Dropdown
+            overlay={(
+              <Menu>
+                {!this.state.inviteMemberRole ?
+                  <Menu.Item className='unhover' key='0'>
+                    <Button onClick={() => this.setState({inviteMemberRole: 'Member'})} style={{display: 'block', width: '100%', marginBottom: 1}}>Участник</Button>
+                  </Menu.Item>
+                  :
+                  <Menu.Item className='unhover'>
+                    <Select
+                      mode='combobox'
+                      className='unhover'
+                      style={{width: '100%'}}
+                      value={this.state.selectValue}
+                      onChange={this.handleSelectChange}
+                      placeholder='Введите имя пользователя'
+                      defaultActiveFirstOption={false}
+                      showArrow={false}
+                    >
+                      {
+                        this.state.selectValue ?
+                          this.props.users.map(item =>
+                            <Select.Option key={item.username}>
+                              <div onClick={() => this.tryInviteMember(item.id)}>{item.username}</div>
+                            </Select.Option>)
+                          : [].map(item =>
+                            <Select.Option key={item.username}>
+                              <div onClick={() => this.tryInviteMember(item.id)}>{item.username}</div>
+                            </Select.Option>)
+                      }
+                    </Select>
+                  </Menu.Item>
+                }
+              </Menu>
+            )}
+            onVisibleChange={this.handleVisibleChange}
+            visible={this.state.inviteVisible}
+            trigger={['click']}
+          >
+            <Button
+              className='md-offset-16px'
+              style={{width: '100%', marginBottom: 12}}
+              type='primary'
+            >
+              Пригласить
+            </Button>
+          </Dropdown>
+          : null
     );
   }
 }
