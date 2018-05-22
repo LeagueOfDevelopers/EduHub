@@ -240,13 +240,15 @@ namespace EduHub.Controllers
         /// <summary>
         ///     Returns full information about one group
         /// </summary>
+        [Authorize]
         [HttpGet]
         [Route("{groupId}")]
         [SwaggerResponse(200, Type = typeof(GroupResponse))]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
         public IActionResult GetGroup([FromRoute] int groupId)
         {
-            var group = _groupFacade.GetGroup(groupId);
+            var userId = Request.GetUserId();
+            var group = _groupFacade.GetGroup(groupId, userId);
             var groupInfoView = group.GroupInfoView;
             var groupMembersInfo = group.GroupMemberInfo;
             var fullGroupInfo = new FullGroupInfo(groupInfoView.Title, groupInfoView.Size,

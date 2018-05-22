@@ -64,7 +64,7 @@ namespace EduHub.Controllers
                 if (inv.Status == InvitationStatus.InProgress)
                 {
                     var fromUsername = _userFacade.GetUser(inv.FromUser).UserProfile.Name;
-                    var toGroupTitle = _groupFacade.GetGroup(inv.GroupId).GroupInfoView.Title;
+                    var toGroupTitle = _groupFacade.GetGroup(inv.GroupId, userId).GroupInfoView.Title;
                     var invitation = new InvitationModel(inv.Id, inv.FromUser, fromUsername, inv.ToUser,
                         currentUsername, inv.GroupId, toGroupTitle, inv.SuggestedRole);
                     allInv.Add(invitation);

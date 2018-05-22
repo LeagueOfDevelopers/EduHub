@@ -94,7 +94,7 @@ namespace EduHubTests
                 false, GroupType.Seminar);
 
             //Assert
-            Assert.IsNotNull(_groupFacade.GetGroup(groupId));
+            Assert.IsNotNull(_groupFacade.GetGroup(groupId, creatorId));
         }
 
         [TestMethod]
@@ -146,7 +146,7 @@ namespace EduHubTests
             _groupFacade.DeleteTeacher(createdGroupId, _groupCreator.Id);
 
             //Assert
-            Assert.AreEqual(expected, _groupFacade.GetGroup(createdGroupId).GroupMemberInfo.Count());
+            Assert.AreEqual(expected, _groupFacade.GetGroup(createdGroupId, _groupCreator.Id).GroupMemberInfo.Count());
         }
 
         [TestMethod]
@@ -179,7 +179,7 @@ namespace EduHubTests
             _userFacade.ChangeInvitationStatus(testUserId, invitationId, InvitationStatus.Declined);
 
             //Assert
-            Assert.AreEqual(1, _groupFacade.GetGroup(createdGroupId).GroupMemberInfo.Count());
+            Assert.AreEqual(1, _groupFacade.GetGroup(createdGroupId, _groupCreator.Id).GroupMemberInfo.Count());
         }
     }
 }

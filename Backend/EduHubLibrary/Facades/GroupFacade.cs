@@ -105,9 +105,14 @@ namespace EduHubLibrary.Facades
             }
         }
 
-        public FullGroupView GetGroup(int id)
+        public FullGroupView GetGroup(int id, int userId)
         {
             var currentGroup = _groupRepository.GetGroupById(id);
+
+            if(currentGroup.GroupInfo.IsPrivate)
+                if (!currentGroup.IsMember(userId) & !currentGroup.IsTeacher(userId))
+                    throw new NotEnoughPermissionsException(userId);
+
             var members = currentGroup.Members;
             var memberAmount = currentGroup.Members.Count;
             var votersAmount = currentGroup.Members.FindAll(m => m.CurriculumStatus == MemberCurriculumStatus.Accepted)
@@ -165,6 +170,7 @@ namespace EduHubLibrary.Facades
             GroupType type = GroupType.Default, double minPrice = 0, double maxPrice = 0, bool formed = false)
         {
             var allGroups = _groupRepository.GetAll().ToList();
+            allGroups = allGroups.Where(g => !g.GroupInfo.IsPrivate & g.GroupInfo.IsActive).ToList();
             allGroups = allGroups.Where(g => g.GroupInfo.Title.Contains(title))
                 .OrderBy(g => g.GroupInfo.Title.Length).ToList();
 

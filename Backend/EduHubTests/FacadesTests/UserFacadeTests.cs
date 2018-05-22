@@ -59,8 +59,8 @@ namespace EduHubTests
             var createdGroupId2 = groupFacade.CreateGroup(creatorId, "Group2", new List<string> {"c#"},
                 "The best group!", 7, 0, true, GroupType.Seminar);
 
-            var createdGroup1 = groupFacade.GetGroup(createdGroupId1);
-            var createdGroup2 = groupFacade.GetGroup(createdGroupId2);
+            var createdGroup1 = groupFacade.GetGroup(createdGroupId1, creatorId);
+            var createdGroup2 = groupFacade.GetGroup(createdGroupId2, creatorId);
 
             //Act
             groupFacade.AddMember(createdGroup1.GroupInfoView.GroupId, testUserId);
@@ -258,7 +258,7 @@ namespace EduHubTests
 
             var createdGroupId = groupFacade.CreateGroup(creatorId, "Some group", new List<string> {"c#"},
                 "Very interesting", 1, 100, false, GroupType.Lecture);
-            var createdGroup = groupFacade.GetGroup(createdGroupId);
+            var createdGroup = groupFacade.GetGroup(createdGroupId, creatorId);
             groupFacade.ApproveTeacher(userFacade.GetUser(teacherId).Id, createdGroupId);
 
             //Act
