@@ -176,7 +176,7 @@ namespace EduHubLibrary.Facades
 
             if (tags != null && tags.Any())
                 allGroups = allGroups.FindAll(g => g.GroupInfo.Tags.Intersect(tags).Any())
-                    .OrderByDescending(g => g.GroupInfo.Tags.Intersect(tags).Count()).ToList();
+                    .OrderBy(g => g.GroupInfo.Tags.Intersect(tags).Count()).ToList();
 
             if (type != GroupType.Default) allGroups = allGroups.FindAll(g => g.GroupInfo.GroupType == type);
 
