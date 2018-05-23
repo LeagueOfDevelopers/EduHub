@@ -140,7 +140,7 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.Messages)
                     .Include(g => g.GroupMessages)
                     .Include(g => g.Tags)
-                    .Where(g => (g.Members.Any(m => m.Id == userId) || g.TeacherId == userId) 
+                    .Where(g => (g.Members.Any(m => m.UserId == userId) || g.TeacherId == userId) 
                     && !g.IsDeleted)
                     .ToList();
                 var result = new List<Group>();
