@@ -139,11 +139,7 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<Group> GetAllGroupsOfUser(int userId)
         {
-            var groupsOfUser = new List<Group>();
-
-            foreach (var group in _groupRepository.GetAll())
-                if (group.Members.Any(member => member.UserId.Equals(userId)) || group.Teacher.Id == userId)
-                    groupsOfUser.Add(group);
+            var groupsOfUser = _groupRepository.GetGroupsByUserId(userId);
 
             return groupsOfUser;
         }

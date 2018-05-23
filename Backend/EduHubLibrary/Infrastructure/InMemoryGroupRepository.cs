@@ -56,5 +56,12 @@ namespace EduHubLibrary.Infrastructure
             });
             currentGroup = group;
         }
+
+        public IEnumerable<Group> GetGroupsByUserId(int userId)
+        {
+            var result = _listOfGroups.Where(g => 
+            g.Members.Any(m => m.UserId == userId) || g.Teacher?.Id == userId).ToList();
+            return result;
+        }
     }
 }

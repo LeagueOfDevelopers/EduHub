@@ -10,5 +10,6 @@ namespace EduHubLibrary.Domain
         IEnumerable<Group> GetAll();
         Group GetGroupById(int id);
         IEnumerable<Group> GetGroupsByMemberId(int memberId);
+        IEnumerable<Group> GetGroupsByUserId(int userId);
     }
 }

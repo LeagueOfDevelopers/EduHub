@@ -87,7 +87,7 @@ namespace EduHubLibrary.Infrastructure
                     .ToList();
                 var allGroups = new List<Group>();
                 groups.ForEach(g => allGroups.Add(GroupExtensions.ParseFromGroupDto(g)));
-                return allGroups;
+                return allGroups;   
             }
         }
 
@@ -122,6 +122,26 @@ namespace EduHubLibrary.Infrastructure
                     .Include(g => g.GroupMessages)
                     .Include(g => g.Tags)
                     .Where(g => g.Members.Any(m => m.Id == memberId) && !g.IsDeleted)
+                    .ToList();
+                var result = new List<Group>();
+                foundValues.ForEach(groupDto => result.Add(GroupExtensions.ParseFromGroupDto(groupDto)));
+                return result;
+            }
+        }
+
+        public IEnumerable<Group> GetGroupsByUserId(int userId)
+        {
+            using (var _context = new EduhubContext(_connectionString))
+            {
+                var foundValues = _context.Groups
+                    .Include(g => g.Invitations)
+                    .Include(g => g.Members)
+                    .Include(g => g.Kicked)
+                    .Include(g => g.Messages)
+                    .Include(g => g.GroupMessages)
+                    .Include(g => g.Tags)
+                    .Where(g => (g.Members.Any(m => m.Id == userId) || g.TeacherId == userId) 
+                    && !g.IsDeleted)
                     .ToList();
                 var result = new List<Group>();
                 foundValues.ForEach(groupDto => result.Add(GroupExtensions.ParseFromGroupDto(groupDto)));
