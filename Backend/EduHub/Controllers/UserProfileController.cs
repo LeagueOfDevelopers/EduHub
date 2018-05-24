@@ -57,20 +57,12 @@ namespace EduHub.Controllers
         public IActionResult GetInvitations()
         {
             var userId = Request.GetUserId();
-            var allInv = new List<InvitationModel>();
-            var currentUsername = _userFacade.GetUser(userId).UserProfile.Name;
-            _userFacade.GetAllInvitationsForUser(userId).ToList().ForEach(inv =>
-            {
-                if (inv.Status == InvitationStatus.InProgress)
-                {
-                    var fromUsername = _userFacade.GetUser(inv.FromUser).UserProfile.Name;
-                    var toGroupTitle = _groupFacade.GetGroup(inv.GroupId, userId).GroupInfoView.Title;
-                    var invitation = new InvitationModel(inv.Id, inv.FromUser, fromUsername, inv.ToUser,
-                        currentUsername, inv.GroupId, toGroupTitle, inv.SuggestedRole);
-                    allInv.Add(invitation);
-                }
-            });
-            var response = new InvitationsResponse(allInv);
+            var allInv = _userFacade.GetAllInvitationsForUser(userId);
+            var invitationModels = new List<InvitationModel>();
+            allInv.ToList().ForEach(i => invitationModels.Add(new InvitationModel(i.Id,
+                i.FromUser, i.FromUserName, i.ToUser, i.ToUserName, i.ToGroup,
+                i.ToGroupTitle, i.SuggestedRole)));
+            var response = new InvitationsResponse(invitationModels);
             return Ok(response);
         }
 

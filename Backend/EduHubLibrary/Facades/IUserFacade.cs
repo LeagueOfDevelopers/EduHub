@@ -13,7 +13,7 @@ namespace EduHubLibrary.Facades
         User FindByCredentials(Credentials credentials);
         void ChangeInvitationStatus(int userId, int invitationId, InvitationStatus status);
         void Invite(int inviterId, int invitedId, int groupId, MemberRole suggestedRole);
-        IEnumerable<Invitation> GetAllInvitationsForUser(int userId);
+        IEnumerable<InvitationView> GetAllInvitationsForUser(int userId);
         IEnumerable<Group> GetAllGroupsOfUser(int userId);
         IEnumerable<User> GetAllModerators(int callerId);
 

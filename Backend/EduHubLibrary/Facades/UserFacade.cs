@@ -8,9 +8,7 @@ using EduHubLibrary.Domain.NotificationService;
 using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.EventBus.EventTypes;
 using EduHubLibrary.Facades.Views;
-using EduHubLibrary.Settings;
 using EnsureThat;
-using EduHubLibrary.Domain.NotificationService.Notifications;
 
 namespace EduHubLibrary.Facades
 {
@@ -131,10 +129,21 @@ namespace EduHubLibrary.Facades
                 invitedId, suggestedRole));
         }
 
-        public IEnumerable<Invitation> GetAllInvitationsForUser(int userId)
+        public IEnumerable<InvitationView> GetAllInvitationsForUser(int userId)
         {
             var currentUser = _userRepository.GetUserById(userId);
-            return currentUser.Invitations;
+            var invitations = currentUser.Invitations;
+            var invitationViews = new List<InvitationView>();
+            invitations.ForEach(i =>
+            {
+                var currentGroup = _groupRepository.GetGroupById(i.GroupId);
+                var inviter = _userRepository.GetUserById(i.FromUser);
+                invitationViews.Add(new InvitationView(i.Id, i.FromUser, inviter.UserProfile.Name,
+                    i.ToUser, currentUser.UserProfile.Name, i.GroupId, currentGroup.GroupInfo.Title,
+                    i.SuggestedRole));
+            }
+            );
+            return invitationViews;
         }
 
         public IEnumerable<Group> GetAllGroupsOfUser(int userId)
