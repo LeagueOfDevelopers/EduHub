@@ -81,7 +81,7 @@ namespace EduHub.Controllers
             _userFacade.ChangeInvitationStatus(userId, changer.InvitationId, changer.Status);
             var invitation = _userFacade.GetAllInvitationsForUser(userId).First(i => i.Id.Equals(changer.InvitationId));
 
-            var response = new ChangeInvitationStatusResponse(invitation.GroupId);
+            var response = new ChangeInvitationStatusResponse(invitation.ToGroup);
             return Ok(response);
         }
 

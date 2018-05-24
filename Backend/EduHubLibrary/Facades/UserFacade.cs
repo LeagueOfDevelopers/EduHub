@@ -140,7 +140,7 @@ namespace EduHubLibrary.Facades
                 var inviter = _userRepository.GetUserById(i.FromUser);
                 invitationViews.Add(new InvitationView(i.Id, i.FromUser, inviter.UserProfile.Name,
                     i.ToUser, currentUser.UserProfile.Name, i.GroupId, currentGroup.GroupInfo.Title,
-                    i.SuggestedRole));
+                    i.SuggestedRole, i.Status));
             }
             );
             return invitationViews;

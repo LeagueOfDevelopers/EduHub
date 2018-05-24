@@ -6,7 +6,7 @@ namespace EduHubLibrary.Facades.Views
     {
         public InvitationView(int id, int fromUser, string fromUserName,
             int toUser, string toUserName, int toGroup, string toGroupTitle,
-            MemberRole suggestedRole)
+            MemberRole suggestedRole, InvitationStatus status)
         {
             Id = id;
             FromUser = fromUser;
@@ -16,6 +16,7 @@ namespace EduHubLibrary.Facades.Views
             ToGroup = toGroup;
             ToGroupTitle = toGroupTitle;
             SuggestedRole = suggestedRole;
+            Status = status;
         }
 
         public int Id { get; set; }
@@ -26,5 +27,6 @@ namespace EduHubLibrary.Facades.Views
         public int ToGroup { get; set; }
         public string ToGroupTitle { get; set; }
         public MemberRole SuggestedRole { get; set; }
+        public InvitationStatus Status { get; set; }
     }
 }
