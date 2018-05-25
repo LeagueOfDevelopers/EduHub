@@ -22,7 +22,7 @@ function resetPasswordPageReducer(state = initialState, action) {
       return state
         .set('pending', true);
     case RESET_PASSWORD_SUCCESS:
-      history.back();
+      location.assign('/');
       return state
         .set('pending', false);
     case RESET_PASSWORD_FAILED:

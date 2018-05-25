@@ -91,7 +91,7 @@ export class GroupPage extends React.Component {
       id: this.props.match.params.id,
       groupData: {
         groupInfo: {
-          isPrivate: true,
+          isPrivate: false,
           title: '',
           description: '',
           isActive: true,
@@ -119,7 +119,7 @@ export class GroupPage extends React.Component {
       sizeInput: '',
       priceInput: '',
       groupTypeInput: '',
-      privateInput: null
+      privateInput: false
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -272,7 +272,8 @@ export class GroupPage extends React.Component {
       descInput: this.state.groupData.groupInfo.description,
       sizeInput: this.state.groupData.groupInfo.size,
       priceInput: this.state.groupData.groupInfo.cost,
-      tagsInput: this.state.groupData.groupInfo.tags
+      tagsInput: this.state.groupData.groupInfo.tags,
+      privateInput: this.state.groupData.groupInfo.isPrivate
     })
   };
 
@@ -408,7 +409,7 @@ export class GroupPage extends React.Component {
                       Приватная группа
                     </Col>
                     <Col span={8} style={{textAlign: 'right'}}>
-                      <Switch value={this.state.privateInput} id='privacy' onChange={this.onHandlePrivateChange}/>
+                      <Switch checked={this.state.privateInput} id='privacy' onChange={this.onHandlePrivateChange}/>
                     </Col>
                   </Row>
                   : this.state.groupData.groupInfo.isPrivate ?
