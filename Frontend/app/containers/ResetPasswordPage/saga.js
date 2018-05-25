@@ -2,6 +2,7 @@ import { takeEvery, call, put, select } from 'redux-saga/effects';
 import { resetPasswordSuccess, resetPasswordFailed } from "./actions";
 import { RESET_PASSWORD_START } from "./constants";
 import config from "../../config";
+import {message} from 'antd';
 
 function* resetPasswordSaga(action) {
   try {
@@ -25,7 +26,7 @@ function resetPassword(newPassword, key) {
           newPassword
       })
     })
-    .then(res => res.json())
+    .then(res => res.status === 200 ? location.assign('/') : res.status === 400 ? message.error('Ключ недействителен!') : message.error('Что-то пошло не так! Попробуйте позже!'))
     .catch(error => error)
       :
       fetch(`${config.API_BASE_URL}/account/password`, {
@@ -39,7 +40,7 @@ function resetPassword(newPassword, key) {
           newPassword
         })
       })
-        .then(res => res.json())
+        .then(res => res.status === 200 ? location.assign('/') : res.status === 400 ? message.error('Ключ недействителен!') : message.error('Что-то пошло не так! Попробуйте позже!'))
         .catch(error => error)
 }
 

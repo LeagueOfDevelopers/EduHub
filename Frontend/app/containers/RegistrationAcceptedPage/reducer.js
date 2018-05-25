@@ -12,7 +12,7 @@ import {
 } from './constants';
 
 const initialState = fromJS({
-  status: null,
+  status: 400,
   pending: false,
   error: false
 });

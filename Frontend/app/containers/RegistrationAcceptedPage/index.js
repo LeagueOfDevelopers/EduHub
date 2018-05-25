@@ -30,10 +30,10 @@ export class RegistrationAccepted extends React.Component { // eslint-disable-li
     return (
       <Row style={{marginTop: 80, padding: 40, fontSize: 24, height: 'calc(100% - 64px)'}}>
         <Col span={24} style={{marginBottom: 30, textAlign: 'center'}}>
-          {this.props.status && this.props.status !== 400 ?
-            'Вы успешно зарегистрированы.'
+          {this.props.status === 200 ?
+            'Вы успешно подтвердили свой email!'
             :
-            'Ссылка недействительна.'
+            'Ссылка недействительна!'
           }
         </Col>
         <Col span={24} style={{display: 'flex', justifyContent: 'center'}}>

@@ -35,7 +35,6 @@ function registrationPageReducer(state = initialState, action) {
         .setIn(['registrationData', 'isTeacher'], action.isTeacher)
         .setIn(['registrationData', 'inviteCode'], action.inviteCode);
     case REGISTRATION_SUCCESS:
-      // location.assign('/registration_success');
       return state
         .set('pending', false)
         .set('userId', action.id);

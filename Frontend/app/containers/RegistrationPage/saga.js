@@ -1,5 +1,6 @@
 import { takeEvery, call, put, select, all } from 'redux-saga/effects';
 import  config from '../../config';
+import { message } from 'antd';
 
 import {REGISTRATION_START} from './constants';
 import {registrateSuccess, registrateError} from './actions';
@@ -38,7 +39,7 @@ function registrate(username, email, password, isTeacher, inviteCode) {
         isTeacher: isTeacher
       })
   })
-    .then(res => console.log(res))
+    .then(res => res.status === 200 ? location.assign('/registration_success') : res.status === 400 ? message.error('Данный email уже занят!') : message.error('Что-то пошло не так! Попробуйте позже!'))
     .catch(error => error)
 }
 
