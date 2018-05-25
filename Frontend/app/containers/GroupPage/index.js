@@ -161,7 +161,8 @@ export class GroupPage extends React.Component {
     if(localStorage.getItem('without_server') !== 'true') {
       fetch(`${config.API_BASE_URL}/group/${this.state.id}`, {
         headers: {
-          'Content-Type': 'application/json-patch+json'
+          'Content-Type': 'application/json-patch+json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       })
         .then(response => response.json())

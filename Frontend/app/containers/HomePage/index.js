@@ -62,6 +62,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     this.handleCancel = this.handleCancel.bind(this);
     this.getGroups = this.getGroups.bind(this);
+    this.showLoginForm = this.showLoginForm.bind(this);
 
     this.state = {
       signInVisible: false,
@@ -69,6 +70,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       assembledGroups: []
     }
   }
+
+  showLoginForm = () => {
+    this.setState({signInVisible: true})
+  };
 
   componentWillMount() {
     if(localStorage.getItem('token') && parseJwt(localStorage.getItem('token')).exp - parseInt(Date.now()/1000) < 0) {
@@ -116,9 +121,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   (
                     <div className='cards-holder cards-holder-center'>
                       {unassembledGroups.map((item) =>
-                        <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                        <div key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
                           <UnassembledGroupCard {...item}/>
-                        </Link>
+                        </div>
                       )}
                     </div>
                   )
@@ -127,9 +132,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     <div className='cards-holder cards-holder-center'>
                       {this.state.unassembledGroups.map((item, i) =>
                         i < 8 ?
-                          <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                          <div key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
                             <UnassembledGroupCard {...item}/>
-                          </Link>
+                          </div>
                           : null
                       )}
                     </div>
@@ -163,9 +168,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   (
                     <div className='cards-holder cards-holder-center'>
                       {assembledGroups.map((item) =>
-                        <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                        <div key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
                           <AssembledGroupCard {...item}/>
-                        </Link>
+                        </div>
                       )}
                     </div>
                   )
@@ -174,9 +179,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     <div className='cards-holder cards-holder-center'>
                       {this.state.assembledGroups.map((item, i) =>
                         i < 8 ?
-                          <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                          <div key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
                             <AssembledGroupCard {...item}/>
-                          </Link>
+                          </div>
                           : null
                       )}
                     </div>

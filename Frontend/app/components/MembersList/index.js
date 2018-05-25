@@ -31,7 +31,7 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
         {
           this.props.members.find(item => item.role === 3) ?
             <div>
-              <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 2px 6px -2px rgba(0,0,0,0.36)'}}>
+              <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: 'rgba(0, 0, 0, 0.36) 0px 4px 6px -6px'}}>
                 <Col>Преподаватель</Col>
               </Row>
               <div className="teacher-container">
@@ -77,7 +77,7 @@ class MembersList extends React.Component { // eslint-disable-line react/prefer-
             : null
         }
         <div>
-          <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 1px 8px -2px rgba(0,0,0,0.36)'}}>
+          <Row type='flex' justify='space-between' style={{padding: '6px 16px', boxShadow: '0px 1px 6px -2px rgba(0,0,0,0.36)'}}>
             <Col>Участники</Col>
             <Col>{this.props.memberAmount + '/' + this.props.size}</Col>
           </Row>
