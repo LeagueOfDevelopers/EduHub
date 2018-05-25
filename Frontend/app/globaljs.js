@@ -153,3 +153,20 @@ export function getAge(date) {
   }
   return age;
 }
+
+
+export function getGroupCardWidth() {
+  let cardsHolderWidth = document.getElementsByClassName('cards-holder')[0].offsetWidth;
+  if(cardsHolderWidth >= 450 && cardsHolderWidth < 750) {
+    return 'calc((100% - 40px) / 2)'
+  }
+  else if(cardsHolderWidth >= 750 && cardsHolderWidth < 1000) {
+    return 'calc((100% - 60px) / 3)'
+  }
+  else if(cardsHolderWidth >= 1000) {
+    return 'calc((100% - 80px) / 4)'
+  }
+  else if(cardsHolderWidth < 450) {
+    return '100%'
+  }
+}

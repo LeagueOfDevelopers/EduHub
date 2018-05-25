@@ -29,8 +29,9 @@ a:active {
 }
 
 .group-card {
-  width: 260px;
-  min-width: 250px;
+  width: 100%;
+  margin: 0 20px 20px 0;
+  min-width: 220px;
   height: 214px;
 }
 
@@ -193,10 +194,6 @@ a:active {
   margin-top: 0;
 }
 
-.groups-content .cards-holder {
-  grid-gap: 12px;
-}
-
 .filter-btn {
   display: none;
 }
@@ -288,10 +285,6 @@ a:active {
     width: 100% !important;
   }
 
-  .md-cards-holder-center {
-    justify-content: center;
-  }
-
   .plan-file-btn {
     text-align: center;
   }
@@ -311,10 +304,6 @@ a:active {
 
   .groups-content {
     margin-top: 40px;
-  }
-
-  .groups-content .cards-holder {
-    justify-content: center;
   }
 
   .filter-btn {
@@ -633,19 +622,13 @@ a:focus {
 }
 
 .cards-holder {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 260px);
-  grid-gap: 29px;
-  align-items: center;
-  justify-content: left;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -20px 0 0;
 }
 
 .cards-holder:before {
   content: none;
-}
-
-.cards-holder-center {
-  justify-content: center;
 }
 
 .admin-list .ant-list-footer{

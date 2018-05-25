@@ -21,7 +21,7 @@ import reducer from '../GroupsPage/reducer';
 import saga from '../GroupsPage/saga';
 import { getFilteredGroups } from "../GroupsPage/actions";
 import {Link} from "react-router-dom";
-import { parseJwt } from "../../globalJS";
+import { parseJwt, getGroupCardWidth } from "../../globalJS";
 import {Card, Col, Row, Button, message} from 'antd';
 import UnassembledGroupCard from 'components/UnassembledGroupCard';
 import AssembledGroupCard from 'components/AssembledGroupCard';
@@ -66,6 +66,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
     this.state = {
       signInVisible: false,
+      groupCardWidth: '100%',
       unassembledGroups: [],
       assembledGroups: []
     }
@@ -85,6 +86,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
   componentDidMount() {
+    this.setState({groupCardWidth: getGroupCardWidth()});
     if(localStorage.getItem('without_server') !== 'true') {
       this.getGroups();
     }
@@ -119,9 +121,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               >
                 {(localStorage.getItem('without_server') === 'true') ?
                   (
-                    <div className='cards-holder cards-holder-center'>
+                    <div className='cards-holder'>
                       {unassembledGroups.map((item) =>
-                        <div key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
+                        <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
                           <UnassembledGroupCard {...item}/>
                         </div>
                       )}
@@ -129,10 +131,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   )
                   :
                   (
-                    <div className='cards-holder cards-holder-center'>
+                    <div className='cards-holder'>
                       {this.state.unassembledGroups.map((item, i) =>
                         i < 8 ?
-                          <div key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
+                          <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
                             <UnassembledGroupCard {...item}/>
                           </div>
                           : null
@@ -166,9 +168,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
               >
                 {(localStorage.getItem('without_server') === 'true') ?
                   (
-                    <div className='cards-holder cards-holder-center'>
+                    <div className='cards-holder'>
                       {assembledGroups.map((item) =>
-                        <div key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
+                        <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
                           <AssembledGroupCard {...item}/>
                         </div>
                       )}
@@ -176,10 +178,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   )
                   :
                   (
-                    <div className='cards-holder cards-holder-center'>
+                    <div className='cards-holder'>
                       {this.state.assembledGroups.map((item, i) =>
                         i < 8 ?
-                          <div key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
+                          <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
                             <AssembledGroupCard {...item}/>
                           </div>
                           : null

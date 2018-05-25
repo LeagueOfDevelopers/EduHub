@@ -13,29 +13,42 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
-import { getQueryVariable } from "../../globalJS";
+import { getQueryVariable, getGroupCardWidth } from "../../globalJS";
 import {Link} from "react-router-dom";
 import { makeSelectGroups } from "./selectors";
 import {Row, Col, Menu, Dropdown, Icon, Card} from 'antd';
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
 import FilterForm from '../../components/GroupsFilterForm';
+import SigningInForm from '../../containers/SigningInForm';
 
 export class GroupsPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
 
     this.state = {
+      signInVisible: false,
+      groupCardWidth: '100%',
       formed: getQueryVariable('formed') === 'true',
       title: getQueryVariable('name'),
       tags: getQueryVariable('tags')
     };
 
     this.showFilterForm = this.showFilterForm.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.showLoginForm = this.showLoginForm.bind(this);
   }
 
   componentDidMount() {
-
+    this.setState({groupCardWidth: getGroupCardWidth()})
   }
+
+  handleCancel = () => {
+    this.setState({signInVisible: false})
+  };
+
+  showLoginForm = () => {
+    this.setState({signInVisible: true})
+  };
 
   componentDidUpdate(prevProps) {
     if(prevProps.location.search !== this.props.location.search) {
@@ -71,14 +84,15 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
           <Row className='cards-holder font-size-20' style={{marginTop: 28}}>
             {this.props.groups && this.props.groups.length && this.props.groups.length !== 0 ?
               this.props.groups.map((item) =>
-                <Link key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
+                <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
                   <UnassembledGroupCard {...item}/>
-                </Link>
+                </div>
               )
               : <div>Нет результатов</div>
             }
           </Row>
         </Col>
+        <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
       </Row>
     );
   }

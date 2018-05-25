@@ -21,7 +21,6 @@ class AssembledGroupCard extends React.PureComponent { // eslint-disable-line re
         <Card
           title={this.props.groupInfo.title}
           hoverable
-          className='group-card'
         >
           <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
             <Col>Участников</Col>

@@ -17,31 +17,28 @@ class UnassembledGroupCard extends React.PureComponent { // eslint-disable-line 
 
   render() {
     return (
-      <Col>
-        <Card
-          title={this.props.groupInfo.title}
-          hoverable
-          className='group-card'
-        >
-          <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
-            <Col>Участников</Col>
-            <Col>{this.props.groupInfo.memberAmount + '/' + this.props.groupInfo.size}</Col>
-          </Row>
-          <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
-            <Col>Взнос</Col>
-            <Col>{this.props.groupInfo.cost} руб.</Col>
-          </Row>
-          <Row type='flex' justify='space-between' style={{marginBottom: 10}}>
-            <Col>Тип</Col>
-            <Col>{getGroupType(this.props.groupInfo.groupType)}</Col>
-          </Row>
-          <Row gutter={6} className='group-tags'>
-            {this.props.groupInfo.tags.map(item =>
-              <Link key={item} to={`/groups?tags=${item.replace('#', '*')}`}>{item}</Link>
-            )}
-          </Row>
-        </Card>
-      </Col>
+      <Card
+        title={this.props.groupInfo.title}
+        hoverable
+      >
+        <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
+          <Col>Участников</Col>
+          <Col>{this.props.groupInfo.memberAmount + '/' + this.props.groupInfo.size}</Col>
+        </Row>
+        <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
+          <Col>Взнос</Col>
+          <Col>{this.props.groupInfo.cost} руб.</Col>
+        </Row>
+        <Row type='flex' justify='space-between' style={{marginBottom: 10}}>
+          <Col>Тип</Col>
+          <Col>{getGroupType(this.props.groupInfo.groupType)}</Col>
+        </Row>
+        <Row gutter={6} className='group-tags'>
+          {this.props.groupInfo.tags.map(item =>
+            <Link key={item} to={`/groups?tags=${item.replace('#', '*')}`}>{item}</Link>
+          )}
+        </Row>
+      </Card>
     );
   }
 }

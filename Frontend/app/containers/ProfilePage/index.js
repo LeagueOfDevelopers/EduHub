@@ -28,7 +28,7 @@ import {
 } from "./actions";
 import reducer from './reducer';
 import saga from './saga';
-import {parseJwt, getGender, getGenderType} from "../../globalJS";
+import {parseJwt, getGender, getGenderType, getGroupCardWidth} from "../../globalJS";
 import config from '../../config';
 import {Link} from "react-router-dom";
 import UnassembledGroupCard from "../../components/UnassembledGroupCard/index";
@@ -179,7 +179,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       contactsInputs: [],
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
       isCurrentUser: false,
-      reportVisible: false
+      reportVisible: false,
+      groupCardWidth: '100%'
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -211,6 +212,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
   };
 
   componentDidMount() {
+    this.setState({groupCardWidth: getGroupCardWidth()});
     if(localStorage.getItem('without_server') !== 'true') {
       this.getCurrentUser(this.props.match.params.id);
       this.props.getCurrentUserGroups(this.props.match.params.id);
@@ -647,15 +649,15 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   <div className='cards-holder md-cards-holder-center' style={{margin: '16px 0'}}>
                     {localStorage.getItem('withoutServer') === 'true' ?
                       defaultMyGroups.map((item, i) =>
-                        <Link to={`/group/${item.groupInfo.id}`} key={item.groupInfo.id}>
+                        <div className='group-card' style={{width: this.state.groupCardWidth}} onClick={() => location.assign(`/group/${item.groupInfo.id}`)} key={item.groupInfo.id}>
                           <UnassembledGroupCard {...item}/>
-                        </Link>
+                        </div>
                       )
                       :
                       this.props.myGroups.map((item, i) =>
-                        <Link to={`/group/${item.groupInfo.id}`} key={item.groupInfo.id}>
+                        <div className='group-card' style={{width: this.state.groupCardWidth}} onClick={() => location.assign(`/group/${item.groupInfo.id}`)} key={item.groupInfo.id}>
                           <UnassembledGroupCard {...item}/>
-                        </Link>
+                        </div>
                       )
                     }
                   </div>
