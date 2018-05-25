@@ -38,7 +38,7 @@ function registrate(username, email, password, isTeacher, inviteCode) {
         isTeacher: isTeacher
       })
   })
-    .then(res => res.json())
+    .then(res => console.log(res))
     .catch(error => error)
 }
 
