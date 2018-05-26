@@ -39,7 +39,16 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
   }
 
   componentDidMount() {
-    this.setState({groupCardWidth: getGroupCardWidth()})
+    this.setState({groupCardWidth: getGroupCardWidth()});
+    setTimeout(() => {
+      let groupCards = Array.from(document.getElementsByClassName('group-card'));
+      groupCards.map(item => item.addEventListener('click', (e) => {
+        if(!localStorage.getItem('token')) {
+          e.preventDefault();
+          this.showLoginForm();
+        }
+      }))
+    }, 0)
   }
 
   handleCancel = () => {
@@ -84,9 +93,9 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
           <Row className='cards-holder font-size-20' style={{marginTop: 28}}>
             {this.props.groups && this.props.groups.length && this.props.groups.length !== 0 ?
               this.props.groups.map((item) =>
-                <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
+                <Link className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                   <UnassembledGroupCard {...item}/>
-                </div>
+                </Link>
               )
               : <div>Нет результатов</div>
             }

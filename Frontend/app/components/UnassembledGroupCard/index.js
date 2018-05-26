@@ -35,7 +35,7 @@ class UnassembledGroupCard extends React.PureComponent { // eslint-disable-line 
         </Row>
         <Row gutter={6} className='group-tags'>
           {this.props.groupInfo.tags.map(item =>
-            <Link key={item} to={`/groups?tags=${item.replace('#', '*')}`}>{item}</Link>
+            <Link key={item} className='tag' to={`/groups?tags=${item.replace('#', '*')}`}>{item}</Link>
           )}
         </Row>
       </Card>

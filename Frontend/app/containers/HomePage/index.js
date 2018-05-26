@@ -95,12 +95,23 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   getGroups = () => {
     return fetch(`${config.API_BASE_URL}/group`)
       .then(response => response.json())
-      .then(res => this.setState(
-        {
-          unassembledGroups: res.fillingGroups,
-          assembledGroups: res.fullGroups
-        }
-      ))
+      .then(res => {
+        this.setState(
+          {
+            unassembledGroups: res.fillingGroups,
+            assembledGroups: res.fullGroups
+          }
+        );
+        setTimeout(() => {
+          let groupCards = Array.from(document.getElementsByClassName('group-card'));
+          groupCards.map(item => item.addEventListener('click', (e) => {
+            if(!localStorage.getItem('token')) {
+              e.preventDefault();
+              this.showLoginForm();
+            }
+          }))
+        }, 0)
+      })
       .catch(error => error)
   };
 
@@ -123,9 +134,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   (
                     <div className='cards-holder'>
                       {unassembledGroups.map((item) =>
-                        <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
+                        <Link className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                           <UnassembledGroupCard {...item}/>
-                        </div>
+                        </Link>
                       )}
                     </div>
                   )
@@ -134,9 +145,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     <div className='cards-holder'>
                       {this.state.unassembledGroups.map((item, i) =>
                         i < 8 ?
-                          <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
+                          <Link className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                             <UnassembledGroupCard {...item}/>
-                          </div>
+                          </Link>
                           : null
                       )}
                     </div>
@@ -170,9 +181,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                   (
                     <div className='cards-holder'>
                       {assembledGroups.map((item) =>
-                        <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
+                        <Link className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                           <AssembledGroupCard {...item}/>
-                        </div>
+                        </Link>
                       )}
                     </div>
                   )
@@ -181,9 +192,9 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                     <div className='cards-holder'>
                       {this.state.assembledGroups.map((item, i) =>
                         i < 8 ?
-                          <div className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} onClick={localStorage.getItem('token') ? () => location.assign(`/group/${item.groupInfo.id}`) : this.showLoginForm}>
+                          <Link className='group-card' style={{width: this.state.groupCardWidth}} key={item.groupInfo.id} to={`/group/${item.groupInfo.id}`}>
                             <AssembledGroupCard {...item}/>
-                          </div>
+                          </Link>
                           : null
                       )}
                     </div>

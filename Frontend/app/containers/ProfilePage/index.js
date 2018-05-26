@@ -649,15 +649,15 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   <div className='cards-holder md-cards-holder-center'>
                     {localStorage.getItem('withoutServer') === 'true' ?
                       defaultMyGroups.map((item, i) =>
-                        <div className='group-card' style={{width: this.state.groupCardWidth}} onClick={() => location.assign(`/group/${item.groupInfo.id}`)} key={item.groupInfo.id}>
+                        <Link className='group-card' style={{width: this.state.groupCardWidth}} to={`/group/${item.groupInfo.id}`} key={item.groupInfo.id}>
                           <UnassembledGroupCard {...item}/>
-                        </div>
+                        </Link>
                       )
                       :
                       this.props.myGroups.map((item, i) =>
-                        <div className='group-card' style={{width: this.state.groupCardWidth}} onClick={() => location.assign(`/group/${item.groupInfo.id}`)} key={item.groupInfo.id}>
+                        <Link className='group-card' style={{width: this.state.groupCardWidth}} to={`/group/${item.groupInfo.id}`} key={item.groupInfo.id}>
                           <UnassembledGroupCard {...item}/>
-                        </div>
+                        </Link>
                       )
                     }
                   </div>
