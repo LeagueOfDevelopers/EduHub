@@ -24,7 +24,7 @@
       <div id='footer'></div>
     </footer>
     <script type="text/javascript">
-      document.getElementById("footer").innerHTML = '&copy; ' + new Date().getFullYear() + ' League Of Developers';
+      window.onload = () => document.getElementById("footer").innerHTML = '&copy; ' + new Date().getFullYear() + ' League Of Developers';
     </script>
   </body>
 </html>
