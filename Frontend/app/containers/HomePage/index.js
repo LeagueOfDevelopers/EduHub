@@ -112,7 +112,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     return (
       localStorage.getItem('token') && parseJwt(localStorage.getItem('token')).exp - parseInt(Date.now()/1000) > 0 || !localStorage.getItem('token') ?
         (
-          <div style={{height: 'calc(100% - 64px)'}}>
+          <div>
             <Col xs={{span: 22, offset: 1}} sm={{span: 16, offset: 4}} style={{marginTop: 40}}>
               <Card
                 title='Группы, которым требуются ученики'

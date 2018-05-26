@@ -646,7 +646,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             <Tabs defaultActiveKey="1" style={{width: '100%'}}>
               <TabPane tab="Группы" key="1">
                 {this.props.myGroups.length !== 0 ?
-                  <div className='cards-holder md-cards-holder-center' style={{margin: '16px 0'}}>
+                  <div className='cards-holder md-cards-holder-center'>
                     {localStorage.getItem('withoutServer') === 'true' ?
                       defaultMyGroups.map((item, i) =>
                         <div className='group-card' style={{width: this.state.groupCardWidth}} onClick={() => location.assign(`/group/${item.groupInfo.id}`)} key={item.groupInfo.id}>

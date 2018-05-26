@@ -387,7 +387,7 @@ export class GroupPage extends React.Component {
                 </Row>
                 <Row type='flex' justify='space-between' align='middle' style={{marginBottom: 8}}>
                   <Col span={10}>Стоимость</Col>
-                  <Col span={14} style={{textAlign: 'right'}}>
+                  <Col span={14} title={`${this.state.groupData.groupInfo.cost} руб.`} style={{textAlign: 'right', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>
                     {this.state.isEditing ?
                       <FormItem style={{width: '100%', marginBottom: 0}}>
                         {getFieldDecorator('price', {

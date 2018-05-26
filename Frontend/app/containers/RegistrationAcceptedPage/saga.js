@@ -18,7 +18,10 @@ function acceptUser(key) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json-patch+json'
-    }
+    },
+    body: JSON.stringify({
+      key
+    })
   })
     .then(res => res.status)
     .catch(error => error)

@@ -34,9 +34,10 @@ namespace EduHubLibrary.SocketTool
 
             try
             {
-                await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(message),
+                var byteslol = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message),
                         0,
-                        message.Length),
+                        message.Length);
+                await socket.SendAsync(byteslol,
                     WebSocketMessageType.Text,
                     true,
                     CancellationToken.None);

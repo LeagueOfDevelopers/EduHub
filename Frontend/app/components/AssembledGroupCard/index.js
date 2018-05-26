@@ -26,9 +26,9 @@ class AssembledGroupCard extends React.PureComponent { // eslint-disable-line re
             <Col>Участников</Col>
             <Col>{this.props.groupInfo.memberAmount + '/' + this.props.groupInfo.size}</Col>
           </Row>
-          <Row type='flex' justify='space-between' style={{marginBottom: 8}}>
-            <Col>Оплата</Col>
-            <Col>{this.props.groupInfo.cost} руб.</Col>
+          <Row type='flex' justify='space-between' style={{marginBottom: 8, flexWrap: 'nowrap'}}>
+            <Col style={{marginRight: 20}}>Оплата</Col>
+            <Col style={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}>{this.props.groupInfo.cost} руб.</Col>
           </Row>
           <Row type='flex' justify='space-between' style={{marginBottom: 10}}>
             <Col>Тип</Col>

@@ -35,6 +35,11 @@ a:active {
   height: 214px;
 }
 
+.ant-card-wider-padding .ant-card-head {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
 .group-card .group-tags {
   white-space: nowrap;
   overflow: hidden;

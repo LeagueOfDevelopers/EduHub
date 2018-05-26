@@ -15,7 +15,7 @@ import {makeSelectStatus} from './selectors';
 import {acceptUser} from "./actions";
 import reducer from './reducer';
 import saga from './saga';
-import {Row, Col, Button} from 'antd';
+import {Row, Col, Button, Icon} from 'antd';
 
 export class RegistrationAccepted extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -32,8 +32,9 @@ export class RegistrationAccepted extends React.Component { // eslint-disable-li
         <Col span={24} style={{marginBottom: 30, textAlign: 'center'}}>
           {this.props.status === 200 ?
             'Вы успешно подтвердили свой email!'
-            :
+            : this.props.status === 400 ?
             'Ссылка недействительна!'
+              : <Icon type="loading" />
           }
         </Col>
         <Col span={24} style={{display: 'flex', justifyContent: 'center'}}>

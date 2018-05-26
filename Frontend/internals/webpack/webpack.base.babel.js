@@ -79,7 +79,7 @@ module.exports = (options) => ({
             limit: 10000,
           },
         },
-      },
+      }
     ],
   },
   plugins: options.plugins.concat([
