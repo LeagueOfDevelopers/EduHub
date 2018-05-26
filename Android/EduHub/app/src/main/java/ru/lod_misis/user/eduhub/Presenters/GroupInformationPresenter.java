@@ -27,10 +27,10 @@ public class GroupInformationPresenter implements IGroupInfirmationPresenter {
     }
 
     @Override
-    public void loadGroupInformation(String groupId, Context context) {
+    public void loadGroupInformation(String token,String groupId, Context context) {
         Log.d("GroupIfInPresenter",groupId);
         EduHubApi eduHubApi= RetrofitBuilder.getApi(context);
-        disposable= eduHubApi.getInformationAbotGroup(groupId)
+        disposable= eduHubApi.getInformationAbotGroup("Bearer "+token,groupId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

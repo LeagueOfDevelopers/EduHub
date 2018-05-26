@@ -7,5 +7,5 @@ import android.content.Context;
  */
 
 public interface IGroupInfirmationPresenter {
-    void loadGroupInformation(String groupId, Context context);
+    void loadGroupInformation(String token,String groupId, Context context);
 }

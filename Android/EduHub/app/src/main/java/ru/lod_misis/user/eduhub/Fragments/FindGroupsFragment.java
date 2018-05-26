@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -73,7 +74,7 @@ public class FindGroupsFragment extends Fragment implements IFindGroupsView {
             filtresModel=(FiltresModel) this.getArguments().get("filters");
             String[] types={"","Лекция","Мастер класс","Cеминар"};
             SpinnerAdapter
-                    adapter2=new SpinnerAdapter(getContext(),R.layout.spenner_item, types);
+                    adapter2=new SpinnerAdapter(getContext(),R.layout.spinner_item2, types);
             type.setAdapter(adapter2);
             // заголовок
             // выделяем элемент
@@ -96,7 +97,17 @@ public class FindGroupsFragment extends Fragment implements IFindGroupsView {
             }
             editTags.setTags( tags);
             flag=filtresModel.getPrivacy();
+            if(flag){
+                filtresModel.setPrivacy(false);
 
+                privacy.setButtonDrawable(R.drawable.ic_black_circle);
+                flag=false;
+            }else{
+                filtresModel.setPrivacy(true);
+
+                privacy.setButtonDrawable(R.drawable.ic_check_circle_black_24dp);
+                flag=true;
+            }
             // устанавливаем обработчик нажатия
 
             type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -181,9 +192,9 @@ public class FindGroupsFragment extends Fragment implements IFindGroupsView {
             });
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
+
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        recyclerView.setLayoutManager(llm);
+
             if(groups.size()==0){
                  adapter3=new Empty_adapters_for_search_groups();
                 recyclerView.setAdapter(adapter3);
@@ -192,6 +203,7 @@ public class FindGroupsFragment extends Fragment implements IFindGroupsView {
                 recyclerView.setAdapter(adapter);}
 
         }
+
         return v;
     }
 
@@ -219,7 +231,11 @@ public class FindGroupsFragment extends Fragment implements IFindGroupsView {
         if(groups.size()==0){
             adapter3=new Empty_adapters_for_search_groups();
             recyclerView.setAdapter(adapter3);
+            LinearLayoutManager llm=new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(llm);
         }else{
+            StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2,1);
+            recyclerView.setLayoutManager(llm);
             adapter=new GroupAdapter(groups,getActivity(),getContext());
             recyclerView.setAdapter(adapter);}
     }

@@ -21,7 +21,7 @@ public class FakeChatPresenter implements IChatPresenter {
 
     @Override
     public void loadAllMessages(String token, String groupId) {
-        Message message=new Message("Александр","1","Android Developer","2018-04-21T09:45:39.341Z","Это тестовое сообщение,чтобы сверстать простенький чатик",11);
+        Message message=new Message();
         for (int i=0;i<10;i++){
             messages.add(message);
         }

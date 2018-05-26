@@ -46,6 +46,7 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
     GroupInformationFragment groupInformationFragment;
     Group group;
     User user;
+    Boolean flag=false;
     Boolean isTeacher=false;
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     SharedPreferences sPref;
@@ -98,7 +99,7 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         adapter.addFragment(groupInformationFragment, "Информация");
 
         pager.setAdapter(adapter);
-        if(group.getGroupInfo().getCourseStatus()!=0){
+        if(group.getGroupInfo().getCourseStatus()!=0&&group.getGroupInfo().getCourseStatus()!=1){
             signInToGroup.setVisibility(View.GONE);
         }else{
             if(user.getTeacher()){
@@ -109,12 +110,12 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
                     }
                 }
                 if(isTeacher){
-                    signInToGroup.setVisibility(View.GONE);
+                    flag=true;
                 }
-            }else{
+            }
                 if(group.getGroupInfo().getSize()==group.getGroupInfo().getMemberAmount()){
                     signInToGroup.setVisibility(View.GONE);
-                }
+
             }
         }
         tabLayout.setupWithViewPager(pager);
@@ -128,8 +129,12 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
                else{
                     fakeSignInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());
                 }}else{
+                    if(!flag){
                     CustomDialog customDialog=new CustomDialog(getContext(),group,user.getToken(),fragmentsActivities,groupInformationFragment);
                     customDialog.show();
+                    }else{
+                        signInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());
+                    }
                 }
 
             }else{
@@ -159,7 +164,8 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
     public void getResponse() {
         MainGroupFragment mainGroupFragment=new MainGroupFragment();
         mainGroupFragment.setGroup(group);
-        mainGroupFragment.setGroupInformationFragment(groupInformationFragment);
+        mainGroupFragment.setAdapter(adapter);
+
         fragmentsActivities.switchingFragmets(mainGroupFragment);
     }
     public void setGroup(Group group) {

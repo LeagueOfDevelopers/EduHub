@@ -153,7 +153,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
         exit=v.findViewById(R.id.exit);
         refactorButton=v.findViewById(R.id.refactor_group_settings);
-        load(group.getGroupInfo().getId(),getContext());
+        load(user.getToken(),group.getGroupInfo().getId(),getContext());
         exit.setOnClickListener(click->{
 
             if(!fakesButton.getCheckButton()){
@@ -285,12 +285,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     @Override
     public void onResume() {
         super.onResume();
-        if(isLoading){
-            progressBar.setVisibility(View.VISIBLE);
 
-        }else{
-            finishProgressBar();
-        }
     }
 
     @Override
@@ -355,10 +350,11 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
         discription.setText(group.getGroupInfo().getDescription());
 
         if (!isLoading) {
-            if (user != null) {
+            if (member.getUserId() != null) {
                 switch (group.getGroupInfo().getCourseStatus()) {
 
                     case 0: {
+                        progressBar.setVisibility(View.GONE);
                         closeCourseCard.setVisibility(View.GONE);
                         status.setText("Не предложено");
                         link.setVisibility(View.GONE);
@@ -384,6 +380,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                     }
 
                     case 1: {
+                        progressBar.setVisibility(View.GONE);
                         closeCourseCard.setVisibility(View.GONE);
                         result.setText(group.getGroupInfo().getVotersAmount().toString() + "/" + group.getGroupInfo().getMemberAmount());
                         refactorCourse.setVisibility(View.VISIBLE);
@@ -399,7 +396,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                             reason_negative_response_card.setVisibility(View.GONE);
                             suggestion_course_card.setVisibility(View.GONE);
                         } else {
-                            if (member.getCurriculumStatus() == 2 || member.getCurriculumStatus() == 3) {
+                            if (member.getCurriculumStatus().equals("2")|| member.getCurriculumStatus().equals("3")) {
                                 resultCard.setVisibility(View.VISIBLE);
                                 voteCard.setVisibility(View.GONE);
                                 reason_negative_response_card.setVisibility(View.GONE);
@@ -417,6 +414,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                         break;
                     }
                     case 2: {
+                        progressBar.setVisibility(View.GONE);
                         closeCourseCard.setVisibility(View.GONE);
                         result.setText(group.getGroupInfo().getVotersAmount().toString() + "/" + group.getGroupInfo().getMemberAmount());
                         refactorCourse.setVisibility(View.VISIBLE);
@@ -433,7 +431,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                             reason_negative_response_card.setVisibility(View.GONE);
                             suggestion_course_card.setVisibility(View.GONE);
                         } else {
-                            if (member.getCurriculumStatus() == 2 || member.getCurriculumStatus() == 3) {
+                            if (member.getCurriculumStatus().equals("2")|| member.getCurriculumStatus().equals("3")) {
                                 refactorCourse.setVisibility(View.GONE);
                                 resultCard.setVisibility(View.GONE);
                                 voteCard.setVisibility(View.GONE);
@@ -454,6 +452,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                         break;
                     }
                     case 3: {
+                        progressBar.setVisibility(View.GONE);
                         closeCourseCard.setVisibility(View.GONE);
                         refactorCourse.setVisibility(View.GONE);
                         link.setText(group.getGroupInfo().getCurriculum());
@@ -478,7 +477,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                 }
             } else {
                 closeCourseCard.setVisibility(View.GONE);
-                status.setText("Не предложено");
+                status.setText("Вступи и узри");
                 link.setText(group.getGroupInfo().getCurriculum());
                 add_review_card.setVisibility(View.GONE);
                 refactorCourse.setVisibility(View.GONE);
@@ -487,6 +486,7 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
                 linkCard.setVisibility(View.GONE);
                 reason_negative_response_card.setVisibility(View.GONE);
                 suggestion_course_card.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
 
 
@@ -533,22 +533,23 @@ public class GroupInformationFragment extends Fragment implements IGroupView,IEx
     }
     private void RefreshData(){
         if(!fakesButton.getCheckButton()){
-            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
+            groupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),getContext());}
         else {
 
-            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());
+            fakeGroupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),getContext());
         }
     }
-    private void finishProgressBar(){
+    public void finishProgressBar(){
         progressBar.setVisibility(View.GONE);
         course.setVisibility(View.VISIBLE);
+        load(user.getToken(),group.getGroupInfo().getId(),getContext());
         isLoading=false;
     }
-    public void load(String id,Context context){
-        if(!fakesButton.getCheckButton()){groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
+    public void load(String token,String id,Context context){
+        if(!fakesButton.getCheckButton()){groupInformationPresenter.loadGroupInformation(token,id,context);}
         else {
 
-            fakeGroupInformationPresenter.loadGroupInformation(id,context);
+            fakeGroupInformationPresenter.loadGroupInformation(token,id,context);
         }
     }
 

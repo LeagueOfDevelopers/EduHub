@@ -10,55 +10,93 @@ import java.util.Date;
  */
 
 public class Message {
+    @SerializedName("notificationInfo")
+    @Expose
+    private String notificationInfo;
+    @SerializedName("notificationType")
+    @Expose
+    private Integer notificationType;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("sentOn")
+    @Expose
+    private String sentOn;
+    @SerializedName("messageType")
+    @Expose
+    private Integer messageType;
+    @SerializedName("senderId")
+    @Expose
+    private Integer senderId;
     @SerializedName("senderName")
     @Expose
     private String senderName;
-    @SerializedName("senderId")
-    @Expose
-    private String senderId;
-    @SerializedName("senderRole")
-    @Expose
-    private String senderRole;
-    @SerializedName("sentOn")
-    @Expose
-    private String time;
     @SerializedName("text")
     @Expose
-    private String textMessage;
-    @SerializedName("id")
-    @Expose
-    private int id;
+    private String text;
 
+    public String getNotificationInfo() {
+        return notificationInfo;
+    }
 
+    public void setNotificationInfo(String notificationInfo) {
+        this.notificationInfo = notificationInfo;
+    }
 
-    public Message(String senderName, String senderId, String senderRole, String time, String textMessage, int id) {
+    public Integer getNotificationType() {
+        return notificationType;
+    }
 
-        this.senderName = senderName;
-        this.senderId = senderId;
-        this.senderRole = senderRole;
-        this.time = time;
-        this.textMessage = textMessage;
+    public void setNotificationType(Integer notificationType) {
+        this.notificationType = notificationType;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getSenderName(){
-        return senderName;
+    public String getSentOn() {
+        return sentOn;
     }
-    public String getSenderRole(){
-        return senderRole;
+
+    public void setSentOn(String sentOn) {
+        this.sentOn = sentOn;
     }
-    public String getTextMessage(){
-        return textMessage;
+
+    public Integer getMessageType() {
+        return messageType;
     }
-    public String getTime(){
-        return time;
+
+    public void setMessageType(Integer messageType) {
+        this.messageType = messageType;
     }
-    public String getSenderId() {
+
+    public Integer getSenderId() {
         return senderId;
     }
 
-    public int getId() {
-        return id;
+    public void setSenderId(Integer senderId) {
+        this.senderId = senderId;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
 }

@@ -8,8 +8,8 @@ android {
         applicationId "ru.lod_misis.user.eduhub"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 8
-        versionName "8.0"
+        versionCode 10
+        versionName "10.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -88,6 +88,6 @@ dependencies {
     androidTestCompile 'org.testng:testng:6.9.6'
     compile files('build/intermediates/rs/debug/lib/lambdaj-2.4-with-dependencies.jar')
     compile files('src/main/java/com/example/user/eduhub/android-support-v4 (1).jar')
-
+    compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 }

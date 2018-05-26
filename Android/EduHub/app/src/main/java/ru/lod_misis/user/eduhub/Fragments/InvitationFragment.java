@@ -100,10 +100,10 @@ public class InvitationFragment extends Fragment implements INotificationsView,I
                     ) {
                 if(fakesButton.getCheckButton()){
                     Log.e("Check",fakesButton.getCheckButton().toString());
-                    fakeGroupInformationPresenter.loadGroupInformation(invitation.getGroupId(),getContext());
+                    fakeGroupInformationPresenter.loadGroupInformation(user.getToken(),invitation.getGroupId(),getContext());
                 }else{
                     Log.d("GroupIdInvitation",invitation.getGroupId());
-                    groupInfirmationPresenter.loadGroupInformation(invitation.getGroupId(),getContext());
+                    groupInfirmationPresenter.loadGroupInformation(user.getToken(),invitation.getGroupId(),getContext());
                 }
             }
         }else{

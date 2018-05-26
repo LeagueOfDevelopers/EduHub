@@ -71,7 +71,7 @@ public interface EduHubApi {
     Observable<GetAllGroups> getGroups();
 
     @GET(" /api/group/{groupId}")
-    Observable<Group> getInformationAbotGroup(@Path("groupId") String id);
+    Observable<Group> getInformationAbotGroup(@Header("Authorization") String token,@Path("groupId") String id);
 
     @POST("/api/group/{groupId}/member/invitation")
     Completable invitedUser(@Header("Authorization") String token, @Path("groupId") String groupId, @Body InviteUserModel model);

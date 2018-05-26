@@ -1,6 +1,7 @@
 package ru.lod_misis.user.eduhub.Adapters.PlaceHolder;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -19,7 +20,11 @@ import org.joda.time.DateTime;
 import java.util.Date;
 
 import ru.lod_misis.user.eduhub.Models.Group.Message;
+import ru.lod_misis.user.eduhub.Models.Notivications.ConvertNotifications;
+import ru.lod_misis.user.eduhub.Models.Notivications.Notification;
+import ru.lod_misis.user.eduhub.Models.Notivications.Notifications;
 import ru.lod_misis.user.eduhub.Models.User;
+import ru.lod_misis.user.eduhub.Presenters.NotificationsPresenter;
 
 /**
  * Created by User on 20.04.2018.
@@ -47,8 +52,7 @@ public class MessageView {
     float dp;
     static int i=0;
     RelativeLayout.LayoutParams layoutParams;
-
-
+    ConvertNotifications convertNotifications=new ConvertNotifications();
 
     public MessageView(Message message, User user, Context context) {
         this.user=user;
@@ -62,6 +66,7 @@ public class MessageView {
 
     @Resolve
     private void onResolved() {
+        if(message.getNotificationInfo()==null){
         if(message.getSenderId().equals(user.getUserId())){
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             layoutParams.setMargins(7*(int)dp,8*(int)dp,7*(int)dp,8*(int)dp);
@@ -73,11 +78,39 @@ public class MessageView {
             layoutParams.setMargins(7*(int)dp,8*(int)dp,7*(int)dp,8*(int)dp);
             cardOfMessage.setLayoutParams(layoutParams);
         }
-        messageText.setText(message.getTextMessage());
-        DateTime dt = new DateTime(message.getTime());
-        name.setText(message.getSenderName());
-        role.setText(message.getSenderRole());
+        messageText.setText(message.getText());
 
+        name.setText(message.getSenderName());
+       // role.setText(message.getSenderRole());
+            operationWithDate(message.getSentOn());
+
+        }else{
+            Notifications notifications=new Notifications();
+            notifications.setEventInfo(message.getNotificationInfo());
+            notifications.setEventType(message.getNotificationType());
+            notifications.setId(message.getId()+"");
+            notifications.setOccurredOn(message.getSentOn());
+            Notification notification=convertNotifications.convertCommonNotificationToNotofication(notifications);
+            messageText.setText(notification.getText());
+            role.setVisibility(android.view.View.GONE);
+            date.setVisibility(android.view.View.GONE);
+            RelativeLayout.LayoutParams layout= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layout.setMargins(2*(int)dp,7*(int)dp,2*(int)dp,7*(int)dp);
+            layout.addRule(RelativeLayout.CENTER_IN_PARENT);
+            messageText.setLayoutParams(layout);
+            messageText.setTextSize(5*dp);
+            layoutParams=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            layoutParams.setMargins(2*(int)dp,5*(int)dp,2*(int)dp,5*(int)dp);
+            cardOfMessage.setBackgroundColor(Color.GRAY);
+            cardOfMessage.setLayoutParams(layoutParams);
+
+
+
+        }
+    }
+    private void operationWithDate(String data){
+        DateTime dt = new DateTime(data);
         Long dateInt = dt.toDate().getTime() / 1000 / 60 / 60;
         Log.d("messageTime",dateInt.toString()+"||"+new Date().getTime()/1000/60/60);
 
@@ -124,6 +157,5 @@ public class MessageView {
 
             }
         }
-
     }
 }

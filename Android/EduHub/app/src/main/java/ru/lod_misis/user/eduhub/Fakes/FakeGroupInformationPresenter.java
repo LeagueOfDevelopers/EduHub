@@ -21,7 +21,7 @@ public class FakeGroupInformationPresenter  implements IGroupInfirmationPresente
 
     private IGroupView groupInformationView;
     @Override
-    public void loadGroupInformation(String groupId, Context context) {
+    public void loadGroupInformation(String token,String groupId, Context context) {
         Group group=new Group();
         ArrayList<Member> members=new ArrayList<>();
         Member member=new Member();

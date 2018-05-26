@@ -68,13 +68,13 @@ public class GroupActivity extends AppCompatActivity
         progressBar.setVisibility(View.VISIBLE);
         setSupportActionBar(toolbar);
         sPref=getSharedPreferences("User",MODE_PRIVATE);
+        user= savedDataRepository.loadSavedData(sPref);
 
-            user= savedDataRepository.loadSavedData(sPref);
             if(!fakesButton.getCheckButton()){
                 Log.d("GroupId",group.getGroupInfo().getId());
-                groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),this);
+                groupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),this);
             }else{
-                fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),this);}
+                fakeGroupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),this);}
 
 
 
@@ -122,7 +122,7 @@ public class GroupActivity extends AppCompatActivity
         if(groupInformationFragment.getView().findViewById(R.id.progressBar).getVisibility()==(View.VISIBLE)){
             groupInformationFragment.getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
             groupInformationFragment.getView().findViewById(R.id.course).setVisibility(View.VISIBLE);
-            groupInformationFragment.load(groupId,this);
+            groupInformationFragment.load(user.getToken(),groupId,this);
         }
     }
 
@@ -217,9 +217,8 @@ public class GroupActivity extends AppCompatActivity
     public void getResponseAfterAddCourse() {
         groupInformationFragment.getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
         groupInformationFragment.getView().findViewById(R.id.course).setVisibility(View.VISIBLE);
-        groupInformationFragment.load(groupId,this);
+        groupInformationFragment.finishProgressBar();
         Log.d("ResponseAfterAddCourse","2");
-        onResume();
     }
 
 

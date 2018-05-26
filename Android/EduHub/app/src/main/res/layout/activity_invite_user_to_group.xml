@@ -79,7 +79,7 @@
                     android:layout_marginTop="70dp"
                     />
 
-                <android.support.v7.widget.AppCompatSpinner
+                <Spinner
                     android:id="@+id/UserRole"
                     android:layout_width="110dp"
                     android:layout_height="30dp"
@@ -88,12 +88,7 @@
                     android:background="@color/lightGrey"
                     android:ems="10"
                     android:inputType="textPersonName" />
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_arrow_drop_down_black_24dp"
-                    android:layout_alignRight="@+id/UserRole"
-                    android:layout_marginTop="70dp" />
+
 
                 <ImageView
                     android:id="@+id/search_item"

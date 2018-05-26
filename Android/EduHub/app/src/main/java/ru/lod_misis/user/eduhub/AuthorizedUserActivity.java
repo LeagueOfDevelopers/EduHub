@@ -75,7 +75,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
     Toolbar toolbar;
     GroupsPresenter groupsPresenter;
     CheckBox checkFakes;
-    ProgressBar progressBar;
+
     final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE",EXP="EXP";
     RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
 
@@ -92,7 +92,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
         setContentView(R.layout.activity_authorized_user);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
-        progressBar=findViewById(R.id.progressBar);
+
         setSupportActionBar(toolbar);
         Log.d("Cont",context.toString());
         filtresModel=FiltresModel.getInstance();
@@ -120,6 +120,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
             filtresModel=FiltresModel.getInstance();
             JWT jwt = new JWT(user.getToken());
             user.setUserId(jwt.getClaim("UserId").asString());
+            user.setRole(jwt.getClaim("ROle").asString());
             savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sPref);
             drawer();
 
@@ -249,16 +250,12 @@ public class AuthorizedUserActivity extends AppCompatActivity
 
     @Override
     public void showLoading() {
-        if(progressBar.getVisibility()!=View.VISIBLE){
-        progressBar.setVisibility(View.VISIBLE);
-        }
+
 
     }
 
     @Override
     public void stopLoading() {
-        if(progressBar.getVisibility()!=View.GONE){
-        progressBar.setVisibility(View.GONE);}
     }
 
     @Override

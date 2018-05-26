@@ -1,84 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<FrameLayout android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <android.support.v7.widget.CardView
         android:id="@+id/group_card"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp">
 
-
-        >
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/metalic">
-
-            <RelativeLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/name_of_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="@color/grey">
+                android:textAlignment="center"
+                android:text="Название группы"
+                android:background="@color/darkBlue"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp"
+                android:paddingTop="9dp"
+                android:paddingBottom="9dp"
+                android:paddingRight="17dp"
+                android:paddingLeft="17dp"
+                />
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="20dp"
+                android:id="@+id/recycler_tags"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginRight="17dp"
+                android:layout_marginLeft="17dp">
 
+            </android.support.v7.widget.RecyclerView>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="17dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="25dp"
+                android:layout_gravity="center_horizontal"
+                >
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/first_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:civ_circle_background_color="@color/darkBlue"
+                    android:src="@drawable/ic_person_black_24dp"
+                    />
                 <TextView
                     android:id="@+id/participants"
-                    android:layout_width="48dp"
-                    android:layout_height="60dp"
-                    android:background="@color/veryGrey"
-                    android:gravity="center"
-                    android:text="7/8"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/name_of_group"
-                    android:layout_width="85dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/participants"
-                    android:paddingTop="5dp"
-                    android:text="TextView"
-                    android:textColor="@color/black"
-                    android:textSize="13dp" />
-
-                <TextView
-                    android:id="@+id/type_of_education"
-                    android:layout_width="85dp"
-                    android:layout_height="20dp"
-                    android:layout_below="@+id/name_of_group"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/participants"
-                    android:text="TextView"
-                    android:textColor="@color/black"
-                    android:textSize="10dp"
-                    android:textStyle="italic" />
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/first_image"
+                    android:layout_alignLeft="@+id/first_image"
+                    android:layout_alignEnd="@id/first_image"
+                    android:layout_below="@+id/first_image"
+                    android:layout_alignRight="@+id/first_image"
+                    android:textSize="9dp"
+                    android:text="122/122"
+                    android:textAlignment="center"
+                    android:layout_marginBottom="17dp"/>
+                <View
+                    android:layout_width="27dp"
+                    android:layout_height="1dp"
+                    android:layout_toRightOf="@id/first_image"
+                    android:layout_marginTop="11dp"
+                    android:background="@color/metalic"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/second_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/first_image"
+                    android:layout_marginLeft="27dp"
+                    app:civ_circle_background_color="@color/darkBlue"
+                    android:src="@drawable/ic_ruble_currency_sign24dp"/>
                 <TextView
                     android:id="@+id/cost"
-                    android:layout_width="45dp"
-                    android:layout_height="60dp"
-                    android:layout_toRightOf="@+id/type_of_education"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:text="25"
-                    android:textColor="@color/black" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_tags"
-                    android:layout_width="135dp"
-                    android:layout_height="60dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:scrollbars="none"
-                    android:nestedScrollingEnabled="false"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/second_image"
+                    android:layout_alignEnd="@id/second_image"
+                    android:layout_alignRight="@+id/second_image"
+                    android:layout_alignLeft="@+id/second_image"
+                    android:layout_below="@+id/second_image"
+                    android:textAlignment="center"
+                    android:text="100000"
+                    android:textSize="9dp"
+                    android:layout_marginBottom="17dp"
+                    />
+                <View
+                    android:layout_width="27dp"
+                    android:layout_height="1dp"
+                    android:layout_toRightOf="@+id/second_image"
+                    android:layout_marginTop="11dp"
+                    android:background="@color/metalic"
+                    />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/third_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/second_image"
+                    android:layout_marginLeft="27dp"
+                    app:civ_circle_background_color="@color/darkBlue"
+                    android:src="@drawable/ic_male_cartoon_pointing_to_white_board"
+                    />
 
             </RelativeLayout>
-        </FrameLayout>
 
+
+
+        </LinearLayout>
     </android.support.v7.widget.CardView>
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

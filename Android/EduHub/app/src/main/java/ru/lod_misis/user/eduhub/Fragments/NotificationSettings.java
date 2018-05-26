@@ -15,7 +15,9 @@ import android.widget.Spinner;
 
 import com.example.user.eduhub.R;
 
+import ru.lod_misis.user.eduhub.Adapters.SpinnerAdapter;
 import ru.lod_misis.user.eduhub.Adapters.SpinnerAdapterForMemberRole;
+import ru.lod_misis.user.eduhub.Adapters.SpinnerAdapterForSex;
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.INotificationsSettingsPresenter;
 import ru.lod_misis.user.eduhub.Interfaces.View.INotificationsSettingsView;
 import ru.lod_misis.user.eduhub.Models.User;
@@ -90,7 +92,7 @@ public class NotificationSettings extends Fragment implements INotificationsSett
         notSanctions = v.findViewById(R.id.not_sunctions);
 
         String[] roles = {"", "Никуда", "На почту", "На сайт", "Везде",};
-        SpinnerAdapterForMemberRole adapter = new SpinnerAdapterForMemberRole(getContext(), R.layout.spinner_item2, roles);
+        SpinnerAdapter adapter = new SpinnerAdapter(getContext(), R.layout.spinner_item2, roles);
 
         courseFinished.setAdapter(adapter);
 
@@ -138,54 +140,40 @@ public class NotificationSettings extends Fragment implements INotificationsSett
 
     @Override
     public void getSettings(NotificationsSettings settings) {
-        courseFinished.setSelection(Integer.valueOf(settings.getCourseFinished()));
-        courseAccepted.setSelection(Integer.valueOf(settings.getCurriculumAccepted()));
-        courseRejected.setSelection(Integer.valueOf(settings.getCurriculumDeclined()));
-        courseOffered.setSelection(Integer.valueOf(settings.getCurriculumSuggested()));
-        fullGroupSpinner.setSelection(Integer.valueOf(settings.getGroupIsFormed()));
-        participantLeft.setSelection(Integer.valueOf(settings.getMemberLeft()));
-        changeCreator.setSelection(Integer.valueOf(settings.getNewCreator()));
-        newParticipant.setSelection(Integer.valueOf(settings.getNewMember()));
-        teacherFind.setSelection(Integer.valueOf(settings.getTeacherFound()));
+        courseFinished.setSelection(Integer.valueOf(settings.getCourseFinished()),false);
+        courseAccepted.setSelection(Integer.valueOf(settings.getCurriculumAccepted()),false);
+        courseRejected.setSelection(Integer.valueOf(settings.getCurriculumDeclined()),false);
+        courseOffered.setSelection(Integer.valueOf(settings.getCurriculumSuggested()),false);
+        fullGroupSpinner.setSelection(Integer.valueOf(settings.getGroupIsFormed()),false);
+        participantLeft.setSelection(Integer.valueOf(settings.getMemberLeft()),false);
+        changeCreator.setSelection(Integer.valueOf(settings.getNewCreator()),false);
+        newParticipant.setSelection(Integer.valueOf(settings.getNewMember()),false);
+        teacherFind.setSelection(Integer.valueOf(settings.getTeacherFound()),false);
 
-        getReview.setSelection(Integer.valueOf(settings.getReviewReceived()));
-        yourInviteAccepted.setSelection(Integer.valueOf(settings.getInvitationAccepted()));
-        yourInviteRejected.setSelection(Integer.valueOf(settings.getInvitationDeclined()));
-        getNewInvite.setSelection(Integer.valueOf(settings.getInvitationReceived()));
+        getReview.setSelection(Integer.valueOf(settings.getReviewReceived()),false);
+        yourInviteAccepted.setSelection(Integer.valueOf(settings.getInvitationAccepted()),false);
+        yourInviteRejected.setSelection(Integer.valueOf(settings.getInvitationDeclined()),false);
+        getNewInvite.setSelection(Integer.valueOf(settings.getInvitationReceived()),false);
 
 
         if (user.getRole().equals("Admin")) {
-            sanctionsToAdmin.setSelection(Integer.valueOf(settings.getSanctionsAppliedToAdmin()));
+            sanctionsToAdmin.setSelection(Integer.valueOf(settings.getSanctionsAppliedToAdmin()),false);
             sanctionsToUser.setSelection(0);
-            notSanctions.setSelection(Integer.valueOf(settings.getSanctionsCancelledToAdmin()));
-            reportMessageSpinner.setSelection(Integer.valueOf(settings.getReportMessage()));
+            notSanctions.setSelection(Integer.valueOf(settings.getSanctionsCancelledToAdmin()),false);
+            reportMessageSpinner.setSelection(Integer.valueOf(settings.getReportMessage()),false);
             sanctionsToUserCard.setVisibility(View.GONE);
         } else {
             sanctionsToAdmin.setSelection(0);
-            sanctionsToUser.setSelection(Integer.valueOf(settings.getSanctionsAppliedToUser()));
-            notSanctions.setSelection(Integer.valueOf(settings.getSanctionsCancelledToUser()));
+            sanctionsToUser.setSelection(Integer.valueOf(settings.getSanctionsAppliedToUser()),false);
+            notSanctions.setSelection(Integer.valueOf(settings.getSanctionsCancelledToUser()),false);
 
             sanctionsToAdminCard.setVisibility(View.GONE);
             reportMessage.setVisibility(View.GONE);
         }
-        click(courseFinished, "courseFinished");
-        click(courseAccepted, "courseAccepted");
-        click(courseRejected, "courseRejected");
-        click(courseOffered, "courseOffered");
-        click(fullGroupSpinner, "fullGroupSpinner");
-        click(participantLeft, "participantLeft");
-        click(changeCreator, "changeCreator");
-        click(newParticipant, "newParticipant");
-        click(teacherFind,"teacherFind");
-        click(getReview, "getReview");
-        click(yourInviteAccepted, "yourInviteAccepted");
-        click(yourInviteRejected, "yourInviteRejected");
-        click(getNewInvite, "getNewInvite");
-        click(reportMessageSpinner, "reportMessageSpinner");
-        click(sanctionsToAdmin, "sanctionsToAdmin");
-        click(sanctionsToUser, "sanctionsToUser");
 
+        listener();
         mainLayout.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -304,6 +292,24 @@ public class NotificationSettings extends Fragment implements INotificationsSett
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+    }
+    private void listener(){
+        click(courseFinished, "courseFinished");
+        click(courseAccepted, "courseAccepted");
+        click(courseRejected, "courseRejected");
+        click(courseOffered, "courseOffered");
+        click(fullGroupSpinner, "fullGroupSpinner");
+        click(participantLeft, "participantLeft");
+        click(changeCreator, "changeCreator");
+        click(newParticipant, "newParticipant");
+        click(teacherFind,"teacherFind");
+        click(getReview, "getReview");
+        click(yourInviteAccepted, "yourInviteAccepted");
+        click(yourInviteRejected, "yourInviteRejected");
+        click(getNewInvite, "getNewInvite");
+        click(reportMessageSpinner, "reportMessageSpinner");
+        click(sanctionsToAdmin, "sanctionsToAdmin");
+        click(sanctionsToUser, "sanctionsToUser");
     }
 }
 

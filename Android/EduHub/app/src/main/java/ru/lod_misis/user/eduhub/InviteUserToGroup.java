@@ -112,7 +112,7 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
         );
         Spinner spinner=findViewById(R.id.UserRole);
         String[] roles={"Ученик","Учитель"};
-        SpinnerAdapterForMemberRole adapter=new SpinnerAdapterForMemberRole(this,R.layout.spinner_item2, roles);
+        SpinnerAdapterForMemberRole adapter=new SpinnerAdapterForMemberRole(this,R.layout.spinner_item_for_members_role, roles);
         spinner.setAdapter(adapter);
         // заголовок
         spinner.setPrompt("Type of education");

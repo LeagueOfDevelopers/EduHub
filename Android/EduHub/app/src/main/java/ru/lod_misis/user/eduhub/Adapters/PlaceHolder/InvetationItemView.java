@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ru.lod_misis.user.eduhub.Adapters.TagsAdapter;
@@ -50,7 +51,7 @@ public class InvetationItemView {
     private RecyclerView recyclerView;
 
     @View(R.id.group_card)
-    private  CardView cv;
+    private CardView cv;
 
     private Context context;
     private Group group;

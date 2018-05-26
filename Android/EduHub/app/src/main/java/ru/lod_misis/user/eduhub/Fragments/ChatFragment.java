@@ -94,7 +94,7 @@ public class ChatFragment extends Fragment implements IChatView  {
             public void onClick(View view) {
                 if(!editTextMessage.getText().toString().equals("")){
                     if(fakesButton.getCheckButton()){
-                    Message newMessage=new Message(user.getName(),user.getUserId(),user.getRole(),new Date()+"",editTextMessage.getText().toString(),1);
+                    Message newMessage=new Message();
                     expandablePlaceHolderView.addView(new MessageView(newMessage,user,context));}
                     else{
                         chatPresenter.sendMessage(user.getToken(),group.getGroupInfo().getId(),editTextMessage.getText().toString());
@@ -162,7 +162,7 @@ public class ChatFragment extends Fragment implements IChatView  {
     @Override
     public void newMessage(NewMessageResponse message) {
         Log.d("123",123+"");
-        Message message1=new Message("",message.getGroupId()+"","","",message.getText(),0);
+        Message message1=new Message();
         expandablePlaceHolderView.addView(new MessageView(message1,user,context));
     }
     private void startListenerWebSocket(){

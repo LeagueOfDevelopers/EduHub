@@ -17,15 +17,15 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_grey"
+            android:background="@color/darkBlue"
             android:minHeight="?attr/actionBarSize"
+            app:tabTextColor="#FFFFFF"
             app:tabGravity="fill"
             app:tabMode="fixed"
             style="@style/MyCustomTabLayout"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
-            android:background="@color/metalic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/tabs"

@@ -44,16 +44,16 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
         if(!fakesButton.getCheckButton()){}
         else {
 
-            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());
+            fakeGroupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),getContext());
         }
         swipeConteiner.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
-                    groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
+                    groupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),getContext());}
                 else {
 
-                    fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());
+                    fakeGroupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),getContext());
                 }
             }
         });
@@ -66,7 +66,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
         super.onCreate(savedInstanceState);
         if(!fakesButton.getCheckButton()){
             Log.d("GroupIdMembersFrag",group.getGroupInfo().getId()+"");
-            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
+            groupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),getContext());}
 
     }
 
@@ -114,10 +114,10 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
     @Override
     public void updateList() {
         if(!fakesButton.getCheckButton()){
-            groupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());}
+            groupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),getContext());}
         else {
 
-            fakeGroupInformationPresenter.loadGroupInformation(group.getGroupInfo().getId(),getContext());
+            fakeGroupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),getContext());
         }
     }
 }

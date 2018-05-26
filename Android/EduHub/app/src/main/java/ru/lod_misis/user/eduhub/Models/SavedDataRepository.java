@@ -12,7 +12,6 @@ import com.auth0.android.jwt.JWT;
 public class SavedDataRepository {
     public User loadSavedData(SharedPreferences sPref){
         User user=new User();
-        Log.d("ROLELELELE",sPref.getString("ROLE",null));
         user.setRole(sPref.getString("ROLE",null));
         user.setTeacher(sPref.getBoolean("ROLE2",false));
         user.setUserId(sPref.getString("ID",null));

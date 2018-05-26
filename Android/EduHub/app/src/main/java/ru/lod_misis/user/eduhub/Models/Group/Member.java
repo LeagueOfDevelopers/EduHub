@@ -31,13 +31,13 @@ public class Member implements Serializable{
     private Boolean acceptedCourse;
     @SerializedName("curriculumStatus")
     @Expose
-    private Integer curriculumStatus;
+    private String curriculumStatus;
 
-    public Integer getCurriculumStatus() {
+    public String getCurriculumStatus() {
         return curriculumStatus;
     }
 
-    public void setCurriculumStatus(Integer curriculumStatus) {
+    public void setCurriculumStatus(String curriculumStatus) {
         this.curriculumStatus = curriculumStatus;
     }
 

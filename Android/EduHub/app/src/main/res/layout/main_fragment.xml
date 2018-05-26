@@ -13,24 +13,27 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_grey"
+            android:background="@color/darkBlue"
             android:minHeight="?attr/actionBarSize"
+            app:tabTextColor="#FFFFFF"
             app:tabGravity="fill"
             app:tabMode="fixed"
             style="@style/MyCustomTabLayout"/>
 
         <android.support.v4.view.ViewPager
+            android:background="#FFFFFF"
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/tabs"
-            android:background="@color/metalic"
             />
         <Button
             android:id="@+id/create_group_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Создать группу"
+            android:background="@color/darkBlue"
+            android:textColor="#FFFFFF"
             android:layout_alignParentBottom="true"/>
 
 

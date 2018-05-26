@@ -33,10 +33,14 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
 
         View view= mInflater.inflate(this.mLayout, parent, false);
 
-        TextView type=view.findViewById(R.id.spenner_item);
-
-        type.setText(typesOfEducations[position].toString());
-
+        TextView type=view.findViewById(R.id.spinner_item2);
+        TextView type2=view.findViewById(R.id.spenner_item);
+        if(type!=null) {
+            type.setText(typesOfEducations[position].toString());
+        }
+        if(type2!=null){
+            type2.setText(typesOfEducations[position].toString());
+        }
         return view;
     }
 }

@@ -26,13 +26,13 @@ public class Invitation {
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("FromUserName")
+    @SerializedName("fromUserName")
     @Expose
     private String fromUserName;
-    @SerializedName("ToUserName")
+    @SerializedName("toUserName")
     @Expose
     private String toUserName;
-    @SerializedName("ToGroupTitle")
+    @SerializedName("toGroupTitle")
     @Expose
     private String toGroupTitle;
     private String title;

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,7 @@ public class AuthorizedFragmentForTeacher extends android.support.v4.app.Fragmen
         v.findViewById(R.id.btn).setVisibility(View.GONE);
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
+        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2,1);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         recyclerView.setLayoutManager(llm);
         if(!fakesButton.getCheckButton()){

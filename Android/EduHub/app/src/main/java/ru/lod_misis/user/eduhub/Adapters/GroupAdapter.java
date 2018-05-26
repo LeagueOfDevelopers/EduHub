@@ -9,13 +9,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ru.lod_misis.user.eduhub.Classes.TypeOfEducation;
 import ru.lod_misis.user.eduhub.GroupActivity;
+import ru.lod_misis.user.eduhub.Main2Activity;
+import ru.lod_misis.user.eduhub.MainActivity;
 import ru.lod_misis.user.eduhub.Models.Group.Group;
 
 import com.example.user.eduhub.R;
+import com.squareup.picasso.Picasso;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import java.util.ArrayList;
@@ -28,7 +32,13 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     private ArrayList<Group> groups;
     private Activity activity;
     private Context context;
-    public GroupAdapter(ArrayList<Group> groups, Activity activity,Context context){
+    Boolean flag=false;
+
+    public void setFlag(Boolean flag) {
+        this.flag = flag;
+    }
+
+    public GroupAdapter(ArrayList<Group> groups, Activity activity, Context context){
         this.groups=groups;
         this.activity=activity;
         this.context=context;
@@ -42,27 +52,33 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
     @Override
     public void onBindViewHolder(GroupViewHolder holder, final int position) {
-        holder.tags.setNestedScrollingEnabled(false);
+
         holder.name.setText(groups.get(position).getGroupInfo().getTitle());
         holder.users.setText(groups.get(position).getGroupInfo().getMemberAmount()+"/"+groups.get(position).getGroupInfo().getSize());
-        holder.cost.setText("$"+groups.get(position).getGroupInfo().getCost());
+        holder.cost.setText(""+groups.get(position).getGroupInfo().getCost());
         FlowLayoutManager flowLayoutManager=new FlowLayoutManager();
         holder.tags.setLayoutManager(flowLayoutManager);
         TagsAdapter adapter=new TagsAdapter((ArrayList<String>) groups.get(position).getGroupInfo().getTags());
         holder.tags.setAdapter(adapter);
-        switch (String.valueOf(groups.get(position).getGroupInfo().getGroupType())){
+
+
+       /* switch (String.valueOf(groups.get(position).getGroupInfo().getGroupType())){
             case "1":{holder.typeOfEducation.setText(TypeOfEducation.Лекция.toString());break;}
             case "2":{holder.typeOfEducation.setText(TypeOfEducation.Семинар.toString());break;}
             case "3":{holder.typeOfEducation.setText(TypeOfEducation.МастерКласс.toString());break;}
-        }
+        }*/
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!flag){
                 Group group=groups.get(position);
                 Log.d("gROUPiD",group.getGroupInfo().getId());
                 Intent intent = new Intent(activity, GroupActivity.class);
                 intent.putExtra("group",group);
-                activity.startActivity(intent);
+                activity.startActivity(intent);}else{
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    activity.startActivity(intent);
+                }
             }
         });
 
@@ -79,7 +95,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
     public static class GroupViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
-        TextView typeOfEducation;
+        //TextView typeOfEducation;
         TextView name;
         TextView users;
         RecyclerView tags;
@@ -91,7 +107,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
             users=itemView.findViewById(R.id.participants);
             tags=itemView.findViewById(R.id.recycler_tags);
             cost=itemView.findViewById(R.id.cost);
-            typeOfEducation=itemView.findViewById(R.id.type_of_education);
+           // typeOfEducation=itemView.findViewById(R.id.type_of_education);
             cv=itemView.findViewById(R.id.group_card);
 
 

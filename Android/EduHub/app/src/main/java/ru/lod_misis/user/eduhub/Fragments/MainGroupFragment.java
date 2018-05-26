@@ -71,7 +71,7 @@ public class MainGroupFragment extends Fragment {
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
         ImageView imageView=v.findViewById(R.id.icon_group);
         imageView.setImageResource(R.mipmap.ic_launcher_round);
-
+        if(adapter==null){
         groupInformationFragment.setGroup(group);
         chat=new ChatFragment();
         chat.setGroup(group);
@@ -84,7 +84,7 @@ public class MainGroupFragment extends Fragment {
         adapter=new ViewPagerAdapter(getFragmentManager());
         adapter.addFragment(groupMembersFragment,"Участники");
         adapter.addFragment(chat,"Чат");
-        adapter.addFragment(groupInformationFragment,"Информация");
+        adapter.addFragment(groupInformationFragment,"Информация");}
 
         pager.setAdapter(adapter);
 
@@ -100,6 +100,10 @@ public class MainGroupFragment extends Fragment {
 
 
         return v;
+    }
+
+    public void setAdapter(ViewPagerAdapter adapter) {
+        this.adapter = adapter;
     }
 
     @Override

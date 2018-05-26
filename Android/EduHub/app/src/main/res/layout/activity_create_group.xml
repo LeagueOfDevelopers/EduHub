@@ -132,6 +132,7 @@
                                     android:layout_alignStart="@+id/title_of_cost_education"
                                     android:layout_below="@+id/title_of_cost_education"
                                     android:layout_marginTop="10dp"
+                                    android:textAlignment="center"
                                     android:drawableLeft="@drawable/ic_ruble_currency_sign2"
                                     android:inputType="numberDecimal" />
                                 <TextView
@@ -151,6 +152,7 @@
                                     android:layout_below="@+id/title_of_sizeGroup"
                                     android:layout_marginRight="15dp"
                                     android:layout_marginTop="10dp"
+                                    android:textAlignment="center"
                                     android:drawableLeft="@drawable/ic_person_black_16dp"
                                     android:paddingLeft="5dp"
 

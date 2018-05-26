@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,7 +62,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
 
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
+        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2,1);
         recyclerView.setLayoutManager(llm);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         Log.d("UserId",user.getUserId());

@@ -1,10 +1,12 @@
 package ru.lod_misis.user.eduhub.Fragments;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +47,7 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
         btn.setTextSize(10);
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
+        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2,1);
         recyclerView.setLayoutManager(llm);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         if(!fakesButton.getCheckButton()){
@@ -101,7 +103,7 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
             recyclerView.setAdapter(emptyGroupAdapter);
         }else{
         GroupAdapter adapter=new GroupAdapter(groups,getActivity(),getContext());
-
+        adapter.setFlag(true);
         recyclerView.setAdapter(adapter);
         }
         swipeContainer.setRefreshing(false);

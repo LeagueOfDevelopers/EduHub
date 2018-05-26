@@ -43,6 +43,7 @@
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@+id/back"
                     android:background="@color/darkBlue"
+                    app:titleTextColor="#FFFFFF"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
             </RelativeLayout>
         </android.support.design.widget.AppBarLayout>
@@ -332,7 +333,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="bottom"
-        android:background="@color/blue"
+        android:background="@color/darkBlue"
         android:textColor="#FFFFFF"
         android:text="Cохранить" />
 </FrameLayout>
