@@ -17,7 +17,7 @@ import {Link} from "react-router-dom";
 export default class NotFound extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <Row type='flex' style={{height: 'calc(100vh - 64px)', alignItems: 'center'}}>
+      <Row type='flex' style={{alignItems: 'center'}}>
         <Col xs={{span: 20, offset: 2}} md={{span: 8, offset: 2}} className='md-text-center md-margin-top-30'>
           <h1 style={{fontWeight: 600}}>
             This page not found :(

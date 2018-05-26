@@ -151,7 +151,7 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <div style={{height: 'calc(100% - 64px)', marginBottom: 90}}>
+      <div style={{marginBottom: 90}}>
         <Row style={{textAlign: 'center', marginTop: 40}}><h3 style={{marginBottom: 0}}>Создание группы</h3></Row>
         <Row><Divider/></Row>
         <Row style={{marginTop: 0}}>

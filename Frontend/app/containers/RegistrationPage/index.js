@@ -127,7 +127,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
   render() {
     const {getFieldDecorator} = this.props.form;
     return (
-      <div style={{height: 'calc(100% - 64px)'}}>
+      <div>
         <Row style={{textAlign: 'center', marginTop: 40}}><h3 style={{marginBottom: 0}}>Регистрация</h3></Row>
         <Row><Divider/></Row>
         <Row style={{marginTop: 0}}>
