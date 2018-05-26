@@ -137,10 +137,8 @@ namespace EduHubTests
             userFacade.ChangeInvitationStatus(invitedId, invitation.Id, InvitationStatus.Accepted);
 
             //Assert
-            invitation = userFacade.GetAllInvitationsForUser(invitedId).ToList()[0];
             var createdGroup = _groupRepository.GetGroupById(createdGroupId);
             Assert.AreEqual(2, createdGroup.Members.Count);
-            Assert.AreEqual(InvitationStatus.Accepted, invitation.Status);
         }
 
         [TestMethod]
@@ -167,10 +165,8 @@ namespace EduHubTests
             userFacade.ChangeInvitationStatus(teacherId, invitation.Id, InvitationStatus.Accepted);
 
             //Assert
-            invitation = userFacade.GetAllInvitationsForUser(teacherId).ToList()[0];
             var createdGroup = _groupRepository.GetGroupById(createdGroupId);
             Assert.IsNotNull(createdGroup.Teacher);
-            Assert.AreEqual(InvitationStatus.Accepted, invitation.Status);
         }
 
         [TestMethod]
