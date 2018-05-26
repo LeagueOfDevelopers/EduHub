@@ -29,6 +29,19 @@ injectGlobal`
     min-height: 100%;
     min-width: 100%;
   }
+  
+  #footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 64px;
+    width: 100%;
+    margin-top: 40px;
+    font-size: 16px;
+    padding: 10px;
+    background-color: #2C365D;
+    color: #ffffff;
+  }
 
   p,
   label {

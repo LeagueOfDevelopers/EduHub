@@ -137,17 +137,17 @@ a:active {
   height: 64px;
 }
 
-.footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 64px;
-  width: 100%;
-  font-size: 16px;
-  padding: 10px;
-  background-color: #2C365D;
-  color: #ffffff;
-}
+/*.footer {*/
+  /*display: flex;*/
+  /*justify-content: center;*/
+  /*align-items: center;*/
+  /*height: 64px;*/
+  /*width: 100%;*/
+  /*font-size: 16px;*/
+  /*padding: 10px;*/
+  /*background-color: #2C365D;*/
+  /*color: #ffffff;*/
+/*}*/
 
 .userName {
   margin-left: 14px;

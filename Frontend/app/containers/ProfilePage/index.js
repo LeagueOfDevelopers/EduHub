@@ -356,8 +356,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
     const {getFieldDecorator} = this.props.form;
 
     return (
-      <div style={{height: 'calc(100% - 64px)'}}>
-        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} style={{marginTop: 40, marginBottom: 40}} className='md-center-container'>
+      <div>
+        <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} style={{marginTop: 40}} className='md-center-container'>
           <Col xs={{span: 24}} md={{span: 11}} lg={{span: 10}} xl={{span: 8}} xxl={{span: 6}} className='lg-center-container-item'>
             <Form className='profile-form' style={{width: '100%'}} onSubmit={this.changeProfileData}>
               <Card

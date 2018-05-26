@@ -28,7 +28,7 @@ export class RegistrationAccepted extends React.Component { // eslint-disable-li
 
   render() {
     return (
-      <Row style={{marginTop: 80, padding: 40, fontSize: 24, height: 'calc(100% - 64px)'}}>
+      <Row style={{marginTop: 80, padding: 40, fontSize: 24}}>
         <Col span={24} style={{marginBottom: 30, textAlign: 'center'}}>
           {this.props.status === 200 ?
             'Вы успешно подтвердили свой email!'
