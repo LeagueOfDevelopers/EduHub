@@ -134,7 +134,7 @@ namespace EduHubLibrary.Facades
             var currentUser = _userRepository.GetUserById(userId);
             var invitations = currentUser.Invitations;
             var invitationViews = new List<InvitationView>();
-            invitations.ForEach(i =>
+            invitations.Where(i => i.Status == InvitationStatus.InProgress).ToList().ForEach(i =>
             {
                 var currentGroup = _groupRepository.GetGroupById(i.GroupId);
                 var inviter = _userRepository.GetUserById(i.FromUser);

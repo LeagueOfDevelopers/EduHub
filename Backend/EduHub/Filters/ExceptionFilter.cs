@@ -85,6 +85,9 @@ namespace EduHub.Filters
                 case InappropriateEmailException exception:
                     context.Result = new BadRequestObjectResult(exception.Message);
                     return;
+                case InvitationAlreadyChangedException exception:
+                    context.Result = new BadRequestObjectResult(exception.Message);
+                    return;
                 default:
                     context.Result = new ObjectResult("Unknown error occured")
                     {
