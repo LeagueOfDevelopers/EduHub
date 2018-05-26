@@ -229,7 +229,12 @@ namespace EduHub
         {
             app.UseSwagger();
             app.UseStaticFiles();
-            app.UseWebSockets();
+            var webSocketOptions = new WebSocketOptions()
+            {
+                ReceiveBufferSize = 8 * 1024
+            };
+
+            app.UseWebSockets(webSocketOptions);
             app.MapWebSocketManager("/api/sockets/creation",
                 serviceProvider.GetService<NotificationsMessageHandler>());
 
