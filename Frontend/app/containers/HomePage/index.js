@@ -155,7 +155,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 }
                 <Row type='flex' align='middle' style={{marginTop: 30}}>
                   <Col className='xs-margin-bottom-14' xs={{span: 24}} md={{span: 8}} style={{fontSize: 16}}>
-                    <Link to='/groups?formed=false'>Расширенный поиск</Link>
+                    <Link to='/groups?formed=false' style={{color: '#2C365D'}}>Расширенный поиск</Link>
                   </Col>
                   {localStorage.getItem('token') ?
                     <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>
@@ -202,7 +202,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
                 }
                 <Row type='flex' align='middle' style={{marginTop: 30}}>
                   <Col className='xs-margin-bottom-14' xs={{span: 24}} md={{span: 8}} style={{fontSize: 16}}>
-                    <Link to='/groups?formed=true'>Расширенный поиск</Link>
+                    <Link to='/groups?formed=true'  style={{color: '#2C365D'}}>Расширенный поиск</Link>
                   </Col>
                   {!localStorage.getItem('token') ?
                     <Col className='xs-text-align-left' xs={{span: 24}} md={{span: 16}}>
