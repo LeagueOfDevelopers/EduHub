@@ -16,7 +16,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
 import 'antd/dist/antd.min.css';
-import 'my_theme.css'
+import 'my_theme.css';
 // Import root app
 import App from 'containers/App';
 
