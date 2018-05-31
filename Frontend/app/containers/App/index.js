@@ -12,6 +12,7 @@
  */
 
 import React from 'react';
+import Favicon from 'react-favicon';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from '../HomePage/Loadable';
 import NotFoundPage from '../NotFoundPage/Loadable';
@@ -27,7 +28,6 @@ import RegistrationSuccessPage from '../../containers/RegistrationSuccessPage';
 import RegistrationAcceptedPage from '../../containers/RegistrationAcceptedPage';
 import UsersPage from '../../containers/UsersPage';
 import AdminPage from '../../containers/AdminPage';
-import Footer from '../../components/Footer';
 import ResetPasswordPage from '../ResetPasswordPage';
 import SendResetPasswordInfoPage from '../SendResetPasswordInfoPage';
 import ResetPasswordAcceptedPage from '../ResetPasswordAcceptedPage';
@@ -36,6 +36,7 @@ export default class App extends React.Component{
   render() {
     return (
       <div>
+        <Favicon url={require('../../images/favicon.png')} />
         <header>
           <Header/>
         </header>
