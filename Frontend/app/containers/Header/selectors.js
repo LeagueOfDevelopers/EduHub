@@ -15,8 +15,14 @@ const makeSelectGroups = () => createSelector(
   (headerState) => headerState.get('groups')
 );
 
+const makeSelectPending = () => createSelector(
+  selectHeaderDomain,
+  (headerState) => headerState.get('pending')
+);
+
 export {
   selectHeaderDomain,
   makeSelectUsers,
-  makeSelectGroups
+  makeSelectGroups,
+  makeSelectPending
 };

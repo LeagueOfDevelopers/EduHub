@@ -10,7 +10,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectUsers, makeSelectGroups} from './selectors';
+import {makeSelectUsers, makeSelectGroups, makeSelectPending} from './selectors';
 import {getUsers, getGroups} from "./actions";
 import reducer from './reducer';
 import saga from './saga';
@@ -43,6 +43,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.showSideMenu = this.showSideMenu.bind(this);
     this.hideSideMenu = this.hideSideMenu.bind(this);
+    this.addListener = this.addListener.bind(this);
   }
 
   onSignInClick = () => {
@@ -86,23 +87,20 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
     </Menu>
   );
 
-  menu = (
-    <Menu>
-      <Menu.Item className='unhover' key="0">
-        <Button className='profile' style={{width: '100%'}} htmlType="button"
-                onClick={this.onSignInClick}>Войти</Button>
-      </Menu.Item>
-      <Menu.Item className='unhover' key="1">
-        <Link className="profile" to='/registration'><Button type="primary"
-                                                             htmlType="button">Зарегистрироваться</Button></Link>
-      </Menu.Item>
-    </Menu>
-  );
-
   handleSelectChange = (value) => {
     this.setState({searchValue: value});
     this.props.getUsers(value);
     this.props.getGroups(value);
+  };
+
+  addListener = () => {
+    let results = Array.from(document.getElementsByClassName('search-result'));
+    results.map(item => item.addEventListener('click', (e) => {
+      if(!localStorage.getItem('token')) {
+        e.preventDefault();
+        this.onSignInClick();
+      }
+    }));
   };
 
   showSideMenu = () => {
@@ -118,6 +116,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
   };
 
   render() {
+    setTimeout(() => this.addListener(), 0);
     return (
       <Row type="flex" align="middle" className='header' style={{width: '100hr'}}>
         <Col xs={{span: 8, offset: 2}} md={{span: 4, offset: 2}}>
@@ -139,7 +138,9 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
             showArrow={false}
             onChange={this.handleSelectChange}
             notFoundContent='Ничего не найдено'
-            onSelect={(e) => e.preventDefault()}
+            onSelect={(e) => {
+              e.preventDefault();
+            }}
           >
             {
               this.state.searchValue ?
@@ -155,7 +156,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                         index < selectItemsCount ?
                           <Option className='search-option-item' key={item.name + item.id + 'user'}>
                             <Link
-                              className='search-user-link'
+                              className='search-user-link search-result'
                               to={`/profile/${item.id}`}
                               style={{display: 'flex', alignItems: 'center'}}
                             >
@@ -194,7 +195,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                         index < selectItemsCount ?
                           <Option className='search-option-item' key={item.groupInfo.title + item.groupInfo.id + 'group'}>
                             <Link
-                              className='search-user-link'
+                              className='search-user-link search-result'
                               to={`/group/${item.groupInfo.id}`}
                             >
                               <div>{item.groupInfo.title}</div>
@@ -247,7 +248,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                         index < selectItemsCount ?
                           <Option className='search-option-item' key={item.name + item.id + 'user'}>
                             <Link
-                              className='search-user-link'
+                              className='search-user-link search-result'
                               to={`/profile/${item.id}`}
                               style={{display: 'flex', alignItems: 'center'}}
                             >
@@ -280,7 +281,7 @@ class Header extends React.PureComponent { // eslint-disable-line react/prefer-s
                         index < selectItemsCount ?
                           <Option className='search-option-item' key={item.groupInfo.title + item.groupInfo.id + 'group'}>
                             <Link
-                              className='search-user-link'
+                              className='search-user-link search-result'
                               to={`/group/${item.groupInfo.id}`}
                             >
                               <div>{item.groupInfo.title}</div>
@@ -406,7 +407,8 @@ Header.defaultProps = {
 
 const mapStateToProps = createStructuredSelector({
   users: makeSelectUsers(),
-  groups: makeSelectGroups()
+  groups: makeSelectGroups(),
+  pending: makeSelectPending()
 });
 
 function mapDispatchToProps(dispatch) {

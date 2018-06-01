@@ -156,7 +156,8 @@ export function getAge(date) {
 
 
 export function getGroupCardWidth() {
-  let cardsHolderWidth = document.getElementsByClassName('cards-holder')[0].offsetWidth;
+  let cardsHolderWidth = document.getElementsByClassName('cards-holder')[0] ? document.getElementsByClassName('cards-holder')[0].offsetWidth : 0;
+
   if(cardsHolderWidth >= 500 && cardsHolderWidth < 750) {
     return 'calc((100% - 40px) / 2)'
   }
@@ -166,7 +167,7 @@ export function getGroupCardWidth() {
   else if(cardsHolderWidth >= 1000) {
     return 'calc((100% - 80px) / 4)'
   }
-  else if(cardsHolderWidth < 500) {
+  else {
     return '100%'
   }
 }
