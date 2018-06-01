@@ -9,6 +9,7 @@ using EduHubLibrary.Domain.Tools;
 using EduHubLibrary.EventBus.EventTypes;
 using EduHubLibrary.Facades.Views;
 using EnsureThat;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 
 namespace EduHubLibrary.Facades
 {
@@ -156,9 +157,10 @@ namespace EduHubLibrary.Facades
         public IEnumerable<User> FindUser(string name, bool isTeacher = false, List<string> requiredTags = null,
             int minTeacherGroups = 0, int minUserGroups = 0)
         {
+            name = name.ToLower();
             var allUsers = _userRepository.GetAll().ToList();
             var allGroups = _groupRepository.GetAll().ToList();
-            allUsers = allUsers.Where(u => u.UserProfile.Name.Contains(name))
+            allUsers = allUsers.Where(u => u.UserProfile.Name.ToLower().Contains(name))
                 .OrderBy(u => u.UserProfile.Name.Length).ToList();
 
             if (isTeacher) allUsers = allUsers.FindAll(u => u.UserProfile.IsTeacher);
@@ -180,7 +182,8 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<User> FindByName(string name)
         {
-            var result = _userRepository.GetAll().ToList().FindAll(u => u.UserProfile.Name.Contains(name));
+            name = name.ToLower();
+            var result = _userRepository.GetAll().ToList().FindAll(u => u.UserProfile.Name.ToLower().Contains(name));
 
             return result.OrderBy(u => u.UserProfile.Name.Length);
         }
@@ -192,9 +195,10 @@ namespace EduHubLibrary.Facades
 
         public IEnumerable<UserInviteInfo> FindUsersForInvite(string name, int groupId, bool isTeacher)
         {
+            name = name.ToLower();
             var currentGroup = _groupRepository.GetGroupById(groupId);
             var targets = _userRepository.GetAll().ToList()
-                .FindAll(u => u.UserProfile.Name.Contains(name))
+                .FindAll(u => u.UserProfile.Name.ToLower().Contains(name))
                 .Where(u => !(currentGroup.IsMember(u.Id) || currentGroup.IsTeacher(u.Id)));
 
             if (isTeacher)

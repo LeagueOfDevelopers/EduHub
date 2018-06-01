@@ -169,9 +169,10 @@ namespace EduHubLibrary.Facades
         public IEnumerable<Group> FindGroup(string title, List<string> tags = null,
             GroupType type = GroupType.Default, double minPrice = 0, double maxPrice = 0, bool formed = false)
         {
+            title = title.ToLower();
             var allGroups = _groupRepository.GetAll().ToList();
             allGroups = allGroups.Where(g => !g.GroupInfo.IsPrivate & g.GroupInfo.IsActive).ToList();
-            allGroups = allGroups.Where(g => g.GroupInfo.Title.Contains(title))
+            allGroups = allGroups.Where(g => g.GroupInfo.Title.ToLower().Contains(title))
                 .OrderBy(g => g.GroupInfo.Title.Length).ToList();
 
             if (tags != null && tags.Any())
