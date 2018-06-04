@@ -36,20 +36,22 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
     this.showFilterForm = this.showFilterForm.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.showLoginForm = this.showLoginForm.bind(this);
+    this.addListener = this.addListener.bind(this);
   }
 
   componentDidMount() {
     this.setState({groupCardWidth: getGroupCardWidth()});
-    setTimeout(() => {
-      let groupCards = Array.from(document.getElementsByClassName('group-card'));
-      groupCards.map(item => item.addEventListener('click', (e) => {
-        if(!localStorage.getItem('token')) {
-          e.preventDefault();
-          this.showLoginForm();
-        }
-      }))
-    }, 0)
   }
+
+  addListener = () => {
+    let groupCards = Array.from(document.getElementsByClassName('group-card'));
+    groupCards.map(item => item.addEventListener('click', (e) => {
+      if(!localStorage.getItem('token')) {
+        e.preventDefault();
+        this.showLoginForm();
+      }
+    }))
+  };
 
   handleCancel = () => {
     this.setState({signInVisible: false})
@@ -72,6 +74,7 @@ export class GroupsPage extends React.Component { // eslint-disable-line react/p
   };
 
   render() {
+    setTimeout(() => this.addListener(), 0);
     return (
       <Row style={{marginTop: 40, marginBottom: 40}}>
         <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} onClick={this.showFilterForm} className='filter-btn' style={{height: 50}}>
