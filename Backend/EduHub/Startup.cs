@@ -75,7 +75,7 @@ namespace EduHub
                             var tableName = mapping.TableName;
                             context.Database.ExecuteSqlCommand(
                                 "alter table " + tableName.ToLower()
-                                               + " convert to character set utf8 collate utf8_unicode_ci;");
+                                               + " convert to character set utf8mb4 collate utf8mb4_bin;");
                         }
                     }
 
