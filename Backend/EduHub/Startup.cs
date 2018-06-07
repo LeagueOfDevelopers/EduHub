@@ -67,7 +67,7 @@ namespace EduHub
                     {
                         var dbName = dbContext.Split("database=")[1].Split(";")[0];
                         context.Database.ExecuteSqlCommand(
-                            "ALTER DATABASE " + dbName + " CHARACTER SET utf8 COLLATE utf8_general_ci;");
+                            "ALTER DATABASE " + dbName + " CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;");
                         var modelNames = context.Model.GetEntityTypes();
                         foreach (var modelname in modelNames)
                         {
