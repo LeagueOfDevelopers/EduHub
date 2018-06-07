@@ -25,42 +25,37 @@ export default class Message extends React.Component {
               <span>
               {
                 this.props.message.notificationType === 1 ?
-                  `Преподаватель ${eventInfo.TeacherName} завершил курс в группе "${eventInfo.GroupTitle}"`
+                  `Преподаватель ${eventInfo.TeacherName} завершил курс`
                   : this.props.message.notificationType === 2 ?
-                  `Учебный план группы "${eventInfo.GroupTitle}" принят`
+                  `Учебный план группы принят`
                   : this.props.message.notificationType === 3 ?
-                    `Пользователь ${eventInfo.DeclinedName} отклонил учебный план группы "${eventInfo.GroupTitle}"`
+                    `Пользователь ${eventInfo.DeclinedName} отклонил учебный план`
                     : this.props.message.notificationType === 4 ?
-                      (
-                        <div>
-                          <span style={{display: 'block'}}>В группе {eventInfo.GroupTitle} предложен учебный план</span>
-                          <a target='_blank' onClick={() => this.props.downloadCourseFile(eventInfo.CurriculumLink)}>Скачать учебный план</a>
-                        </div>
-                      )
+                      `В группе предложен учебный план`
                       : this.props.message.notificationType === 5 ?
-                        `Группа "${eventInfo.GroupTitle}" сформирована`
+                        `Группа сформирована`
                         : this.props.message.notificationType === 6 ?
-                          `Пользователь ${eventInfo.InvitedName} принял ваше приглашение в группу "${eventInfo.GroupTitle}"`
+                          `Пользователь ${eventInfo.InvitedName} принял ваше приглашение`
                           : this.props.message.notificationType === 7 ?
-                            `Пользователь ${eventInfo.InvitedName} отклонил ваше приглашение в группу "${eventInfo.GroupTitle}"`
+                            `Пользователь ${eventInfo.InvitedName} отклонил ваше приглашение`
                             : this.props.message.notificationType === 8 ?
                               `Пользователь ${eventInfo.InviterName} пригласил вас в группу "${eventInfo.GroupTitle}" на роль "${getMemberRole(eventInfo.SuggestedRole)}"`
                               : this.props.message.notificationType === 9 ?
-                                `Пользователь ${eventInfo.Username} покинул группу "${eventInfo.GroupTitle}"`
+                                `Пользователь ${eventInfo.Username} покинул группу`
                                 : this.props.message.notificationType === 10 ?
-                                  `Пользователь ${eventInfo.NewCreatorUsername} стал новым создателем группы "${eventInfo.GroupTitle}"`
+                                  `Пользователь ${eventInfo.NewCreatorUsername} стал новым создателем группы`
                                   : this.props.message.notificationType === 11 ?
-                                    `Пользователь ${eventInfo.Username} присоединился в группу "${eventInfo.GroupTitle}"`
+                                    `Пользователь ${eventInfo.Username} присоединился в группу`
                                     : this.props.message.notificationType === 12 ?
                                       `Пользователь ${eventInfo.SenderName} отправил репорт на пользователя ${eventInfo.SuspectedName} за нарушение правила "${eventInfo.BrokenRule}"`
                                       : this.props.message.notificationType === 13 ?
-                                        `Пользователь ${eventInfo.ReviewerName} оставил отзыв о преподавателе группы "${eventInfo.GroupTitle}"`
+                                        `Пользователь ${eventInfo.ReviewerName} оставил отзыв о преподавателе группы`
                                         : this.props.message.notificationType === 14 ?
                                           `К вам была применена санкция "${getSanctionType(eventInfo.SanctionType)}" за нарушение правила "${eventInfo.BrokenRule}"`
                                           : this.props.message.notificationType === 15 ?
                                             `К пользователю ${eventInfo.Username} была применена санкция "${getSanctionType(eventInfo.SanctionType)}" за нарушение правила "${eventInfo.BrokenRule}"`
                                             : this.props.message.notificationType === 16 ?
-                                              `Пользователь ${eventInfo.TeacherName} стал новым учителем группы "${eventInfo.GroupTitle}"`
+                                              `Пользователь ${eventInfo.TeacherName} стал новым учителем группы`
                                               : this.props.message.notificationType === 17 ?
                                                 `Примененная к вам санкция "${getSanctionType(eventInfo.SanctionType)}" за нарушение правила "${eventInfo.BrokenRule}" была отменена`
                                                 : this.props.message.notificationType === 18 ?
