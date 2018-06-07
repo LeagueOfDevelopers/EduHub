@@ -109,12 +109,20 @@ class ChatRoom extends React.Component {
             <ul className='chat' ref={chat => this.chat = chat}>
               {localStorage.getItem('withoutServer') === 'true' ?
                 this.state.messages.map(msg =>
-                  <Message key={msg.id} message={msg} user={localStorage.getItem('name')}/>
+                  <Message key={msg.notificationType ? `notify-${msg.id}` : `msg-${msg.id}`} message={msg} user={localStorage.getItem('name')}/>
                 )
                 :
                 this.props.chat ?
                   this.props.chat.map((msg, index) =>
-                    <Message key={msg.id ? msg.id : Math.random()} message={msg}/>
+                    <Message key={
+                      msg.id ?
+                        msg.notificationType ?
+                          `notify-${msg.id}`
+                          : `msg-${msg.id}`
+                        : Math.random()
+                    }
+                             message={msg}
+                    />
                   )
                   :
                   [].map((msg, index) =>

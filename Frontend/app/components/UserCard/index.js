@@ -8,6 +8,7 @@ import React from 'react';
 import {Card, Row, Col, Button, message, Avatar} from 'antd';
 import {Link} from "react-router-dom";
 import {getGender, getAge} from "../../globalJS";
+import config from "../../config";
 
 
 class UserCard extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -26,7 +27,7 @@ class UserCard extends React.Component { // eslint-disable-line react/prefer-sta
         <Row type='flex' align='middle'>
           <Col className='md-margin-bottom-14' xs={{span: 24}} md={{span: 14}} lg={{span: 24}} xl={{span: 14}} style={{display: 'flex', alignItems: 'center'}}>
             <Avatar
-              src={this.props.avatarLink}
+              src={this.props.avatarLink ? `${config.API_BASE_URL}/file/img/${this.props.avatarLink}` : null}
               style={{minHeight: 50, minWidth: 50, marginRight: 20, borderRadius: '50%'}}
             >
             </Avatar>

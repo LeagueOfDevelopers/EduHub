@@ -246,7 +246,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       imageUrl: result.userProfile.avatarLink,
       nameInput: result.userProfile.name,
       genderInput: result.userProfile.gender === 1 ? 'Man' : result.userProfile.gender === 2 ? 'Woman' : 'Unknown',
-      birthYearInput: result.userProfile.birthYear ? result.userProfile.birthYear : new Date(),
+      birthYearInput: result.userProfile.birthYear && result.userProfile.birthYear !== '0001-01-01T00:00:00+00:00' ? result.userProfile.birthYear : new Date(),
       aboutInput: result.userProfile.aboutUser ? result.userProfile.aboutUser : '',
       contactsInputs: result.userProfile.contacts ? result.userProfile.contacts : [],
       isCurrentUser: Boolean(this.state.userData && this.props.match.params.id == this.state.userData.UserId)
@@ -452,7 +452,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                             <DatePicker onChange={this.onChangeBirthYearHandle} format='DD.MM.YYYY' style={{width: '100%'}}/>)
                           }
                         </FormItem>
-                        : this.state.userProfile.birthYear ?
+                        : this.state.userProfile.birthYear && this.state.userProfile.birthYear !== '0001-01-01T00:00:00+00:00' ?
                         `${new Date(this.state.userProfile.birthYear).getDate() < 10 ?
                           '0' + new Date(this.state.userProfile.birthYear).getDate()
                           : new Date(this.state.userProfile.birthYear).getDate()}.${
