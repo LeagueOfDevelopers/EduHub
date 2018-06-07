@@ -33,7 +33,7 @@ namespace EduHub.SocketTool
                 return;
 
             var socket = await context.WebSockets.AcceptWebSocketAsync();
-            await _webSocketHandler.OnConnected(socket, userId);
+            _webSocketHandler.OnConnected(socket, userId);
 
             await Receive(socket, async (result, buffer) =>
             {

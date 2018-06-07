@@ -17,7 +17,7 @@ namespace EduHubLibrary.SocketTool
 
         protected WebSocketConnectionManager WebSocketConnectionManager { get; set; }
 
-        public virtual async Task OnConnected(WebSocket socket, int userId)
+        public void OnConnected(WebSocket socket, int userId)
         {
             WebSocketConnectionManager.AddSocket(socket, userId);
         }
@@ -34,10 +34,9 @@ namespace EduHubLibrary.SocketTool
 
             try
             {
-                var byteslol = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message),
+                await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(message),
                         0,
-                        message.Length);
-                await socket.SendAsync(byteslol,
+                        Encoding.UTF8.GetBytes(message).Length),
                     WebSocketMessageType.Text,
                     true,
                     CancellationToken.None);
