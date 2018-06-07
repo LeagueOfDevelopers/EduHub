@@ -35,72 +35,86 @@ namespace EduHubLibrary.Data
         {
             modelBuilder.Entity<ReviewDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("Review");
             });
             modelBuilder.Entity<ContactDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("Contact");
             });
             modelBuilder.Entity<InvitationDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("Invitation");
             });
             modelBuilder.Entity<NotifiesDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("Notifie");
             });
             modelBuilder.Entity<UserDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("User");
             });
             modelBuilder.Entity<TagDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Name).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("Tag");
             });
             modelBuilder.Entity<UserFileDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Filename).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("File");
             });
             modelBuilder.Entity<KeyDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Value).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("KeyData");
             });
             modelBuilder.Entity<GroupDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("GroupData");
             });
             modelBuilder.Entity<SanctionDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("Sanction");
             });
             modelBuilder.Entity<MemberDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("Member");
             });
             modelBuilder.Entity<MessageDto>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("Message");
             });
             modelBuilder.Entity<TagGroup>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("TagGroup");
             });
             modelBuilder.Entity<TagUser>(e =>
             {
-                e.ForMySQLHasCollation("utf8_general_ci");
+                e.Property(entity => entity.Id).HasMaxLength(127);
+                e.ForMySQLHasCollation("utf8mb4_bin");
                 e.ToTable("TagUser");
             });
         }
