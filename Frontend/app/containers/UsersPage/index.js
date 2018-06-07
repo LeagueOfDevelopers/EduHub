@@ -18,6 +18,7 @@ import {Row, Col, Card} from 'antd';
 import UserCard from '../../components/UserCard';
 import FilterForm from '../../components/UsersFilterForm';
 import {getQueryVariable} from "../../globalJS";
+import SigningInForm from '../../containers/SigningInForm';
 
 const users = [
   {
@@ -39,15 +40,37 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
     super(props);
 
     this.state = {
-      name: getQueryVariable('name')
+      name: getQueryVariable('name'),
+      signInVisible: false,
     };
 
     this.showFilterForm = this.showFilterForm.bind(this);
+    this.addListener = this.addListener.bind(this);
+    this.showLoginForm = this.showLoginForm.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   componentDidMount() {
 
   }
+
+  handleCancel = () => {
+    this.setState({signInVisible: false})
+  };
+
+  showLoginForm = () => {
+    this.setState({signInVisible: true})
+  };
+
+  addListener = () => {
+    let usersLink = Array.from(document.getElementsByClassName('user-link'));
+    usersLink.map(item => item.addEventListener('click', (e) => {
+      if(!localStorage.getItem('token')) {
+        e.preventDefault();
+        this.showLoginForm();
+      }
+    }))
+  };
 
   showFilterForm = () => {
     document.getElementById('xs-filter').style.display === 'block' ?
@@ -56,6 +79,7 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
   };
 
   render() {
+    setTimeout(() => this.addListener(), 0);
     return (
       <Row style={{margin: '40px 0'}}>
         <Col xs={{span: 20, offset: 2}} sm={{span: 16, offset: 4}} onClick={this.showFilterForm} className='filter-btn' style={{height: 50}}>
@@ -76,7 +100,7 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
             (<div>
                 {this.props.users && this.props.users.length && this.props.users.length !== 0 ?
                   this.props.users.map(item =>
-                    <UserCard key={item.id} {...item}/>
+                    <UserCard className='user' key={item.id}  {...item}/>
                   )
                   :
                   <div>Нет результатов</div>
@@ -86,12 +110,13 @@ export class UsersPage extends React.Component { // eslint-disable-line react/pr
             :
             (<div>
                 {users.map(item =>
-                  <UserCard key={item.id} {...item}/>
+                  <UserCard className='user' key={item.id} {...item}/>
                 )}
                 </div>
             )
           }
         </Col>
+        <SigningInForm visible={this.state.signInVisible} handleCancel={this.handleCancel}/>
       </Row>
     );
   }

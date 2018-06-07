@@ -13,7 +13,7 @@ import config from "../../config";
 
 class UserCard extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   render() {
@@ -50,7 +50,7 @@ class UserCard extends React.Component { // eslint-disable-line react/prefer-sta
             </div>
           </Col>
           <Col className='md-center-container user-card-profile-btn' xs={{span: 24}} md={{span: 10}} lg={{span: 24}} xl={{span: 10}} style={{textAlign: 'right'}}>
-            <Link to={`/profile/${this.props.id}`}><Button>Перейти к профилю</Button></Link>
+            <Link className='user-link' to={`/profile/${this.props.id}`}><Button>Перейти к профилю</Button></Link>
           </Col>
         </Row>
       </Card>

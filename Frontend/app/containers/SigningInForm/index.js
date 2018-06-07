@@ -115,7 +115,7 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
             }
           </FormItem>
           {this.props.isExists ? null :
-            <div style={{color: 'red'}}>
+            <div style={{color: '#f5222d', marginBottom: 16}}>
               Данного пользователя не существует
             </div>
           }
