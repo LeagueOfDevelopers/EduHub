@@ -7,6 +7,7 @@ using EduHub.Security;
 using EduHubLibrary.Common;
 using EduHubLibrary.Facades;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -128,9 +129,9 @@ namespace EduHub.Controllers
         [Route("password/restore")]
         [SwaggerResponse(200)]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult RestorePassword([FromBody] string email)
+        public IActionResult RestorePassword([FromBody] RestorePasswordRequest request)
         {
-            _userAccountFacade.SendQueryToChangePassword(email);
+            _userAccountFacade.SendQueryToChangePassword(request.Email);
             return Ok();
         }
 
