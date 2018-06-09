@@ -16,7 +16,7 @@ namespace EduHub.Models.ValidationAttributes
         {
             var birthDate = (DateTimeOffset) value;
             var current = DateTime.Now.Year;
-            return birthDate.Year >= _startYear && birthDate.Year <= current;
+            return (birthDate.Year >= _startYear && birthDate.Year <= current) || birthDate == DateTimeOffset.MinValue;
         }
     }
 }
