@@ -157,9 +157,9 @@ namespace EduHub.Controllers
         [Route("password/{key}")]
         [SwaggerResponse(200)]
         [SwaggerResponse(400, Type = typeof(BadRequestObjectResult))]
-        public IActionResult ChangePassword([FromRoute] int key, [FromBody] string newPassword)
+        public IActionResult ChangePassword([FromRoute] int key, [FromBody] ChangePasswordRequest request)
         {
-            _userAccountFacade.ChangePassword(newPassword, key);
+            _userAccountFacade.ChangePassword(request.NewPassword, key);
             return Ok();
         }
 
