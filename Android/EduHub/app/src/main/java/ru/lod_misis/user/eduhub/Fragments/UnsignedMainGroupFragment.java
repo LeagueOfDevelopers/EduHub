@@ -42,8 +42,8 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
     ViewPagerAdapter adapter;
     TabLayout tabLayout;
     ChatFragment chat;
-    GroupMembersFragment groupMembersFragment;
-    GroupInformationFragment groupInformationFragment;
+    GroupMembersFragment aboutGroupFragment;
+
     Group group;
     User user;
     Boolean flag=false;
@@ -72,31 +72,30 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         View v = inflater.inflate(R.layout.unsigned_group, null);
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(group.getGroupInfo().getTitle());
-        TextView groupTitle=v.findViewById(R.id.GroupTitle);
-        groupTitle.setText(group.getGroupInfo().getTitle());
+
+
         Button signInToGroup=v.findViewById(R.id.signed_to_group);
 
         sPref =getActivity().getSharedPreferences("User",MODE_PRIVATE);
         pager = v.findViewById(R.id.pager);
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
-        ImageView imageView = v.findViewById(R.id.icon_group);
-        imageView.setImageResource(R.mipmap.ic_launcher_round);
 
-        groupInformationFragment.setGroup(group);
-        groupInformationFragment.setFlag(true);
+
+
+
         user=savedDataRepository.loadSavedData(sPref);
 
 
         chat = new ChatFragment();
         chat.setFlag(true);
-        groupMembersFragment = new GroupMembersFragment();
-        groupMembersFragment.setGroup(group);
-        groupMembersFragment.setUser(user);
+
+        aboutGroupFragment.setGroup(group);
+        aboutGroupFragment.setUser(user);
 
         adapter = new ViewPagerAdapter(getFragmentManager());
-        adapter.addFragment(groupMembersFragment, "Участники");
+        adapter.addFragment(aboutGroupFragment, "Информация");
         adapter.addFragment(chat, "Чат");
-        adapter.addFragment(groupInformationFragment, "Информация");
+
 
         pager.setAdapter(adapter);
         if(group.getGroupInfo().getCourseStatus()!=0&&group.getGroupInfo().getCourseStatus()!=1){
@@ -130,7 +129,7 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
                     fakeSignInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());
                 }}else{
                     if(!flag){
-                    CustomDialog customDialog=new CustomDialog(getContext(),group,user.getToken(),fragmentsActivities,groupInformationFragment);
+                    CustomDialog customDialog=new CustomDialog(getContext(),group,user.getToken(),fragmentsActivities,aboutGroupFragment);
                     customDialog.show();
                     }else{
                         signInUserToGroupPresenter.signInUserToGroup(user.getToken(),group.getGroupInfo().getId(),getContext());
@@ -172,7 +171,9 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         this.group = group;
     }
 
-    public void setGroupInformationFragment(GroupInformationFragment groupInformationFragment) {
-        this.groupInformationFragment = groupInformationFragment;
+    public void setAboutGroupFragment(GroupMembersFragment aboutGroupFragment) {
+        this.aboutGroupFragment = aboutGroupFragment;
     }
+
+
 }

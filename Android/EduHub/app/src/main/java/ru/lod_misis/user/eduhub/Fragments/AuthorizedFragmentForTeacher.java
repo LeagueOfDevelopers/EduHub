@@ -43,6 +43,7 @@ public class AuthorizedFragmentForTeacher extends android.support.v4.app.Fragmen
     EduHubApi eduHubApi;
     TextView textView;
     EmptyGroupAdapter emptyGroupAdapter=new EmptyGroupAdapter();
+    StaggeredGridLayoutManager llm;
 
     @Nullable
     @Override
@@ -51,8 +52,9 @@ public class AuthorizedFragmentForTeacher extends android.support.v4.app.Fragmen
         v.findViewById(R.id.btn).setVisibility(View.GONE);
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2,1);
+
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        llm = new StaggeredGridLayoutManager(2,1);
         recyclerView.setLayoutManager(llm);
         if(!fakesButton.getCheckButton()){
 
@@ -64,6 +66,7 @@ public class AuthorizedFragmentForTeacher extends android.support.v4.app.Fragmen
             @Override
             public void onRefresh() {
                 if(!fakesButton.getCheckButton()){
+
                     groupsPresenter.loadAllGroupsForTeachers(getContext());}else{
                     fakeGroupRepository.loadAllGroupsForTeachers(getContext());
                 }
@@ -108,9 +111,12 @@ public class AuthorizedFragmentForTeacher extends android.support.v4.app.Fragmen
             recyclerView.setAdapter(emptyGroupAdapter);
         }else{
             GroupAdapter adapter=new GroupAdapter(groups,getActivity(),getContext());
-
+            llm = new StaggeredGridLayoutManager(2,1);
+            recyclerView.setLayoutManager(llm);
             recyclerView.setAdapter(adapter);
+
         }
+
         swipeContainer.setRefreshing(false);
     }
     private void MakeToast(String s) {

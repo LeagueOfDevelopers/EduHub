@@ -35,6 +35,7 @@ public class TeacherFragment extends android.support.v4.app.Fragment implements 
     FakeGroupRepository fakeGroupRepository=new FakeGroupRepository(this);
     FakesButton fakesButton=new FakesButton();
     EmptyGroupAdapter emptyGroupAdapter=new EmptyGroupAdapter();
+    StaggeredGridLayoutManager llm;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class TeacherFragment extends android.support.v4.app.Fragment implements 
         btn.setTextSize(10);
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2,1);
+         llm = new StaggeredGridLayoutManager(2,1);
         recyclerView.setLayoutManager(llm);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         if(!fakesButton.getCheckButton()){
@@ -101,6 +102,8 @@ public class TeacherFragment extends android.support.v4.app.Fragment implements 
         }else{
             GroupAdapter adapter=new GroupAdapter(groups,getActivity(),getContext());
             adapter.setFlag(true);
+            llm = new StaggeredGridLayoutManager(2,1);
+            recyclerView.setLayoutManager(llm);
             recyclerView.setAdapter(adapter);
         }
         swipeContainer.setRefreshing(false);

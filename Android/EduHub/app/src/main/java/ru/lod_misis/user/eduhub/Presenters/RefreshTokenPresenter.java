@@ -31,7 +31,7 @@ public class RefreshTokenPresenter implements IRefreshTokenPresenter {
                 .subscribe(finish->{refreshTokenView.getResponse(finish);},
                         throwable -> {
                             Log.e("errRefreshToken",throwable.toString());
-                    refreshTokenView.getError(throwable);});
+                    refreshTokenView.getThrowable(throwable);});
 
     }
 }

@@ -1,56 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/metalic">
+        android:background="@color/darkBlue">
 
-        <TextView
+        <ImageView
             android:id="@+id/title"
-            android:layout_width="270dp"
-            android:layout_height="45dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="85dp"
-            android:text="Добро Пожаловать!"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="24dp"
-            android:textStyle="bold" />
-z
-        <EditText
-            android:id="@+id/edit_email"
+            android:layout_marginTop="45dp"
+            android:src="@drawable/title"
+             />
+        <TextView
+            android:id="@+id/edit_email_title"
             android:layout_width="270dp"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18dp"
-            android:background="@drawable/edit_text_style"
+            android:textColor="#FFFFFF"
+            android:text="Email"/>
+        <EditText
+            android:id="@+id/edit_email"
+            android:layout_width="270dp"
+            android:layout_height="35dp"
+            android:layout_below="@+id/edit_email_title"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textSize="13dp"
             android:ems="10"
-            android:hint="Email"
+
             android:inputType="textPersonName"
             android:paddingLeft="7dp"
 
             android:paddingRight="7dp"
-            android:textAlignment="center" />
-
+             />
+        <TextView
+            android:id="@+id/edit_password_title"
+            android:layout_marginTop="20dp"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_email"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFFFFF"
+            android:text="Пароль"/>
         <EditText
             android:id="@+id/edit_password"
             android:layout_width="270dp"
-            android:layout_height="45dp"
+            android:layout_height="35dp"
+            android:textSize="13dp"
             android:layout_alignLeft="@+id/edit_email"
             android:layout_alignStart="@+id/edit_email"
-            android:layout_below="@+id/edit_email"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/edit_text_style"
+            android:layout_below="@+id/edit_password_title"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
             android:ems="10"
-            android:hint="Пароль"
+
             android:inputType="textPassword"
             android:paddingLeft="7dp"
             android:paddingRight="7dp"
-            android:textAlignment="center" />
+             />
 
         <Button
             android:id="@+id/sign_in"
@@ -60,7 +76,8 @@ z
             android:layout_alignStart="@+id/edit_password"
             android:layout_below="@+id/edit_password"
             android:layout_marginTop="20dp"
-            android:background="@drawable/ellipse_background"
+            android:background="#ffffff"
+            android:textColor="@color/darkBlue"
             style="@style/MyCustomTabLayout"
             android:text="Войти" />
         <TextView

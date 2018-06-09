@@ -38,7 +38,7 @@ public class Contacts_adapter_profile extends RecyclerView.Adapter<Contacts_adap
 
     @Override
     public void onBindViewHolder(Contacts_adapter.ContactViewHolder holder, final int position) {
-        holder.label.setImageResource(R.drawable.ic_vk);
+
         holder.contactText.setText(contacts.get(position));
 
     }
@@ -59,7 +59,7 @@ public class Contacts_adapter_profile extends RecyclerView.Adapter<Contacts_adap
 
         public ContactViewHolder(View itemView){
             super(itemView);
-            label=itemView.findViewById(R.id.label_social_network);
+
             contactText=itemView.findViewById(R.id.contact_text);
 
 

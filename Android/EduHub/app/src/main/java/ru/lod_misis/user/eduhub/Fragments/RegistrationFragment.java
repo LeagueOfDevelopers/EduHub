@@ -3,6 +3,8 @@ package ru.lod_misis.user.eduhub.Fragments;
 import android.app.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -69,16 +72,22 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.registration_fragment, null);
         email=v.findViewById(R.id.registr_email);
+        email.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         password=v.findViewById(R.id.registr_password);
+        password.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         isTeacher=v.findViewById(R.id.teacher_or_not);
         name=v.findViewById(R.id.registr_login);
+        name.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Регистрация");
         errorLayoutEmail=v.findViewById(R.id.error_layout_registr_email);
         errorLayoutName=v.findViewById(R.id.error_layout_registr_login);
         errorLayoutPassword=v.findViewById(R.id.registr_password2);
-
-
+        TextView back=v.findViewById(R.id.sign_in);
+back.setOnClickListener(click->{
+    LoginFragment loginFragment = new LoginFragment();
+    fragmentsActivities.switchingFragmets(loginFragment);
+});
         Button submit=v.findViewById(R.id.registr_btn);
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +102,7 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
                         errorLayoutEmail.setErrorEnabled(false);
                         if(password.getText().length()>=8&&password.getText().length()<=50){
                             errorLayoutPassword.setErrorEnabled(false);
-               isTeacherFlag=isTeacher.isChecked();
+               isTeacherFlag=false;
                 if(!fakesButton.getCheckButton()){
                 registrPresenter.RegistrationUser(name.getText().toString(),email.getText().toString(),password.getText().toString(),isTeacherFlag,getContext());}
                 else{

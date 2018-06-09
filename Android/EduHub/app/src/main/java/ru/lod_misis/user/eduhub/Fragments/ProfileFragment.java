@@ -289,7 +289,9 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
             birthYear.setVisibility(View.GONE);
 
         }else {
-
+            line4.setVisibility(View.VISIBLE);
+            headerBirthyear.setVisibility(View.VISIBLE);
+            birthYear.setVisibility(View.VISIBLE);
             birthYear.setText(converDate.convertDate(userProfile.getUserProfile().getBirthYear(),false));
         }
         if(userProfile.getUserProfile().getContacts().size()==0){
@@ -297,12 +299,15 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
             contacts.setVisibility(View.GONE);
 
         }else{
-            v.findViewById(R.id.links).setVisibility(View.VISIBLE);
+
+
             contacts.setHasFixedSize(true);
             Contacts_adapter_profile adapter1=new Contacts_adapter_profile((ArrayList<String>) userProfile.getUserProfile().getContacts(),getActivity(),getContext());
             StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);
             contacts.setLayoutManager(llm);
             contacts.setAdapter(adapter1);
+            headerContacts.setVisibility(View.VISIBLE);
+            contacts.setVisibility(View.VISIBLE);
         }
 
         if(userProfile.getUserProfile().getAboutUser()==null){
@@ -310,15 +315,22 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
             aboutMe.setVisibility(View.GONE);
             line5.setVisibility(View.GONE);
         }else{
-
+            headerAboutMe.setVisibility(View.VISIBLE);
+            aboutMe.setVisibility(View.VISIBLE);
+            line5.setVisibility(View.VISIBLE);
             aboutMe.setText(userProfile.getUserProfile().getAboutUser());}
             if(userProfile.getUserProfile().getIsTeacher()){
+                headerSkils.setVisibility(View.VISIBLE);
+                v.findViewById(R.id.skils).setVisibility(View.VISIBLE);
+                line6.setVisibility(View.VISIBLE);
         if(userProfile.getTeacherProfile().getSkills().size()==0){
             headerSkils.setVisibility(View.GONE);
             v.findViewById(R.id.skils).setVisibility(View.GONE);
             line6.setVisibility(View.GONE);
         }else{
-
+            headerSkils.setVisibility(View.VISIBLE);
+            v.findViewById(R.id.skils).setVisibility(View.VISIBLE);
+            line6.setVisibility(View.VISIBLE);
             RecyclerView recyclerView=v.findViewById(R.id.skils);
             recyclerView.setHasFixedSize(true);
             StaggeredGridLayoutManager staggeredGridLayoutManager=new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);
@@ -390,13 +402,15 @@ public class ProfileFragment extends Fragment implements IUserProfileView,IRefre
     }
 
     @Override
-    public void getThrowable() {
+    public void getThrowable(Throwable error) {
         Intent intent=new Intent(getActivity(), Main2Activity.class);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.clear();
         editor.commit();
         getActivity().startActivity(intent);
     }
+
+
 
     @Override
     public void getResponse(AddFileResponseModel addFileResponseModel) {

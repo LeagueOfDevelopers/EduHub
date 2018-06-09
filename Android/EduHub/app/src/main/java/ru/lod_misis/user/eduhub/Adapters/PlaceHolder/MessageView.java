@@ -52,6 +52,7 @@ public class MessageView {
     float dp;
     static int i=0;
     RelativeLayout.LayoutParams layoutParams;
+    RelativeLayout.LayoutParams layoutParams2;
     ConvertNotifications convertNotifications=new ConvertNotifications();
 
     public MessageView(Message message, User user, Context context) {
@@ -59,21 +60,29 @@ public class MessageView {
         this.message = message;
         this.context=context;
          dp =context.getResources().getDisplayMetrics().density;
-         layoutParams=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
+
 
 
     }
 
     @Resolve
     private void onResolved() {
-        if(message.getNotificationInfo()==null){
-        if(message.getSenderId().equals(user.getUserId())){
+        Log.d("Id",user.getUserId());
+        if(message.getMessageType()==0){
+            cardOfMessage.setBackgroundColor(Color.GRAY);
+
+            role.setVisibility(android.view.View.VISIBLE);
+            date.setVisibility(android.view.View.VISIBLE);
+            name.setVisibility(android.view.View.VISIBLE);
+        if(message.getSenderId().toString().equals(user.getUserId())){
+            layoutParams=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             layoutParams.setMargins(7*(int)dp,8*(int)dp,7*(int)dp,8*(int)dp);
             cardOfMessage.setLayoutParams(layoutParams);
 
             i++;
         }else{
+            layoutParams=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             layoutParams.setMargins(7*(int)dp,8*(int)dp,7*(int)dp,8*(int)dp);
             cardOfMessage.setLayoutParams(layoutParams);
@@ -81,8 +90,8 @@ public class MessageView {
         messageText.setText(message.getText());
 
         name.setText(message.getSenderName());
-       // role.setText(message.getSenderRole());
-            operationWithDate(message.getSentOn());
+        role.setText("");
+        operationWithDate(message.getSentOn());
 
         }else{
             Notifications notifications=new Notifications();
@@ -94,16 +103,14 @@ public class MessageView {
             messageText.setText(notification.getText());
             role.setVisibility(android.view.View.GONE);
             date.setVisibility(android.view.View.GONE);
-            RelativeLayout.LayoutParams layout= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layout.setMargins(2*(int)dp,7*(int)dp,2*(int)dp,7*(int)dp);
-            layout.addRule(RelativeLayout.CENTER_IN_PARENT);
-            messageText.setLayoutParams(layout);
+            name.setVisibility(android.view.View.GONE);
+
             messageText.setTextSize(5*dp);
-            layoutParams=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            layoutParams.setMargins(2*(int)dp,5*(int)dp,2*(int)dp,5*(int)dp);
+            layoutParams2=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            layoutParams2.setMargins(2*(int)dp,5*(int)dp,2*(int)dp,5*(int)dp);
             cardOfMessage.setBackgroundColor(Color.GRAY);
-            cardOfMessage.setLayoutParams(layoutParams);
+            cardOfMessage.setLayoutParams(layoutParams2);
 
 
 
@@ -112,7 +119,7 @@ public class MessageView {
     private void operationWithDate(String data){
         DateTime dt = new DateTime(data);
         Long dateInt = dt.toDate().getTime() / 1000 / 60 / 60;
-        Log.d("messageTime",dateInt.toString()+"||"+new Date().getTime()/1000/60/60);
+
 
         Long days;
         Long mes;

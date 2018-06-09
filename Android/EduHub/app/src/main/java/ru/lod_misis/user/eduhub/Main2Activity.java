@@ -2,6 +2,7 @@ package ru.lod_misis.user.eduhub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -76,6 +77,7 @@ SavedDataRepository savedDataRepository=new SavedDataRepository();
         pager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setTabTextColors(Color.WHITE,Color.WHITE);
         tabLayout.setupWithViewPager(pager);
         ViewTreeObserver vto = navigationView.getViewTreeObserver();
         vto.addOnGlobalLayoutListener

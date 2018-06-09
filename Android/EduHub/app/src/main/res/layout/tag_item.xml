@@ -9,10 +9,8 @@
         <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/grey"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp">
+            app:cardBackgroundColor="@color/lightGrey"
+            android:layout_margin="5dp">
 
             <TextView
                 android:id="@+id/tag"
@@ -22,7 +20,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="1dp"
-                android:background="@color/grey"
+                android:background="@color/lightGrey"
                 android:gravity="center"
                 android:text=" c# "
                 android:textColor="@color/black" />

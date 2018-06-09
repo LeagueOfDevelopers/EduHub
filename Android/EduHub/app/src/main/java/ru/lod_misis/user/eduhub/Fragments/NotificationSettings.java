@@ -91,7 +91,7 @@ public class NotificationSettings extends Fragment implements INotificationsSett
         sanctionsToUser = v.findViewById(R.id.sanctions_to_user);
         notSanctions = v.findViewById(R.id.not_sunctions);
 
-        String[] roles = {"", "Никуда", "На почту", "На сайт", "Везде",};
+        String[] roles = {"Никуда", "На почту", "На сайт", "Везде",};
         SpinnerAdapter adapter = new SpinnerAdapter(getContext(), R.layout.spinner_item2, roles);
 
         courseFinished.setAdapter(adapter);
@@ -140,32 +140,32 @@ public class NotificationSettings extends Fragment implements INotificationsSett
 
     @Override
     public void getSettings(NotificationsSettings settings) {
-        courseFinished.setSelection(Integer.valueOf(settings.getCourseFinished()),false);
-        courseAccepted.setSelection(Integer.valueOf(settings.getCurriculumAccepted()),false);
-        courseRejected.setSelection(Integer.valueOf(settings.getCurriculumDeclined()),false);
-        courseOffered.setSelection(Integer.valueOf(settings.getCurriculumSuggested()),false);
-        fullGroupSpinner.setSelection(Integer.valueOf(settings.getGroupIsFormed()),false);
-        participantLeft.setSelection(Integer.valueOf(settings.getMemberLeft()),false);
-        changeCreator.setSelection(Integer.valueOf(settings.getNewCreator()),false);
-        newParticipant.setSelection(Integer.valueOf(settings.getNewMember()),false);
-        teacherFind.setSelection(Integer.valueOf(settings.getTeacherFound()),false);
+        courseFinished.setSelection(Integer.valueOf(settings.getCourseFinished())-1,false);
+        courseAccepted.setSelection(Integer.valueOf(settings.getCurriculumAccepted())-1,false);
+        courseRejected.setSelection(Integer.valueOf(settings.getCurriculumDeclined())-1,false);
+        courseOffered.setSelection(Integer.valueOf(settings.getCurriculumSuggested())-1,false);
+        fullGroupSpinner.setSelection(Integer.valueOf(settings.getGroupIsFormed())-1,false);
+        participantLeft.setSelection(Integer.valueOf(settings.getMemberLeft())-1,false);
+        changeCreator.setSelection(Integer.valueOf(settings.getNewCreator())-1,false);
+        newParticipant.setSelection(Integer.valueOf(settings.getNewMember())-1,false);
+        teacherFind.setSelection(Integer.valueOf(settings.getTeacherFound())-1,false);
 
-        getReview.setSelection(Integer.valueOf(settings.getReviewReceived()),false);
-        yourInviteAccepted.setSelection(Integer.valueOf(settings.getInvitationAccepted()),false);
-        yourInviteRejected.setSelection(Integer.valueOf(settings.getInvitationDeclined()),false);
-        getNewInvite.setSelection(Integer.valueOf(settings.getInvitationReceived()),false);
+        getReview.setSelection(Integer.valueOf(settings.getReviewReceived())-1,false);
+        yourInviteAccepted.setSelection(Integer.valueOf(settings.getInvitationAccepted())-1,false);
+        yourInviteRejected.setSelection(Integer.valueOf(settings.getInvitationDeclined())-1,false);
+        getNewInvite.setSelection(Integer.valueOf(settings.getInvitationReceived())-1,false);
 
 
         if (user.getRole().equals("Admin")) {
-            sanctionsToAdmin.setSelection(Integer.valueOf(settings.getSanctionsAppliedToAdmin()),false);
+            sanctionsToAdmin.setSelection(Integer.valueOf(settings.getSanctionsAppliedToAdmin())-1,false);
             sanctionsToUser.setSelection(0);
-            notSanctions.setSelection(Integer.valueOf(settings.getSanctionsCancelledToAdmin()),false);
-            reportMessageSpinner.setSelection(Integer.valueOf(settings.getReportMessage()),false);
+            notSanctions.setSelection(Integer.valueOf(settings.getSanctionsCancelledToAdmin())-1,false);
+            reportMessageSpinner.setSelection(Integer.valueOf(settings.getReportMessage())-1,false);
             sanctionsToUserCard.setVisibility(View.GONE);
         } else {
             sanctionsToAdmin.setSelection(0);
-            sanctionsToUser.setSelection(Integer.valueOf(settings.getSanctionsAppliedToUser()),false);
-            notSanctions.setSelection(Integer.valueOf(settings.getSanctionsCancelledToUser()),false);
+            sanctionsToUser.setSelection(Integer.valueOf(settings.getSanctionsAppliedToUser())-1,false);
+            notSanctions.setSelection(Integer.valueOf(settings.getSanctionsCancelledToUser())-1,false);
 
             sanctionsToAdminCard.setVisibility(View.GONE);
             reportMessage.setVisibility(View.GONE);
@@ -273,7 +273,7 @@ public class NotificationSettings extends Fragment implements INotificationsSett
                     }
 
                 }
-                switch (position){
+                switch (position+1){
                     case 0:{model.setNewValue("Default");
                         break;}
                     case 1:{model.setNewValue("DontSend");

@@ -1,15 +1,19 @@
 package ru.lod_misis.user.eduhub.Fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 import ru.lod_misis.user.eduhub.Adapters.ViewPagerAdapter;
@@ -32,7 +36,9 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.main_fragment, null);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Главная");
+
+        toolbar.setTitle("Полный курс");
+
         authorized_fragment=new Authorized_fragment();
 
         authorized_fragment2=new AuthorizedFragmentForTeacher();
@@ -47,6 +53,7 @@ public class MainFragment extends Fragment {
         pager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tabs);
+        tabLayout.setTabTextColors(Color.WHITE,Color.WHITE);
         tabLayout.setupWithViewPager(pager);
         button.setOnClickListener(click->{
             Intent intent=new Intent(getActivity(), CreateGroupActivity.class);

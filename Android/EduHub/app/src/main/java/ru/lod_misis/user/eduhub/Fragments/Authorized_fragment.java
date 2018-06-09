@@ -42,6 +42,8 @@ SwipeRefreshLayout swipeContainer;
     FakesButton fakesButton=new FakesButton();
     EduHubApi eduHubApi;
     TextView textView;
+    GroupAdapter adapter;
+    StaggeredGridLayoutManager llm;
     EmptyGroupAdapter emptyGroupAdapter=new EmptyGroupAdapter();
 
     @Nullable
@@ -51,9 +53,11 @@ SwipeRefreshLayout swipeContainer;
         v.findViewById(R.id.btn).setVisibility(View.GONE);
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2,1);
+
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        llm = new StaggeredGridLayoutManager(2,1);
         recyclerView.setLayoutManager(llm);
+
         if(!fakesButton.getCheckButton()){
 
             groupsPresenter.loadAllGroupsForUsers(getContext());}else{
@@ -63,9 +67,11 @@ SwipeRefreshLayout swipeContainer;
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 if(!fakesButton.getCheckButton()){
                     groupsPresenter.loadAllGroupsForUsers(getContext());}else{
                     fakeGroupRepository.loadAllGroupsForUsers(getContext());
+
                 }
             }
         });
@@ -106,9 +112,12 @@ SwipeRefreshLayout swipeContainer;
         if(groups.size()==0){
             recyclerView.setAdapter(emptyGroupAdapter);
         }else{
-            GroupAdapter adapter=new GroupAdapter(groups,getActivity(),getContext());
 
+            adapter=new GroupAdapter(groups,getActivity(),getContext());
+            llm = new StaggeredGridLayoutManager(2,1);
+            recyclerView.setLayoutManager(llm);
             recyclerView.setAdapter(adapter);
+
         }
         swipeContainer.setRefreshing(false);
     }

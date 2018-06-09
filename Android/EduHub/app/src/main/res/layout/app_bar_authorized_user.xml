@@ -22,7 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/darkBlue"
+
             app:titleTextColor="#FFFFFF"
+            app:titleTextAppearance="@style/ToolbarTitle"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             />
 

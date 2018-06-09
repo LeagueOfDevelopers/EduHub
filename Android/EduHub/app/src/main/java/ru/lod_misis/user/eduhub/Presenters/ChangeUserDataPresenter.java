@@ -40,7 +40,10 @@ public class ChangeUserDataPresenter implements IChangeUsersDataPresenter {
         refactorUserRequestModel.setUserName(name);
         refactorUserRequestModel.setAboutUser(aboutUser);
         refactorUserRequestModel.setAvatarLink(avatarLink);
-        refactorUserRequestModel.setBirthYear(birthYear);
+        if(birthYear.equals("")){
+        refactorUserRequestModel.setBirthYear("0");}else {
+            refactorUserRequestModel.setBirthYear(birthYear);
+        }
         refactorUserRequestModel.setContacts(contacts);
 
         if(sex.equals("Мужской")){

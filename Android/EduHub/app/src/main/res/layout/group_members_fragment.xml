@@ -1,15 +1,395 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout">
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/refactor_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="39dp"
+        android:layout_marginRight="27dp"
+        android:clickable="true"
+        app:backgroundTint="@color/orange"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeConteinerForMembers"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+            <android.support.v7.widget.CardView
+                android:id="@+id/vote_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+
+                >
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="20dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/darkBlue"
+                        android:textColor="#FFFFFF"
+                        android:textAlignment="center"
+                        android:text="Идет голосование"
+                        android:padding="5dp"/>
+                    <TextView
+                        android:id="@+id/download_course"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Скачать учебный файл"
+                        android:textColor="@color/orange"
+                        android:layout_marginTop="20dp"/>
+                    <LinearLayout
+                        android:id="@+id/buttons_for_vote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <Button
+                            android:id="@+id/possitive_button_about_course"
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_marginRight="7.5dp"
+                            android:text="Принять"
+                            android:textSize="12dp"
+                            android:background="@color/darkBlue"
+                            android:textColor="#FFFFFF"
+                            />
+                        <Button
+                            android:id="@+id/negative_button_about_course"
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="7.5dp"
+                            android:text="Отклонить"
+                            android:textSize="12dp"
+                            android:background="@color/darkBlue"
+                            android:textColor="#FFFFFF"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/upload_course_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
+                <ProgressBar
+                    android:id="@+id/progressBar2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/darkBlue"
+                        android:textColor="#FFFFFF"
+                        android:textAlignment="center"
+                        android:text="Предложение учебного плана"
+                        android:padding="5dp"/>
+                    <TextView
+                        android:id="@+id/upload_course"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Выбрать файл"
+                        android:textColor="@color/orange"
+                        android:layout_marginTop="20dp"/>
+                    <Button
+                        android:id="@+id/upload_course_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="13dp"
+                        android:paddingLeft="40dp"
+                        android:paddingRight="40dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/darkBlue"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="#ffffff"
+                        android:text="Предложить"
+                        android:textSize="12dp"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:id="@+id/invite_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/darkBlue"
+                        android:textColor="#FFFFFF"
+                        android:textAlignment="center"
+                        android:text="Идет набор участников"
+                        android:padding="5dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Надоело ждать?"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="20dp"/>
+                    <Button
+                        android:id="@+id/invite_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="13dp"
+                        android:paddingLeft="40dp"
+                        android:paddingRight="40dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/darkBlue"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="#ffffff"
+                        android:text="Пригласить"
+                        android:textSize="12dp"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Информация о группе"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/name_of_group_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="18dp"
+                        android:text="Название"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/name_of_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Название группы"
+                        android:textColor="@color/black" />
+
+                    <View
+                        android:id="@+id/line1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/dark_grey" />
+
+                    <TextView
+                        android:id="@+id/type_of_education_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Формат"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/type_of_education"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Лекция"
+                        android:textColor="@color/black" />
+
+                    <View
+                        android:id="@+id/line2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/dark_grey" />
+
+                    <TextView
+                        android:id="@+id/cost_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Стоимость"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="4dp"
+                        android:text="123Р"
+                        android:textColor="@color/black" />
+
+                    <View
+                        android:id="@+id/line3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/dark_grey" />
+
+                    <TextView
+                        android:id="@+id/about_group_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Описание"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/about_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Тут должно быть очень большое описание.Ярослав очень хороший дизайнер."
+                        android:textColor="@color/black" />
+
+                    <View
+                        android:id="@+id/line4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/dark_grey" />
+
+                    <TextView
+                        android:id="@+id/tags_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Тэги"
+                        android:textColor="@color/dark_grey" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/tagsRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="30dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="8dp">
+
+
+                    </android.support.v7.widget.RecyclerView>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"
+                        android:weightSum="2">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+
+                            android:text="Участники группы"
+                            android:textColor="@color/black"/>
+
+                        <TextView
+                            android:id="@+id/participants"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_weight="1"
+                            android:text="1/15"
+                            android:textAlignment="textEnd" />
+
+                    </LinearLayout>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp">
+        </android.support.v7.widget.RecyclerView>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+        </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

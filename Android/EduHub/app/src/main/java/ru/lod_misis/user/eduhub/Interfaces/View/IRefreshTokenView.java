@@ -8,5 +8,5 @@ import ru.lod_misis.user.eduhub.Models.User;
 
 public interface IRefreshTokenView extends IBaseView {
     void getResponse(User user);
-    void getThrowable();
+    void getThrowable(Throwable error);
 }

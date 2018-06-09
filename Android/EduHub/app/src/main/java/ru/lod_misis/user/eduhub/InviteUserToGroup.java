@@ -177,7 +177,8 @@ public class InviteUserToGroup extends AppCompatActivity implements ISearchRespo
 
     @Override
     public void getResponse() {
-        Intent intent2=new Intent(this,AuthorizedUserActivity.class);
+        Intent intent2=new Intent(this,GroupActivity.class);
+        intent2.putExtra("group",group);
         startActivity(intent2);
     }
 }

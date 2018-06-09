@@ -69,6 +69,7 @@ public class UserProfileFragment extends Fragment {
             }else{
                 sex.setText("Женский");
             }
+            v.findViewById(R.id.card_of_sex).setVisibility(View.VISIBLE);
         }else {
             v.findViewById(R.id.card_of_sex).setVisibility(View.GONE);
         }
@@ -76,6 +77,7 @@ public class UserProfileFragment extends Fragment {
             v.findViewById(R.id.card_of_birth).setVisibility(View.GONE);
         }else {
             birthYear.setText(userProfile.getUserProfile().getBirthYear().toString());
+            v.findViewById(R.id.card_of_birth).setVisibility(View.VISIBLE);
         }
         if(userProfile.getUserProfile().getContacts()==null){
             v.findViewById(R.id.links).setVisibility(View.GONE);
@@ -85,6 +87,7 @@ public class UserProfileFragment extends Fragment {
             StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);
             contacts.setLayoutManager(llm);
             contacts.setAdapter(adapter1);
+            v.findViewById(R.id.links).setVisibility(View.VISIBLE);
         }
 
 

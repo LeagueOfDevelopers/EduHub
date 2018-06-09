@@ -54,8 +54,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     public void onBindViewHolder(GroupViewHolder holder, final int position) {
 
         holder.name.setText(groups.get(position).getGroupInfo().getTitle());
-        holder.users.setText(groups.get(position).getGroupInfo().getMemberAmount()+"/"+groups.get(position).getGroupInfo().getSize());
-        holder.cost.setText(""+groups.get(position).getGroupInfo().getCost());
+       holder.users.setText(groups.get(position).getGroupInfo().getMemberAmount()+"/"+groups.get(position).getGroupInfo().getSize());
+       holder.cost.setText(groups.get(position).getGroupInfo().getCost().intValue()+"");
         FlowLayoutManager flowLayoutManager=new FlowLayoutManager();
         holder.tags.setLayoutManager(flowLayoutManager);
         TagsAdapter adapter=new TagsAdapter((ArrayList<String>) groups.get(position).getGroupInfo().getTags());
@@ -106,7 +106,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
             name=itemView.findViewById(R.id.name_of_group);
             users=itemView.findViewById(R.id.participants);
             tags=itemView.findViewById(R.id.recycler_tags);
-            cost=itemView.findViewById(R.id.cost);
+           cost=itemView.findViewById(R.id.cost);
            // typeOfEducation=itemView.findViewById(R.id.type_of_education);
             cv=itemView.findViewById(R.id.group_card);
 

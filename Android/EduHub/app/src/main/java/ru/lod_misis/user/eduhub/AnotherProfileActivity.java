@@ -181,9 +181,10 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
     }
 
     @Override
-    public void getThrowable() {
+    public void getThrowable(Throwable error) {
 
     }
+
 
     @Override
     public void getResponse(AddFileResponseModel addFileResponseModel) {
@@ -257,7 +258,7 @@ public class AnotherProfileActivity extends AppCompatActivity implements IUserPr
                 contacts.setVisibility(View.GONE);
 
             }else{
-                v.findViewById(R.id.links).setVisibility(View.VISIBLE);
+
                 contacts.setHasFixedSize(true);
                 Contacts_adapter_profile adapter1=new Contacts_adapter_profile((ArrayList<String>) userProfile.getUserProfile().getContacts(),this,this);
                 StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL);

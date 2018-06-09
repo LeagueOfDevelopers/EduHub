@@ -9,6 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/darkBlue"
         android:theme="@style/AppTheme.PopupOverlay">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,14 +21,14 @@
                 android:layout_height="24dp"
                 android:layout_marginLeft="7dp"
                 android:layout_centerVertical="true"
-                android:background="@color/grey"
+                android:background="@color/darkBlue"
                 android:src="@drawable/ic_arrow_back_black_24dp" />
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/back"
-            android:background="?attr/colorPrimary"
+            android:background="@color/darkBlue"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
         </RelativeLayout>
 

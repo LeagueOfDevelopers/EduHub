@@ -120,7 +120,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         }
         holder.userName.setText(members.get(i).getName());
         if(members.get(i).getPaid()){
-            holder.paid.setImageResource(R.drawable.ic_wallet_24dp);
+
         }
         holder.cv.setOnTouchListener(new View.OnTouchListener(){
 
@@ -246,7 +246,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<GroupMembersAdapte
         CardView cv;
         public GroupMembersViewHolder(View itemView) {
             super(itemView);
-            paid=itemView.findViewById(R.id.paid);
+
             userImage=itemView.findViewById(R.id.UserImage);
             userName=itemView.findViewById(R.id.UserName);
             userRole=itemView.findViewById(R.id.UserRole);

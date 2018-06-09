@@ -1,68 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_profile_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/main_profile_layout"
-    android:visibility="gone"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:visibility="visible">
 
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/refactor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="39dp"
+        android:layout_marginRight="27dp"
         android:clickable="true"
         app:backgroundTint="@color/orange"
-        app:srcCompat="@android:drawable/ic_menu_edit"
-        android:layout_gravity="end|bottom"
-        android:layout_marginRight="27dp"
-        android:layout_marginBottom="39dp"/>
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/darkBlue"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/avatar"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                app:srcCompat="@drawable/ic_person_48px" />
+                android:background="@color/darkBlue"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/name_user_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:text="Дмитрий Борисович"
-                android:textColor="#FFFFFF"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    app:srcCompat="@drawable/ic_person_48px" />
 
-            <Switch
-                android:id="@+id/teacher_or_not"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="19dp"
-                android:layout_marginTop="11.5dp"
-                android:text="Преподаю"
-                android:textColor="#FFFFFF" />
+                <TextView
+                    android:id="@+id/name_user_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:text="Дмитрий Борисович"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
-        </LinearLayout>
+                <Switch
+                    android:id="@+id/teacher_or_not"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="19dp"
+                    android:layout_marginTop="11.5dp"
+                    android:text="Преподаю"
+                    android:textColor="#FFFFFF" />
+
+            </LinearLayout>
 
 
             <LinearLayout
@@ -85,9 +86,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="15dp"
                             android:text="Личные данные"
                             android:textColor="@color/black" />
 
@@ -95,9 +96,9 @@
                             android:id="@+id/name_user_profile_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="18dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="18dp"
                             android:text="Имя"
                             android:textColor="@color/dark_grey"
                             android:textSize="12dp" />
@@ -106,25 +107,26 @@
                             android:id="@+id/name_user_profile2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="4dp"
                             android:text="Дмитрий Борисович"
                             android:textColor="@color/black" />
+
                         <View
                             android:id="@+id/line1"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@color/dark_grey"
-                            android:layout_marginTop="8dp"/>
+                            android:layout_marginTop="8dp"
+                            android:background="@color/dark_grey" />
 
                         <TextView
                             android:id="@+id/email_user_profile2_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="8dp"
                             android:text="Email"
                             android:textColor="@color/dark_grey"
                             android:textSize="12dp" />
@@ -133,25 +135,26 @@
                             android:id="@+id/email_user_profile2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="4dp"
                             android:text="LolKek@gmail.com"
                             android:textColor="@color/black" />
+
                         <View
                             android:id="@+id/line2"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@color/dark_grey"
-                            android:layout_marginTop="8dp"/>
+                            android:layout_marginTop="8dp"
+                            android:background="@color/dark_grey" />
 
                         <TextView
                             android:id="@+id/sex_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="8dp"
                             android:text="Пол"
                             android:textColor="@color/dark_grey"
                             android:textSize="12dp" />
@@ -160,25 +163,26 @@
                             android:id="@+id/sex"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="4dp"
                             android:text="Мужской"
                             android:textColor="@color/black" />
+
                         <View
                             android:id="@+id/line3"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@color/dark_grey"
-                            android:layout_marginTop="8dp"/>
+                            android:layout_marginTop="8dp"
+                            android:background="@color/dark_grey" />
 
                         <TextView
                             android:id="@+id/birth_year_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="8dp"
                             android:text="Дата рождения"
                             android:textColor="@color/dark_grey"
                             android:textSize="12dp" />
@@ -187,25 +191,26 @@
                             android:id="@+id/birth_year"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="4dp"
                             android:text="04.03.1999"
                             android:textColor="@color/black" />
+
                         <View
                             android:id="@+id/line4"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@color/dark_grey"
-                            android:layout_marginTop="8dp"/>
+                            android:layout_marginTop="8dp"
+                            android:background="@color/dark_grey" />
 
                         <TextView
                             android:id="@+id/aboutMe_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="8dp"
                             android:text="Обо мне"
                             android:textColor="@color/dark_grey"
                             android:textSize="12dp" />
@@ -214,49 +219,52 @@
                             android:id="@+id/aboutMe"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="4dp"
                             android:text="Дизайн супер.Приступил к верстке.Тут может быть еще много текста,надеюсь верстка не поедет."
                             android:textColor="@color/black" />
+
                         <View
                             android:id="@+id/line5"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@color/dark_grey"
-                            android:layout_marginTop="8dp"/>
+                            android:layout_marginTop="8dp"
+                            android:background="@color/dark_grey" />
 
                         <TextView
                             android:id="@+id/skils_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
+                            android:layout_marginTop="4dp"
                             android:text="Навыки"
                             android:textColor="@color/dark_grey" />
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/skils"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginRight="15dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp">
 
 
                         </android.support.v7.widget.RecyclerView>
+
                         <View
                             android:id="@+id/line6"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
-                            android:background="@color/dark_grey"
-                            android:layout_marginTop="8dp"/>
+                            android:layout_marginTop="8dp"
+                            android:background="@color/dark_grey" />
+
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/contacts"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginRight="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
                             android:layout_marginTop="8dp">
 
                         </android.support.v7.widget.RecyclerView>
@@ -309,6 +317,6 @@
                 </android.support.v7.widget.CardView>
             </LinearLayout>
 
-    </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 </FrameLayout>

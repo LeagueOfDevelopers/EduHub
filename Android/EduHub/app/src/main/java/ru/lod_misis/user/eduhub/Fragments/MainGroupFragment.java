@@ -37,7 +37,7 @@ public class MainGroupFragment extends Fragment {
     TabLayout tabLayout;
     ChatFragment chat;
     IFragmentsActivities fragmentsActivities;
-    GroupMembersFragment groupMembersFragment;
+    GroupMembersFragment aboutGroupFragment;
     GroupInformationFragment groupInformationFragment;
     Group group;
     User user;
@@ -53,8 +53,8 @@ public class MainGroupFragment extends Fragment {
         }
     }
 
-    public void setGroupInformationFragment(GroupInformationFragment groupInformationFragment) {
-        this.groupInformationFragment = groupInformationFragment;
+    public void setAboutGroupFragment(GroupMembersFragment aboutGroupFragment) {
+        this.aboutGroupFragment = aboutGroupFragment;
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -62,41 +62,34 @@ public class MainGroupFragment extends Fragment {
         Log.d("Group",group.toString());
          toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle(group.getGroupInfo().getTitle());
-        TextView groupTitle=v.findViewById(R.id.GroupTitle);
-        groupTitle.setText(group.getGroupInfo().getTitle());
-        ImageButton inviteButton=v.findViewById(R.id.invite_button);
+
+
         SharedPreferences sPref=getActivity().getSharedPreferences("User",MODE_PRIVATE);
         user= savedDataRepository.loadSavedData(sPref);
         pager=v.findViewById(R.id.pager);
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
-        ImageView imageView=v.findViewById(R.id.icon_group);
-        imageView.setImageResource(R.mipmap.ic_launcher_round);
+
         if(adapter==null){
-        groupInformationFragment.setGroup(group);
+
         chat=new ChatFragment();
         chat.setGroup(group);
         chat.setUser(user);
 
-        groupMembersFragment=new GroupMembersFragment();
-        groupMembersFragment.setGroup(group);
-        groupMembersFragment.setUser(user);
+
+        aboutGroupFragment.setGroup(group);
+        aboutGroupFragment.setUser(user);
 
         adapter=new ViewPagerAdapter(getFragmentManager());
-        adapter.addFragment(groupMembersFragment,"Участники");
+        adapter.addFragment(aboutGroupFragment,"Информация");
         adapter.addFragment(chat,"Чат");
-        adapter.addFragment(groupInformationFragment,"Информация");}
+        }
 
         pager.setAdapter(adapter);
 
 
 
 
-        inviteButton.setOnClickListener(click->{
-            Intent intent=new Intent(getActivity(),InviteUserToGroup.class);
-            intent.putExtra("group",group);
-            getActivity().startActivity(intent);
 
-        });
 
 
         return v;

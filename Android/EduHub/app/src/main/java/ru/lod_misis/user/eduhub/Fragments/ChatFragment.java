@@ -110,10 +110,16 @@ public class ChatFragment extends Fragment implements IChatView  {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if(!flag){
-        client=new OkHttpClient.Builder()
-                .build();
-        startListenerWebSocket();}
+            client=new OkHttpClient.Builder()
+                    .build();
+            startListenerWebSocket();}
     }
 
     public void setUser(User user) {
@@ -160,9 +166,15 @@ public class ChatFragment extends Fragment implements IChatView  {
     }
 
     @Override
-    public void newMessage(NewMessageResponse message) {
-        Log.d("123",123+"");
+    public void newMessage(NewMessage message) {
+
         Message message1=new Message();
+        message1.setId(message.getId());
+        message1.setText(message.getText());
+        message1.setSenderName(message.getSenderName());
+        message1.setSentOn(message.getSentOn());
+        message1.setSenderId(message.getSenderId());
+        message1.setMessageType(0);
         expandablePlaceHolderView.addView(new MessageView(message1,user,context));
     }
     private void startListenerWebSocket(){
@@ -187,7 +199,7 @@ public class ChatFragment extends Fragment implements IChatView  {
                     // Received a text message.
                     Log.d("message",message);
                     Gson gson=new Gson();
-                    NewMessageResponse message1=gson.fromJson(message,NewMessageResponse.class);
+                    NewMessage message1=gson.fromJson(message,NewMessage.class);
                     newMessage(message1);
                 }
 
@@ -200,7 +212,7 @@ public class ChatFragment extends Fragment implements IChatView  {
                 @Override
                 public void onDisconnected(WebSocket websocket, WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame, boolean closedByServer) throws Exception {
                     super.onDisconnected(websocket, serverCloseFrame, clientCloseFrame, closedByServer);
-                    Log.d("disconected","Disconected");
+                    Log.e("disconected","Disconected");
                 }
             });
             ws.connectAsynchronously();
@@ -212,12 +224,16 @@ public class ChatFragment extends Fragment implements IChatView  {
     }
 
 
-   
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(ws!=null){
+            ws.disconnect();}
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(ws!=null){
-        ws.disconnect();}
+
     }
 }

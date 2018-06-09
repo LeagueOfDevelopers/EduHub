@@ -14,6 +14,7 @@ import com.example.user.eduhub.R;
 import ru.lod_misis.user.eduhub.Fakes.FakeSignInUserToGroupPresenter;
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
 import ru.lod_misis.user.eduhub.Fragments.GroupInformationFragment;
+import ru.lod_misis.user.eduhub.Fragments.GroupMembersFragment;
 import ru.lod_misis.user.eduhub.Fragments.MainGroupFragment;
 import ru.lod_misis.user.eduhub.Interfaces.IFragmentsActivities;
 import ru.lod_misis.user.eduhub.Interfaces.Presenters.ISignInUserToGroupPresenter;
@@ -35,13 +36,13 @@ public class CustomDialog extends Dialog implements ISignInUserToGroupView {
     SignInUserToGroupPresenter signInUserToGroupPresenter=new SignInUserToGroupPresenter(this);
     FakeSignInUserToGroupPresenter fakeSignInUserToGroupPresenter=new FakeSignInUserToGroupPresenter(this);
     IFragmentsActivities fragmentsActivities;
-    GroupInformationFragment groupInformationFragment;
-    public CustomDialog(@NonNull Context context, Group group,String token,IFragmentsActivities fragmentsActivities,GroupInformationFragment groupInformationFragment) {
+    GroupMembersFragment aboutGroupFragment;
+    public CustomDialog(@NonNull Context context, Group group,String token,IFragmentsActivities fragmentsActivities,GroupMembersFragment groupInformationFragment) {
         super(context);
         this.context=context;
         this.group=group;
         this.token=token;
-        this.groupInformationFragment=groupInformationFragment;
+        this.aboutGroupFragment=groupInformationFragment;
         this.fragmentsActivities=fragmentsActivities;
     }
 
@@ -99,7 +100,7 @@ public class CustomDialog extends Dialog implements ISignInUserToGroupView {
     public void getResponse() {
         MainGroupFragment mainGroupFragment=new MainGroupFragment();
         mainGroupFragment.setGroup(group);
-        mainGroupFragment.setGroupInformationFragment(groupInformationFragment);
+        mainGroupFragment.setAboutGroupFragment(aboutGroupFragment);
         fragmentsActivities.switchingFragmets(mainGroupFragment);
         dismiss();
     }

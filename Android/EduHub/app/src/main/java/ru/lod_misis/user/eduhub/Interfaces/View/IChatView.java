@@ -3,6 +3,7 @@ package ru.lod_misis.user.eduhub.Interfaces.View;
 import java.util.ArrayList;
 
 import ru.lod_misis.user.eduhub.Models.Group.Message;
+import ru.lod_misis.user.eduhub.Models.Group.NewMessage;
 import ru.lod_misis.user.eduhub.Models.Group.NewMessageResponse;
 
 /**
@@ -12,6 +13,6 @@ import ru.lod_misis.user.eduhub.Models.Group.NewMessageResponse;
 public interface IChatView extends IBaseView {
     void getMessages(ArrayList<Message> messages);
     void getEmptyMessages();
-    void newMessage(NewMessageResponse newMessageResponse);
+    void newMessage(NewMessage newMessageResponse);
 
 }

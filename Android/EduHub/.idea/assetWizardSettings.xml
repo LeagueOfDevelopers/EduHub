@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_person_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_search_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -35,9 +35,11 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_male_cartoon_pointing_to_white_board" />
+                            <entry key="height" value="88" />
+                            <entry key="outputName" value="title" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\User\Desktop\material-design-icons-master\material-design-icons-master\iconfont\png\male-cartoon-pointing-to-white-board.psd" />
+                            <entry key="sourceFile" value="C:\Users\User\Desktop\material-design-icons-master\material-design-icons-master\iconfont\png\77f966bd9e10bc69909d7c776a8f4f89.svg" />
+                            <entry key="width" value="240" />
                           </map>
                         </option>
                       </PersistentState>

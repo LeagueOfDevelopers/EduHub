@@ -55,7 +55,7 @@ public class InvitationHeaderView implements IChangeStatusOfInvitationView {
 
     private Context context;
     private Invitation heading;
-    private Group group;
+    private String groupId;
     InvetationItemView invetationItemView;
     Activity activity;
     User user;
@@ -64,12 +64,12 @@ public class InvitationHeaderView implements IChangeStatusOfInvitationView {
     FakeChangeStatusOfInvitation fakeChangeStatusOfInvitation=new FakeChangeStatusOfInvitation(this);
     Dialog dialog;
 
-    public InvitationHeaderView(Context context, Invitation heading, Activity activity, User user, Group group) {
+    public InvitationHeaderView(Context context, Invitation heading, Activity activity, User user, String group) {
         this.context = context;
         this.heading=heading;
         this.user=user;
         this.activity=activity;
-        this.group=group;
+        this.groupId=group;
     }
 
     @Resolve
@@ -168,9 +168,9 @@ public class InvitationHeaderView implements IChangeStatusOfInvitationView {
 
     @Override
     public void Possitive() {
-        Log.d("groupId",group.getGroupInfo().getId());
+
         Intent intent = new Intent(activity, GroupActivity.class);
-        intent.putExtra("group",(Serializable)group);
+        intent.putExtra("groupId",(Serializable)groupId);
         activity.startActivity(intent);
     }
 

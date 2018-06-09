@@ -3,6 +3,7 @@ package ru.lod_misis.user.eduhub;
 import android.content.*;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -285,8 +286,16 @@ public class AuthorizedUserActivity extends AppCompatActivity
     }
 
     @Override
-    public void getThrowable() {
-
+    public void getThrowable(Throwable error) {
+        if(error instanceof HttpException){
+            switch (((HttpException) error).code()){
+                case 401:{Intent intent=new Intent(this, Main2Activity.class);
+                    SharedPreferences.Editor editor=sPref.edit();
+                    editor.clear();
+                    editor.commit();
+                    startActivity(intent);}
+            }
+        }
     }
 
     private void drawer(){
@@ -294,11 +303,11 @@ public class AuthorizedUserActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
+
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         Log.d("User name",user.getName());
-
         navigationView.setNavigationItemSelectedListener(this);
         MainFragment mainFragment=new MainFragment();
         fragmentTransaction=getSupportFragmentManager().beginTransaction();

@@ -18,6 +18,7 @@ import com.example.user.eduhub.R;
 import ru.lod_misis.user.eduhub.Fakes.FakeGroupInformationPresenter;
 import ru.lod_misis.user.eduhub.Fakes.FakesButton;
 import ru.lod_misis.user.eduhub.Fragments.GroupInformationFragment;
+import ru.lod_misis.user.eduhub.Fragments.GroupMembersFragment;
 import ru.lod_misis.user.eduhub.Fragments.MainGroupFragment;
 import ru.lod_misis.user.eduhub.Fragments.UnsignedMainGroupFragment;
 import ru.lod_misis.user.eduhub.Interfaces.IFragmentsActivities;
@@ -36,7 +37,7 @@ import ru.lod_misis.user.eduhub.Presenters.GroupInformationPresenter;
 import okhttp3.ResponseBody;
 
 public class GroupActivity extends AppCompatActivity
-        implements  IFragmentsActivities,IGroupView,IFileRepositoryView,ICourseMethodsView {
+        implements  IFragmentsActivities,IGroupView {
     Group group;
     String groupId;
     FragmentTransaction transaction;
@@ -48,19 +49,19 @@ public class GroupActivity extends AppCompatActivity
     FakeGroupInformationPresenter fakeGroupInformationPresenter=new FakeGroupInformationPresenter(this);
     final  String TOKEN="TOKEN",NAME="NAME",AVATARLINK="AVATARLINK",EMAIL="EMAIL",ID="ID",ROLE="ROLE";
     SharedPreferences sPref;
-    CourseMethodsPresenter addCourseMethodsPresenter=new CourseMethodsPresenter(this);
-    FileRepository fileRepository;
+
+
     ImageButton back;
     ProgressBar progressBar;
-    GroupInformationFragment groupInformationFragment;
+    GroupMembersFragment groupInformationFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         Intent intent=getIntent();
-        fileRepository=new FileRepository(this,this);
-        group=(Group) intent.getSerializableExtra("group") ;
 
+        group=(Group) intent.getSerializableExtra("group") ;
+        groupId= intent.getStringExtra("groupId") ;
          back=findViewById(R.id.back);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -69,13 +70,21 @@ public class GroupActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         sPref=getSharedPreferences("User",MODE_PRIVATE);
         user= savedDataRepository.loadSavedData(sPref);
-
-            if(!fakesButton.getCheckButton()){
-                Log.d("GroupId",group.getGroupInfo().getId());
-                groupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),this);
-            }else{
-                fakeGroupInformationPresenter.loadGroupInformation(user.getToken(),group.getGroupInfo().getId(),this);}
-
+        if(groupId==null||groupId.equals("")) {
+            if (!fakesButton.getCheckButton()) {
+                Log.d("GroupId", group.getGroupInfo().getId());
+                groupInformationPresenter.loadGroupInformation(user.getToken(), group.getGroupInfo().getId(), this);
+            } else {
+                fakeGroupInformationPresenter.loadGroupInformation(user.getToken(), group.getGroupInfo().getId(), this);
+            }
+        }else{
+            if (!fakesButton.getCheckButton()) {
+                Log.d("GroupId", group.getGroupInfo().getId());
+                groupInformationPresenter.loadGroupInformation(user.getToken(), groupId, this);
+            } else {
+                fakeGroupInformationPresenter.loadGroupInformation(user.getToken(), groupId, this);
+            }
+        }
 
 
 
@@ -128,7 +137,7 @@ public class GroupActivity extends AppCompatActivity
 
     @Override
     public void getInformationAboutGroup(Group group) {
-        groupInformationFragment=new GroupInformationFragment();
+        groupInformationFragment=new GroupMembersFragment();
         group.getGroupInfo().setId(this.group.getGroupInfo().getId());
         if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
         Log.d("MyId",user.getUserId());
@@ -145,7 +154,7 @@ public class GroupActivity extends AppCompatActivity
         if(flag){
         mainGroupFragment=new MainGroupFragment();
 
-        mainGroupFragment.setGroupInformationFragment(groupInformationFragment);
+        mainGroupFragment.setAboutGroupFragment(groupInformationFragment);
         mainGroupFragment.setGroup(group);
         transaction=getSupportFragmentManager().beginTransaction();
         Log.d("TRANSACTION",transaction.isEmpty()+"");
@@ -157,7 +166,7 @@ public class GroupActivity extends AppCompatActivity
         transaction.commit();}else{
             UnsignedMainGroupFragment unsignedMainGroupFragment=new UnsignedMainGroupFragment();
             unsignedMainGroupFragment.setGroup(group);
-            unsignedMainGroupFragment.setGroupInformationFragment(groupInformationFragment);
+            unsignedMainGroupFragment.setAboutGroupFragment(groupInformationFragment);
 
             transaction=getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.group_fragments_conteiner,unsignedMainGroupFragment);
@@ -166,7 +175,7 @@ public class GroupActivity extends AppCompatActivity
         }else{
             UnsignedMainGroupFragment unsignedMainGroupFragment=new UnsignedMainGroupFragment();
             unsignedMainGroupFragment.setGroup(group);
-            unsignedMainGroupFragment.setGroupInformationFragment(groupInformationFragment);
+            unsignedMainGroupFragment.setAboutGroupFragment(groupInformationFragment);
             Log.d("GROUP",group.getGroupInfo().getId());
             transaction=getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.group_fragments_conteiner,unsignedMainGroupFragment);
@@ -193,38 +202,12 @@ public class GroupActivity extends AppCompatActivity
 
                Uri uri=data.getData();
                Log.d("URI",uri.toString());
+               groupInformationFragment.refreshDataAboutCourse(uri);
 
-                fileRepository.loadFiletoServer(user.getToken(),uri);
-                groupInformationFragment.getView().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
-                groupInformationFragment.getView().findViewById(R.id.course).setVisibility(View.GONE);
+
 
             }
     }
 
-    @Override
-    public void getResponse(AddFileResponseModel addFileResponseModel) {
-        Log.d("Test",addFileResponseModel.getFileName());
-        addCourseMethodsPresenter.addPlan(user.getToken(),group.getGroupInfo().getId(),addFileResponseModel.getFileName(),this);
-
-    }
-
-    @Override
-    public void getFile(ResponseBody file) {
-
-    }
-
-    @Override
-    public void getResponseAfterAddCourse() {
-        groupInformationFragment.getView().findViewById(R.id.progressBar).setVisibility(View.GONE);
-        groupInformationFragment.getView().findViewById(R.id.course).setVisibility(View.VISIBLE);
-        groupInformationFragment.finishProgressBar();
-        Log.d("ResponseAfterAddCourse","2");
-    }
-
-
-    @Override
-    public void getResponseAfterYourResponse() {
-
-    }
     
 }

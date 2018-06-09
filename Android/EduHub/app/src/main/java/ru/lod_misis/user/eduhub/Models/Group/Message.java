@@ -10,21 +10,6 @@ import java.util.Date;
  */
 
 public class Message {
-    @SerializedName("notificationInfo")
-    @Expose
-    private String notificationInfo;
-    @SerializedName("notificationType")
-    @Expose
-    private Integer notificationType;
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("sentOn")
-    @Expose
-    private String sentOn;
-    @SerializedName("messageType")
-    @Expose
-    private Integer messageType;
     @SerializedName("senderId")
     @Expose
     private Integer senderId;
@@ -34,21 +19,44 @@ public class Message {
     @SerializedName("text")
     @Expose
     private String text;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("sentOn")
+    @Expose
+    private String sentOn;
+    @SerializedName("messageType")
+    @Expose
+    private Integer messageType;
+    @SerializedName("notificationInfo")
+    @Expose
+    private String notificationInfo;
+    @SerializedName("notificationType")
+    @Expose
+    private Integer notificationType;
 
-    public String getNotificationInfo() {
-        return notificationInfo;
+    public Integer getSenderId() {
+        return senderId;
     }
 
-    public void setNotificationInfo(String notificationInfo) {
-        this.notificationInfo = notificationInfo;
+    public void setSenderId(Integer senderId) {
+        this.senderId = senderId;
     }
 
-    public Integer getNotificationType() {
-        return notificationType;
+    public String getSenderName() {
+        return senderName;
     }
 
-    public void setNotificationType(Integer notificationType) {
-        this.notificationType = notificationType;
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Integer getId() {
@@ -75,28 +83,21 @@ public class Message {
         this.messageType = messageType;
     }
 
-    public Integer getSenderId() {
-        return senderId;
+    public String getNotificationInfo() {
+        return notificationInfo;
     }
 
-    public void setSenderId(Integer senderId) {
-        this.senderId = senderId;
+    public void setNotificationInfo(String notificationInfo) {
+        this.notificationInfo = notificationInfo;
     }
 
-    public String getSenderName() {
-        return senderName;
+    public Integer getNotificationType() {
+        return notificationType;
     }
 
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
+    public void setNotificationType(Integer notificationType) {
+        this.notificationType = notificationType;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
 }

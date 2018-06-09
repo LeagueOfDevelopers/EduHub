@@ -35,6 +35,7 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
     FakeGroupRepository fakeGroupRepository=new FakeGroupRepository(this);
     FakesButton fakesButton=new FakesButton();
     EmptyGroupAdapter emptyGroupAdapter=new EmptyGroupAdapter();
+    StaggeredGridLayoutManager llm;
 
 
     RecyclerView recyclerView;
@@ -47,7 +48,7 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
         btn.setTextSize(10);
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2,1);
+         llm = new StaggeredGridLayoutManager(2,1);
         recyclerView.setLayoutManager(llm);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         if(!fakesButton.getCheckButton()){
@@ -104,6 +105,8 @@ public class UserFragment extends android.support.v4.app.Fragment implements IGr
         }else{
         GroupAdapter adapter=new GroupAdapter(groups,getActivity(),getContext());
         adapter.setFlag(true);
+            llm = new StaggeredGridLayoutManager(2,1);
+            recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(adapter);
         }
         swipeContainer.setRefreshing(false);

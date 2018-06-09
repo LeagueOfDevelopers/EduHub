@@ -8,8 +8,8 @@ android {
         applicationId "ru.lod_misis.user.eduhub"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 10
-        versionName "10.0"
+        versionCode 11
+        versionName "11.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'com.neovisionaries:nv-websocket-client:2.4'
     compile 'joda-time:joda-time:2.9.9'
     compile 'com.sothree.slidinguppanel:library:3.4.0'

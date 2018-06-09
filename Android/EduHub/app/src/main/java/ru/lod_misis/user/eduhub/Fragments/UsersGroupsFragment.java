@@ -52,6 +52,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
     SavedDataRepository savedDataRepository=new SavedDataRepository();
     SharedPreferences sharedPreferences;
     RefreshTokenPresenter refreshTokenPresenter=new RefreshTokenPresenter(this);
+    StaggeredGridLayoutManager llm;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
 
         recyclerView=v.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
-        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(2,1);
+         llm = new StaggeredGridLayoutManager(2,1);
         recyclerView.setLayoutManager(llm);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         Log.d("UserId",user.getUserId());
@@ -114,7 +115,8 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
             recyclerView.setAdapter(emptyGroupAdapter);
         }else{
             GroupAdapter adapter=new GroupAdapter(groups,getActivity(),getContext());
-
+            llm = new StaggeredGridLayoutManager(2,1);
+            recyclerView.setLayoutManager(llm);
             recyclerView.setAdapter(adapter);
         }
         swipeContainer.setRefreshing(false);
@@ -130,13 +132,15 @@ public class UsersGroupsFragment extends Fragment implements IGroupListView,IRef
     }
 
     @Override
-    public void getThrowable() {
+    public void getThrowable(Throwable error) {
         Intent intent=new Intent(getActivity(), Main2Activity.class);
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.clear();
         editor.commit();
         getActivity().startActivity(intent);
     }
+
+
     private void MakeToast(String s) {
         Toast toast = Toast.makeText(getActivity().getApplicationContext(),
                 (s), Toast.LENGTH_LONG);

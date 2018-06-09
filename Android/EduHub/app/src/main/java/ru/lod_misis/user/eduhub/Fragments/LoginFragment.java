@@ -3,6 +3,8 @@ package ru.lod_misis.user.eduhub.Fragments;
 import android.app.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import android.support.design.widget.TextInputLayout;
@@ -59,7 +61,9 @@ public class LoginFragment extends Fragment implements ILoginView {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.login_fragment, null);
         final EditText emailText = (EditText) v.findViewById(R.id.edit_email);
+        emailText.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         final EditText password = (EditText) v.findViewById(R.id.edit_password);
+        password.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Вход");
 

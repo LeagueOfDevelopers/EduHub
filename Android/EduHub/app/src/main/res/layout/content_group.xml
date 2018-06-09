@@ -12,7 +12,7 @@
         android:id="@+id/group_fragments_conteiner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/metalic"
+        android:background="#ffffff"
         >
 
         <ProgressBar

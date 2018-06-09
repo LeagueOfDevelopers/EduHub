@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/grey</item>
         <item name="colorPrimaryDark">@color/metalic</item>
         <item name="colorAccent">@color/black</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowToggle</item>
         <item name="windowActionBar">true</item>
 
 
@@ -17,7 +18,13 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="DrawerArrowToggle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
 
+        <item name="color">#ffffff</item>
+
+
+
+    </style>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="MyCustomEditText" parent="Widget.AppCompat.EditText">
         <item name="colorControlActivated">#FFFFFF</item>
@@ -30,7 +37,12 @@
     </style>
 
     <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="fontPath">assets/Roboto-Medium.ttf</item>
         <item name="textAllCaps">false</item>
+    </style>
+    <style name="ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18dp</item>
+        <item name="fontPath">assets/Roboto-Medium.ttf</item>
     </style>
 
 </resources>

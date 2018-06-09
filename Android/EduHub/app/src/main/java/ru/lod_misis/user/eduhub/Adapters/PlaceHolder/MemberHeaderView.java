@@ -33,8 +33,7 @@ public class MemberHeaderView  {
 
     @View(R.id.UserRole)
     private TextView userRole;
-    @View(R.id.paid)
-    private ImageView paid;
+
 
     @LongClick(R.id.member_card)
     private void onLongClickListener(){
@@ -71,9 +70,6 @@ public class MemberHeaderView  {
             case 3+"":{userRole.setText(MemberRole.Учитель.toString()); break;}
         }
         userName.setText(member.getName());
-        if(member.getPaid()){
-            paid.setImageResource(R.drawable.ic_wallet_24dp);
-        }
 
 
 

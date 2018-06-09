@@ -142,7 +142,7 @@
                             android:layout_marginRight="15dp"
                             android:text="Дмитрий Борисович"
                             android:textColor="@color/black" />
-                        <Button
+                        <View
                             android:id="@+id/line1"
                             android:layout_width="match_parent"
                             android:layout_height="1sp"
@@ -169,7 +169,7 @@
                             android:layout_marginRight="15dp"
                             android:text="LolKek@gmail.com"
                             android:textColor="@color/black" />
-                        <Button
+                        <View
                             android:id="@+id/line2"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
@@ -196,7 +196,7 @@
                             android:layout_marginRight="15dp"
                             android:text="Мужской"
                             android:textColor="@color/black" />
-                        <Button
+                        <View
                             android:id="@+id/line3"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
@@ -223,7 +223,7 @@
                             android:layout_marginRight="15dp"
                             android:text="04.03.1999"
                             android:textColor="@color/black" />
-                        <Button
+                        <View
                             android:id="@+id/line4"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
@@ -250,7 +250,7 @@
                             android:layout_marginRight="15dp"
                             android:text="Дизайн супер.Приступил к верстке.Тут может быть еще много текста,надеюсь верстка не поедет."
                             android:textColor="@color/black" />
-                        <Button
+                        <View
                             android:id="@+id/line5"
                             android:layout_width="match_parent"
                             android:layout_height="1px"
@@ -276,7 +276,7 @@
 
 
                         </android.support.v7.widget.RecyclerView>
-                        <Button
+                        <View
                             android:id="@+id/line6"
                             android:layout_width="match_parent"
                             android:layout_height="1px"

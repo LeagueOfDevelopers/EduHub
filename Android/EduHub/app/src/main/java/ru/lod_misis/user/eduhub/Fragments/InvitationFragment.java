@@ -98,13 +98,7 @@ public class InvitationFragment extends Fragment implements INotificationsView,I
             Log.d("NOTIFICATIONS", invitations.size() + "");
             for (Invitation invitation : invitations
                     ) {
-                if(fakesButton.getCheckButton()){
-                    Log.e("Check",fakesButton.getCheckButton().toString());
-                    fakeGroupInformationPresenter.loadGroupInformation(user.getToken(),invitation.getGroupId(),getContext());
-                }else{
-                    Log.d("GroupIdInvitation",invitation.getGroupId());
-                    groupInfirmationPresenter.loadGroupInformation(user.getToken(),invitation.getGroupId(),getContext());
-                }
+                expandablePlaceHolderView.addView(new InvitationHeaderView(getContext(),invitation,getActivity(),user,invitation.getGroupId()));
             }
         }else{
             expandablePlaceHolderView.addView(new EmptyInvitationsView());
@@ -122,8 +116,8 @@ public class InvitationFragment extends Fragment implements INotificationsView,I
         groups.get(i).getGroupInfo().setId(invitations.get(i).getGroupId());
         Log.d("groups",groups.size()+"");
 
-        expandablePlaceHolderView.addView(new InvitationHeaderView(getContext(),invitations.get(i),getActivity(),user,groups.get(i)));
-        expandablePlaceHolderView.addView(new InvetationItemView(getContext(),groups.get(i),getActivity()));
+
+
         i++;
 
 

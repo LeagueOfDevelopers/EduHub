@@ -484,11 +484,19 @@ UserProfileResponse userProfile;
         return calendar.get(Calendar.YEAR);
     }
     private Boolean checkLink(String link){
-        Log.d("Link",link);
-        Pattern p=Pattern.compile("^vk.com/\\S+$|^@\\S+$|^twitter.com/\\S+$|^ok.ru\\S+$|^facebook.com/\\S+$" +
-                "|^instagram.com/\\S+$");
+
+        Pattern p=Pattern.compile("^((http|https)://(vk.com|behance.net|twitter.com|ok.ru|facebook.com|instagram.com|github.com)/[0-9A-Za-z]+)$");
+        Pattern p1=Pattern.compile("^((https|http)://([0-9A-Za-z]+).tumblr.com)$");
+        Pattern p2=Pattern.compile("^(d{11})$");
         Matcher m=p.matcher(link);
-        return m.matches();
+        Matcher m1=p1.matcher(link);
+        Matcher m2=p2.matcher(link);
+        if(m.matches()||m1.matches()||m2.matches()){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     @Override
