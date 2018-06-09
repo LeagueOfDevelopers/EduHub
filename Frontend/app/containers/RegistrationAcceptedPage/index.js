@@ -15,6 +15,7 @@ import {makeSelectStatus} from './selectors';
 import {acceptUser} from "./actions";
 import reducer from './reducer';
 import saga from './saga';
+import {parseJwt} from "../../globaljs";
 import {Row, Col, Button, Icon} from 'antd';
 
 export class RegistrationAccepted extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -23,6 +24,11 @@ export class RegistrationAccepted extends React.Component { // eslint-disable-li
   }
 
   componentDidMount = () => {
+    if(localStorage.getItem('token') && parseJwt(localStorage.getItem('token')).exp - parseInt(Date.now()/1000) < 0) {
+      localStorage.setItem('name', '');
+      localStorage.setItem('avatarLink', '');
+      localStorage.setItem('token', '');
+    }
     this.props.acceptUser(this.props.match.params.key)
   };
 

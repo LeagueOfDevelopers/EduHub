@@ -180,7 +180,8 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       userData: localStorage.getItem('token') ? parseJwt(localStorage.getItem('token')) : null,
       isCurrentUser: false,
       reportVisible: false,
-      groupCardWidth: '100%'
+      groupCardWidth: '100%',
+      currentDate: new Date().toISOString()
     };
 
     this.onSetResult = this.onSetResult.bind(this);
@@ -246,7 +247,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       imageUrl: result.userProfile.avatarLink,
       nameInput: result.userProfile.name,
       genderInput: result.userProfile.gender === 1 ? 'Man' : result.userProfile.gender === 2 ? 'Woman' : 'Unknown',
-      birthYearInput: result.userProfile.birthYear && result.userProfile.birthYear !== '0001-01-01T00:00:00+00:00' ? result.userProfile.birthYear : new Date(),
+      birthYearInput: result.userProfile.birthYear && result.userProfile.birthYear !== '0001-01-01T00:00:00+00:00' ? result.userProfile.birthYear : this.state.currentDate,
       aboutInput: result.userProfile.aboutUser ? result.userProfile.aboutUser : '',
       contactsInputs: result.userProfile.contacts ? result.userProfile.contacts : [],
       isCurrentUser: Boolean(this.state.userData && this.props.match.params.id == this.state.userData.UserId)
@@ -288,7 +289,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
       isEditing: false,
       nameInput: this.state.userProfile.name,
       aboutInput: this.state.userProfile.aboutUser,
-      birthYearInput: this.state.userProfile.birthYear,
+      birthYearInput: this.state.userProfile.birthYear !== '0001-01-01T00:00:00+00:00' ? this.state.userProfile.birthYear : this.state.currentDate,
       contactsInputs: this.state.userProfile.contacts ? this.state.userProfile.contacts : [],
       genderInput: this.state.userProfile.gender === 1 ? 'Man' : this.state.userProfile.gender === 2 ? 'Woman' : 'Unknown',
       imageUrl: this.state.userProfile.avatarLink
@@ -304,7 +305,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             item !== this.state.userProfile.contacts[i]
           ).length !== 0 || this.state.aboutInput !== this.state.userProfile.aboutUser || this.state.birthYearInput !== this.state.userProfile.birthYear ||
           getGenderType(this.state.genderInput) !== this.state.userProfile.gender || this.state.nameInput !== this.state.userProfile.name || this.state.imageUrl !== this.state.userProfile.avatarLink) {
-          setTimeout(() => this.props.editProfile(this.state.nameInput, this.state.aboutInput, this.state.genderInput, this.state.contactsInputs, this.state.birthYearInput, this.state.imageUrl ? this.state.imageUrl : ''), 0);
+          setTimeout(() => this.props.editProfile(this.state.nameInput, this.state.aboutInput, this.state.genderInput, this.state.contactsInputs, this.state.birthYearInput === this.state.currentDate ? '0001-01-01T00:00:00+00:00' : this.state.birthYearInput , this.state.imageUrl ? this.state.imageUrl : ''), 0);
         }
         if(this.state.teacherProfile && this.state.teacherProfile.skills && (this.state.skillsInput.length !== this.state.teacherProfile.skills.length || this.state.teacherProfile && this.state.teacherProfile.skills && this.state.skillsInput.filter((item, i) =>
             item !== this.state.teacherProfile.skills[i]
@@ -618,7 +619,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   onClick={() => {
                     this.props.makeTeacher();
                   }}
-                  style={{width: '100%', marginTop: 12}}
+                  style={{width: '100%', marginTop: 12, marginBottom: 40}}
                 >
                   Преподавать
                 </Button>
@@ -627,7 +628,7 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
                   onClick={() => {
                     this.props.makeNotTeacher();
                   }}
-                  style={{width: '100%', marginTop: 12}}
+                  style={{width: '100%', marginTop: 12, marginBottom: 40}}
                 >
                   Не преподавать
                 </Button>
@@ -636,14 +637,14 @@ export class ProfilePage extends React.Component { // eslint-disable-line react/
             {this.state.isCurrentUser ? null :
               <Button
                 onClick={this.onReportClick}
-                style={{width: '100%', marginTop: 12}}
+                style={{width: '100%', marginTop: 12, marginBottom: 40}}
               >
                 Пожаловаться
               </Button>
             }
           </Col>
           <Col xs={{span: 24}} md={{span: 12, offset: 1}} lg={{span: 13, offset: 1}} xl={{span: 15, offset: 1}} xxl={{span: 17, offset: 1}} className='lg-center-container-item xs-groups-tabs'>
-            <Tabs defaultActiveKey="1" style={{width: '100%'}}>
+            <Tabs defaultActiveKey="1" style={{width: '100%', marginBottom: 40}}>
               <TabPane tab="Группы" key="1">
                 {this.props.myGroups.length !== 0 ?
                   <div className='cards-holder md-cards-holder-center'>

@@ -10,6 +10,7 @@ import {
   ACCEPT_USER_SUCCESS,
   ACCEPT_USER_FAILED
 } from './constants';
+import {parseJwt} from "../../globalJS";
 
 const initialState = fromJS({
   status: null,

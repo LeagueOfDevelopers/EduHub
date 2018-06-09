@@ -245,9 +245,8 @@ export class CreateGroupPage extends React.PureComponent { // eslint-disable-lin
                   ],
                   initialValue: this.state.price
                 })(
-                  <Input onChange={this.onHandlePriceChange} style={{width: '88%'}}/>)
+                  <Input onChange={this.onHandlePriceChange} addonAfter='руб.'/>)
                 }
-                <span style={{fontSize: 16, marginLeft: 'calc(12% - 30px)'}}>руб.</span>
               {/*</Col>*/}
             </FormItem >
             {/*<FormItem*/}

@@ -15,6 +15,7 @@ import reducer from './reducer';
 import saga from './saga';
 import { resetPassword } from "./actions";
 import { Form, Col, Row, Button, Divider, message, Input, Switch } from 'antd';
+import {parseJwt} from "../../globalJS";
 const FormItem = Form.Item;
 
 const formItemLayout = {
@@ -42,6 +43,14 @@ export class ResetPasswordPage extends React.Component { // eslint-disable-line 
   goBack = () => {
     history.back()
   };
+
+  componentDidMount() {
+    if(localStorage.getItem('token') && parseJwt(localStorage.getItem('token')).exp - parseInt(Date.now()/1000) < 0) {
+      localStorage.setItem('name', '');
+      localStorage.setItem('avatarLink', '');
+      localStorage.setItem('token', '');
+    }
+  }
 
   onHandlePasswordChange = (e) => {
     this.setState({password: e.target.value})
