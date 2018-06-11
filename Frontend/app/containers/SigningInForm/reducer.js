@@ -6,6 +6,7 @@ import {
   LOAD_CURRENT_USER_ERROR
 } from './constants';
 import {message} from 'antd';
+import {parseJwt} from "../../globalJS";
 
 
 const initialState = fromJS({
@@ -17,7 +18,8 @@ const initialState = fromJS({
     token: localStorage.getItem('token'),
     isTeacher: localStorage.getItem('isTeacher'),
   },
-  isExists: true
+  isExists: true,
+  isConfirmed: true
 });
 
 function appReducer(state = initialState, action) {
@@ -27,7 +29,8 @@ function appReducer(state = initialState, action) {
         .set('loading', true)
         .set('error', false);
     case LOAD_CURRENT_USER_SUCCESS:
-      if(action.token !== undefined) {
+      // if(action.token && parseJwt(action.token).Role !== 'Unconfirmed') {
+      if(action.token) {
         localStorage.setItem('name', `${action.name}`);
         localStorage.setItem('avatarLink', `${action.avatarLink}`);
         localStorage.setItem('token', `${action.token}`);
@@ -42,8 +45,9 @@ function appReducer(state = initialState, action) {
           .setIn(['currentUser', 'token'], action.token)
           .setIn(['currentUser', 'isTeacher'], action.isTeacher)
           .set('isExists', true)
+          .set('isConfirmed', true)
       }
-      else {
+      else if(!action.token){
         return state
           .set('loading', false)
           .set('error', false)
@@ -51,7 +55,18 @@ function appReducer(state = initialState, action) {
           .setIn(['currentUser', 'avatarLink'], action.avatarLink)
           .setIn(['currentUser', 'token'], action.token)
           .set('isExists', false)
+          .set('isConfirmed', true)
       }
+      // else if(parseJwt(action.token).Role === 'Unconfirmed') {
+      //   return state
+      //     .set('loading', false)
+      //     .set('error', false)
+      //     .setIn(['currentUser', 'name'], '')
+      //     .setIn(['currentUser', 'avatarLink'], '')
+      //     .setIn(['currentUser', 'token'], '')
+      //     .set('isExists', true)
+      //     .set('isConfirmed', false)
+      // }
 
     case LOAD_CURRENT_USER_ERROR:
       return state

@@ -15,7 +15,7 @@ import {makeSelectStatus} from './selectors';
 import {acceptUser} from "./actions";
 import reducer from './reducer';
 import saga from './saga';
-import {parseJwt} from "../../globaljs";
+import {parseJwt} from "../../globalJS";
 import {Row, Col, Button, Icon} from 'antd';
 
 export class RegistrationAccepted extends React.Component { // eslint-disable-line react/prefer-stateless-function

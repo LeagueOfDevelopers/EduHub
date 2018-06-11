@@ -22,7 +22,6 @@ function sendResetPasswordInfoPageReducer(state = initialState, action) {
       return state
         .set('pending', true);
     case SEND_RESET_PASSWORD_INFO_SUCCESS:
-      setTimeout(() => location.assign('/reset_password_accepted'), 500);
       return state
         .set('pending', false);
     case SEND_RESET_PASSWORD_INFO_FAILED:

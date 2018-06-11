@@ -12,7 +12,13 @@ const makeSelectIsExists = () => createSelector(
   (globalState) => globalState.get('isExists')
 );
 
+const makeSelectIsConfirmed = () => createSelector(
+  selectLogin,
+  (globalState) => globalState.get('isConfirmed')
+);
+
 export {
   makeSelectCurrentUser,
-  makeSelectIsExists
+  makeSelectIsExists,
+  makeSelectIsConfirmed
 }

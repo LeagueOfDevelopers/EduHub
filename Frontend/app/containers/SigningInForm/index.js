@@ -13,7 +13,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
 import saga from './saga';
-import {makeSelectIsExists} from "./selectors";
+import {makeSelectIsExists, makeSelectIsConfirmed} from "./selectors";
 import {loadCurrentUser} from './actions';
 import {Link} from "react-router-dom";
 import styled from 'styled-components';
@@ -94,6 +94,11 @@ class SingingInForm extends React.Component { // eslint-disable-line react/prefe
         ]}
       >
         <Form id='sign-in-form' onSubmit={this.handleSubmit}>
+          {this.props.isConfirmed ? null :
+            <div style={{color: '#3a5cf5', marginBottom: 16}}>
+              Пожалуйста, подтвердите свою почту для входа на сайт!
+            </div>
+          }
           <FormItem
             label="Ваш email"
           >
@@ -138,7 +143,8 @@ SingingInForm.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  isExists: makeSelectIsExists()
+  isExists: makeSelectIsExists(),
+  isConfirmed: makeSelectIsConfirmed()
 });
 
 function mapDispatchToProps(dispatch) {
