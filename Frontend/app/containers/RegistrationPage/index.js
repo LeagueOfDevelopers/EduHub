@@ -15,10 +15,9 @@ import reducer from './reducer';
 import saga from './saga';
 import {registrate} from './actions';
 import SigningInForm from "../SigningInForm";
+import { getQueryVariable } from '../../globalJS'
 import { Form, Col, Row, Button, Divider, message, Input, Switch } from 'antd';
 const FormItem = Form.Item;
-
-
 
 const tailFormItemLayout = {
   wrapperCol: {
@@ -119,7 +118,7 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
     e.preventDefault();
     this.props.form.validateFields((err, value) => {
       if(!err) {
-        this.registrate(value.name, value.email, value.password, value.isTeacher, value.inviteCode)
+        this.registrate(value.name, value.email, value.password, value.isTeacher, getQueryVariable('key') ? getQueryVariable('key') : '')
       }
     })
   };
@@ -184,16 +183,6 @@ export class RegistrationPage extends React.Component { // eslint-disable-line r
                 <Switch onChange={this.onHandleTeacherStatusChange}/>)
               }
             </FormItem>
-            {/*<FormItem*/}
-              {/*{...formItemLayout}*/}
-              {/*label="Код приглашения"*/}
-            {/*>*/}
-              {/*{getFieldDecorator('inviteCode', {*/}
-                {/*initialValue: this.state.inviteCode*/}
-              {/*})(*/}
-                {/*<Input onChange={this.onHandleInviteCodeChange} placeholder="Можете оставить поле пустым"/>)*/}
-              {/*}*/}
-            {/*</FormItem>*/}
             <Col offset={10} className='sm-row-center' style={{marginTop: 20}}>
               <FormItem {...tailFormItemLayout}>
                 <div>
