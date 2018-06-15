@@ -3,6 +3,7 @@ package ru.lod_misis.user.eduhub.Fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -79,7 +80,8 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
         sPref =getActivity().getSharedPreferences("User",MODE_PRIVATE);
         pager = v.findViewById(R.id.pager);
         tabLayout = (TabLayout) v.findViewById(R.id.tabs);
-
+        tabLayout.setTabTextColors(Color.WHITE,Color.WHITE);
+        tabLayout.setupWithViewPager(pager);
 
 
 
@@ -117,7 +119,7 @@ public class UnsignedMainGroupFragment extends Fragment implements ISignInUserTo
 
             }
         }
-        tabLayout.setupWithViewPager(pager);
+
         signInToGroup.setOnClickListener(click->{
             if(sPref.contains(TOKEN)&&sPref.contains(NAME)&&sPref.contains(EMAIL)&&sPref.contains(ID)&&sPref.contains(ROLE)){
 

@@ -97,6 +97,7 @@ FakeCreateGroupPresenter fakeCreateGroupPresenter=new FakeCreateGroupPresenter(t
         });
         EditText nameOfGroup=findViewById(R.id.name_of_group_create);
         nameOfGroup.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+
         spinner.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         tags.setOnKeyListener(new View.OnKeyListener() {
             @Override

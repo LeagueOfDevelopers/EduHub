@@ -43,6 +43,18 @@ public class MessageView {
     private TextView date;
     @View(R.id.message)
     private TextView messageText;
+    @View(R.id.card_of_my_message)
+    private CardView MyCardOfMessage;
+    @View(R.id.my_role)
+    private TextView MyRole;
+    @View(R.id.my_name)
+    private TextView MyName;
+    @View(R.id.my_time)
+    private TextView MyDate;
+    @View(R.id.my_message)
+    private TextView MyMessageText;
+    @View(R.id.notification)
+    private TextView notification;
 
 
 
@@ -69,60 +81,100 @@ public class MessageView {
     private void onResolved() {
         Log.d("Id",user.getUserId());
         if(message.getMessageType()==0){
-            cardOfMessage.setBackgroundColor(Color.GRAY);
 
-            role.setVisibility(android.view.View.VISIBLE);
-            date.setVisibility(android.view.View.VISIBLE);
-            name.setVisibility(android.view.View.VISIBLE);
         if(message.getSenderId().toString().equals(user.getUserId())){
-            layoutParams=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            layoutParams.setMargins(7*(int)dp,8*(int)dp,7*(int)dp,8*(int)dp);
-            cardOfMessage.setLayoutParams(layoutParams);
+            MyCardOfMessage.setVisibility(android.view.View.VISIBLE);
+            cardOfMessage.setVisibility(android.view.View.GONE);
+            notification.setVisibility(android.view.View.GONE);
+            MyMessageText.setText(message.getText());
+
+            MyName.setText(message.getSenderName());
+            MyRole.setText("");
+            operationWithDate(message.getSentOn(),true);
 
             i++;
-        }else{
-            layoutParams=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            layoutParams.setMargins(7*(int)dp,8*(int)dp,7*(int)dp,8*(int)dp);
-            cardOfMessage.setLayoutParams(layoutParams);
+        }else {
+            MyCardOfMessage.setVisibility(android.view.View.GONE);
+            cardOfMessage.setVisibility(android.view.View.VISIBLE);
+            notification.setVisibility(android.view.View.GONE);
+            messageText.setText(message.getText());
+
+            name.setText(message.getSenderName());
+            role.setText("");
+            operationWithDate(message.getSentOn(),false);
         }
-        messageText.setText(message.getText());
 
-        name.setText(message.getSenderName());
-        role.setText("");
-        operationWithDate(message.getSentOn());
 
         }else{
+            MyCardOfMessage.setVisibility(android.view.View.GONE);
+            cardOfMessage.setVisibility(android.view.View.GONE);
+            notification.setVisibility(android.view.View.VISIBLE);
             Notifications notifications=new Notifications();
             notifications.setEventInfo(message.getNotificationInfo());
             notifications.setEventType(message.getNotificationType());
             notifications.setId(message.getId()+"");
             notifications.setOccurredOn(message.getSentOn());
             Notification notification=convertNotifications.convertCommonNotificationToNotofication(notifications);
-            messageText.setText(notification.getText());
-            role.setVisibility(android.view.View.GONE);
-            date.setVisibility(android.view.View.GONE);
-            name.setVisibility(android.view.View.GONE);
+            this.notification.setText(notification.getText());
 
-            messageText.setTextSize(5*dp);
-            layoutParams2=new RelativeLayout.LayoutParams(300*(int)dp, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams2.addRule(RelativeLayout.CENTER_HORIZONTAL);
-            layoutParams2.setMargins(2*(int)dp,5*(int)dp,2*(int)dp,5*(int)dp);
-            cardOfMessage.setBackgroundColor(Color.GRAY);
-            cardOfMessage.setLayoutParams(layoutParams2);
+
 
 
 
         }
     }
-    private void operationWithDate(String data){
+    private void operationWithDate(String data,Boolean flag){
         DateTime dt = new DateTime(data);
         Long dateInt = dt.toDate().getTime() / 1000 / 60 / 60;
 
 
         Long days;
         Long mes;
+        Log.d("Date",dateInt+"");
+        Log.d("Now",new Date().getTime()/1000/60/60+"");
+        if(flag){
+            if (new Date().getTime() / 1000 / 60 / 60 - dateInt < 1) {
+                MyDate.setText("<часа назад");
+            } else {
+                if (new Date().getTime() / 1000 / 60 / 60 - dateInt < 24) {
+                    MyDate.setText(new Date().getTime() / 1000 / 60 / 60 - dateInt + "ч. назад");
+                }
+                if (new Date().getTime() / 1000 / 60 / 60 - dateInt > 24) {
+                    days = (new Date().getTime() / 1000 / 60 / 60 - dateInt) / 24;
+                    if (days == 1) {
+                        MyDate.setText(days + " день назад");
+                    } else {
+                        if (days < 5) {
+                            MyDate.setText(days + " дня назад");
+                        } else {
+                            if (days > 31) {
+                                mes = days / 31;
+                                if (mes == 1) {
+                                    MyDate.setText("месяяц назад");
+                                } else {
+                                    if (mes < 5) {
+                                        MyDate.setText(mes + " месяца назад");
+                                    } else {
+                                        if (mes < 12) {
+                                            MyDate.setText(mes + " месяцев назад");
+                                        } else {
+                                            MyDate.setText("больше года назад");
+                                        }
+                                    }
+
+                                }
+                            } else {
+                                MyDate.setText(days + " дней назад");
+                            }
+                        }
+
+
+                    }
+
+
+                }
+            }
+        }else{
         if (new Date().getTime() / 1000 / 60 / 60 - dateInt == 0) {
             date.setText("<часа назад");
         } else {
@@ -164,5 +216,6 @@ public class MessageView {
 
             }
         }
+    }
     }
 }

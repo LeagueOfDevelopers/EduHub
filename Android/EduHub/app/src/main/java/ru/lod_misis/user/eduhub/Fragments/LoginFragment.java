@@ -65,7 +65,7 @@ public class LoginFragment extends Fragment implements ILoginView {
         final EditText password = (EditText) v.findViewById(R.id.edit_password);
         password.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Вход");
+        toolbar.setTitle("");
 
         Button signIn = v.findViewById(R.id.sign_in);
         TextView signUp = v.findViewById(R.id.sign_up);

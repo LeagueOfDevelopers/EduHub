@@ -17,12 +17,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import ru.lod_misis.user.eduhub.Adapters.GroupMembersAdapter;
 import ru.lod_misis.user.eduhub.Adapters.TagsAdapter;
@@ -35,12 +38,16 @@ import ru.lod_misis.user.eduhub.Interfaces.View.IFileRepositoryView;
 import ru.lod_misis.user.eduhub.Interfaces.View.IGroupView;
 import ru.lod_misis.user.eduhub.InviteUserToGroup;
 import ru.lod_misis.user.eduhub.Models.AddFileResponseModel;
+import ru.lod_misis.user.eduhub.Models.AddReviewModel;
 import ru.lod_misis.user.eduhub.Models.Group.Group;
 import ru.lod_misis.user.eduhub.Models.Group.Member;
 import ru.lod_misis.user.eduhub.Models.User;
 import ru.lod_misis.user.eduhub.Presenters.CourseMethodsPresenter;
 import ru.lod_misis.user.eduhub.Presenters.FileRepository;
 import ru.lod_misis.user.eduhub.Presenters.GroupInformationPresenter;
+import ru.lod_misis.user.eduhub.Retrofit.EduHubApi;
+import ru.lod_misis.user.eduhub.Retrofit.RetrofitBuilder;
+
 import com.example.user.eduhub.R;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
@@ -58,6 +65,9 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
    SwipeRefreshLayout swipeConteiner;
    User user;
    FloatingActionButton refactor;
+   EditText review;
+   CardView reviewCard;
+   Button addReview;
    Button invite;
    Button positiveResponse;
    Button negativeResponse;
@@ -90,6 +100,9 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
         View v = inflater.inflate(R.layout.group_members_fragment, null);
         downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
         fileRepository=new FileRepository(this,getContext());
+        addReview=v.findViewById(R.id.add_review);
+        review=v.findViewById(R.id.review);
+        reviewCard=v.findViewById(R.id.review_card);
         mainLayout=v.findViewById(R.id.main_layout);
         mainLayout.setVisibility(View.GONE);
         participants=v.findViewById(R.id.participants);
@@ -115,6 +128,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
         voteCard=v.findViewById(R.id.vote_card);
         inviteCard=v.findViewById(R.id.invite_card);
         uploadCourseCard=v.findViewById(R.id.upload_course_card);
+        reviewCard.setVisibility(View.GONE);
         voteCard.setVisibility(View.GONE);
         inviteCard.setVisibility(View.GONE);
         uploadCourseCard.setVisibility(View.GONE);
@@ -166,6 +180,20 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
                 }else{
                     MakeToast("Выберите файл,который хотите загрузить");
                 }
+            }
+        });
+        addReview.setOnClickListener(click->{
+            if(!review.getText().toString().equals("")){
+                AddReviewModel addReviewModel=new AddReviewModel();
+                addReviewModel.setText(addReview.getText().toString());
+                addReviewModel.setTitle("Отзыв от "+user.getName());
+                EduHubApi eduHubApi= RetrofitBuilder.getApi(getContext());
+                eduHubApi.addReview("Bearer "+user.getToken(),group.getGroupInfo().getId(),addReviewModel)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(()->{
+                            reviewCard.setVisibility(View.GONE);
+                        },throwable -> {Log.e("AddReview",throwable.toString());});
             }
         });
         downloadFile.setOnClickListener(click->{
@@ -262,7 +290,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
             switch (group.getGroupInfo().getCourseStatus()) {
 
                 case 0: {
-
+                    reviewCard.setVisibility(View.GONE);
                     voteCard.setVisibility(View.GONE);
                     if (member.getRole() == 3) {
                         uploadCourseCard.setVisibility(View.VISIBLE);
@@ -277,7 +305,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
 
                 case 1: {
 
-
+                    reviewCard.setVisibility(View.GONE);
                     voteCard.setVisibility(View.VISIBLE);
                     changeFile.setText("Файл уже выбран");
                     if (member.getRole() == 3) {
@@ -296,6 +324,7 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
                     break;
                 }
                 case 2: {
+                    reviewCard.setVisibility(View.GONE);
                     voteCard.setVisibility(View.GONE);
                     uploadCourseCard.setVisibility(View.GONE);
                     inviteCard.setVisibility(View.GONE);
@@ -324,10 +353,14 @@ public class GroupMembersFragment extends android.support.v4.app.Fragment implem
 
 
                     if (member.getRole() == 3) {
-
+                        reviewCard.setVisibility(View.GONE);
 
                     } else {
-
+                        if(member.getCurriculumStatus().equals("2")||member.getCurriculumStatus().equals("3")){
+                            reviewCard.setVisibility(View.GONE);
+                        }else{
+                            reviewCard.setVisibility(View.VISIBLE);
+                        }
                     }
 
 

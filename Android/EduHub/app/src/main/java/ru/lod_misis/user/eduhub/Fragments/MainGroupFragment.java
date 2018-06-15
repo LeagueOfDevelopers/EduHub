@@ -3,6 +3,7 @@ package ru.lod_misis.user.eduhub.Fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -85,6 +86,8 @@ public class MainGroupFragment extends Fragment {
         }
 
         pager.setAdapter(adapter);
+        tabLayout.setTabTextColors(Color.WHITE,Color.WHITE);
+        tabLayout.setupWithViewPager(pager);
 
 
 
@@ -102,7 +105,7 @@ public class MainGroupFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tabLayout.setupWithViewPager(pager);
+
     }
 
     public void setGroup(Group group){

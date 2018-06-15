@@ -79,7 +79,7 @@ public class RegistrationFragment extends Fragment implements IRegistrView,ILogi
         name=v.findViewById(R.id.registr_login);
         name.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         Toolbar toolbar=getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Регистрация");
+        toolbar.setTitle("");
         errorLayoutEmail=v.findViewById(R.id.error_layout_registr_email);
         errorLayoutName=v.findViewById(R.id.error_layout_registr_login);
         errorLayoutPassword=v.findViewById(R.id.registr_password2);

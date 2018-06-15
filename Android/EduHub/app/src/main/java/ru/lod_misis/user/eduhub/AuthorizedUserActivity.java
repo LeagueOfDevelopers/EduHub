@@ -121,7 +121,7 @@ public class AuthorizedUserActivity extends AppCompatActivity
             filtresModel=FiltresModel.getInstance();
             JWT jwt = new JWT(user.getToken());
             user.setUserId(jwt.getClaim("UserId").asString());
-            user.setRole(jwt.getClaim("ROle").asString());
+            user.setRole(jwt.getClaim("Role").asString());
             savedDataRepository.SaveUser(user.getToken(),user.getName(),user.getAvatarLink(),user.getEmail(),user.getTeacher(),sPref);
             drawer();
 

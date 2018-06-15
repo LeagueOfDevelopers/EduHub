@@ -57,6 +57,7 @@ public class ChatFragment extends Fragment implements IChatView  {
     Context context;
     private OkHttpClient client;
     WebSocket ws;
+    int size=0;
 
     //private FakeMessageRep messageRep=new FakeMessageRep();
     ArrayList<Message> messages=new ArrayList<>();
@@ -154,10 +155,14 @@ public class ChatFragment extends Fragment implements IChatView  {
 
     @Override
     public void getMessages(ArrayList<Message> messages) {
+        size=messages.size();
+        Log.d("Size",size+"");
+
         for (Message message:messages) {
 
             expandablePlaceHolderView.addView(new MessageView(message,user,context));
         }
+        expandablePlaceHolderView.scrollToPosition(size-1);
     }
 
     @Override
@@ -175,7 +180,15 @@ public class ChatFragment extends Fragment implements IChatView  {
         message1.setSentOn(message.getSentOn());
         message1.setSenderId(message.getSenderId());
         message1.setMessageType(0);
+        size++;
         expandablePlaceHolderView.addView(new MessageView(message1,user,context));
+        Scrol();
+
+    }
+    private void Scrol(){
+
+        Log.d("Size",size+"");
+        expandablePlaceHolderView.scrollToPosition(size-1);
     }
     private void startListenerWebSocket(){
 

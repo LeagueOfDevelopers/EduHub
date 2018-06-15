@@ -81,6 +81,7 @@
                         android:layout_marginLeft="21dp"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
+                        android:textCursorDrawable="@drawable/color_cursor"
                         android:textColor="#FFFFFF"
                         android:textColorHint="#FFFFFF"
 
